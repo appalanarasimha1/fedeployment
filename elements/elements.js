@@ -241,6 +241,7 @@ import './nuxeo-themes/nuxeo-theme.js';
 import './nuxeo-confirm-button/nuxeo-confirm-button.js';
 import './nuxeo-restore-version-button/nuxeo-restore-version-button.js';
 import './nuxeo-keys/nuxeo-keys.js';
+import './nuxeo-admin/reports/neom-reports.js';
 
 // Note -->
 import './nuxeo-note-editor/nuxeo-note-editor.js';

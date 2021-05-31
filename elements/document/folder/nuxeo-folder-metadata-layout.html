@@ -20,6 +20,7 @@ limitations under the License.
 @group Nuxeo UI
 @element nuxeo-folder-metadata-layout
 -->
+<!--TODO: Translations-->
 <dom-module id="nuxeo-folder-metadata-layout">
   <template>
     <style include="nuxeo-styles"></style>
@@ -37,6 +38,21 @@ limitations under the License.
     <div role="widget" hidden$="[[!document.properties.dc:nature]]">
       <label>[[i18n('label.dublincore.nature')]]</label>
       <div name="nature">[[formatDirectory(document.properties.dc:nature)]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.dc:start]]">
+      <label>[[i18n('start')]]</label>
+      <nuxeo-date name="start" datetime="[[document.properties.dc:start]]"></nuxeo-date>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.dc:end]]">
+      <label>[[i18n('end')]]</label>
+      <nuxeo-date name="end" datetime="[[document.properties.dc:end]]"></nuxeo-date>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.dc:recurrence]]">
+      <label>[[i18n('repeat')]]</label>
+      <div name="recurrence">[[formatDirectory(document.properties.dc:recurrence)]]</div>
     </div>
 
     <nuxeo-directory-suggestion

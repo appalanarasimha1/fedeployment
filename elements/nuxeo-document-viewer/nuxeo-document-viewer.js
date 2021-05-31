@@ -32,7 +32,7 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 */
 Polymer({
   _template: html`
-    <style include="nuxeo-styles">
+    <style include="nuxeo- v  ">
       :host {
         display: block;
       }

@@ -13,7 +13,7 @@
   <template>
     <nuxeo-filter user="[[user]]" expression="user.isAdministrator">
       <template>
-        <nuxeo-analytics name="analytics" selected="document-distribution"></nuxeo-analytics>
+        <nuxeo-analytics name="analytics" selected="reports"></nuxeo-analytics>
       </template>
     </nuxeo-filter>
   </template>
@@ -118,6 +118,17 @@
 </nuxeo-slot-content>
 
 <!-- ANALYTICS -->
+
+<nuxeo-slot-content name="reportsItem" slot="ANALYTICS_ITEMS" order="10">
+  <template>
+    <nuxeo-page-item name="reports" label="REPORTS"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+<nuxeo-slot-content name="reportsPage" slot="ANALYTICS_PAGES" order="10">
+  <template>
+    <neom-reports name="reports" path="/default-domain/"></neom-reports>
+  </template>
+</nuxeo-slot-content>
 
 <nuxeo-slot-content name="analyticsDocumentDistributionItem" slot="ANALYTICS_ITEMS" order="10">
   <template>

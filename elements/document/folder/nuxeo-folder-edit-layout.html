@@ -20,13 +20,29 @@ limitations under the License.
 @group Nuxeo UI
 @element nuxeo-folder-edit-layout
 -->
+
+<!--TODO: Translations-->
 <dom-module id="nuxeo-folder-edit-layout">
   <template>
     <style include="nuxeo-styles"></style>
 
+    <nuxeo-resource id="eventType" params='{"pageSize": 0}' path="/directory/eventType"></nuxeo-resource>
+    <nuxeo-resource id="folderTypes" params='{"pageSize": 0}' path="/directory/folderTypes"></nuxeo-resource>
+
+    <nuxeo-select
+      attr-for-selected="id"
+      id="folderTypeSelector"
+      label="Folder Type"
+      selected="{{document.properties.dc:folderType}}"
+    >
+      <template as="folderType" is="dom-repeat" items="[[folderTypes]]">
+        <paper-item id$="[[folderType.id]]">[[folderType.properties.label]]</paper-item>
+      </template>
+    </nuxeo-select>
+
     <nuxeo-input
       role="widget"
-      label="[[i18n('title')]]"
+      label="{{getTitle(isEventFolder)}}"
       name="title"
       value="{{document.properties.dc:title}}"
       autofocus
@@ -42,51 +58,62 @@ limitations under the License.
     >
     </nuxeo-textarea>
 
-    <nuxeo-directory-suggestion
-      role="widget"
-      label="[[i18n('label.dublincore.nature')]]"
-      name="nature"
-      directory-name="nature"
-      value="{{document.properties.dc:nature}}"
-      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"
-      min-chars="0"
-    >
-    </nuxeo-directory-suggestion>
+    <!--    <nuxeo-directory-suggestion-->
+    <!--      role="widget"-->
+    <!--      label="[[i18n('label.dublincore.nature')]]"-->
+    <!--      name="nature"-->
+    <!--      directory-name="nature"-->
+    <!--      value="{{document.properties.dc:nature}}"-->
+    <!--      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"-->
+    <!--      min-chars="0"-->
+    <!--    >-->
+    <!--    </nuxeo-directory-suggestion>-->
 
-    <nuxeo-directory-suggestion
-      role="widget"
-      label="[[i18n('label.dublincore.subjects')]]"
-      directory-name="l10nsubjects"
-      name="subjects"
-      value="{{document.properties.dc:subjects}}"
-      multiple="true"
-      dbl10n="true"
-      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"
-      min-chars="0"
-    >
-    </nuxeo-directory-suggestion>
+    <!--    <nuxeo-directory-suggestion-->
+    <!--      role="widget"-->
+    <!--      label="[[i18n('label.dublincore.subjects')]]"-->
+    <!--      directory-name="l10nsubjects"-->
+    <!--      name="subjects"-->
+    <!--      value="{{document.properties.dc:subjects}}"-->
+    <!--      multiple="true"-->
+    <!--      dbl10n="true"-->
+    <!--      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"-->
+    <!--      min-chars="0"-->
+    <!--    >-->
+    <!--    </nuxeo-directory-suggestion>-->
 
-    <nuxeo-directory-suggestion
-      role="widget"
-      label="[[i18n('label.dublincore.coverage')]]"
-      directory-name="l10ncoverage"
-      name="coverage"
-      value="{{document.properties.dc:coverage}}"
-      dbl10n="true"
-      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"
-      min-chars="0"
-    >
-    </nuxeo-directory-suggestion>
+    <!--    <nuxeo-directory-suggestion-->
+    <!--      role="widget"-->
+    <!--      label="[[i18n('label.dublincore.coverage')]]"-->
+    <!--      directory-name="l10ncoverage"-->
+    <!--      name="coverage"-->
+    <!--      value="{{document.properties.dc:coverage}}"-->
+    <!--      dbl10n="true"-->
+    <!--      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"-->
+    <!--      min-chars="0"-->
+    <!--    >-->
+    <!--    </nuxeo-directory-suggestion>-->
 
-    <nuxeo-date-picker
-      role="widget"
-      label="[[i18n('label.dublincore.expire')]]"
-      name="expired"
-      value="{{document.properties.dc:expired}}"
-    >
-    </nuxeo-date-picker>
+    <!--    <nuxeo-date-picker-->
+    <!--      role="widget"-->
+    <!--      label="[[i18n('label.dublincore.expire')]]"-->
+    <!--      name="expired"-->
+    <!--      value="{{document.properties.dc:expired}}"-->
+    <!--    >-->
+    <!--    </nuxeo-date-picker>-->
+
+    <template if="[[isEventFolder]]" is="dom-if">
+      <nuxeo-date-picker label="Start Date" name="start" role="widget" value="{{document.properties.dc:start}}">
+      </nuxeo-date-picker>
+      <nuxeo-date-picker label="End Date" name="end" role="widget" value="{{document.properties.dc:end}}">
+      </nuxeo-date-picker>
+
+      <template if="[[isRecurringEventFolder]]" is="dom-if">
+        <nuxeo-input label="recurrence" name="recurrence" role="widget" value="{{document.properties.dc:recurrence}}">
+        </nuxeo-input>
+      </template>
+    </template>
   </template>
-
   <script>
     Polymer({
       is: 'nuxeo-folder-edit-layout',
@@ -96,6 +123,56 @@ limitations under the License.
          * @doctype Folder
          */
         document: Object,
+        folderTypes: {
+          type: Array,
+          value: [],
+        },
+        isEventFolder: {
+          type: Boolean,
+          value: false,
+        },
+        isRecurringEventFolder: {
+          type: Boolean,
+          value: false,
+        },
+      },
+      observers: ['folderTypeChanged(document.properties.dc:folderType)'],
+      getTitle(isEventFolder) {
+        return isEventFolder ? this.i18n('eventTitle') : this.i18n('title');
+      },
+      folderTypeChanged(folderType) {
+        if (typeof this.document === 'undefined' || !this.eventType) return;
+        const { properties } = this.document;
+
+        this.isEventFolder = this.eventType.includes(folderType);
+        const start = this.isEventFolder ? properties['dc:start'] : null;
+        const end = this.isEventFolder ? properties['dc:end'] : null;
+
+        this.isRecurringEventFolder = folderType === 'repeatingEvent';
+        const recurrence = this.isRecurringEventFolder ? properties['dc:recurrence'] : null;
+
+        this.setProperties({
+          'document.properties.dc:start': start,
+          'document.properties.dc:end': end,
+          'document.properties.dc:recurrence': recurrence,
+        });
+      },
+      ready() {
+        this.$.eventType.get().then((response) => {
+          this.eventType = response.entries.map((eventType) => eventType.id);
+        });
+
+        this.$.folderTypes
+          .get()
+          .then((response) => {
+            this.folderTypes = response.entries;
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      },
+      disconnectedCallback() {
+        delete this.eventType;
       },
     });
   </script>

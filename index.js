@@ -66,7 +66,7 @@ Nuxeo.UploaderBehavior = UploaderBehavior;
 // import the main bundle
 importHTML(bundleHtml);
 
-const bundles = [...Nuxeo.UI.bundles, 'nuxeo-spreadsheet'];
+const bundles = [...Nuxeo.UI.bundles];
 
 // load addons / bundles
 // NXP-26977: await loading of addons
