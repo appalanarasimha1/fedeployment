@@ -27,8 +27,9 @@ import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { I18nBehavior } from '@nuxeo/nuxeo-ui-elements/nuxeo-i18n-behavior.js';
 
+import '@nuxeo/nuxeo-elements/nuxeo-operation.js';
 import '@nuxeo/nuxeo-ui-elements/nuxeo-data-table/iron-data-table.js';
-import { LIST } from './lists.data';
+// import { LIST } from './lists.data';
 
 /**
  `neom-reports`
@@ -71,6 +72,8 @@ Polymer({
     </style>
 
     <template is="dom-if" if="[[visible]]">
+      <iron-ajax auto url="{{resolveUrl}}" handle-as="json" on-response="onResponse" id="xhr"></iron-ajax>
+
       <div class="flex-layout">
         <nuxeo-card>
           <nuxeo-data-table items="{{getData()}}" label="SIMPLE REPORT">
@@ -111,20 +114,54 @@ Polymer({
 
   is: 'neom-reports',
   behaviors: [I18nBehavior],
+  url: 'http://0.0.0.0:5000/nuxeo/api/v1/automation/Directory.ReportEntries',
 
   properties: {
     visible: {
       type: Boolean,
       value: false,
     },
+    reports: {
+      type: Array,
+      value: [],
+    },
+    resolveUrl: {
+      type: String,
+    },
   },
 
   observers: [],
+
   ready() {
     this.getData();
   },
 
   getData() {
-    return LIST(10).data;
+    // return LIST(10).data;
+    // this.$.reports
+    //       .get()
+    //       .then((response) => {
+    //         console.log('get API response = ', response);
+    //         // this.folderTypes = response.entries;
+    //         // const assetFolderType = this.folderTypes.find((folderType) => folderType.id === 'asset');
+    //         // if (assetFolderType) this.$.folderTypeSelector.set('selected', assetFolderType.id);
+    //       })
+    //       .catch((e) => {
+    //         console.error(e);
+    //       });
+
+    // this.$.folderTypes
+    //       .get()
+    //       .then((response) => {
+    //         console.log('got it = ', response)
+    //       })
+    //       .catch((e) => {
+    //         console.error(e);
+    //       });
+    this.set('resolveUrl', this.url);
+  },
+
+  onResponse(response) {
+    return response;
   },
 });
