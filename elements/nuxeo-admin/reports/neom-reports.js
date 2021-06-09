@@ -72,38 +72,53 @@ Polymer({
     </style>
 
     <template is="dom-if" if="[[visible]]">
-      <iron-ajax auto url="{{resolveUrl}}" handle-as="json" on-response="onResponse" id="xhr"></iron-ajax>
+      <iron-ajax
+        auto
+        method="post"
+        content-type="application/json"
+        url="{{resolveUrl}}"
+        body='{"params":{"directoryName":"nature","dbl10n":false,"localize":true,"lang":"en","searchTerm":""},"context":{}}'
+        handle-as="json"
+        on-response="onResponse"
+        id="xhr"
+      ></iron-ajax>
 
-      <div class="flex-layout">
+      <div class="flex-layout" is="dom-if" if="[[showTable]]">
         <nuxeo-card>
-          <nuxeo-data-table items="{{getData()}}" label="SIMPLE REPORT">
-            <nuxeo-data-table-column name="Company">
+          <nuxeo-data-table items="{{reports}}" label="SIMPLE REPORT">
+            <nuxeo-data-table-column name="Event Name">
               <template>
-                [[item.properties.company_name]]
+                [[item.directoryName]]
               </template>
             </nuxeo-data-table-column>
 
-            <nuxeo-data-table-column name="Date">
+            <nuxeo-data-table-column name="Sector">
               <template>
-                <nuxeo-date datetime="[[item.properties.date]]"></nuxeo-date>
+                <nuxeo-date datetime="[[item.sector]]"></nuxeo-date>
               </template>
             </nuxeo-data-table-column>
 
-            <nuxeo-data-table-column name="Department">
+            <nuxeo-data-table-column name="Event Date(Range)">
               <template>
-                [[item.properties.department]]
+                [[item.properties.dateRange]]
               </template>
             </nuxeo-data-table-column>
 
-            <nuxeo-data-table-column name="City">
+            <nuxeo-data-table-column name="Event Description">
+              <template>
+                [[item.displayLabel]]
+              </template>
+            </nuxeo-data-table-column>
+
+            <nuxeo-data-table-column name="Associated Asset Types">
               <template>
                 [[item.properties.city]]
               </template>
             </nuxeo-data-table-column>
 
-            <nuxeo-data-table-column name="User">
+            <nuxeo-data-table-column name="Link to Collection">
               <template>
-                <nuxeo-user-tag user="[[item.properties.user]]" disabled></nuxeo-user-tag>
+                [[item.properties.city]]
               </template>
             </nuxeo-data-table-column>
           </nuxeo-data-table>
@@ -121,6 +136,10 @@ Polymer({
       type: Boolean,
       value: false,
     },
+    showTable: {
+      type: Boolean,
+      value: false,
+    },
     reports: {
       type: Array,
       value: [],
@@ -133,7 +152,7 @@ Polymer({
   observers: [],
 
   ready() {
-    this.getData();
+    this.set('resolveUrl', this.url);
   },
 
   getData() {
@@ -158,10 +177,11 @@ Polymer({
     //       .catch((e) => {
     //         console.error(e);
     //       });
-    this.set('resolveUrl', this.url);
+    
   },
 
-  onResponse(response) {
-    return response;
+  onResponse(event, request) {
+    this.reports = request.response;
+    this.showTable = true;
   },
 });
