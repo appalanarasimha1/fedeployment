@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.nuxeo</groupId>
     <artifactId>nuxeo-parent</artifactId>
-    <version>2021.0</version>
+    <version>11.5.127</version>
   </parent>
 
   <groupId>org.nuxeo.web.ui</groupId>
@@ -82,7 +82,7 @@
       <id>maven-internal</id>
       <url>https://packages.nuxeo.com/repository/maven-internal/</url>
       <releases>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </releases>
       <snapshots>
         <updatePolicy>always</updatePolicy>

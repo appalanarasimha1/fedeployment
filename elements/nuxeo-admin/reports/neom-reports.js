@@ -85,7 +85,7 @@ Polymer({
         id="xhr"
       ></iron-ajax>
 
-      <div class="flex-layout" is="dom-if" if="[[showTable]]">
+      <div class="flex-layout">
         <nuxeo-card>
           <nuxeo-data-table items="{{reports}}" label="SIMPLE REPORT">
             <nuxeo-data-table-column name="Event Name">
@@ -102,7 +102,7 @@ Polymer({
 
             <nuxeo-data-table-column name="Event Date(Range)">
               <template>
-                [[item.properties.dateRange]]
+                [[getDateRange(item)]]
               </template>
             </nuxeo-data-table-column>
 
@@ -120,7 +120,7 @@ Polymer({
 
             <nuxeo-data-table-column name="Link to Collection">
               <template>
-                [[getLinkToCollection(item)]]
+                <a href="[[getLinkToCollection(item)]]">Click here to open</a>
               </template>
             </nuxeo-data-table-column>
           </nuxeo-data-table>
@@ -131,7 +131,7 @@ Polymer({
 
   is: 'neom-reports',
   behaviors: [I18nBehavior],
-  url: 'http://0.0.0.0:5000/nuxeo/api/v1/automation/Directory.ReportEntries',
+  url: '/nuxeo/api/v1/automation/Directory.ReportEntries',
 
   properties: {
     visible: {
@@ -149,12 +149,17 @@ Polymer({
     resolveUrl: {
       type: String,
     },
+    originUrl: {
+      type: String,
+      value: '',
+    },
   },
 
   observers: [],
 
   ready() {
-    this.set('resolveUrl', this.url);
+    this.originUrl = window.location.origin;
+    this.set('resolveUrl', this.originUrl + this.url);
   },
 
   getData() {
@@ -181,13 +186,19 @@ Polymer({
   },
 
   onResponse(event, request) {
+    if (!request?.response) return;
     this.reports = Object.values(request.response);
-    this.showTable = true;
   },
 
   getLinkToCollection(item) {
-    // console.log();
+    return `${this.originUrl  }#!${  item.path}`;
+  },
 
-    return item.path;
+  getDateRange(item) {
+    const startDate = item['dc:start'];
+    const endDate = item['dc:end'];
+    let resultString = startDate && `Start date - ${  new Date(startDate).toDateString()}`;
+    resultString += endDate && `, End date - ${  new Date(endDate).toDateString()}`;
+    return resultString;
   },
 });
