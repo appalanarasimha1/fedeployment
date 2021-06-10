@@ -71,6 +71,8 @@ Polymer({
       }
     </style>
 
+    <nuxeo-connection id="nxconn"></nuxeo-connection>
+
     <template is="dom-if" if="[[visible]]">
       <iron-ajax
         auto
@@ -88,7 +90,7 @@ Polymer({
           <nuxeo-data-table items="{{reports}}" label="SIMPLE REPORT">
             <nuxeo-data-table-column name="Event Name">
               <template>
-                [[item.directoryName]]
+                [[item.dc:name]]
               </template>
             </nuxeo-data-table-column>
 
@@ -106,7 +108,7 @@ Polymer({
 
             <nuxeo-data-table-column name="Event Description">
               <template>
-                [[item.displayLabel]]
+                [[item.dc:description]]
               </template>
             </nuxeo-data-table-column>
 
@@ -118,7 +120,7 @@ Polymer({
 
             <nuxeo-data-table-column name="Link to Collection">
               <template>
-                [[item.properties.city]]
+                [[getLinkToCollection(item)]]
               </template>
             </nuxeo-data-table-column>
           </nuxeo-data-table>
@@ -168,7 +170,6 @@ Polymer({
     //       .catch((e) => {
     //         console.error(e);
     //       });
-
     // this.$.folderTypes
     //       .get()
     //       .then((response) => {
@@ -177,11 +178,16 @@ Polymer({
     //       .catch((e) => {
     //         console.error(e);
     //       });
-    
   },
 
   onResponse(event, request) {
-    this.reports = request.response;
+    this.reports = Object.values(request.response);
     this.showTable = true;
+  },
+
+  getLinkToCollection(item) {
+    // console.log();
+
+    return item.path;
   },
 });
