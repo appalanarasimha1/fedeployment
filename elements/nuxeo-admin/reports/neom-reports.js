@@ -96,7 +96,7 @@ Polymer({
 
             <nuxeo-data-table-column name="Sector">
               <template>
-                <nuxeo-date datetime="[[item.dc:sector]]"></nuxeo-date>
+                [[item.dc:sector]]
               </template>
             </nuxeo-data-table-column>
 
@@ -114,7 +114,7 @@ Polymer({
 
             <nuxeo-data-table-column name="Associated Asset Types">
               <template>
-                [[item.properties.city]]
+                [[getAssets(item.dc:assets)]]
               </template>
             </nuxeo-data-table-column>
 
@@ -197,8 +197,21 @@ Polymer({
   getDateRange(item) {
     const startDate = item['dc:start'];
     const endDate = item['dc:end'];
-    let resultString = startDate && `Start date - ${new Date(startDate).toDateString()}`;
+    let resultString = startDate && `Start date - ${new Date(startDate).toDateString()} \n`;
     resultString += endDate && `, End date - ${new Date(endDate).toDateString()}`;
     return resultString;
+  },
+
+  getAssets(assetObject) {
+    if (!assetObject) {
+      return 'Empty';
+    }
+    
+    let result = '';
+    for (const key in assetObject) {
+      result += `${key} ${assetObject[key]}, `;
+    }
+    return result.substr(0, result.length - 2);
+    
   },
 });
