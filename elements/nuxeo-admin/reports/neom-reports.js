@@ -96,7 +96,7 @@ Polymer({
 
             <nuxeo-data-table-column name="Sector">
               <template>
-                <nuxeo-date datetime="[[item.sector]]"></nuxeo-date>
+                <nuxeo-date datetime="[[item.dc:sector]]"></nuxeo-date>
               </template>
             </nuxeo-data-table-column>
 
@@ -191,14 +191,14 @@ Polymer({
   },
 
   getLinkToCollection(item) {
-    return `${this.originUrl  }#!${  item.path}`;
+    return `${this.originUrl}#!${item.path}`;
   },
 
   getDateRange(item) {
     const startDate = item['dc:start'];
     const endDate = item['dc:end'];
-    let resultString = startDate && `Start date - ${  new Date(startDate).toDateString()}`;
-    resultString += endDate && `, End date - ${  new Date(endDate).toDateString()}`;
+    let resultString = startDate && `Start date - ${new Date(startDate).toDateString()}`;
+    resultString += endDate && `, End date - ${new Date(endDate).toDateString()}`;
     return resultString;
   },
 });
