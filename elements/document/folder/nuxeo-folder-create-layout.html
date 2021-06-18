@@ -157,11 +157,11 @@ limitations under the License.
         if (typeof this.document === 'undefined' || !this.eventType) return;
         const { properties } = this.document;
 
-        this.isEventFolder = this.eventType.includes(folderType);
+        this.isEventFolder = folderType !== 'generic';
         const start = this.isEventFolder ? properties['dc:start'] : null;
         const end = this.isEventFolder ? properties['dc:end'] : null;
 
-        this.isRecurringEventFolder = folderType === 'repeatingEvent';
+        this.isRecurringEventFolder = folderType === 'recurringEvent';
         const recurrence = this.isRecurringEventFolder ? properties['dc:recurrence'] : null;
 
         this.setProperties({
@@ -179,7 +179,7 @@ limitations under the License.
           .get()
           .then((response) => {
             this.folderTypes = response.entries;
-            const assetFolderType = this.folderTypes.find((folderType) => folderType.id === 'asset');
+            const assetFolderType = this.folderTypes.find((folderType) => folderType.id === 'genric');
             if (assetFolderType) this.$.folderTypeSelector.set('selected', assetFolderType.id);
           })
           .catch((e) => {
