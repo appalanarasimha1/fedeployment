@@ -361,9 +361,8 @@ Polymer({
     }
     this.document.name = this.document.name || this._sanitizeName(this.document.properties['dc:title']);
     this.setProperties({
-      'document.properties.dc:path': this.document.path,
+      'document.properties.dc:path': this.document.path.split('/null')[0],
     });
-    this.document.properties['dc:path'] = this.document.path;
     this.$.docRequest
       .post()
       .then((response) => {
