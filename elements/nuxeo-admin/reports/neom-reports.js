@@ -90,7 +90,7 @@ Polymer({
           <nuxeo-data-table items="{{reports}}" label="SIMPLE REPORT">
             <nuxeo-data-table-column name="Event Name">
               <template>
-                [[item.dc:name]]
+                [[getFolderName(item)]]
               </template>
             </nuxeo-data-table-column>
 
@@ -214,4 +214,8 @@ Polymer({
     return result.substr(0, result.length - 2);
     
   },
+
+  getFolderName(item) {
+    return `${item['dc:sector']}_${item['dc:name']}_${new Date(item['dc:start']).toLocaleDateString()}_${new Date(item['dc:end']).toLocaleDateString()}`;
+  }
 });

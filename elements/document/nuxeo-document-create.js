@@ -363,9 +363,14 @@ Polymer({
     this.setProperties({
       'document.properties.dc:path': this.document.path.split('/null')[0],
       'document.properties.dc:parentName': this.parent.title,
-      'document.properties.dc:parentId': this.parent.uid,
-      'document.properties.dc:type': (this.parent.type === "Folder" && this.document.type === 'Folder') ? 'subFolder' : this.document.type
+      'document.properties.dc:parentId': this.parent.uid
     });
+
+    if(this.parent.type === "Folder" && this.document.type === 'Folder') {
+      document.properties['dc:type'] = 'subFolder';
+    } else if(this.parent.type === "subFolder" && this.document.type === 'Folder') {
+      document.properties['dc:type'] = 'subsubFolder';
+    }
     
     this.$.docRequest
       .post()
