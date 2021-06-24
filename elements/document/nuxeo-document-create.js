@@ -362,7 +362,11 @@ Polymer({
     this.document.name = this.document.name || this._sanitizeName(this.document.properties['dc:title']);
     this.setProperties({
       'document.properties.dc:path': this.document.path.split('/null')[0],
+      'document.properties.dc:parentName': this.parent.title,
+      'document.properties.dc:parentId': this.parent.uid,
+      'document.properties.dc:type': (this.parent.type === "Folder" && this.document.type === 'Folder') ? 'subFolder' : this.document.type
     });
+    
     this.$.docRequest
       .post()
       .then((response) => {

@@ -191,7 +191,7 @@ Polymer({
   },
 
   getLinkToCollection(item) {
-    return `${this.originUrl}#!${item.path}`;
+    return `${this.originUrl}/nuxeo/ui/#!/browse${item['dc:path']}/${item['dc:name']}`;
   },
 
   getDateRange(item) {
