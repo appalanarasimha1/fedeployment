@@ -363,13 +363,19 @@ Polymer({
     this.setProperties({
       'document.properties.dc:path': this.document.path.split('/null')[0],
       'document.properties.dc:parentName': this.parent.title,
-      'document.properties.dc:parentId': this.parent.uid
+      'document.properties.dc:parentId': this.parent.uid,
+      'document.properties.dc:name': `${this.parent.title.trim()}_${this.document['name'].trim()}`
     });
 
     if(this.parent.type === "Folder" && this.document.type === 'Folder') {
-      document.properties['dc:type'] = 'subFolder';
+      this.document.properties['dc:type'] = 'subFolder';
     } else if(this.parent.type === "subFolder" && this.document.type === 'Folder') {
-      document.properties['dc:type'] = 'subsubFolder';
+      this.document.properties['dc:type'] = 'subsubFolder';
+    }
+
+    if(this.document.properties['dc:folderType'].toLowerCase() !== 'generic') {
+      let dateString = this.getDateString(this.document.properties);
+      this.document.properties['dc:name'] += dateString; 
     }
     
     this.$.docRequest
@@ -389,6 +395,14 @@ Polymer({
         }
       })
       .finally(() => this._setCreating(false));
+  },
+
+  getDateString(properties) {
+    if(new Date(properties['dc:start']).getTime() === new Date(properties['dc:end']).getTime()) {
+      return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}`;
+    } else {
+      return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}_${new Date(this.document.properties['dc:end']).toLocaleDateString()}`;
+    }
   },
 
   _back() {

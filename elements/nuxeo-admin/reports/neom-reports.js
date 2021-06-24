@@ -216,6 +216,6 @@ Polymer({
   },
 
   getFolderName(item) {
-    return `${item['dc:sector']}_${item['dc:name']}_${new Date(item['dc:start']).toLocaleDateString()}_${new Date(item['dc:end']).toLocaleDateString()}`;
+    return item['dc:name'];
   }
 });
