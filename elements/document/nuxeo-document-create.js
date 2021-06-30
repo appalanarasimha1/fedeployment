@@ -362,22 +362,29 @@ Polymer({
     this.document.name = this.document.name || this._sanitizeName(this.document.properties['dc:title']);
     this.setProperties({
       'document.properties.dc:path': this.document.path.split('/null')[0],
+      'document.properties.dc:sector': this.document.path.split('/')[1],
       'document.properties.dc:parentName': this.parent.title,
       'document.properties.dc:parentId': this.parent.uid,
-      'document.properties.dc:name': `${this.parent.title.trim()}_${this.document['name'].trim()}`
+      'document.properties.dc:name': this.document.name.trim(),
     });
 
-    if(this.parent.type === "Folder" && this.document.type === 'Folder') {
-      this.document.properties['dc:type'] = 'subFolder';
-    } else if(this.parent.type === "subFolder" && this.document.type === 'Folder') {
-      this.document.properties['dc:type'] = 'subsubFolder';
+    if (this.document.type.toLowerCase() === 'folder') {
+      if (this.parent.type.toLowerCase() === 'workspace') {
+        this.document.properties['dc:primaryType'] = 'subEvent';
+      } else if (this.parent.type === 'subFolder') {
+        this.document.properties['dc:primaryType'] = 'subsubEvent';
+      }
+
+      if (this.document.properties['dc:folderType'].toLowerCase() !== 'generic') {
+        const dateString = this.getDateString(this.document.properties);
+        this.document.properties['dc:name'] += dateString;
+      }
     }
 
-    if(this.document.properties['dc:folderType'].toLowerCase() !== 'generic') {
-      let dateString = this.getDateString(this.document.properties);
-      this.document.properties['dc:name'] += dateString; 
+    if (this.document.type.toLowerCase() === 'workspace') {
+      this.document['dc:primaryType'] = 'event';
     }
-    
+
     this.$.docRequest
       .post()
       .then((response) => {
@@ -398,11 +405,13 @@ Polymer({
   },
 
   getDateString(properties) {
-    if(new Date(properties['dc:start']).getTime() === new Date(properties['dc:end']).getTime()) {
+    if (new Date(properties['dc:start']).getTime() === new Date(properties['dc:end']).getTime()) {
       return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}`;
-    } else {
-      return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}_${new Date(this.document.properties['dc:end']).toLocaleDateString()}`;
-    }
+    } 
+      return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}_${new Date(
+        this.document.properties['dc:end'],
+      ).toLocaleDateString()}`;
+    
   },
 
   _back() {
