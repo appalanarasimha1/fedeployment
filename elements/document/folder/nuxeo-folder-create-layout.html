@@ -115,14 +115,15 @@ limitations under the License.
       </nuxeo-date-picker>
 
       <template if="[[isRecurringEventFolder]]" is="dom-if">
-        <nuxeo-input
-          label="recurrence"
-          name="recurrence"
-          role="widget"
-          value="{{document.properties.dc:recurrence}}"
+        <nuxeo-select
+          attr-for-selected="id"
+          id="recurrence"
+          label="Recurrence"
+          options="[[recurrenceOptions]]"
+          selected="{{document.properties.dc:recurrence}}"
           required
         >
-        </nuxeo-input>
+        </nuxeo-select>
       </template>
     </template>
   </template>
@@ -147,6 +148,10 @@ limitations under the License.
         isRecurringEventFolder: {
           type: Boolean,
           value: false,
+        },
+        recurrenceOptions: {
+          type: Array,
+          value: ['Daily', 'Weekly', 'Monthly', 'Annually'],
         },
       },
       observers: ['folderTypeChanged(document.properties.dc:folderType)'],
