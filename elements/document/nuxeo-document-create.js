@@ -365,7 +365,7 @@ Polymer({
       'document.properties.dc:sector': this.document.path.split('/')[1],
       'document.properties.dc:parentName': this.parent.title,
       'document.properties.dc:parentId': this.parent.uid,
-      'document.properties.dc:name': this.document.name.trim(),
+      'document.properties.dc:title': this.document.name.trim(),
     });
 
     if (this.document.type.toLowerCase() === 'folder') {
@@ -374,15 +374,18 @@ Polymer({
       } else if (this.parent.type === 'subFolder') {
         this.document.properties['dc:primaryType'] = 'subsubEvent';
       }
-
-      if (this.document.properties['dc:folderType'].toLowerCase() !== 'generic') {
-        const dateString = this.getDateString(this.document.properties);
-        this.document.properties['dc:name'] += dateString;
-      }
     }
 
     if (this.document.type.toLowerCase() === 'workspace') {
-      this.document['dc:primaryType'] = 'event';
+      this.document.properties['dc:primaryType'] = 'event';
+    }
+
+    if (
+      (this.document.type.toLowerCase() === 'workspace' || this.document.type.toLowerCase() === 'folder') &&
+      this.document.properties['dc:folderType'].toLowerCase() !== 'generic'
+    ) {
+      const dateString = this.getDateString(this.document.properties);
+      this.document.properties['dc:title'] += dateString;
     }
 
     this.$.docRequest
@@ -405,13 +408,15 @@ Polymer({
   },
 
   getDateString(properties) {
+    if (properties['dc:folderType'].toLowerCase() === 'singledayevent') {
+      return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}`;
+    }
     if (new Date(properties['dc:start']).getTime() === new Date(properties['dc:end']).getTime()) {
       return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}`;
-    } 
-      return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}_${new Date(
-        this.document.properties['dc:end'],
-      ).toLocaleDateString()}`;
-    
+    }
+    return `_${new Date(this.document.properties['dc:start']).toLocaleDateString()}_${new Date(
+      this.document.properties['dc:end'],
+    ).toLocaleDateString()}`;
   },
 
   _back() {

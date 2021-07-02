@@ -24,6 +24,19 @@ limitations under the License.
   <template>
     <style include="nuxeo-styles"></style>
 
+    <nuxeo-resource id="folderTypes" params='{"pageSize": 0}' path="/directory/folderTypes"></nuxeo-resource>
+
+    <nuxeo-select
+      attr-for-selected="id"
+      id="folderTypeSelector"
+      label="Folder Type"
+      selected="{{document.properties.dc:folderType}}"
+    >
+      <template as="folderType" is="dom-repeat" items="[[folderTypes]]">
+        <paper-item id$="[[folderType.id]]">[[i18n(folderType.properties.label)]]</paper-item>
+      </template>
+    </nuxeo-select>
+
     <nuxeo-input
       role="widget"
       label="[[i18n('title')]]"
@@ -42,7 +55,7 @@ limitations under the License.
     >
     </nuxeo-textarea>
 
-    <nuxeo-directory-suggestion
+    <!-- <nuxeo-directory-suggestion
       role="widget"
       label="[[i18n('label.dublincore.nature')]]"
       name="nature"
@@ -76,15 +89,61 @@ limitations under the License.
       placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"
       min-chars="0"
     >
-    </nuxeo-directory-suggestion>
+    </nuxeo-directory-suggestion> -->
 
-    <nuxeo-date-picker
-      role="widget"
-      label="[[i18n('label.dublincore.expire')]]"
-      name="expired"
-      value="{{document.properties.dc:expired}}"
-    >
-    </nuxeo-date-picker>
+    <!-- <nuxeo-select
+        attr-for-selected="id"
+        id="recurrence"
+        label="Recurrence"
+        options="[[eventOption]]"
+        selected="{{document.properties.dc:recurrence}}"
+        required
+      >
+      </nuxeo-select> -->
+
+    <!-- <template> -->
+    <!-- <nuxeo-select
+        attr-for-selected="id"
+        id="recurrence"
+        label="Recurrence"
+        options="[[eventOption]]"
+        selected="{{document.properties.dc:recurrence}}"
+        required
+      >
+      </nuxeo-select> -->
+
+    <template if="[[isEventFolder]]" is="dom-if">
+      <nuxeo-date-picker
+        id="startDateId"
+        label="Start Date"
+        name="start"
+        role="widget"
+        value="{{document.properties.dc:start}}"
+      >
+      </nuxeo-date-picker>
+
+      <template if="[[!isSingleDayEvent]]" is="dom-if">
+        <nuxeo-date-picker
+          id="endDateId"
+          label="End Date"
+          name="end"
+          role="widget"
+          value="{{document.properties.dc:end}}"
+        >
+        </nuxeo-date-picker>
+      </template>
+    </template>
+
+    <template if="[[isRecurringEventFolder]]" is="dom-if">
+      <nuxeo-select
+        attr-for-selected="id"
+        id="recurrence"
+        label="Recurrence"
+        options="[[recurrenceOptions]]"
+        selected="{{document.properties.dc:recurrence}}"
+      >
+      </nuxeo-select>
+    </template>
   </template>
 
   <script>
@@ -96,6 +155,71 @@ limitations under the License.
          * @doctype Workspace
          */
         document: Object,
+        eventOption: {
+          type: Array,
+          value: ['Single day', 'Generic', 'Recurring', 'Multiple days'],
+        },
+        folderTypes: {
+          type: Array,
+          value: [],
+        },
+        isEventFolder: {
+          type: Boolean,
+          value: false,
+        },
+        isRecurringEventFolder: {
+          type: Boolean,
+          value: false,
+        },
+        recurrenceOptions: {
+          type: Array,
+          value: ['Daily', 'Weekly', 'Monthly', 'Annually'],
+        },
+      },
+      observers: ['folderTypeChanged(document.properties.dc:folderType)'],
+      ready() {
+        this.$.folderTypes
+          .get()
+          .then((response) => {
+            this.folderTypes = response.entries;
+            const assetFolderType = this.folderTypes.find((folderType) => folderType.id === 'genric');
+            if (assetFolderType) this.$.folderTypeSelector.set('selected', assetFolderType.id);
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      },
+
+      folderTypeChanged(folderType) {
+        if (!this.document) return;
+        const { properties } = this.document;
+
+        this.isEventFolder = folderType !== 'generic';
+        const startDate = this.isEventFolder ? properties['dc:start'] : null;
+        let endDate = this.isEventFolder ? properties['dc:end'] : null;
+
+        this.isSingleDayEvent = folderType.toLowerCase() === 'singledayevent';
+        if (this.isSingleDayEvent) {
+          endDate = null;
+          if (!startDate) {
+            return;
+          }
+        }
+
+        this.isRecurringEventFolder = folderType === 'recurringEvent';
+        if (this.isRecurringEventFolder || folderType.toLowerCase() === 'multipleevent') {
+          if (!startDate || !endDate) {
+            return;
+          }
+        }
+
+        const recurrence = this.isRecurringEventFolder ? properties['dc:recurrence'] : null;
+
+        this.setProperties({
+          'document.properties.dc:start': startDate,
+          'document.properties.dc:end': endDate,
+          'document.properties.dc:recurrence': recurrence,
+        });
       },
     });
   </script>

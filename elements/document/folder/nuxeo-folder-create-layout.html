@@ -103,28 +103,35 @@ limitations under the License.
 
     <template if="[[isEventFolder]]" is="dom-if">
       <nuxeo-date-picker
+        id="startDateId"
         label="Start Date"
         name="start"
         role="widget"
         value="{{document.properties.dc:start}}"
-        required
       >
       </nuxeo-date-picker>
+    </template>
 
-      <nuxeo-date-picker label="End Date" name="end" role="widget" value="{{document.properties.dc:end}}" required>
+    <template if="[[!isSingleDayEvent]]" is="dom-if">
+      <nuxeo-date-picker
+        id="endDateId"
+        label="End Date"
+        name="end"
+        role="widget"
+        value="{{document.properties.dc:end}}"
+      >
       </nuxeo-date-picker>
+    </template>
 
-      <template if="[[isRecurringEventFolder]]" is="dom-if">
-        <nuxeo-select
-          attr-for-selected="id"
-          id="recurrence"
-          label="Recurrence"
-          options="[[recurrenceOptions]]"
-          selected="{{document.properties.dc:recurrence}}"
-          required
-        >
-        </nuxeo-select>
-      </template>
+    <template if="[[isRecurringEventFolder]]" is="dom-if">
+      <nuxeo-select
+        attr-for-selected="id"
+        id="recurrence"
+        label="Recurrence"
+        options="[[recurrenceOptions]]"
+        selected="{{document.properties.dc:recurrence}}"
+      >
+      </nuxeo-select>
     </template>
   </template>
 
@@ -155,26 +162,43 @@ limitations under the License.
         },
       },
       observers: ['folderTypeChanged(document.properties.dc:folderType)'],
+
       getTitle(isEventFolder) {
         return isEventFolder ? this.i18n('eventTitle') : this.i18n('title');
       },
+
       folderTypeChanged(folderType) {
         if (typeof this.document === 'undefined' || !this.eventType) return;
         const { properties } = this.document;
 
         this.isEventFolder = folderType !== 'generic';
-        const start = this.isEventFolder ? properties['dc:start'] : null;
-        const end = this.isEventFolder ? properties['dc:end'] : null;
+        const startDate = this.isEventFolder ? properties['dc:start'] : null;
+        let endDate = this.isEventFolder ? properties['dc:end'] : null;
+
+        this.isSingleDayEvent = folderType.toLowerCase() === 'singledayevent';
+        if (this.isSingleDayEvent) {
+          endDate = null;
+          if (!startDate) {
+            return;
+          }
+        }
 
         this.isRecurringEventFolder = folderType === 'recurringEvent';
+        if (this.isRecurringEventFolder || folderType.toLowerCase() === 'multipleevent') {
+          if (!startDate || !endDate) {
+            return;
+          }
+        }
+
         const recurrence = this.isRecurringEventFolder ? properties['dc:recurrence'] : null;
 
         this.setProperties({
-          'document.properties.dc:start': start,
-          'document.properties.dc:end': end,
+          'document.properties.dc:start': startDate,
+          'document.properties.dc:end': endDate,
           'document.properties.dc:recurrence': recurrence,
         });
       },
+
       ready() {
         this.$.eventType.get().then((response) => {
           this.eventType = response.entries.map((eventType) => eventType.id);
@@ -191,6 +215,7 @@ limitations under the License.
             console.error(e);
           });
       },
+
       disconnectedCallback() {
         delete this.eventType;
       },
