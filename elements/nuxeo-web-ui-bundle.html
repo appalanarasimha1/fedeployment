@@ -130,6 +130,17 @@
   </template>
 </nuxeo-slot-content>
 
+<nuxeo-slot-content name="advanceReportsItem" slot="ANALYTICS_ITEMS" order="10">
+  <template>
+    <nuxeo-page-item name="advanceReports" label="Advance Reports"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+<nuxeo-slot-content name="advanceReportsPage" slot="ANALYTICS_PAGES" order="10">
+  <template>
+    <neom-advance-reports name="advanceReports" path="/default-domain/"></neom-advance-reports>
+  </template>
+</nuxeo-slot-content>
+
 <nuxeo-slot-content name="analyticsDocumentDistributionItem" slot="ANALYTICS_ITEMS" order="10">
   <template>
     <nuxeo-page-item name="document-distribution" label="analytics.document.distribution"></nuxeo-page-item>

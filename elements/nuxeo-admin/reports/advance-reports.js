@@ -32,8 +32,8 @@ import '@nuxeo/nuxeo-ui-elements/nuxeo-data-table/iron-data-table.js';
 // import { LIST } from './lists.data';
 
 /**
- `neom-reports`
- @element neom-reports
+ `neom-advance-reports`
+ @element neom-advance-reports
  */
 Polymer({
   _template: html`
@@ -41,9 +41,6 @@ Polymer({
     <style include="iron-flex">
       :host {
         display: block;
-      }
-      nuxeo-data-table ::-webkit-scrollbar {
-        display: none !important;
       }
 
       .suggestion-wrapper {
@@ -72,7 +69,6 @@ Polymer({
           display: none;
         }
       }
-
     </style>
 
     <nuxeo-connection id="nxconn"></nuxeo-connection>
@@ -86,26 +82,21 @@ Polymer({
         body='{"params":{"directoryName":"nature","dbl10n":false,"localize":true,"lang":"en","searchTerm":""},"context":{}}'
         handle-as="json"
         on-response="onResponse"
-        id="xhr"
+        id="xhr2"
       ></iron-ajax>
-
-      <iron-ajax
-        auto
-        method="post"
-        content-type="application/json"
-        url="{{advanceReportUrl}}"
-        body='{"params":{"directoryName":"nature","dbl10n":false,"localize":true,"lang":"en","searchTerm":""},"context":{}}'
-        handle-as="json"
-        on-response="onResponse"
-        id="xhr"
-      ></iron-ajax> 
 
       <div class="flex-layout">
         <nuxeo-card>
-          <nuxeo-data-table items="{{reports}}" label="SIMPLE REPORT" style="min-height: 410px !important">
+          <nuxeo-data-table items="{{reports}}" label="ADVANCE REPORT" style="min-height: 410px !important">
             <nuxeo-data-table-column name="Event Name">
               <template>
                 [[getFolderName(item)]]
+              </template>
+            </nuxeo-data-table-column>
+
+            <nuxeo-data-table-column name="Sub-Event">
+              <template>
+                [[item.dc:title]]
               </template>
             </nuxeo-data-table-column>
 
@@ -139,17 +130,14 @@ Polymer({
               </template>
             </nuxeo-data-table-column>
           </nuxeo-data-table>
-          <neom-advance-reports></neom-advance-reports>
         </nuxeo-card>
-      
       </div>
     </template>
   `,
 
-  is: 'neom-reports',
+  is: 'neom-advance-reports',
   behaviors: [I18nBehavior],
-  url: '/nuxeo/api/v1/automation/Directory.ReportEntries',
-  advanceReport: '/nuxeo/api/v1/automation/Directory.AdvancedReportEntries',
+  url: '/nuxeo/api/v1/automation/Directory.AdvancedReportEntries',
 
   properties: {
     visible: {
@@ -178,29 +166,6 @@ Polymer({
   ready() {
     this.originUrl = window.location.origin;
     this.set('resolveUrl', this.originUrl + this.url);
-  },
-
-  getData() {
-    // return LIST(10).data;
-    // this.$.reports
-    //       .get()
-    //       .then((response) => {
-    //         console.log('get API response = ', response);
-    //         // this.folderTypes = response.entries;
-    //         // const assetFolderType = this.folderTypes.find((folderType) => folderType.id === 'asset');
-    //         // if (assetFolderType) this.$.folderTypeSelector.set('selected', assetFolderType.id);
-    //       })
-    //       .catch((e) => {
-    //         console.error(e);
-    //       });
-    // this.$.folderTypes
-    //       .get()
-    //       .then((response) => {
-    //         console.log('got it = ', response)
-    //       })
-    //       .catch((e) => {
-    //         console.error(e);
-    //       });
   },
 
   onResponse(event, request) {
@@ -234,6 +199,6 @@ Polymer({
   },
 
   getFolderName(item) {
-    return item['dc:name'];
+    return item['dc:parentName'];
   }
 });
