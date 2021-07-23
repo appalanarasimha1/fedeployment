@@ -42,8 +42,72 @@ Polymer({
       :host {
         display: block;
       }
-      nuxeo-data-table ::-webkit-scrollbar {
-        display: none !important;
+
+      @media only screen and (max-width: 600px) {
+        
+        .nuxeoDataTable {
+          min-height: 410px !important
+        }
+      }
+      
+      /* Small devices (portrait tablets and large phones, 601px and up) */
+      @media only screen and (min-width: 600px) {
+        
+        .nuxeoDataTable {
+          min-height: 610px !important
+        }
+      }
+      
+      /* Medium devices (landscape tablets, 768px and up) */
+      @media only screen and (min-width: 768px) {
+        
+        .nuxeoDataTable {
+          min-height: 410px !important
+        }
+      } 
+      
+      /* Large devices (laptops/desktops, 992px and up) */
+      @media only screen and (min-width: 992px) {
+        
+        .nuxeoDataTable {
+          min-height: 410px !important
+        }
+      } 
+      
+      /* Extra large devices (large laptops and desktops, 1200px and up) */
+      @media only screen and (min-width: 1200px) {
+        
+        .nuxeoDataTable {
+          min-height: 696px !important
+        }
+      }
+
+      /* Extra large devices (large laptops and desktops, 1600px and up) */
+      @media only screen and (min-width: 1600px) {
+        
+        .nuxeoDataTable {
+          min-height: 977px !important
+        }
+      }
+
+      /* Extra large devices (large laptops and desktops, 2400px and up) */
+      @media only screen and (min-width: 2400px) {
+        
+        .nuxeoDataTable {
+          min-height: 1500px !important
+        }
+      }
+
+      /* Extra large devices (large laptops and desktops, 4000px and up) */
+      @media only screen and (min-width: 4000px) {
+        
+        .nuxeoDataTable {
+          min-height: 2100px !important
+        }
+      }
+
+      .nuxeoDataTable {
+        min-height: 410px
       }
 
       .suggestion-wrapper {
@@ -102,7 +166,7 @@ Polymer({
 
       <div class="flex-layout">
         <nuxeo-card>
-          <nuxeo-data-table items="{{reports}}" label="SIMPLE REPORT" style="min-height: 410px !important">
+          <nuxeo-data-table items="{{reports}}" class="nuxeoDataTable" label="SIMPLE REPORT" style="">
             <nuxeo-data-table-column name="Event Name">
               <template>
                 [[getFolderName(item)]]
