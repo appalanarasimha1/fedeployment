@@ -1,0 +1,9 @@
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Manifest-Version: 1.0
+Bundle-Vendor: scry.2
+Bundle-Version: 1.0.0
+Bundle-Name: groundx-angular-web
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: scry.2.groundx-angular-web;singleton=true
+Nuxeo-Component: OSGI-INF/groundx-ui-auth-contrib.xml
