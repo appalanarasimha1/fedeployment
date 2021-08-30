@@ -1,0 +1,30 @@
+header{
+    background-color: #000;
+}
+.header-menu, .header-right-menu{
+    list-style: none;
+    padding: 0px;
+    margin: unset;
+}
+.header-right-menu{
+    float: right;
+}
+.header-menu li{
+    margin: 0px 20px;
+}
+.header-right-menu li{
+    margin-left: 20px;
+}
+.header-menu li p a{
+    font-size: 14px;
+    line-height: 14px;
+    color: #fff;
+    font-weight: 400;
+    text-decoration: unset;
+    letter-spacing: 0.7px;
+}
+.header-menu li.active p a{
+    font-size: 18px;
+    font-weight: 500;
+    color: #5FCAD2;
+}
