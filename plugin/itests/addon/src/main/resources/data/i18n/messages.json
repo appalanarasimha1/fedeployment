@@ -1,9 +1,0 @@
-{
-  "label.document.type.docsuggestion": "DocSuggestion",
-  "label.document.type.legacyfile": "Legacy File",
-  "label.document.type.multistring": "MultiString",
-  "label.document.type.multicomplex": "MultiComplex",
-  "label.document.type.validation": "Validation",
-  "label.schema.constraint.violation.PatternConstraint.validation.letterOnly": "'Letter Only' field can only contain letters",
-  "sum.of.numbers.must.be.equal.ten": "Sum must be equal 10"
-}
