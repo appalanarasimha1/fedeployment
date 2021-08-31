@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./sideDrawer.component.css']
 })
 export class SideDrawerComponent {
+openNav() {
+    document.getElementById("main-sidebar").style.width = "270px";
+    document.getElementById("main").classList.toggle('shiftFilter');
+  document.getElementById("main-sidebar").classList.toggle("closeBtn");
 
+  }
 }
