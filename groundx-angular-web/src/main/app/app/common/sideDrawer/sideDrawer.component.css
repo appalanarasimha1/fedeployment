@@ -1,0 +1,169 @@
+.sidepanel {
+    height: 100%; /* Specify a height */
+    width: 0;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0px;
+    padding: unset;
+    background-color: #C4C4C4; /* Grey*/
+    overflow-x: hidden; 
+    /* overflow-y: scroll; */
+    padding: 25px 15px;
+    transition: 0.5s;
+}
+/* .sidepanel a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+} */
+
+/* When you mouse over the navigation links, change their color */
+.sidepanel a:hover {
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidepanel.closeBtn {
+    left: -50px;
+}
+
+/* Style the button that is used to open the sidepanel */
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    /* background-color: #111; */
+    color: white;
+    /* padding: 10px 15px; */
+    border: none;
+    transition: 0.4s;
+    background-color: #eaeaea;
+}
+
+.openbtn:hover {
+
+    background-color: transparent;
+}
+#main{
+    position: absolute;
+    top: 20px;
+    transition: 0.5s;
+}
+.openbtn img{
+    transform: rotate(180deg);
+}
+.closeBtn#main-sidebar{
+    /* width: 50px !important; */
+    width: 0px !important;
+}
+.form-group{
+    display: block;
+    /* text-align: center; */
+}
+.closeBtn#main-sidebar .form-group{
+    display: none;
+}
+.shiftFilter{
+    left: 280px ;
+}
+.sidebarList{
+
+}
+.sidebarList ul{
+    list-style: none;
+    padding: 0px;
+}
+.sidebarList ul li{
+    width: 47.7%;
+}
+.mr-2{
+    margin-right: 8px;
+}
+.sidebarList ul.sideList li.active a{
+    background-color: #5FCAD2;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 0px;
+    text-align: center;
+    display: block;
+    border-radius: 4px;
+}
+.sidebarList ul.sideList li a{
+    background-color: #e6e6e6;
+    color: #929292;
+    font-size: 14px;
+    padding: 5px 0px;
+    text-align: center;
+    display: block;
+    border-radius: 4px;
+}
+.sidebarList h6{
+    color: #fff;
+    font-size: 18px;
+    font-weight: 200;
+}
+#main-sidebar h3{
+    font-size: 20px;
+    color: #fff;
+}
+.file-type ul li{
+    width: 30%;
+}
+.accordion-item{
+    background-color: unset;
+    border: unset;
+    padding: unset;
+}
+.accordion-button{
+    background-color: unset;
+    box-shadow: unset;
+    padding: unset;
+}
+
+.accordion-body{
+    padding: unset;
+}
+.dropdown button{
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    background-color: #fff;
+    width: 100%;
+    position: relative;
+    text-align: left;
+    padding: 9px;
+    margin-top: 15px;
+}
+.dropdown-menu{
+    margin: 0px 0px 0px 0px;
+    margin-top: -2px !important;
+    width: 100%;
+}
+.dropdown-item{
+    padding: 3px 13px !important;
+}
+.dropdown-toggle::after{
+    right: 10px;
+    position: absolute;
+    top: 19px;
+    bottom: 0;
+    margin: auto;
+}
+.search-btn{
+    position: absolute;
+    right: 0px;
+    background-color: #808080;
+    border-radius: 2px;
+    border: unset;
+    padding: 10px 10px;
+}
+.search-btn img{
+    filter: invert(1);
+    width: 18px;
+}
+.dropdown-item:focus, .dropdown-item:hover{
+    background-color: #5FCAD2;
+    color: #fff;
+}
