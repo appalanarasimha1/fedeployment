@@ -5,7 +5,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { HeaderComponent } from './common/header';
 import { SideDrawerComponent } from './common/sideDrawer/sideDrawer.component';
 import { SubHeaderComponent } from './common/subHeader/subHeader.component';
-import { NuxeoService } from './nuxeo.service';
+import { NuxeoService } from './services/nuxeo.service';
 
 /*
  * App Component
@@ -14,7 +14,7 @@ import { NuxeoService } from './nuxeo.service';
 @Component({
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
-  directives: [HeaderComponent, SubHeaderComponent, SideDrawerComponent],
+  directives: [HeaderComponent, SubHeaderComponent],
   styleUrls: [
     './app.style.css'
   ],
