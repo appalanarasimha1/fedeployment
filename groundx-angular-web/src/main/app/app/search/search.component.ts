@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Document } from './document';
-import { NuxeoService } from '../services/nuxeo.service';
 import { SubHeaderComponent } from '../common/subHeader/subHeader.component';
 import { SideDrawerComponent } from '../common/sideDrawer/sideDrawer.component';
+import { NuxeoService } from '../services/nuxeo.service';
 // import { ApiService } from '../services/http.service';
 
 @Component({
