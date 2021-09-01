@@ -3,7 +3,7 @@ import { Document } from './document';
 import { NuxeoService } from '../services/nuxeo.service';
 import { SubHeaderComponent } from '../common/subHeader/subHeader.component';
 import { SideDrawerComponent } from '../common/sideDrawer/sideDrawer.component';
-import { ApiService } from '../services/http.service';
+// import { ApiService } from '../services/http.service';
 
 @Component({
   selector: 'app-search',
@@ -12,7 +12,7 @@ import { ApiService } from '../services/http.service';
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './search.template.html',
   directives: [SubHeaderComponent, SideDrawerComponent, Document],
-  providers: [ApiService]
+  // providers: [ApiService]
 })
 export class Search {
   searchValue = '';
@@ -22,7 +22,7 @@ export class Search {
   error = undefined;
 
   // TypeScript public modifiers
-  constructor(public nuxeo: NuxeoService, public http: ApiService) {
+  constructor(public nuxeo: NuxeoService) { //, public http: ApiService
 
   }
 
