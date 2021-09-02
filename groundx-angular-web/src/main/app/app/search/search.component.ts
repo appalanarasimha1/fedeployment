@@ -3,6 +3,7 @@ import { Document } from './document';
 import { SubHeaderComponent } from '../common/subHeader/subHeader.component';
 import { SideDrawerComponent } from '../common/sideDrawer/sideDrawer.component';
 import { NuxeoService } from '../services/nuxeo.service';
+import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 // import { ApiService } from '../services/http.service';
 
 @Component({
@@ -26,15 +27,16 @@ export class Search {
 
   }
 
-  searchDocuments(value: String) {
-    console.log('Search: ' + value);
+  searchDocuments(data: IHeaderSearchCriteria) {
+    console.log('Search: ' + data);
 
     this.loading = true;
     this.error = undefined;
     this.documents = undefined;
+    let queryParams = Object.assign({currentPageIndex: 0, offset: 0, pageSize: 40}, data);
 
-    this.nuxeo.request('/search/pp/assets_search/execute')
-    .get({asset_height_agg: []}
+    this.nuxeo.request('/search/pp/assets_search/execute', {queryParams: queryParams})
+    .get(
 //       {
 //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
 //  ,{

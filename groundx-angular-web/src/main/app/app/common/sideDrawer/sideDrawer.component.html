@@ -9,10 +9,6 @@
                 <div id="main-sidebar"  class="sidepanel closeBtn" >
                    <h3 class="pb-2">Search Settings</h3>
 
-
-
-
-
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item sidebarList">
                       <h2 class="accordion-header" id="headingOne">
@@ -42,10 +38,10 @@
                       <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <ul class="flexible pt-2 pb-2 sideList">
-                                <li class="mr-2 mb-2">
-                                    <a >Environment</a>
+                                <li *ngFor="let sector of sectors" class="mr-2 mb-2">
+                                    <a >{{sector.title}}</a>
                                 </li>
-                                <li class="active mb-2">
+                                <!-- <li class="active mb-2">
                                     <a >Tourist</a>
                                 </li>
                                 <li class="mr-2 ">
@@ -53,7 +49,7 @@
                                </li>
                                <li class="">
                                    <a >Marketing</a>
-                               </li>
+                               </li> -->
                             </ul>
                         </div>
                       </div>
