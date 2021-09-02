@@ -28,8 +28,6 @@ export class Search {
   }
 
   searchDocuments(data: IHeaderSearchCriteria) {
-    console.log('Search: ' + data);
-
     this.loading = true;
     this.error = undefined;
     this.documents = undefined;

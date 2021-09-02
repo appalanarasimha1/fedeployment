@@ -1,6 +1,6 @@
 <div class="main">
   <app-sub-header (searchTextOutput)="searchDocuments($event)"></app-sub-header>
-  <app-side-drawer></app-side-drawer>
+  <app-side-drawer (searchTextOutput)="searchDocuments($event)"></app-side-drawer>
 </div>
 
 <div class="result">

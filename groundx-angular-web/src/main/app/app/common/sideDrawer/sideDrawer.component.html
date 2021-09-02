@@ -20,10 +20,10 @@
                         <div class="accordion-body">
                             <ul class="flexible pt-2 pb-2 sideList">
                                 <li class="mr-2 active">
-                                    <a >Most relevant</a>
+                                    <a (click)="createQuery('relevant')">Most relevant</a>
                                 </li>
                                 <li>
-                                    <a >Most recent</a>
+                                    <a  (click)="createQuery('recent')">Most recent</a>
                                 </li>
                             </ul>
                         </div>
@@ -63,15 +63,15 @@
                       <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <ul class="flexible pt-2 pb-2 sideList">
-                                <li class="mr-2 active">
-                                    <a >Image</a>
+                                <li *ngFor="let docType of metaData.system_primaryType_agg.extendedBuckets" class="mr-2">
+                                    <a (click)="selectDoctype(docType.key)">{{docType.key}}</a>
                                 </li>
-                                <li class="mr-2">
+                                <!-- <li class="mr-2">
                                     <a >Video</a>
                                 </li>
                                 <li>
                                    <a >Document</a>
-                               </li>
+                               </li> -->
                             </ul>
                         </div>
                       </div>
@@ -86,19 +86,15 @@
                         <div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                           <div class="accordion-body">
                             <div class="dropdown">
-                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                  All assets
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                  <li><a class="dropdown-item" href="#">All assets</a></li>
-                                  <li><a class="dropdown-item" href="#">Created</a></li>
-                                  <li><a class="dropdown-item" href="#">Modified</a></li>
-                                  <li><a class="dropdown-item" href="#">Last Contibutor</a></li>
-                                  <li><a class="dropdown-item" href="#">Modified</a></li>
-                                  <li><a class="dropdown-item" href="#">Modified</a></li>
-                                  <li><a class="dropdown-item" href="#">Modified</a></li>
-                                  <li><a class="dropdown-item" href="#">Modified</a></li>
-                                </ul>
+                              <select class="btn" style="background-color: white; height: 44px;" (change)="dropdownMenu($event)">
+                                <option class="dropdown-item" value='' selected>All assets</option>
+                                <option class="dropdown-item" value='dc:created'>Created</option>
+                                <option class="dropdown-item" value='dc:modified'>Modified</option>
+                                <option class="dropdown-item" value='dc:lastContributor'>Last Contibutor</option>
+                                <option class="dropdown-item" value='state'>State</option>
+                                <option class="dropdown-item" value='dc:nature'>Nature</option>
+                                <option class="dropdown-item" value='dc:coverage'>Coverage</option>
+                              </select>
                               </div>
                           </div>
                         </div>
