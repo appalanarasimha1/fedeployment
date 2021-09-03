@@ -1,19 +1,28 @@
 .sub-header{
-    background-color: #000;
+    /* background-color: #000; */
+    /* background-image: url(~/../../../../assets/images/NEOMbannerImage.png); */
+    background-image: url(~/../../../../assets/images/NEOM-banner-Image.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 145px !important;
+    padding-bottom: 100px;
 }
 .sub-header h2{
-    font-size: 20px;
-    line-height: 30px;
     color: #fff;
     letter-spacing: 0.8px;
     font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.31em;
 }
 .search-bar{
     position: relative;
-    padding: 9px 10px 9px 33px;
-    border-radius: 2px;
+    padding: 9px 10px 9px 16px;
+    border-radius: 8px;
     border: 1px solid #E5E5E5;
-    width: 325px;
+    width: 430px;
+    border-top-left-radius: unset;
+    border-bottom-left-radius: unset;
 }
 .placeholder-search{
     position: absolute;
@@ -25,12 +34,16 @@
 }
 .dropdown button{
     border: 1px solid #E5E5E5;
-    border-radius: 2px;
+    border-radius: 8px;
     background-color: #fff;
     width: 160px;
     position: relative;
+    border-top-right-radius: unset;
+    border-bottom-right-radius: unset;
     text-align: left;
-    padding: 9px;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 22px;
 }
 .dropdown-menu{
     margin: 0px 0px 0px 0px;
@@ -49,16 +62,31 @@
 .search-btn{
     position: absolute;
     right: 0px;
-    background-color: #808080;
-    border-radius: 2px;
+     border-radius: 2px;
     border: unset;
     padding: 10px 10px;
+    background-color: transparent;
 }
 .search-btn img{
-    filter: invert(1);
     width: 18px;
 }
 .dropdown-item:focus, .dropdown-item:hover{
     background-color: #5FCAD2;
     color: #fff;
+}
+.search-tags ul{
+    padding: 0px;
+    list-style: none;
+    justify-content: center;
+}
+.search-tags ul li a{
+    background-color: #000;
+    font-size: 14px;
+    line-height: 11px;
+    border-radius: 20px;
+    padding: 14px 22px;
+    color: #fff;
+    text-decoration: unset;
+    margin: 0px 5px;
+    display: block;
 }

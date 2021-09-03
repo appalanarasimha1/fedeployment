@@ -1,8 +1,18 @@
 @import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@font-face {
+  font-family: brownFont;
+  src: url(~/../../assets/fonts/Brown-Light.otf);
+  font-weight: 400;
+}
+@font-face {
+  font-family: brownFont;
+  src: url(~/../../assets/fonts/Brown-Regular.otf);
+  font-weight: 600;
+}
 html, body{
   height: 100%;
-  font-family: 'Roboto', sans-serif;
+  font-family: brownFont;
 }
 p{
   margin-bottom: unset;

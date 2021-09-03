@@ -1,8 +1,8 @@
-<section class="sub-header pt-3 pb-5">
+<section class="sub-header" >
   <div class="container">
     <div class="row">
       <div class="col-xl-12 text-center">
-        <h2 class="pb-2">GROUND X Search</h2>
+        <h2 class="pb-4">GROUND X</h2>
         <form>
           <div class="flexible" style="justify-content: center">
             <div class="dropdown">
@@ -24,16 +24,35 @@
             <div style="position: relative;">
               <form (ngSubmit)="searchOutputFn(searchText)" autocomplete="off">
                 <input [ngModel]="searchText" (ngModelChange)="searchText=$event" [ngModelOptions]="{standalone: true}"
-                  type="text" placeholder="Search" class="search-bar"><img
-                  src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search">
+                  type="text" placeholder="Search files" class="search-bar">
                 <button class="primary search-btn"><img
                     src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" /></button>
               </form>
             </div>
           </div>
         </form>
+        <div class="search-tags pt-5">
+          <ul class="flexible">
+            <li>
+              <a href="#">Travel</a>
+            </li>
+            <li>
+              <a href="#">Hotel</a>
+            </li>
+            <li>
+              <a href="#">Tourist</a>
+            </li>
+            <li>
+              <a href="#">Tourism Industry</a>
+            </li>
+            <li>
+              <a href="#">Tourism Industry</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
+<!-- <app-search></app-search> -->
