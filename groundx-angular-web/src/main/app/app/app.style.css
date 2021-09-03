@@ -30,3 +30,6 @@ footer {
   align-items: center;
   flex-wrap: wrap;
 }
+.btn-check:focus+.btn, .btn:focus{
+  box-shadow: unset;
+}

@@ -88,7 +88,9 @@
 .btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active{
     background-color: #fff;
     color: #000;
-    border: #fff;
+    border: 1px solid #fff;
+    transition: unset;
+    outline: 0;
 }
 .btn-outline-primary{
     background-color: transparent;
@@ -101,6 +103,7 @@
     display: block;
     border-radius: 8px;
     width: 100%;
+    transition: unset;
 }.btn-outline-primary:focus{
     outline: 0;
     box-shadow: unset !important;
@@ -186,4 +189,9 @@
 .dropdown-item:focus, .dropdown-item:hover{
     background-color: #fff;
     color: #000 !important;
+}
+.colorPicker{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
 }

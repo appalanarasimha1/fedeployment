@@ -42,18 +42,14 @@
                         <div class="accordion-body">
                             <ul class="flexible pt-2 pb-2 sideList btn-group "  role="group" aria-label="Basic example">
                                 <li class="mr-2">
-                                  <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-                                  <label class="btn btn-outline-primary" for="btncheck1">Most Relevant</label>
-                                
+                                  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                                  <label class="btn btn-outline-primary" for="btnradio1">Most Relevant</label>
                                 </li>
                                 <li>
-                                  <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                  <label class="btn btn-outline-primary" for="btncheck2">Most recent</label>
-
+                                  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                                  <label class="btn btn-outline-primary" for="btnradio2">Most recent</label>
                                 </li>
                             </ul>
-
-                          
                         </div>
                       </div>
                     </div>
@@ -213,7 +209,22 @@
                         </div>
                       </div>
 
-
+                      <div class="accordion-item sidebarList pt-3">
+                        <h2 class="accordion-header" id="headingEight">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                              <h6>Color</h6>
+                          </button>
+                        </h2>
+                        <div id="collapseEight" class="accordion-collapse collapse show" aria-labelledby="headingEight" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <div class="pb-4 colorPicker">
+                              <input type="color" id="head" name="head"
+                                     value="#e66465">
+                              
+                          </div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="accordion-item sidebarList pt-3">
                         <h2 class="accordion-header" id="headingSeven">
                           <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">

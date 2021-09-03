@@ -12,8 +12,11 @@ export class Document {
     title: 'dummy',
     uuid: 'xxx-xxx-xxx'
   };
-
+  public display: number = 1;
   constructor() {
 
+  }
+  changeDisplay(mode: number): void {
+    this.display = mode;
   }
 }

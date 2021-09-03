@@ -1,21 +1,15 @@
+
+
 <div class="main">
   <app-sub-header (searchTextOutput)="searchDocuments($event)"></app-sub-header>
   <app-side-drawer></app-side-drawer>
 </div>
 
-<div class="result">
+<!-- <div class="result">
   <div [class.hidden]="!documents || documents.length">No results found.</div>
   <div [class.hidden]="!loading">Loading...</div>
   <div [class.hidden]="!error">{{error}}</div>
   <document *ngFor="let document of documents" [document]="document"></document>
   <div style="clear: both;"></div>
-</div>
-
-<!-- <section class="search-subpage pt-5 pb-5">
-  <diiv class="container">
-    <div class="row flexible" style="justify-content: space-between;">
-      <div class="col-xl-4"></div>
-      <div class="col-xl-4"></div>
-    </div>
-  </diiv>
-</section> -->
+</div> -->
+<document></document>
