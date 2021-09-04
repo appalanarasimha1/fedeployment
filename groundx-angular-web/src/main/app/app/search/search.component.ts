@@ -31,7 +31,8 @@ export class Search {
     this.loading = true;
     this.error = undefined;
     this.documents = undefined;
-    let queryParams = Object.assign({currentPageIndex: 0, offset: 0, pageSize: 40}, data);
+    let queryParams = Object.assign({currentPageIndex: 0, offset: 0, pageSize: 40,'document': ['thumbnail']}, data);
+    console.log('incoming data = ', queryParams);
 
     this.nuxeo.request('/search/pp/assets_search/execute', {queryParams: queryParams})
     .get(
