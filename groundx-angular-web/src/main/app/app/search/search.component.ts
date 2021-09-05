@@ -23,15 +23,13 @@ export class Search {
   metaData = {};
 
   // TypeScript public modifiers
-  constructor(public nuxeo: NuxeoService) { //, public http: ApiService
-
-  }
+  constructor(public nuxeo: NuxeoService) {}
 
   searchDocuments(data: IHeaderSearchCriteria) {
     this.loading = true;
     this.error = undefined;
     this.documents = undefined;
-    let queryParams = Object.assign({currentPageIndex: 0, offset: 0, pageSize: 40, 'document': "['thumbnail']"});
+    let queryParams = Object.assign({currentPageIndex: 0, offset: 0, pageSize: 40});
     for(let key in data) {
       if(typeof data[key] !== 'string' && typeof data[key] !== 'number') {
         data[key].map((item: string) => {
@@ -39,11 +37,12 @@ export class Search {
             queryParams[key] = queryParams[key].split(']')[0]+`,"${item.toString()}"]`;
           else queryParams[key] = `["${item.toString()}"]`;
         })
+      } else {
+        queryParams[key] = data[key];
       }
     }
-    console.log('incoming data search document = ', queryParams);
 
-    this.nuxeo.request('/search/pp/assets_search/execute', {queryParams: queryParams})
+    this.nuxeo.request('/search/pp/assets_search/execute', {queryParams: queryParams, headers: {'enrichers-document': 'thumbnail'}})
     .get(
 //       {
 //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
@@ -60,18 +59,6 @@ export class Search {
       this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
       this.loading = false;
     });
-
-    // this.http.get('/search/pp/assets_search/execute?currentPageIndex=1&offset=0&pageSize=50&system_primaryType_agg=%5B%5D&system_mimetype_agg=%5B%5D&asset_width_agg=%5B%5D&asset_height_agg=%5B%5D&color_profile_agg=%5B%5D&color_depth_agg=%5B%5D&video_duration_agg=%5B%5D')
-    // .subscribe((docs: any) => {
-    //   this.documents = docs.entries;
-    //   console.log(docs.entries[0]);
-    //   this.loading = false;
-    // });
-    // .catch((error) => {
-    //   console.log(error);
-    //   this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
-    //   this.loading = false;
-    // });
   }
 
 }

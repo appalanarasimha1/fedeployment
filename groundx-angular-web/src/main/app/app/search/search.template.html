@@ -2,7 +2,7 @@
 
 <div class="main">
   <app-sub-header (searchTextOutput)="searchDocuments($event)"></app-sub-header>
-  <app-side-drawer [metaData]="metaData" (searchTextOutput)="searchDocuments($event)"></app-side-drawer>
+  <app-side-drawer [inputMetaData]="metaData" (searchTextOutput)="searchDocuments($event)"></app-side-drawer>
 </div>
 
 <!-- <div class="result">
@@ -12,4 +12,4 @@
   <document *ngFor="let document of documents" [document]="document"></document>
   <div style="clear: both;"></div>
 </div> -->
-<document (searchTextOutput)="searchDocuments($event)"></document>
+<document [documents]="documents" (searchTextOutput)="searchDocuments($event)"></document>
