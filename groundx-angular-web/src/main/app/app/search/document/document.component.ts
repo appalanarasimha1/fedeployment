@@ -1,4 +1,5 @@
-import { Input, Component } from '@angular/core';
+import { Input, Component, Output, EventEmitter } from '@angular/core';
+import { IHeaderSearchCriteria } from '../../common/subHeader/interface';
 
 @Component({
   selector: 'document',
@@ -8,12 +9,31 @@ import { Input, Component } from '@angular/core';
   templateUrl: './document.template.html'
 })
 export class Document {
-  @Input() document: Object = {
-    title: 'dummy',
-    uuid: 'xxx-xxx-xxx'
-  };
+  @Input() document: Object = {};
+  @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
+  private searchCriteria: IHeaderSearchCriteria = {};
+  public display: number = 1;
 
-  constructor() {
+  constructor() {}
 
+  dropdownMenu(event: any): void {
+    let sortBy = event.target.value;
+    if(sortBy) {
+      this.searchCriteria['sortBy'] = sortBy;
+      this.searchCriteria['sortOrder'] = 'asc';
+    } else {
+      delete this.searchCriteria['sortBy'];
+      delete this.searchCriteria['sortOrder']
+    }
+    this.emitData(this.searchCriteria);
+  }
+
+  emitData(data: IHeaderSearchCriteria): void {
+    this.searchTextOutput.emit(data);
+    return;
+  }
+
+  changeDisplay(mode: number): void {
+    this.display = mode;
   }
 }

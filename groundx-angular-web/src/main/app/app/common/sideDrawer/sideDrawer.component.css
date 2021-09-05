@@ -6,11 +6,13 @@
     top: 0;
     left: 0px;
     padding: unset;
-    background-color: #C4C4C4; /* Grey*/
+ background-image: url(~/../../../../assets/images/SidePanel.png); /* Grey*/
     overflow-x: hidden; 
     /* overflow-y: scroll; */
     padding: 25px 15px;
     transition: 0.5s;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 /* .sidepanel a {
     padding: 8px 8px 8px 32px;
@@ -40,7 +42,7 @@
     /* padding: 10px 15px; */
     border: none;
     transition: 0.4s;
-    background-color: #eaeaea;
+    background-color: unset;
 }
 
 .openbtn:hover {
@@ -63,15 +65,16 @@
     display: block;
     /* text-align: center; */
 }
+.accordion-button::after{
+    display: none;
+}
 .closeBtn#main-sidebar .form-group{
     display: none;
 }
 .shiftFilter{
-    left: 280px ;
+    left: 290px ;
 }
-.sidebarList{
 
-}
 .sidebarList ul{
     list-style: none;
     padding: 0px;
@@ -82,35 +85,42 @@
 .mr-2{
     margin-right: 8px;
 }
-.sidebarList ul.sideList li.active a{
-    background-color: #5FCAD2;
-    color: #fff;
-    font-size: 14px;
-    padding: 5px 0px;
-    text-align: center;
-    display: block;
-    border-radius: 4px;
+.btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active{
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #fff;
+    transition: unset;
+    outline: 0;
 }
-.sidebarList ul.sideList li a{
-    background-color: #e6e6e6;
-    color: #929292;
+.btn-outline-primary{
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
     font-size: 14px;
-    padding: 5px 0px;
+    line-height: 22px;
+    padding: 7px 0px;
     text-align: center;
     display: block;
-    border-radius: 4px;
+    border-radius: 8px;
+    width: 100%;
+    transition: unset;
+}.btn-outline-primary:focus{
+    outline: 0;
+    box-shadow: unset !important;
 }
 .sidebarList h6{
     color: #fff;
     font-size: 18px;
-    font-weight: 200;
+    font-weight: 400;
+    line-height: 22px;
+    margin-bottom: 7px;
 }
 #main-sidebar h3{
     font-size: 20px;
     color: #fff;
 }
 .file-type ul li{
-    width: 30%;
+    width: 31%;
 }
 .accordion-item{
     background-color: unset;
@@ -127,22 +137,35 @@
     padding: unset;
 }
 .dropdown button{
-    border: 1px solid #E5E5E5;
-    border-radius: 4px;
-    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    background-color: transparent;
     width: 100%;
     position: relative;
     text-align: left;
     padding: 9px;
-    margin-top: 15px;
+    margin-top: 10px;
+    color: #fff;
 }
 .dropdown-menu{
-    margin: 0px 0px 0px 0px;
-    margin-top: -2px !important;
+    margin-top: 0px !important;
     width: 100%;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    position: relative !important;
+    transform: unset !important;
+    border-top: unset;
+    border-radius: 8px;
 }
 .dropdown-item{
     padding: 3px 13px !important;
+    color: #fff;
+    font-size: 16px;
+    line-height: 30px;
+}
+.dropdown-menu li {
+    width: 100% !important;
 }
 .dropdown-toggle::after{
     right: 10px;
@@ -164,6 +187,11 @@
     width: 18px;
 }
 .dropdown-item:focus, .dropdown-item:hover{
-    background-color: #5FCAD2;
-    color: #fff;
+    background-color: #fff;
+    color: #000 !important;
+}
+.colorPicker{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
 }

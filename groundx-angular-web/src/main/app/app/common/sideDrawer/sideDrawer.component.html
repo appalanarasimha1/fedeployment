@@ -3,14 +3,36 @@
         <div class="row">
             <div class="mainDiv">
                 <div id="main" >
-                    <button class="openbtn" (click)="openNav()">open</button>
-                   
+                    <button class="openbtn" (click)="openNav()"><img src="../../../assets/images/Searchfilterpaneltrigger.png"></button> 
                 </div>
                 <div id="main-sidebar"  class="sidepanel closeBtn" >
-                   <h3 class="pb-2">Search Settings</h3>
-
-                <div class="accordion" id="accordionExample">
-                    <div class="accordion-item sidebarList">
+                  <!-- <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+                    <ngb-panel title="Simple">
+                      <ng-template ngbPanelContent>
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
+                        aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
+                        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
+                        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
+                        labore sustainable VHS.
+                      </ng-template>
+                    </ngb-panel>
+                    <ngb-panel>
+                      <ng-template ngbPanelTitle>
+                        <span>&#9733; <b>Fancy</b> title &#9733;</span>
+                      </ng-template>
+                      <ng-template ngbPanelContent>
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
+                        aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
+                        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
+                        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
+                        labore sustainable VHS.
+                      </ng-template>
+                    </ngb-panel>
+                  </ngb-accordion> -->
+                  <div class="accordion" id="accordionExample">
+                    <div class="accordion-item sidebarList pb-3">
                       <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <h6>Sort by</h6>
@@ -18,18 +40,20 @@
                       </h2>
                       <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <ul class="flexible pt-2 pb-2 sideList">
-                                <li class="mr-2 active">
-                                    <a (click)="createQuery('relevant')">Most relevant</a>
+                            <ul class="flexible pt-2 pb-2 sideList btn-group"  role="group" aria-label="Basic example">
+                                <li class="mr-2">
+                                  <input type="radio" class="btn-check" (change)="createQuery('relevant')" name="btnradio" id="btnradio1" autocomplete="off" checked> <!--  (click)="createQuery('relevant')" -->
+                                  <label class="btn btn-outline-primary" for="btnradio1">Most Relevant</label>
                                 </li>
                                 <li>
-                                    <a  (click)="createQuery('recent')">Most recent</a>
+                                  <input type="radio" class="btn-check" (change)="createQuery('recent')" name="btnradio" id="btnradio2" autocomplete="off">
+                                  <label class="btn btn-outline-primary" for="btnradio2">Most recent</label>
                                 </li>
                             </ul>
                         </div>
                       </div>
                     </div>
-                    <div class="accordion-item sidebarList">
+                    <div class="accordion-item sidebarList pb-3">
                       <h2 class="accordion-header" id="headingTwo">
                         <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                             <h6>Sector</h6>
@@ -37,24 +61,28 @@
                       </h2>
                       <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <ul class="flexible pt-2 pb-2 sideList">
-                                <li *ngFor="let sector of sectors" class="mr-2 mb-2">
-                                    <a >{{sector.title}}</a>
+                            <ul class="flexible pt-2 pb-2 sideList btn-group" (click)=selectSector($event)>
+                                <li *ngFor="let sector of sectors" class="mr-2 mb-3">
+                                  <input type="checkbox" class="btn-check" id="env" autocomplete="off">
+                                  <label class="btn btn-outline-primary" for="env">{{sector.title}}</label>
                                 </li>
-                                <!-- <li class="active mb-2">
-                                    <a >Tourist</a>
+                                <!-- <li class="active mb-3">
+                                  <input type="checkbox" class="btn-check" id="tourist" autocomplete="off">
+                                  <label class="btn btn-outline-primary" for="tourist">Tourist</label>
                                 </li>
                                 <li class="mr-2 ">
-                                   <a >Sports</a>
+                                  <input type="checkbox" class="btn-check" id="sports" autocomplete="off">
+                                  <label class="btn btn-outline-primary" for="sports">Sports</label>
                                </li>
                                <li class="">
-                                   <a >Marketing</a>
+                                <input type="checkbox" class="btn-check" id="marketing" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="marketing">Marketing</label>
                                </li> -->
                             </ul>
                         </div>
                       </div>
                     </div>
-                    <div class="accordion-item sidebarList file-type">
+                    <div class="accordion-item sidebarList file-type pb-3">
                       <h2 class="accordion-header" id="headingThree">
                         <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                             <h6>File type</h6>
@@ -62,39 +90,158 @@
                       </h2>
                       <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <ul class="flexible pt-2 pb-2 sideList">
-                                <li *ngFor="let docType of metaData.system_primaryType_agg.extendedBuckets" class="mr-2">
-                                    <a (click)="selectDoctype(docType.key)">{{docType.key}}</a>
+                            <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">
+                                <li *ngFor="let fileType of metaData.system_primaryType_agg.buckets; let i = index" class="mr-2 active">
+                                  <input type="checkbox" class="btn-check" id="img{{i}}" autocomplete="off">
+                                  <label class="btn btn-outline-primary" for="img">{{fileType.key}}</label>
                                 </li>
                                 <!-- <li class="mr-2">
-                                    <a >Video</a>
+                                  <input type="checkbox" class="btn-check" id="video" autocomplete="off">
+                                  <label class="btn btn-outline-primary" for="video">Video</label>
                                 </li>
                                 <li>
-                                   <a >Document</a>
+                                  <input type="checkbox" class="btn-check" id="doc" autocomplete="off">
+                                  <label class="btn btn-outline-primary" for="doc">Document</label>
                                </li> -->
                             </ul>
                         </div>
                       </div>
                     </div>
 
-                    <div class="accordion-item sidebarList">
+                    <div class="accordion-item sidebarList pb-4">
                         <h2 class="accordion-header" id="headingFour">
                           <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                            <h6>Sort by</h6>
+                            <h6>Format</h6>
                           </button>
                         </h2>
                         <div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                           <div class="accordion-body">
                             <div class="dropdown">
-                              <select class="btn" style="background-color: white; height: 44px;" (change)="dropdownMenu($event)">
-                                <option class="dropdown-item" value='' selected>All assets</option>
-                                <option class="dropdown-item" value='dc:created'>Created</option>
-                                <option class="dropdown-item" value='dc:modified'>Modified</option>
-                                <option class="dropdown-item" value='dc:lastContributor'>Last Contibutor</option>
-                                <option class="dropdown-item" value='state'>State</option>
-                                <option class="dropdown-item" value='dc:nature'>Nature</option>
-                                <option class="dropdown-item" value='dc:coverage'>Coverage</option>
-                              </select>
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  All
+                                </button>
+                                <ul (click)="selectMimeType($event)" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li><a class="dropdown-item" href="#">All</a></li>
+                                  <li *ngFor="let mimeType of metaData.system_mimetype_agg.buckets"><a class="dropdown-item" href="#">{{mimeType.key}}</a></li>
+                                  
+                                </ul>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                      <div class="accordion-item sidebarList pb-3">
+                        <h2 class="accordion-header" id="headingFour">
+                          <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                            <h6>Size</h6>
+                          </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  All
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li><a class="dropdown-item" href="#">All </a></li>
+                                  <li><a class="dropdown-item" href="#">Large</a></li>
+                                  <li><a class="dropdown-item" href="#">Medium</a></li>
+                                  <li><a class="dropdown-item" href="#">Larger than 400x300</a></li>
+                                  <li><a class="dropdown-item" href="#">Larger than 640x480</a></li>
+                                  <li><a class="dropdown-item" href="#">Larger than 800x600</a></li>
+                                  <li><a class="dropdown-item" href="#">Larger than 1024x768</a></li>
+                                  <li><a class="dropdown-item" href="#">Larger than 2 MP</a></li>
+                                  <li><a class="dropdown-item" href="#">Larger than 4 MP</a></li>
+                                  <li><a class="dropdown-item" href="#">Larger than 6 MP</a></li>
+                                  <li><a class="dropdown-item" href="#">Larger than 8 MP</a></li>
+                                   <li><a class="dropdown-item" href="#">Larger than 10 MP</a></li>
+                                    <li><a class="dropdown-item" href="#">Larger than 12 MP</a></li>
+                                     <li><a class="dropdown-item" href="#">Larger than 15 MP</a></li>
+                                      <li><a class="dropdown-item" href="#">Larger than 20 MP</a></li>
+                                       <li><a class="dropdown-item" href="#">Larger than 40 MP</a></li>
+                                        <li><a class="dropdown-item" href="#">Larger than 70 MP</a></li>
+                                      
+                                </ul>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="accordion-item sidebarList pt-3">
+                        <h2 class="accordion-header" id="headingSix">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                              <h6>Orientation</h6>
+                          </button>
+                        </h2>
+                        <div id="collapseSix" class="accordion-collapse collapse show" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                              <ul class="flexible pt-2 pb-2 sideList btn-group "  role="group" aria-label="Basic example">
+                                  <li class="mr-2 mb-3">
+                                    <input type="checkbox" class="btn-check" id="vertical" autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="vertical">Vertical</label>
+                                  
+                                  </li>
+                                  <li class="mb-3">
+                                    <input type="checkbox" class="btn-check" id="horizontal" autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="horizontal">Horizontal</label>
+  
+                                  </li>
+                                  <li class="mr-2">
+                                    <input type="checkbox" class="btn-check" id="square" autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="square">Square</label>
+  
+                                  </li>
+                                  <li>
+                                    <input type="checkbox" class="btn-check" id="pano" autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="pano">Panoramic</label>
+  
+                                  </li>
+                              </ul>
+  
+                            
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item sidebarList pt-3">
+                        <h2 class="accordion-header" id="headingEight">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                              <h6>Color</h6>
+                          </button>
+                        </h2>
+                        <div id="collapseEight" class="accordion-collapse collapse show" aria-labelledby="headingEight" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <div class="pb-4 colorPicker">
+                              <input type="color" id="head" name="head"
+                                     value="#e66465">
+                              
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item sidebarList pt-3">
+                        <h2 class="accordion-header" id="headingSeven">
+                          <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                            <h6>Updated date</h6>
+                          </button>
+                        </h2>
+                        <div id="collapseSeven" class="accordion-collapse collapse show" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  All
+                                </button>
+                                <ul (click)="selectModifiedDate($event)" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li><a class="dropdown-item" href="#">All </a></li>
+                                  <li><a class="dropdown-item" href="#" value="last24h">Last 24 hours</a></li>
+                                  <li><a class="dropdown-item" href="#">Last week</a></li>
+                                  <li><a class="dropdown-item" href="#">Last month</a></li>
+                                  <li><a class="dropdown-item" href="#">Last year</a></li>
+                                  <li><a class="dropdown-item" href="#">More than 1 year ago</a></li>
+                                </ul>
                               </div>
                           </div>
                         </div>

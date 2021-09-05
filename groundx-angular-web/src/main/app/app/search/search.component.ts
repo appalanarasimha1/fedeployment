@@ -18,9 +18,9 @@ import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 export class Search {
   searchValue = '';
   documents = undefined;
-
   loading = false;
   error = undefined;
+  metaData = {};
 
   // TypeScript public modifiers
   constructor(public nuxeo: NuxeoService) { //, public http: ApiService
@@ -31,8 +31,17 @@ export class Search {
     this.loading = true;
     this.error = undefined;
     this.documents = undefined;
-    let queryParams = Object.assign({currentPageIndex: 0, offset: 0, pageSize: 40,'document': ['thumbnail']}, data);
-    console.log('incoming data = ', queryParams);
+    let queryParams = Object.assign({currentPageIndex: 0, offset: 0, pageSize: 40, 'document': "['thumbnail']"});
+    for(let key in data) {
+      if(typeof data[key] !== 'string' && typeof data[key] !== 'number') {
+        data[key].map((item: string) => {
+          if(queryParams[key])
+            queryParams[key] = queryParams[key].split(']')[0]+`,"${item.toString()}"]`;
+          else queryParams[key] = `["${item.toString()}"]`;
+        })
+      }
+    }
+    console.log('incoming data search document = ', queryParams);
 
     this.nuxeo.request('/search/pp/assets_search/execute', {queryParams: queryParams})
     .get(
@@ -43,6 +52,7 @@ export class Search {
 //     }
     ).then((docs) => {
       this.documents = docs.entries;
+      this.metaData = docs.aggregations;
       console.log(docs.entries[0]);
       this.loading = false;
     }).catch((error) => {

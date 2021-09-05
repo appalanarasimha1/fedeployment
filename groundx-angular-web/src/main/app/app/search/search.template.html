@@ -1,12 +1,15 @@
+
+
 <div class="main">
   <app-sub-header (searchTextOutput)="searchDocuments($event)"></app-sub-header>
-  <app-side-drawer (searchTextOutput)="searchDocuments($event)"></app-side-drawer>
+  <app-side-drawer [metaData]="metaData" (searchTextOutput)="searchDocuments($event)"></app-side-drawer>
 </div>
 
-<div class="result">
+<!-- <div class="result">
   <div [class.hidden]="!documents || documents.length">No results found.</div>
   <div [class.hidden]="!loading">Loading...</div>
   <div [class.hidden]="!error">{{error}}</div>
   <document *ngFor="let document of documents" [document]="document"></document>
   <div style="clear: both;"></div>
-</div>
+</div> -->
+<document (searchTextOutput)="searchDocuments($event)"></document>

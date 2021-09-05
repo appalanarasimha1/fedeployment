@@ -1,26 +1,39 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { NuxeoService } from '../../services/nuxeo.service';
 import { IHeaderSearchCriteria } from '../subHeader/interface';
 
 @Component({
   selector: 'app-side-drawer',
   templateUrl: './sideDrawer.component.html',
-  styleUrls: ['./sideDrawer.component.css']
+  styleUrls: ['./sideDrawer.component.css'],
+
 })
 export class SideDrawerComponent implements OnInit {
 
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
+  @Input() inputMetaData = {system_primaryType_agg: {buckets: []}, system_mimetype_agg: {buckets: []}};
+  metaData = {system_primaryType_agg: {buckets: []}, system_mimetype_agg: {buckets: []}};
   sectors = undefined;
   loading = false;
   error = undefined;
-  metaData = {system_primaryType_agg: {extendedBuckets: []}};
-  private searchCriteria: {quickFilters?: string, system_primaryType_agg?: string[]} = {system_primaryType_agg: []};
+  private searchCriteria: {
+    quickFilters?: string,
+    system_primaryType_agg?: string[],
+    system_mimetype_agg?: string[]
+  } = {
+    system_primaryType_agg: [],
+    system_mimetype_agg: []
+  };
 
   constructor(private nuxeo: NuxeoService) { }
 
   ngOnInit(): void {
     this.getSectors();
     this.getMetaData();
+  }
+
+  ngOnChanges(changes: any): void {
+    this.metaData = this.inputMetaData;
   }
 
   getSectors() {
@@ -74,7 +87,12 @@ export class SideDrawerComponent implements OnInit {
     return;
   }
 
-  selectDoctype(docType: string): void {
+  selectSector(event: any) {
+    return event.target.outerText;
+  }
+
+  selectDoctype(event: any): void {
+    let docType = event.target.textContent;
     let index = this.searchCriteria['system_primaryType_agg'].indexOf(docType);
     index > -1 ? this.searchCriteria['system_primaryType_agg'].splice(index, 1) : this.searchCriteria['system_primaryType_agg'].push(docType);
     this.emitData(this.searchCriteria);
@@ -87,10 +105,28 @@ export class SideDrawerComponent implements OnInit {
     } else {
       delete this.searchCriteria['quickFilters'];
     }
+    this.emitData(this.searchCriteria);
+  }
+
+  selectMimeType(event: any) {
+    let mimeType = event.target.textContent;
+    let index = this.searchCriteria['system_mimetype_agg'].indexOf(mimeType);
+    index > -1 ? this.searchCriteria['system_mimetype_agg'].splice(index, 1) : this.searchCriteria['system_mimetype_agg'].push(mimeType);
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
+  modifiedDate = {dc_modified_agg: []};
+  selectModifiedDate(event: any) {
+    let mimeType = event.target.value;
+    let index = this.modifiedDate['dc_modified_agg'].indexOf(mimeType);
+    index > -1 ? this.modifiedDate['dc_modified_agg'].splice(index, 1) : this.modifiedDate['dc_modified_agg'].push(mimeType);
+    this.emitData(this.modifiedDate);
+    return;
   }
 
   openNav() {
-    document.getElementById("main-sidebar").style.width = "270px";
+    document.getElementById("main-sidebar").style.width = "280px";
     document.getElementById("main").classList.toggle('shiftFilter');
     document.getElementById("main-sidebar").classList.toggle("closeBtn");
 

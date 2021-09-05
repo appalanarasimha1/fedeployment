@@ -1,15 +1,11 @@
-<section class="sub-header pt-3 pb-5">
+<section class="sub-header" >
   <div class="container">
     <div class="row">
       <div class="col-xl-12 text-center">
-        <h2 class="pb-2">GROUND X Search</h2>
+        <h2 class="pb-4">GROUND X</h2>
         <form>
           <div class="flexible" style="justify-content: center">
-            <div class="dropdown">
-              <!-- <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                All assets
-              </button> -->
+            <!-- <div class="dropdown">
               <select class="btn" style="background-color: white; height: 44px;" (change)="dropdownMenu($event)">
                 <option class="dropdown-item" value='' selected>All assets</option>
                 <option class="dropdown-item" value='dc:created'>Created</option>
@@ -19,7 +15,7 @@
                 <option class="dropdown-item" value='dc:nature'>Nature</option>
                 <option class="dropdown-item" value='dc:coverage'>Coverage</option>
               </select>
-            </div>
+            </div> -->
             <!-- <app-search></app-search> -->
             <div style="position: relative;">
               <form (ngSubmit)="searchOutputFn(searchText)" autocomplete="off">
@@ -33,8 +29,28 @@
             </div>
           </div>
         </form>
+        <div class="search-tags pt-5">
+          <ul class="flexible">
+            <li>
+              <a href="#">Travel</a>
+            </li>
+            <li>
+              <a href="#">Hotel</a>
+            </li>
+            <li>
+              <a href="#">Tourist</a>
+            </li>
+            <li>
+              <a href="#">Tourism Industry</a>
+            </li>
+            <li>
+              <a href="#">Tourism Industry</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
+<!-- <app-search></app-search> -->
