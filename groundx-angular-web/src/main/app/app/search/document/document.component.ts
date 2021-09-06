@@ -19,7 +19,9 @@ export class Document {
   private searchCriteria: IHeaderSearchCriteria = {};
   public display: number = 1;
   imageSliceInput = 9;
-  hideImageShowMoreBtn = false;
+  videoSliceInput = 5;
+  hideImageShowMoreBtn = true;
+  hideVideoShowMoreBtn = true;
 
   constructor() { }
 
@@ -27,8 +29,15 @@ export class Document {
     if (changes.documents.currentValue && changes.documents.currentValue.length) {
       this.resetValues();
       this.segregateDocuments(changes.documents.currentValue);
-      if (this.imageSliceInput >= this.images.length) {
+      if(this.imageSliceInput >= this.images.length) {
         this.hideImageShowMoreBtn = true;
+      } else {
+        this.hideImageShowMoreBtn = false;
+      }
+      if(this.videoSliceInput >= this.videos.length) {
+        this.hideVideoShowMoreBtn = true;
+      } else {
+        this.hideVideoShowMoreBtn = false;
       }
     }
     return;
@@ -77,6 +86,14 @@ export class Document {
       this.imageSliceInput += 9;
       if (this.imageSliceInput >= this.images.length) {
         this.hideImageShowMoreBtn = true;
+      }
+      return;
+    }
+
+    if (docType === constants.VIDEO_SMALL_CASE) {
+      this.videoSliceInput += 9;
+      if (this.videoSliceInput >= this.videos.length) {
+        this.hideVideoShowMoreBtn = true;
       }
       return;
     }
