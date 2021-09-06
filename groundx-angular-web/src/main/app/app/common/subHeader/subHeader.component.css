@@ -21,8 +21,8 @@
     border-radius: 8px;
     border: 1px solid #E5E5E5;
     width: 430px;
-    border-top-left-radius: unset;
-    border-bottom-left-radius: unset;
+    /* border-top-left-radius: unset; */
+    /* border-bottom-left-radius: unset; */
 }
 .placeholder-search{
     position: absolute;

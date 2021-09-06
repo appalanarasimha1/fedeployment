@@ -20,8 +20,8 @@
             <div style="position: relative;">
               <form (ngSubmit)="searchOutputFn(searchText)" autocomplete="off">
                 <input [ngModel]="searchText" (ngModelChange)="searchText=$event" [ngModelOptions]="{standalone: true}"
-                  type="text" placeholder="Search" class="search-bar"><img
-                  src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search">
+                  type="text" placeholder="Search" class="search-bar">
+                  <!-- <img src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search"> -->
                   <!-- <button ngIf="search" class="btn" style="position: absolute; right: 39px; top: 3px;">x</button> -->
                 <button class="primary search-btn"><img
                     src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" /></button>
@@ -29,7 +29,7 @@
             </div>
           </div>
         </form>
-        <div class="search-tags pt-5">
+        <!-- <div class="search-tags pt-5">
           <ul class="flexible">
             <li>
               <a href="#">Travel</a>
@@ -47,7 +47,7 @@
               <a href="#">Tourism Industry</a>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
 
     </div>

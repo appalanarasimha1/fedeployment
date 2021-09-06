@@ -24,7 +24,7 @@
             <li><a class="dropdown-item" href="#">Coverage</a></li>
           </ul> -->
 
-          <select class="btn" style="background-color: white; height: 44px;" (change)="dropdownMenu($event)">
+          <select class="btn" style="background-color: white; height: 44px; text-align: left;" (change)="dropdownMenu($event)">
             <option class="dropdown-item" value='' selected>All assets</option>
             <option class="dropdown-item" value='dc:created'>Created</option>
             <option class="dropdown-item" value='dc:modified'>Modified</option>
@@ -51,11 +51,20 @@
       </div>
       <!-- Gallery -->
       
-      <div *ngFor="let image of images.slice(0, imageSliceInput); let i = index" class="col-lg-4 mb-4 mb-lg-0">
+      <!-- <div *ngFor="let image of images.slice(0, imageSliceInput); let i = index" class="col-lg-4 mb-4 mb-lg-0">
         <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{image.path}}">
           <img src="{{image.contextParameters.thumbnail.url}}" class="w-100 shadow-1-strong rounded mb-4" alt="" />
         </a>
-      </div>
+      </div> -->
+      <ul class="flexible" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+        <!-- <span  class="horizontal" style="width: 30%;margin: 15px;"> -->
+          <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{image.path}}" style="width: 31%;margin: 8px;display: flex;"  *ngFor="let image of images.slice(0, imageSliceInput); let i = index" >
+            <img src="{{image.contextParameters.thumbnail.url}}" class=" shadow-1-strong rounded "alt="" />
+          </a>
+         <!--</span> -->
+      </ul>
+       
+           
       <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show more</div>
 
 

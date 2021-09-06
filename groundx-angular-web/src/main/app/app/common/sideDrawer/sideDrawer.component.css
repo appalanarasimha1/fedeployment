@@ -80,7 +80,7 @@
     padding: 0px;
 }
 .sidebarList ul li{
-    width: 47.7%;
+    width: 46%;
 }
 .mr-2{
     margin-right: 8px;
@@ -120,7 +120,7 @@
     color: #fff;
 }
 .file-type ul li{
-    width: 31%;
+    width: 29%;
 }
 .accordion-item{
     background-color: unset;

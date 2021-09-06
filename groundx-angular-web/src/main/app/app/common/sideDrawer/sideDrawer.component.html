@@ -58,7 +58,7 @@
                 </div>
               </div>
             </div>
-            <div class="accordion-item sidebarList pb-3">
+           <div class="accordion-item sidebarList pb-3" >
               <h2 class="accordion-header" id="headingTwo">
                 <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
                   aria-expanded="true" aria-controls="collapseTwo">
@@ -69,8 +69,8 @@
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <ul class="flexible pt-2 pb-2 sideList btn-group" (click)=selectSector($event)>
-                    <li *ngFor="let sector of sectors" class="mr-2 mb-3">
-                      <input type="checkbox" class="btn-check" id="env" autocomplete="off">
+                    <li *ngFor="let sector of sectors" class="mr-2 mb-3" style="cursor: not-allowed !important;">
+                      <input type="checkbox" class="btn-check" id="env" autocomplete="off" disabled style="cursor: not-allowed;">
                       <label class="btn btn-outline-primary" for="env">{{sector.title}}</label>
                     </li>
                     <!-- <li class="active mb-3">
@@ -88,7 +88,7 @@
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> 
             <div class="accordion-item sidebarList file-type pb-3">
               <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button " type="button" data-bs-toggle="collapse"
@@ -133,7 +133,7 @@
                       aria-expanded="false">
                       All
                     </button>
-                    <ul (click)="selectMimeType($event)" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <ul (click)="selectMimeType($event)" class="dropdown-menu " multiple aria-labelledby="dropdownMenuButton1">
                       <li><a class="dropdown-item" href="#">All</a></li>
                       <li *ngFor="let mimeType of metaData.system_mimetype_agg.buckets">
                         <a class="dropdown-item"
@@ -142,6 +142,13 @@
                       </li>
                     </ul>
                   </div>
+
+
+<!-- 
+                  <select (click)="selectMimeType($event)" class="select" multiple>
+                    <option value="1" *ngFor="let mimeType of metaData.system_mimetype_agg.buckets">{{mimeType.key}}</option>
+                    
+                  </select> -->
                 </div>
               </div>
             </div>
@@ -242,7 +249,7 @@
             </div>
 
 
-            <div class="accordion-item sidebarList pt-3">
+            <div class="accordion-item sidebarList pt-3" >
               <h2 class="accordion-header" id="headingSix">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix"
                   aria-expanded="true" aria-controls="collapseSix">
@@ -253,23 +260,23 @@
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <ul class="flexible pt-2 pb-2 sideList btn-group " role="group" aria-label="Basic example">
-                    <li class="mr-2 mb-3">
-                      <input type="checkbox" class="btn-check" id="vertical" autocomplete="off">
+                    <li class="mr-2 mb-3" style="cursor: not-allowed !important;">
+                      <input type="checkbox" class="btn-check" id="vertical" autocomplete="off" disabled style="cursor: not-allowed;">
                       <label class="btn btn-outline-primary" for="vertical">Vertical</label>
 
                     </li>
-                    <li class="mb-3">
-                      <input type="checkbox" class="btn-check" id="horizontal" autocomplete="off">
+                    <li class="mb-3" style="cursor: not-allowed !important;">
+                      <input type="checkbox" class="btn-check" id="horizontal" autocomplete="off" disabled style="cursor: not-allowed;">
                       <label class="btn btn-outline-primary" for="horizontal">Horizontal</label>
 
                     </li>
-                    <li class="mr-2">
-                      <input type="checkbox" class="btn-check" id="square" autocomplete="off">
+                    <li class="mr-2" style="cursor: not-allowed !important;">
+                      <input type="checkbox" class="btn-check" id="square" autocomplete="off" disabled style="cursor: not-allowed;">
                       <label class="btn btn-outline-primary" for="square">Square</label>
 
                     </li>
-                    <li>
-                      <input type="checkbox" class="btn-check" id="pano" autocomplete="off">
+                    <li style="cursor: not-allowed !important;">
+                      <input type="checkbox" class="btn-check" id="pano" autocomplete="off" disabled style="cursor: not-allowed !important;">
                       <label class="btn btn-outline-primary" for="pano">Panoramic</label>
 
                     </li>
@@ -280,7 +287,7 @@
               </div>
             </div>
 
-            <div class="accordion-item sidebarList pt-3">
+            <div class="accordion-item sidebarList pt-3" >
               <h2 class="accordion-header" id="headingEight">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight"
                   aria-expanded="true" aria-controls="collapseEight">
@@ -291,7 +298,7 @@
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <div class="pb-4 colorPicker">
-                    <input type="color" id="head" name="head" value="#e66465">
+                    <input type="color" id="head" name="head" value="#e66465" disabled style="cursor: not-allowed;">
 
                   </div>
                 </div>

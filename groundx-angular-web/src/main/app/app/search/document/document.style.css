@@ -60,10 +60,23 @@ label img {
   z-index: -1;
 }
 .dropdown{
-  border: 1px solid #404040;
+  /* border: 1px solid #404040; */
   border-radius: 8px;
   width: 170px;
 }
+select.btn{
+  border: 1.5px solid #000;
+}
+select option {
+  margin: 40px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+.dropdown-item.active, .dropdown-item:active,  .dropdown-item:hover{
+  background-color: #000 !important;
+}
+
 .dropdown-toggle::after{
   
   position: absolute;
@@ -89,6 +102,7 @@ font-weight: 600;
   margin-right: 15px;
   position: relative;
   transition: 0.4s;
+  margin-bottom: 15px;
 }
 .videosList li:before{
   content: '';
@@ -119,3 +133,52 @@ color: #737373;
   width: 100%;
   text-align: left;
 }
+.imagesList{
+  list-style: none;
+  padding: 0px;
+  align-items: unset;
+}
+
+.imagesList li{
+  width: 30%;
+  margin: 15px;
+}
+
+
+/* .container > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  color: #ffeead;
+} */
+.imgGallery{}
+.imgGallery  img {
+	margin-top: 8px;
+	vertical-align: middle;
+}
+
+/* Grid */
+.imgGallery a{
+	flex: 25%;
+	max-width: 25%;
+	padding: 0 4px;
+}
+/* .big {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.imgGallery a{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+} */
+ /* .horizontal {
+grid-column: span 2;
+} 
+
+.vertical {
+grid-row: span 2;
+} */
+
