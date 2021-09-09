@@ -4,5 +4,5 @@
     <app-sub-header (searchTextOutput)="searchDocuments($event)"></app-sub-header>
     <app-side-drawer [inputMetaData]="metaData" (searchTextOutput)="searchDocuments($event)"></app-side-drawer>
 </div>
-  <button (click)="connectToNuxeo()">Connect to nuxeo server</button>
+  <!-- <button (click)="connectToNuxeo()">Connect to nuxeo server</button> -->
 <app-content [documents]="documents" (searchTextOutput)="searchDocuments($event)"></app-content>
