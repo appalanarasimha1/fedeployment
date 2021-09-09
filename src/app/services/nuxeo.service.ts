@@ -39,7 +39,7 @@ export class NuxeoService {
       baseURL: `http://localhost:4200/nuxeo/`,
       auth: {
         username: 'Administrator',
-        password: 'Z7DaUfED',
+        password: 'Administrator',
         method: 'basic'
       },
       headers: this.defaultHeader,

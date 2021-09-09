@@ -120,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "groundx"
+    }
+  },
+  "defaultProject": "groundx",
+  "cli": {
+    "analytics": false
+  }
 }
