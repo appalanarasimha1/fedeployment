@@ -62,7 +62,7 @@
       <ul class="flexible" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
         <!-- <span  class="horizontal" style="width: 30%;margin: 15px;"> -->
           <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{image.path}}" style="width: 31%;margin: 8px;display: flex;"  *ngFor="let image of images.slice(0, imageSliceInput); let i = index" >
-            <img src="{{image.contextParameters.thumbnail.url}}" class=" shadow-1-strong rounded "alt="" />
+            <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class=" shadow-1-strong rounded "alt="" />
           </a>
          <!--</span> -->
       </ul>
@@ -91,7 +91,8 @@
       <div class="col-xl-12">
         <ul class="flexible videosList">
           <li *ngFor="let v of videos.slice(0, videoSliceInput)"class="">
-            <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{v.path}}"><img src="{{v.contextParameters.thumbnail.url}}"></a>
+            <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{v.path}}">
+              <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}"></a>
           </li>
           <!-- <li>
             <a href="#"><img src="../../../assets/images/tourism 1.png"></a>
@@ -114,7 +115,7 @@
         <ul class="flexible docList">
           <li *ngFor="let doc of docs"class="">
             <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{doc.path}}"><img
-                src="{{doc.contextParameters.thumbnail.url}}"></a>
+                src="{{getAssetUrl(doc.contextParameters.thumbnail.url)}}"></a>
           </li>
           <!-- <li>
             <a href="#" target="_blank"><img src="../../../assets/images/Pin 15.png"></a>

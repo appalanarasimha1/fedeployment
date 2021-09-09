@@ -42,7 +42,7 @@ export class NuxeoService {
         password: 'Administrator',
         method: 'basic'
       },
-      headers: this.defaultHeader,
+      // headers: this.defaultHeader,
     });
 
     // Mixin Nuxeo JS Client prototype with NuxeoService to use it the same way.

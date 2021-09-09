@@ -107,4 +107,8 @@ export class DocumentComponent {
   changeDisplay(mode: number): void {
     this.display = mode;
   }
+
+  getAssetUrl(url: string): string {
+    return `http://localhost:4200/nuxeo/${url.split('/nuxeo/')[1]}`;
+  }
 }
