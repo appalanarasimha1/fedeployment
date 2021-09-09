@@ -339,7 +339,11 @@ nav ul {
   display: inline-block;
 }
 
-
+.flexible{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
 /*.card {*/
 /*  box-shadow: none;*/
