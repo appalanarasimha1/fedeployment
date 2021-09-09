@@ -1,0 +1,31 @@
+/* .hidden {
+  display: none;
+} */
+
+.search-bar{
+    position: relative;
+    padding: 9px 10px 9px 33px;
+    border-radius: 2px;
+    border: 1px solid #E5E5E5;
+    width: 325px;
+  }
+  .placeholder-search{
+    position: absolute;
+    left: 11px;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+    width: 18px;
+  }
+  .search-btn{
+    position: absolute;
+    right: 0px;
+    background-color: #808080;
+    border-radius: 2px;
+    border: unset;
+    padding: 10px 10px;
+  }
+  .search-btn img{
+    filter: invert(1);
+    width: 18px;
+  }
