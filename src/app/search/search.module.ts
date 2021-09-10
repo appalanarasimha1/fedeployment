@@ -10,6 +10,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from '../services/http-interceptor.service';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HttpInterceptorService } from '../services/http-interceptor.service';
   ],
   imports: [
     SharedModule,
-    SearchRoutingModule
+    SearchRoutingModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }]
 })
