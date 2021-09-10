@@ -46,36 +46,30 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   showImageSize = true;
   showVideoSize = true;
   productsSelectedItems;
+  sectorData = [];
+  primeTypeData = [];
+  mimeTypeData = [];
+  assetWidthData = [];
+  assetHeightData = [];
+  videoSizeData = [];
+  assetOrientationData = [];
+  updatedDateData = [];
 
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
-  constructor(private nuxeo: NuxeoService) {
-
-
-  }
+  constructor(private nuxeo: NuxeoService) {}
 
   ngOnInit(): void {
     this.getSectors();
     this.getMetaData();
-    this.dropdownList = [
-      { item_id: 1, item_text: 'Mumbai' },
-      { item_id: 2, item_text: 'Bangaluru' },
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' },
-      { item_id: 5, item_text: 'New Delhi' }
-    ];
-    this.selectedItems = [
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' }
-    ];
     this.dropdownSettings = {
       singleSelection: false,
-      // idField: 'item_id',
+      idField: 'id',
       textField: 'key',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 5,
       allowSearchFilter: false
     };
     // this.nuxeo.nuxeoClientConnect();
@@ -84,7 +78,8 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any): void {
     if (Object.keys(changes.inputMetaData.currentValue).length) {
       this.metaData = this.inputMetaData;
-      this.checkSelectedPrimeAndMimeType(this.metaData);
+      this.checkSelectedPrimeAndMimeType(this.inputMetaData);
+      this.manupulateData(this.inputMetaData);
     }
   }
 
@@ -97,16 +92,37 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     this.nuxeo.nuxeoClient.request('/search/pp/tree_children/execute', { queryParams })
       .get().then((docs) => {
         this.sectors = docs.entries;
-        if (docs.aggregations) {
-          this.metaData = docs.aggregations;
-          this.checkSelectedPrimeAndMimeType(docs.aggregations);
-        }
         this.loading = false;
       }).catch((error) => {
         console.log(error);
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         this.loading = false;
       });
+  }
+
+  manupulateData(data) {
+    this.mimeTypeData = [];
+    this.assetWidthData = [];
+    this.assetHeightData = [];
+    this.videoSizeData = [];
+
+    data.system_mimetype_agg.buckets.map((item: { key: string }, index: number) => {
+      this.mimeTypeData.push({ key: item.key, id: index });
+    });
+
+    data.asset_width_agg.buckets.map((item: { key: string }, index: number) => {
+      this.assetWidthData.push({ key: item.key, id: index });
+    });
+
+    data.asset_height_agg.buckets.map((item: { key: string }, index: number) => {
+      this.assetHeightData.push({ key: item.key, id: index });
+    });
+    
+    data.video_duration_agg.buckets.map((item: { key: string }, index: number) => {
+      this.videoSizeData.push({ key: item.key, id: index });
+    });
+    
+    return;
   }
 
   checkSelectedPrimeAndMimeType(metaData: any) {
@@ -142,13 +158,18 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     this.sectors = undefined;
     let queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40, system_primaryType_agg: '[]', system_mimetype_agg: '[]', asset_width_agg: '[]', asset_height_agg: '[]', color_profile_agg: '[]', color_depth_agg: '[]', video_duration_agg: '[]' };
 
-    this.nuxeo.nuxeoClient.request('/search/pp/assets_search/execute', { queryParams: queryParams })
+    this.nuxeo.nuxeoClient.request('/search/pp/assets_search/execute', { queryParams })
       .get().then((result) => {
         this.metaData = result.aggregations;
+        if (result && result.aggregations) {
+          this.metaData = result.aggregations;
+          this.checkSelectedPrimeAndMimeType(result.aggregations);
+          this.manupulateData(result.aggregations);
+        }
         this.loading = false;
       }).catch((error) => {
         console.log(error);
-        this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+        this.error = `${error}. Ensure Nuxeo is running `;
         this.loading = false;
       });
   }
@@ -192,58 +213,85 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   selectMimeType(data: any) {
-    if (data.isArray()) {
+    if (Array.isArray(data)) {
       this.searchCriteria['system_mimetype_agg'] = [];
-      data.map((item: {key: string}) => {
+      data.map((item: { key: string }) => {
         this.searchCriteria['system_mimetype_agg'].push(item.key);
       });
     } else {
-      const mimeType = data.key;
-      const  index = this.searchCriteria['system_mimetype_agg'].indexOf(mimeType);
-      index > -1 ? this.searchCriteria['system_mimetype_agg'].splice(index, 1) : this.searchCriteria['system_mimetype_agg'].push(mimeType);
+      this.searchCriteria['system_mimetype_agg'].push(data.key);
     }
     this.emitData(this.searchCriteria);
     return;
-
-    // let mimeType = event.target.textContent;
-    // let index = this.searchCriteria['system_mimetype_agg'].indexOf(mimeType);
-    // index > -1 ? this.searchCriteria['system_mimetype_agg'].splice(index, 1) : this.searchCriteria['system_mimetype_agg'].push(mimeType);
-    // this.emitData(this.searchCriteria);
-    // return;
   }
 
-  selectWidth(event: any) {
-    let width = event.target.textContent;
-    if (width.trim().toLowerCase() === 'all') {
+  deSelectFormat(data: any): void {
+    const mimeType = data.key;
+    const index = this.searchCriteria['system_mimetype_agg'].indexOf(mimeType);
+    this.searchCriteria['system_mimetype_agg'].splice(index, 1);
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
+  selectWidth(data: any) {
+    if (Array.isArray(data)) {
       this.searchCriteria['asset_width_agg'] = [];
+      data.map((item: { key: string }) => {
+        this.searchCriteria['asset_width_agg'].push(item.key);
+      });
     } else {
-      let index = this.searchCriteria['asset_width_agg'].indexOf(width);
-      index > -1 ? this.searchCriteria['asset_width_agg'].splice(index, 1) : this.searchCriteria['asset_width_agg'].push(width);
+      this.searchCriteria['asset_width_agg'].push(data.key);
     }
     this.emitData(this.searchCriteria);
     return;
   }
 
-  selectHeight(event: any) {
-    let height = event.target.textContent;
-    if (height.trim().toLowerCase() === 'all') {
+  deSelectWidth(data: any) {
+    const mimeType = data.key;
+    const index = this.searchCriteria['asset_width_agg'].indexOf(mimeType);
+    this.searchCriteria['asset_width_agg'].splice(index, 1);
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
+  selectHeight(data: any) {
+    if (Array.isArray(data)) {
       this.searchCriteria['asset_height_agg'] = [];
+      data.map((item: { key: string }) => {
+        this.searchCriteria['asset_height_agg'].push(item.key);
+      });
     } else {
-      let index = this.searchCriteria['asset_height_agg'].indexOf(height);
-      index > -1 ? this.searchCriteria['asset_height_agg'].splice(index, 1) : this.searchCriteria['asset_height_agg'].push(height);
+      this.searchCriteria['asset_height_agg'].push(data.key);
     }
     this.emitData(this.searchCriteria);
     return;
   }
 
-  selectVieoDuration(event: any) {
-    let height = event.target.textContent;
-    if (height.trim().toLowerCase() === 'all') {
+  deSelectHeight(data: any) {
+    const mimeType = data.key;
+    const index = this.searchCriteria['asset_height_agg'].indexOf(mimeType);
+    this.searchCriteria['asset_height_agg'].splice(index, 1);
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
+  selectVideoDuration(data: any) {
+    if (Array.isArray(data)) {
       this.searchCriteria['video_duration_agg'] = [];
+      data.map((item: { key: string }) => {
+        this.searchCriteria['video_duration_agg'].push(item.key);
+      });
     } else {
-      let index = this.searchCriteria['video_duration_agg'].indexOf(height);
-      index > -1 ? this.searchCriteria['video_duration_agg'].splice(index, 1) : this.searchCriteria['video_duration_agg'].push(height);
+      this.searchCriteria['video_duration_agg'].push(data.key);
     }
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
+  deSelectVideoDuration(data: any) {
+    const mimeType = data.key;
+    const index = this.searchCriteria['video_duration_agg'].indexOf(mimeType);
+    this.searchCriteria['video_duration_agg'].splice(index, 1);
     this.emitData(this.searchCriteria);
     return;
   }

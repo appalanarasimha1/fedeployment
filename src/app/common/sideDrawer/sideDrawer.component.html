@@ -1,48 +1,49 @@
 <section class="filter-sidebar pt-5">
-  <div class="container-fluid">
-     <div class="row">
-        <div class="mainDiv">
-           <div id="main">
-              <button class="openbtn" (click)="openNav()"><img
-                 src="../../../assets/images/Searchfilterpaneltrigger.png"></button>
-           </div>
-           <div id="main-sidebar" class="sidepanel closeBtn">
-              <div class=" sidebarList pb-3">
-                 <h6>Sort by</h6>
-                 <ul class="flexible pt-2 pb-2 sideList btn-group" role="group" aria-label="Basic example">
-                    <li class="mr-2">
-                       <input type="radio" class="btn-check" (change)="createQuery('relevant')" name="btnradio"
-                          id="btnradio1" autocomplete="off" checked> <!--  (click)="createQuery('relevant')" -->
-                       <label class="btn btn-outline-primary" for="btnradio1">Most Relevant</label>
-                    </li>
-                    <li>
-                       <input type="radio" class="btn-check" (change)="createQuery('recent')" name="btnradio"
-                          id="btnradio2" autocomplete="off">
-                       <label class="btn btn-outline-primary" for="btnradio2">Most recent</label>
-                    </li>
-                 </ul>
-              </div>
-              <div class="sidebarList pb-3" >
-                <h6>Sector</h6>
-                <ul class="flexible pt-2 pb-2 sideList btn-group" (click)=selectSector($event)>
-                   <li *ngFor="let sector of sectors" class="mr-2 mb-3" style="cursor: not-allowed !important;">
-                      <input type="checkbox" class="btn-check" id="env" autocomplete="off" disabled style="cursor: not-allowed;">
-                      <label class="btn btn-outline-primary" for="env">{{sector.title}}</label>
-                   </li>
-                </ul>
-             </div>
-             <div class="sidebarList file-type pb-3">
-              <h6>File type</h6>
-              <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">
-                 <li *ngFor="let fileType of metaData.system_primaryType_agg.buckets; let i = index"
-                    class="mr-2 active">
-                    <input type="checkbox" class="btn-check" id="img{{i}}" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="img">{{fileType.key}}</label>
-                 </li>
-              </ul>
-           </div>
-           <div class="sidebarList pb-4">
-            <!-- <div class="dropdown">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="mainDiv">
+            <div id="main">
+               <button class="openbtn" (click)="openNav()"><img
+                     src="../../../assets/images/Searchfilterpaneltrigger.png"></button>
+            </div>
+            <div id="main-sidebar" class="sidepanel closeBtn">
+               <div class=" sidebarList pb-3">
+                  <h6>Sort by</h6>
+                  <ul class="flexible pt-2 pb-2 sideList btn-group" role="group" aria-label="Basic example">
+                     <li class="mr-2">
+                        <input type="radio" class="btn-check" (change)="createQuery('relevant')" name="btnradio"
+                           id="btnradio1" autocomplete="off" checked> <!--  (click)="createQuery('relevant')" -->
+                        <label class="btn btn-outline-primary" for="btnradio1">Most Relevant</label>
+                     </li>
+                     <li>
+                        <input type="radio" class="btn-check" (change)="createQuery('recent')" name="btnradio"
+                           id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btnradio2">Most recent</label>
+                     </li>
+                  </ul>
+               </div>
+               <div class="sidebarList pb-3">
+                  <h6>Sector</h6>
+                  <ul class="flexible pt-2 pb-2 sideList btn-group" (click)=selectSector($event)>
+                     <li *ngFor="let sector of sectors" class="mr-2 mb-3" style="cursor: not-allowed !important;">
+                        <input type="checkbox" class="btn-check" id="env" autocomplete="off" disabled
+                           style="cursor: not-allowed;">
+                        <label class="btn btn-outline-primary" for="env">{{sector.title}}</label>
+                     </li>
+                  </ul>
+               </div>
+               <div class="sidebarList file-type pb-3">
+                  <h6>File type</h6>
+                  <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">
+                     <li *ngFor="let fileType of metaData.system_primaryType_agg.buckets; let i = index"
+                        class="mr-2 active">
+                        <input type="checkbox" class="btn-check" id="img{{i}}" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="img">{{fileType.key}}</label>
+                     </li>
+                  </ul>
+               </div>
+               <div class="sidebarList pb-4">
+                  <!-- <div class="dropdown">
                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                  aria-expanded="false">
                  All
@@ -56,19 +57,18 @@
                  </li>
                </ul>
                </div> -->
-            <h6>Format</h6>
-            <ng-multiselect-dropdown
-            [settings]="dropdownSettings"
-            [data]="metaData.system_mimetype_agg.buckets"
-            [(ngModel)]="selectedItems"
-            (onSelect)="selectMimeType($event)"
-            (onSelectAll)="selectMimeType($event)"
-            >
-            </ng-multiselect-dropdown>
-         </div>
-         <div *ngIf="showImageSize" class="sidebarList pb-3">
-          <h6>Width</h6>
-          <div class="dropdown">
+                  <h6>Format</h6>
+                  <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="mimeTypeData"
+                     (onSelect)="selectMimeType($event)" (onSelectAll)="selectMimeType($event)"
+                     (onDeSelect)="deSelectFormat($event)"></ng-multiselect-dropdown>
+               </div>
+
+               <div *ngIf="showImageSize" class="sidebarList pb-3">
+                  <h6>Width</h6>
+                  <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assetWidthData"
+                     (onSelect)="selectWidth($event)" (onSelectAll)="selectWidth($event)"
+                     (onDeSelect)="deSelectWidth($event)"></ng-multiselect-dropdown>
+                  <!-- <div class="dropdown">
              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                 aria-expanded="false">
              All
@@ -79,86 +79,97 @@
                    <a class="dropdown-item" href="#">{{width.key}}</a>
                 </li>
              </ul>
-          </div>
-       </div>
-       <div *ngIf="showImageSize" class="sidebarList pb-3">
-        <h6>Height</h6>
-        <div class="dropdown">
-           <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-              aria-expanded="false">
-           All
-           </button>
-           <ul (click)="selectHeight($event)" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">All</a></li>
-              <li *ngFor="let ht of metaData.asset_height_agg.buckets">
-                 <a class="dropdown-item" href="#">{{ht.key}}</a>
-              </li>
-           </ul>
-        </div>
-     </div>
-     <div *ngIf="showVideoSize" class="sidebarList pb-3">
-      <h6>Video Size</h6>
-      <div class="dropdown">
-         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-            aria-expanded="false">
-         All
-         </button>
-         <ul (click)="selectVieoDuration($event)" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">All </a></li>
-            <li *ngFor="let ht of metaData.video_duration_agg.buckets">
-               <a class="dropdown-item" href="#">{{ht.key}}</a>
-            </li>
-         </ul>
+          </div> -->
+               </div>
+               <div *ngIf="showImageSize" class="sidebarList pb-3">
+                  <h6>Height</h6>
+                  <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assetHeightData"
+                     (onSelect)="selectHeight($event)" (onSelectAll)="selectHeight($event)"
+                     (onDeSelect)="deSelectHeight($event)"></ng-multiselect-dropdown>
+                  <!-- <div class="dropdown">
+                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        All
+                     </button>
+                     <ul (click)="selectHeight($event)" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">All</a></li>
+                        <li *ngFor="let ht of metaData.asset_height_agg.buckets">
+                           <a class="dropdown-item" href="#">{{ht.key}}</a>
+                        </li>
+                     </ul>
+                  </div> -->
+               </div>
+               <div *ngIf="showVideoSize" class="sidebarList pb-3">
+                  <h6>Video Size</h6>
+                  <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="videoSizeData"
+                     (onSelect)="selectVideoDuration($event)" (onSelectAll)="selectVideoDuration($event)"
+                     (onDeSelect)="deSelectVideoDuration($event)"></ng-multiselect-dropdown>
+                  <!-- <div class="dropdown">
+                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        All
+                     </button>
+                     <ul (click)="selectVieoDuration($event)" class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">All </a></li>
+                        <li *ngFor="let ht of metaData.video_duration_agg.buckets">
+                           <a class="dropdown-item" href="#">{{ht.key}}</a>
+                        </li>
+                     </ul>
+                  </div> -->
+               </div>
+               <div class="sidebarList pt-3">
+                  <h6>Orientation</h6>
+                  <ul class="flexible pt-2 pb-2 sideList btn-group " role="group" aria-label="Basic example">
+                     <li class="mr-2 mb-3" style="cursor: not-allowed !important;">
+                        <input type="checkbox" class="btn-check" id="vertical" autocomplete="off" disabled
+                           style="cursor: not-allowed;">
+                        <label class="btn btn-outline-primary" for="vertical">Vertical</label>
+                     </li>
+                     <li class="mb-3" style="cursor: not-allowed !important;">
+                        <input type="checkbox" class="btn-check" id="horizontal" autocomplete="off" disabled
+                           style="cursor: not-allowed;">
+                        <label class="btn btn-outline-primary" for="horizontal">Horizontal</label>
+                     </li>
+                     <li class="mr-2" style="cursor: not-allowed !important;">
+                        <input type="checkbox" class="btn-check" id="square" autocomplete="off" disabled
+                           style="cursor: not-allowed;">
+                        <label class="btn btn-outline-primary" for="square">Square</label>
+                     </li>
+                     <li style="cursor: not-allowed !important;">
+                        <input type="checkbox" class="btn-check" id="pano" autocomplete="off" disabled
+                           style="cursor: not-allowed !important;">
+                        <label class="btn btn-outline-primary" for="pano">Panoramic</label>
+                     </li>
+                  </ul>
+               </div>
+               <div class=" sidebarList pt-3">
+                  <h6>Color</h6>
+                  <div class="pb-4 colorPicker">
+                     <input type="color" id="head" name="head" value="#e66465" disabled style="cursor: not-allowed;">
+                  </div>
+               </div>
+               <div class="sidebarList pt-3">
+                  <h6>Updated date</h6>
+                  <div class="dropdown">
+                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        All
+                     </button>
+                     <ul (click)="selectModifiedDate($event)" class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">All </a></li>
+                        <li><a class="dropdown-item" href="#" value="last24h">Last 24 hours</a></li>
+                        <li><a class="dropdown-item" href="#">Last week</a></li>
+                        <li><a class="dropdown-item" href="#">Last month</a></li>
+                        <li><a class="dropdown-item" href="#">Last year</a></li>
+                        <li><a class="dropdown-item" href="#">More than 1 year ago</a></li>
+                     </ul>
+                  </div>
+               </div>
+
+            </div>
+         </div>
       </div>
    </div>
-   <div class="sidebarList pt-3" >
-    <h6>Orientation</h6>
-    <ul class="flexible pt-2 pb-2 sideList btn-group " role="group" aria-label="Basic example">
-       <li class="mr-2 mb-3" style="cursor: not-allowed !important;">
-          <input type="checkbox" class="btn-check" id="vertical" autocomplete="off" disabled style="cursor: not-allowed;">
-          <label class="btn btn-outline-primary" for="vertical">Vertical</label>
-       </li>
-       <li class="mb-3" style="cursor: not-allowed !important;">
-          <input type="checkbox" class="btn-check" id="horizontal" autocomplete="off" disabled style="cursor: not-allowed;">
-          <label class="btn btn-outline-primary" for="horizontal">Horizontal</label>
-       </li>
-       <li class="mr-2" style="cursor: not-allowed !important;">
-          <input type="checkbox" class="btn-check" id="square" autocomplete="off" disabled style="cursor: not-allowed;">
-          <label class="btn btn-outline-primary" for="square">Square</label>
-       </li>
-       <li style="cursor: not-allowed !important;">
-          <input type="checkbox" class="btn-check" id="pano" autocomplete="off" disabled style="cursor: not-allowed !important;">
-          <label class="btn btn-outline-primary" for="pano">Panoramic</label>
-       </li>
-    </ul>
- </div>
- <div class=" sidebarList pt-3" >
-  <h6>Color</h6>
-  <div class="pb-4 colorPicker">
-     <input type="color" id="head" name="head" value="#e66465" disabled style="cursor: not-allowed;">
-  </div>
-</div>
-<div class="sidebarList pt-3">
-  <h6>Updated date</h6>
-  <div class="dropdown">
-     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-        aria-expanded="false">
-     All
-     </button>
-     <ul (click)="selectModifiedDate($event)" class="dropdown-menu"
-        aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" href="#">All </a></li>
-        <li><a class="dropdown-item" href="#" value="last24h">Last 24 hours</a></li>
-        <li><a class="dropdown-item" href="#">Last week</a></li>
-        <li><a class="dropdown-item" href="#">Last month</a></li>
-        <li><a class="dropdown-item" href="#">Last year</a></li>
-        <li><a class="dropdown-item" href="#">More than 1 year ago</a></li>
-     </ul>
-  </div>
-</div>
-
-           </div>
-        </div>
-     </div>
-  </div>
 </section>
