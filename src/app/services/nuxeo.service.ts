@@ -27,7 +27,7 @@ export class NuxeoService {
   private defaultHeader = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-    'enrichers.document': 'thumbnail,preview',
+    'enrichers.document': 'thumbnail,permissions,preview',
     properties: '*'
   };
 
@@ -67,7 +67,7 @@ export class NuxeoService {
       baseURL: `http://localhost:4200/nuxeo/`,
       auth: {
         username: 'Administrator',
-        password: 'Z7DaUfED',
+        password: 'Administrator',
         method: 'basic'
       },
       headers: this.defaultHeader,
