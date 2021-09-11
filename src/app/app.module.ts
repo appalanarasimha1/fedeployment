@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 // import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,7 +11,9 @@ import { SharedModule } from './shared/shared.module';
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { NgModule } from '@angular/core';
-// import { SideDrawerComponent } from './common/sideDrawer/sideDrawer.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from './services/http-interceptor.service';
+import { NuxeoService } from './services/nuxeo.service';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,16 @@ import { NgModule } from '@angular/core';
     LoginComponent,
   ],
   imports: [
+    HttpClientModule,
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     SharedModule
   ],
+  providers: [
+    NuxeoService,
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

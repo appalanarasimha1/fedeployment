@@ -1,36 +1,21 @@
-import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
-import { map, catchError } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class HttpInterceptorService implements HttpInterceptor {
-  constructor(private router: Router) { }
+@Injectable()
+export class InterceptorService implements HttpInterceptor {
+    constructor() { }
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        const token = localStorage.getItem('token');
+        if (token) {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(req);
-    return next.handle(req).pipe(
-      map((event: HttpEvent<any>) => {
-          if (event instanceof HttpResponse) {
-              console.log('event--->>>', event);
-          }
-          return event;
-      }));
-    // return next.handle(req).tap((event: HttpEvent<any>) => {
-    //   if (event instanceof HttpResponse) {
-    //     // do stuff with response if you want
-    //   }
-    // }, (err: any) => {
-    //   if (err instanceof HttpErrorResponse) {
-    //     if (err.status === 401) {
-    //       this.router.navigate(['/login']);
-    //     }
-    //   }
-    // });
-    // return;
-    // All HTTP requests are going to go through this method
-  }
+            // if the token is  stored in localstorage add it to http header
+            const headers = new HttpHeaders().set('access-token', token);
+            // clone http to the custom AuthRequest and send it to the server
+            const AuthRequest = request.clone({ headers });
+            return next.handle(AuthRequest);
+        } else {
+            return next.handle(request);
+        }
+    }
 }

@@ -7,10 +7,10 @@ import { SideDrawerComponent } from '../common/sideDrawer/sideDrawer.component';
 import { SubHeaderComponent } from '../common/subHeader/subHeader.component';
 import { DocumentComponent } from '../document/document.component';
 import { SharedModule } from '../shared/shared.module';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpInterceptorService } from '../services/http-interceptor.service';
-
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { HttpInterceptorService } from '../services/http-interceptor.service';
+// import { NuxeoService } from '../services/nuxeo.service';
 
 @NgModule({
   declarations: [
@@ -20,10 +20,11 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     DocumentComponent
   ],
   imports: [
+    // HttpClientModule,
     SharedModule,
     SearchRoutingModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }]
+  // providers: [NuxeoService, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}]
 })
 export class SearchModule { }

@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import Nuxeo from 'nuxeo';
 import { environment } from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NuxeoService {
 
   // XXX Declared here to prevent from mixin style compilation error when using the service.
