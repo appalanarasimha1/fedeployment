@@ -23,7 +23,7 @@ export class SearchComponent implements OnInit {
   }
 
   connectToNuxeo() {
-    this.nuxeo.nuxeoClientConnect();
+    // this.nuxeo.nuxeoClientConnect();
   }
 
   searchDocuments(data: IHeaderSearchCriteria) {

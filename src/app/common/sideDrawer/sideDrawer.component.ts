@@ -3,6 +3,7 @@ import { IHeaderSearchCriteria } from './interface';
 import { constants } from '../constant';
 import { NuxeoService } from '../../services/nuxeo.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import {HttpClient } from '@angular/common/http';
 
 @Component({
 
@@ -58,7 +59,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
-  constructor(private nuxeo: NuxeoService) {}
+  constructor(private nuxeo: NuxeoService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.getSectors();
@@ -72,7 +73,6 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       itemsShowLimit: 5,
       allowSearchFilter: false
     };
-    // this.nuxeo.nuxeoClientConnect();
   }
 
   ngOnChanges(changes: any): void {

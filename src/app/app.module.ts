@@ -22,16 +22,17 @@ import { NuxeoService } from './services/nuxeo.service';
     LoginComponent,
   ],
   imports: [
-    HttpClientModule,
     CommonModule,
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     NgbModule,
     SharedModule
   ],
   providers: [
     NuxeoService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,1 +1,6 @@
-<p>login works!</p>
+<div style="margin-top: 200px">
+    <input type="text" placeholder="Username" [(ngModel)]="username" />
+    <input type="password" placeholder="Password" [(ngModel)]="password" />
+    <button type="submit" class="btn btn-primary"(click)="login()">Log In</button>
+    <button type="button" class="btn btn-primary"(click)="logout()">Logout</button>
+</div>
