@@ -34,7 +34,11 @@ export class NuxeoService {
 
   // private instance = {request: function(){}};
 
-  constructor(private router: Router, private http: HttpClient, @Inject(DOCUMENT) private document: Document) {
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    @Inject(DOCUMENT) private document: Document
+  ) {
     this.authenticateUser(null, null);
 
     // Mixin Nuxeo JS Client prototype with NuxeoService to use it the same way.
@@ -63,14 +67,13 @@ export class NuxeoService {
 
   logout(): void {
     this.http.get(`${this.document.location.origin}/nuxeo/logout`, { headers: this.defaultHeader })
-    .subscribe((response: any) => {
-      this.router.navigate(['/login']);
-      this.nuxeoClient = null;
-    });
+      .subscribe((response: any) => {
+        this.router.navigate(['/login']);
+        this.nuxeoClient = null;
+      });
   }
 
   authenticateUser(username: string, password: string) {
-    console.log('base url = ', this.document.location.origin);
     this.nuxeoClient = new Nuxeo({
       // baseURL: `${this.baseUrl}/nuxeo/`,
       baseURL: `${this.document.location.origin}/nuxeo/`,
