@@ -14,12 +14,14 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './services/http-interceptor.service';
 import { NuxeoService } from './services/nuxeo.service';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     LoginComponent,
+    LandingPageComponent,
   ],
   imports: [
     CommonModule,

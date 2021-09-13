@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import Nuxeo from 'nuxeo';
 import { HttpClient } from '@angular/common/http';
@@ -33,7 +34,7 @@ export class NuxeoService {
 
   // private instance = {request: function(){}};
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, @Inject(DOCUMENT) private document: Document) {
     this.authenticateUser(null, null);
 
     // Mixin Nuxeo JS Client prototype with NuxeoService to use it the same way.
@@ -61,7 +62,7 @@ export class NuxeoService {
   }
 
   logout(): void {
-    this.http.get('http://localhost:4200/nuxeo/logout', { headers: this.defaultHeader })
+    this.http.get(`${this.document.location.origin}/nuxeo/logou`, { headers: this.defaultHeader })
     .subscribe((response: any) => {
       this.router.navigate(['/login']);
       this.nuxeoClient = null;
@@ -69,9 +70,10 @@ export class NuxeoService {
   }
 
   authenticateUser(username: string, password: string) {
+    console.log('base url = ', this.document.location.origin);
     this.nuxeoClient = new Nuxeo({
       // baseURL: `${this.baseUrl}/nuxeo/`,
-      baseURL: `http://localhost:4200/nuxeo/`,
+      baseURL: `${this.document.location.origin}/nuxeo/`,
       auth: {
         username,
         password,
@@ -83,14 +85,14 @@ export class NuxeoService {
     this.nuxeoClient.requestAuthenticationToken('My App', '123', 'my-device', 'rw')
       .then((token) => {
         this.nuxeoClient = new Nuxeo({
-          baseURL: `http://localhost:4200/nuxeo/`,
+          baseURL: `${this.document.location.origin}/nuxeo/`,
           auth: {
             method: 'token',
             token
           },
           headers: this.defaultHeader
         });
-        this.router.navigate(['/search']);
+        this.router.navigate(['/']);
         // do something with the new `nuxeo` client using token authentication
         // store the token, and next time you need to create a client, use it
       })
