@@ -5,6 +5,7 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import {HttpClient } from '@angular/common/http';
 
+
 @Component({
 
   selector: 'app-side-drawer',

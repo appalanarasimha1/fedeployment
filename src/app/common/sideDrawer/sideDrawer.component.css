@@ -85,7 +85,14 @@
 .mr-2{
     margin-right: 8px;
 }
-.btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active{
+.btn-check:active+ .btn-outline-primary, .btn-check:checked+ .btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active{
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #fff;
+    transition: unset;
+    outline: 0;
+}
+.active .btn-outline-primary, .btn-outline-primary:hover{
     background-color: #fff;
     color: #000;
     border: 1px solid #fff;

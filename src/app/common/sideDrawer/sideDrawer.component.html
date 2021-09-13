@@ -36,9 +36,9 @@
                   <h6>File type</h6>
                   <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">
                      <li *ngFor="let fileType of metaData.system_primaryType_agg.buckets; let i = index"
-                        class="mr-2 active">
+                        class="mr-2 ">
                         <input type="checkbox" class="btn-check" id="img{{i}}" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="img">{{fileType.key}}</label>
+                        <label class="btn btn-outline-primary" for="img{{i}}">{{fileType.key}}</label>
                      </li>
                   </ul>
                </div>
@@ -151,13 +151,26 @@
                </div>
                <div class="sidebarList pt-3">
                   <h6>Updated date</h6>
-                  <div class="dropdown">
-                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+                  <div class="d-inline-block " ngbDropdown #myDrop="ngbDropdown">
+                     <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor (focus)="myDrop.open()">All</button>
+                     <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                       <button ngbDropdownItem>All</button>
+                       <button ngbDropdownItem>Last 24 hours</button>
+                       <button ngbDropdownItem>Last week</button>
+                       <button ngbDropdownItem>Last month</button>
+                       <button ngbDropdownItem>Last year</button>
+                       <button ngbDropdownItem>More than 1 year ago</button>
+                     </div>
+                   </div>
+
+
+                  <!-- <div class="dropdown">
+                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton11"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         All
                      </button>
                      <ul (click)="selectModifiedDate($event)" class="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton1">
+                        aria-labelledby="dropdownMenuButton11">
                         <li><a class="dropdown-item" href="#">All </a></li>
                         <li><a class="dropdown-item" href="#" value="last24h">Last 24 hours</a></li>
                         <li><a class="dropdown-item" href="#">Last week</a></li>
@@ -165,7 +178,7 @@
                         <li><a class="dropdown-item" href="#">Last year</a></li>
                         <li><a class="dropdown-item" href="#">More than 1 year ago</a></li>
                      </ul>
-                  </div>
+                  </div> -->
                </div>
 
             </div>
