@@ -6,8 +6,19 @@
 @import "../node_modules/c3/c3.min.css";
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css'; */
 
-
-
+@font-face {
+  font-family: myBrown;
+  src: url(./assets/fonts/Brown-Light.otf);
+  font-weight: 400;
+}
+@font-face {
+  font-family: myBrown;
+  src: url(./assets/fonts/Brown-Regular.otf);
+  font-weight: 600;
+}
+body{
+  font-family: myBrown !important;
+}
 /* Change the white to any color */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -17,7 +28,7 @@ input:-webkit-autofill:active
   -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
-a, a:hover, a:visited, a:focus {
+a, a:hover, a:visited, a:focus,button:focus {
   text-decoration: none;
 }
 
