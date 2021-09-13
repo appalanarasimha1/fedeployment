@@ -62,7 +62,7 @@ export class NuxeoService {
   }
 
   logout(): void {
-    this.http.get(`${this.document.location.origin}/nuxeo/logou`, { headers: this.defaultHeader })
+    this.http.get(`${this.document.location.origin}/nuxeo/logout`, { headers: this.defaultHeader })
     .subscribe((response: any) => {
       this.router.navigate(['/login']);
       this.nuxeoClient = null;
