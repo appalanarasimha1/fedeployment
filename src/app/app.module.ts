@@ -15,6 +15,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './services/http-interceptor.service';
 import { NuxeoService } from './services/nuxeo.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     SharedModule
   ],
   providers: [
+    CookieService,
     NuxeoService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ],

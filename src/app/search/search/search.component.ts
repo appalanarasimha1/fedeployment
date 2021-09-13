@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NuxeoService } from '../../services/nuxeo.service';
 import { IHeaderSearchCriteria } from '../../common/subHeader/interface';
+import { Router } from '@angular/router';
 // import { ApiService } from '../services/http.service';
 
 @Component({
@@ -16,9 +17,17 @@ export class SearchComponent implements OnInit {
   metaData = {};
 
   // TypeScript public modifiers
-  constructor(public nuxeo: NuxeoService) { }
+  constructor(
+    public nuxeo: NuxeoService,
+    private router: Router
+    ) { }
 
   ngOnInit() {
+
+    if(!this.nuxeo.nuxeoClient) {
+      this.router.navigate(['login']);
+      return;
+    }
     // this.connectToNuxeo();
   }
 
@@ -58,7 +67,7 @@ export class SearchComponent implements OnInit {
         console.log(docs.entries[0]);
         this.loading = false;
       }).catch((error) => {
-        console.log(error);
+        console.log('search document error = ', error);
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         this.loading = false;
       });

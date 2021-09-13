@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import Nuxeo from 'nuxeo';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-
+import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class NuxeoService {
 
@@ -29,6 +29,7 @@ export class NuxeoService {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
     'enrichers.document': 'thumbnail,permissions,preview',
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
     properties: '*'
   };
 
@@ -37,9 +38,19 @@ export class NuxeoService {
   constructor(
     private router: Router,
     private http: HttpClient,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private cookie: CookieService
   ) {
-    this.authenticateUser(null, null);
+    const token = localStorage.getItem('token');
+    if (!this.isAuthenticated()) {
+      if(!token) {
+        this.router.navigate(['login']);
+        return;
+      }
+      this.createClientWithToken(token);
+      return;
+    }
+    // this.authenticateUser(null, null);
 
     // Mixin Nuxeo JS Client prototype with NuxeoService to use it the same way.
     // Object.getOwnPropertyNames(Nuxeo.prototype).forEach(name => {
@@ -58,7 +69,9 @@ export class NuxeoService {
   }
 
   isAuthenticated(): boolean {
-    if (this.nuxeoClient) {
+    const token = this.cookie.get('X-Authentication-Token');
+    const sessionId = this.cookie.get('JSESSIONID');
+    if (this.nuxeoClient && localStorage.getItem('token')) {
       return true;
     } else {
       return false;
@@ -66,11 +79,18 @@ export class NuxeoService {
   }
 
   logout(): void {
-    this.http.get(`${this.document.location.origin}/nuxeo/logout`, { headers: this.defaultHeader })
-      .subscribe((response: any) => {
-        this.router.navigate(['/login']);
-        this.nuxeoClient = null;
-      });
+    // this.http.get(`${this.document.location.origin}/nuxeo/logout`)
+    //   .subscribe((response: any) => {
+    //     this.cookie.deleteAll();
+    //     this.nuxeoClient = null;
+    //     this.router.navigate(['login']);
+    //   });
+
+    this.cookie.deleteAll();
+    localStorage.removeItem('token');
+    // Document.cookie = "";
+    this.nuxeoClient = null;
+    this.router.navigate(['login']);
   }
 
   authenticateUser(username: string, password: string) {
@@ -95,7 +115,8 @@ export class NuxeoService {
           },
           headers: this.defaultHeader
         });
-        this.router.navigate(['/']);
+        localStorage.setItem('token', token);
+        this.router.navigate(['search']);
         // do something with the new `nuxeo` client using token authentication
         // store the token, and next time you need to create a client, use it
       })
@@ -103,6 +124,20 @@ export class NuxeoService {
         this.router.navigate(['/login']);
         throw err;
       });
+  }
+
+  createClientWithToken(token) {
+    this.nuxeoClient = new Nuxeo({
+      baseURL: `${this.document.location.origin}/nuxeo/`,
+      auth: {
+        method: 'bearerToken',
+        token,
+      }
+    });
+    if(this.router.url === '/login') {
+      this.router.navigate(['/']);
+    }
+    return;
   }
 
   // public nuxeoClientConnect(auth: any): void {

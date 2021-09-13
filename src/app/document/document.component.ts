@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './document.template.html'
 })
-export class DocumentComponent implements OnInit, OnChanges {
+export class DocumentComponent implements OnChanges {
   @Input() documents: object[] = [];
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   images = [];

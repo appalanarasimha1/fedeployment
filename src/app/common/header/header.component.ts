@@ -21,7 +21,7 @@ export class HeaderComponent {
     this.selectedTab = tab;
     this.sendSelectedTab.emit(tab);
     if (tab === 'search') {
-      this.router.navigate(['/search']);
+      this.router.navigate(['search']);
     }
   }
 
