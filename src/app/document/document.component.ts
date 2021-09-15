@@ -1,6 +1,8 @@
-import { Input, Component, Output, EventEmitter } from '@angular/core';
+import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject } from '@angular/core';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 import { constants } from '../common/constant';
+import { DOCUMENT } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-content',
@@ -9,32 +11,35 @@ import { constants } from '../common/constant';
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './document.template.html'
 })
-export class DocumentComponent {
-  @Input() documents: Object[] = [];
+export class DocumentComponent implements OnChanges {
+  @Input() documents: object[] = [];
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   images = [];
   videos = [];
   audio = [];
   docs = [];
   private searchCriteria: IHeaderSearchCriteria = {};
-  public display: number = 1;
+  public display = 1;
   imageSliceInput = 9;
   videoSliceInput = 5;
   hideImageShowMoreBtn = true;
   hideVideoShowMoreBtn = true;
+  baseUrl = environment.baseUrl;
 
-  constructor() { }
+  constructor(
+    @Inject(DOCUMENT) private document: Document
+  ) { }
 
   ngOnChanges(changes: any) {
     if (changes.documents.currentValue && changes.documents.currentValue.length) {
       this.resetValues();
       this.segregateDocuments(changes.documents.currentValue);
-      if(this.imageSliceInput >= this.images.length) {
+      if (this.imageSliceInput >= this.images.length) {
         this.hideImageShowMoreBtn = true;
       } else {
         this.hideImageShowMoreBtn = false;
       }
-      if(this.videoSliceInput >= this.videos.length) {
+      if (this.videoSliceInput >= this.videos.length) {
         this.hideVideoShowMoreBtn = true;
       } else {
         this.hideVideoShowMoreBtn = false;
@@ -66,11 +71,11 @@ export class DocumentComponent {
         default:
           this.docs.push(item);
       }
-    })
+    });
   }
 
   dropdownMenu(event: any): void {
-    let sortBy = event.target.value;
+    const sortBy = event.target.value;
     if (sortBy) {
       this.searchCriteria['sortBy'] = sortBy;
       this.searchCriteria['sortOrder'] = 'asc';
@@ -109,6 +114,6 @@ export class DocumentComponent {
   }
 
   getAssetUrl(url: string): string {
-    return `http://localhost:4200/nuxeo/${url.split('/nuxeo/')[1]}`;
+    return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 }

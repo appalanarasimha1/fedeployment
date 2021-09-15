@@ -4,6 +4,7 @@ import { constants } from '../constant';
 import { NuxeoService } from '../../services/nuxeo.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import {HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -60,9 +61,16 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
-  constructor(private nuxeo: NuxeoService, private http: HttpClient) {}
+  constructor(
+    private nuxeo: NuxeoService,
+    private http: HttpClient,
+    private router: Router) {}
 
   ngOnInit(): void {
+    if(!this.nuxeo.nuxeoClient) {
+      this.router.navigate(['login']);
+      return;
+    }
     this.getSectors();
     this.getMetaData();
     this.dropdownSettings = {
@@ -95,9 +103,11 @@ export class SideDrawerComponent implements OnInit, OnChanges {
         this.sectors = docs.entries;
         this.loading = false;
       }).catch((error) => {
-        console.log(error);
-        this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+        console.log('sidedrawer get sector document error = ', error.message);
         this.loading = false;
+        if(error.message === 'Unauthorized') {
+          this.router.navigate(['login']);
+        }
       });
   }
 
@@ -170,8 +180,10 @@ export class SideDrawerComponent implements OnInit, OnChanges {
         this.loading = false;
       }).catch((error) => {
         console.log(error);
-        this.error = `${error}. Ensure Nuxeo is running `;
         this.loading = false;
+        if(error.message === 'Unauthorized') {
+          this.router.navigate(['login']);
+        }
       });
   }
 

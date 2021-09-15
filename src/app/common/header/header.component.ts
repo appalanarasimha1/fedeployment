@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { NuxeoService } from '../../services/nuxeo.service';
 
 @Component({
@@ -11,12 +12,17 @@ export class HeaderComponent {
 
   selectedTab: string;
 
-  constructor(private nuxeo: NuxeoService) { }
+  constructor(
+    private nuxeo: NuxeoService,
+    private router: Router
+  ) { }
 
   selectTab(tab: string) {
     this.selectedTab = tab;
     this.sendSelectedTab.emit(tab);
-    return;
+    if (tab === 'search') {
+      this.router.navigate(['search']);
+    }
   }
 
   logout() {

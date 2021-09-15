@@ -53,28 +53,25 @@
         <a class="fileCount pb-4" href="#">{{images.length}} images</a>
       </div>
       <!-- Gallery -->
-      
-      <!-- <div *ngFor="let image of images.slice(0, imageSliceInput); let i = index" class="col-lg-4 mb-4 mb-lg-0">
-        <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{image.path}}">
-          <img src="{{image.contextParameters.thumbnail.url}}" class="w-100 shadow-1-strong rounded mb-4" alt="" />
-        </a>
-      </div> -->
+
       <ul class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
         <!-- <span  class="horizontal" style="width: 30%;margin: 15px;"> -->
-          <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index"> 
-          <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{image.path}}" >
-            <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"  class="w-100 shadow-1-strong rounded" alt="">
+        <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
+          <a href="{{baseUrl}}/nuxeo/ui/#!/browse{{image.path}}">
+            <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
+              alt="">
           </a>
         </li>
-         <!--</span> -->
+        <!--</span> -->
       </ul>
-       
-           
-      <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show more</div>
 
-<div class="card-view">
-  <ul class="flexible"></ul>
-</div>
+
+      <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show
+        more</div>
+
+      <div class="card-view">
+        <ul class="flexible"></ul>
+      </div>
       <!-- <div class="col-lg-4 mb-4 mb-lg-0">
         <img src="../../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded mb-4" alt="" />
         <img src="../../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded mb-4" alt="" />
@@ -94,19 +91,18 @@
       </div>
       <div class="col-xl-12">
         <ul class="flexible videosList">
-          <li *ngFor="let v of videos.slice(0, videoSliceInput)"class="">
-            <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{v.path}}">
+          <li *ngFor="let v of videos.slice(0, videoSliceInput)" class="">
+            <a href="{{baseUrl}}/nuxeo/ui/#!/browse{{v.path}}">
               <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}"></a>
           </li>
           <!-- <li>
             <a href="#"><img src="../../../assets/images/tourism 1.png"></a>
           </li> -->
         </ul>
-        <div *ngIf="!hideVideoShowMoreBtn" (click)="showMore('video')" style="text-align: center; cursor: pointer;">Show more</div>
-  
-  
-      </div>
+        <div *ngIf="!hideVideoShowMoreBtn" (click)="showMore('video')" style="text-align: center; cursor: pointer;">Show
+          more</div>
 
+      </div>
     </div>
 
 
@@ -117,16 +113,10 @@
       </div>
       <div class="col-xl-12">
         <ul class="flexible docList">
-          <li *ngFor="let doc of docs"class="">
-            <a href="http://10.101.21.58:8089/nuxeo/ui/#!/browse{{doc.path}}"><img
+          <li *ngFor="let doc of docs" class="">
+            <a href="{{baseUrl}}/nuxeo/ui/#!/browse{{doc.path}}"><img
                 src="{{getAssetUrl(doc.contextParameters.thumbnail.url)}}"></a>
           </li>
-          <!-- <li>
-            <a href="#" target="_blank"><img src="../../../assets/images/Pin 15.png"></a>
-          </li>
-          <li>
-            <a href="#" target="_blank"><img src="../../../assets/images/Pin 14.png"></a>
-          </li> -->
         </ul>
       </div>
 
