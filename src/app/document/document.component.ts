@@ -25,6 +25,7 @@ export class DocumentComponent implements OnChanges {
   hideImageShowMoreBtn = true;
   hideVideoShowMoreBtn = true;
   baseUrl = environment.baseUrl;
+  showListView = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document
@@ -115,5 +116,14 @@ export class DocumentComponent implements OnChanges {
 
   getAssetUrl(url: string): string {
     return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+  }
+
+  viewChange(e: any): void {
+    if(e.target.value.toLowerCase() === 'list') {
+      this.showListView = true;
+      return;
+    }
+    this.showListView = false;
+
   }
 }

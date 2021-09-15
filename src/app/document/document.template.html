@@ -41,11 +41,11 @@
       <div class="col-xl-4">
         <div id="view" class="e-btn-group flexible">
           <div>
-            <input type="radio" id="left" name="align" value="1" />
+            <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" />
             <label class="e-btn" for="left"><img src="../../assets/images/gallery view.png" style="width: 30px;"></label>
           </div>
           <div>
-            <input type="radio" id="right" name="align" value="2"/>
+            <input type="radio" (change)="viewChange($event)" id="right" name="align" value="list"/>
             <label class="e-btn" for="right"><img src="../../assets/images/list view.png" style="width: 30px;"></label>
           </div>
         </div>
@@ -58,7 +58,7 @@
       </div>
       <!-- Gallery -->
 
-      <ul class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+      <ul *ngIf="!showListView" class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
         <!-- <span  class="horizontal" style="width: 30%;margin: 15px;"> -->
         <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
           <a href="{{baseUrl}}/nuxeo/ui/#!/browse{{image.path}}">
@@ -68,34 +68,36 @@
         </li>
         <!--</span> -->
       </ul>
+      <div *ngIf="showListView" class="card-view">
+        <ul class="flexible">
+          <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index" >
+            <div style="background-color: #F9F7F2;padding: 20px;">
+              <div class="row">
+                <div class="col-xl-6 col-md-6" style="position: relative;">
+                    <p>Young man walking in desert</p>
+                    <div class="username">
+                      <span>
+                        <img src="../../assets/images/user.png" style="width: 20px;">
+                      </span>
+                      <span>Jing L.</span>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6">
+                  <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" style="width: 100%;border-radius: 8px;">
+                </div>
+              </div>
+             
+            </div>
+          </li>
+        </ul>
+      </div>
 
 
       <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show
         more</div>
 
-<div class="card-view">
-  <ul class="flexible">
-    <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index" >
-      <div style="background-color: #F9F7F2;padding: 20px;">
-        <div class="row">
-          <div class="col-xl-6 col-md-6" style="position: relative;">
-            	<p>Young man walking in desert</p>
-              <div class="username">
-                <span>
-                  <img src="../../assets/images/user.png" style="width: 20px;">
-                </span>
-                <span>Jing L.</span>
-              </div>
-          </div>
-          <div class="col-xl-6 col-md-6">
-            <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" style="width: 100%;border-radius: 8px;">
-          </div>
-        </div>
-       
-      </div>
-    </li>
-  </ul>
-</div>
+        <!-- List view Images -->
+
       <!-- <div class="col-lg-4 mb-4 mb-lg-0">
         <img src="../../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded mb-4" alt="" />
         <img src="../../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded mb-4" alt="" />
