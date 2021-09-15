@@ -195,8 +195,27 @@ grid-row: span 2;
   float: left;
   padding: 0 4px;
   margin: 4px 0;
+  border-radius: 8px;
 }
 .set-width {
   width: calc(100% + 20px);
   margin-left: -10px;
+}
+#view input{
+  display: none;
+}
+.e-btn-group{
+  float: right;
+}
+.card-view ul{
+  padding: 0px;
+  list-style: none;;
+}
+.card-view ul li {
+  width: 48%;
+  margin: 4px;
+}
+.username{
+  position: absolute;
+  bottom: 0px;
 }

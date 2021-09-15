@@ -151,22 +151,8 @@
                </div>
                <div class="sidebarList pt-3">
                   <h6>Updated date</h6>
-                  <div class="d-inline-block " ngbDropdown #myDrop="ngbDropdown">
-                     <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor (focus)="myDrop.open()">All</button>
-                     <div ngbDropdownMenu aria-labelledby="dropdownManual">
-                       <button ngbDropdownItem>All</button>
-                       <button ngbDropdownItem>Last 24 hours</button>
-                       <button ngbDropdownItem>Last week</button>
-                       <button ngbDropdownItem>Last month</button>
-                       <button ngbDropdownItem>Last year</button>
-                       <button ngbDropdownItem>More than 1 year ago</button>
-                     </div>
-                   </div>
-
-
-                  <!-- <div class="dropdown">
-                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton11"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="dropdown">
+                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton11" aria-expanded="false" data-bs-toggle="dropdown">
                         All
                      </button>
                      <ul (click)="selectModifiedDate($event)" class="dropdown-menu"
@@ -178,7 +164,7 @@
                         <li><a class="dropdown-item" href="#">Last year</a></li>
                         <li><a class="dropdown-item" href="#">More than 1 year ago</a></li>
                      </ul>
-                  </div> -->
+                  </div>
                </div>
 
             </div>
@@ -186,3 +172,5 @@
       </div>
    </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
