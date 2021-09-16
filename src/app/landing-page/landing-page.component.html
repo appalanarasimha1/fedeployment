@@ -7,16 +7,16 @@
     
                      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs mt-5">
                         <li [ngbNavItem]="1">
-                          <a ngbNavLink>Recently updated</a>
+                          <a ngbNavLink>Recently Edited</a>
                           <ng-template ngbNavContent>
                                 <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
-                                    <li>
+                                    <li *ngFor="let item of recentEdited">
                                         <a href="#">
-                                            <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
+                                            <img src="{{getAssetUrl(item.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
                                             alt="">
                                         </a>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="#">
                                             <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
                                             alt="">
@@ -34,8 +34,6 @@
                                             alt="">
                                         </a>
                                     </li>
-    
-    
                                     <li>
                                         <a href="#">
                                             <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
@@ -59,7 +57,7 @@
                                             <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
                                             alt="">
                                         </a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                           </ng-template>
                         </li>
@@ -69,35 +67,35 @@
                             <p>Recently viewed content</p>
                           </ng-template>
                         </li>
-                        <li [ngbNavItem]="3">
+                        <!-- <li [ngbNavItem]="3">
                           <a ngbNavLink>Recently edited</a>
                           <ng-template ngbNavContent>
                             <p>Recently edited content</p>
                           </ng-template>
-                        </li>
+                        </li> -->
                       </ul>
                       <div [ngbNavOutlet]="nav" class="mt-4"></div>      
                 </div>
                 <div class="col-xxl-6 col-xl-6 col-md-6 offset-xxl-1 offset-xl-1 offset-md-1">
                     <h2>Tasks</h2>
                     <ul class="tasksList">
-                        <li class="flexible">
+                        <li *ngFor="let task of tasks"class="flexible">
                             <div class="mainDiv1">
                                 <div class="innerDiv1">
                                     <h4>Choose Participants</h4>
-                                    <p>JGB_NEOM_17.7.2019_0285.jpg</p>
-                                    <p>Due <span>Sep 12, 2021 at 3:00 PM</span></p>
+                                    <p>{{task.targetDocumentIds[0].properties['dc:title']}}</p>
+                                    <p>Due <span>{{dateFormat(task.dueDate)}}</span></p>
                                 </div>
                                 <div class="innerDiv2">
-                                    <h4>Parallel document review</h4>
+                                    <h4>{{titleCaseSplit(task.workflowModelName)}}</h4>
                                 </div>
                             </div>
                             <div class="mainDiv2">
-                                <img src="../../assets/images/gallery-3.png">
+                                <img src="{{getAssetUrl(task.targetDocumentIds[0].properties['file:content'].data)}}">
                             </div>
                         </li>
 
-                        <li class="flexible">
+                        <!-- <li class="flexible">
                             <div class="mainDiv1">
                                 <div class="innerDiv1">
                                     <h4>Choose Participants</h4>
@@ -141,7 +139,7 @@
                             <div class="mainDiv2">
                                 <img src="../../assets/images/gallery-3.png">
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-<!-- <header class="pt-4 pb-4 ">
+<header *ngIf="searchHeader" class="pt-4 pb-4 ">
     <div class="container-fluid">
         <div class="row ">
             <div class="col-xl-7 offset-xl-3">
@@ -67,12 +67,11 @@
             </div>
         </div>
     </div>
-</header> -->
-
+</header>
 
 
 <!-- for landing page -->
-<header class="pt-4 pb-4 landingLp">
+ <header *ngIf="!searchHeader" class="pt-4 pb-4 landingLp">
     <div class="container-fluid">
         <div class="row flexible">
             <div class="col-xl-3 col-md-3">
@@ -89,7 +88,7 @@
                             <a href="#">Browse</a>
                         </p>
                     </li>
-                    <li class="active">
+                    <li>
                         <p>
                             <a (click)="selectTab('search')">Search</a>
                         </p>
@@ -139,7 +138,7 @@
                     </li>
                     <li>
                         <p>
-                            <a (click)="logout()">
+                            <a style="cursor: 'pointer'" (click)="logout()">
                                 Log out
                             </a>
                         </p>
@@ -148,4 +147,4 @@
             </div>
         </div>
     </div>
-</header>
+</header> 

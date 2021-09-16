@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { NuxeoService } from '../../services/nuxeo.service';
 
 @Component({
@@ -7,15 +7,36 @@ import { NuxeoService } from '../../services/nuxeo.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Output() sendSelectedTab: EventEmitter<any> = new EventEmitter();
 
   selectedTab: string;
+  searchHeader: boolean;
 
   constructor(
     private nuxeo: NuxeoService,
     private router: Router
-  ) { }
+  ) {
+    router.events.forEach((event) => {
+      if (event instanceof NavigationStart) {
+        // TODO: will break if we have another url that contains /user.
+        if (event.url === '/') {
+          this.searchHeader = false;
+        } else {
+          this.searchHeader = true;
+        }
+      }
+    });
+
+    if (window.location.pathname === '/') {
+      this.searchHeader = false;
+    } else {
+      this.searchHeader = true;
+    }
+  }
+
+  ngOnInit() {
+  }
 
   selectTab(tab: string) {
     this.selectedTab = tab;
