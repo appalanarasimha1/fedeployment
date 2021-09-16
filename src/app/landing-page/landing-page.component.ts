@@ -7,7 +7,7 @@ import { NuxeoService } from '../services/nuxeo.service';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-
+active = 1;
   constructor(private nuxeo: NuxeoService) { }
 
   ngOnInit(): void {
