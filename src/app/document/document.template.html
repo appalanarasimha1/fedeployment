@@ -59,15 +59,166 @@
       <!-- Gallery -->
 
       <ul *ngIf="!showListView" class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
-        <!-- <span  class="horizontal" style="width: 30%;margin: 15px;"> -->
         <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
-          <a href="{{baseUrl}}/nuxeo/ui/#!/browse{{image.path}}">
+
+          <!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
+          <a (click)="open(content)">
             <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
               alt="">
           </a>
         </li>
-        <!--</span> -->
       </ul>
+      <ng-template #content let-modal class="imgPopUpTab">
+        <!-- <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body ">
+          <div class="modalHead">
+            <div class="row flexible" style="justify-content: space-between;">
+              <div class="col-xl-2 col-md-2">
+                	<img src="../../assets/images/User.svg" style="width: 50px;">
+                  <span>Ahmed A.</span>
+              </div>
+              <div class="col-xl-4 col-md-4">
+                <ul class="flexible">
+                  <li>
+                    <a >
+                      <img src="../../assets/images/star.svg">
+                    </a>
+                  </li>
+                  <li>
+                    <a >
+                      <img src="../../assets/images/add-circle.svg">
+                    </a>
+                  </li>
+                  <li>
+                    <a >
+                      <img src="../../assets/images/Download.svg">
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <img src="../../assets/images/girl-travell.png">
+          <div class="sub-body-modal flexible" style="justify-content: space-between;">
+            <div class="mb-5 mb-2">
+              <span class="main-heading">Young woman waiting to aboard the airplane</span>
+              <span class="yellowBtn">Internal Use ©</span>
+            </div>
+            <div>
+              <ul class="iconsList flexible">
+                <li>
+                  <a>
+                    <img src="../../assets/images/clock.svg">
+                  </a>
+                </li>
+                <li>
+                  <a>
+                    <img src="../../assets/images/Comments.svg">
+                  </a>
+                </li>
+                <li>
+                  <a>
+                    <img src="../../assets/images/Info.svg">
+                  </a>
+                </li>
+                <li>
+                  <a>
+                    <img src="../../assets/images/threedots.svg" style="height: 25px;">
+                  </a>
+                </li>
+              </ul>
+            </div>
+         
+          <div>
+            <h2 class="main-modal-head">Related Images</h2>
+            <ul *ngIf="!showListView" class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+              <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
+      
+                <!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
+                <a (click)="open(content)">
+                  <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
+                    alt="">
+                </a>
+              </li>
+            </ul>
+          </div>
+          <section class="lpSecThree">
+            
+            <h2 class="main-modal-head">Related collections</h2>
+            <ul class="flexible">
+                <li class="">
+                    <div class="flexible tripDivOne">
+                        <div>
+                            <img src="../../assets/images/Picture1.png" class="tripImg1">
+                        </div>
+                        <div style="display: grid;">
+                            <img src="../../assets/images/gallery-3.png" class="tripImg2">
+                            <img src="../../assets/images/gallery-4.png" class="tripImg3">
+                        </div>
+                    </div>
+                    <div class="tripDivTwo">
+                        <p>Trips</p>
+                        <span>27 photos curated by Jing L.</span>
+                    </div>
+                </li>
+                <li class="">
+                    <div class="flexible tripDivOne">
+                        <div>
+                            <img src="../../assets/images/Picture1.png" class="tripImg1">
+                        </div>
+                        <div style="display: grid;">
+                            <img src="../../assets/images/gallery-3.png" class="tripImg2">
+                            <img src="../../assets/images/gallery-4.png" class="tripImg3">
+                        </div>
+                    </div>
+                    <div class="tripDivTwo">
+                        <p>Trips</p>
+                        <span>27 photos curated by Jing L.</span>
+                    </div>
+                </li>
+                <li class="">
+                    <div class="flexible tripDivOne">
+                        <div>
+                            <img src="../../assets/images/Picture1.png" class="tripImg1">
+                        </div>
+                        <div style="display: grid;">
+                            <img src="../../assets/images/gallery-3.png" class="tripImg2">
+                            <img src="../../assets/images/gallery-4.png" class="tripImg3">
+                        </div>
+                    </div>
+                    <div class="tripDivTwo">
+                        <p>Trips</p>
+                        <span>27 photos curated by Jing L.</span>
+                    </div>
+                </li>
+                <li class="">
+                    <div class="flexible tripDivOne">
+                        <div>
+                            <img src="../../assets/images/Picture1.png" class="tripImg1">
+                        </div>
+                        <div style="display: grid;">
+                            <img src="../../assets/images/gallery-3.png" class="tripImg2">
+                            <img src="../../assets/images/gallery-4.png" class="tripImg3">
+                        </div>
+                    </div>
+                    <div class="tripDivTwo">
+                        <p>Trips</p>
+                        <span>27 photos curated by Jing L.</span>
+                    </div>
+                </li>
+            </ul>
+        </section>
+        </div>
+      </div>
+      </ng-template>
+
+
+
       <div *ngIf="showListView" class="card-view">
         <ul class="flexible">
           <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index" >

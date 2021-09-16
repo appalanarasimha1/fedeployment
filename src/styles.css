@@ -355,6 +355,9 @@ nav ul {
   align-items: center;
   flex-wrap: wrap;
 }
+.modal-content,.modal-body {
+  padding: 0px !important;
+}
 
 /*.card {*/
 /*  box-shadow: none;*/
@@ -3531,3 +3534,10 @@ li.breadcrumb-item {
 .filter-sidebar .multiselect-item-checkbox:hover input[type=checkbox]:checked + div:before{
   background-color: #000 !important;
 }
+@media (min-width: 576px){
+   .modal-dialog {
+    max-width: 1000px !important;
+    margin: 1.75rem auto;
+}
+}
+
