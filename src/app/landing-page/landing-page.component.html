@@ -1,1 +1,338 @@
-<p>landing-page works!</p>
+<section style="background-color: #F1EFE0;" class="lpBAck">
+    <section class="lpSecOne">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-5 col-md-5">
+                    <h2>Recent activities</h2>
+    
+                     <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs mt-5">
+                        <li [ngbNavItem]="1">
+                          <a ngbNavLink>Recently updated</a>
+                          <ng-template ngbNavContent>
+                                <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+                                    <li>
+                                        <a href="#">
+                                            <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
+                                            alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+                                            alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
+                                            alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+                                            alt="">
+                                        </a>
+                                    </li>
+    
+    
+                                    <li>
+                                        <a href="#">
+                                            <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
+                                            alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
+                                            alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+                                            alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+                                            alt="">
+                                        </a>
+                                    </li>
+                                </ul>
+                          </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                          <a ngbNavLink>Recently viewed</a>
+                          <ng-template ngbNavContent>
+                            <p>Recently viewed content</p>
+                          </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3">
+                          <a ngbNavLink>Recently edited</a>
+                          <ng-template ngbNavContent>
+                            <p>Recently edited content</p>
+                          </ng-template>
+                        </li>
+                      </ul>
+                      <div [ngbNavOutlet]="nav" class="mt-4"></div>      
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-md-6 offset-xxl-1 offset-xl-1 offset-md-1">
+                    <h2>Tasks</h2>
+                    <ul class="tasksList">
+                        <li class="flexible">
+                            <div class="mainDiv1">
+                                <div class="innerDiv1">
+                                    <h4>Choose Participants</h4>
+                                    <p>JGB_NEOM_17.7.2019_0285.jpg</p>
+                                    <p>Due <span>Sep 12, 2021 at 3:00 PM</span></p>
+                                </div>
+                                <div class="innerDiv2">
+                                    <h4>Parallel document review</h4>
+                                </div>
+                            </div>
+                            <div class="mainDiv2">
+                                <img src="../../assets/images/gallery-3.png">
+                            </div>
+                        </li>
+
+                        <li class="flexible">
+                            <div class="mainDiv1">
+                                <div class="innerDiv1">
+                                    <h4>Choose Participants</h4>
+                                    <p>JGB_NEOM_17.7.2019_0285.jpg</p>
+                                    <p>Due <span>Sep 12, 2021 at 3:00 PM</span></p>
+                                </div>
+                                <div class="innerDiv2">
+                                    <h4>Parallel document review</h4>
+                                </div>
+                            </div>
+                            <div class="mainDiv2">
+                                <img src="../../assets/images/gallery-3.png">
+                            </div>
+                        </li>
+                        <li class="flexible">
+                            <div class="mainDiv1">
+                                <div class="innerDiv1">
+                                    <h4>Choose Participants</h4>
+                                    <p>JGB_NEOM_17.7.2019_0285.jpg</p>
+                                    <p>Due <span>Sep 12, 2021 at 3:00 PM</span></p>
+                                </div>
+                                <div class="innerDiv2">
+                                    <h4>Parallel document review</h4>
+                                </div>
+                            </div>
+                            <div class="mainDiv2">
+                                <img src="../../assets/images/gallery-3.png">
+                            </div>
+                        </li>
+                        <li class="flexible">
+                            <div class="mainDiv1">
+                                <div class="innerDiv1">
+                                    <h4>Choose Participants</h4>
+                                    <p>JGB_NEOM_17.7.2019_0285.jpg</p>
+                                    <p>Due <span>Sep 12, 2021 at 3:00 PM</span></p>
+                                </div>
+                                <div class="innerDiv2">
+                                    <h4>Parallel document review</h4>
+                                </div>
+                            </div>
+                            <div class="mainDiv2">
+                                <img src="../../assets/images/gallery-3.png">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+        </div>
+    </section>
+    <section class="lpSecTwo ">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-5 col-xl-5 col-md-5">
+                    <h2>Trending</h2>
+                    <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                    </ul> 
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-md-6 offset-xxl-1 offset-xl-1 offset-md-1">
+                    <h2>Favourites</h2>
+                    <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+                                alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="lpSecThree">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-md-12">
+                    <h2>Collections</h2>
+                    <ul class="flexible">
+                        <li class="">
+                            <div class="flexible tripDivOne">
+                                <div>
+                                    <img src="../../assets/images/Picture1.png" class="tripImg1">
+                                </div>
+                                <div style="display: grid;">
+                                    <img src="../../assets/images/gallery-3.png" class="tripImg2">
+                                    <img src="../../assets/images/gallery-4.png" class="tripImg3">
+                                </div>
+                            </div>
+                            <div class="tripDivTwo">
+                                <p>Trips</p>
+                                <span>27 photos curated by Jing L.</span>
+                            </div>
+                        </li>
+                        <li class="">
+                            <div class="flexible tripDivOne">
+                                <div>
+                                    <img src="../../assets/images/Picture1.png" class="tripImg1">
+                                </div>
+                                <div style="display: grid;">
+                                    <img src="../../assets/images/gallery-3.png" class="tripImg2">
+                                    <img src="../../assets/images/gallery-4.png" class="tripImg3">
+                                </div>
+                            </div>
+                            <div class="tripDivTwo">
+                                <p>Trips</p>
+                                <span>27 photos curated by Jing L.</span>
+                            </div>
+                        </li>
+                        <li class="">
+                            <div class="flexible tripDivOne">
+                                <div>
+                                    <img src="../../assets/images/Picture1.png" class="tripImg1">
+                                </div>
+                                <div style="display: grid;">
+                                    <img src="../../assets/images/gallery-3.png" class="tripImg2">
+                                    <img src="../../assets/images/gallery-4.png" class="tripImg3">
+                                </div>
+                            </div>
+                            <div class="tripDivTwo">
+                                <p>Trips</p>
+                                <span>27 photos curated by Jing L.</span>
+                            </div>
+                        </li>
+                        <li class="">
+                            <div class="flexible tripDivOne">
+                                <div>
+                                    <img src="../../assets/images/Picture1.png" class="tripImg1">
+                                </div>
+                                <div style="display: grid;">
+                                    <img src="../../assets/images/gallery-3.png" class="tripImg2">
+                                    <img src="../../assets/images/gallery-4.png" class="tripImg3">
+                                </div>
+                            </div>
+                            <div class="tripDivTwo">
+                                <p>Trips</p>
+                                <span>27 photos curated by Jing L.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

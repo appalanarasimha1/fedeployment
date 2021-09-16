@@ -39,3 +39,16 @@ position: relative;
 }.header-menu li p a:hover:before, .header-menu li.active p a:before{
     width: 100%;
 }
+.landingLp .header-menu li p a{
+    color: #000;
+}
+.landingLp .header-menu li p a:before{
+    background-color: #000;
+}
+.landingLp{
+    background-color: #F1EFE0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+}

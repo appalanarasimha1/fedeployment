@@ -3,6 +3,9 @@ import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 import { constants } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
 import { environment } from '../../environments/environment';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
+
 
 @Component({
   selector: 'app-content',
@@ -26,9 +29,10 @@ export class DocumentComponent implements OnChanges {
   hideVideoShowMoreBtn = true;
   baseUrl = environment.baseUrl;
   showListView = false;
+  closeResult = '';
 
   constructor(
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document, private modalService: NgbModal
   ) { }
 
   ngOnChanges(changes: any) {
@@ -125,5 +129,25 @@ export class DocumentComponent implements OnChanges {
     }
     this.showListView = false;
 
+  }
+
+
+  // added for modal
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

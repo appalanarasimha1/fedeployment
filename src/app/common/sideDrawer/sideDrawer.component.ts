@@ -3,8 +3,9 @@ import { IHeaderSearchCriteria } from './interface';
 import { constants } from '../constant';
 import { NuxeoService } from '../../services/nuxeo.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import {HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { apiRoutes } from '../config';
 
 
 @Component({
@@ -20,36 +21,40 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   @Input() inputMetaData = {
     system_primaryType_agg: { buckets: [] },
     system_mimetype_agg: { buckets: [], selection: [] },
-    asset_width_agg: { buckets: [] }, asset_height_agg: { buckets: [] }, video_duration_agg: { buckets: [] }
+    asset_width_agg: { buckets: [] },
+    asset_height_agg: { buckets: [] },
+    video_duration_agg: { buckets: [] },
+    sectors: { buckets: []}
   };
   metaData = {
     system_primaryType_agg: { buckets: [] },
     system_mimetype_agg: { buckets: [], selection: [] },
     asset_width_agg: { buckets: [] }, asset_height_agg: { buckets: [] },
-    video_duration_agg: { buckets: [] }
+    video_duration_agg: { buckets: [] },
+    sectors: { buckets: [] }
   };
-  sectors = undefined;
   loading = false;
   error = undefined;
   private searchCriteria: {
     quickFilters?: string,
     system_primaryType_agg?: string[],
     system_mimetype_agg?: string[],
-    asset_width_agg: string[],
-    asset_height_agg: string[],
-    video_duration_agg: string[]
+    asset_width_agg?: string[],
+    asset_height_agg?: string[],
+    video_duration_agg?: string[]
+    sectors?: string[]
   } = {
       system_primaryType_agg: [],
       system_mimetype_agg: [],
       asset_width_agg: [],
       asset_height_agg: [],
-      video_duration_agg: []
+      video_duration_agg: [],
+      sectors: []
     };
   modifiedDate = { dc_modified_agg: [] };
   showImageSize = true;
   showVideoSize = true;
   productsSelectedItems;
-  sectorData = [];
   primeTypeData = [];
   mimeTypeData = [];
   assetWidthData = [];
@@ -57,6 +62,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   videoSizeData = [];
   assetOrientationData = [];
   updatedDateData = [];
+  sectors = [];
 
   dropdownList = [];
   selectedItems = [];
@@ -64,10 +70,10 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   constructor(
     private nuxeo: NuxeoService,
     private http: HttpClient,
-    private router: Router) {}
+    private router: Router) { }
 
   ngOnInit(): void {
-    if(!this.nuxeo.nuxeoClient) {
+    if (!this.nuxeo.nuxeoClient) {
       this.router.navigate(['login']);
       return;
     }
@@ -95,17 +101,16 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   getSectors() {
     this.loading = true;
     this.error = undefined;
-    this.sectors = undefined;
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40, queryParams: '00000000-0000-0000-0000-000000000000' };
 
     this.nuxeo.nuxeoClient.request('/search/pp/tree_children/execute', { queryParams })
       .get().then((docs) => {
-        this.sectors = docs.entries;
+        // this.sectors = docs.entries;
         this.loading = false;
       }).catch((error) => {
         console.log('sidedrawer get sector document error = ', error.message);
         this.loading = false;
-        if(error.message === 'Unauthorized') {
+        if (error.message === 'Unauthorized') {
           this.router.navigate(['login']);
         }
       });
@@ -128,11 +133,15 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     data.asset_height_agg.buckets.map((item: { key: string }, index: number) => {
       this.assetHeightData.push({ key: item.key, id: index });
     });
-    
+
     data.video_duration_agg.buckets.map((item: { key: string }, index: number) => {
       this.videoSizeData.push({ key: item.key, id: index });
     });
-    
+
+    data.sectors.buckets.map((item: { key: string }, index: number) => {
+      this.sectors.push({ key: item.key, id: index });
+    });
+
     return;
   }
 
@@ -166,10 +175,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   getMetaData() {
     this.loading = true;
     this.error = undefined;
-    this.sectors = undefined;
     let queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40, system_primaryType_agg: '[]', system_mimetype_agg: '[]', asset_width_agg: '[]', asset_height_agg: '[]', color_profile_agg: '[]', color_depth_agg: '[]', video_duration_agg: '[]' };
 
-    this.nuxeo.nuxeoClient.request('/search/pp/assets_search/execute', { queryParams })
+    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams })
       .get().then((result) => {
         this.metaData = result.aggregations;
         if (result && result.aggregations) {
@@ -181,7 +189,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       }).catch((error) => {
         console.log(error);
         this.loading = false;
-        if(error.message === 'Unauthorized') {
+        if (error.message === 'Unauthorized') {
           this.router.navigate(['login']);
         }
       });
