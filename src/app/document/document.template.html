@@ -88,19 +88,31 @@
               <div class="col-xl-4 col-md-4">
                 <ul class="flexible">
                   <li>
-                    <a>
+                    <a placement="bottom" ngbTooltip="Favourites">
                       <img src="../../assets/images/yellow-star.svg">
                       <img src="../../assets/images/star.svg">
                     </a>
                   </li>
                   <li>
-                    <a>
+                    <a placement="bottom" ngbTooltip="Add">
                       <img src="../../assets/images/add-circle.svg">
                     </a>
                   </li>
                   <li>
-                    <a>
-                      <img src="../../assets/images/Download.svg">
+                    <a placement="bottom" ngbTooltip="Download">
+                      
+                        <div ngbDropdown class="d-inline-block downloadDrop">
+                          <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img src="../../assets/images/Download.svg"></a>
+                          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem>100 * 7 <span>25kb</span></button>
+                            <button ngbDropdownItem>560 x 420 <span>75kb</span></button>
+                            <button ngbDropdownItem>1000 X 750 <span>172 KB</span></button>
+                            <button ngbDropdownItem>1920 x 1440 <span>1.52 MB</span></button>
+                            <button ngbDropdownItem>2048 x 1580 <span>2.17 MB</span></button>
+                          
+                          </div>
+                        </div>
+                      
                     </a>
                   </li>
                 </ul>
@@ -108,25 +120,25 @@
             </div>
           </div>
           <img src="{{selectedFileUrl}}">
-          <div class="sub-body-modal flexible" style="justify-content: space-between;">
-            <div class="mb-5 mb-2">
+          <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset;">
+            <div class="mb-5 mb-2" style="width: 70%">
               <span class="main-heading">{{selectedFile.properties['dc:description']}}</span>
               <span class="yellowBtn">Internal Use ©</span>
             </div>
             <div>
               <ul class="iconsList flexible">
                 <li>
-                  <a>
+                  <a placement="bottom" ngbTooltip="Timeline">
                     <img src="../../assets/images/clock.svg">
                   </a>
                 </li>
                 <li>
-                  <a>
+                  <a placement="bottom" ngbTooltip="Comments">
                     <img src="../../assets/images/Comments.svg">
                   </a>
                 </li>
                 <li>
-                  <a>
+                  <a placement="bottom" ngbTooltip="Info">
                     <img src="../../assets/images/Info.svg">
                   </a>
                 </li>

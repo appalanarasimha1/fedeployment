@@ -311,3 +311,23 @@ line-height: 22px;
 color: #000000;
 
 }
+.downloadDrop.dropdown{
+  width: unset;
+}
+.downloadDrop .dropdown-toggle::after{
+  display: none;
+}
+.dropdown .dropdown-menu.show {
+  left: -139px !important;
+  top: 25px !important;
+  background-color: #000;
+  min-width: max-content !important;
+}
+.dropdown .dropdown-menu.show button{
+  color: #fff;
+}
+.dropdown .dropdown-menu.show button span{
+  text-align: right;
+  float: right;
+  padding-left: 15px;
+}
