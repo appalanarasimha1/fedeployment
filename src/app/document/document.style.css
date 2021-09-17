@@ -486,3 +486,22 @@ line-height: 22px;
 color: #FFFFFF;
 padding: 15px 0px;
 }
+/* for loader */
+@keyframes rotate{
+  0%{transform: rotate(0deg);}
+  100%{transform: rotate(360deg);}
+}
+.load{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 10px solid transparent;
+  border-top: 10px solid #EBC03F;
+  border-bottom: 10px solid #EBC03F;
+  animation: rotate 1.8s linear infinite;
+  position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
