@@ -35,11 +35,12 @@ export class DocumentComponent implements OnChanges {
   selectedFile: any; // TODO: add interface, search result entires
   selectedFileUrl: string;
   favourite: boolean;
+  active = 1;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
-    public nuxeo: NuxeoService,
+    public nuxeo: NuxeoService
   ) { }
 
   ngOnChanges(changes: any) {
