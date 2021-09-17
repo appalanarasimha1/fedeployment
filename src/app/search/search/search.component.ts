@@ -53,7 +53,7 @@ export class SearchComponent implements OnInit {
       }
     }
 
-    this.nuxeo.nuxeoClient.request('/search/pp/assets_search/execute', { queryParams, headers: { 'enrichers-document': ['thumbnail', 'preview', 'tags'], 'fetch.document': 'properties', properties: 'dublincore,common,file,uid' } })
+    this.nuxeo.nuxeoClient.request('/search/pp/assets_search/execute', { queryParams, headers: { 'enrichers-document': ['thumbnail', 'renditions', 'tags'], 'fetch.document': 'properties', properties: 'dublincore,common,file,uid' } })
       .get(
         //       {
         //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or

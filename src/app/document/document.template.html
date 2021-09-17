@@ -62,13 +62,14 @@
         <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
 
           <!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
-          <a (click)="open(content)">
+          <a (click)="open(preview, image)">
             <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
               alt="">
           </a>
         </li>
       </ul>
-      <ng-template #content let-modal class="imgPopUpTab">
+
+      <ng-template #preview let-modal class="imgPopUpTab">
         <!-- <div class="modal-header">
           <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
           <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -103,7 +104,7 @@
               </div>
             </div>
           </div>
-          <img src="../../assets/images/girl-travell.png">
+          <img src="{{selectedFile}}">
           <div class="sub-body-modal flexible" style="justify-content: space-between;">
             <div class="mb-5 mb-2">
               <span class="main-heading">Young woman waiting to aboard the airplane</span>
@@ -140,7 +141,7 @@
               <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
       
                 <!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
-                <a (click)="open(content)">
+                <a (click)="open(preview, image)">
                   <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
                     alt="">
                 </a>

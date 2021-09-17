@@ -30,6 +30,7 @@ export class DocumentComponent implements OnChanges {
   baseUrl = environment.baseUrl;
   showListView = false;
   closeResult = '';
+  selectedFile;
 
   constructor(
     @Inject(DOCUMENT) private document: Document, private modalService: NgbModal
@@ -133,7 +134,8 @@ export class DocumentComponent implements OnChanges {
 
 
   // added for modal
-  open(content) {
+  open(content, file) {
+    this.selectedFile = this.getAssetUrl(file.contextParameters.renditions[file.contextParameters.renditions.length - 1].url);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
