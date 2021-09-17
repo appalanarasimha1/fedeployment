@@ -32,7 +32,9 @@ export class DocumentComponent implements OnChanges {
   closeResult = '';
   selectedFile: any; // TODO: add interface, search result entires
   selectedFileUrl: string;
+  active = 1;
 
+  
   constructor(
     @Inject(DOCUMENT) private document: Document, private modalService: NgbModal
   ) { }
