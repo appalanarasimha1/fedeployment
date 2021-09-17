@@ -77,7 +77,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       this.router.navigate(['login']);
       return;
     }
-    this.getSectors();
+    // this.getSectors();
     this.getMetaData();
     this.dropdownSettings = {
       singleSelection: false,
@@ -98,23 +98,23 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     }
   }
 
-  getSectors() {
-    this.loading = true;
-    this.error = undefined;
-    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40, queryParams: '00000000-0000-0000-0000-000000000000' };
+  // getSectors() {
+  //   this.loading = true;
+  //   this.error = undefined;
+  //   const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40, queryParams: '00000000-0000-0000-0000-000000000000' };
 
-    this.nuxeo.nuxeoClient.request('/search/pp/tree_children/execute', { queryParams })
-      .get().then((docs) => {
-        // this.sectors = docs.entries;
-        this.loading = false;
-      }).catch((error) => {
-        console.log('sidedrawer get sector document error = ', error.message);
-        this.loading = false;
-        if (error.message === 'Unauthorized') {
-          this.router.navigate(['login']);
-        }
-      });
-  }
+  //   this.nuxeo.nuxeoClient.request('/search/pp/tree_children/execute', { queryParams })
+  //     .get().then((docs) => {
+  //       // this.sectors = docs.entries;
+  //       this.loading = false;
+  //     }).catch((error) => {
+  //       console.log('sidedrawer get sector document error = ', error.message);
+  //       this.loading = false;
+  //       if (error.message === 'Unauthorized') {
+  //         this.router.navigate(['login']);
+  //       }
+  //     });
+  // }
 
   manupulateData(data) {
     this.mimeTypeData = [];

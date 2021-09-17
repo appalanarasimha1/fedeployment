@@ -30,7 +30,8 @@ export class DocumentComponent implements OnChanges {
   baseUrl = environment.baseUrl;
   showListView = false;
   closeResult = '';
-  selectedFile;
+  selectedFile: any; // TODO: add interface, search result entires
+  selectedFileUrl: string;
 
   constructor(
     @Inject(DOCUMENT) private document: Document, private modalService: NgbModal
@@ -136,12 +137,13 @@ export class DocumentComponent implements OnChanges {
   // added for modal
   open(content, file) {
     let fileRendition;
+    this.selectedFile = file;
     file.contextParameters.renditions.map(item => {
       if (item.name.toLowerCase().includes('original')) {
         fileRendition = item;
       }
     });
-    this.selectedFile = this.getAssetUrl(fileRendition.url);
+    this.selectedFileUrl = this.getAssetUrl(fileRendition.url);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
