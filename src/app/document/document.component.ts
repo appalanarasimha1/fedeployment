@@ -1,9 +1,11 @@
 import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject } from '@angular/core';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
-import { constants } from '../common/constant';
+import { constants, localStorageVars } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
 import { environment } from '../../environments/environment';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NuxeoService } from '../services/nuxeo.service';
+import { apiRoutes } from '../common/config';
 
 
 
@@ -32,9 +34,12 @@ export class DocumentComponent implements OnChanges {
   closeResult = '';
   selectedFile: any; // TODO: add interface, search result entires
   selectedFileUrl: string;
+  favourite: boolean;
 
   constructor(
-    @Inject(DOCUMENT) private document: Document, private modalService: NgbModal
+    @Inject(DOCUMENT) private document: Document,
+    private modalService: NgbModal,
+    public nuxeo: NuxeoService,
   ) { }
 
   ngOnChanges(changes: any) {
@@ -125,7 +130,7 @@ export class DocumentComponent implements OnChanges {
   }
 
   viewChange(e: any): void {
-    if(e.target.value.toLowerCase() === 'list') {
+    if (e.target.value.toLowerCase() === 'list') {
       this.showListView = true;
       return;
     }
@@ -133,22 +138,43 @@ export class DocumentComponent implements OnChanges {
 
   }
 
-
   // added for modal
   open(content, file) {
     let fileRendition;
     this.selectedFile = file;
-    file.contextParameters.renditions.map(item => {
-      if (item.name.toLowerCase().includes('original')) {
+    this.favourite = file.contextParameters.favorites.isFavorite;
+    this.markRecentlyViewed(file);
+    file.properties['picture:views'].map(item => {
+      if (item.title.toLowerCase().includes('original')) {
         fileRendition = item;
       }
     });
-    this.selectedFileUrl = this.getAssetUrl(fileRendition.url);
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.selectedFileUrl = this.getAssetUrl(fileRendition.content.data);
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  markRecentlyViewed(data: any) {
+    let found = false;
+    // tslint:disable-next-line:prefer-const
+    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+    if (recentlyViewed.length) {
+      recentlyViewed.map(item => {
+        if (item.uid === data.uid) {
+          found = true;
+        }
+      });
+    }
+    if (found) {
+      return;
+    }
+
+    recentlyViewed.push(data);
+    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+    return;
   }
 
   private getDismissReason(reason: any): string {
@@ -159,5 +185,54 @@ export class DocumentComponent implements OnChanges {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  markFavourite(data, favouriteValue) {
+    let loading = true;
+    let error;
+    this.nuxeo.nuxeoClient.request(apiRoutes.MARK_FAVOURITE, {body: {context: 'hello'}})
+      .post().then((docs) => {
+        console.log(docs.entries[0]);
+        loading = false;
+      }).catch((err) => {
+        console.log('search document error = ', err);
+        error = `${error}. `;
+        loading = false;
+      });
+  }
+
+  getDownloadFileEstimation(data: any) {
+    return `${(data.length / 1024) > 1024 ? ((data.length / 1024) / 1024).toFixed(2) + ' MB' : (data.length / 1024).toFixed(2) + ' KB'}`;
+  }
+
+  getComments() {
+    '/id/eef8a0d4-b828-41dc-95bf-a0f310cd6f5e/@comment/?pageSize=10&currentPageIndex=0';
+
+    // response
+    /**
+    /* {"entity-type":"comments",
+    "totalSize":1,
+    "entries":[
+      {
+        "entity-type":"comment","id":"e343f0bd-75de-4ea3-ad00-3a28acba21e6",
+        "parentId":"eef8a0d4-b828-41dc-95bf-a0f310cd6f5e",
+        "ancestorIds":["eef8a0d4-b828-41dc-95bf-a0f310cd6f5e"],
+        "author":"Administrator",
+        "text":"this is a test, need to see how it works",
+        "creationDate":"2021-09-17T07:38:32.432Z",
+        "modificationDate":"2021-09-17T07:38:32.432Z",
+        "entityId":null,
+        "origin":null,
+        "entity":null,
+        "permissions":["Browse","ReadProperties","ReadChildren","ReadLifeCycle","ReviewParticipant",
+        "ReadSecurity","WriteProperties","ReadVersion","WriteVersion","Version",
+        "Read","AddChildren","RemoveChildren","Remove","ManageWorkflows",
+        "WriteLifeCycle","Unlock","ReadRemove","Write","ReadWrite","WriteSecurity",
+        "Everything","RestrictedRead","MakeRecord","SetRetention","ManageLegalHold",
+        "WriteColdStorage","ReadCanCollect","Comment","Moderate","CanAskForPublishing",
+        "DataVisualization"],
+        "numberOfReplies":0}
+      ]}
+    */
   }
 }

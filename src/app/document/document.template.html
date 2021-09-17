@@ -89,8 +89,8 @@
                 <ul class="flexible">
                   <li>
                     <a placement="bottom" ngbTooltip="Favourites">
-                      <img src="../../assets/images/yellow-star.svg">
-                      <img src="../../assets/images/star.svg">
+                      <img *ngIf="favourite" (click)="markFavourite(selectedFile, false)" src="../../assets/images/yellow-star.svg">
+                      <img *ngIf="!favourite" (click)="markFavourite(selectedFile, true)" src="../../assets/images/star.svg">
                     </a>
                   </li>
                   <li>
@@ -104,11 +104,11 @@
                         <div ngbDropdown class="d-inline-block downloadDrop">
                           <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img src="../../assets/images/Download.svg"></a>
                           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button ngbDropdownItem>100 * 7 <span>25kb</span></button>
-                            <button ngbDropdownItem>560 x 420 <span>75kb</span></button>
+                            <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{view.content.data}}" style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}} <span style="margin-left: 58px">{{getDownloadFileEstimation(view.content)}}</span></a>
+                            <!-- <button ngbDropdownItem>560 x 420 <span>75kb</span></button>
                             <button ngbDropdownItem>1000 X 750 <span>172 KB</span></button>
                             <button ngbDropdownItem>1920 x 1440 <span>1.52 MB</span></button>
-                            <button ngbDropdownItem>2048 x 1580 <span>2.17 MB</span></button>
+                            <button ngbDropdownItem>2048 x 1580 <span>2.17 MB</span></button> -->
                           
                           </div>
                         </div>

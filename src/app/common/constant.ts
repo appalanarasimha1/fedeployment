@@ -1,4 +1,4 @@
-export let constants = {
+export const constants = {
     AUDIO_TITLE_CASE: 'Audio',
     AUDIO_SMALL_CASE: 'audio',
     IMAGE_TITLE_CASE: 'Image',
@@ -8,3 +8,8 @@ export let constants = {
     PICTURE_TITLE_CASE: 'Picture',
     PICTURE_SMALL_CASE: 'picture',
 };
+
+export const localStorageVars = {
+    RECENTLY_VIEWED: 'Administrator-default-nuxeo-recent-documents',
+    CLIPBOARD: 'Administrator-default-nuxeo-clipboard'
+}
