@@ -135,7 +135,13 @@ export class DocumentComponent implements OnChanges {
 
   // added for modal
   open(content, file) {
-    this.selectedFile = this.getAssetUrl(file.contextParameters.renditions[file.contextParameters.renditions.length - 1].url);
+    let fileRendition;
+    file.contextParameters.renditions.map(item => {
+      if (item.name.toLowerCase().includes('original')) {
+        fileRendition = item;
+      }
+    });
+    this.selectedFile = this.getAssetUrl(fileRendition.url);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
