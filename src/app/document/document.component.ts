@@ -36,6 +36,8 @@ export class DocumentComponent implements OnChanges {
   selectedFileUrl: string;
   favourite: boolean;
   active = 1;
+  showShadow = false;
+  selectedTab;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -188,10 +190,18 @@ export class DocumentComponent implements OnChanges {
     }
   }
 
+  openInfo(data: string) {
+    if (this.showShadow || this.selectedTab === data) {
+      this.showShadow = !this.showShadow;
+    }
+    this.selectedTab = data;
+  }
+
   markFavourite(data, favouriteValue) {
     let loading = true;
     let error;
-    this.nuxeo.nuxeoClient.request(apiRoutes.MARK_FAVOURITE, {body: {context: 'hello'}})
+    this.favourite = !this.favourite;
+    this.nuxeo.nuxeoClient.request(apiRoutes.MARK_FAVOURITE, { body: { context: 'hello' } })
       .post().then((docs) => {
         console.log(docs.entries[0]);
         loading = false;

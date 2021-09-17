@@ -89,8 +89,10 @@
                 <ul class="flexible">
                   <li>
                     <a placement="bottom" ngbTooltip="Favourites">
-                      <img *ngIf="favourite" (click)="markFavourite(selectedFile, false)" src="../../assets/images/yellow-star.svg">
-                      <img *ngIf="!favourite" (click)="markFavourite(selectedFile, true)" src="../../assets/images/star.svg">
+                      <img *ngIf="favourite" (click)="markFavourite(selectedFile, false)"
+                        src="../../assets/images/yellow-star.svg">
+                      <img *ngIf="!favourite" (click)="markFavourite(selectedFile, true)"
+                        src="../../assets/images/star.svg">
                     </a>
                   </li>
                   <li>
@@ -100,19 +102,17 @@
                   </li>
                   <li>
                     <a placement="bottom" ngbTooltip="Download">
-                      
-                        <div ngbDropdown class="d-inline-block downloadDrop">
-                          <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img src="../../assets/images/Download.svg"></a>
-                          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{view.content.data}}" style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}} <span style="margin-left: 58px">{{getDownloadFileEstimation(view.content)}}</span></a>
-                            <!-- <button ngbDropdownItem>560 x 420 <span>75kb</span></button>
-                            <button ngbDropdownItem>1000 X 750 <span>172 KB</span></button>
-                            <button ngbDropdownItem>1920 x 1440 <span>1.52 MB</span></button>
-                            <button ngbDropdownItem>2048 x 1580 <span>2.17 MB</span></button> -->
-                          
-                          </div>
+
+                      <div ngbDropdown class="d-inline-block downloadDrop">
+                        <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
+                            src="../../assets/images/Download.svg"></a>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                          <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{view.content.data}}"
+                            style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}} <span
+                              style="margin-left: 58px">{{getDownloadFileEstimation(view.content)}}</span>
+                          </a>
                         </div>
-                      
+                      </div>
                     </a>
                   </li>
                 </ul>
@@ -121,21 +121,39 @@
           </div>
           <div class="popupTabSec">
             <img src="{{selectedFileUrl}}" style="width: 100%;">
-            <div class="myTabContentMain">
-              <div class="tab-content myTabContent" id="myTabContent" > 
+            <div class="myTabContentMain" [ngClass]="{'hide': showShadow}">
+              <div class="tab-content myTabContent" id="myTabContent">
                 <!-- use class myTabContent -->
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
                   <div class="timeline-content">
-                    <ul >
-                      <li><p>You unblocked the file 22 minutes ago</p></li>
-                      <li><p>You blocked the file 1 hour ago</p></li>
-                      <li><p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p></li>
-                      <li><p>You unblocked the file 22 minutes ago</p></li>
-                      <li><p>You blocked the file 1 hour ago</p></li>
-                      <li><p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p></li>
-                      <li><p>You unblocked the file 22 minutes ago</p></li>
-                      <li><p>You blocked the file 1 hour ago</p></li>
-                      <li><p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p></li>
+                    <ul>
+                      <li>
+                        <p>You unblocked the file 22 minutes ago</p>
+                      </li>
+                      <li>
+                        <p>You blocked the file 1 hour ago</p>
+                      </li>
+                      <li>
+                        <p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p>
+                      </li>
+                      <li>
+                        <p>You unblocked the file 22 minutes ago</p>
+                      </li>
+                      <li>
+                        <p>You blocked the file 1 hour ago</p>
+                      </li>
+                      <li>
+                        <p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p>
+                      </li>
+                      <li>
+                        <p>You unblocked the file 22 minutes ago</p>
+                      </li>
+                      <li>
+                        <p>You blocked the file 1 hour ago</p>
+                      </li>
+                      <li>
+                        <p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -151,10 +169,10 @@
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
               </div>
             </div>
-            
+
           </div>
-         
-         
+
+
           <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset;">
             <div class="mb-5 mb-2" style="width: 70%">
               <span class="main-heading">{{selectedFile.properties['dc:description']}}</span>
@@ -163,20 +181,26 @@
             <div class="flexible" style="align-items: unset;">
               <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <a class="nav-link active" placement="bottom" ngbTooltip="Timeline" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg"></a>
-                 
+                  <a class="nav-link active" placement="bottom" ngbTooltip="Timeline" id="home-tab" data-bs-toggle="tab"
+                    (click)="openInfo('timeline')" href="#timeline" role="tab" aria-controls="home" aria-selected="true"><img
+                      src="../../assets/images/clock.svg"></a>
+
                 </li>
                 <li class="nav-item" role="presentation">
-                  <a class="nav-link" id="profile-tab" placement="bottom" ngbTooltip="Comments" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><img src="../../assets/images/Comments.svg"></a>
+                  <a class="nav-link" id="profile-tab" placement="bottom" ngbTooltip="Comments" data-bs-toggle="tab"
+                  (click)="openInfo('comments')" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><img
+                      src="../../assets/images/Comments.svg"></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <a class="nav-link" id="contact-tab" placement="bottom" ngbTooltip="Info" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"> <img src="../../assets/images/Info.svg"></a>
+                  <a class="nav-link" id="contact-tab" placement="bottom" ngbTooltip="Info" data-bs-toggle="tab"
+                  (click)="openInfo('info')" href="#contact" role="tab" aria-controls="contact" aria-selected="false"> <img
+                      src="../../assets/images/Info.svg"></a>
                 </li>
               </ul>
 
 
               <ul class="iconsList">
-                
+
                 <li>
                   <a>
                     <img src="../../assets/images/threedots.svg" style="height: 25px;">
