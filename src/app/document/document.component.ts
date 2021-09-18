@@ -148,6 +148,7 @@ export class DocumentComponent implements OnChanges {
   open(content, file) {
     let fileRendition;
     this.selectedFile = file;
+    this.getComments();
     this.favourite = file.contextParameters.favorites.isFavorite;
     this.markRecentlyViewed(file);
     file.properties['picture:views'].map(item => {
@@ -222,7 +223,7 @@ export class DocumentComponent implements OnChanges {
   getComments() {
     let loading = true;
     let error;
-    const queryParams = {};
+    const queryParams = {pageSize: 10, currentPageIndex: 0};
     const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
     this.nuxeo.nuxeoClient.request(route, { queryParams })
       .get().then((docs) => {
