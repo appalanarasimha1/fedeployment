@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NuxeoService } from '../../services/nuxeo.service';
 import { IHeaderSearchCriteria } from '../../common/subHeader/interface';
 import { Router } from '@angular/router';
+import { apiRoutes } from 'src/app/common/config';
 // import { ApiService } from '../services/http.service';
 
 @Component({
@@ -53,7 +54,7 @@ export class SearchComponent implements OnInit {
       }
     }
 
-    this.nuxeo.nuxeoClient.request('/search/pp/assets_search/execute', { queryParams, headers: { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit'], 'fetch.document': 'properties', properties: '*' } })
+    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers: { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit'], 'fetch.document': 'properties', properties: '*' } })
       .get(
         //       {
         //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or

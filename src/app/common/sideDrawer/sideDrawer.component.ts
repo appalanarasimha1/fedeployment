@@ -121,6 +121,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     this.assetWidthData = [];
     this.assetHeightData = [];
     this.videoSizeData = [];
+    this.sectors = [];
 
     data.system_mimetype_agg.buckets.map((item: { key: string }, index: number) => {
       this.mimeTypeData.push({ key: item.key, id: index });

@@ -222,6 +222,20 @@ export class DocumentComponent implements OnChanges {
   getComments() {
     '/id/eef8a0d4-b828-41dc-95bf-a0f310cd6f5e/@comment/?pageSize=10&currentPageIndex=0';
 
+    let loading = true;
+    let error;
+    const queryParams = {};
+    const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
+    this.nuxeo.nuxeoClient.request(route, { queryParams })
+      .get().then((docs) => {
+        console.log(docs.entries[0]);
+        loading = false;
+      }).catch((err) => {
+        console.log('search document error = ', err);
+        error = `${error}. `;
+        loading = false;
+      });
+
     // response
     /**
     /* {"entity-type":"comments",
