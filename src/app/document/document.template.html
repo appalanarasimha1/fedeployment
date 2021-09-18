@@ -150,7 +150,16 @@
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                   <div class="comment-content">
                     <ul>
-                      <li class="flexible" style="align-items: unset;">
+                      <li *ngFor="let comment of comments" class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>{{comment.author}} <span>{{getTime(comment.creationDate, false)}} ago</span></p>
+                          <p>{{comment.text}}</p>
+                        </div>
+                      </li>
+                      <!-- <li class="flexible" style="align-items: unset;">
                         <div>
                           <img src="../../assets/images/User.svg">
                         </div>
@@ -165,15 +174,6 @@
                         </div>
                         <div>
                           <p>You <span>2 hours ago</span></p>
-                          <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
-                        </div>
-                      </li>
-                      <li class="flexible" style="align-items: unset;">
-                        <div>
-                          <img src="../../assets/images/User.svg">
-                        </div>
-                        <div>
-                          <p>You <span>2 hours ago</span></p>
                             <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
                         </div>
                       </li>
@@ -239,10 +239,10 @@
                           <p>You <span>2 hours ago</span></p>
                             <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
                         </div>
-                      </li>
+                      </li> -->
                     </ul>
-                    <form>
-                      <input type="text" placeholder="Write a comment here">
+                    <form (submit)="saveComment(commentText)">
+                      <input type="text" [(ngModel)]="commentText" name="comment" placeholder="Write a comment here">
                     </form>
                   </div>
                 </div>

@@ -7,9 +7,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NuxeoService } from '../services/nuxeo.service';
 import { apiRoutes } from '../common/config';
 import * as moment from 'moment';
-
-
-
+import { ApiService } from '../services/api.service';
 @Component({
   selector: 'app-content',
   // Our list of styles in our component. We may add more to compose many styles together
@@ -40,11 +38,14 @@ export class DocumentComponent implements OnChanges {
   showShadow = true;
   selectedTab;
   showLoader = false;
+  comments = [];
+  commentText: string;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
-    public nuxeo: NuxeoService
+    public nuxeo: NuxeoService,
+    private apiService: ApiService,
   ) { }
 
   ngOnChanges(changes: any) {
@@ -223,11 +224,11 @@ export class DocumentComponent implements OnChanges {
   getComments() {
     let loading = true;
     let error;
-    const queryParams = {pageSize: 10, currentPageIndex: 0};
+    const queryParams = { pageSize: 10, currentPageIndex: 0 };
     const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
     this.nuxeo.nuxeoClient.request(route, { queryParams })
       .get().then((docs) => {
-        console.log(docs.entries[0]);
+        this.comments = docs.enteries;
         loading = false;
       }).catch((err) => {
         console.log('search document error = ', err);
@@ -263,6 +264,18 @@ export class DocumentComponent implements OnChanges {
     */
   }
 
+  saveComment(comment: string): void {
+    const route = apiRoutes.SAVE_COMMENT.replace('[assetId]', this.selectedFile.uid);
+    const apiBody = {
+      'entity-type': 'comment',
+      parentId: this.selectedFile.uid,
+      text: comment
+    };
+    this.apiService.post(route, apiBody).subscribe(response => {
+      console.log(response);
+    });
+  }
+
   getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
     if (!fromDate) { //NOTE: when in development phase, for the notifications which did not have createdOn field
       return showHours ? `yesterday` : `1 day`;
@@ -270,7 +283,7 @@ export class DocumentComponent implements OnChanges {
     const today = toDate ? toDate : moment();
 
     const daysDifference = moment(today).diff(moment(fromDate), 'days');
-    if (daysDifference === 0 ) {
+    if (daysDifference === 0) {
       let output = `${this.getDoubleDigit(new Date(fromDate).getUTCHours() + 3)}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
       if (!showHours) {
         output = `${moment(today).diff(moment(fromDate), 'hours')} hours`;
@@ -285,7 +298,7 @@ export class DocumentComponent implements OnChanges {
 
   getDoubleDigit(value: number) {
     if (value < 10) {
-        return '0' + value;
+      return '0' + value;
     }
     return value;
   }
