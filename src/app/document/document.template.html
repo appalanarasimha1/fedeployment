@@ -4,27 +4,14 @@
     <img src="{{document.contextParameters?.thumbnail.url}}" /> 
   </a>
 </div> -->
-<span class="load"></span>
+<!-- loader -->
+<!-- <span class="load"></span>    -->
 <section class="search-subpage pt-2 pb-5">
   <div class="container">
     <div class="row flexible" style="justify-content: space-between;">
       <div class="col-xl-4">
         <!-- <p class="pb-3 searchP">Traveller</p> TODO: pass search term from sub-header to search and then to here -->
         <div class="dropdown mb-4">
-          <!-- <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            All 
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">All assets</a></li>
-            <li><a class="dropdown-item" href="#">Created</a></li>
-            <li><a class="dropdown-item" href="#">Modified</a></li>
-            <li><a class="dropdown-item" href="#">Last Contibutor</a></li>
-            <li><a class="dropdown-item" href="#">State</a></li>
-            <li><a class="dropdown-item" href="#">Nature</a></li>
-            <li><a class="dropdown-item" href="#">Coverage</a></li>
-          </ul> -->
-
           <select class="btn" style="    background-color: white;
           height: 44px;
           text-align: left;
@@ -109,8 +96,8 @@
                             src="../../assets/images/Download.svg"></a>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                           <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{view.content.data}}"
-                            style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}} <span
-                              style="margin-left: 58px">{{getDownloadFileEstimation(view.content)}}</span>
+                            style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}} 
+                            <span>{{getDownloadFileEstimation(view.content)}}</span>
                           </a>
                         </div>
                       </div>
@@ -275,7 +262,19 @@
 
                 <li>
                   <a>
-                    <img src="../../assets/images/threedots.svg" style="height: 25px;">
+                    <div ngbDropdown class="d-inline-block downloadDrop settingsDropdown">
+                      <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img src="../../assets/images/threedots.svg" style="height: 24px;"></a>
+                      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                        <a  href="#"  ngbDropdownItem>Share</a>
+                        <a  href="#"  ngbDropdownItem>Publish file</a>
+                        <a  href="#"  ngbDropdownItem>Stop notifications</a>
+                        <a  href="#"  ngbDropdownItem>Add to clipboard</a>
+                        <a  href="#"  ngbDropdownItem>Export</a>
+                        <a  href="#"  ngbDropdownItem>Start process</a>
+                        <a  href="#"  ngbDropdownItem>Replace file</a>
+                        <a  href="#"  ngbDropdownItem>Delete file</a>
+                      </div>
+                    </div>
                   </a>
                 </li>
               </ul>

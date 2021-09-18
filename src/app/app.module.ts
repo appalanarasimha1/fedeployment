@@ -16,6 +16,7 @@ import { InterceptorService } from './services/http-interceptor.service';
 import { NuxeoService } from './services/nuxeo.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { CookieService } from 'ngx-cookie-service';
+import { FooterComponent } from './common/footer/footer.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { CookieService } from 'ngx-cookie-service';
     HeaderComponent,
     LoginComponent,
     LandingPageComponent,
+    FooterComponent,
   ],
   imports: [
     CommonModule,
