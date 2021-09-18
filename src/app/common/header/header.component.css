@@ -56,4 +56,5 @@ position: relative;
     /* position: fixed; */
     width: 100%;
     z-index: 99;
+    padding: 10px 0px;
 }
