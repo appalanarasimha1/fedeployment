@@ -212,14 +212,24 @@ grid-row: span 2;
   list-style: none;;
 }
 .card-view ul li {
-  width: 48%;
+  width: 49%;
   margin: 4px;
 }
 .username{
   position: absolute;
   bottom: 0px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
-
+.username:nth-child(2){
+  padding-left: 8px;
+  display: block;
+  font-size: 16px;
+line-height: 22px;
+font-weight: 600;
+color: #000000;
+}
 /* modal css */
 .modalHead{
   padding: 8px 5px;
@@ -232,6 +242,7 @@ grid-row: span 2;
 }
 .modalHead ul li, .iconsList li{
   margin-left: 15px ;
+  cursor: pointer;
 }
 .modalHead ul li img, .iconsList li img{
   width: 25px;
@@ -330,7 +341,7 @@ color: #000000;
   min-width: max-content !important;
 }
 .dropdown .dropdown-menu.show .dropdown-item{
-  color: #fff;
+  color: #fff !important;
 }
 .dropdown .dropdown-menu.show .dropdown-item span{
   text-align: right;
@@ -445,6 +456,8 @@ height: 100%;
   width: 100%;
   margin: auto;
   padding-top: 40px;
+  height: 478px;
+  overflow: scroll;
 }
 .comment-content ul li{
   padding: 15px 0px;
@@ -515,3 +528,35 @@ padding: 15px 0px;
     margin: auto;
 }
 
+.noresult{
+  font-size: 24px;
+  line-height: 22px;
+  opacity: 0.6;
+  color: #000000;
+  text-align: center;
+}
+
+.e-btn{
+  border: unset;
+  padding: unset;
+}
+:checked + .e-btn::before{
+  content: '';
+  background-color: unset;
+  transform: unset;
+  border: unset;
+}
+.listImg{
+  height: 150px !important;
+}
+.listImg img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card-view p{
+  font-size: 18px;
+line-height: 24px;
+color: #161824;
+font-weight: 600;
+}

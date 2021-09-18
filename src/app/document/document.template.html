@@ -41,6 +41,13 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-xl-12 col-md-12 ">
+        <h2 class="noresult">Sorry !! No results available</h2>
+      </div>
+    </div>
+
+
+    <div class="row">
       <div class="col-xl-12 flexible" style="justify-content: space-between;">
         <p class="imgHead pb-4">Images</p>
         <a class="fileCount pb-4" href="#">{{images.length}} images</a>
@@ -60,17 +67,12 @@
       </ul>
 
       <ng-template #preview let-modal class="imgPopUpTab">
-        <!-- <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> -->
         <div class="modal-body ">
           <div class="modalHead">
             <div class="row flexible" style="justify-content: space-between;">
               <div class="col-xl-2 col-md-2">
                 <img src="../../assets/images/User.svg" style="width: 50px;">
+                <img src="../../assets/images/black-user.png" style="width: 50px;">
                 <span>Ahmed A.</span>
               </div>
               <div class="col-xl-4 col-md-4">
@@ -148,6 +150,78 @@
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                   <div class="comment-content">
                     <ul>
+                      <li class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>You <span>2 hours ago</span></p>
+                            <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
+                        </div>
+                      </li>
+                      <li class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>You <span>2 hours ago</span></p>
+                            <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
+                        </div>
+                      </li>
+                      <li class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>You <span>2 hours ago</span></p>
+                            <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
+                        </div>
+                      </li>
+                      <li class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>You <span>2 hours ago</span></p>
+                            <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
+                        </div>
+                      </li>
+                      <li class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>You <span>2 hours ago</span></p>
+                            <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
+                        </div>
+                      </li>
+                      <li class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>You <span>2 hours ago</span></p>
+                            <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
+                        </div>
+                      </li>
+                      <li class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>You <span>2 hours ago</span></p>
+                            <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
+                        </div>
+                      </li>
+                      <li class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src="../../assets/images/User.svg">
+                        </div>
+                        <div>
+                          <p>You <span>2 hours ago</span></p>
+                            <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
+                        </div>
+                      </li>
                       <li class="flexible" style="align-items: unset;">
                         <div>
                           <img src="../../assets/images/User.svg">
@@ -263,7 +337,7 @@
                 <li>
                   <a>
                     <div ngbDropdown class="d-inline-block downloadDrop settingsDropdown">
-                      <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img src="../../assets/images/threedots.svg" style="height: 24px;"></a>
+                      <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img src="../../assets/images/threedots.svg" style="height: 18px;"></a>
                       <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
                         <a  href="#"  ngbDropdownItem>Share</a>
                         <a  href="#"  ngbDropdownItem>Publish file</a>
@@ -361,32 +435,36 @@
         </div>
       </ng-template>
 
-
-
-      <div *ngIf="showListView" class="card-view">
-        <ul class="flexible">
-          <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
-            <div style="background-color: #F9F7F2;padding: 20px;">
-              <div class="row">
-                <div class="col-xl-6 col-md-6" style="position: relative;">
-                  <p>Young man walking in desert</p>
-                  <div class="username">
-                    <span>
-                      <img src="../../assets/images/user.png" style="width: 20px;">
-                    </span>
-                    <span>Jing L.</span>
-                  </div>
-                </div>
-                <div class="col-xl-6 col-md-6">
-                  <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
-                    style="width: 100%;border-radius: 8px;">
-                </div>
+<div class="col-xl-12 col-md-12">
+  <div *ngIf="showListView" class="card-view">
+    <ul class="flexible">
+      <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
+        <div style="background-color: #F9F7F2;padding: 20px;">
+          <div class="row">
+            <div class="col-xl-6 col-md-6" style="position: relative;">
+              <p>Young man walking in desert</p>
+              <div class="username">
+                <span>
+                  <img src="../../assets/images/user.png" style="width: 20px;">
+                </span>
+                <span>Jing L.</span>
               </div>
-
             </div>
-          </li>
-        </ul>
-      </div>
+            <div class="col-xl-6 col-md-6">
+              <div class="listImg">
+                <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
+                style="width: 100%;border-radius: 8px;">
+              </div>
+              
+            </div>
+          </div>
+
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+     
 
 
       <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show
