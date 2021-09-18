@@ -340,7 +340,7 @@ color: #000000;
   background-color: #000;
   min-width: max-content !important;
 }
-.dropdown .dropdown-menu.show .dropdown-item{
+.dropdown .dropdown-menu.show .dropdown-item, .settingsDropdown .dropdown-menu.show .dropdown-item{
   color: #fff !important;
 }
 .dropdown .dropdown-menu.show .dropdown-item span{

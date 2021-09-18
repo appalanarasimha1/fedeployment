@@ -52,3 +52,8 @@ position: relative;
     width: 100%;
     z-index: 99;
 }
+.searchHeading{
+    /* position: fixed; */
+    width: 100%;
+    z-index: 99;
+}
