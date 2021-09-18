@@ -220,8 +220,6 @@ export class DocumentComponent implements OnChanges {
   }
 
   getComments() {
-    '/id/eef8a0d4-b828-41dc-95bf-a0f310cd6f5e/@comment/?pageSize=10&currentPageIndex=0';
-
     let loading = true;
     let error;
     const queryParams = {};
