@@ -318,15 +318,21 @@ color: #000000;
   display: none;
 }
 .dropdown .dropdown-menu.show {
-  left: -139px !important;
+  left: -150px !important;
   top: 25px !important;
   background-color: #000;
   min-width: max-content !important;
 }
-.dropdown .dropdown-menu.show button{
+.settingsDropdown .dropdown-menu.show{
+  left: -119px !important;
+  top: 25px !important;
+  background-color: #000;
+  min-width: max-content !important;
+}
+.dropdown .dropdown-menu.show .dropdown-item{
   color: #fff;
 }
-.dropdown .dropdown-menu.show button span{
+.dropdown .dropdown-menu.show .dropdown-item span{
   text-align: right;
   float: right;
   padding-left: 15px;
