@@ -253,7 +253,7 @@
                         <ul>
                           <li>
                             Created {{toDateString(selectedFile.properties['dc:created'])}} by
-                            <span style="color: yellow;">{{selectedFile.properties['dc:creator'].id}}</span></li>
+                            <span style="color: #EBC03F;">{{selectedFile.properties['dc:creator'].id}}</span></li>
 
                           <li>State <br>{{selectedFile.state}}</li>
 
@@ -261,7 +261,7 @@
 
                           <li>Last Modified <br>{{toDateString(selectedFile.lastModified)}}</li>
 
-                          <li>Contributors <br><span style="color: yellow;">{{getNames(selectedFile.properties['dc:contributors'])}}</span></li>
+                          <li>Contributors <br><span style="color: #EBC03F;">{{getNames(selectedFile.properties['dc:contributors'])}}</span></li>
 
                           <li>
                             Dimensions <br>{{selectedFile.properties['picture:info'].width}} x
