@@ -10,18 +10,17 @@ const apiVersion1 = '/nuxeo/api/v1';
   providedIn: 'root'
 })
 export class ApiService {
-  headers: Headers;
+  headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Accept-Encoding': 'gzip, deflate',
+    accept: 'text/plain,application/json, application/json',
+    'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
+    'enrichers.document': 'thumbnail,permissions,preview',
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    properties: '*'
+  };
 
   constructor(private http: HttpClient) {
-    this.headers = new Headers({
-      'Access-Control-Allow-Origin': '*',
-      'Accept-Encoding': 'gzip, deflate',
-      accept: 'text/plain,application/json, application/json',
-      'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-      'enrichers.document': 'thumbnail,permissions,preview',
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
-      properties: '*'
-    });
   }
 
   get(urlAddress: string, options?: any) {

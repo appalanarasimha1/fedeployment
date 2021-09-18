@@ -35,7 +35,7 @@ export class DocumentComponent implements OnChanges {
   selectedFileUrl: string;
   favourite: boolean;
   active = 1;
-  showShadow = true;
+  showShadow = false;
   selectedTab;
   showLoader = false;
   comments = [];
@@ -50,7 +50,6 @@ export class DocumentComponent implements OnChanges {
 
   ngOnChanges(changes: any) {
     if (changes.documents.currentValue && changes.documents.currentValue.length) {
-      this.showLoader = false;
       this.resetValues();
       this.segregateDocuments(changes.documents.currentValue);
       if (this.imageSliceInput >= this.images.length) {
@@ -147,17 +146,18 @@ export class DocumentComponent implements OnChanges {
 
   // added for modal
   open(content, file) {
+    this.showShadow = false;
     let fileRendition;
     this.selectedFile = file;
     this.getComments();
     this.favourite = file.contextParameters.favorites.isFavorite;
     this.markRecentlyViewed(file);
-    file.properties['picture:views'].map(item => {
-      if (item.title.toLowerCase().includes('original')) {
+    file.contextParameters.renditions.map(item => {
+      if (item.url.toLowerCase().includes('original')) {
         fileRendition = item;
       }
     });
-    this.selectedFileUrl = this.getAssetUrl(fileRendition.content.data);
+    this.selectedFileUrl = this.getAssetUrl(fileRendition.url);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -196,7 +196,7 @@ export class DocumentComponent implements OnChanges {
   }
 
   openInfo(data: string) {
-    if (this.showShadow || this.selectedTab === data) {
+    if (!this.showShadow || this.selectedTab === data) {
       this.showShadow = !this.showShadow;
     }
     this.selectedTab = data;
@@ -206,15 +206,15 @@ export class DocumentComponent implements OnChanges {
     let loading = true;
     let error;
     this.favourite = !this.favourite;
-    this.nuxeo.nuxeoClient.request(apiRoutes.MARK_FAVOURITE, { body: { context: 'hello' } })
-      .post().then((docs) => {
-        console.log(docs.entries[0]);
-        loading = false;
-      }).catch((err) => {
-        console.log('search document error = ', err);
-        error = `${error}. `;
-        loading = false;
-      });
+    const body = {
+      context: {},
+      input: this.selectedFile.uid,
+      params: {}
+    };
+    this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
+      console.log(docs.entries[0]);
+      loading = false;
+    });
   }
 
   getDownloadFileEstimation(data: any) {

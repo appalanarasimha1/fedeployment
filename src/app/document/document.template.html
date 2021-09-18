@@ -110,7 +110,7 @@
           </div>
           <div class="popupTabSec">
             <img src="{{selectedFileUrl}}" style="width: 100%;">
-            <div class="myTabContentMain" [ngClass]="{'hide': showShadow}">
+            <div class="myTabContentMain" [ngClass]="{'hide': !showShadow}">
               <div class="tab-content myTabContent" id="myTabContent">
                 <!-- use class myTabContent -->
                 <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
