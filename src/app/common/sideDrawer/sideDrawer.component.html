@@ -25,9 +25,8 @@
                <div class="sidebarList pb-3">
                   <h6>Sector</h6>
                   <ul class="flexible pt-2 pb-2 sideList btn-group" (click)=selectSector($event)>
-                     <li *ngFor="let sector of sectors" class="mr-2 mb-3" style="cursor: not-allowed !important;">
-                        <input type="checkbox" class="btn-check" id="env" autocomplete="off" disabled
-                           style="cursor: not-allowed;">
+                     <li *ngFor="let sector of sectors" class="mr-2 mb-3">
+                        <input type="checkbox" class="btn-check" id="env" autocomplete="off">
                         <label class="btn btn-outline-primary" for="env">{{sector.key}}</label>
                      </li>
                   </ul>

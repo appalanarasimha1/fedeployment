@@ -40,6 +40,13 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-xl-12 col-md-12 ">
+        <h2 class="noresult">Sorry !! No results available</h2>
+      </div>
+    </div>
+
+
+    <div class="row">
       <div class="col-xl-12 flexible" style="justify-content: space-between;">
         <p class="imgHead pb-4">Images</p>
         <a class="fileCount pb-4" href="#">{{images.length}} images</a>
@@ -58,371 +65,38 @@
         </li>
       </ul>
 
-      <ng-template #preview let-modal class="imgPopUpTab">
-        <!-- <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> -->
-        <div class="modal-body ">
-          <div class="modalHead">
-            <div class="row flexible" style="justify-content: space-between;">
-              <div class="col-xl-2 col-md-2">
-                <img src="../../assets/images/User.svg" style="width: 50px;">
-                <span>Ahmed A.</span>
-              </div>
-              <div class="col-xl-4 col-md-4">
-                <ul class="flexible">
-                  <li>
-                    <a placement="bottom" ngbTooltip="Favourites">
-                      <img *ngIf="favourite" (click)="markFavourite(selectedFile, false)"
-                        src="../../assets/images/yellow-star.svg">
-                      <img *ngIf="!favourite" (click)="markFavourite(selectedFile, true)"
-                        src="../../assets/images/star.svg">
-                    </a>
-                  </li>
-                  <li>
-                    <a placement="bottom" ngbTooltip="Add">
-                      <img src="../../assets/images/add-circle.svg">
-                    </a>
-                  </li>
-                  <li>
-                    <a placement="bottom" ngbTooltip="Download">
-
-                      <div ngbDropdown class="d-inline-block downloadDrop">
-                        <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
-                            src="../../assets/images/Download.svg"></a>
-                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{view.content.data}}"
-                            style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}} 
-                            <span>{{getDownloadFileEstimation(view.content.length)}}</span>
-                          </a>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
+<div class="card-view">
+  <ul class="flexible">
+    <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index" >
+      <div style="background-color: #F9F7F2;padding: 20px;">
+        <div class="row">
+          <div class="col-xl-6 col-md-6" style="position: relative;">
+            	<p>Young man walking in desert</p>
+              <div class="username">
+                <span>
+                  <img src="../../assets/images/user.png" style="width: 20px;">
+                </span>
+                <span>Jing L.</span>
               </div>
             </div>
-          </div>
-          <div class="popupTabSec">
-            <img src="{{selectedFileUrl}}" style="width: 100%;">
-            <div class="myTabContentMain" [ngClass]="{'hide': showShadow}">
-              <div class="tab-content myTabContent" id="myTabContent">
-                <!-- use class myTabContent -->
-                <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
-                  <div class="timeline-content">
-                    <ul>
-                      <li *ngFor="let log of selectedFile.contextParameters.audit">
-                        <p><span>{{log.principalName}}</span> {{getEventString(log.eventId)}} {{getTime(log.eventDate,
-                          false)}} ago</p>
-                      </li>
-                      <!-- <li>
-                        <p>You blocked the file 1 hour ago</p>
-                      </li>
-                      <li>
-                        <p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p>
-                      </li>
-                      <li>
-                        <p>You unblocked the file 22 minutes ago</p>
-                      </li>
-                      <li>
-                        <p>You blocked the file 1 hour ago</p>
-                      </li>
-                      <li>
-                        <p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p>
-                      </li>
-                      <li>
-                        <p>You unblocked the file 22 minutes ago</p>
-                      </li>
-                      <li>
-                        <p>You blocked the file 1 hour ago</p>
-                      </li>
-                      <li>
-                        <p><span>Jing L.</span> updated the file lifecycle state 2 hours ago</p>
-                      </li> -->
-                    </ul>
-                  </div>
-                </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                  <div class="comment-content">
-                    <ul>
-                      <li class="flexible" style="align-items: unset;">
-                        <div>
-                          <img src="../../assets/images/User.svg">
-                        </div>
-                        <div>
-                          <p>You <span>2 hours ago</span></p>
-                          <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
-                        </div>
-                      </li>
-                      <li class="flexible" style="align-items: unset;">
-                        <div>
-                          <img src="../../assets/images/User.svg">
-                        </div>
-                        <div>
-                          <p>You <span>2 hours ago</span></p>
-                          <p>This image can be the splash screen background for our tourism event @Luis Castro</p>
-                        </div>
-                      </li>
-                    </ul>
-                    <form>
-                      <input type="text" placeholder="Write a comment here">
-                    </form>
-                  </div>
-                </div>
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                  <div class="info-content">
-                    <div class="row">
-                      <div class="col-xl-6 col-md-6">
-                        <ul>
-                          <li>
-                            Created {{toDateString(selectedFile.properties['dc:created'])}} by
-                            {{selectedFile.properties['dc:creator'].id}}</li>
-
-                          <li>State <br>{{selectedFile.state}}</li>
-
-                          <li>Version</li>
-
-                          <li>Last Modified <br>{{toDateString(selectedFile.lastModified)}}</li>
-
-                          <li>Contributors <br>{{getNames(selectedFile.properties['dc:contributors'])}}</li>
-
-                          <li>
-                            Dimensions <br>{{selectedFile.properties['picture:info'].width}} x
-                            {{selectedFile.properties['picture:info'].height}}
-                          </li>
-
-                          <li>
-                            Format <br>{{selectedFile.properties['picture:info'].format}}
-                          </li>
-                          <li>
-                            Colour Profile <br>{{selectedFile.properties['picture:info'].colorSpace}}
-                          </li>
-                          <li>
-                            Bit Depth per Channel <br>{{selectedFile.properties['picture:info'].depth}}
-                          </li>
-                          <li>
-                            Weight <br>{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-xl-6 col-md-6">
-                        <ul>
-                          <li>
-                            Description <br>{{selectedFile.properties['dc:description'] ||
-                            selectedFile.properties['imd:image_description']}}
-                          </li>
-                          <li>EXIF
-                            <br>
-                            Date {{selectedFile.properties['dc:created']}}
-                            <br>
-                            Orientation {{selectedFile.properties['imd:orientation']}}
-                            <br>
-                            Aperture {{selectedFile.properties['imd:fnumber']}}
-                            <br>
-                            Exposure {{selectedFile.properties['imd:exposure_time']}}
-                            <br>
-                            ISO {{selectedFile.properties['imd:iso_speed_ratings']}}
-                            <br>
-                            Focal Length {{selectedFile.properties['imd:focalLength']}}
-                          </li>
-                          <li>IPTC
-                            <br>
-                            Copyright {{selectedFile.properties['imd:copyright']}}
-                            <br>
-                            Rights {{selectedFile.properties['dc:rights']}}
-                            <br>
-                            Source {{selectedFile.properties['picture:source']}}
-                            <br>
-                            Description {{selectedFile.properties['dc:description']}}
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div class="col-xl-6 col-md-6">
+              <div class="listImg">
+                <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
+                style="width: 100%;border-radius: 8px;">
               </div>
+              
             </div>
-
           </div>
 
-
-          <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset;">
-            <div class="mb-5 mb-2" style="width: 70%">
-              <span class="main-heading">{{selectedFile.properties['dc:description']}}</span>
-              <span class="yellowBtn">Internal Use ©</span>
-            </div>
-            <div class="flexible" style="align-items: unset;">
-              <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link active" placement="bottom" ngbTooltip="Timeline" id="home-tab" data-bs-toggle="tab"
-                    (click)="openInfo('timeline')" href="#timeline" role="tab" aria-controls="home"
-                    aria-selected="true"><img src="../../assets/images/clock.svg"></a>
-
-                </li>
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" id="profile-tab" placement="bottom" ngbTooltip="Comments" data-bs-toggle="tab"
-                    (click)="openInfo('comments')" href="#profile" role="tab" aria-controls="profile"
-                    aria-selected="false"><img src="../../assets/images/Comments.svg"></a>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" id="contact-tab" placement="bottom" ngbTooltip="Info" data-bs-toggle="tab"
-                    (click)="openInfo('info')" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
-                    <img src="../../assets/images/Info.svg"></a>
-                </li>
-              </ul>
-
-
-              <ul class="iconsList">
-
-                <li>
-                  <a>
-                    <div ngbDropdown class="d-inline-block downloadDrop settingsDropdown">
-                      <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img src="../../assets/images/threedots.svg" style="height: 24px;"></a>
-                      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-                        <a  href="#"  ngbDropdownItem>Share</a>
-                        <a  href="#"  ngbDropdownItem>Publish file</a>
-                        <a  href="#"  ngbDropdownItem>Stop notifications</a>
-                        <a  href="#"  ngbDropdownItem>Add to clipboard</a>
-                        <a  href="#"  ngbDropdownItem>Export</a>
-                        <a  href="#"  ngbDropdownItem>Start process</a>
-                        <a  href="#"  ngbDropdownItem>Replace file</a>
-                        <a  href="#"  ngbDropdownItem>Delete file</a>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <!-- <div>
-              <h2 class="main-modal-head">Related Images</h2>
-              <ul *ngIf="!showListView" class="set-width portfolio-list"
-                style="list-style: none;margin: unset; padding: 0; align-items: unset;">
-                <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
-                  <a (click)="open(preview, image)">
-                    <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
-                      class="w-100 shadow-1-strong rounded" alt="">
-                  </a>
-                </li>
-              </ul>
-            </div> -->
-            <!-- <section class="lpSecThree">
-              <h2 class="main-modal-head">Related collections</h2>
-              <ul class="flexible">
-                <li class="">
-                  <div class="flexible tripDivOne">
-                    <div>
-                      <img src="../../assets/images/Picture1.png" class="tripImg1">
-                    </div>
-                    <div style="display: grid;">
-                      <img src="../../assets/images/gallery-3.png" class="tripImg2">
-                      <img src="../../assets/images/gallery-4.png" class="tripImg3">
-                    </div>
-                  </div>
-                  <div class="tripDivTwo">
-                    <p>Trips</p>
-                    <span>27 photos curated by Jing L.</span>
-                  </div>
-                </li>
-                <li class="">
-                  <div class="flexible tripDivOne">
-                    <div>
-                      <img src="../../assets/images/Picture1.png" class="tripImg1">
-                    </div>
-                    <div style="display: grid;">
-                      <img src="../../assets/images/gallery-3.png" class="tripImg2">
-                      <img src="../../assets/images/gallery-4.png" class="tripImg3">
-                    </div>
-                  </div>
-                  <div class="tripDivTwo">
-                    <p>Trips</p>
-                    <span>27 photos curated by Jing L.</span>
-                  </div>
-                </li>
-                <li class="">
-                  <div class="flexible tripDivOne">
-                    <div>
-                      <img src="../../assets/images/Picture1.png" class="tripImg1">
-                    </div>
-                    <div style="display: grid;">
-                      <img src="../../assets/images/gallery-3.png" class="tripImg2">
-                      <img src="../../assets/images/gallery-4.png" class="tripImg3">
-                    </div>
-                  </div>
-                  <div class="tripDivTwo">
-                    <p>Trips</p>
-                    <span>27 photos curated by Jing L.</span>
-                  </div>
-                </li>
-                <li class="">
-                  <div class="flexible tripDivOne">
-                    <div>
-                      <img src="../../assets/images/Picture1.png" class="tripImg1">
-                    </div>
-                    <div style="display: grid;">
-                      <img src="../../assets/images/gallery-3.png" class="tripImg2">
-                      <img src="../../assets/images/gallery-4.png" class="tripImg3">
-                    </div>
-                  </div>
-                  <div class="tripDivTwo">
-                    <p>Trips</p>
-                    <span>27 photos curated by Jing L.</span>
-                  </div>
-                </li>
-              </ul>
-            </section> -->
-          </div>
         </div>
-      </ng-template>
-
-
-
-      <div *ngIf="showListView" class="card-view">
-        <ul class="flexible">
-          <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
-            <div style="background-color: #F9F7F2;padding: 20px;">
-              <div class="row">
-                <div class="col-xl-6 col-md-6" style="position: relative;">
-                  <p>Young man walking in desert</p>
-                  <div class="username">
-                    <span>
-                      <img src="../../assets/images/user.png" style="width: 20px;">
-                    </span>
-                    <span>Jing L.</span>
-                  </div>
-                </div>
-                <div class="col-xl-6 col-md-6">
-                  <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
-                    style="width: 100%;border-radius: 8px;">
-                </div>
-              </div>
-
-            </div>
-          </li>
-        </ul>
-      </div>
-
-
+      </li>
+    </ul>
+  </div>
+</div>
       <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show
         more</div>
-
-      <!-- List view Images -->
-
-      <!-- <div class="col-lg-4 mb-4 mb-lg-0">
-        <img src="../../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded mb-4" alt="" />
-        <img src="../../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded mb-4" alt="" />
-      </div>
-      <div class="col-lg-4 mb-4 mb-lg-0">
-        <img src="../../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded mb-4" alt="" />
-
-        <img src="../../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded mb-4" alt="" />
-      </div> -->
-
       <!-- Gallery -->
-    </div>
+  
     <div class="row pt-5">
       <div class="col-xl-12 flexible" style="justify-content: space-between;">
         <p class="imgHead pb-4">Videos</p>
@@ -461,4 +135,5 @@
 
     </div>
   </div>
+
 </section>

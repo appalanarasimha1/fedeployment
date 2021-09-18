@@ -198,9 +198,19 @@ button.btn-primary:focus, button.btn-primary:hover {
 
 h1, h2, h3, h4, h5, h6, p {
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
+  /* font-family: 'Open Sans', sans-serif; */
 }
-
+.selected-item a{
+  color: #000 !important;
+}
+.selected-item{
+  margin: 2px 0px;
+}
+.multiselect-dropdown .dropdown-btn .selected-item{
+  max-width: 94px !important;
+  font-size: 13px !important;
+  height: 24px !important;
+}
 .no-gutters, .no-gutters > [class^="col-"],
 .no-gutters, .no-gutters > [class*=" col-"] {
   padding-right: 0;
