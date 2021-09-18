@@ -64,7 +64,14 @@
                         <li [ngbNavItem]="2">
                           <a ngbNavLink>Recently viewed</a>
                           <ng-template ngbNavContent>
-                            <p>Recently viewed content</p>
+                            <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+                                <li *ngFor="let item of recentlyViewed">
+                                    <a href="#">
+                                        <img src="{{getAssetUrl(item.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
+                                        alt="">
+                                    </a>
+                                </li>
+                            </ul>
                           </ng-template>
                         </li>
                         <!-- <li [ngbNavItem]="3">

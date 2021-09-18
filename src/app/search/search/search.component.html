@@ -1,7 +1,7 @@
 
 
 <div class="main">
-    <app-loader [show]="false"></app-loader>
+    <app-loader [show]="loading"></app-loader>
     <app-sub-header (searchTextOutput)="searchDocuments($event)"></app-sub-header>
     <app-side-drawer [inputMetaData]="metaData" (searchTextOutput)="searchDocuments($event)"></app-side-drawer>
 </div>

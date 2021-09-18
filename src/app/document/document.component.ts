@@ -15,7 +15,7 @@ import { ApiService } from '../services/api.service';
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './document.template.html'
 })
-export class DocumentComponent implements OnChanges {
+export class DocumentComponent implements OnInit, OnChanges {
   @Input() documents: object[] = [];
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   images = [];
@@ -40,6 +40,7 @@ export class DocumentComponent implements OnChanges {
   showLoader = false;
   comments = [];
   commentText: string;
+  recentlyViewed = [];
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -47,6 +48,10 @@ export class DocumentComponent implements OnChanges {
     public nuxeo: NuxeoService,
     private apiService: ApiService,
   ) { }
+
+  ngOnInit() {
+    this.recentlyViewed = JSON.parse(localStorage.getItem('Administrator-default-nuxeo-recent-documents'));
+  }
 
   ngOnChanges(changes: any) {
     if (changes.documents.currentValue && changes.documents.currentValue.length) {

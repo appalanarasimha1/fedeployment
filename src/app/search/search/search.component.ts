@@ -40,6 +40,7 @@ export class SearchComponent implements OnInit {
     this.loading = true;
     this.error = undefined;
     this.documents = undefined;
+    const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40}; //, sectors: `["Sport"]`
     for (const key in data) {
       if (typeof data[key] !== 'string' && typeof data[key] !== 'number') {
@@ -54,7 +55,7 @@ export class SearchComponent implements OnInit {
       }
     }
 
-    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers: { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*' } })
+    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } )
       .get(
         //       {
         //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or

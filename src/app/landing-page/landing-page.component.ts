@@ -21,6 +21,7 @@ export class LandingPageComponent implements OnInit {
     this.getTasks();
     this.getCollections();
     this.getEdited();
+    this.recentlyViewed = JSON.parse(localStorage.getItem('Administrator-default-nuxeo-recent-documents'));
   }
 
   getFavorites() {

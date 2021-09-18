@@ -6,7 +6,12 @@
 </div> -->
 <app-loader [show]="showLoader"></app-loader>
 <section class="search-subpage pt-2 pb-5">
-  <div class="container">
+  <div *ngIf="!videos.length && !images.length && !docs.length" class="row">
+    <div class="col-xl-12 col-md-12 ">
+      <h2 class="noresult">No results available!</h2>
+    </div>
+  </div>
+  <div *ngIf="videos.length || images.length || docs.length" class="container">
     <div class="row flexible" style="justify-content: space-between;">
       <div class="col-xl-4">
         <!-- <p class="pb-3 searchP">Traveller</p> TODO: pass search term from sub-header to search and then to here -->
@@ -39,17 +44,11 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xl-12 col-md-12 ">
-        <h2 class="noresult">Sorry !! No results available</h2>
-      </div>
-    </div>
 
-
-    <div class="row">
+    <div *ngIf="images.length" class="row">
       <div class="col-xl-12 flexible" style="justify-content: space-between;">
         <p class="imgHead pb-4">Images</p>
-        <a class="fileCount pb-4" href="#">{{images.length}} images</a>
+        <a class="fileCount pb-4" >{{images.length}} images</a>
       </div>
       <!-- Gallery -->
 
@@ -65,14 +64,15 @@
         </li>
       </ul>
 
+      <!-- modal window start -->
       <ng-template #preview let-modal class="imgPopUpTab">
         <div class="modal-body ">
           <div class="modalHead">
             <div class="row flexible" style="justify-content: space-between;">
               <div class="col-xl-2 col-md-2">
-                <img src="../../assets/images/User.svg" style="width: 50px;">
+                <!-- <img src="../../assets/images/User.svg" style="width: 50px;"> -->
                 <img src="../../assets/images/black-user.png" style="width: 50px;">
-                <span>Ahmed A.</span>
+                <span>{{selectedFile.properties['dc:creator'].id}}</span>
               </div>
               <div class="col-xl-4 col-md-4">
                 <ul class="flexible">
@@ -97,7 +97,7 @@
                             src="../../assets/images/Download.svg"></a>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                           <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{view.content.data}}"
-                            style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}} 
+                            style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}}
                             <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                           </a>
                         </div>
@@ -253,7 +253,8 @@
                         <ul>
                           <li>
                             Created {{toDateString(selectedFile.properties['dc:created'])}} by
-                            <span style="color: #EBC03F;">{{selectedFile.properties['dc:creator'].id}}</span></li>
+                            <span style="color: #EBC03F;">{{selectedFile.properties['dc:creator'].id}}</span>
+                          </li>
 
                           <li>State <br>{{selectedFile.state}}</li>
 
@@ -261,7 +262,9 @@
 
                           <li>Last Modified <br>{{toDateString(selectedFile.lastModified)}}</li>
 
-                          <li>Contributors <br><span style="color: #EBC03F;">{{getNames(selectedFile.properties['dc:contributors'])}}</span></li>
+                          <li>Contributors <br><span
+                              style="color: #EBC03F;">{{getNames(selectedFile.properties['dc:contributors'])}}</span>
+                          </li>
 
                           <li>
                             Dimensions <br>{{selectedFile.properties['picture:info'].width}} x
@@ -354,16 +357,17 @@
                 <li>
                   <a>
                     <div ngbDropdown class="d-inline-block downloadDrop settingsDropdown">
-                      <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img src="../../assets/images/threedots.svg" style="height: 18px;"></a>
+                      <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img
+                          src="../../assets/images/threedots.svg" style="height: 18px;"></a>
                       <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-                        <a  href="#"  ngbDropdownItem>Share</a>
-                        <a  href="#"  ngbDropdownItem>Publish file</a>
-                        <a  href="#"  ngbDropdownItem>Stop notifications</a>
-                        <a  href="#"  ngbDropdownItem>Add to clipboard</a>
-                        <a  href="#"  ngbDropdownItem>Export</a>
-                        <a  href="#"  ngbDropdownItem>Start process</a>
-                        <a  href="#"  ngbDropdownItem>Replace file</a>
-                        <a  href="#"  ngbDropdownItem>Delete file</a>
+                        <a href="#" ngbDropdownItem>Share</a>
+                        <a href="#" ngbDropdownItem>Publish file</a>
+                        <a href="#" ngbDropdownItem>Stop notifications</a>
+                        <a href="#" ngbDropdownItem>Add to clipboard</a>
+                        <a href="#" ngbDropdownItem>Export</a>
+                        <a href="#" ngbDropdownItem>Start process</a>
+                        <a href="#" ngbDropdownItem>Replace file</a>
+                        <a href="#" ngbDropdownItem>Delete file</a>
                       </div>
                     </div>
                   </a>
@@ -452,37 +456,33 @@
         </div>
       </ng-template>
 
-<div class="col-xl-12 col-md-12">
-  <div *ngIf="showListView" class="card-view">
-    <ul class="flexible">
-      <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
-        <div style="background-color: #F9F7F2;padding: 20px;">
-          <div class="row">
-            <div class="col-xl-6 col-md-6" style="position: relative;">
-              <p>Young man walking in desert</p>
-              <div class="username">
-                <span>
-                  <img src="../../assets/images/user.png" style="width: 20px;">
-                </span>
-                <span>Jing L.</span>
+      <div class="col-xl-12 col-md-12">
+        <div *ngIf="showListView" class="card-view">
+          <ul class="flexible">
+            <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
+              <div style="background-color: #F9F7F2;padding: 20px;">
+                <div class="row">
+                  <div class="col-xl-6 col-md-6" style="position: relative;">
+                    <p>{{image.properties['dc:title']}}</p>
+                    <div class="username">
+                      <span>
+                        <img src="../../assets/images/user.png" style="width: 20px;">
+                      </span>
+                      <span>{{image.properties['dc:creator'].id}}</span>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-md-6">
+                    <div (click)="open(preview, image)" class="listImg">
+                      <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
+                        style="width: 100%;border-radius: 8px;">
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="col-xl-6 col-md-6">
-              <div class="listImg">
-                <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
-                style="width: 100%;border-radius: 8px;">
-              </div>
-              
-            </div>
-          </div>
-
+            </li>
+          </ul>
         </div>
-      </li>
-    </ul>
-  </div>
-</div>
-     
-
+      </div>
 
       <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show
         more</div>
@@ -501,7 +501,8 @@
 
       <!-- Gallery -->
     </div>
-    <div class="row pt-5">
+
+    <div *ngIf="videos.length" class="row pt-5">
       <div class="col-xl-12 flexible" style="justify-content: space-between;">
         <p class="imgHead pb-4">Videos</p>
         <a class="fileCount pb-4" href="#">{{videos.length}} videos</a>
@@ -522,8 +523,7 @@
       </div>
     </div>
 
-
-    <div class="row pt-5">
+    <div *ngIf="docs.length" class="row pt-5">
       <div class="col-xl-12 flexible" style="justify-content: space-between;">
         <p class="imgHead pb-4">Documents</p>
         <a class="fileCount pb-4" href="#">{{docs.length}} documents</a>
