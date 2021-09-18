@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NuxeoService } from '../services/nuxeo.service';
 import { apiRoutes } from '../common/config';
+import * as moment from 'moment';
 
 
 
@@ -36,8 +37,9 @@ export class DocumentComponent implements OnChanges {
   selectedFileUrl: string;
   favourite: boolean;
   active = 1;
-  showShadow = false;
+  showShadow = true;
   selectedTab;
+  showLoader = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -47,6 +49,7 @@ export class DocumentComponent implements OnChanges {
 
   ngOnChanges(changes: any) {
     if (changes.documents.currentValue && changes.documents.currentValue.length) {
+      this.showLoader = false;
       this.resetValues();
       this.segregateDocuments(changes.documents.currentValue);
       if (this.imageSliceInput >= this.images.length) {
@@ -213,7 +216,7 @@ export class DocumentComponent implements OnChanges {
   }
 
   getDownloadFileEstimation(data: any) {
-    return `${(data.length / 1024) > 1024 ? ((data.length / 1024) / 1024).toFixed(2) + ' MB' : (data.length / 1024).toFixed(2) + ' KB'}`;
+    return `${(data / 1024) > 1024 ? ((data / 1024) / 1024).toFixed(2) + ' MB' : (data / 1024).toFixed(2) + ' KB'}`;
   }
 
   getComments() {
@@ -245,5 +248,57 @@ export class DocumentComponent implements OnChanges {
         "numberOfReplies":0}
       ]}
     */
+  }
+
+  getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
+    if (!fromDate) { //NOTE: when in development phase, for the notifications which did not have createdOn field
+      return showHours ? `yesterday` : `1 day`;
+    }
+    const today = toDate ? toDate : moment();
+
+    const daysDifference = moment(today).diff(moment(fromDate), 'days');
+    if (daysDifference === 0 ) {
+      let output = `${this.getDoubleDigit(new Date(fromDate).getUTCHours() + 3)}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
+      if (!showHours) {
+        output = `${moment(today).diff(moment(fromDate), 'hours')} hours`;
+      }
+      return output;
+    } else if (daysDifference === 1) {
+      return showHours ? 'yesterday' : `1 day`;
+    } else {
+      return showHours ? `${daysDifference} days ago` : `${daysDifference} days`;
+    }
+  }
+
+  getDoubleDigit(value: number) {
+    if (value < 10) {
+        return '0' + value;
+    }
+    return value;
+  }
+
+  getEventString(event: string): string {
+    let result = event;
+    switch (event) {
+      case 'download':
+        result = 'downloaded';
+        break;
+      case 'documentCreated':
+        result = 'created document';
+        break;
+    }
+    return result;
+  }
+
+  toDateString(date: string): string {
+    return `${new Date(date).toDateString()}`;
+  }
+
+  getNames(users: any) {
+    let result = '';
+    users.map(user => {
+      result += user.id + ', ';
+    });
+    return result;
   }
 }
