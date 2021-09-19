@@ -29,3 +29,35 @@
     filter: invert(1);
     width: 18px;
   }
+  .portfolio-list{
+    -webkit-column-count: 3;
+      -webkit-column-gap: 0;
+      -moz-column-count: 3;
+      -moz-column-gap: 0;
+      column-count: 4;
+      column-gap: 0;
+  }
+  .portfolio-list li {
+    width: 100%;
+    float: left;
+    padding: 0 4px;
+    margin: 4px 0;
+    border-radius: 8px;
+  }
+  .set-width {
+    width: calc(100% + 20px);
+    margin-left: -10px;
+  }
+  .commonHeading{
+    font-size: 24px;
+line-height: 22px;
+font-weight: bold;
+color: #000000;
+  }
+  .clear{
+    float: right;
+    font-size: 14px;
+line-height: 22px;
+text-decoration-line: underline;
+color: #737373;
+  }
