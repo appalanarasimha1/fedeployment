@@ -18,8 +18,12 @@
   width: 100%;
   float: left;
   padding: 0 4px;
-  margin: 4px 0;
+  /* margin: 4px 0; */
   border-radius: 8px;
+}
+ul.set-width.portfolio-list li a {
+    margin-bottom: 7px;
+    display: inline-block;
 }
 .set-width {
   width: calc(100% + 20px);
