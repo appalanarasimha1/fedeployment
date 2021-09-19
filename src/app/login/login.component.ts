@@ -16,10 +16,11 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    if((this.username && !this.username.trim()) || (this.password && !this.password.trim())) {
+    if((this.username && this.username.trim()) && (this.password)) {
+      this.nuxeo.authenticateUser(this.username, this.password);
       return;
     }
-    this.nuxeo.authenticateUser(this.username, this.password);
+    return;
   }
 
   logout() {
