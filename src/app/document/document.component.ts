@@ -50,7 +50,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.recentlyViewed = JSON.parse(localStorage.getItem('Administrator-default-nuxeo-recent-documents'));
+    this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED));
   }
 
   ngOnChanges(changes: any) {
@@ -339,5 +339,11 @@ export class DocumentComponent implements OnInit, OnChanges {
       result += user.id + ', ';
     });
     return result;
+  }
+
+  clearRecentlyViewed() {
+    localStorage.removeItem(localStorageVars.RECENTLY_VIEWED);
+    this.recentlyViewed = [];
+    return;
   }
 }
