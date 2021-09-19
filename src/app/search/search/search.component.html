@@ -6,4 +6,87 @@
     <app-side-drawer [inputMetaData]="metaData" (searchTextOutput)="searchDocuments($event)"></app-side-drawer>
 </div>
   <!-- <button (click)="connectToNuxeo()">Connect to nuxeo server</button> -->
+
+<section>
+  <div class="container">
+    <div class="row flexible" style="justify-content: space-between;">
+      <div class="col-xl-4 col-md-4 mb-4">
+        <h2 class=" commonHeading">Recently viewed</h2>
+        </div>
+        <div class="col-xl-2 col-md-2 mb-4">
+          <p class="clear">Clear</p>
+        </div>
+        <div class="col-xl-12 col-md-12">
+        <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+          <li>
+            <a href="#">
+                <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+                alt="">
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
+                alt="">
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+                alt="">
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
+                alt="">
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
+                alt="">
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+                alt="">
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+                alt="">
+            </a>
+        </li>
+        <li>
+          <a href="#">
+              <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+              alt="">
+          </a>
+      </li>
+      <li>
+          <a href="#">
+              <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+              alt="">
+          </a>
+      </li>
+      <li>
+        <a href="#">
+            <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
+            alt="">
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
+            alt="">
+        </a>
+    </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</section>
 <app-content [documents]="documents" (searchTextOutput)="searchDocuments($event)"></app-content>
