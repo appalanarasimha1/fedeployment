@@ -599,3 +599,287 @@ font-weight: 600;
   color: #737373;
   cursor: pointer;
 }
+
+
+
+/* Start New CSS Umesh */
+.white-bg{
+  background-color: #fff !important;
+}
+/* .cardBlock{
+  background: #F9F7F2;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+  opacity: 1;
+}
+.cardBlock:hover::after{
+  background: #000;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+  content: '';
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+  opacity: 0.3;
+} */
+
+
+.card-view ul.cardList{
+  display: block;
+  margin: 0px -5px;
+}
+.card-view ul.cardList li{
+  width: 50%;
+  float: left;
+  margin: 0px;
+  padding: 0px 5px 10px;
+}
+.cardBlock{
+  background: #F9F7F2;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.cardBlock:after{
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.cardBlock:hover:after{
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.cardBlockContentHover{
+  opacity: 0;
+  z-index: 99;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.cardBlock:hover .cardBlockContentHover{
+  opacity: 1;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 20px;
+  width: 100%;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.card-view .cardBlockContentHover ol, .set-width .cardBlockContentHover ol{
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+.card-view .cardBlockContentHover ol li, .set-width .cardBlockContentHover ol li{
+  width: 50%;
+  float: left;
+  margin: 0px;
+}
+
+/* custom checkbox start */
+.form-group-custom {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.form-group-custom input {
+  padding: 0;
+  height: initial;
+  width: initial;
+  margin-bottom: 0;
+  display: none;
+  cursor: pointer;
+}
+
+.form-group-custom label {
+  position: relative;
+  cursor: pointer;
+  border: 0px;
+  background: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.form-group-custom label:before {
+  content:'';
+  -webkit-appearance: none;
+  border: 2px solid #006B44;
+  padding: 10px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-right: 0px;
+  text-align: left;
+  background: #006B44;
+  border-radius: 8px;
+  height: 40px;
+  width: 40px;
+  left: 0px;
+  top: 0px;
+}
+
+.form-group-custom input:checked + label:after,
+.form-group-custom input + label:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 9px;
+  left: 17px;
+  width: 6px;
+  height: 20px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.form-group-custom input + label:after{
+  border-color:#A3A3A3;
+}
+/* custom checkbox end */
+.hover-icon-group{
+  display: block;
+  float: right;
+  width: 40px;
+}
+.hover-icon{
+  display: block;
+  background: #fff;
+  border-radius: 8px;
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  margin-bottom: 15px;
+  float: right;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.hover-icon:hover{
+  background: #006B44;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.hover-icon.download-icon {
+  margin: 0px;
+  bottom: 20px;
+  position: absolute;
+}
+.hover-icon.star-icon{
+  background: url(~/../../../../assets/images/star.svg) no-repeat center center #fff;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.hover-icon.plus-icon{
+  background: url(~/../../../../assets/images/plus.svg) no-repeat center center #fff;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.hover-icon.download-icon{
+  background: url(~/../../../../assets/images/download.svg) no-repeat center center #fff;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.hover-icon.star-icon:hover{
+  background: url(~/../../../../assets/images/star-white.svg) no-repeat center center #e0b803;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.hover-icon.plus-icon:hover{
+  background: url(~/../../../../assets/images/plus-white.svg) no-repeat center center #006B44;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.hover-icon.download-icon:hover{
+  background: url(~/../../../../assets/images/download-white.svg) no-repeat center center #006B44;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.username span {
+  display: inline-block;
+  margin-right: 6px;
+  height: 34px;
+  width: 34px;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.username span img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pa-0{
+  padding: 0px !important;
+}
+/* End New CSS Umesh */

@@ -24,7 +24,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     asset_width_agg: { buckets: [] },
     asset_height_agg: { buckets: [] },
     video_duration_agg: { buckets: [] },
-    sectors: { buckets: []}
+    sectors: { buckets: [] }
   };
   metaData = {
     system_primaryType_agg: { buckets: [] },
@@ -214,7 +214,11 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   selectSector(event: any) {
-    return event.target.outerText;
+    const docType = event.target.outerText;
+    const index = this.searchCriteria['sectors'].indexOf(docType);
+    index > -1 ? this.searchCriteria['sectors'].splice(index, 1) : this.searchCriteria['sectors'].push(docType);
+    this.emitData(this.searchCriteria);
+    return;
   }
 
   selectDoctype(event: any): void {
@@ -223,6 +227,24 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     index > -1 ? this.searchCriteria['system_primaryType_agg'].splice(index, 1) : this.searchCriteria['system_primaryType_agg'].push(docType);
     this.emitData(this.searchCriteria);
     return;
+  }
+
+  isActive(key: string, value: string): boolean {
+    let result = false;
+    if (key === 'modifiedDate') {
+      this.modifiedDate.dc_modified_agg.map(item => {
+        if (item.toLowerCase() === value.toLowerCase()) {
+          result = true;
+        }
+      });
+      return result;
+    }
+    this.searchCriteria[key].map(item => {
+      if (item.toLowerCase() === value.toLowerCase()) {
+        result = true;
+      }
+    });
+    return result;
   }
 
   createQuery(value: string) {
@@ -248,6 +270,11 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   deSelectFormat(data: any): void {
+    if (!data.key && !data.length) {
+      this.searchCriteria['system_mimetype_agg'] = [];
+      this.emitData(this.searchCriteria);
+      return;
+    }
     const mimeType = data.key;
     const index = this.searchCriteria['system_mimetype_agg'].indexOf(mimeType);
     this.searchCriteria['system_mimetype_agg'].splice(index, 1);
@@ -269,6 +296,11 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   deSelectWidth(data: any) {
+    if (!data.key && !data.length) {
+      this.searchCriteria['asset_width_agg'] = [];
+      this.emitData(this.searchCriteria);
+      return;
+    }
     const mimeType = data.key;
     const index = this.searchCriteria['asset_width_agg'].indexOf(mimeType);
     this.searchCriteria['asset_width_agg'].splice(index, 1);
@@ -290,6 +322,11 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   deSelectHeight(data: any) {
+    if (!data.key && !data.length) {
+      this.searchCriteria['asset_height_agg'] = [];
+      this.emitData(this.searchCriteria);
+      return;
+    }
     const mimeType = data.key;
     const index = this.searchCriteria['asset_height_agg'].indexOf(mimeType);
     this.searchCriteria['asset_height_agg'].splice(index, 1);
@@ -311,6 +348,11 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   deSelectVideoDuration(data: any) {
+    if (!data.key && !data.length) {
+      this.searchCriteria['video_duration_agg'] = [];
+      this.emitData(this.searchCriteria);
+      return;
+    }
     const mimeType = data.key;
     const index = this.searchCriteria['video_duration_agg'].indexOf(mimeType);
     this.searchCriteria['video_duration_agg'].splice(index, 1);
@@ -318,9 +360,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     return;
   }
 
-  selectModifiedDate(event: any) {
-    let mimeType = event.target.value;
-    let index = this.modifiedDate['dc_modified_agg'].indexOf(mimeType);
+  selectModifiedDate(value: string) {
+    const mimeType = value;
+    const index = this.modifiedDate['dc_modified_agg'].indexOf(mimeType);
     index > -1 ? this.modifiedDate['dc_modified_agg'].splice(index, 1) : this.modifiedDate['dc_modified_agg'].push(mimeType);
     this.emitData(this.modifiedDate);
     return;

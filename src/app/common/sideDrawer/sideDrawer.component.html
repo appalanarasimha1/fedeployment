@@ -22,12 +22,12 @@
                      </li>
                   </ul>
                </div>
-               <div class="sidebarList pb-3">
+               <div *ngIf="sectors.length" class="sidebarList pb-3">
                   <h6>Sector</h6>
                   <ul class="flexible pt-2 pb-2 sideList btn-group" (click)=selectSector($event)>
-                     <li *ngFor="let sector of sectors" class="mr-2 mb-3">
-                        <input type="checkbox" class="btn-check" id="env" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="env">{{sector.key}}</label>
+                     <li *ngFor="let sector of sectors; let i = index" class="mr-2 mb-3">
+                        <input type="checkbox" class="btn-check" id="env{{i}}" autocomplete="off">
+                        <label [ngClass]="{'active': isActive('sectors', sector.key)}" class="btn btn-outline-primary" [attr.for]="'env'+i">{{sector.key}}</label>
                      </li>
                   </ul>
                </div>
@@ -38,7 +38,7 @@
                         class="mr-2 ">  
                         <!-- add active class in li -->
                         <input type="checkbox" class="btn-check" id="img{{i}}" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="img{{i}}">{{fileType.key}}</label>
+                        <label [ngClass]="{'active': isActive('system_primaryType_agg', fileType.key)}" class="btn btn-outline-primary" [attr.for]="'img'+i">{{fileType.key}}</label>
                      </li>
                   </ul>
                </div>
@@ -60,14 +60,14 @@
                   <h6>Format</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="mimeTypeData"
                      (onSelect)="selectMimeType($event)" (onSelectAll)="selectMimeType($event)"
-                     (onDeSelect)="deSelectFormat($event)"></ng-multiselect-dropdown>
+                     (onDeSelect)="deSelectFormat($event)" (onDeSelectAll)="deSelectFormat($event)"></ng-multiselect-dropdown>
                </div>
 
                <div *ngIf="showImageSize" class="sidebarList pb-3">
                   <h6>Width</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assetWidthData"
                      (onSelect)="selectWidth($event)" (onSelectAll)="selectWidth($event)"
-                     (onDeSelect)="deSelectWidth($event)"></ng-multiselect-dropdown>
+                     (onDeSelect)="deSelectWidth($event)" (onDeSelectAll)="deSelectWidth($event)"></ng-multiselect-dropdown>
                   <!-- <div class="dropdown">
              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -85,7 +85,7 @@
                   <h6>Height</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assetHeightData"
                      (onSelect)="selectHeight($event)" (onSelectAll)="selectHeight($event)"
-                     (onDeSelect)="deSelectHeight($event)"></ng-multiselect-dropdown>
+                     (onDeSelect)="deSelectHeight($event)" (onDeSelectAll)="deSelectHeight($event)"></ng-multiselect-dropdown>
                   <!-- <div class="dropdown">
                      <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -103,7 +103,9 @@
                   <h6>Video Size</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="videoSizeData"
                      (onSelect)="selectVideoDuration($event)" (onSelectAll)="selectVideoDuration($event)"
-                     (onDeSelect)="deSelectVideoDuration($event)"></ng-multiselect-dropdown>
+                     (onDeSelect)="deSelectVideoDuration($event)"
+                     (onDeSelectAll)="deSelectVideoDuration($event)"></ng-multiselect-dropdown>
+
                   <!-- <div class="dropdown">
                      <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -150,23 +152,32 @@
                      <!-- <input type="color" id="head" name="head" value="#e66465" disabled style="cursor: not-allowed;"> -->
                   </div>
                </div>
+
                <div class="sidebarList pt-3">
                   <h6>Updated date</h6>
                   <div class="dropdown">
                      <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton11" aria-expanded="false" data-bs-toggle="dropdown">
-                        All
+                        Select value
                      </button>
-                     <ul (click)="selectModifiedDate($event)" class="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton11">
-                        <li><a class="dropdown-item" href="#">All </a></li>
-                        <li><a class="dropdown-item" href="#" value="last24h">Last 24 hours</a></li>
-                        <li><a class="dropdown-item" href="#">Last week</a></li>
-                        <li><a class="dropdown-item" href="#">Last month</a></li>
-                        <li><a class="dropdown-item" href="#">Last year</a></li>
-                        <li><a class="dropdown-item" href="#">More than 1 year ago</a></li>
+                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton11">
+                        <li (click)="selectModifiedDate('last24h')"><a [ngClass]="{'active': isActive('modifiedDate', 'last24h')}" class="dropdown-item" style="cursor: pointer">Last 24 hours</a></li>
+                        <li (click)="selectModifiedDate('lastWeek')"><a [ngClass]="{'active': isActive('modifiedDate', 'lastWeek')}" class="dropdown-item" style="cursor: pointer">Last week</a></li>
+                        <li (click)="selectModifiedDate('lastMonth')"><a [ngClass]="{'active': isActive('modifiedDate', 'lastMonth')}" class="dropdown-item" style="cursor: pointer">Last month</a></li>
+                        <li (click)="selectModifiedDate('lastYear')"><a [ngClass]="{'active': isActive('modifiedDate', 'lastYear')}" class="dropdown-item" style="cursor: pointer">Last year</a></li>
+                        <li (click)="selectModifiedDate('priorToLastYear')"><a [ngClass]="{'active': isActive('modifiedDate', 'priorToLastYear')}" class="dropdown-item" style="cursor: pointer">More than 1 year ago</a></li>
                      </ul>
                   </div>
                </div>
+               <!-- <div class="sidebarList file-type pb-3">
+                  <h6>Updated date</h6>
+                  <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">
+                     <li *ngFor="let fileType of metaData.system_primaryType_agg.buckets; let i = index"
+                        class="mr-2">
+                        <input type="checkbox" class="btn-check" id="img{{i}}" autocomplete="off">
+                        <label [ngClass]="{'active': isActive('system_primaryType_agg', fileType.key)}" class="btn btn-outline-primary" [attr.for]="'img'+i">{{fileType.key}}</label>
+                     </li>
+                  </ul>
+               </div> -->
 
             </div>
          </div>

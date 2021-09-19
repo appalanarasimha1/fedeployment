@@ -54,6 +54,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
+    this.resetValues();
     if (changes.documents.currentValue && changes.documents.currentValue.length) {
       this.resetValues();
       this.segregateDocuments(changes.documents.currentValue);

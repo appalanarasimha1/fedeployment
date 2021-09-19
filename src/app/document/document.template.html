@@ -106,7 +106,51 @@
           <div *ngIf="showListView" class="card-view">
             <ul class="flexible">
               <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
-                <div style="background-color: #F9F7F2;padding: 20px;">
+
+
+
+                <div class="cardBlock">
+                  <div class="cardBlockContent">
+                    <div class="row">
+                      <div class="col-xl-6 col-md-6" style="position: relative;">
+                        <p>{{image.properties['dc:title']}}</p>
+                        <div class="username">
+                          <span>
+                            <img src="../../assets/images/card-small-pic.jpg">
+                          </span>
+                          {{image.properties['dc:creator'].id}}
+                        </div>
+                      </div>
+                      <div (click)="open(preview, image)" class="col-xl-6 col-md-6">
+                        <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded" style="width: 100%;border-radius: 8px !important;" alt="" />
+                        <!-- <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
+                          style="width: 100%;border-radius: 8px;"> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cardBlockContentHover">
+                    <ol>
+                      <li>
+                        <div class="form-group-custom">
+                          <input type="checkbox" id="html{{i}}">
+                          <label for="html{{i}}"></label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="hover-icon-group">
+                          <div class="hover-icon star-icon"></div>
+                          <div class="hover-icon plus-icon"></div>
+                          <div class="hover-icon download-icon"></div>
+                        </div>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+
+
+
+
+                <!-- <div style="background-color: #F9F7F2;padding: 20px;">
                   <div class="row">
                     <div class="col-xl-6 col-md-6" style="position: relative;">
                       <p>{{image.properties['dc:title']}}</p>
@@ -124,7 +168,11 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
+              
+              
+              
+              
               </li>
             </ul>
           </div>

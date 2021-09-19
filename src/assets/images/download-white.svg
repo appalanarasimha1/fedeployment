@@ -1,0 +1,10 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20">
+	<title>download-white-svg</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: none;stroke: #a3a3a3;stroke-linecap:round;stroke-linejoin:round } 
+	</style>
+	<path id="Layer" class="shp0" d="M9.97 18.55L9.97 11.05" />
+	<path id="Layer" class="shp0" d="M13.09 15.79L9.97 18.91L6.84 15.79" />
+	<path id="Layer" class="shp0" d="M14.37 13.13L15.31 13.13C17.06 13.13 18.62 12.01 19.17 10.35C19.73 8.69 19.16 6.87 17.76 5.81C16.36 4.76 14.45 4.73 13.01 5.72C12.43 2.63 9.65 0.46 6.51 0.63C3.37 0.81 0.86 3.29 0.63 6.43C0.41 9.56 2.55 12.38 5.62 13" />
+</svg>
