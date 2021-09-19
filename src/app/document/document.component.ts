@@ -140,6 +140,14 @@ export class DocumentComponent implements OnInit, OnChanges {
     return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
+  findOriginalUrlFromRenditions(urls: any[]): string {
+    if (!urls || !urls.length) {
+      return;
+    }
+    const matchedUrl = urls.find(url => url.name.toLowerCase().includes('original'));
+    return this.getAssetUrl(matchedUrl.url);
+  }
+
   viewChange(e: any): void {
     if (e.target.value.toLowerCase() === 'list') {
       this.showListView = true;

@@ -5,6 +5,28 @@
   </a>
 </div> -->
 <app-loader [show]="showLoader"></app-loader>
+
+<section>
+  <div class="container">
+    <div class="row flexible" style="justify-content: space-between;">
+      <div class="col-xl-4 col-md-4 mb-4">
+        <h2 class=" commonHeading">Recently viewed</h2>
+      </div>
+      <div class="col-xl-2 col-md-2 mb-4">
+        <p class="clear">Clear</p>
+      </div>
+      <div class="col-xl-12 col-md-12">
+        <ul class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+          <li *ngFor="let file of recentlyViewed">
+            <a (click)="open(preview, file)">
+              <img src="{{findOriginalUrlFromRenditions(file.contextParameters.renditions)}}" class="w-100 shadow-1-strong rounded" alt="">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="search-subpage pt-2 pb-5">
   <div *ngIf="!videos.length && !images.length && !docs.length" class="row">
     <div class="col-xl-12 col-md-12 ">
@@ -41,7 +63,7 @@
             <button ngbDropdownItem value='dc:nature'>Nature</button>
             <button ngbDropdownItem value='dc:coverage'>Coverage</button>
           </div>
-          </div>
+        </div>
       </div>
       <div class="col-xl-4">
         <div id="view" class="e-btn-group flexible">
@@ -61,7 +83,7 @@
     <div *ngIf="images.length" class="row">
       <div class="col-xl-12 flexible" style="justify-content: space-between;">
         <p class="imgHead pb-4">Images</p>
-        <a class="fileCount pb-4" >{{images.length}} images</a>
+        <a class="fileCount pb-4">{{images.length}} images</a>
       </div>
       <!-- Gallery -->
 
