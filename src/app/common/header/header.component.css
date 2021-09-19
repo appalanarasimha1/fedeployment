@@ -102,3 +102,6 @@ header{
     bottom: 0px;
     left: 0;
 }
+.searchHeading .dropdown-menu li a{
+    color: #000 !important;
+}
