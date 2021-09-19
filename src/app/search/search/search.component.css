@@ -48,16 +48,3 @@
     width: calc(100% + 20px);
     margin-left: -10px;
   }
-  .commonHeading{
-    font-size: 24px;
-line-height: 22px;
-font-weight: bold;
-color: #000000;
-  }
-  .clear{
-    float: right;
-    font-size: 14px;
-line-height: 22px;
-text-decoration-line: underline;
-color: #737373;
-  }
