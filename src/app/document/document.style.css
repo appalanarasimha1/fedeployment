@@ -721,7 +721,7 @@ font-weight: 600;
   -o-transition: .5s ease all;
   transition: .5s ease all;
 }
-.cardBlock:hover .cardBlockContentHover{
+.cardBlock:hover .cardBlockContentHover, .cardBlockContentHover.activeHover{
   opacity: 1;
   position: absolute;
   top: 0px;
