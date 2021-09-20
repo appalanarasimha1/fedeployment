@@ -22,7 +22,7 @@
     height: 100%;
     position: fixed;
     background: #222;
-    z-index: 2;
+    z-index: 99999;
     opacity: 0.7;
 }
 
