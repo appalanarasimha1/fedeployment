@@ -37,7 +37,7 @@
                   <ol>
                     <li>
                       <div class="form-group-custom">
-                        <input type="checkbox" id="html{{i}}" [checked]="file.isChecked" (change)="selectImage($event, file, i, true)">
+                        <input type="checkbox" id="html{{i}}" [checked]="file.isSelected" [(ngModel)]="file.isSelected" (change)="selectImage($event, file, i, true)">
                         <label for="html{{i}}"></label>
                       </div>
                     </li>
@@ -142,7 +142,7 @@
                 <ol>
                   <li>
                     <div class="form-group-custom">
-                      <input type="checkbox" id="html{{i}}" [checked]="image.isChecked" (change)="selectImage($event, image, i)">
+                      <input type="checkbox" id="html{{i}}"  [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
                       <label for="html{{i}}"></label>
                     </div>
                   </li>
@@ -186,7 +186,7 @@
                     <ol>
                       <li>
                         <div class="form-group-custom">
-                          <input type="checkbox" id="html{{i}}" [checked]="image.isChecked" (change)="selectImage($event, image, i)">
+                          <input type="checkbox" id="html{{i}}" [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
                           <label for="html{{i}}"></label>
                         </div>
                       </li>

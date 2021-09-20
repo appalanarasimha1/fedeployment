@@ -84,29 +84,38 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
     if (event.target.checked) {
-      if (isRecent) {
-        this.recentlyViewed[index]['isChecked'] = true;
-      } else {
-        this.images[index]['isChecked'] = true;
-      }
+      // if (isRecent) {
+        // file['isChecked'] = true;
+      // } else {
+      //   file['isChecked'] = true;
+      // }
       this.fileSelected.push(file);
     } else {
       if (this.fileSelected.length) {
-        if (isRecent) {
-          this.recentlyViewed[index]['isChecked'] = false;
-        } else {
-          this.images[index]['isChecked'] = false;
+        let i = -1;
+        // if (isRecent) {
+          // file['isChecked'] = false;
+        // } else {
+        //   file['isChecked'] = false;
+        // }
+        this.fileSelected.map((item, ind) => {
+          if (item.uid === file.uid) {
+            i = ind;
+          }
+        });
+        if (i !== -1) {
+          this.fileSelected.splice(i, 1); // remove the file from selected files
         }
-        this.fileSelected.splice(index, 1); // remove the file from selected files
       }
     }
   }
 
   clearSelected() {
+    const dataToIterate = !this.images.length ? this.recentlyViewed : this.images;
     for (let i = 0; i < this.fileSelected.length; i++) {
-      for (let j = 0; j < this.images.length; j++) {
-        if (this.images[j].uid === this.fileSelected[i].uid) {
-          this.images[i]['isChecked'] = false;
+      for (let j = 0; j < dataToIterate.length; j++) {
+        if (dataToIterate[j].uid === this.fileSelected[i].uid) {
+          dataToIterate[i]['isSelected'] = false;
         }
       }
     }
@@ -116,6 +125,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   segregateDocuments(documents: any[]): void {
     documents.map(item => {
+      item['isSelected'] = false;
       switch (item.type.toLowerCase()) {
         case constants.AUDIO_SMALL_CASE:
           this.audio.push(item);
@@ -236,6 +246,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       return;
     }
 
+    data['isSelected'] = false;
     recentlyViewed.push(data);
     localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
     return;
