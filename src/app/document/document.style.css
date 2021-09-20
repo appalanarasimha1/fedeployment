@@ -59,7 +59,7 @@ label img {
   /* box-shadow: 0 0 5px #333; */
   z-index: -1;
 }
-.dropdown{
+.dropdown, .dropup{
   /* border: 1px solid #404040; */
   border-radius: 8px;
   width: 170px;
@@ -149,7 +149,7 @@ line-height: 22px;
 text-decoration-line: underline;
 color: #737373;
 }
-.dropdown  button{
+.dropdown button, .dropup button{
   display: block;
   width: 100%;
   text-align: left;
@@ -358,7 +358,7 @@ color: #000000;
 .downloadDrop .dropdown-toggle::after{
   display: none;
 }
-.dropdown .dropdown-menu.show {
+.dropdown .dropdown-menu.show,.dropup .dropdown-menu.show {
   left: -150px !important;
   top: 25px !important;
   background-color: #000;
@@ -370,7 +370,7 @@ color: #000000;
   background-color: #000;
   min-width: max-content !important;
 }
-.dropdown .dropdown-menu.show .dropdown-item, .settingsDropdown .dropdown-menu.show .dropdown-item{
+.dropdown .dropdown-menu.show .dropdown-item, .settingsDropdown .dropdown-menu.show .dropdown-item  ,.dropup .dropdown-menu.show .dropdown-item, .settingsDropdown .dropdown-menu.show .dropdown-item{
   color: #fff ;
 }
 .dropdown .dropdown-menu.show .dropdown-item span{
@@ -596,7 +596,7 @@ font-weight: 600;
   min-width: 100% !important;
   /* background-color: #fff !important; */
 }
-.assetsDropdown.dropdown {
+.assetsDropdown.dropdown, .assetsDropdown.dropup {
   border: 1px solid #000;
 }
 /* .assetsDropdown .dropdown-menu.show .dropdown-item{
