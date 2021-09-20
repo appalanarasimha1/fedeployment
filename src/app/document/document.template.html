@@ -58,10 +58,10 @@
     </div>
   </section>
 
-  <section class="search-subpage pt-2 pb-5" style="height: 600px;">
+  <section class="search-subpage pt-2 pb-5" >
     <div *ngIf="!videos.length && !images.length && !docs.length && (!recentlyViewed || !recentlyViewed.length)" class="row">
-      <div class="col-xl-12 col-md-12 ">
-        <h2 class="noresult">No results available!</h2>
+      <div class="col-xl-12 col-md-12 " >
+        <h2 class="noresult" style="height: 600px;">No results available!</h2>
       </div>
     </div>
     <div *ngIf="videos.length || images.length || docs.length" class="container">
