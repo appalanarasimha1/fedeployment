@@ -79,12 +79,12 @@ export class NuxeoService {
   }
 
   logout(): void {
-    // this.http.get(`${this.document.location.origin}/nuxeo/logout`)
-    //   .subscribe((response: any) => {
-    //     this.cookie.deleteAll();
-    //     this.nuxeoClient = null;
-    //     this.router.navigate(['login']);
-    //   });
+    this.http.get(`${this.document.location.origin}/nuxeo/logout`)
+      .subscribe((response: any) => {
+        // this.cookie.deleteAll();
+        // this.nuxeoClient = null;
+        // this.router.navigate(['login']);
+      });
 
     this.cookie.deleteAll();
     localStorage.removeItem('token');
