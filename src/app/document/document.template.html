@@ -84,15 +84,15 @@
         </div> -->
 
 
-          <div ngbDropdown class="d-inline-block mb-4 assetsDropdown" (change)="dropdownMenu($event)">
+          <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
             <button class="btn" id="dropdownBasic4" ngbDropdownToggle>All assets</button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic4">
-              <button ngbDropdownItem value='dc:created'>Created</button>
-              <button ngbDropdownItem value='dc:modified'>Modified</button>
-              <button ngbDropdownItem value='dc:lastContributor'>Last Contibutor</button>
-              <button ngbDropdownItem value='state'>State</button>
-              <button ngbDropdownItem value='dc:nature'>Nature</button>
-              <button ngbDropdownItem value='dc:coverage'>Coverage</button>
+              <button (click)="dropdownMenu($event)" ngbDropdownItem value='dc:created'>Created</button>
+              <button (click)="dropdownMenu($event)" ngbDropdownItem value='dc:modified'>Modified</button>
+              <button (click)="dropdownMenu($event)" ngbDropdownItem value='dc:lastContributor'>Last Contibutor</button>
+              <button (click)="dropdownMenu($event)" ngbDropdownItem value='state'>State</button>
+              <button (click)="dropdownMenu($event)" ngbDropdownItem value='dc:nature'>Nature</button>
+              <button (click)="dropdownMenu($event)" ngbDropdownItem value='dc:coverage'>Coverage</button>
             </div>
           </div>
         </div>
