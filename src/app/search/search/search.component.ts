@@ -11,11 +11,12 @@ import { apiRoutes } from 'src/app/common/config';
   templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnInit {
-  searchValue = '';
+  searchValue: IHeaderSearchCriteria = {ecm_fulltext: '', highlight: ''};
   documents = undefined;
   loading = false;
   error = undefined;
   metaData = {};
+  filtersParams = {};
 
   // TypeScript public modifiers
   constructor(
@@ -36,10 +37,24 @@ export class SearchComponent implements OnInit {
     // this.nuxeo.nuxeoClientConnect();
   }
 
-  searchDocuments(data: IHeaderSearchCriteria) {
+  searchTerm(data: IHeaderSearchCriteria) {
+    this.searchValue = data;
+    this.searchDocuments(data);
+  }
+
+  filters(data: IHeaderSearchCriteria) {
+    this.filtersParams = data;
+    this.searchDocuments(data);
+  }
+
+  searchDocuments(dataParam: IHeaderSearchCriteria) {
     this.loading = true;
     this.error = undefined;
     this.documents = undefined;
+    this.filtersParams['ecm_fulltext'] = this.searchValue.ecm_fulltext || '';
+    this.filtersParams['highlight'] = this.searchValue.highlight || '';
+    const data = this.filtersParams;
+    // let data = Object.assign(this.filtersParams || {}, this.searchValue);
     const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40}; //, sectors: `["Sport"]`
     for (const key in data) {
