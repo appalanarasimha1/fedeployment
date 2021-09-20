@@ -865,7 +865,7 @@ font-weight: 600;
   -o-transition: .5s ease all;
   transition: .5s ease all;
 }
-.hover-icon.star-icon:hover{
+.hover-icon.star-icon:hover, .hover-icon.star-icon.active{
   background: url(~/../../../../assets/images/star-white.svg) no-repeat center center #e0b803;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
