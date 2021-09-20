@@ -105,18 +105,7 @@ export class NuxeoService {
       headers: this.defaultHeader
     });
 
-    this.nuxeoClient.requestAuthenticationToken('My App', '123', 'my-device', 'rw')
-      .then((token) => {
-        this.createClientWithToken(token);
-        localStorage.setItem('token', token);
-        this.router.navigate(['/']);
-        // do something with the new `nuxeo` client using token authentication
-        // store the token, and next time you need to create a client, use it
-      })
-      .catch((err) => {
-        this.router.navigate(['/login']);
-        throw err;
-      });
+    return this.nuxeoClient.requestAuthenticationToken('My App', '123', 'my-device', 'rw');
   }
 
   createClientWithToken(token) {
