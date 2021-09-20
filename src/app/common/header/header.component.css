@@ -75,6 +75,8 @@ header{
 .searchHeading{
     position: fixed;
     width: 100%;
+    background-color: #000;
+    z-index: 999;
 }
 .searchHeading .nav-item a:before{
     content: '';

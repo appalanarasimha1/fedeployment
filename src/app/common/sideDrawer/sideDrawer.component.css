@@ -1,53 +1,35 @@
 .sidepanel {
-    height: 100%; /* Specify a height */
+    height: 100%; 
     width: 0;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
+    position: fixed; 
+    z-index: 9999; 
     top: 0;
     left: 0px;
     padding: unset;
- background-image: url(~/../../../../assets/images/SidePanel.png); /* Grey*/
+    background-image: url(~/../../../../assets/images/SidePanel.png); 
     overflow-x: hidden; 
-    /* overflow-y: scroll; */
     padding: 25px 15px;
     transition: 0.5s;
     background-repeat: no-repeat;
     background-size: cover;
 }
-/* .sidepanel a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-} */
-
-/* When you mouse over the navigation links, change their color */
 .sidepanel a:hover {
     color: #f1f1f1;
 }
-
-/* Position and style the close button (top right corner) */
 .sidepanel.closeBtn {
     left: -50px;
 }
-
-/* Style the button that is used to open the sidepanel */
 .openbtn {
     font-size: 20px;
     cursor: pointer;
-    /* background-color: #111; */
     color: white;
-    /* padding: 10px 15px; */
     border: none;
     transition: 0.4s;
     background-color: unset;
-    z-index: 99;
+    z-index: 9999;
+    position: fixed;
 }
-
 .openbtn:hover {
-
     background-color: transparent;
 }
 #main{
@@ -59,12 +41,10 @@
     transform: rotate(180deg);
 }
 .closeBtn#main-sidebar{
-    /* width: 50px !important; */
     width: 0px !important;
 }
 .form-group{
     display: block;
-    /* text-align: center; */
 }
 .accordion-button::after{
     display: none;
@@ -75,7 +55,6 @@
 .shiftFilter{
     left: 290px ;
 }
-
 .sidebarList ul{
     list-style: none;
     padding: 0px;
@@ -112,7 +91,8 @@
     border-radius: 8px;
     width: 100%;
     transition: unset;
-}.btn-outline-primary:focus{
+}
+.btn-outline-primary:focus{
     outline: 0;
     box-shadow: unset !important;
 }
@@ -140,7 +120,6 @@
     box-shadow: unset;
     padding: unset;
 }
-
 .accordion-body{
     padding: unset;
 }
