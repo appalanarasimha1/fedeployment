@@ -262,7 +262,7 @@ color: #000000;
 }
 /* modal css */
 .modalHead{
-  padding: 8px 5px;
+  padding: 8px 15px;
   background-color: #fff;
 }
 .modalHead ul, .iconsList{
@@ -680,7 +680,7 @@ font-weight: 600;
   -o-transition: .5s ease all;
   transition: .5s ease all;
 }
-.cardBlock:after{
+.cardBlock:after  {
   content: '';
   display: block;
   height: 100%;
@@ -694,7 +694,21 @@ font-weight: 600;
   top: 0px;
   left: 0px;
 }
-.cardBlock:hover:after{
+.activeHover + .cardBlock:after    {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.cardBlock:hover:after {
   content: '';
   display: block;
   height: 100%;
@@ -951,4 +965,6 @@ li .videoBlock  {
   border-radius: 8px;
   padding: 20px;
   position: relative;
+  background: #F9F7F2;
+
 }
