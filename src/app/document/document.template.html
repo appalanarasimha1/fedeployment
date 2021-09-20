@@ -17,11 +17,40 @@
         </div>
         <div class="col-xl-12 col-md-12">
           <ul class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
-            <li *ngFor="let file of recentlyViewed">
-              <a (click)="open(preview, file)">
+            <li *ngFor="let file of recentlyViewed; let i = index">
+              <!-- <a (click)="open(preview, file)">
                 <img src="{{findOriginalUrlFromRenditions(file.contextParameters.renditions)}}"
                   class="w-100 shadow-1-strong rounded" alt="">
-              </a>
+              </a> -->
+
+
+              <div class="cardBlock pa-0" style="border-radius: 0px;">
+                <div class="cardBlockContent">
+                  <div class="row">
+                    <div (click)="open(preview, file)" class="col-xl-12 col-md-12">
+                        <img src="{{getAssetUrl(file.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong" alt=""/>
+                        <!-- <img src="{{getAssetUrl(file.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded" alt=""> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="cardBlockContentHover">
+                  <ol>
+                    <li>
+                      <div class="form-group-custom">
+                        <input type="checkbox" id="html{{i}}" [checked]="file.isChecked" (change)="selectImage($event, file, i, true)">
+                        <label for="html{{i}}"></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="hover-icon-group">
+                        <div class="hover-icon star-icon"></div>
+                        <div class="hover-icon plus-icon" (click)="open(preview, file)"></div>
+                        <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
@@ -95,10 +124,38 @@
           <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
 
             <!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
-            <a (click)="open(preview, image)">
+            <!-- <a (click)="open(preview, image)">
               <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
                 alt="">
-            </a>
+            </a> -->
+
+            <div class="cardBlock pa-0" style="border-radius: 0px;">
+              <div class="cardBlockContent">
+                <div class="row">
+                  <div (click)="open(preview, image)" class="col-xl-12 col-md-12">
+                      <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong" alt=""/>
+                      <!-- <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded" alt=""> -->
+                  </div>
+                </div>
+              </div>
+              <div class="cardBlockContentHover">
+                <ol>
+                  <li>
+                    <div class="form-group-custom">
+                      <input type="checkbox" id="html{{i}}" [checked]="image.isChecked" (change)="selectImage($event, image, i)">
+                      <label for="html{{i}}"></label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="hover-icon-group">
+                      <div class="hover-icon star-icon"></div>
+                      <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
+                      <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
           </li>
         </ul>
 
@@ -106,9 +163,6 @@
           <div *ngIf="showListView" class="card-view">
             <ul class="flexible">
               <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
-
-
-
                 <div class="cardBlock">
                   <div class="cardBlockContent">
                     <div class="row">
@@ -132,15 +186,15 @@
                     <ol>
                       <li>
                         <div class="form-group-custom">
-                          <input type="checkbox" id="html{{i}}">
+                          <input type="checkbox" id="html{{i}}" [checked]="image.isChecked" (change)="selectImage($event, image, i)">
                           <label for="html{{i}}"></label>
                         </div>
                       </li>
                       <li>
                         <div class="hover-icon-group">
                           <div class="hover-icon star-icon"></div>
-                          <div class="hover-icon plus-icon"></div>
-                          <div class="hover-icon download-icon"></div>
+                          <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
+                          <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                         </div>
                       </li>
                     </ol>
@@ -199,23 +253,45 @@
       <div *ngIf="videos.length" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Videos</p>
-          <a class="fileCount pb-4" href="#">{{videos.length}} videos</a>
+          <a class="fileCount pb-4">{{videos.length}} videos</a>
         </div>
-        <div class="col-xl-12">
+
+        <div class="col-xl-12"> <!--  *ngIf="!showListView" -->
           <ul class="flexible videosList">
             <li *ngFor="let v of videos.slice(0, videoSliceInput)" class="">
               <a href="{{baseUrl}}/nuxeo/ui/#!/browse{{v.path}}">
-                <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}"></a>
+                <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}">
+              </a>
             </li>
-            <!-- <li>
-            <a href="#"><img src="../../../assets/images/tourism 1.png"></a>
-          </li> -->
           </ul>
+          </div>
+
+          <!-- TODO: video card view -->
+          <!-- <div class="col-xl-12 col-md-12">
+            <div *ngIf="showListView" class="card-view">
+              <ul class="flexible">
+                <li *ngFor="let v of videos.slice(0, videoSliceInput); let i = index">
+                  <div class="row">
+                    <div class="col-xl-6 col-md-6" style="position: relative;">
+                      <p>{{v.properties['dc:title']}}</p>
+                      <div class="username">
+                        <a href="{{baseUrl}}/nuxeo/ui/#!/browse{{v.path}}">
+                          <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}">
+                        </a>
+                        {{v.properties['dc:creator'].id}}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div> -->
+
+          
           <div *ngIf="!hideVideoShowMoreBtn" (click)="showMore('video')" style="text-align: center; cursor: pointer;">
             Show
             more</div>
 
-        </div>
       </div>
 
       <div *ngIf="docs.length" class="row pt-5">
@@ -422,22 +498,42 @@
                   <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img
                       src="../../assets/images/threedots.svg" style="height: 18px;"></a>
                   <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-                    <a href="#" ngbDropdownItem>Share</a>
-                    <a href="#" ngbDropdownItem>Publish file</a>
-                    <a href="#" ngbDropdownItem>Stop notifications</a>
-                    <a href="#" ngbDropdownItem>Add to clipboard</a>
-                    <a href="#" ngbDropdownItem>Export</a>
-                    <a href="#" ngbDropdownItem>Start process</a>
-                    <a href="#" ngbDropdownItem>Replace file</a>
-                    <a href="#" ngbDropdownItem>Delete file</a>
+                    <a ngbDropdownItem>Share</a>
+                    <a ngbDropdownItem>Publish file</a>
+                    <a ngbDropdownItem>Stop notifications</a>
+                    <a ngbDropdownItem>Add to clipboard</a>
+                    <a ngbDropdownItem>Export</a>
+                    <a ngbDropdownItem>Start process</a>
+                    <a ngbDropdownItem>Replace file</a>
+                    <a ngbDropdownItem>Delete file</a>
                   </div>
                 </div>
               </a>
             </li>
           </ul>
         </div>
-
       </div>
     </div>
   </ng-template>
+
+  <div *ngIf="fileSelected.length" class="footer-listing">
+    <div class="row">
+      <div class="col-md-4 footer-add-items">
+        <span>{{fileSelected.length}} item(s) selected</span>
+        <a (click)="clearSelected()">Clear</a>
+      </div>
+      <div class="col-md-4">
+        <img src="../../assets/images/synchronize-arrow-clock-footer.svg" alt="" class="footer-icons">
+        <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
+      </div>
+      <div class="col-md-4">
+        <img src="../../assets/images/download-all-as-zip.svg" alt="" class="footer-icons">
+        <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons">
+        <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons">
+        <img src="../../assets/images/upload-footer.svg" alt="" class="footer-icons">
+        <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" style="height: 30px;">
+      </div>
+    </div>
+  </div>
+
 </section>

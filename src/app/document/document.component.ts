@@ -41,6 +41,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   comments = [];
   commentText: string;
   recentlyViewed = [];
+  fileSelected = [];
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -54,6 +55,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
+    this.recentlyViewed = [];
     this.resetValues();
     if (changes.documents.currentValue && changes.documents.currentValue.length) {
       this.resetValues();
@@ -77,6 +79,38 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.videos = [];
     this.audio = [];
     this.docs = [];
+    return;
+  }
+
+  selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
+    if (event.target.checked) {
+      if (isRecent) {
+        this.recentlyViewed[index]['isChecked'] = true;
+      } else {
+        this.images[index]['isChecked'] = true;
+      }
+      this.fileSelected.push(file);
+    } else {
+      if (this.fileSelected.length) {
+        if (isRecent) {
+          this.recentlyViewed[index]['isChecked'] = false;
+        } else {
+          this.images[index]['isChecked'] = false;
+        }
+        this.fileSelected.splice(index, 1); // remove the file from selected files
+      }
+    }
+  }
+
+  clearSelected() {
+    for (let i = 0; i < this.fileSelected.length; i++) {
+      for (let j = 0; j < this.images.length; j++) {
+        if (this.images[j].uid === this.fileSelected[i].uid) {
+          this.images[i]['isChecked'] = false;
+        }
+      }
+    }
+    this.fileSelected = [];
     return;
   }
 
@@ -147,6 +181,14 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
     const matchedUrl = urls.find(url => url.name.toLowerCase().includes('original'));
     return this.getAssetUrl(matchedUrl.url);
+  }
+
+  findOriginalUrlFromViews(urls: any[]): string {
+    if (!urls || !urls.length) {
+      return;
+    }
+    const matchedUrl = urls.find(url => url.title.toLowerCase().includes('original'));
+    return this.getAssetUrl(matchedUrl.content.data);
   }
 
   viewChange(e: any): void {
