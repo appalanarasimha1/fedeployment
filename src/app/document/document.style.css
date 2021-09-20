@@ -968,3 +968,6 @@ li .videoBlock  {
   background: #F9F7F2;
 
 }
+.downloadDrop.dropup{
+  width: unset;
+}
