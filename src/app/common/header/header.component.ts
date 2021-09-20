@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { NuxeoService } from '../../services/nuxeo.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-header',
@@ -36,6 +37,14 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    $(window).on( 'scroll', () => {
+      const scroll = $(window).scrollTop();
+      if (scroll >= 400 && scroll <= 9000) {
+        $('.searchHeading').addClass('fixedHeader');
+      } else {
+        $('.searchHeading').removeClass('fixedHeader');
+      }
+    });
   }
 
   selectTab(tab: string) {
