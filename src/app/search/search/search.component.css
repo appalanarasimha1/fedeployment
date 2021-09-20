@@ -48,3 +48,8 @@
     width: calc(100% + 20px);
     margin-left: -10px;
   }
+  ul.set-width.portfolio-list li .cardBlock  {
+    margin-bottom: 3px;
+    display: inline-block;
+    border-radius: 8px;
+  }

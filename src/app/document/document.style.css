@@ -197,10 +197,12 @@ grid-row: span 2;
   /* margin: 4px 0; */
   border-radius: 8px;
 }
-ul.set-width.portfolio-list li a {
-  margin-bottom: -3px;
+ul.set-width.portfolio-list li .cardBlock  {
+  margin-bottom: 3px;
   display: inline-block;
+  border-radius: 8px;
 }
+
 .set-width {
   width: calc(100% + 20px);
   margin-left: -10px;
@@ -836,7 +838,7 @@ font-weight: 600;
   transition: .5s ease all;
 }
 .hover-icon.download-icon{
-  background: url(~/../../../../assets/images/download.svg) no-repeat center center #fff;
+  background: url('~/../../../../assets/images/Download (1).svg') no-repeat center center #fff;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -857,7 +859,7 @@ font-weight: 600;
   transition: .5s ease all;
 }
 .hover-icon.download-icon:hover{
-  background: url(~/../../../../assets/images/download-white.svg) no-repeat center center #006B44;
+  background: url('~/../../../../assets/images/Download (1).svg') no-repeat center center #006B44;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -887,10 +889,15 @@ font-weight: 600;
 /* yello footer css */
 
 .footer-listing{
-  background: linear-gradient(0deg, #EBC03F, #EBC03F);
-  padding: 20px 4%;
-  margin: 0px auto;
-  text-align: center;
+  background: linear-gradient(
+    0deg, #EBC03F, #EBC03F);
+        padding: 20px 4%;
+        margin: 0px auto;
+        text-align: center;
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+        z-index: 99;
 }
 .footer-listing .col-md-4:first-child{
   text-align: left;
