@@ -42,6 +42,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   commentText: string;
   recentlyViewed = [];
   fileSelected = [];
+  sortValue = '';
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
