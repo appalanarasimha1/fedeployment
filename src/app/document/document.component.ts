@@ -25,10 +25,10 @@ export class DocumentComponent implements OnInit, OnChanges {
   private searchCriteria: IHeaderSearchCriteria = {};
   public display = 1;
   imageSliceInput = 9;
-  videoSliceInput = 5;
+  videoSliceInput = 6;
   hideImageShowMoreBtn = true;
   hideVideoShowMoreBtn = true;
-  baseUrl = environment.baseUrl;
+  redirectBaseUrl = environment.redirectBaseUrl;
   showListView = false;
   closeResult = '';
   selectedFile: any; // TODO: add interface, search result entires
