@@ -115,7 +115,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     for (let i = 0; i < this.fileSelected.length; i++) {
       for (let j = 0; j < dataToIterate.length; j++) {
         if (dataToIterate[j].uid === this.fileSelected[i].uid) {
-          dataToIterate[i]['isSelected'] = false;
+          dataToIterate[j]['isSelected'] = false;
         }
       }
     }
