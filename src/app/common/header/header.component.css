@@ -75,7 +75,7 @@ header{
 .searchHeading{
     position: fixed;
     width: 100%;
-
+    	transition: 0.3s;
     z-index: 999;
 }
 .fixedHeader{
