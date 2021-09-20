@@ -331,7 +331,7 @@
                     <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
                         src="../../assets/images/Download.svg"></a>
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                      <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{view.content.data}}"
+                      <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{getAssetUrl(view.content.data)}}"
                         style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}}
                         <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                       </a>
