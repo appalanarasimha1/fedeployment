@@ -25,7 +25,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   getFavorites() {
-    this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ context: {}, params: {} })
+    this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ body: {context: {}, params: {} }})
       .then((response) => { })
       .catch((error) => { });
   }
