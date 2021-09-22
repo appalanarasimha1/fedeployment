@@ -35,7 +35,7 @@
                   <h6>File type</h6>
                   <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">
                      <li *ngFor="let fileType of metaData.system_primaryType_agg.buckets; let i = index"
-                        class="mr-2 ">  
+                        class="mr-2 ">
                         <!-- add active class in li -->
                         <input type="checkbox" class="btn-check" id="img{{i}}" autocomplete="off">
                         <label [ngClass]="{'active': isActive('system_primaryType_agg', fileType.key)}" class="btn btn-outline-primary" [attr.for]="'img'+i">{{fileType.key}}</label>

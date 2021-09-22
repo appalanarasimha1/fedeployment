@@ -19,6 +19,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() documents: object[] = [];
   @Input() documentCount;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
+  @Output() pageCount: EventEmitter<any> = new EventEmitter();
+
   images = [];
   videos = [];
   audio = [];
@@ -156,17 +158,33 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   showMore(docType: string) {
+    console.log(this.imageSliceInput);
+    console.log(this.images.length)
+    console.log(this.documentCount)
+
+
     if (docType === constants.IMAGE_SMALL_CASE) {
       this.imageSliceInput += 9;
-      if (this.imageSliceInput >= this.images.length) {
-        this.hideImageShowMoreBtn = true;
+
+      if (this.imageSliceInput >= this.images.length && this.imageSliceInput <= this.documentCount['Picture']) {
+        this.pageCount.emit({'Picture':1});
+
+        // this.hideImageShowMoreBtn = true;
       }
+      else if(this.imageSliceInput >= this.documentCount['Picture']){
+         this.hideImageShowMoreBtn = true;
+      }
+
       return;
     }
 
     if (docType === constants.VIDEO_SMALL_CASE) {
       this.videoSliceInput += 9;
-      if (this.videoSliceInput >= this.videos.length) {
+      if (this.videoSliceInput >= this.videos.length && this.imageSliceInput <= this.documentCount['Video']) {
+        this.pageCount.emit({'Video':1});
+
+      }
+      else if(this.imageSliceInput >= this.documentCount['Video']){
         this.hideVideoShowMoreBtn = true;
       }
       return;

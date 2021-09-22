@@ -117,6 +117,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   // }
 
   manupulateData(data) {
+
     this.mimeTypeData = [];
     this.assetWidthData = [];
     this.assetHeightData = [];
@@ -209,6 +210,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   emitData(data: any): void {
+
     this.searchTextOutput.emit(data);
     return;
   }
@@ -222,6 +224,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   selectDoctype(event: any): void {
+    console.log('in doc ty')
     let docType = event.target.textContent;
     let index = this.searchCriteria['system_primaryType_agg'].indexOf(docType);
     index > -1 ? this.searchCriteria['system_primaryType_agg'].splice(index, 1) : this.searchCriteria['system_primaryType_agg'].push(docType);

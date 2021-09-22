@@ -6,4 +6,4 @@
     <app-side-drawer [inputMetaData]="metaData" (searchTextOutput)="filters($event)"></app-side-drawer>
 </div>
   <!-- <button (click)="connectToNuxeo()">Connect to nuxeo server</button> -->
-<app-content [documents]="documents" [documentCount]="documentCount" (searchTextOutput)="searchDocuments($event)"></app-content>
+<app-content [documents]="documents" [documentCount]="documentCount" (searchTextOutput)="searchDocuments($event)" (pageCount)="searchDocuments($event,1)"></app-content>

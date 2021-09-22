@@ -12,12 +12,18 @@ import { apiRoutes } from 'src/app/common/config';
 })
 export class SearchComponent implements OnInit {
   searchValue: IHeaderSearchCriteria = {ecm_fulltext: '', highlight: ''};
-  documents = [];
+  documents = undefined;
   loading = false;
   error = undefined;
   metaData = {};
   filtersParams = {};
   documentCount={};
+  pageShown={
+    'Picture':0,
+    'Video':0,
+    'Audio':0
+  };
+extra=0;
 
   // TypeScript public modifiers
   constructor(
@@ -39,25 +45,38 @@ export class SearchComponent implements OnInit {
   }
 
   searchTerm(data: IHeaderSearchCriteria) {
-    this.searchValue = data;
-    this.searchDocuments(data);
+      if(this.extra===0) {
+          this.searchValue = data;
+
+          this.searchDocuments(data);
+          this.extra=this.extra+1
+      }
   }
 
   filters(data: IHeaderSearchCriteria) {
+      if(this.extra===0) {
+          console.log("in filters")
 
-    this.filtersParams = data;
-    this.searchDocuments(data);
+          this.filtersParams = data;
+          this.searchDocuments(data);
+          this.extra=this.extra+1
+
+      }
   }
 
-  searchDocuments(dataParam: IHeaderSearchCriteria) {
+  searchDocuments(dataParam: IHeaderSearchCriteria, pageNumber?:any) {
+
+
     this.loading = true;
     this.error = undefined;
-    this.documents = undefined;
+  //  this.documents = undefined;
     this.filtersParams['ecm_fulltext'] = this.searchValue.ecm_fulltext || '';
     this.filtersParams['highlight'] = this.searchValue.highlight || '';
     const data = this.filtersParams;
    // console.log("filters are ", this.filtersParams)
     // let data = Object.assign(this.filtersParams || {}, this.searchValue);
+
+
     const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40}; //, sectors: `["Sport"]`
 
@@ -73,10 +92,9 @@ export class SearchComponent implements OnInit {
         queryParams[key] = data[key];
       }
     }
-   console.log(queryParams['system_primaryType_agg'])
 
 
-        this.callRequestByFilterType(queryParams['system_primaryType_agg'], queryParams, headers)
+        this.callRequestByFilterType(queryParams['system_primaryType_agg'], queryParams, headers,pageNumber)
 
 
 
@@ -99,10 +117,10 @@ export class SearchComponent implements OnInit {
     //     this.loading = false;
     //   });
   }
-   async callRequestByFilterType(filterType, queryParams,headers){
-    this.documents=[];
-    console.log(queryParams);
-    console.log(filterType)
+   async callRequestByFilterType(filterType, queryParams,headers,pageNumber?:any){
+
+    console.log("pagenumber",pageNumber);
+
      let localdoc=[];
      let localmetaData=[];
     localdoc[0]=[]
@@ -112,10 +130,20 @@ export class SearchComponent implements OnInit {
 
 
     //  queryParams['system_primaryType_agg']=[];
+
     if(filterType.includes('Picture')){
+      if(pageNumber!==undefined) {
+        if (pageNumber['Picture'] === 1) {
+          this.pageShown['Picture'] = this.pageShown['Picture'] + 1
+          queryParams.currentPageIndex = this.pageShown['Picture']
+          queryParams.offset = this.pageShown['Picture']//, sectors: `["Sport"]`
+        }
+      }
+
+
       queryParams['system_primaryType_agg']='["Picture"]';
-      console.log(filterType)
-      console.log(queryParams['system_primaryType_agg'])
+     // console.log(filterType)
+      //console.log(queryParams['system_primaryType_agg'])
        await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } ) .get(
           //       {
           //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
@@ -129,7 +157,7 @@ export class SearchComponent implements OnInit {
        // this.documents.push( docs.entries);
          localmetaData.push(docs.aggregations)
        // this.metaData = docs.aggregations;
-        console.log(this.metaData);
+       // console.log(this.metaData);
         this.loading = false;
       }).catch((error) => {
         console.log('search document error = ', error);
@@ -138,6 +166,13 @@ export class SearchComponent implements OnInit {
       });
     }
     if(filterType.includes('Video')){
+      if(pageNumber!==undefined) {
+        if (pageNumber['Video'] === 1) {
+          this.pageShown['Video'] = this.pageShown['Video'] + 1
+          queryParams.currentPageIndex = this.pageShown['Video']
+          queryParams.offset = this.pageShown['Video']//, sectors: `["Sport"]`
+        }
+      }
       queryParams['system_primaryType_agg']='["Video"]';
       console.log(filterType)
       console.log(queryParams['system_primaryType_agg'])
@@ -164,6 +199,13 @@ export class SearchComponent implements OnInit {
 
     }
      if(filterType.includes('Audio')){
+       if(pageNumber!==undefined) {
+         if (pageNumber['Audio'] === 1) {
+           this.pageShown['Video'] = this.pageShown['Audio'] + 1
+           queryParams.currentPageIndex = this.pageShown['Audio']
+           queryParams.offset = this.pageShown['Audio']//, sectors: `["Sport"]`
+         }
+       }
        queryParams['system_primaryType_agg']='["Video"]';
        console.log(filterType)
        console.log(queryParams['system_primaryType_agg'])
@@ -191,27 +233,35 @@ export class SearchComponent implements OnInit {
      }
     // console.log("after docs")
      //console.log(localdoc[0])
-     console.log(localmetaData)
+
      for(let i=0;i<localdoc[0].length;i++){
-       if(i===0) {
-
-         this.documents = localdoc[0][0]
-         this.metaData=localmetaData[0]
+       console.log(this.documents)
+       if(this.documents===undefined){
+         console.log('others')
+            this.documents = localdoc[0][0]
+            this.metaData=localmetaData[0]
        }
-       else{
-         this.documents=this.documents.concat(localdoc[0][i])
+     else {
+         // if(i===0) {
+         //
+         //   this.documents = this.documents.concat(localdoc[0][i])
+         //   this.metaData=localmetaData[0]
+         // }
+         // else{
+         this.documents = this.documents.concat(localdoc[0][i])
          //this.metaData['system_primaryType_agg']['buckets']=this.metaData['system_primaryType_agg']['buckets'].concat(localmetaData[i]['system_primaryType_agg']['buckets'])
-         this.metaData['system_mimetype_agg']['buckets']=this.metaData['system_mimetype_agg']['buckets'].concat(localmetaData[i]['system_mimetype_agg']['buckets'])
-         this.metaData['system_mimetype_agg']['selection']=this.metaData['system_mimetype_agg']['selection'].concat(localmetaData[i]['system_mimetype_agg']['selection'])
-         this.metaData['asset_width_agg']['buckets']=this.metaData['asset_width_agg']['buckets'].concat(localmetaData[i]['asset_width_agg']['buckets'])
-         this.metaData['asset_height_agg']['buckets']=this.metaData['asset_height_agg']['buckets'].concat(localmetaData[i]['asset_height_agg']['buckets'])
-         this.metaData['video_duration_agg']['buckets']=this.metaData['video_duration_agg']['buckets'].concat(localmetaData[i]['video_duration_agg']['buckets'])
-         this.metaData['sectors']['buckets']=this.metaData['sectors']['buckets'].concat(localmetaData[i]['sectors']['buckets'])
-
+         this.metaData['system_mimetype_agg']['buckets'] = this.metaData['system_mimetype_agg']['buckets'].concat(localmetaData[i]['system_mimetype_agg']['buckets'])
+         this.metaData['system_mimetype_agg']['selection'] = this.metaData['system_mimetype_agg']['selection'].concat(localmetaData[i]['system_mimetype_agg']['selection'])
+         this.metaData['asset_width_agg']['buckets'] = this.metaData['asset_width_agg']['buckets'].concat(localmetaData[i]['asset_width_agg']['buckets'])
+         this.metaData['asset_height_agg']['buckets'] = this.metaData['asset_height_agg']['buckets'].concat(localmetaData[i]['asset_height_agg']['buckets'])
+         this.metaData['video_duration_agg']['buckets'] = this.metaData['video_duration_agg']['buckets'].concat(localmetaData[i]['video_duration_agg']['buckets'])
+         this.metaData['sectors']['buckets'] = this.metaData['sectors']['buckets'].concat(localmetaData[i]['sectors']['buckets'])
        }
+       //}
      }
+    console.log( this.documents);
+     this.extra=0
 
-     console.log(this.documentCount);
 
 
 
