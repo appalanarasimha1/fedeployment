@@ -501,23 +501,10 @@
           </ul>
         </div>
 
-
         <div class="search-tags pt-3 pb-5">
           <ul class="flexible">
-            <li>
-              <a href="#">Travel</a>
-            </li>
-            <li>
-              <a href="#">Hotel</a>
-            </li>
-            <li>
-              <a href="#">Tourist</a>
-            </li>
-            <li>
-              <a href="#">Tourism Industry</a>
-            </li>
-            <li>
-              <a href="#">Tourism Industry</a>
+            <li *ngFor="let tag of selectedFile.properties['nxtag:tags']; let i = index">
+              <a style="cursor: pointer;" >{{tag.label}}</a>
             </li>
           </ul>
         </div>
