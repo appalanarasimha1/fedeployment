@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://10.101.21.58:8089',
+  baseUrl: 'http://10.101.21.31:8080',
   redirectBaseUrl: 'http://10.101.21.58:8089/'
 };
 
