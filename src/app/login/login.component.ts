@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(private nuxeo: NuxeoService, private router: Router) { }
 
   ngOnInit(): void {
-    if (this.nuxeo.nuxeoClient) {
+    if (this.nuxeo.nuxeoClient && localStorage.getItem('token')) {
       this.router.navigate(['/']);
       return;
     }
