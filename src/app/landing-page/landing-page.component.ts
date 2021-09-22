@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { apiRoutes } from '../common/config';
 import { NuxeoService } from '../services/nuxeo.service';
 
@@ -14,9 +15,13 @@ export class LandingPageComponent implements OnInit {
   recentlyViewed = [];
   active = 1;
 
-  constructor(private nuxeo: NuxeoService) { }
+  constructor(private nuxeo: NuxeoService, private router: Router) { }
 
   ngOnInit(): void {
+    if(!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
+      this.router.navigate(['login']);
+      return;
+    }
     this.getFavorites();
     this.getTasks();
     this.getCollections();
@@ -25,7 +30,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   getFavorites() {
-    this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ context: {}, params: {} })
+    this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ body: {context: {}, params: {} }})
       .then((response) => { })
       .catch((error) => { });
   }

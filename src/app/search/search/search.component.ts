@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
 
-    if(!this.nuxeo.nuxeoClient) {
+    if(!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
       this.router.navigate(['login']);
       return;
     }

@@ -880,7 +880,7 @@ font-weight: 600;
   transition: .5s ease all;
 }
 .hover-icon.star-icon:hover, .hover-icon.star-icon.active{
-  background: url(~/../../../../assets/images/star-white.svg) no-repeat center center #e0b803;
+  background: url(~/../../../../assets/images/whiteStar.svg) no-repeat center center #e0b803;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -967,4 +967,7 @@ li .videoBlock  {
   position: relative;
   background: #F9F7F2;
 
+}
+.downloadDrop.dropup{
+  width: unset;
 }
