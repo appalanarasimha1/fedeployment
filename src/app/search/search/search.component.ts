@@ -3,6 +3,7 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { IHeaderSearchCriteria } from '../../common/subHeader/interface';
 import { Router } from '@angular/router';
 import { apiRoutes } from 'src/app/common/config';
+import { SharedService } from 'src/app/services/shared.service';
 // import { ApiService } from '../services/http.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { apiRoutes } from 'src/app/common/config';
   templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnInit {
-  searchValue: IHeaderSearchCriteria = {ecm_fulltext: '', highlight: ''};
+  searchValue: IHeaderSearchCriteria = { ecm_fulltext: '', highlight: '' };
   documents = undefined;
   loading = false;
   error = undefined;
@@ -21,13 +22,13 @@ export class SearchComponent implements OnInit {
   // TypeScript public modifiers
   constructor(
     public nuxeo: NuxeoService,
-    private router: Router
-    ) { }
+    private router: Router, private sharedService: SharedService,
+  ) { }
 
   ngOnInit() {
 
-    if(!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
-      this.router.navigate(['login']);
+    if (!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
+      this.sharedService.redirectToLogin();
       return;
     }
     // this.connectToNuxeo();
@@ -56,7 +57,7 @@ export class SearchComponent implements OnInit {
     const data = this.filtersParams;
     // let data = Object.assign(this.filtersParams || {}, this.searchValue);
     const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
-    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40}; //, sectors: `["Sport"]`
+    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40 }; //, sectors: `["Sport"]`
     for (const key in data) {
       if (typeof data[key] !== 'string' && typeof data[key] !== 'number') {
         data[key].map((item: string) => {
@@ -70,7 +71,7 @@ export class SearchComponent implements OnInit {
       }
     }
 
-    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } )
+    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
       .get(
         //       {
         //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
@@ -86,6 +87,11 @@ export class SearchComponent implements OnInit {
       }).catch((error) => {
         console.log('search document error = ', error);
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
         this.loading = false;
       });
   }

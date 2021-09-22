@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { apiRoutes } from '../common/config';
 import { NuxeoService } from '../services/nuxeo.service';
+import { SharedService } from '../services/shared.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -15,11 +16,11 @@ export class LandingPageComponent implements OnInit {
   recentlyViewed = [];
   active = 1;
 
-  constructor(private nuxeo: NuxeoService, private router: Router) { }
+  constructor(private nuxeo: NuxeoService, private router: Router, private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    if(!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
-      this.router.navigate(['login']);
+    if (!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
+      this.sharedService.redirectToLogin();
       return;
     }
     this.getFavorites();
@@ -30,9 +31,16 @@ export class LandingPageComponent implements OnInit {
   }
 
   getFavorites() {
-    this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ body: {context: {}, params: {} }})
+    this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ body: { context: {}, params: {} } })
       .then((response) => { })
-      .catch((error) => { });
+      .catch((error) => {
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        return;
+      });
   }
 
   getTasks() {
@@ -43,6 +51,11 @@ export class LandingPageComponent implements OnInit {
         this.tasks = response.entries;
       }).catch((error) => {
         console.error('error while fetching tasks on landing page = ', error);
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
         return;
       });
   }
@@ -55,18 +68,28 @@ export class LandingPageComponent implements OnInit {
         this.collections = response.entries;
       }).catch((error) => {
         console.error('error while fetching collections on landing page = ', error);
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
         return;
       });
   }
 
   getEdited() {
     const queryParams = { currentPageIndex: 0, offset: 10, pageSize: 16, queryParams: '/' };
-    const headers = {'enrichers-document': ['thumbnail'], 'fetch-task': 'actors'};
+    const headers = { 'enrichers-document': ['thumbnail'], 'fetch-task': 'actors' };
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_RECENT_EDITED, { queryParams, headers }).get()
       .then((response) => {
         this.recentEdited = response.entries;
       }).catch((error) => {
         console.error('error while fetching recent edited on landing page = ', error);
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
         return;
       });
   }
