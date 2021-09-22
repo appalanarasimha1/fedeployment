@@ -8,6 +8,7 @@ import { NuxeoService } from '../services/nuxeo.service';
 import { apiRoutes } from '../common/config';
 import * as moment from 'moment';
 import { ApiService } from '../services/api.service';
+import { SharedService } from '../services/shared.service';
 @Component({
   selector: 'app-content',
   // Our list of styles in our component. We may add more to compose many styles together
@@ -43,12 +44,14 @@ export class DocumentComponent implements OnInit, OnChanges {
   commentText: string;
   recentlyViewed = [];
   fileSelected = [];
+  sortValue = '';
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
     public nuxeo: NuxeoService,
     private apiService: ApiService,
+    private sharedService: SharedService,
   ) { }
 
   ngOnInit() {
@@ -301,6 +304,11 @@ export class DocumentComponent implements OnInit, OnChanges {
       }).catch((err) => {
         console.log('search document error = ', err);
         error = `${error}. `;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
         loading = false;
       });
 

@@ -18,8 +18,6 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { CookieService } from 'ngx-cookie-service';
 import { FooterComponent } from './common/footer/footer.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
