@@ -23,7 +23,7 @@ export class App {
           origin: '*',
         }
       });
-    const socketPort = 3010;
+    const socketPort = process.env.SOCKET_PORT;
     server.listen(socketPort);
 
     this.app.io.on('connection', (socket: any) => {

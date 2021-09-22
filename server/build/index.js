@@ -7,7 +7,7 @@ var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var app_1 = require("./app");
 var app = new app_1.App().App;
-var port = 4200;
+var port = process.env.PORT || 8080;
 app.listen(port, function (err) {
     if (err) {
         return console.error(err);

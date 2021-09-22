@@ -25,7 +25,7 @@ var App = /** @class */ (function () {
                 origin: '*',
             }
         });
-        var socketPort = 3010;
+        var socketPort = process.env.SOCKET_PORT;
         server.listen(socketPort);
         this.app.io.on('connection', function (socket) {
             console.log('Client connected, socketID = ', socket.id);

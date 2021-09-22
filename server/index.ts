@@ -3,7 +3,7 @@ dotenv.config();
 import {App} from './app';
 
 const app = new App().App;
-const port = 4200;
+const port = process.env.PORT || 8080;
 
 app.listen(port, (err: any) => {
     if (err) {
