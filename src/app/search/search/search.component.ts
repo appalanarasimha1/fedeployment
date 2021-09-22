@@ -12,11 +12,12 @@ import { apiRoutes } from 'src/app/common/config';
 })
 export class SearchComponent implements OnInit {
   searchValue: IHeaderSearchCriteria = {ecm_fulltext: '', highlight: ''};
-  documents = undefined;
+  documents = [];
   loading = false;
   error = undefined;
   metaData = {};
   filtersParams = {};
+  documentCount={};
 
   // TypeScript public modifiers
   constructor(
@@ -43,6 +44,7 @@ export class SearchComponent implements OnInit {
   }
 
   filters(data: IHeaderSearchCriteria) {
+
     this.filtersParams = data;
     this.searchDocuments(data);
   }
@@ -54,9 +56,11 @@ export class SearchComponent implements OnInit {
     this.filtersParams['ecm_fulltext'] = this.searchValue.ecm_fulltext || '';
     this.filtersParams['highlight'] = this.searchValue.highlight || '';
     const data = this.filtersParams;
+   // console.log("filters are ", this.filtersParams)
     // let data = Object.assign(this.filtersParams || {}, this.searchValue);
     const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40}; //, sectors: `["Sport"]`
+
     for (const key in data) {
       if (typeof data[key] !== 'string' && typeof data[key] !== 'number') {
         data[key].map((item: string) => {
@@ -69,25 +73,149 @@ export class SearchComponent implements OnInit {
         queryParams[key] = data[key];
       }
     }
+   console.log(queryParams['system_primaryType_agg'])
 
-    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } )
-      .get(
-        //       {
-        //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
-        // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
-        //  ,{
-        //       enrichers: {'document': ['thumbnail']}
-        //     }
+
+        this.callRequestByFilterType(queryParams['system_primaryType_agg'], queryParams, headers)
+
+
+
+    // this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } )
+    //   .get(
+    //     //       {
+    //     //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
+    //     // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
+    //     //  ,{
+    //     //       enrichers: {'document': ['thumbnail']}
+    //     //     }
+    //   ).then((docs) => {
+    //     this.documents = docs.entries;
+    //     this.metaData = docs.aggregations;
+    //     console.log(docs.entries[0]);
+    //     this.loading = false;
+    //   }).catch((error) => {
+    //     console.log('search document error = ', error);
+    //     this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+    //     this.loading = false;
+    //   });
+  }
+   async callRequestByFilterType(filterType, queryParams,headers){
+    this.documents=[];
+    console.log(queryParams);
+    console.log(filterType)
+     let localdoc=[];
+     let localmetaData=[];
+    localdoc[0]=[]
+     if(filterType===''||filterType===undefined){
+   filterType='["Picture","Video","Audio"]'
+     }
+
+
+    //  queryParams['system_primaryType_agg']=[];
+    if(filterType.includes('Picture')){
+      queryParams['system_primaryType_agg']='["Picture"]';
+      console.log(filterType)
+      console.log(queryParams['system_primaryType_agg'])
+       await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } ) .get(
+          //       {
+          //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
+          // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
+          //  ,{
+          //       enrichers: {'document': ['thumbnail']}
+          //     }
       ).then((docs) => {
-        this.documents = docs.entries;
-        this.metaData = docs.aggregations;
-        console.log(docs.entries[0]);
+        localdoc[0].push(docs.entries)
+           this.documentCount['Picture']=docs.resultsCount
+       // this.documents.push( docs.entries);
+         localmetaData.push(docs.aggregations)
+       // this.metaData = docs.aggregations;
+        console.log(this.metaData);
         this.loading = false;
       }).catch((error) => {
         console.log('search document error = ', error);
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         this.loading = false;
       });
+    }
+    if(filterType.includes('Video')){
+      queryParams['system_primaryType_agg']='["Video"]';
+      console.log(filterType)
+      console.log(queryParams['system_primaryType_agg'])
+       await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } ) .get(
+          //       {
+          //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
+          // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
+          //  ,{
+          //       enrichers: {'document': ['thumbnail']}
+          //     }
+      ).then((docs) => {
+         localdoc[0].push(docs.entries)
+         localmetaData.push(docs.aggregations)
+           this.documentCount['Video']=docs.resultsCount
+       // this.documents = docs.entries;
+       // this.metaData = docs.aggregations;
+        console.log(this.documents);
+        this.loading = false;
+      }).catch((error) => {
+        console.log('search document error = ', error);
+        this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+        this.loading = false;
+      });
+
+    }
+     if(filterType.includes('Audio')){
+       queryParams['system_primaryType_agg']='["Video"]';
+       console.log(filterType)
+       console.log(queryParams['system_primaryType_agg'])
+       await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } ) .get(
+           //       {
+           //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
+           // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
+           //  ,{
+           //       enrichers: {'document': ['thumbnail']}
+           //     }
+       ).then((docs) => {
+         localdoc[0].push(docs.entries)
+         localmetaData.push(docs.aggregations)
+           this.documentCount['Audio']=docs.resultsCount
+         // this.documents = docs.entries;
+         // this.metaData = docs.aggregations;
+         console.log(this.documents);
+         this.loading = false;
+       }).catch((error) => {
+         console.log('search document error = ', error);
+         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+         this.loading = false;
+       });
+
+     }
+    // console.log("after docs")
+     //console.log(localdoc[0])
+     console.log(localmetaData)
+     for(let i=0;i<localdoc[0].length;i++){
+       if(i===0) {
+
+         this.documents = localdoc[0][0]
+         this.metaData=localmetaData[0]
+       }
+       else{
+         this.documents=this.documents.concat(localdoc[0][i])
+         //this.metaData['system_primaryType_agg']['buckets']=this.metaData['system_primaryType_agg']['buckets'].concat(localmetaData[i]['system_primaryType_agg']['buckets'])
+         this.metaData['system_mimetype_agg']['buckets']=this.metaData['system_mimetype_agg']['buckets'].concat(localmetaData[i]['system_mimetype_agg']['buckets'])
+         this.metaData['system_mimetype_agg']['selection']=this.metaData['system_mimetype_agg']['selection'].concat(localmetaData[i]['system_mimetype_agg']['selection'])
+         this.metaData['asset_width_agg']['buckets']=this.metaData['asset_width_agg']['buckets'].concat(localmetaData[i]['asset_width_agg']['buckets'])
+         this.metaData['asset_height_agg']['buckets']=this.metaData['asset_height_agg']['buckets'].concat(localmetaData[i]['asset_height_agg']['buckets'])
+         this.metaData['video_duration_agg']['buckets']=this.metaData['video_duration_agg']['buckets'].concat(localmetaData[i]['video_duration_agg']['buckets'])
+         this.metaData['sectors']['buckets']=this.metaData['sectors']['buckets'].concat(localmetaData[i]['sectors']['buckets'])
+
+       }
+     }
+
+     console.log(this.documentCount);
+
+
+
+
   }
 
 }

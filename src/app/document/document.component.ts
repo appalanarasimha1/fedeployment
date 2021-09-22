@@ -17,6 +17,7 @@ import { ApiService } from '../services/api.service';
 })
 export class DocumentComponent implements OnInit, OnChanges {
   @Input() documents: object[] = [];
+  @Input() documentCount;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   images = [];
   videos = [];

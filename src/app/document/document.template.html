@@ -115,7 +115,7 @@
       <div *ngIf="images.length" class="row">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Images</p>
-          <a class="fileCount pb-4">{{images.length}} images</a>
+          <a class="fileCount pb-4">{{documentCount['Picture']}} images</a>
         </div>
         <!-- Gallery -->
 
@@ -210,7 +210,7 @@
       <div *ngIf="videos.length" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Videos</p>
-          <a class="fileCount pb-4">{{videos.length}} videos</a>
+          <a class="fileCount pb-4">{{documentCount['Video']}} videos</a>
         </div>
 
         <div class="col-xl-12" *ngIf="!showListView"> <!--  *ngIf="!showListView" -->
