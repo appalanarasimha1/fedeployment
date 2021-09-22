@@ -1,5 +1,7 @@
 import * as path from 'path';
 import * as express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import { proxy } from 'jquery';
 
 const allowedExt = [
   '.js',
@@ -16,6 +18,7 @@ const allowedExt = [
 
 export class RouteManager {
   private readonly app: any;
+  private environment = process.env.NODE_ENV === 'demo' ? 'http://10.101.21.58:8089' : 'https://10.101.21.63:8087';
 
   constructor(app: any) {
     this.app = app;
@@ -31,6 +34,12 @@ export class RouteManager {
     // this.app.use('/api/v1/device-management', checkApiAuth, DeviceManagementController.Instance.Router);
     // this.app.use('/api/v1/alerts-management', checkApiAuth, AlertsManagementController.Instance.Router);
     // initialiseServices(app);
+
+    this.app.use('/nuxeo/', createProxyMiddleware({ target: this.environment, changeOrigin: true }));
+    this.app.use('/sockjs-node/', createProxyMiddleware({ target: this.environment, changeOrigin: true }));
+    function proxyMiddleware() {
+
+    }
 
     // Default route.
     this.app.use(express.static(path.resolve(__dirname + '/../../' + '/dist')));

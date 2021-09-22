@@ -22,6 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RouteManager = void 0;
 var path = __importStar(require("path"));
 var express = __importStar(require("express"));
+var http_proxy_middleware_1 = require("http-proxy-middleware");
 var allowedExt = [
     '.js',
     '.ico',
@@ -36,6 +37,7 @@ var allowedExt = [
 ];
 var RouteManager = /** @class */ (function () {
     function RouteManager(app) {
+        this.environment = process.env.NODE_ENV === 'demo' ? 'http://10.101.21.58:8089' : 'https://10.101.21.63:8087';
         this.app = app;
         this.mountRoutes(app);
     }
@@ -48,6 +50,10 @@ var RouteManager = /** @class */ (function () {
         // this.app.use('/api/v1/device-management', checkApiAuth, DeviceManagementController.Instance.Router);
         // this.app.use('/api/v1/alerts-management', checkApiAuth, AlertsManagementController.Instance.Router);
         // initialiseServices(app);
+        this.app.use('/nuxeo/', (0, http_proxy_middleware_1.createProxyMiddleware)({ target: this.environment, changeOrigin: true }));
+        this.app.use('/sockjs-node/', (0, http_proxy_middleware_1.createProxyMiddleware)({ target: this.environment, changeOrigin: true }));
+        function proxyMiddleware() {
+        }
         // Default route.
         this.app.use(express.static(path.resolve(__dirname + '/../../' + '/dist')));
         this.app.get('*', function (req, res) {

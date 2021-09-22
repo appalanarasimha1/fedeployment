@@ -96,7 +96,7 @@ export class NuxeoService {
   authenticateUser(username: string, password: string) {
     this.nuxeoClient = new Nuxeo({
       // baseURL: `${this.baseUrl}/nuxeo/`,
-      baseURL: `${this.baseUrl}/nuxeo/`,
+      baseURL: `${this.document.location.origin}/nuxeo/`,
       auth: {
         username,
         password,
@@ -110,7 +110,7 @@ export class NuxeoService {
 
   createClientWithToken(token) {
     this.nuxeoClient = new Nuxeo({
-      baseURL: `${this.baseUrl}/nuxeo/`,
+      baseURL: `${this.document.location.origin}/nuxeo/`,
       auth: {
         method: 'token',
         token

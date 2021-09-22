@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-const SERVER_URL = environment.baseUrl;
+const SERVER_URL = document.location.origin;
 const apiVersion1 = '/nuxeo/api/v1';
 
 @Injectable({
@@ -12,7 +12,6 @@ const apiVersion1 = '/nuxeo/api/v1';
 export class ApiService {
   headers = {
     'Access-Control-Allow-Origin': '*',
-    'Accept-Encoding': 'gzip, deflate',
     accept: 'text/plain,application/json, application/json',
     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
     'enrichers.document': 'thumbnail,permissions,preview',
