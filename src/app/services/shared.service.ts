@@ -33,27 +33,27 @@ export class SharedService {
   }
 
 
-   public getDateFormatted(dateGroup: {year: number, month: number, day: number, hour: number, week: number}, aggregationDuration: string) {
+  // public getDateFormatted(dateGroup: {year: number, month: number, day: number, hour: number, week: number}, aggregationDuration: string) {
 
-    if (aggregationDuration === AGGREGATE_DATA_HOUR) {
-      const date = new Date(dateGroup.year, dateGroup.month - 1, dateGroup.day, dateGroup.hour);
-      const newtime = date.getTime();
+  //   if (aggregationDuration === AGGREGATE_DATA_HOUR) {
+  //     const date = new Date(dateGroup.year, dateGroup.month - 1, dateGroup.day, dateGroup.hour);
+  //     const newtime = date.getTime();
 
-      const plus3hours = new Date(newtime + (3 * 60 * 60 * 1000));
+  //     const plus3hours = new Date(newtime + (3 * 60 * 60 * 1000));
 
-      dateGroup.year = plus3hours.getFullYear();
-      dateGroup.month = plus3hours.getMonth();
-      dateGroup.day = plus3hours.getDate();
-      dateGroup.hour = plus3hours.getHours();
+  //     dateGroup.year = plus3hours.getFullYear();
+  //     dateGroup.month = plus3hours.getMonth();
+  //     dateGroup.day = plus3hours.getDate();
+  //     dateGroup.hour = plus3hours.getHours();
 
-      return `${dateGroup.year}-${this.getDoubleDigit(dateGroup.month + 1)}-${this.getDoubleDigit(dateGroup.day)} ${this.getDoubleDigit(dateGroup.hour)}:00`;
+  //     return `${dateGroup.year}-${this.getDoubleDigit(dateGroup.month + 1)}-${this.getDoubleDigit(dateGroup.day)} ${this.getDoubleDigit(dateGroup.hour)}:00`;
 
-    } else if (aggregationDuration === AGGREGATE_DATA_DAY) {
-      return `${this.getDoubleDigit(dateGroup.year)}-${this.getDoubleDigit(dateGroup.month)}-${this.getDoubleDigit(dateGroup.day)}`;
-    } else if (aggregationDuration === AGGREGATE_DATA_WEEK) {
-      return `${this.getDoubleDigit(dateGroup.year)}-${this.getDoubleDigit(dateGroup.month)} week-${this.getDoubleDigit(dateGroup.week)}`;
-    }
-  }
+  //   } else if (aggregationDuration === AGGREGATE_DATA_DAY) {
+  //     return `${this.getDoubleDigit(dateGroup.year)}-${this.getDoubleDigit(dateGroup.month)}-${this.getDoubleDigit(dateGroup.day)}`;
+  //   } else if (aggregationDuration === AGGREGATE_DATA_WEEK) {
+  //     return `${this.getDoubleDigit(dateGroup.year)}-${this.getDoubleDigit(dateGroup.month)} week-${this.getDoubleDigit(dateGroup.week)}`;
+  //   }
+  // }
 
   gmtToKSA(dateString: string): string {
     if (!dateString) { return '-'; }
