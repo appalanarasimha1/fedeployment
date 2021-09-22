@@ -4,6 +4,7 @@ import { IHeaderSearchCriteria } from '../../common/subHeader/interface';
 import { Router } from '@angular/router';
 import { apiRoutes } from 'src/app/common/config';
 // import { ApiService } from '../services/http.service';
+import {SharedService} from "../../services/shared.service";
 
 @Component({
   selector: 'app-search',
@@ -28,13 +29,13 @@ extra=0;
   // TypeScript public modifiers
   constructor(
     public nuxeo: NuxeoService,
-    private router: Router
-    ) { }
+    private router: Router, private sharedService: SharedService,
+  ) { }
 
   ngOnInit() {
 
-    if(!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
-      this.router.navigate(['login']);
+    if (!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
+      this.sharedService.redirectToLogin();
       return;
     }
     // this.connectToNuxeo();
@@ -78,8 +79,7 @@ extra=0;
 
 
     const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
-    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40}; //, sectors: `["Sport"]`
-
+    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40 }; //, sectors: `["Sport"]`
     for (const key in data) {
       if (typeof data[key] !== 'string' && typeof data[key] !== 'number') {
         data[key].map((item: string) => {
@@ -92,6 +92,7 @@ extra=0;
         queryParams[key] = data[key];
       }
     }
+   console.log(queryParams['system_primaryType_agg'])
 
 
         this.callRequestByFilterType(queryParams['system_primaryType_agg'], queryParams, headers,pageNumber)
@@ -151,6 +152,13 @@ extra=0;
           //  ,{
           //       enrichers: {'document': ['thumbnail']}
           //     }
+
+        //       {
+        //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
+        // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
+        //  ,{
+        //       enrichers: {'document': ['thumbnail']}
+        //     }
       ).then((docs) => {
         localdoc[0].push(docs.entries)
            this.documentCount['Picture']=docs.resultsCount
@@ -162,6 +170,11 @@ extra=0;
       }).catch((error) => {
         console.log('search document error = ', error);
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
         this.loading = false;
       });
     }
@@ -184,9 +197,9 @@ extra=0;
           //       enrichers: {'document': ['thumbnail']}
           //     }
       ).then((docs) => {
-         localdoc[0].push(docs.entries)
-         localmetaData.push(docs.aggregations)
-           this.documentCount['Video']=docs.resultsCount
+        localdoc[0].push(docs.entries);
+        localmetaData.push(docs.aggregations);
+        this.documentCount['Video']=docs.resultsCount;
        // this.documents = docs.entries;
        // this.metaData = docs.aggregations;
         console.log(this.documents);
