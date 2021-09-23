@@ -275,8 +275,10 @@ if(queryParams['sectors']!==undefined) {
          this.metaData['asset_width_agg']['buckets'] = this.metaData['asset_width_agg']['buckets'].concat(localmetaData[i]['asset_width_agg']['buckets'])
          this.metaData['asset_height_agg']['buckets'] = this.metaData['asset_height_agg']['buckets'].concat(localmetaData[i]['asset_height_agg']['buckets'])
          this.metaData['video_duration_agg']['buckets'] = this.metaData['video_duration_agg']['buckets'].concat(localmetaData[i]['video_duration_agg']['buckets'])
-         this.metaData['sectors']['buckets'] = this.metaData['sectors']['buckets'].concat(localmetaData[i]['sectors']['buckets'])
-       }
+           if(queryParams['sectors']!==undefined && queryParams['sectors'] !== `[""]`) {
+               this.metaData['sectors']['buckets'] = this.metaData['sectors']['buckets'].concat(localmetaData[i]['sectors']['buckets'])
+           }
+     }
        //}
      }
      this.extra=0
