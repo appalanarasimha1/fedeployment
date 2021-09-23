@@ -139,15 +139,19 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     data.video_duration_agg.buckets.map((item: { key: string }, index: number) => {
       this.videoSizeData.push({ key: item.key, id: index });
     });
-
-    data.sectors.buckets.map((item: { key: string }, index: number) => {
-      this.sectors.push({ key: item.key, id: index });
-    });
+console.log(data);
+if(data.sectors!==undefined) {
+  data.sectors.buckets.map((item: { key: string }, index: number) => {
+    this.sectors.push({key: item.key, id: index});
+  });
+}
 
     return;
   }
 
   checkSelectedPrimeAndMimeType(metaData: any) {
+console.log(metaData)
+
     if (metaData.system_primaryType_agg.selection.indexOf(constants.AUDIO_TITLE_CASE) !== -1
       || this.checkMimeSelection(constants.AUDIO_SMALL_CASE)) {
       this.showImageSize = false;
@@ -155,22 +159,33 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       return;
     } else if (metaData.system_primaryType_agg.selection.indexOf(constants.IMAGE_TITLE_CASE) !== -1
       || this.checkMimeSelection(constants.IMAGE_SMALL_CASE)) {
+
       this.showImageSize = true;
       this.showVideoSize = false;
       return;
     }
     this.showImageSize = true;
     this.showVideoSize = true;
+    // if(metaData.system_primaryType_agg.selection.includes('Video')){
+    //   this.showVideoSize = true;
+    // }
+    // else{
+    //   this.showVideoSize = false;
+    // }
+
+
     return;
   }
 
   checkMimeSelection(checkString: string) {
+
     let flag = false;
     this.metaData.system_mimetype_agg.selection.map(item => {
       if (item.split('/')[0].toLowerCase() === checkString) {
         flag = true;
       }
     });
+
     return flag;
   }
 

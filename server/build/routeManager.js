@@ -37,7 +37,7 @@ var allowedExt = [
 ];
 var RouteManager = /** @class */ (function () {
     function RouteManager(app) {
-        this.environment = process.env.NODE_ENV === 'demo' ? 'http://10.101.21.58:8089' : 'https://10.101.21.63:8087';
+        this.environment = process.env.NODE_ENV === 'demo' ? 'http://10.101.21.58:8089' : 'http://10.101.21.63:8087';
         this.app = app;
         this.mountRoutes(app);
     }
