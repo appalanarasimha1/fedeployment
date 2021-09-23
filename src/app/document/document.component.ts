@@ -47,7 +47,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   recentlyViewed = [];
   fileSelected = [];
   sortValue = '';
-  activeTabs = {comments: false, info: false, timeLine: false};
+  activeTabs = {comments: false, info: false, timeline: false};
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -162,10 +162,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   showMore(docType: string) {
-    console.log(this.imageSliceInput);
-    console.log(this.images.length)
-    console.log(this.documentCount)
-
 
     if (docType === constants.IMAGE_SMALL_CASE) {
       this.imageSliceInput += 9;
@@ -237,7 +233,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   open(content, file) {
     this.showShadow = false;
     this.activeTabs.comments = false;
-    this.activeTabs.timeLine = false;
+    this.activeTabs.timeline = false;
     this.activeTabs.info = false;
     let fileRendition;
     this.selectedFile = file;
@@ -293,9 +289,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.showShadow = !this.showShadow;
     }
     this.selectedTab = tabName;
-    if(!this.showShadow || this.selectedTab === tabName) {
-      this.activeTabs[tabName] = this.showShadow;
-    }
+    this.activeTabs[tabName] = this.showShadow;
   }
 
   markFavourite(data, favouriteValue) {
