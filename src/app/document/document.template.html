@@ -184,22 +184,23 @@
                       </div>
                     </div>
                   </div>
-                  <div class="cardBlockContentHover" [ngClass]="{'activeHover': image.isSelected}">
-                    <ol>
-                      <li>
+                  <div [ngClass]="{'activeHover': image.isSelected}">
+                    <!-- <ol>
+                      <li> -->
                         <div class="form-group-custom">
                           <input type="checkbox" id="html{{i}}" [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
                           <label for="html{{i}}"></label>
                         </div>
-                      </li>
-                      <li>
+                      <!-- </li>
+                      <li> -->
                         <div class="hover-icon-group">
                           <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
                           <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
                           <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                         </div>
-                      </li>
-                    </ol>
+                        <div class="mouse-hover-bg" (click)="open(preview, image)"></div>
+                      <!-- </li>
+                    </ol> -->
                   </div>
                 </div>
               </li>
