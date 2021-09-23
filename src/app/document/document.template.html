@@ -33,24 +33,25 @@
                     </div>
                   </div>
                 </div>
-                <div class="cardBlockContentHover" [ngClass]="{'activeHover': file.isSelected}">
-                  <ol>
-                    <li>
+                <div class="" [ngClass]="{'activeHover': file.isSelected}">
+                 <!--  <ol>
+                    <li> -->
                       <div class="form-group-custom">
                         <input type="checkbox" id="html{{i}}" [checked]="file.isSelected" [(ngModel)]="file.isSelected" (change)="selectImage($event, file, i, true)">
                         <label for="html{{i}}"></label>
                       </div>
-                    </li>
-                    <li>
+                    <!-- </li>
+                    <li> -->
                       <div class="hover-icon-group">
                         <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}"></div>
                         <div class="hover-icon plus-icon" (click)="open(preview, file)"></div>
                         <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
                       </div>
-                    </li>
-                  </ol>
+                      <div class="mouse-hover-bg" (click)="open(preview, file)"></div>
+                    <!-- </li> -->
+                  <!-- </ol> -->
                 </div>
-              </div>
+              </div> 
             </li>
           </ul>
         </div>
@@ -138,22 +139,23 @@
                   </div>
                 </div>
               </div>
-              <div class="cardBlockContentHover" [ngClass]="{'activeHover': image.isSelected}">
-                <ol>
-                  <li>
+              <div [ngClass]="{'activeHover': image.isSelected}">
+                <!-- <ol>
+                  <li> -->
                     <div class="form-group-custom">
                       <input type="checkbox" id="html{{i}}"  [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
                       <label for="html{{i}}"></label>
                     </div>
-                  </li>
-                  <li>
+                  <!-- </li>
+                  <li> -->
                     <div class="hover-icon-group">
                       <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
                       <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
                       <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                     </div>
-                  </li>
-                </ol>
+                    <div class="mouse-hover-bg" (click)="open(preview, image)"></div>
+                  <!-- </li>
+                </ol> -->
               </div>
             </div>
           </li>
@@ -514,15 +516,15 @@
 
   <div *ngIf="fileSelected.length" class="footer-listing">
     <div class="row">
-      <div class="col-md-4 footer-add-items">
+      <div class="col-md-6 footer-add-items">
         <span>{{fileSelected.length}} item(s) selected</span>
         <a (click)="clearSelected()">Clear</a>
       </div>
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <img src="../../assets/images/synchronize-arrow-clock-footer.svg" alt="" class="footer-icons">
         <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
-      </div>
-      <div class="col-md-4">
+      </div> -->
+      <div class="col-md-6">
         <img src="../../assets/images/download-all-as-zip.svg" placement="top" ngbTooltip="Download all as zip" alt="" class="footer-icons" style="    cursor: not-allowed;opacity: 0.4;">
         <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to collections " style="cursor: not-allowed;opacity: 0.4;">
         <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to clipboard" style="cursor: not-allowed;opacity: 0.4;">
