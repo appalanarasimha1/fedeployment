@@ -15,6 +15,7 @@ export class LandingPageComponent implements OnInit {
   recentEdited = [];
   recentlyViewed = [];
   active = 1;
+  loading = false;
 
   constructor(private nuxeo: NuxeoService, private router: Router, private sharedService: SharedService) { }
 
@@ -23,6 +24,7 @@ export class LandingPageComponent implements OnInit {
       this.sharedService.redirectToLogin();
       return;
     }
+    this.loading = true;
     this.getFavorites();
     this.getTasks();
     this.getCollections();
@@ -32,8 +34,13 @@ export class LandingPageComponent implements OnInit {
 
   getFavorites() {
     this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ body: { context: {}, params: {} } })
-      .then((response) => { })
+      .then((response) => {
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
+      })
       .catch((error) => {
+        this.loading = false;
         if (error && error.message) {
           if (error.message.toLowerCase() === 'unauthorized') {
             this.sharedService.redirectToLogin();
@@ -49,7 +56,11 @@ export class LandingPageComponent implements OnInit {
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_TASKS, { queryParams, headers }).get()
       .then((response) => {
         this.tasks = response.entries;
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
       }).catch((error) => {
+        this.loading = false;
         console.error('error while fetching tasks on landing page = ', error);
         if (error && error.message) {
           if (error.message.toLowerCase() === 'unauthorized') {
@@ -66,7 +77,11 @@ export class LandingPageComponent implements OnInit {
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_COLLECTIONS, { queryParams, headers }).get()
       .then((response) => {
         this.collections = response.entries;
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
       }).catch((error) => {
+        this.loading = false;
         console.error('error while fetching collections on landing page = ', error);
         if (error && error.message) {
           if (error.message.toLowerCase() === 'unauthorized') {
@@ -83,7 +98,11 @@ export class LandingPageComponent implements OnInit {
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_RECENT_EDITED, { queryParams, headers }).get()
       .then((response) => {
         this.recentEdited = response.entries;
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
       }).catch((error) => {
+        this.loading = false;
         console.error('error while fetching recent edited on landing page = ', error);
         if (error && error.message) {
           if (error.message.toLowerCase() === 'unauthorized') {
