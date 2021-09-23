@@ -3551,3 +3551,7 @@ li.breadcrumb-item {
 }
 }
 
+.modal-content {
+  padding: 20px 5px;
+  margin-top: 111px !important;
+}

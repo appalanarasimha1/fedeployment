@@ -216,12 +216,12 @@ grid-row: span 2;
   float: left;
   padding: 0 4px;
   /* margin: 4px 0; */
-  border-radius: 8px;
+  /* border-radius: 8px; */
 }
 ul.set-width.portfolio-list li .cardBlock  {
   margin-bottom: 3px;
   display: inline-block;
-  border-radius: 8px;
+  /* border-radius: 8px; */
 }
 
 .set-width {
@@ -286,6 +286,7 @@ line-height: 34px;
 color: #000000;
 border: unset;
 padding-bottom: 15px;
+font-weight: 600;
 }
 .yellowBtn{
   background-color: #EBC03F;
@@ -622,9 +623,6 @@ font-weight: 600;
   color: #737373;
   cursor: pointer;
 }
-
-
-
 /* Start New CSS Umesh */
 .white-bg{
   background-color: #fff !important;
@@ -670,7 +668,7 @@ font-weight: 600;
 }
 .cardBlock{
   background: #F9F7F2;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   padding: 20px;
   position: relative;
   overflow: hidden;
@@ -680,7 +678,7 @@ font-weight: 600;
   -o-transition: .5s ease all;
   transition: .5s ease all;
 }
-.cardBlock:after  {
+/* .cardBlock:after{
   content: '';
   display: block;
   height: 100%;
@@ -694,7 +692,7 @@ font-weight: 600;
   top: 0px;
   left: 0px;
 }
-.activeHover + .cardBlock:after    {
+.cardBlock:hover:after{
   content: '';
   display: block;
   height: 100%;
@@ -707,62 +705,24 @@ font-weight: 600;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
-}
-.cardBlock:hover:after {
-  content: '';
-  display: block;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  background: rgba(0, 0, 0, 0.3);
-  -webkit-transition: .5s ease all;
-  -moz-transition: .5s ease all;
-  -o-transition: .5s ease all;
-  transition: .5s ease all;
-}
-.cardBlockContentHover{
-  opacity: 0;
-  z-index: 99;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  -webkit-transition: .5s ease all;
-  -moz-transition: .5s ease all;
-  -o-transition: .5s ease all;
-  transition: .5s ease all;
-}
-.cardBlock:hover .cardBlockContentHover, .cardBlockContentHover.activeHover{
-  opacity: 1;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  padding: 20px;
-  width: 100%;
-  -webkit-transition: .5s ease all;
-  -moz-transition: .5s ease all;
-  -o-transition: .5s ease all;
-  transition: .5s ease all;
-}
-.card-view .cardBlockContentHover ol, .set-width .cardBlockContentHover ol{
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-}
-.card-view .cardBlockContentHover ol li, .set-width .cardBlockContentHover ol li{
-  width: 50%;
-  float: left;
-  margin: 0px;
-}
+} */
 
 /* custom checkbox start */
-.form-group-custom {
+.form-group-custom,
+.hover-icon-group {
   display: block;
   margin-bottom: 15px;
+  width: 40px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 9;
+  opacity: 0;
+}
+.hover-icon-group{
+  left: auto;
+  right: 15px;
+  width: 40px;
 }
 
 .form-group-custom input {
@@ -827,6 +787,81 @@ font-weight: 600;
   border-color:#A3A3A3;
 }
 /* custom checkbox end */
+
+.cardBlockContentHover{
+  opacity: 0;
+  z-index: 99;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.cardBlock:hover .cardBlockContentHover,
+.cardBlock:hover .form-group-custom,
+.cardBlock:hover .hover-icon-group{
+  opacity: 1;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 0px;
+  width: auto;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.cardBlock:hover .hover-icon-group{
+  top: 15px;
+  left: auto;
+  right: 15px;
+  height: calc(100% - 30px);
+}
+.card-view .cardBlockContentHover ol, .set-width .cardBlockContentHover ol{
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+.card-view .cardBlockContentHover ol li, .set-width .cardBlockContentHover ol li{
+  width: 50%;
+  float: left;
+  margin: 0px;
+}
+.mouse-hover-bg{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.cardBlock:hover .mouse-hover-bg, .activeHover .mouse-hover-bg{
+  opacity: 1;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+
+.activeHover .mouse-hover-bg, .activeHover .form-group-custom, .activeHover .hover-icon-group {
+  opacity: 1;
+}
+.activeHover .hover-icon-group {
+  height: calc(100% - 30px);
+}
+
+
 .hover-icon-group{
   display: block;
   float: right;
@@ -840,7 +875,6 @@ font-weight: 600;
   width: 40px;
   padding: 10px;
   margin-bottom: 15px;
-  float: right;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -855,7 +889,7 @@ font-weight: 600;
 }
 .hover-icon.download-icon {
   margin: 0px;
-  bottom: 20px;
+  bottom: 0px;
   position: absolute;
 }
 .hover-icon.star-icon{
@@ -873,14 +907,14 @@ font-weight: 600;
   transition: .5s ease all;
 }
 .hover-icon.download-icon{
-  background: url('~/../../../../assets/images/Download (1).svg') no-repeat center center #fff;
+  background: url(~/../../../../assets/images/download.svg) no-repeat center center #fff;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
 }
 .hover-icon.star-icon:hover, .hover-icon.star-icon.active{
-  background: url(~/../../../../assets/images/whiteStar.svg) no-repeat center center #e0b803;
+  background: url(~/../../../../assets/images/star-white.svg) no-repeat center center #e0b803;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -894,7 +928,7 @@ font-weight: 600;
   transition: .5s ease all;
 }
 .hover-icon.download-icon:hover{
-  background: url('~/../../../../assets/images/Download (1).svg') no-repeat center center #006B44;
+  background: url(~/../../../../assets/images/download-white.svg) no-repeat center center #006B44;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -919,7 +953,65 @@ font-weight: 600;
 .pa-0{
   padding: 0px !important;
 }
+
+.footer-listing{
+  background: linear-gradient(0deg, #EBC03F, #EBC03F);
+  padding: 20px 4%;
+  margin: 0px auto;
+  text-align: center;
+}
+.footer-listing .col-md-6:first-child{
+  text-align: left;
+  line-height: 30px
+}
+.footer-listing .col-md-6:last-child{
+  text-align: right;
+}
+img.footer-icons {
+  width: 30px;
+  display: inline-block;
+  margin-left: 30px;
+  cursor: pointer;
+}
+.footer-add-items span{
+  font-weight: 600;
+  padding-right: 40px;
+}
+.footer-add-items a {
+  color: #000;
+  text-decoration: underline;
+}
 /* End New CSS Umesh */
+
+
+.activeHover + .cardBlock:after    {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.cardBlock:hover:after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
 
 /* yello footer css */
 
@@ -979,11 +1071,58 @@ li .videoBlock  {
 .search-tags ul li a{
   background-color: #000;
   font-size: 14px;
-  line-height: 11px;
+  line-height: 6px;
   border-radius: 20px;
-  padding: 14px 22px;
+  padding: 17px 22px;
   color: #fff;
   text-decoration: unset;
   margin: 0px 5px;
+  display: inline-block;
+}
+.weightSize{
+  font-weight: 600;
+font-size: 20px;
+line-height: 20px;
+color: #C4C4C4;
+
+}
+.close{
+    position: absolute;
+    left: -8%;
+    top: -10%;
+    z-index: 9999 !important;
+    background-color: transparent;
+    border: unset;
+}
+.modal-header button img{
+  width: 35px;
+}
+.modal-header{
+  border-bottom: unset;
+  padding: unset;
+}
+
+.nav-link::before{
+  display: none;
+}
+.nav-link.active{
+  position: relative;
+}
+.nav-link.active::before{
+
+  content: '';
+  background-image: url('../../assets/images/trianglearrow.svg');
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  top: -16px;
+  background-repeat: no-repeat;
+  background-size: contain;
   display: block;
+}
+.search-tags ul li:nth-child(1) a{
+  margin-left: unset;
+}
+input::placeholder {
+  color: #fff !important;
 }

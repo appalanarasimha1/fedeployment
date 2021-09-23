@@ -39,6 +39,7 @@ ul.set-width.portfolio-list li a {
     border-bottom: 1px solid #E5E5E5;
     position: relative;
     align-items: unset;
+    justify-content: space-between;
 }
 .innerDiv2{
     position: absolute;
@@ -48,9 +49,10 @@ ul.set-width.portfolio-list li a {
     border-radius: 8px;
     width: 100%;
     height: 150px;
+    object-fit: cover;
 }
 .mainDiv2{
-    width: 48%;
+    width: 40%;
     margin-left: 4px;
 }
 .mainDiv1{
@@ -62,6 +64,7 @@ ul.set-width.portfolio-list li a {
     display: flex;
     align-items: center;
     color: #171717;
+    font-weight: 600;
 }
 .innerDiv1 p{
     font-size: 14px;
