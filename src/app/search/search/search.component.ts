@@ -66,7 +66,7 @@ extra=0;
   }
 
   searchDocuments(dataParam: IHeaderSearchCriteria, pageNumber?:any) {
-
+console.log(dataParam)
 
     this.loading = true;
     this.error = undefined;
@@ -92,7 +92,12 @@ extra=0;
         queryParams[key] = data[key];
       }
     }
-   console.log(queryParams['system_primaryType_agg'])
+if(queryParams['sectors']!==undefined) {
+    if (queryParams['sectors'] === '[""]') {
+        delete queryParams['sectors']
+
+    }
+}
 
 
         this.callRequestByFilterType(queryParams['system_primaryType_agg'], queryParams, headers,pageNumber)
@@ -121,11 +126,14 @@ extra=0;
    async callRequestByFilterType(filterType, queryParams,headers,pageNumber?:any){
 
     console.log("pagenumber",pageNumber);
+    if(pageNumber===undefined){
+        this.documents=undefined;
+    }
 
      let localdoc=[];
      let localmetaData=[];
     localdoc[0]=[]
-     if(filterType===''||filterType===undefined){
+     if(filterType==='[""]'||filterType===undefined){
    filterType='["Picture","Video","Audio"]'
      }
 
@@ -144,7 +152,7 @@ extra=0;
 
       queryParams['system_primaryType_agg']='["Picture"]';
      // console.log(filterType)
-      //console.log(queryParams['system_primaryType_agg'])
+      console.log(queryParams['system_primaryType_agg'])
        await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } ) .get(
           //       {
           //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
@@ -214,12 +222,12 @@ extra=0;
      if(filterType.includes('Audio')){
        if(pageNumber!==undefined) {
          if (pageNumber['Audio'] === 1) {
-           this.pageShown['Video'] = this.pageShown['Audio'] + 1
+           this.pageShown['Audio'] = this.pageShown['Audio'] + 1
            queryParams.currentPageIndex = this.pageShown['Audio']
            queryParams.offset = this.pageShown['Audio']//, sectors: `["Sport"]`
          }
        }
-       queryParams['system_primaryType_agg']='["Video"]';
+       queryParams['system_primaryType_agg']='["Audio"]';
        console.log(filterType)
        console.log(queryParams['system_primaryType_agg'])
        await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } ) .get(
@@ -245,10 +253,9 @@ extra=0;
 
      }
     // console.log("after docs")
-     //console.log(localdoc[0])
 
      for(let i=0;i<localdoc[0].length;i++){
-       console.log(this.documents)
+
        if(this.documents===undefined){
          console.log('others')
             this.documents = localdoc[0][0]
@@ -272,7 +279,6 @@ extra=0;
        }
        //}
      }
-    console.log( this.documents);
      this.extra=0
 
 
