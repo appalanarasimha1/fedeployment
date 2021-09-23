@@ -42,16 +42,18 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     asset_width_agg?: string[],
     asset_height_agg?: string[],
     video_duration_agg?: string[]
-    sectors?: string[]
+    sectors?: string[],
+    dc_modified_agg: string[]
   } = {
       system_primaryType_agg: [],
       system_mimetype_agg: [],
       asset_width_agg: [],
       asset_height_agg: [],
       video_duration_agg: [],
-      sectors: []
+      sectors: [],
+      dc_modified_agg: []
     };
-  modifiedDate = { dc_modified_agg: [] };
+  // modifiedDate = { dc_modified_agg: [] };
   showImageSize = true;
   showVideoSize = true;
   productsSelectedItems;
@@ -261,14 +263,14 @@ if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
 
   isActive(key: string, value: string): boolean {
     let result = false;
-    if (key === 'modifiedDate') {
-      this.modifiedDate.dc_modified_agg.map(item => {
-        if (item.toLowerCase() === value.toLowerCase()) {
-          result = true;
-        }
-      });
-      return result;
-    }
+    // if (key === 'modifiedDate') {
+    //   this.modifiedDate.dc_modified_agg.map(item => {
+    //     if (item.toLowerCase() === value.toLowerCase()) {
+    //       result = true;
+    //     }
+    //   });
+    //   return result;
+    // }
     this.searchCriteria[key].map(item => {
       if (item.toLowerCase() === value.toLowerCase()) {
         result = true;
@@ -399,20 +401,20 @@ if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
     } else {
       this.searchCriteria['dc_modified_agg'].push(data.key);
     }
-    this.modifiedDate['system_primaryType_agg'] = this.searchCriteria['system_primaryType_agg'];
+    // this.modifiedDate['system_primaryType_agg'] = this.searchCriteria['system_primaryType_agg'];
     this.emitData(this.searchCriteria);
     return;
   }
 
   deSelectModifiedDate(data: any) {
     if (!data.key && !data.length) {
-      this.searchCriteria['system_primaryType_agg'] = [];
+      this.searchCriteria['dc_modified_agg'] = [];
       this.emitData(this.searchCriteria);
       return;
     }
     const mimeType = data.key;
-    const index = this.searchCriteria['system_primaryType_agg'].indexOf(mimeType);
-    this.searchCriteria['system_primaryType_agg'].splice(index, 1);
+    const index = this.searchCriteria['dc_modified_agg'].indexOf(mimeType);
+    this.searchCriteria['dc_modified_agg'].splice(index, 1);
     this.emitData(this.searchCriteria);
     return;
   }
