@@ -907,14 +907,14 @@ font-weight: 600;
   transition: .5s ease all;
 }
 .hover-icon.download-icon{
-  background: url(~/../../../../assets/images/download.svg) no-repeat center center #fff;
+  background: url(~/../../../../assets/images/download-white.svg) no-repeat center center #fff;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
 }
 .hover-icon.star-icon:hover, .hover-icon.star-icon.active{
-  background: url(~/../../../../assets/images/star-white.svg) no-repeat center center #e0b803;
+  background: url(~/../../../../assets/images/whitestar.png) no-repeat center center #e0b803;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -1058,6 +1058,7 @@ li .videoBlock  {
   padding: 20px;
   position: relative;
   background: #F9F7F2;
+  width: 100%;
 
 }
 .downloadDrop.dropup{
@@ -1119,6 +1120,9 @@ color: #C4C4C4;
   background-repeat: no-repeat;
   background-size: contain;
   display: block;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 .search-tags ul li:nth-child(1) a{
   margin-left: unset;

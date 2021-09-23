@@ -165,7 +165,7 @@
           <div *ngIf="showListView" class="card-view">
             <ul class="flexible">
               <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
-                <div class="cardBlock">
+                <div class="cardBlock" style="border-radius: 8px;">
                   <div class="cardBlockContent">
                     <div class="row">
                       <div class="col-xl-6 col-md-6" style="position: relative;">
@@ -225,8 +225,6 @@
             </li>
           </ul>
           </div>
-
-
           <div class="col-xl-12 col-md-12">
             <div *ngIf="showListView" class="card-view">
               <ul class="flexible videosList1">
@@ -255,7 +253,6 @@
               </ul>
             </div>
           </div>
-
           <!-- TODO: video card view -->
           <!-- <div class="col-xl-12 col-md-12">
             <div *ngIf="showListView" class="card-view">
