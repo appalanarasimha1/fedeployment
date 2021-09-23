@@ -216,12 +216,12 @@ grid-row: span 2;
   float: left;
   padding: 0 4px;
   /* margin: 4px 0; */
-  border-radius: 8px;
+  /* border-radius: 8px; */
 }
 ul.set-width.portfolio-list li .cardBlock  {
   margin-bottom: 3px;
   display: inline-block;
-  border-radius: 8px;
+  /* border-radius: 8px; */
 }
 
 .set-width {
@@ -286,6 +286,7 @@ line-height: 34px;
 color: #000000;
 border: unset;
 padding-bottom: 15px;
+font-weight: 600;
 }
 .yellowBtn{
   background-color: #EBC03F;
@@ -670,7 +671,7 @@ font-weight: 600;
 }
 .cardBlock{
   background: #F9F7F2;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   padding: 20px;
   position: relative;
   overflow: hidden;
@@ -979,11 +980,58 @@ li .videoBlock  {
 .search-tags ul li a{
   background-color: #000;
   font-size: 14px;
-  line-height: 11px;
+  line-height: 6px;
   border-radius: 20px;
-  padding: 14px 22px;
+  padding: 17px 22px;
   color: #fff;
   text-decoration: unset;
   margin: 0px 5px;
+  display: inline-block;
+}
+.weightSize{
+  font-weight: 600;
+font-size: 20px;
+line-height: 20px;
+color: #C4C4C4;
+
+}
+.close{
+    position: absolute;
+    left: -8%;
+    top: -10%;
+    z-index: 9999 !important;
+    background-color: transparent;
+    border: unset;
+}
+.modal-header button img{
+  width: 35px;
+}
+.modal-header{
+  border-bottom: unset;
+  padding: unset;
+}
+
+.nav-link::before{
+  display: none;
+}
+.nav-link.active{
+  position: relative;
+}
+.nav-link.active::before{
+
+  content: '';
+  background-image: url('../../assets/images/trianglearrow.svg');
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  top: -16px;
+  background-repeat: no-repeat;
+  background-size: contain;
   display: block;
+}
+.search-tags ul li:nth-child(1) a{
+  margin-left: unset;
+}
+input::placeholder {
+  color: #fff !important;
 }

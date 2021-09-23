@@ -14,7 +14,7 @@ header{
     z-index: 99;
 }
 .landingLp li.nav-item {
-    padding: 0px 10px;
+    padding: 0px 15px;
     cursor: pointer;
 }
 .landingLp .nav-item a{
@@ -95,7 +95,7 @@ header{
     color: #fff;
 }
 .searchHeading li.nav-item {
-    padding: 0px 10px;
+    padding: 0px 15px;
     cursor: pointer;
 }
 .searchHeading .dropdown-item{
@@ -113,4 +113,10 @@ header{
 }
 .searchHeading .dropdown-menu li a{
     color: #000 !important;
+}
+.rightNav .nav-item{
+    padding: 0px 10px;
+}
+.navbar-expand-lg .navbar-nav{
+    margin: auto;
 }

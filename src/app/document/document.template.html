@@ -300,6 +300,12 @@
   </section>
 
   <ng-template #preview let-modal class="imgPopUpTab">
+    <div class="modal-header">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <!-- <span aria-hidden="true">&times;</span> -->
+        <span aria-hidden="true"><img src="../../assets/images/modalclose.svg"></span>
+      </button>
+    </div>
     <div class="modal-body ">
       <div class="modalHead">
         <div class="row flexible" style="justify-content: space-between;">
@@ -329,7 +335,7 @@
 
                   <div ngbDropdown class="d-inline-block downloadDrop">
                     <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
-                        src="../../assets/images/Download.svg"></a>
+                        src="../../assets/images/black-downloadicon.svg"></a>
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                       <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{getAssetUrl(view.content.data)}}"
                         style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}}
@@ -386,64 +392,64 @@
                         <span style="color: #EBC03F;">{{selectedFile.properties['dc:creator'].id}}</span>
                       </li>
 
-                      <li>State <br>{{selectedFile.state}}</li>
+                      <li>State <br><span style="opacity: 0.7;">{{selectedFile.state}}</span></li>
 
                       <li>Version</li>
 
-                      <li>Last Modified <br>{{toDateString(selectedFile.lastModified)}}</li>
+                      <li>Last Modified <br><span style="opacity: 0.7;">{{toDateString(selectedFile.lastModified)}}</span></li>
 
                       <li>Contributors <br><span
                           style="color: #EBC03F;">{{getNames(selectedFile.properties['dc:contributors'])}}</span>
                       </li>
 
                       <li>
-                        Dimensions <br>{{selectedFile.properties['picture:info'].width}} x
-                        {{selectedFile.properties['picture:info'].height}}
+                        Dimensions <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].width}} x
+                        {{selectedFile.properties['picture:info'].height}}</span>
                       </li>
 
                       <li>
-                        Format <br>{{selectedFile.properties['picture:info'].format}}
+                        Format <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].format}}</span>
                       </li>
                       <li>
-                        Colour Profile <br>{{selectedFile.properties['picture:info'].colorSpace}}
+                        Colour Profile <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].colorSpace}}</span>
                       </li>
                       <li>
-                        Bit Depth per Channel <br>{{selectedFile.properties['picture:info'].depth}}
+                        Bit Depth per Channel <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].depth}}</span>
                       </li>
                       <li>
-                        Weight <br>{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}
+                        Weight <br><span style="opacity: 0.7;">{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</span>
                       </li>
                     </ul>
                   </div>
                   <div class="col-xl-6 col-md-6">
                     <ul>
                       <li>
-                        Description <br>{{selectedFile.properties['dc:description'] ||
-                        selectedFile.properties['imd:image_description']}}
+                        Description <br><span style="opacity: 0.7;">{{selectedFile.properties['dc:description'] ||
+                        selectedFile.properties['imd:image_description']}}</span>
                       </li>
                       <li>EXIF
                         <br>
-                        Date {{selectedFile.properties['dc:created']}}
+                        Date <span style="opacity: 0.7;">{{selectedFile.properties['dc:created']}}</span>
                         <br>
-                        Orientation {{selectedFile.properties['imd:orientation']}}
+                        Orientation <span style="opacity: 0.7;">{{selectedFile.properties['imd:orientation']}}</span>
                         <br>
-                        Aperture {{selectedFile.properties['imd:fnumber']}}
+                        Aperture <span style="opacity: 0.7;">{{selectedFile.properties['imd:fnumber']}}</span>
                         <br>
-                        Exposure {{selectedFile.properties['imd:exposure_time']}}
+                        Exposure <span style="opacity: 0.7;">{{selectedFile.properties['imd:exposure_time']}}</span>
                         <br>
-                        ISO {{selectedFile.properties['imd:iso_speed_ratings']}}
+                        ISO <span style="opacity: 0.7;">{{selectedFile.properties['imd:iso_speed_ratings']}}</span>
                         <br>
-                        Focal Length {{selectedFile.properties['imd:focalLength']}}
+                        Focal Length <span style="opacity: 0.7;">{{selectedFile.properties['imd:focalLength']}}</span>
                       </li>
                       <li>IPTC
                         <br>
-                        Copyright {{selectedFile.properties['imd:copyright']}}
+                        Copyright <span style="opacity: 0.7;">{{selectedFile.properties['imd:copyright']}}</span>
                         <br>
-                        Rights {{selectedFile.properties['dc:rights']}}
+                        Rights <span style="opacity: 0.7;">{{selectedFile.properties['dc:rights']}}</span>
                         <br>
-                        Source {{selectedFile.properties['picture:source']}}
+                        Source <span style="opacity: 0.7;">{{selectedFile.properties['picture:source']}}</span>
                         <br>
-                        Description {{selectedFile.properties['dc:description']}}
+                        Description <span style="opacity: 0.7;">{{selectedFile.properties['dc:description']}}</span>
                       </li>
                     </ul>
                   </div>
@@ -455,25 +461,27 @@
       </div>
 
       <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset;">
-        <div class="mb-5 mb-2" style="width: 75%">
+        <div class="mb-4" style="width: 80%">
           <span class="main-heading">{{selectedFile.properties['dc:description']}}</span>
           <span class="yellowBtn">Internal Use ©</span>
+          <h5 class="pt-3 weightSize" >{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</h5>
         </div>
-        <div class="flexible" style="align-items: unset;">
-          <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <a class="nav-link active" placement="bottom" ngbTooltip="Timeline" id="home-tab" data-bs-toggle="tab"
+        
+        <div class="flexible" style="align-items: unset;justify-content: end;width: 20%;">
+          <ul class="nav nav-tabs iconsList iconsTab"  id="myTab" role="tablist">
+            <li class="nav-item" role="presentation"  >
+              <a class="nav-link "  placement="bottom" ngbTooltip="Timeline" id="home-tab" data-bs-toggle="tab"
                 (click)="openInfo('timeline')" href="#timeline" role="tab" aria-controls="home"
                 aria-selected="true"><img src="../../assets/images/clock.svg"></a>
 
             </li>
-            <li class="nav-item" role="presentation">
-              <a class="nav-link" id="profile-tab" placement="bottom" ngbTooltip="Comments" data-bs-toggle="tab"
+            <li class="nav-item" role="presentation" >
+              <a class="nav-link"  id="profile-tab" placement="bottom" ngbTooltip="Comments" data-bs-toggle="tab"
                 (click)="openInfo('comments')" href="#profile" role="tab" aria-controls="profile"
                 aria-selected="false"><img src="../../assets/images/Comments.svg"></a>
             </li>
-            <li class="nav-item" role="presentation">
-              <a class="nav-link" id="contact-tab" placement="bottom" ngbTooltip="Info" data-bs-toggle="tab"
+            <li class="nav-item" role="presentation" >
+              <a class="nav-link"  id="contact-tab" placement="bottom" ngbTooltip="Info" data-bs-toggle="tab"
                 (click)="openInfo('info')" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
                 <img src="../../assets/images/Info.svg"></a>
             </li>
@@ -501,7 +509,7 @@
           </ul>
         </div>
 
-        <div class="search-tags pt-3 pb-5">
+        <div class="search-tags  pb-5">
           <ul class="flexible">
             <li *ngFor="let tag of selectedFile.properties['nxtag:tags']; let i = index">
               <a style="cursor: pointer;" >{{tag.label}}</a>
@@ -519,8 +527,8 @@
         <a (click)="clearSelected()">Clear</a>
       </div>
       <div class="col-md-4">
-        <img src="../../assets/images/synchronize-arrow-clock-footer.svg" alt="" class="footer-icons">
-        <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
+        <!-- <img src="../../assets/images/synchronize-arrow-clock-footer.svg" alt="" class="footer-icons">
+        <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons"> -->
       </div>
       <div class="col-md-4">
         <img src="../../assets/images/download-all-as-zip.svg" placement="top" ngbTooltip="Download all as zip" alt="" class="footer-icons" style="    cursor: not-allowed;opacity: 0.4;">

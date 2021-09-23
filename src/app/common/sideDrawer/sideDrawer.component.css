@@ -26,7 +26,7 @@
     border: none;
     transition: 0.4s;
     background-color: unset;
-    z-index: 9999;
+    z-index: 999;
     position: fixed;
 }
 .openbtn:hover {
