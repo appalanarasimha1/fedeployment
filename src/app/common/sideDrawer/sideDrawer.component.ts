@@ -151,27 +151,33 @@ if(data.sectors!==undefined) {
 
   checkSelectedPrimeAndMimeType(metaData: any) {
 console.log(metaData)
+    console.log(this.searchCriteria);
+if(this.searchCriteria['system_primaryType_agg'].includes('Picture')){
+  this.showImageSize = true;
+  this.showVideoSize = false;
 
-    if (metaData.system_primaryType_agg.selection.indexOf(constants.AUDIO_TITLE_CASE) !== -1
-      || this.checkMimeSelection(constants.AUDIO_SMALL_CASE)) {
-      this.showImageSize = false;
-      this.showVideoSize = false;
-      return;
-    } else if (metaData.system_primaryType_agg.selection.indexOf(constants.IMAGE_TITLE_CASE) !== -1
-      || this.checkMimeSelection(constants.IMAGE_SMALL_CASE)) {
+}
+if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
+  this.showImageSize = true;
+  this.showVideoSize = true;
 
-      this.showImageSize = true;
-      this.showVideoSize = false;
-      return;
-    }
-    this.showImageSize = true;
-    this.showVideoSize = true;
-    // if(metaData.system_primaryType_agg.selection.includes('Video')){
-    //   this.showVideoSize = true;
-    // }
-    // else{
+}
+
+    // if (metaData.system_primaryType_agg.selection.indexOf(constants.AUDIO_TITLE_CASE) !== -1
+    //   || this.checkMimeSelection(constants.AUDIO_SMALL_CASE)) {
+    //   this.showImageSize = false;
     //   this.showVideoSize = false;
+    //   return;
+    // } else if (metaData.system_primaryType_agg.selection.indexOf(constants.IMAGE_TITLE_CASE) !== -1
+    //   || this.checkMimeSelection(constants.IMAGE_SMALL_CASE)) {
+    //
+    //   this.showImageSize = true;
+    //   this.showVideoSize = false;
+    //   return;
     // }
+    // this.showImageSize = true;
+    // this.showVideoSize = true;
+
 
 
     return;
@@ -225,6 +231,8 @@ console.log(metaData)
   }
 
   emitData(data: any): void {
+
+
 
     this.searchTextOutput.emit(data);
     return;
@@ -383,7 +391,11 @@ console.log(metaData)
     const mimeType = value;
     const index = this.modifiedDate['dc_modified_agg'].indexOf(mimeType);
     index > -1 ? this.modifiedDate['dc_modified_agg'].splice(index, 1) : this.modifiedDate['dc_modified_agg'].push(mimeType);
+    console.log(this.searchCriteria);
+    this.modifiedDate['system_primaryType_agg']=this.searchCriteria['system_primaryType_agg'];
+    console.log(this.modifiedDate);
     this.emitData(this.modifiedDate);
+
     return;
   }
 
