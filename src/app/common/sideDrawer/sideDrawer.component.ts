@@ -390,17 +390,44 @@ if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
     return;
   }
 
-  selectModifiedDate(value: string) {
-    const mimeType = value;
-    const index = this.modifiedDate['dc_modified_agg'].indexOf(mimeType);
-    index > -1 ? this.modifiedDate['dc_modified_agg'].splice(index, 1) : this.modifiedDate['dc_modified_agg'].push(mimeType);
-    console.log(this.searchCriteria);
-    this.modifiedDate['system_primaryType_agg']=this.searchCriteria['system_primaryType_agg'];
-    console.log(this.modifiedDate);
-    this.emitData(this.modifiedDate);
-
+  selectModifiedDate(data: any) {
+    if (Array.isArray(data)) {
+      this.searchCriteria['dc_modified_agg'] = [];
+      data.map((item: { key: string }) => {
+        this.searchCriteria['dc_modified_agg'].push(item.key);
+      });
+    } else {
+      this.searchCriteria['dc_modified_agg'].push(data.key);
+    }
+    this.modifiedDate['system_primaryType_agg'] = this.searchCriteria['system_primaryType_agg'];
+    this.emitData(this.searchCriteria);
     return;
   }
+
+  deSelectModifiedDate(data: any) {
+    if (!data.key && !data.length) {
+      this.searchCriteria['system_primaryType_agg'] = [];
+      this.emitData(this.searchCriteria);
+      return;
+    }
+    const mimeType = data.key;
+    const index = this.searchCriteria['system_primaryType_agg'].indexOf(mimeType);
+    this.searchCriteria['system_primaryType_agg'].splice(index, 1);
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
+  // selectModifiedDate(value: string) {
+  //   const mimeType = value;
+  //   const index = this.modifiedDate['dc_modified_agg'].indexOf(mimeType);
+  //   index > -1 ? this.modifiedDate['dc_modified_agg'].splice(index, 1) : this.modifiedDate['dc_modified_agg'].push(mimeType);
+    
+  //   this.modifiedDate['system_primaryType_agg']=this.searchCriteria['system_primaryType_agg'];
+    
+  //   this.emitData(this.modifiedDate);
+
+  //   return;
+  // }
 
   openNav() {
     document.getElementById("main-sidebar").style.width = "280px";
