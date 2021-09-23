@@ -124,6 +124,7 @@ if(queryParams['sectors']!==undefined) {
     //   });
   }
    async callRequestByFilterType(filterType, queryParams,headers,pageNumber?:any){
+      console.log(filterType);
 
     console.log("pagenumber",pageNumber);
     if(pageNumber===undefined){
@@ -269,7 +270,7 @@ if(queryParams['sectors']!==undefined) {
          // }
          // else{
          this.documents = this.documents.concat(localdoc[0][i])
-         //this.metaData['system_primaryType_agg']['buckets']=this.metaData['system_primaryType_agg']['buckets'].concat(localmetaData[i]['system_primaryType_agg']['buckets'])
+         this.metaData['system_primaryType_agg']['selections']=this.metaData['system_primaryType_agg']['buckets'].concat(localmetaData[i]['system_primaryType_agg']['buckets'])
          this.metaData['system_mimetype_agg']['buckets'] = this.metaData['system_mimetype_agg']['buckets'].concat(localmetaData[i]['system_mimetype_agg']['buckets'])
          this.metaData['system_mimetype_agg']['selection'] = this.metaData['system_mimetype_agg']['selection'].concat(localmetaData[i]['system_mimetype_agg']['selection'])
          this.metaData['asset_width_agg']['buckets'] = this.metaData['asset_width_agg']['buckets'].concat(localmetaData[i]['asset_width_agg']['buckets'])
