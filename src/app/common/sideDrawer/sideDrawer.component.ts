@@ -67,6 +67,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
+
+  modifiedDateDropDown = [{key: 'last24h', id: 0}, {key: 'lastWeek', id: 1}, {key: 'lastMonth', id: 2}, {key: 'lastYear', id: 3}, {key: 'priorToLastYear', id: 4}];
+
   constructor(
     private nuxeo: NuxeoService,
     private http: HttpClient,

@@ -156,7 +156,17 @@
 
                <div class="sidebarList pt-3">
                   <h6>Updated date</h6>
-                  <div class="dropdown">
+
+                  <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="modifiedDateDropDown"
+                     (onSelect)="selectVideoDuration($event)" (onSelectAll)="selectVideoDuration($event)"
+                     (onDeSelect)="deSelectVideoDuration($event)"
+                     (onDeSelectAll)="deSelectVideoDuration($event)"></ng-multiselect-dropdown>
+
+
+
+
+
+                  <!-- <div class="dropdown">
                      <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton11" aria-expanded="false" data-bs-toggle="dropdown">
                         Select value
                      </button>
@@ -167,7 +177,7 @@
                         <li (click)="selectModifiedDate('lastYear')"><a [ngClass]="{'active': isActive('modifiedDate', 'lastYear')}" class="dropdown-item" style="cursor: pointer">Last year</a></li>
                         <li (click)="selectModifiedDate('priorToLastYear')"><a [ngClass]="{'active': isActive('modifiedDate', 'priorToLastYear')}" class="dropdown-item" style="cursor: pointer">More than 1 year ago</a></li>
                      </ul>
-                  </div>
+                  </div> -->
                </div>
                <!-- <div class="sidebarList file-type pb-3">
                   <h6>Updated date</h6>
