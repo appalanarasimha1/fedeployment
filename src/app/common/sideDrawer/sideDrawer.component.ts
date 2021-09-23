@@ -216,6 +216,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   selectSector(event: any) {
+    console.log("in selector")
     const docType = event.target.outerText;
     const index = this.searchCriteria['sectors'].indexOf(docType);
     index > -1 ? this.searchCriteria['sectors'].splice(index, 1) : this.searchCriteria['sectors'].push(docType);
@@ -224,7 +225,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   selectDoctype(event: any): void {
-    console.log('in doc ty')
+
     let docType = event.target.textContent;
     let index = this.searchCriteria['system_primaryType_agg'].indexOf(docType);
     index > -1 ? this.searchCriteria['system_primaryType_agg'].splice(index, 1) : this.searchCriteria['system_primaryType_agg'].push(docType);

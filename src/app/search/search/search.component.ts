@@ -66,7 +66,7 @@ extra=0;
   }
 
   searchDocuments(dataParam: IHeaderSearchCriteria, pageNumber?:any) {
-
+console.log(dataParam)
 
     this.loading = true;
     this.error = undefined;
@@ -92,7 +92,12 @@ extra=0;
         queryParams[key] = data[key];
       }
     }
-   console.log(queryParams['system_primaryType_agg'])
+if(queryParams['sectors']!==undefined) {
+    if (queryParams['sectors'] === '[""]') {
+        delete queryParams['sectors']
+
+    }
+}
 
 
         this.callRequestByFilterType(queryParams['system_primaryType_agg'], queryParams, headers,pageNumber)
@@ -128,7 +133,7 @@ extra=0;
      let localdoc=[];
      let localmetaData=[];
     localdoc[0]=[]
-     if(filterType===''||filterType===undefined){
+     if(filterType==='[""]'||filterType===undefined){
    filterType='["Picture","Video","Audio"]'
      }
 
@@ -147,7 +152,7 @@ extra=0;
 
       queryParams['system_primaryType_agg']='["Picture"]';
      // console.log(filterType)
-      //console.log(queryParams['system_primaryType_agg'])
+      console.log(queryParams['system_primaryType_agg'])
        await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } ) .get(
           //       {
           //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
