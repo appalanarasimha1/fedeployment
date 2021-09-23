@@ -47,6 +47,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   recentlyViewed = [];
   fileSelected = [];
   sortValue = '';
+  activeTabs = {comments: false, info: false, timeLine: false};
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -235,6 +236,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   // added for modal
   open(content, file) {
     this.showShadow = false;
+    this.activeTabs.comments = false;
+    this.activeTabs.timeLine = false;
+    this.activeTabs.info = false;
     let fileRendition;
     this.selectedFile = file;
     this.getComments();
@@ -284,11 +288,14 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
   }
 
-  openInfo(data: string) {
-    if (!this.showShadow || this.selectedTab === data) {
+  openInfo(tabName: string) {
+    if (!this.showShadow || this.selectedTab === tabName) {
       this.showShadow = !this.showShadow;
     }
-    this.selectedTab = data;
+    this.selectedTab = tabName;
+    if(!this.showShadow || this.selectedTab === tabName) {
+      this.activeTabs[tabName] = this.showShadow;
+    }
   }
 
   markFavourite(data, favouriteValue) {
@@ -427,4 +434,26 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.recentlyViewed = [];
     return;
   }
+
+  // activeClass(tabName: string): void {
+  //   switch (tabName) {
+  //     case 'timeLine':
+  //       this.activeTabs.timeLine = true;
+  //       this.activeTabs.info = false;
+  //       this.activeTabs.comments = false;
+  //       break;
+      
+  //     case 'comments':
+  //       this.activeTabs.timeLine = false;
+  //       this.activeTabs.info = false;
+  //       this.activeTabs.comments = true;
+  //       break;
+
+  //     case 'info':
+  //       this.activeTabs.timeLine = false;
+  //       this.activeTabs.info = true;
+  //       this.activeTabs.comments = false;
+  //       break;
+  //   }
+  // }
 }
