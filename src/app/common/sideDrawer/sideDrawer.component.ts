@@ -71,7 +71,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   selectedItems = [];
   dropdownSettings = {};
 
-  modifiedDateDropDown = [{key: 'last24h', id: 0}, {key: 'lastWeek', id: 1}, {key: 'lastMonth', id: 2}, {key: 'lastYear', id: 3}, {key: 'priorToLastYear', id: 4}];
+  modifiedDateDropDown = [{ key: 'last24h', id: 0 }, { key: 'lastWeek', id: 1 }, { key: 'lastMonth', id: 2 }, { key: 'lastYear', id: 3 }, { key: 'priorToLastYear', id: 4 }];
 
   constructor(
     private nuxeo: NuxeoService,
@@ -145,27 +145,25 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     data.video_duration_agg.buckets.map((item: { key: string }, index: number) => {
       this.videoSizeData.push({ key: item.key, id: index });
     });
-console.log(data);
-if(data.sectors!==undefined) {
-  data.sectors.buckets.map((item: { key: string }, index: number) => {
-    this.sectors.push({key: item.key, id: index});
-  });
-}
+
+    data.sectors.buckets.map((item: { key: string, index: number }) => {
+      this.sectors.push({ key: item.key, id: item.index });
+    });
 
     return;
   }
 
   checkSelectedPrimeAndMimeType(metaData: any) {
-  if(this.searchCriteria['system_primaryType_agg'].includes('Picture')){
-    this.showImageSize = true;
-    this.showVideoSize = false;
+    if (this.searchCriteria['system_primaryType_agg'].includes('Picture')) {
+      this.showImageSize = true;
+      this.showVideoSize = false;
 
-  }
-  if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
-    this.showImageSize = true;
-    this.showVideoSize = true;
+    }
+    if (this.searchCriteria['system_primaryType_agg'].includes('Video')) {
+      this.showImageSize = true;
+      this.showVideoSize = true;
 
-  }
+    }
 
     // if (metaData.system_primaryType_agg.selection.indexOf(constants.AUDIO_TITLE_CASE) !== -1
     //   || this.checkMimeSelection(constants.AUDIO_SMALL_CASE)) {
@@ -202,7 +200,7 @@ if(data.sectors!==undefined) {
   getMetaData() {
     this.loading = true;
     this.error = undefined;
-    let queryParams = { currentPageIndex: 0, offset: 0, pageSize: 0 }; //, system_primaryType_agg: '[]', system_mimetype_agg: '[]', asset_width_agg: '[]', asset_height_agg: '[]', color_profile_agg: '[]', color_depth_agg: '[]', video_duration_agg: '[]'
+    let queryParams = { currentPageIndex: 0, offset: 0, pageSize: 1 }; //, system_primaryType_agg: '[]', system_mimetype_agg: '[]', asset_width_agg: '[]', asset_height_agg: '[]', color_profile_agg: '[]', color_depth_agg: '[]', video_duration_agg: '[]'
 
     this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams })
       .get().then((result) => {
@@ -235,15 +233,14 @@ if(data.sectors!==undefined) {
   }
 
   emitData(data: any): void {
-
-
-
     this.searchTextOutput.emit(data);
     return;
   }
 
   selectSector(event: any) {
-    console.log("in selector")
+    if(!event.target.outerText) {
+      return;
+    }
     const docType = event.target.outerText;
     const index = this.searchCriteria['sectors'].indexOf(docType);
     index > -1 ? this.searchCriteria['sectors'].splice(index, 1) : this.searchCriteria['sectors'].push(docType);
@@ -252,7 +249,7 @@ if(data.sectors!==undefined) {
   }
 
   selectDoctype(event: any): void {
-    if(!event.target.textContent) {
+    if (!event.target.textContent) {
       return;
     }
     let docType = event.target.textContent;
@@ -424,9 +421,9 @@ if(data.sectors!==undefined) {
   //   const mimeType = value;
   //   const index = this.modifiedDate['dc_modified_agg'].indexOf(mimeType);
   //   index > -1 ? this.modifiedDate['dc_modified_agg'].splice(index, 1) : this.modifiedDate['dc_modified_agg'].push(mimeType);
-    
+
   //   this.modifiedDate['system_primaryType_agg']=this.searchCriteria['system_primaryType_agg'];
-    
+
   //   this.emitData(this.modifiedDate);
 
   //   return;

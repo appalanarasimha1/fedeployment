@@ -26,6 +26,9 @@ export class SearchComponent implements OnInit {
     'Audio': 0
   };
   extra = 0;
+  images: any = {aggregations: {}, entries: [], resultsCount: 0};
+  videos: any = {aggregations: {}, entries: [], resultsCount: 0};
+  audio: any = {aggregations: {}, entries: [], resultsCount: 0};
 
   // TypeScript public modifiers
   constructor(
@@ -48,10 +51,10 @@ export class SearchComponent implements OnInit {
 
   searchTerm(data: IHeaderSearchCriteria) {
     // if (this.extra === 0) {
-      this.searchValue = data;
+    this.searchValue = data;
 
-      this.searchDocuments(data);
-      // this.extra = this.extra + 1
+    this.searchDocuments(data);
+    // this.extra = this.extra + 1
     // }
   }
 
@@ -59,8 +62,8 @@ export class SearchComponent implements OnInit {
     // if (this.extra === 0) {
     //   console.log("in filters")
 
-      this.filtersParams = data;
-      this.searchDocuments(data);
+    this.filtersParams = data;
+    this.searchDocuments(data);
     //   this.extra = this.extra + 1
 
     // }
@@ -129,39 +132,80 @@ export class SearchComponent implements OnInit {
   hitSearchApi(queryParams: any, headers, pageNumber) {
     let primaryTypes = JSON.parse(queryParams['system_primaryType_agg'] || '[]');
 
-    if(!primaryTypes.length) {
+    if (!primaryTypes.length) {
       primaryTypes = ['Picture', 'Video', 'Audio'];
     }
 
     primaryTypes = this.getPrimeTypeByFilter(primaryTypes, queryParams);
-
-    for(let i = 0; i < primaryTypes.length; i++) {
+    let count = primaryTypes.length;
+    for (let i = 0; i < primaryTypes.length; i++) {
       queryParams['system_primaryType_agg'] = `["${primaryTypes[i]}"]`;
-      this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers } )
-    .get().then((docs) => {
-      this.documents = docs.entries;
-      this.metaData = docs.aggregations;
-      console.log(docs.entries[0]);
-      this.loading = false;
-    }).catch((error) => {
-      console.log('search document error = ', error);
-      this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
-      this.loading = false;
-    });
+      this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
+        .get().then((docs) => {
+          this.setData(docs, primaryTypes[i]);
+          if (--count === 0) {
+            this.loading = false;
+          }
+        }).catch((error) => {
+          console.log('search document error = ', error);
+          this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+          if (--count === 0) {
+            this.loading = false;
+          }
+        });
     }
   }
 
+  setData(data: any, primaryType: string) {
+    switch (primaryType.toLowerCase()) {
+      case constants.VIDEO_SMALL_CASE:
+        this.videos = data;
+        break;
+      case constants.AUDIO_SMALL_CASE:
+        this.audio = data;
+        break;
+      case constants.PICTURE_SMALL_CASE:
+        this.images = data;
+        break;
+    }
+    return;
+  }
+
   getPrimeTypeByFilter(primaryTypes: string[], queryParams: any): string[] {
-    if(queryParams['system_mimetype_agg']) {
+    let videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
+    let pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
+    let audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
 
+    if (queryParams['system_mimetype_agg']) {
+      queryParams['system_mimetype_agg'].map((value: string) => {
+        if (value.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
+          primaryTypes.splice(pictureIndex, 1);
+          audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+          primaryTypes.splice(audioIndex, 1);
+        } else if (value.toLowerCase().includes(constants.PICTURE_SMALL_CASE)) {
+          primaryTypes.splice(videoIndex, 1);
+          audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+          primaryTypes.splice(audioIndex, 1);
+        } else if (value.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
+          primaryTypes.splice(pictureIndex, 1);
+          videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
+          primaryTypes.splice(videoIndex, 1);
+        }
+      });
     }
 
-    const mimeIndex = primaryTypes.findIndex((item: any) => item.includes(constants.VIDEO_SMALL_CASE));
-    if(queryParams['video_duration_agg'] && mimeIndex === -1) {
-      primaryTypes.push(constants.VIDEO_TITLE_CASE);
-    } else {
-      primaryTypes.splice(mimeIndex, 1);
+    if (queryParams['asset_width_agg'] || queryParams['asset_height_agg']) {
+      audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+      primaryTypes.splice(audioIndex, 1);
     }
+
+    if (queryParams['video_duration_agg'] && (pictureIndex !== -1 || audioIndex !== -1)) {
+      pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
+      primaryTypes.splice(pictureIndex, 1);
+      audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+      primaryTypes.splice(audioIndex, 1);
+    }
+
     return primaryTypes;
   }
 

@@ -7,7 +7,7 @@
 <app-loader [show]="showLoader"></app-loader>
 <section>
   <section>
-    <div *ngIf="recentlyViewed && recentlyViewed.length && !videos.length && !images.length && !docs.length" class="container">
+    <div *ngIf="recentlyViewed && recentlyViewed.length && !videos.entries.length && !images.entries.entries.length && !docs.length" class="container">
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4 col-md-4 mb-4">
           <h2 class=" commonHeading">Recently viewed</h2>
@@ -60,12 +60,12 @@
   </section>
 
   <section class="search-subpage pt-2 pb-5" >
-    <div *ngIf="!videos.length && !images.length && !docs.length && (!recentlyViewed || !recentlyViewed.length)" class="row">
+    <div *ngIf="!videos.entries.length && !images.entries.length && !docs.length && (!recentlyViewed || !recentlyViewed.length)" class="row">
       <div class="col-xl-12 col-md-12 " >
         <h2 class="noresult" style="height: 600px;">No results available!</h2>
       </div>
     </div>
-    <div *ngIf="videos.length || images.length || docs.length" class="container">
+    <div *ngIf="videos.entries.length || images.entries.length || docs.length" class="container">
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4">
           <!-- <p class="pb-3 searchP">Traveller</p> TODO: pass search term from sub-header to search and then to here -->
@@ -113,16 +113,16 @@
         </div>
       </div>
 
-      <div *ngIf="images.length" class="row">
+      <div *ngIf="images.entries.length" class="row">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Images</p>
-          <a class="fileCount pb-4">{{documentCount['Picture']}} images</a>
+          <a class="fileCount pb-4">{{images.resultsCount}} images</a>
         </div>
         <!-- Gallery -->
 
         <ul *ngIf="!showListView" class="set-width portfolio-list"
           style="list-style: none;margin: unset; padding: 0; align-items: unset;">
-          <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
+          <li *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
 
             <!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
             <!-- <a (click)="open(preview, image)">
@@ -164,7 +164,7 @@
         <div class="col-xl-12 col-md-12">
           <div *ngIf="showListView" class="card-view">
             <ul class="flexible">
-              <li *ngFor="let image of images.slice(0, imageSliceInput); let i = index">
+              <li *ngFor="let image of images.entries.entries.slice(0, imageSliceInput); let i = index">
                 <div class="cardBlock" style="border-radius: 8px;">
                   <div class="cardBlockContent">
                     <div class="row">
@@ -210,15 +210,15 @@
         <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show
           more</div>
       </div>
-      <div *ngIf="videos.length" class="row pt-5">
+      <div *ngIf="videos.entries.length" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Videos</p>
-          <a class="fileCount pb-4">{{documentCount['Video']}} videos</a>
+          <a class="fileCount pb-4">{{videos.resultsCount}} videos</a>
         </div>
 
         <div class="col-xl-12" *ngIf="!showListView"> <!--  *ngIf="!showListView" -->
           <ul class="flexible videosList">
-            <li *ngFor="let v of videos.slice(0, videoSliceInput)" class="">
+            <li *ngFor="let v of videos.entries.slice(0, videoSliceInput)" class="">
               <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{v.path}}">
                 <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}">
               </a>
@@ -228,7 +228,7 @@
           <div class="col-xl-12 col-md-12">
             <div *ngIf="showListView" class="card-view">
               <ul class="flexible videosList1">
-                <li *ngFor="let v of videos.slice(0, videoSliceInput)">
+                <li *ngFor="let v of videos.entries.slice(0, videoSliceInput)">
                   <div class="videoBlock">
                     <div class="cardBlockContent">
                       <div class="row">

@@ -17,14 +17,15 @@ import { SharedService } from '../services/shared.service';
   templateUrl: './document.template.html'
 })
 export class DocumentComponent implements OnInit, OnChanges {
-  @Input() documents: object[] = [];
-  @Input() documentCount;
+  @Input() images: any;
+  @Input() videos: any;
+  @Input() audio: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
 
-  images = [];
-  videos = [];
-  audio = [];
+  // images = [];
+  // videos = [];
+  // audio = [];
   docs = [];
   private searchCriteria: IHeaderSearchCriteria = {};
   public display = 1;
@@ -47,7 +48,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   recentlyViewed = [];
   fileSelected = [];
   sortValue = '';
-  activeTabs = {comments: false, info: false, timeline: false};
+  activeTabs = { comments: false, info: false, timeline: false };
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -63,21 +64,29 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: any) {
     this.recentlyViewed = [];
-    this.resetValues();
-    if (changes.documents.currentValue && changes.documents.currentValue.length) {
-      this.resetValues();
-      this.segregateDocuments(changes.documents.currentValue);
-      if (this.imageSliceInput >= this.images.length) {
-        this.hideImageShowMoreBtn = true;
-      } else {
-        this.hideImageShowMoreBtn = false;
-      }
-      if (this.videoSliceInput >= this.videos.length) {
-        this.hideVideoShowMoreBtn = true;
-      } else {
-        this.hideVideoShowMoreBtn = false;
-      }
+    // this.resetValues();
+    if (changes.images) {
+      this.images = changes.images.currentValue;
     }
+    if(changes.videos) {
+      this.videos = changes.videos.currentValue;
+    }
+    if(changes.audio) {
+      this.audio = changes.audio.currentValue;
+    }
+    // this.resetValues();
+    // this.segregateDocuments(changes.documents.currentValue);
+    // if (this.imageSliceInput >= this.images.entries.length) {
+    //   this.hideImageShowMoreBtn = true;
+    // } else {
+    //   this.hideImageShowMoreBtn = false;
+    // }
+    // if (this.videoSliceInput >= this.videos.entries.length) {
+    //   this.hideVideoShowMoreBtn = true;
+    // } else {
+    //   this.hideVideoShowMoreBtn = false;
+    // }
+
     return;
   }
 
@@ -92,7 +101,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
     if (event.target.checked) {
       // if (isRecent) {
-        // file['isChecked'] = true;
+      // file['isChecked'] = true;
       // } else {
       //   file['isChecked'] = true;
       // }
@@ -101,7 +110,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       if (this.fileSelected.length) {
         let i = -1;
         // if (isRecent) {
-          // file['isChecked'] = false;
+        // file['isChecked'] = false;
         // } else {
         //   file['isChecked'] = false;
         // }
@@ -163,32 +172,32 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   showMore(docType: string) {
 
-    if (docType === constants.IMAGE_SMALL_CASE) {
-      this.imageSliceInput += 9;
+    // if (docType === constants.IMAGE_SMALL_CASE) {
+    //   this.imageSliceInput += 9;
 
-      if (this.imageSliceInput >= this.images.length && this.imageSliceInput <= this.documentCount['Picture']) {
-        this.pageCount.emit({'Picture':1});
+    //   if (this.imageSliceInput >= this.images.length && this.imageSliceInput <= this.documentCount['Picture']) {
+    //     this.pageCount.emit({'Picture':1});
 
-        // this.hideImageShowMoreBtn = true;
-      }
-      else if(this.imageSliceInput >= this.documentCount['Picture']){
-         this.hideImageShowMoreBtn = true;
-      }
+    //     // this.hideImageShowMoreBtn = true;
+    //   }
+    //   else if(this.imageSliceInput >= this.documentCount['Picture']){
+    //      this.hideImageShowMoreBtn = true;
+    //   }
 
-      return;
-    }
+    //   return;
+    // }
 
-    if (docType === constants.VIDEO_SMALL_CASE) {
-      this.videoSliceInput += 9;
-      if (this.videoSliceInput >= this.videos.length && this.imageSliceInput <= this.documentCount['Video']) {
-        this.pageCount.emit({'Video':1});
+    // if (docType === constants.VIDEO_SMALL_CASE) {
+    //   this.videoSliceInput += 9;
+    //   if (this.videoSliceInput >= this.videos.length && this.imageSliceInput <= this.documentCount['Video']) {
+    //     this.pageCount.emit({'Video':1});
 
-      }
-      else if(this.imageSliceInput >= this.documentCount['Video']){
-        this.hideVideoShowMoreBtn = true;
-      }
-      return;
-    }
+    //   }
+    //   else if(this.imageSliceInput >= this.documentCount['Video']){
+    //     this.hideVideoShowMoreBtn = true;
+    //   }
+    //   return;
+    // }
   }
 
   emitData(data: IHeaderSearchCriteria): void {
@@ -436,7 +445,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   //       this.activeTabs.info = false;
   //       this.activeTabs.comments = false;
   //       break;
-      
+
   //     case 'comments':
   //       this.activeTabs.timeLine = false;
   //       this.activeTabs.info = false;
