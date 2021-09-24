@@ -35,6 +35,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   };
   loading = false;
   error = undefined;
+
   private searchCriteria: {
     quickFilters?: string,
     system_primaryType_agg?: string[],
@@ -155,18 +156,16 @@ if(data.sectors!==undefined) {
   }
 
   checkSelectedPrimeAndMimeType(metaData: any) {
-console.log(metaData)
-    console.log(this.searchCriteria);
-if(this.searchCriteria['system_primaryType_agg'].includes('Picture')){
-  this.showImageSize = true;
-  this.showVideoSize = false;
+  if(this.searchCriteria['system_primaryType_agg'].includes('Picture')){
+    this.showImageSize = true;
+    this.showVideoSize = false;
 
-}
-if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
-  this.showImageSize = true;
-  this.showVideoSize = true;
+  }
+  if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
+    this.showImageSize = true;
+    this.showVideoSize = true;
 
-}
+  }
 
     // if (metaData.system_primaryType_agg.selection.indexOf(constants.AUDIO_TITLE_CASE) !== -1
     //   || this.checkMimeSelection(constants.AUDIO_SMALL_CASE)) {
@@ -203,7 +202,7 @@ if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
   getMetaData() {
     this.loading = true;
     this.error = undefined;
-    let queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40, system_primaryType_agg: '[]', system_mimetype_agg: '[]', asset_width_agg: '[]', asset_height_agg: '[]', color_profile_agg: '[]', color_depth_agg: '[]', video_duration_agg: '[]' };
+    let queryParams = { currentPageIndex: 0, offset: 0, pageSize: 0 }; //, system_primaryType_agg: '[]', system_mimetype_agg: '[]', asset_width_agg: '[]', asset_height_agg: '[]', color_profile_agg: '[]', color_depth_agg: '[]', video_duration_agg: '[]'
 
     this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams })
       .get().then((result) => {
@@ -253,7 +252,9 @@ if(this.searchCriteria['system_primaryType_agg'].includes('Video')){
   }
 
   selectDoctype(event: any): void {
-
+    if(!event.target.textContent) {
+      return;
+    }
     let docType = event.target.textContent;
     let index = this.searchCriteria['system_primaryType_agg'].indexOf(docType);
     index > -1 ? this.searchCriteria['system_primaryType_agg'].splice(index, 1) : this.searchCriteria['system_primaryType_agg'].push(docType);
