@@ -3,7 +3,7 @@
 <div class="main">
     <app-loader [show]="loading"></app-loader>
     <app-sub-header (searchTextOutput)="searchTerm($event)"></app-sub-header>
-    <app-side-drawer [inputMetaData]="metaData" (searchTextOutput)="filters($event)"></app-side-drawer>
+    <app-side-drawer [inputMetaData]="aggregationsMetaData" (searchTextOutput)="filters($event)"></app-side-drawer>
 </div>
   <!-- <button (click)="connectToNuxeo()">Connect to nuxeo server</button> -->
 <app-content [images]="images" [videos]="videos" [audio]="audio" (searchTextOutput)="searchDocuments($event)" (pageCount)="searchDocuments($event,1)"></app-content>

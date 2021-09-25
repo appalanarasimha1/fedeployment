@@ -25,6 +25,7 @@ export class SearchComponent implements OnInit {
     'video_duration_agg': { buckets: [], selection: [] },
     'sectors': { buckets: [], selection: [] }
   };
+  aggregationsMetaData;
   filtersParams = {};
   documentCount = {};
   pageShown = {
@@ -177,6 +178,7 @@ export class SearchComponent implements OnInit {
     if (Object.keys(this.audio.aggregations).length) {
       this.setUniqueBucketValues(this.audio);
     }
+    this.aggregationsMetaData = Object.assign({}, this.metaData);
   }
 
   setUniqueBucketValues(primaryTypeData: any): void {
@@ -213,46 +215,63 @@ export class SearchComponent implements OnInit {
 
   getPrimeTypeByFilter(primaryTypes: string[], queryParams: any): string[] {
     // TODO: add new primarytype/filetype here
-    let dataToIterate;
+    // const primaryTypes = [];
+    // let dataToIterate;
     let videoIndex;
     let pictureIndex;
     let audioIndex;
 
-    if (queryParams['system_mimetype_agg']) {
-      if (typeof queryParams['system_mimetype_agg'] === 'string') {
-        dataToIterate = JSON.parse(queryParams['system_mimetype_agg']);
-      }
-      dataToIterate.map((value: string) => {
-        videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
-        pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
-        audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+    // if (queryParams['system_mimetype_agg']) {
+    //   if (typeof queryParams['system_mimetype_agg'] === 'string') {
+    //     dataToIterate = JSON.parse(queryParams['system_mimetype_agg']);
+    //   }
+    //   dataToIterate.map((value: string) => {
+    //     videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
+    //     pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
+    //     audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
 
-        if (value.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
-          if(pictureIndex !== -1) primaryTypes.splice(pictureIndex, 1);
-          audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-          if(audioIndex !== -1) primaryTypes.splice(audioIndex, 1);
-        } else if (value.toLowerCase().includes(constants.PICTURE_SMALL_CASE)) {
-          if(videoIndex !== -1) primaryTypes.splice(videoIndex, 1);
-          audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-          if(audioIndex !== -1) primaryTypes.splice(audioIndex, 1);
-        } else if (value.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
-          if(pictureIndex !== -1) primaryTypes.splice(pictureIndex, 1);
-          videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
-          if(videoIndex !== -1) primaryTypes.splice(videoIndex, 1);
-        }
-      });
+    //     if (value.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
+    //       // if(pictureIndex !== -1) primaryTypes.splice(pictureIndex, 1);
+    //       // audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+    //       // if(audioIndex !== -1) primaryTypes.splice(audioIndex, 1);
+    //       if (primaryTypes.indexOf(constants.VIDEO_TITLE_CASE) === -1) primaryTypes.push(constants.VIDEO_TITLE_CASE);
+    //     } else if (value.toLowerCase().includes(constants.IMAGE_SMALL_CASE)) {
+    //       // if(videoIndex !== -1) primaryTypes.splice(videoIndex, 1);
+    //       // audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+    //       // if(audioIndex !== -1) primaryTypes.splice(audioIndex, 1);
+    //       if (primaryTypes.indexOf(constants.PICTURE_TITLE_CASE) === -1) primaryTypes.push(constants.PICTURE_TITLE_CASE);
+    //     } else if (value.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
+    //       // if(pictureIndex !== -1) primaryTypes.splice(pictureIndex, 1);
+    //       // videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
+    //       // if(videoIndex !== -1) primaryTypes.splice(videoIndex, 1);
+    //       if (primaryTypes.indexOf(constants.AUDIO_TITLE_CASE) === -1) primaryTypes.push(constants.AUDIO_TITLE_CASE);
+    //     }
+    //   });
+    // }
+
+    if (queryParams['system_mimetype_agg']) {
+      const mimeTypeValue = queryParams['system_mimetype_agg'];
+      if(!mimeTypeValue.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
+        primaryTypes.splice(videoIndex, 1);
+      }
+      if(!mimeTypeValue.toLowerCase().includes(constants.PICTURE_SMALL_CASE)) {
+        primaryTypes.splice(pictureIndex, 1);
+      }
+      if(!mimeTypeValue.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
+        primaryTypes.splice(audioIndex, 1);
+      }
     }
 
     if (queryParams['asset_width_agg'] || queryParams['asset_height_agg']) {
       audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-      primaryTypes.splice(audioIndex, 1);
+      if (primaryTypes.indexOf(constants.AUDIO_TITLE_CASE) !== -1) primaryTypes.splice(audioIndex, 1);
     }
 
     if (queryParams['video_duration_agg'] && (pictureIndex !== -1 || audioIndex !== -1)) {
       pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
-      primaryTypes.splice(pictureIndex, 1);
+      if (primaryTypes.indexOf(constants.PICTURE_TITLE_CASE) !== -1) primaryTypes.splice(pictureIndex, 1);
       audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-      primaryTypes.splice(audioIndex, 1);
+      if (primaryTypes.indexOf(constants.AUDIO_TITLE_CASE) !== -1) primaryTypes.splice(audioIndex, 1);
     }
 
     return primaryTypes;
