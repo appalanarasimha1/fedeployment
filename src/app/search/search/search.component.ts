@@ -17,7 +17,14 @@ export class SearchComponent implements OnInit {
   documents = undefined;
   loading = false;
   error = undefined;
-  metaData = {};
+  metaData = {
+    'system_primaryType_agg': { buckets: [], selection: [] },
+    'system_mimetype_agg': { buckets: [], selection: [] },
+    'asset_width_agg': { buckets: [], selection: [] },
+    'asset_height_agg': { buckets: [], selection: [] },
+    'video_duration_agg': { buckets: [], selection: [] },
+    'sectors': { buckets: [], selection: [] }
+  };
   filtersParams = {};
   documentCount = {};
   pageShown = {
@@ -26,9 +33,9 @@ export class SearchComponent implements OnInit {
     'Audio': 0
   };
   extra = 0;
-  images: any = {aggregations: {}, entries: [], resultsCount: 0};
-  videos: any = {aggregations: {}, entries: [], resultsCount: 0};
-  audio: any = {aggregations: {}, entries: [], resultsCount: 0};
+  images: any = { aggregations: {}, entries: [], resultsCount: 0 };
+  videos: any = { aggregations: {}, entries: [], resultsCount: 0 };
+  audio: any = { aggregations: {}, entries: [], resultsCount: 0 };
 
   // TypeScript public modifiers
   constructor(
@@ -71,7 +78,6 @@ export class SearchComponent implements OnInit {
 
   searchDocuments(dataParam: IHeaderSearchCriteria, pageNumber?: any) {
 
-    this.loading = true;
     this.error = undefined;
     //  this.documents = undefined;
     this.filtersParams['ecm_fulltext'] = this.searchValue.ecm_fulltext || '';
@@ -138,25 +144,59 @@ export class SearchComponent implements OnInit {
 
     primaryTypes = this.getPrimeTypeByFilter(primaryTypes, queryParams);
     let count = primaryTypes.length;
+    this.resetResults();
     for (let i = 0; i < primaryTypes.length; i++) {
       queryParams['system_primaryType_agg'] = `["${primaryTypes[i]}"]`;
+      this.loading = true;
       this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
         .get().then((docs) => {
           this.setData(docs, primaryTypes[i]);
           if (--count === 0) {
+            this.getAggregationValues();
             this.loading = false;
           }
         }).catch((error) => {
           console.log('search document error = ', error);
           this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
           if (--count === 0) {
+            this.getAggregationValues();
             this.loading = false;
           }
         });
     }
   }
 
+  getAggregationValues() {
+    // TODO: add new primarytype/filetype here
+    if (Object.keys(this.images.aggregations).length) {
+      this.setUniqueBucketValues(this.images);
+    }
+    if (Object.keys(this.videos.aggregations).length) {
+      this.setUniqueBucketValues(this.videos);
+    }
+    if (Object.keys(this.audio.aggregations).length) {
+      this.setUniqueBucketValues(this.audio);
+    }
+  }
+
+  setUniqueBucketValues(primaryTypeData: any): void {
+    for (const filter in primaryTypeData.aggregations) {
+      if (this.metaData[filter] && !this.sharedService.isEmpty(filter)) {
+        const dataToIterate = primaryTypeData.aggregations[filter].buckets;
+        for (let i = 0; i < dataToIterate.length; i++) {
+          const index = this.metaData[filter].buckets.findIndex(item => item.key === dataToIterate[i].key);
+          if (index === -1) {
+            this.metaData[filter].buckets.push(dataToIterate[i]);
+            // primaryTypeData.aggregations['system_primaryType_agg'].buckets.map(item => this.metaData.system_primaryType_agg.buckets.push(item));
+            // this.metaData.system_primaryType_agg.buckets = [...new Set()]
+          }
+        }
+      }
+    }
+  }
+
   setData(data: any, primaryType: string) {
+    // TODO: add new primarytype/filetype here
     switch (primaryType.toLowerCase()) {
       case constants.VIDEO_SMALL_CASE:
         this.videos = data;
@@ -172,24 +212,33 @@ export class SearchComponent implements OnInit {
   }
 
   getPrimeTypeByFilter(primaryTypes: string[], queryParams: any): string[] {
-    let videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
-    let pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
-    let audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+    // TODO: add new primarytype/filetype here
+    let dataToIterate;
+    let videoIndex;
+    let pictureIndex;
+    let audioIndex;
 
     if (queryParams['system_mimetype_agg']) {
-      queryParams['system_mimetype_agg'].map((value: string) => {
+      if (typeof queryParams['system_mimetype_agg'] === 'string') {
+        dataToIterate = JSON.parse(queryParams['system_mimetype_agg']);
+      }
+      dataToIterate.map((value: string) => {
+        videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
+        pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
+        audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+
         if (value.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
-          primaryTypes.splice(pictureIndex, 1);
+          if(pictureIndex !== -1) primaryTypes.splice(pictureIndex, 1);
           audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-          primaryTypes.splice(audioIndex, 1);
+          if(audioIndex !== -1) primaryTypes.splice(audioIndex, 1);
         } else if (value.toLowerCase().includes(constants.PICTURE_SMALL_CASE)) {
-          primaryTypes.splice(videoIndex, 1);
+          if(videoIndex !== -1) primaryTypes.splice(videoIndex, 1);
           audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-          primaryTypes.splice(audioIndex, 1);
+          if(audioIndex !== -1) primaryTypes.splice(audioIndex, 1);
         } else if (value.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
-          primaryTypes.splice(pictureIndex, 1);
+          if(pictureIndex !== -1) primaryTypes.splice(pictureIndex, 1);
           videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
-          primaryTypes.splice(videoIndex, 1);
+          if(videoIndex !== -1) primaryTypes.splice(videoIndex, 1);
         }
       });
     }
@@ -209,166 +258,14 @@ export class SearchComponent implements OnInit {
     return primaryTypes;
   }
 
+  resetResults() {
+    // TODO: add new primarytype/filetype here
+    this.images = { aggregations: {}, entries: [], resultsCount: 0 };
+    this.videos = { aggregations: {}, entries: [], resultsCount: 0 };
+    this.audio = { aggregations: {}, entries: [], resultsCount: 0 };
+  }
+
   async callRequestByFilterType(filterType, queryParams, headers, pageNumber?: any) {
-
-    if (pageNumber === undefined) {
-      this.documents = undefined;
-    }
-
-    let localdoc = [];
-    let localmetaData = [];
-    localdoc[0] = []
-    if (filterType === '[""]' || filterType === undefined) {
-      filterType = '["Picture","Video","Audio"]'
-    }
-
-
-    //  queryParams['system_primaryType_agg']=[];
-
-    if (filterType.includes('Picture')) {
-      if (pageNumber !== undefined) {
-        if (pageNumber['Picture'] === 1) {
-          this.pageShown['Picture'] = this.pageShown['Picture'] + 1
-          queryParams.currentPageIndex = this.pageShown['Picture']
-          queryParams.offset = this.pageShown['Picture']//, sectors: `["Sport"]`
-        }
-      }
-
-
-      queryParams['system_primaryType_agg'] = '["Picture"]';
-      // console.log(filterType)
-      console.log(queryParams['system_primaryType_agg'])
-      await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers }).get(
-        //       {
-        //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
-        // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
-        //  ,{
-        //       enrichers: {'document': ['thumbnail']}
-        //     }
-
-        //       {
-        //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
-        // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
-        //  ,{
-        //       enrichers: {'document': ['thumbnail']}
-        //     }
-      ).then((docs) => {
-        localdoc[0].push(docs.entries)
-        this.documentCount['Picture'] = docs.resultsCount
-        // this.documents.push( docs.entries);
-        localmetaData.push(docs.aggregations)
-        // this.metaData = docs.aggregations;
-        // console.log(this.metaData);
-        this.loading = false;
-      }).catch((error) => {
-        console.log('search document error = ', error);
-        this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
-        if (error && error.message) {
-          if (error.message.toLowerCase() === 'unauthorized') {
-            this.sharedService.redirectToLogin();
-          }
-        }
-        this.loading = false;
-      });
-    }
-    if (filterType.includes('Video')) {
-      if (pageNumber !== undefined) {
-        if (pageNumber['Video'] === 1) {
-          this.pageShown['Video'] = this.pageShown['Video'] + 1
-          queryParams.currentPageIndex = this.pageShown['Video']
-          queryParams.offset = this.pageShown['Video']//, sectors: `["Sport"]`
-        }
-      }
-      queryParams['system_primaryType_agg'] = '["Video"]';
-      console.log(filterType)
-      console.log(queryParams['system_primaryType_agg'])
-      await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers }).get(
-        //       {
-        //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
-        // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
-        //  ,{
-        //       enrichers: {'document': ['thumbnail']}
-        //     }
-      ).then((docs) => {
-        localdoc[0].push(docs.entries);
-        localmetaData.push(docs.aggregations);
-        this.documentCount['Video'] = docs.resultsCount;
-        // this.documents = docs.entries;
-        // this.metaData = docs.aggregations;
-        console.log(this.documents);
-        this.loading = false;
-      }).catch((error) => {
-        console.log('search document error = ', error);
-        this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
-        this.loading = false;
-      });
-
-    }
-    if (filterType.includes('Audio')) {
-      if (pageNumber !== undefined) {
-        if (pageNumber['Audio'] === 1) {
-          this.pageShown['Audio'] = this.pageShown['Audio'] + 1
-          queryParams.currentPageIndex = this.pageShown['Audio']
-          queryParams.offset = this.pageShown['Audio']//, sectors: `["Sport"]`
-        }
-      }
-      queryParams['system_primaryType_agg'] = '["Audio"]';
-      console.log(filterType)
-      console.log(queryParams['system_primaryType_agg'])
-      await this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers }).get(
-        //       {
-        //       // query: `Select * from Document where ecm:fulltext LIKE '${value}' or
-        // dc:title LIKE '%${value}%' and ecm:isProxy = 0 and ecm:currentLifeCycleState <> 'deleted'`
-        //  ,{
-        //       enrichers: {'document': ['thumbnail']}
-        //     }
-      ).then((docs) => {
-        localdoc[0].push(docs.entries)
-        localmetaData.push(docs.aggregations)
-        this.documentCount['Audio'] = docs.resultsCount
-        // this.documents = docs.entries;
-        // this.metaData = docs.aggregations;
-        console.log(this.documents);
-        this.loading = false;
-      }).catch((error) => {
-        console.log('search document error = ', error);
-        this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
-        this.loading = false;
-      });
-
-    }
-    // console.log("after docs")
-
-    for (let i = 0; i < localdoc[0].length; i++) {
-
-      if (this.documents === undefined) {
-        console.log('others')
-        this.documents = localdoc[0][0]
-        this.metaData = localmetaData[0]
-      }
-      else {
-        // if(i===0) {
-        //
-        //   this.documents = this.documents.concat(localdoc[0][i])
-        //   this.metaData=localmetaData[0]
-        // }
-        // else{
-        this.documents = this.documents.concat(localdoc[0][i])
-        this.metaData['system_primaryType_agg']['selections'] = this.metaData['system_primaryType_agg']['buckets'].concat(localmetaData[i]['system_primaryType_agg']['buckets'])
-        this.metaData['system_mimetype_agg']['buckets'] = this.metaData['system_mimetype_agg']['buckets'].concat(localmetaData[i]['system_mimetype_agg']['buckets'])
-        this.metaData['system_mimetype_agg']['selection'] = this.metaData['system_mimetype_agg']['selection'].concat(localmetaData[i]['system_mimetype_agg']['selection'])
-        this.metaData['asset_width_agg']['buckets'] = this.metaData['asset_width_agg']['buckets'].concat(localmetaData[i]['asset_width_agg']['buckets'])
-        this.metaData['asset_height_agg']['buckets'] = this.metaData['asset_height_agg']['buckets'].concat(localmetaData[i]['asset_height_agg']['buckets'])
-        this.metaData['video_duration_agg']['buckets'] = this.metaData['video_duration_agg']['buckets'].concat(localmetaData[i]['video_duration_agg']['buckets'])
-        if (queryParams['sectors'] !== undefined && queryParams['sectors'] !== `[""]`) {
-          this.metaData['sectors']['buckets'] = this.metaData['sectors']['buckets'].concat(localmetaData[i]['sectors']['buckets'])
-        }
-      }
-      //}
-    }
-    this.extra = 0
-
-
 
 
 

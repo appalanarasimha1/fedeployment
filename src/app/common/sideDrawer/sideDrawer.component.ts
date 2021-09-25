@@ -9,7 +9,6 @@ import { apiRoutes } from '../config';
 
 
 @Component({
-
   selector: 'app-side-drawer',
   templateUrl: './sideDrawer.component.html',
   styleUrls: ['./sideDrawer.component.css'],
@@ -19,7 +18,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Input() inputMetaData = {
-    system_primaryType_agg: { buckets: [] },
+    system_primaryType_agg: { buckets: [], selection: []},
     system_mimetype_agg: { buckets: [], selection: [] },
     asset_width_agg: { buckets: [] },
     asset_height_agg: { buckets: [] },
@@ -153,16 +152,22 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     return;
   }
 
+  /**
+   * This function checks the primary type values in search criteria and show/hides
+   * width, height filters accordingly
+   * @param metaData - aggregation values coming in search API response
+   * @returns void
+   */
   checkSelectedPrimeAndMimeType(metaData: any) {
-    if (this.searchCriteria['system_primaryType_agg'].includes('Picture')) {
+    if (this.searchCriteria['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
       this.showImageSize = true;
       this.showVideoSize = false;
-
-    }
-    if (this.searchCriteria['system_primaryType_agg'].includes('Video')) {
+    } else if (this.searchCriteria['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
       this.showImageSize = true;
       this.showVideoSize = true;
-
+    } else if(this.searchCriteria['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
+      this.showImageSize = false;
+      this.showVideoSize = false;
     }
 
     // if (metaData.system_primaryType_agg.selection.indexOf(constants.AUDIO_TITLE_CASE) !== -1
