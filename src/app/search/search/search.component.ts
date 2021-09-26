@@ -38,6 +38,7 @@ export class SearchComponent implements OnInit {
   videos: any = { aggregations: {}, entries: [], resultsCount: 0 };
   audio: any = { aggregations: {}, entries: [], resultsCount: 0 };
   apiToHit: any = { Picture: {}, Video: {}, Audio: {} };
+  count = 0; // for multiple api calls
 
   // TypeScript public modifiers
   constructor(
@@ -89,7 +90,6 @@ export class SearchComponent implements OnInit {
     // let data = Object.assign(this.filtersParams || {}, this.searchValue);
 
 
-    const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40 }; //, sectors: `["Sport"]`
     for (const key in data) {
       if (typeof data[key] !== 'string' && typeof data[key] !== 'number') {
@@ -109,7 +109,7 @@ export class SearchComponent implements OnInit {
 
       }
     }
-    this.hitSearchApi(queryParams, headers, pageNumber);
+    this.hitSearchApi(queryParams, pageNumber);
 
 
 
@@ -137,7 +137,7 @@ export class SearchComponent implements OnInit {
     //   });
   }
 
-  hitSearchApi(queryParams: any, headers, pageNumber) {
+  hitSearchApi(queryParams: any, pageNumber) {
     let primaryTypes = JSON.parse(queryParams['system_primaryType_agg'] || '[]');
 
     if (!primaryTypes.length) {
@@ -145,7 +145,7 @@ export class SearchComponent implements OnInit {
     }
     // this.resetResults();
     this.cloneQueryParamsForPrimaryTypes(queryParams);
-    let count = 0; // if new primary type comes up then add +1 here
+    this.count = 0; // if new primary type comes up then add +1 here
     // tslint:disable-next-line:forin
     for (const primaryType in this.apiToHit) {
       this.apiToHit[primaryType] = this.getPrimeTypeByFilter(primaryType, this.apiToHit[primaryType]);
@@ -153,7 +153,7 @@ export class SearchComponent implements OnInit {
         this.apiToHit[primaryType] = {};
       } else {
         this.apiToHit[primaryType].system_primaryType_agg = `["${primaryType}"]`;
-        ++count;
+        ++this.count;
       }
     }
     // primaryTypes = this.getPrimeTypeByFilter(primaryTypes, queryParams);
@@ -163,24 +163,36 @@ export class SearchComponent implements OnInit {
       if (!Object.keys(this.apiToHit[primaryType]).length) {
         continue;
       }
-      // queryParams['system_primaryType_agg'] = `["${primaryTypes[i]}"]`;
-      this.loading = true;
-      this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams: this.apiToHit[primaryType], headers })
-        .get().then((docs) => {
-          this.setData(docs, primaryType);
-          if (--count === 0) {
-            this.getAggregationValues();
-            this.loading = false;
-          }
-        }).catch((error) => {
-          console.log('search document error = ', error);
-          this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
-          if (--count === 0) {
-            this.getAggregationValues();
-            this.loading = false;
-          }
-        });
+      const data = { queryParams: this.apiToHit[primaryType], primaryType };
+      this.fetchApiResult(data);
     }
+  }
+
+  fetchApiResult(data: { primaryType: string, queryParams: any }, isShowMore: boolean = false) {
+    const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
+    this.loading = true;
+    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams: data.queryParams, headers })
+      .get().then((docs) => {
+        this.setData(docs, data.primaryType, isShowMore);
+        if (--this.count === 0) {
+          this.getAggregationValues();
+          this.loading = false;
+        }
+      }).catch((error) => {
+        console.log('search document error = ', error);
+        this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+        if (--this.count === 0) {
+          this.getAggregationValues();
+          this.loading = false;
+        }
+      });
+  }
+
+  fetchNextPageResults(count, data: { primaryType: string, pageNumber: number }) {
+    this.count = count;
+    const queryParams = Object.assign(this.apiToHit[data.primaryType], { currentPageIndex: data.pageNumber, offset: 0, pageSize: 40 });
+    this.fetchApiResult({ primaryType: data.primaryType, queryParams }, true);
+    return;
   }
 
   cloneQueryParamsForPrimaryTypes(queryParams: any) {
@@ -220,17 +232,17 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  setData(data: any, primaryType: string) {
+  setData(data: any, primaryType: string, isShowMore: boolean) {
     // TODO: add new primarytype/filetype here
     switch (primaryType.toLowerCase()) {
       case constants.VIDEO_SMALL_CASE:
-        this.videos = data;
+        if (isShowMore) this.videos.entries = new Object(this.videos.entries.concat(data.entries)); else this.videos = data;
         break;
       case constants.AUDIO_SMALL_CASE:
-        this.audio = data;
+        if (isShowMore) this.audio.entries = new Object(this.audio.entries.concat(data.entries)); else this.audio = data;
         break;
       case constants.PICTURE_SMALL_CASE:
-        this.images = data;
+        if (isShowMore) this.images.entries = new Object(this.images.entries.concat(data.entries)); else this.images = data;
         break;
     }
     return;

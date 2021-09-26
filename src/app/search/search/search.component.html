@@ -6,4 +6,4 @@
     <app-side-drawer [inputMetaData]="aggregationsMetaData" (searchTextOutput)="filters($event)"></app-side-drawer>
 </div>
   <!-- <button (click)="connectToNuxeo()">Connect to nuxeo server</button> -->
-<app-content [images]="images" [videos]="videos" [audio]="audio" (searchTextOutput)="searchDocuments($event)" (pageCount)="searchDocuments($event,1)"></app-content>
+<app-content [images]="images" [videos]="videos" [audio]="audio" (searchTextOutput)="searchDocuments($event)" (pageCount)="fetchNextPageResults(1, $event)"></app-content>

@@ -113,7 +113,7 @@
         </div>
       </div>
 
-      <div *ngIf="images.entries.length" class="row">
+      <div *ngIf="getDataLength(images.entries, 'picture')" class="row">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Images</p>
           <a class="fileCount pb-4">{{images.resultsCount}} images</a>
@@ -210,7 +210,7 @@
         <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show
           more</div>
       </div>
-      <div *ngIf="videos.entries.length" class="row pt-5">
+      <div *ngIf="getDataLength(videos.entries, 'video')" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Videos</p>
           <a class="fileCount pb-4">{{videos.resultsCount}} videos</a>
@@ -281,7 +281,7 @@
 
       </div>
 
-      <div *ngIf="docs.length" class="row pt-5">
+      <div *ngIf="getDataLength(docs, 'docs')" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Documents</p>
           <a class="fileCount pb-4" href="#">{{docs.length}} documents</a>
@@ -462,7 +462,7 @@
 
       <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset;">
         <div class="mb-4" style="width: 80%">
-          <span class="main-heading">{{selectedFile.properties['dc:description']}}</span>
+          <span class="main-heading">{{selectedFile.properties['dc:title']}}</span>
           <span class="yellowBtn">Internal Use ©</span>
           <h5 class="pt-3 weightSize" >{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</h5>
         </div>

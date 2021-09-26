@@ -66,28 +66,52 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.recentlyViewed = [];
     // this.resetValues();
     if (changes.images) {
+      // if(changes.images?.currentValue?.currentPageIndex && changes.images?.currentValue?.currentPageIndex === 0) {
       this.images = changes.images.currentValue;
+      // }
+      // else if(changes.images?.currentValue?.currentPageIndex > 0) {
+      //   this.images.entries.concat(changes.images.currentValue.entries);
+      //   this.images.currentPageIndex = changes.images.currentValue.currentPageIndex;
+      // }
     }
-    if(changes.videos) {
+    if (changes.videos) {
       this.videos = changes.videos.currentValue;
     }
-    if(changes.audio) {
+    if (changes.audio) {
       this.audio = changes.audio.currentValue;
     }
     // this.resetValues();
     // this.segregateDocuments(changes.documents.currentValue);
-    // if (this.imageSliceInput >= this.images.entries.length) {
-    //   this.hideImageShowMoreBtn = true;
-    // } else {
-    //   this.hideImageShowMoreBtn = false;
-    // }
-    // if (this.videoSliceInput >= this.videos.entries.length) {
-    //   this.hideVideoShowMoreBtn = true;
-    // } else {
-    //   this.hideVideoShowMoreBtn = false;
-    // }
+    if (this.imageSliceInput >= this.images.entries.length) {
+      this.hideImageShowMoreBtn = true;
+    } else {
+      this.hideImageShowMoreBtn = false;
+    }
+    if (this.videoSliceInput >= this.videos.entries.length) {
+      this.hideVideoShowMoreBtn = true;
+    } else {
+      this.hideVideoShowMoreBtn = false;
+    }
 
     return;
+  }
+
+  getDataLength(data: any, primaryType: string) {
+    if(primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
+      if (this.imageSliceInput >= this.images.entries.length) {
+        this.hideImageShowMoreBtn = true;
+      } else {
+        this.hideImageShowMoreBtn = false;
+      }
+    }
+    if(primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
+      if (this.videoSliceInput >= this.videos.entries.length) {
+        this.hideVideoShowMoreBtn = true;
+      } else {
+        this.hideVideoShowMoreBtn = false;
+      }
+    }
+    return data.length;
   }
 
   resetValues() {
@@ -172,32 +196,30 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   showMore(docType: string) {
 
-    // if (docType === constants.IMAGE_SMALL_CASE) {
-    //   this.imageSliceInput += 9;
+    if (docType === constants.IMAGE_SMALL_CASE) {
+      this.imageSliceInput += 9;
 
-    //   if (this.imageSliceInput >= this.images.length && this.imageSliceInput <= this.documentCount['Picture']) {
-    //     this.pageCount.emit({'Picture':1});
+      if (this.imageSliceInput >= this.images.entries.length) {
+        this.pageCount.emit({ pageNumber: ++this.images.currentPageIndex, primaryType: 'Picture' });
+        this.hideImageShowMoreBtn = true;
+      }
+      else if (this.imageSliceInput >= this.images.resultsCount) {
+        this.hideImageShowMoreBtn = false;
+      }
+      return;
+    }
 
-    //     // this.hideImageShowMoreBtn = true;
-    //   }
-    //   else if(this.imageSliceInput >= this.documentCount['Picture']){
-    //      this.hideImageShowMoreBtn = true;
-    //   }
-
-    //   return;
-    // }
-
-    // if (docType === constants.VIDEO_SMALL_CASE) {
-    //   this.videoSliceInput += 9;
-    //   if (this.videoSliceInput >= this.videos.length && this.imageSliceInput <= this.documentCount['Video']) {
-    //     this.pageCount.emit({'Video':1});
-
-    //   }
-    //   else if(this.imageSliceInput >= this.documentCount['Video']){
-    //     this.hideVideoShowMoreBtn = true;
-    //   }
-    //   return;
-    // }
+    if (docType === constants.VIDEO_SMALL_CASE) {
+      this.videoSliceInput += 9;
+      if (this.videoSliceInput >= this.videos.entries.length) {
+        this.pageCount.emit({ pageNumber: ++this.videos.currentPageIndex, primaryType: 'Video' });
+        this.hideVideoShowMoreBtn = false;
+      }
+      else if(this.imageSliceInput >= this.videos.resultsCount) {
+        this.hideVideoShowMoreBtn = true;
+      }
+      return;
+    }
   }
 
   emitData(data: IHeaderSearchCriteria): void {
