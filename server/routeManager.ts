@@ -1,7 +1,6 @@
 import * as path from 'path';
 import * as express from 'express';
-import { createProxyMiddleware } from 'http-proxy-middleware';
-import { proxy } from 'jquery';
+import { createProxyMiddleware, responseInterceptor } from 'http-proxy-middleware';
 
 const allowedExt = [
   '.js',
@@ -35,7 +34,23 @@ export class RouteManager {
     // this.app.use('/api/v1/alerts-management', checkApiAuth, AlertsManagementController.Instance.Router);
     // initialiseServices(app);
 
-    this.app.use('/nuxeo/', createProxyMiddleware({ target: this.environment, changeOrigin: true }));
+    this.app.use('/nuxeo/', createProxyMiddleware({
+      target: this.environment, changeOrigin: true, selfHandleResponse: true,
+      onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
+        // const response = responseBuffer.toString('utf8'); // convert buffer to string
+        try {
+          // console.log('res = ', proxyRes.statusCode);
+          if (res.statusCode === 401) {
+            res.statusCode = 302;
+            proxyRes.headers.location = 'http://10.101.21.31:8080/login';
+          }
+          return responseBuffer;
+        } catch (e) {
+          console.error('error = ', e);
+          return responseBuffer;
+        }
+      })
+    }));
     this.app.use('/sockjs-node/', createProxyMiddleware({ target: this.environment, changeOrigin: true }));
     function proxyMiddleware() {
 
