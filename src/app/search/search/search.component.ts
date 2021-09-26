@@ -18,25 +18,26 @@ export class SearchComponent implements OnInit {
   loading = false;
   error = undefined;
   metaData = {
-    'system_primaryType_agg': { buckets: [], selection: [] },
-    'system_mimetype_agg': { buckets: [], selection: [] },
-    'asset_width_agg': { buckets: [], selection: [] },
-    'asset_height_agg': { buckets: [], selection: [] },
-    'video_duration_agg': { buckets: [], selection: [] },
-    'sectors': { buckets: [], selection: [] }
+    system_primaryType_agg: { buckets: [], selection: [] },
+    system_mimetype_agg: { buckets: [], selection: [] },
+    asset_width_agg: { buckets: [], selection: [] },
+    asset_height_agg: { buckets: [], selection: [] },
+    video_duration_agg: { buckets: [], selection: [] },
+    sectors: { buckets: [], selection: [] }
   };
   aggregationsMetaData;
   filtersParams = {};
   documentCount = {};
-  pageShown = {
-    'Picture': 0,
-    'Video': 0,
-    'Audio': 0
-  };
+  // pageShown = {
+  //   'Picture': 0,
+  //   'Video': 0,
+  //   'Audio': 0
+  // };
   extra = 0;
   images: any = { aggregations: {}, entries: [], resultsCount: 0 };
   videos: any = { aggregations: {}, entries: [], resultsCount: 0 };
   audio: any = { aggregations: {}, entries: [], resultsCount: 0 };
+  apiToHit: any = { Picture: {}, Video: {}, Audio: {} };
 
   // TypeScript public modifiers
   constructor(
@@ -142,16 +143,31 @@ export class SearchComponent implements OnInit {
     if (!primaryTypes.length) {
       primaryTypes = ['Picture', 'Video', 'Audio'];
     }
-
-    primaryTypes = this.getPrimeTypeByFilter(primaryTypes, queryParams);
-    let count = primaryTypes.length;
+    // this.resetResults();
+    this.cloneQueryParamsForPrimaryTypes(queryParams);
+    let count = 0; // if new primary type comes up then add +1 here
+    // tslint:disable-next-line:forin
+    for (const primaryType in this.apiToHit) {
+      this.apiToHit[primaryType] = this.getPrimeTypeByFilter(primaryType, this.apiToHit[primaryType]);
+      if (this.apiToHit[primaryType].system_primaryType_agg.indexOf(primaryType) === -1) {
+        this.apiToHit[primaryType] = {};
+      } else {
+        this.apiToHit[primaryType].system_primaryType_agg = `["${primaryType}"]`;
+        ++count;
+      }
+    }
+    // primaryTypes = this.getPrimeTypeByFilter(primaryTypes, queryParams);
+    // let count = primaryTypes.length;
     this.resetResults();
-    for (let i = 0; i < primaryTypes.length; i++) {
-      queryParams['system_primaryType_agg'] = `["${primaryTypes[i]}"]`;
+    for (const primaryType in this.apiToHit) {
+      if (!Object.keys(this.apiToHit[primaryType]).length) {
+        continue;
+      }
+      // queryParams['system_primaryType_agg'] = `["${primaryTypes[i]}"]`;
       this.loading = true;
-      this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
+      this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams: this.apiToHit[primaryType], headers })
         .get().then((docs) => {
-          this.setData(docs, primaryTypes[i]);
+          this.setData(docs, primaryType);
           if (--count === 0) {
             this.getAggregationValues();
             this.loading = false;
@@ -165,6 +181,13 @@ export class SearchComponent implements OnInit {
           }
         });
     }
+  }
+
+  cloneQueryParamsForPrimaryTypes(queryParams: any) {
+    this.apiToHit.Picture = Object.assign({ 'system_primaryType_agg': 'Picture' }, queryParams);
+    this.apiToHit.Video = Object.assign({ 'system_primaryType_agg': 'Video' }, queryParams);
+    this.apiToHit.Audio = Object.assign({ 'system_primaryType_agg': 'Audio' }, queryParams);
+    return;
   }
 
   getAggregationValues() {
@@ -213,68 +236,126 @@ export class SearchComponent implements OnInit {
     return;
   }
 
-  getPrimeTypeByFilter(primaryTypes: string[], queryParams: any): string[] {
+  getPrimeTypeByFilter(primaryType: string, queryParams: any): string[] {
     // TODO: add new primarytype/filetype here
-    // const primaryTypes = [];
-    // let dataToIterate;
     let videoIndex;
     let pictureIndex;
     let audioIndex;
 
-    // if (queryParams['system_mimetype_agg']) {
-    //   if (typeof queryParams['system_mimetype_agg'] === 'string') {
-    //     dataToIterate = JSON.parse(queryParams['system_mimetype_agg']);
-    //   }
-    //   dataToIterate.map((value: string) => {
-    //     videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
-    //     pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
-    //     audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-
-    //     if (value.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
-    //       // if(pictureIndex !== -1) primaryTypes.splice(pictureIndex, 1);
-    //       // audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-    //       // if(audioIndex !== -1) primaryTypes.splice(audioIndex, 1);
-    //       if (primaryTypes.indexOf(constants.VIDEO_TITLE_CASE) === -1) primaryTypes.push(constants.VIDEO_TITLE_CASE);
-    //     } else if (value.toLowerCase().includes(constants.IMAGE_SMALL_CASE)) {
-    //       // if(videoIndex !== -1) primaryTypes.splice(videoIndex, 1);
-    //       // audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-    //       // if(audioIndex !== -1) primaryTypes.splice(audioIndex, 1);
-    //       if (primaryTypes.indexOf(constants.PICTURE_TITLE_CASE) === -1) primaryTypes.push(constants.PICTURE_TITLE_CASE);
-    //     } else if (value.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
-    //       // if(pictureIndex !== -1) primaryTypes.splice(pictureIndex, 1);
-    //       // videoIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.VIDEO_SMALL_CASE));
-    //       // if(videoIndex !== -1) primaryTypes.splice(videoIndex, 1);
-    //       if (primaryTypes.indexOf(constants.AUDIO_TITLE_CASE) === -1) primaryTypes.push(constants.AUDIO_TITLE_CASE);
-    //     }
-    //   });
-    // }
-
     if (queryParams['system_mimetype_agg']) {
+      const dataToIterate = JSON.parse(queryParams['system_mimetype_agg']);
       const mimeTypeValue = queryParams['system_mimetype_agg'];
-      if(!mimeTypeValue.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
-        primaryTypes.splice(videoIndex, 1);
+      if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
+        // if (dataToIterate.indexOf(constants.VIDEO_SMALL_CASE) > -1) {
+        //   const index = queryParams['system_primaryType_agg'].findIndex(item => item === primaryType);
+        //   queryParams['system_primaryType_agg'].splice(index, 1);
+        // }
+        if (mimeTypeValue.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          let newMime = '';
+          dataToIterate.map(mimeType => {
+            if (mimeType.includes(constants.VIDEO_SMALL_CASE)) {
+              newMime += `"${mimeType}",`;
+            }
+          });
+          queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
+        } else {
+          if (queryParams['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
+            queryParams['system_mimetype_agg'] = `[]`;
+            queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          } else queryParams['system_primaryType_agg'] = [];
+        }
       }
-      if(!mimeTypeValue.toLowerCase().includes(constants.PICTURE_SMALL_CASE)) {
-        primaryTypes.splice(pictureIndex, 1);
+
+      if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
+        // if(dataToIterate.indexOf(constants.PICTURE_TITLE_CASE) > -1) {
+        //   const index = queryParams['system_primaryType_agg'].findIndex(item => item === primaryType);
+        //   queryParams['system_primaryType_agg'].splice(index, 1);
+        // }
+        if (mimeTypeValue.toLowerCase().includes(constants.PICTURE_SMALL_CASE)) {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          let newMime = '';
+          dataToIterate.map(mimeType => {
+            if (mimeType.includes(constants.IMAGE_SMALL_CASE)) {
+              newMime += `"${mimeType}",`;
+            }
+          });
+          queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
+        } else {
+          if (queryParams['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
+            queryParams['system_mimetype_agg'] = `[]`;
+            queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          } else queryParams['system_primaryType_agg'] = [];
+        }
       }
-      if(!mimeTypeValue.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
-        primaryTypes.splice(audioIndex, 1);
+
+      if (primaryType.toLowerCase() === constants.AUDIO_SMALL_CASE) {
+        if (mimeTypeValue.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          let newMime = '';
+          dataToIterate.map(mimeType => {
+            if (mimeType.includes(constants.AUDIO_SMALL_CASE)) {
+              newMime += `"${mimeType}",`;
+            }
+          });
+          queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
+        } else {
+          if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
+            queryParams['system_mimetype_agg'] = `[]`;
+            queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          } else queryParams['system_primaryType_agg'] = [];
+        }
       }
     }
 
     if (queryParams['asset_width_agg'] || queryParams['asset_height_agg']) {
-      audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-      if (primaryTypes.indexOf(constants.AUDIO_TITLE_CASE) !== -1) primaryTypes.splice(audioIndex, 1);
+      // audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
+      // if (primaryTypes.indexOf(constants.AUDIO_TITLE_CASE) !== -1) queryParams['system_primaryType_agg'].splice(audioIndex, 1);
+
+      if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
+        if (queryParams['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+        } else queryParams['system_primaryType_agg'] = [];
+      }
+      if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
+        if (queryParams['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+        } else queryParams['system_primaryType_agg'] = [];
+      }
+      if (primaryType.toLowerCase() === constants.AUDIO_SMALL_CASE) {
+        if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          queryParams['asset_width_agg'] = `[]`;
+          queryParams['asset_height_agg'] = `[]`;
+        } else queryParams['system_primaryType_agg'] = [];
+      }
     }
 
-    if (queryParams['video_duration_agg'] && (pictureIndex !== -1 || audioIndex !== -1)) {
-      pictureIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.PICTURE_SMALL_CASE));
-      if (primaryTypes.indexOf(constants.PICTURE_TITLE_CASE) !== -1) primaryTypes.splice(pictureIndex, 1);
-      audioIndex = primaryTypes.findIndex((item: any) => item.toLowerCase().includes(constants.AUDIO_SMALL_CASE));
-      if (primaryTypes.indexOf(constants.AUDIO_TITLE_CASE) !== -1) primaryTypes.splice(audioIndex, 1);
+    if (queryParams['video_duration_agg']) {
+      if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
+        if (queryParams['system_primaryType_agg']) {
+          if (queryParams['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
+            queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          } else queryParams['system_primaryType_agg'] = [];
+        } else {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+        }
+      }
+      if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
+        if (queryParams['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          queryParams['video_duration_agg'] = `[]`;
+        } else queryParams['system_primaryType_agg'] = [];
+      }
+      if (primaryType.toLowerCase() === constants.AUDIO_SMALL_CASE) {
+        if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
+          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          queryParams['video_duration_agg'] = `[]`;
+        } else queryParams['system_primaryType_agg'] = [];
+      }
     }
 
-    return primaryTypes;
+    return queryParams;
   }
 
   resetResults() {
