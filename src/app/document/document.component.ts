@@ -186,7 +186,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     const sortBy = event.target.value;
     if (sortBy) {
       this.searchCriteria['sortBy'] = sortBy;
-      this.searchCriteria['sortOrder'] = 'asc';
+      this.searchCriteria['sortOrder'] = 'desc';
     } else {
       delete this.searchCriteria['sortBy'];
       delete this.searchCriteria['sortOrder']

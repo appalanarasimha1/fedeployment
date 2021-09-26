@@ -164,7 +164,7 @@
         <div class="col-xl-12 col-md-12">
           <div *ngIf="showListView" class="card-view">
             <ul class="flexible">
-              <li *ngFor="let image of images.entries.entries.slice(0, imageSliceInput); let i = index">
+              <li *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
                 <div class="cardBlock" style="border-radius: 8px;">
                   <div class="cardBlockContent">
                     <div class="row">

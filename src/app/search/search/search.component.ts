@@ -85,6 +85,8 @@ export class SearchComponent implements OnInit {
     //  this.documents = undefined;
     this.filtersParams['ecm_fulltext'] = this.searchValue.ecm_fulltext || '';
     this.filtersParams['highlight'] = this.searchValue.highlight || '';
+    this.filtersParams['sortBy'] = dataParam['sortBy'] || '';
+    this.filtersParams['sortOrder'] = dataParam['sortOrder'] || '';
     const data = this.filtersParams;
     // console.log("filters are ", this.filtersParams)
     // let data = Object.assign(this.filtersParams || {}, this.searchValue);
