@@ -30,7 +30,8 @@ export class NuxeoService {
     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
     'enrichers.document': 'thumbnail,permissions,preview',
     Authorization: 'Bearer ' + localStorage.getItem('token'),
-    properties: '*'
+    properties: '*',
+    'CSRF-Token': 'defaults'
   };
 
   // private instance = {request: function(){}};

@@ -93,10 +93,10 @@ var RouteManager = /** @class */ (function () {
                 return __generator(this, function (_a) {
                     // const response = responseBuffer.toString('utf8'); // convert buffer to string
                     try {
-                        console.log('res = ', proxyRes.statusCode);
-                        if (res.statusCode === 401) {
+                        // console.log('res = ', proxyRes.statusCode);
+                        if (res.statusCode === 401 || res.statusCode === 302) {
                             res.statusCode = 302;
-                            proxyRes.headers.location = 'http://10.101.21.31:8080/login';
+                            proxyRes.headers['location'] = 'http://10.101.21.31:8080/login';
                         }
                         return [2 /*return*/, responseBuffer];
                     }

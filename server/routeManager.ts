@@ -17,7 +17,7 @@ const allowedExt = [
 
 export class RouteManager {
   private readonly app: any;
-  private environment = process.env.NODE_ENV === 'demo' ? 'http://10.101.21.58:8089' : 'http://10.101.21.63:8087';
+  private environment = process.env.NODE_ENV === 'demo' ? 'http://10.101.21.58:8089' : 'https://10.101.21.63:8087';
 
   constructor(app: any) {
     this.app = app;
@@ -42,7 +42,7 @@ export class RouteManager {
           // console.log('res = ', proxyRes.statusCode);
           if (res.statusCode === 401) {
             res.statusCode = 302;
-            proxyRes.headers.location = 'http://10.101.21.31:8080/login';
+            proxyRes.headers['location'] = 'https://uatgroundx.neom.com/login';
           }
           return responseBuffer;
         } catch (e) {

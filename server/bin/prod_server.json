@@ -8,6 +8,7 @@
     "out_file": "../runtime/out.log",
     "merge_logs": true,
     "env": {
-      "NODE_ENV": "production"
+      "NODE_ENV": "production",
+      "PORT": 8000
     }
   }
