@@ -18,12 +18,15 @@
 }
 .search-bar{
     position: relative;
-    padding: 9px 10px 9px 16px;
+    padding: 10px 10px 10px 16px;
     border-radius: 8px;
     border: 1px solid #E5E5E5;
     width: 430px;
-    /* border-top-left-radius: unset; */
-    /* border-bottom-left-radius: unset; */
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    font-size: 16px;
+line-height: 22px;
+background-color: #FDFDFD;
 }
 .placeholder-search{
     position: absolute;
@@ -33,33 +36,76 @@
     margin: auto;
     width: 18px;
 }
-.dropdown button{
+.sectorDrop button#dropdownManual{
     border: 1px solid #E5E5E5;
     border-radius: 8px;
-    background-color: #fff;
-    width: 160px;
+    background-color: #FDFDFD;
+    width: 230px;
     position: relative;
     border-top-right-radius: unset;
     border-bottom-right-radius: unset;
     text-align: left;
-    padding: 10px;
     font-size: 16px;
     line-height: 22px;
+    padding: 10px 12px;
+    color: #000;
+    z-index: 9;
 }
-.dropdown-menu{
+.sectorDrop button#dropdownManual:focus{
+    box-shadow: unset;
+    outline: 0;
+}
+.sectorDropMain{
+    top: -8px !important;
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+    background: #fff;
+    padding-top: 15px;
+    height: 140px;
+    overflow-y: scroll;
+}
+.sectorDropMain::-webkit-scrollbar {
+    display: none;
+  }
+.sectorDropBtn:focus, .sectorDropBtn:hover{
+    background-color: #EBC03F !important;
+    color: #2B2825 !important;
+}
+.dropup .sectorDropMain.dropdown-menu {
+    top: 24px !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+    padding-top: 8px;
+    /* padding-bottom: 37px !important; */
+    height: 140px;
+    background: #fff;
+}
+.dropup .dropdown-toggle::after {
+    top: unset;
+    bottom: 14px;
+}
+.sectorDropBtn{
+    font-size: 16px;
+line-height: 22px;
+color: #404040;
+background-color: #fff;
+}
+/* .dropdown-menu{
     margin: 0px 0px 0px 0px;
     margin-top: -2px !important;
 }
 .dropdown-item{
     padding: 3px 13px;
-}
+} */
 .dropdown-toggle::after{
     right: 10px;
     position: absolute;
     top: 19px;
     bottom: 0;
     margin: auto;
-}
+} 
 .search-btn{
     position: absolute;
     right: 0px;

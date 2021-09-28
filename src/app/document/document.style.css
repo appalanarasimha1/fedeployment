@@ -1130,3 +1130,10 @@ color: #C4C4C4;
 input::placeholder {
   color: #fff !important;
 }
+.numberFiles{
+  font-size: 14px;
+line-height: 22px;
+display: block;
+padding-left: 15px;
+color: #ACACAC;
+}
