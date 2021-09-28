@@ -4,7 +4,11 @@ const PROXY_CONFIG = [
             "/nuxeo/",
             "/sockjs-node/",
         ],
-        "target": "https://10.101.21.63:8087",
+        "target": {
+            "host": "tomcat-groundx.neom.com",
+            "protocol": "https:",
+            "port": 8087
+        },
         "secure": false,
         "changeOrigin": true
     }];

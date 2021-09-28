@@ -260,11 +260,11 @@ export class SearchComponent implements OnInit {
       const dataToIterate = JSON.parse(queryParams['system_mimetype_agg']);
       const mimeTypeValue = queryParams['system_mimetype_agg'];
       if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
+        if (mimeTypeValue.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
         // if (dataToIterate.indexOf(constants.VIDEO_SMALL_CASE) > -1) {
         //   const index = queryParams['system_primaryType_agg'].findIndex(item => item === primaryType);
         //   queryParams['system_primaryType_agg'].splice(index, 1);
         // }
-        if (mimeTypeValue.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
           queryParams['system_primaryType_agg'] = `['${primaryType}']`;
           let newMime = '';
           dataToIterate.map(mimeType => {
