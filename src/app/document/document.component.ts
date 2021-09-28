@@ -49,6 +49,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   fileSelected = [];
   sortValue = '';
   activeTabs = { comments: false, info: false, timeline: false };
+  loading = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -347,9 +348,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     let error;
     const queryParams = { pageSize: 10, currentPageIndex: 0 };
     const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
-    this.nuxeo.nuxeoClient.request(route, { queryParams })
+    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: {'enrichers.user': 'userprofile'}})
       .get().then((docs) => {
-        this.comments = docs.enteries;
+        this.comments = docs.entries;
         loading = false;
       }).catch((err) => {
         console.log('search document error = ', err);
@@ -361,44 +362,28 @@ export class DocumentComponent implements OnInit, OnChanges {
         }
         loading = false;
       });
-
-    // response
-    /**
-    /* {"entity-type":"comments",
-    "totalSize":1,
-    "entries":[
-      {
-        "entity-type":"comment","id":"e343f0bd-75de-4ea3-ad00-3a28acba21e6",
-        "parentId":"eef8a0d4-b828-41dc-95bf-a0f310cd6f5e",
-        "ancestorIds":["eef8a0d4-b828-41dc-95bf-a0f310cd6f5e"],
-        "author":"Administrator",
-        "text":"this is a test, need to see how it works",
-        "creationDate":"2021-09-17T07:38:32.432Z",
-        "modificationDate":"2021-09-17T07:38:32.432Z",
-        "entityId":null,
-        "origin":null,
-        "entity":null,
-        "permissions":["Browse","ReadProperties","ReadChildren","ReadLifeCycle","ReviewParticipant",
-        "ReadSecurity","WriteProperties","ReadVersion","WriteVersion","Version",
-        "Read","AddChildren","RemoveChildren","Remove","ManageWorkflows",
-        "WriteLifeCycle","Unlock","ReadRemove","Write","ReadWrite","WriteSecurity",
-        "Everything","RestrictedRead","MakeRecord","SetRetention","ManageLegalHold",
-        "WriteColdStorage","ReadCanCollect","Comment","Moderate","CanAskForPublishing",
-        "DataVisualization"],
-        "numberOfReplies":0}
-      ]}
-    */
   }
 
   saveComment(comment: string): void {
+    let error;
     const route = apiRoutes.SAVE_COMMENT.replace('[assetId]', this.selectedFile.uid);
-    const apiBody = {
+    const postData = {
       'entity-type': 'comment',
       parentId: this.selectedFile.uid,
       text: comment
     };
-    this.apiService.post(route, apiBody).subscribe(response => {
-      console.log(response);
+    this.nuxeo.nuxeoClient.request(route).post(postData).then((doc) => {
+      this.comments.push(doc);
+      this.loading = false;
+    }).catch((err) => {
+      console.log('search document error = ', err);
+      error = `${error}. `;
+      if (error && error.message) {
+        if (error.message.toLowerCase() === 'unauthorized') {
+          this.sharedService.redirectToLogin();
+        }
+      }
+      this.loading = false;
     });
   }
 

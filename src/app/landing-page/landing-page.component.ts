@@ -30,6 +30,7 @@ export class LandingPageComponent implements OnInit {
     this.getCollections();
     this.getEdited();
     this.recentlyViewed = JSON.parse(localStorage.getItem('Administrator-default-nuxeo-recent-documents'));
+    // this.getUserProfile();
   }
 
   getFavorites() {
@@ -98,6 +99,27 @@ export class LandingPageComponent implements OnInit {
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_RECENT_EDITED, { queryParams, headers }).get()
       .then((response) => {
         this.recentEdited = response.entries;
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
+      }).catch((error) => {
+        this.loading = false;
+        console.error('error while fetching recent edited on landing page = ', error);
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        return;
+      });
+  }
+
+  getUserProfile() {
+    const queryParams = { };
+    const headers = { 'enrichers-document': ['thumbnail'], 'enrichers.user': 'userprofile' };
+    this.nuxeo.nuxeoClient.request(apiRoutes.USER_PROFILE, { queryParams, headers }).get()
+      .then((response) => {
+        localStorage.setItem('user', response);
         setTimeout(() => {
           this.loading = false;
         }, 0);

@@ -73,7 +73,7 @@ var allowedExt = [
 ];
 var RouteManager = /** @class */ (function () {
     function RouteManager(app) {
-        this.environment = process.env.NODE_ENV === 'demo' ? 'http://10.101.21.58:8089' : 'http://10.101.21.63:8087';
+        this.environment = process.env.NODE_ENV === 'demo' ? 'https://10.101.21.58:8089' : 'https://10.101.21.63:8087';
         this.app = app;
         this.mountRoutes(app);
     }
@@ -94,9 +94,9 @@ var RouteManager = /** @class */ (function () {
                     // const response = responseBuffer.toString('utf8'); // convert buffer to string
                     try {
                         // console.log('res = ', proxyRes.statusCode);
-                        if (res.statusCode === 401 || res.statusCode === 302) {
+                        if (res.statusCode === 401) {
                             res.statusCode = 302;
-                            proxyRes.headers['location'] = 'http://10.101.21.31:8080/login';
+                            proxyRes.headers['location'] = 'https://uatgroundx.neom.com/login';
                         }
                         return [2 /*return*/, responseBuffer];
                     }

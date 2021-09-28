@@ -4,7 +4,7 @@
     <img src="{{document.contextParameters?.thumbnail.url}}" /> 
   </a>
 </div> -->
-<app-loader [show]="showLoader"></app-loader>
+<app-loader [show]="loading"></app-loader>
 <section>
   <section>
     <div *ngIf="recentlyViewed && recentlyViewed.length && !videos.entries.length && !images.entries.entries.length && !docs.length" class="container">
