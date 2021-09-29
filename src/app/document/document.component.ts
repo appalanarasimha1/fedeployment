@@ -50,6 +50,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   sortValue = '';
   activeTabs = { comments: false, info: false, timeline: false };
   loading = false;
+  public myOptions = {
+    gutter: 10
+  };
 
   constructor(
     @Inject(DOCUMENT) private document: Document,

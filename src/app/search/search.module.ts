@@ -8,6 +8,7 @@ import { SubHeaderComponent } from '../common/subHeader/subHeader.component';
 import { DocumentComponent } from '../document/document.component';
 import { SharedModule } from '../shared/shared.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgxMasonryModule } from 'ngx-masonry';
 // import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { HttpInterceptorService } from '../services/http-interceptor.service';
 // import { NuxeoService } from '../services/nuxeo.service';
@@ -23,7 +24,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     // HttpClientModule,
     SharedModule,
     SearchRoutingModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxMasonryModule
   ],
   // providers: [NuxeoService, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}]
 })
