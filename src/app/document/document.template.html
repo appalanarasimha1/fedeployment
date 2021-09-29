@@ -16,44 +16,27 @@
           <p (click)="clearRecentlyViewed()" class="clear">Clear</p>
         </div>
         <div class="col-xl-12 col-md-12">
-          <ul class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
-            <li *ngFor="let file of recentlyViewed; let i = index">
-              <!-- <a (click)="open(preview, file)">
-                <img src="{{findOriginalUrlFromRenditions(file.contextParameters.renditions)}}"
-                  class="w-100 shadow-1-strong rounded" alt="">
-              </a> -->
+          
 
-
-              <div class="cardBlock pa-0" >
-                <div class="cardBlockContent">
-                  <div class="row">
-                    <div (click)="open(preview, file)" class="col-xl-12 col-md-12">
-                        <img src="{{getAssetUrl(file.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong" alt=""/>
-                        <!-- <img src="{{getAssetUrl(file.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded" alt=""> -->
-                    </div>
+          <ngx-masonry [options]="myOptions" [ordered]="true">
+            <div ngxMasonryItem class="masonry-item" *ngFor="let file of recentlyViewed; let i = index">
+              <img src="{{getAssetUrl(file.contextParameters.thumbnail.url)}}" alt="{{file.properties['dc:title']}}" (click)="open(preview, file)" />
+              <div class="cardBlock newDesign pa-0" >
+                <div [ngClass]="{'activeHover': file.isSelected}">
+                  <div class="form-group-custom">
+                    <input type="checkbox" id="html{{i}}"  [checked]="file.isSelected" [(ngModel)]="file.isSelected" (change)="selectImage($event, file, i)">
+                    <label for="html{{i}}"></label>
                   </div>
+                  <div class="hover-icon-group">
+                    <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}"></div>
+                    <div class="hover-icon plus-icon" (click)="open(preview, file)"></div>
+                    <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
+                  </div>
+                  <div class="mouse-hover-bg" (click)="open(preview, file)"></div>
                 </div>
-                <div class="" [ngClass]="{'activeHover': file.isSelected}">
-                 <!--  <ol>
-                    <li> -->
-                      <div class="form-group-custom">
-                        <input type="checkbox" id="html{{i}}" [checked]="file.isSelected" [(ngModel)]="file.isSelected" (change)="selectImage($event, file, i, true)">
-                        <label for="html{{i}}"></label>
-                      </div>
-                    <!-- </li>
-                    <li> -->
-                      <div class="hover-icon-group">
-                        <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}"></div>
-                        <div class="hover-icon plus-icon" (click)="open(preview, file)"></div>
-                        <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
-                      </div>
-                      <div class="mouse-hover-bg" (click)="open(preview, file)"></div>
-                    <!-- </li> -->
-                  <!-- </ol> -->
-                </div>
-              </div> 
-            </li>
-          </ul>
+              </div>
+           </div>
+          </ngx-masonry>
         </div>
       </div>
     </div>
@@ -124,46 +107,61 @@
         </div>
         <!-- Gallery -->
 
-        <ul *ngIf="!showListView" class="set-width portfolio-list"
+        <!-- <ul *ngIf="!showListView" class="set-width portfolio-list"
           style="list-style: none;margin: unset; padding: 0; align-items: unset;">
           <li *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
 
-            <!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
-            <!-- <a (click)="open(preview, image)">
-              <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded"
-                alt="">
-            </a> -->
 
             <div class="cardBlock pa-0" style="">
               <div class="cardBlockContent">
                 <div class="row">
                   <div (click)="open(preview, image)" class="col-xl-12 col-md-12">
                       <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong" alt=""/>
-                      <!-- <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded" alt=""> -->
-                  </div>
+                      </div>
                 </div>
               </div>
               <div [ngClass]="{'activeHover': image.isSelected}">
-                <!-- <ol>
-                  <li> -->
+               
                     <div class="form-group-custom">
                       <input type="checkbox" id="html{{i}}"  [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
                       <label for="html{{i}}"></label>
                     </div>
-                  <!-- </li>
-                  <li> -->
                     <div class="hover-icon-group">
                       <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
                       <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
                       <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                     </div>
                     <div class="mouse-hover-bg" (click)="open(preview, image)"></div>
-                  <!-- </li>
-                </ol> -->
               </div>
             </div>
           </li>
-        </ul>
+        </ul> -->
+
+        <div *ngIf="!showListView">
+          <div class="row">
+            <div class="col-xl-12 col-md-12">
+              <ngx-masonry [options]="myOptions" [ordered]="true">
+                <div ngxMasonryItem class="masonry-item" *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
+                  <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" alt="{{image.properties['dc:title']}}" (click)="open(preview, image)" />
+                  <div class="cardBlock newDesign pa-0" >
+                    <div [ngClass]="{'activeHover': image.isSelected}">
+                      <div class="form-group-custom">
+                        <input type="checkbox" id="html{{i}}"  [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
+                        <label for="html{{i}}"></label>
+                      </div>
+                      <div class="hover-icon-group">
+                        <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
+                        <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
+                        <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
+                      </div>
+                      <div class="mouse-hover-bg" (click)="open(preview, image)"></div>
+                    </div>
+                  </div>
+               </div>
+              </ngx-masonry>
+            </div>
+          </div>
+        </div>
 
         <div class="col-xl-12 col-md-12">
           <div *ngIf="showListView" class="card-view">
@@ -183,28 +181,24 @@
                       </div>
                       <div (click)="open(preview, image)" class="col-xl-6 col-md-6">
                         <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded listViewImg" style="width: 100%;border-radius: 8px !important;" alt="" />
-                        <!-- <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}"
-                          style="width: 100%;border-radius: 8px;"> -->
+                       
                       </div>
                     </div>
                   </div>
                   <div [ngClass]="{'activeHover': image.isSelected}">
-                    <!-- <ol>
-                      <li> -->
+                   
                         <div class="form-group-custom">
                           <input type="checkbox" id="html{{i}}" [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
                           <label for="html{{i}}"></label>
                         </div>
-                      <!-- </li>
-                      <li> -->
+                     
                         <div class="hover-icon-group">
                           <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
                           <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
                           <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                         </div>
                         <div class="mouse-hover-bg" (click)="open(preview, image)"></div>
-                      <!-- </li>
-                    </ol> -->
+                     
                   </div>
                 </div>
               </li>

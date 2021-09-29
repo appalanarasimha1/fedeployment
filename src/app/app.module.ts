@@ -17,6 +17,7 @@ import { NuxeoService } from './services/nuxeo.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { CookieService } from 'ngx-cookie-service';
 import { FooterComponent } from './common/footer/footer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FooterComponent } from './common/footer/footer.component';
   imports: [
     CommonModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     SharedModule

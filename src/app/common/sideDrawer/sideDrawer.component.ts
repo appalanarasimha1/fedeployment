@@ -34,6 +34,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   };
   loading = false;
   error = undefined;
+  filterClosed: boolean = true;
 
   private searchCriteria: {
     quickFilters?: string,
@@ -439,5 +440,23 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     document.getElementById("main").classList.toggle('shiftFilter');
     document.getElementById("main-sidebar").classList.toggle("closeBtn");
 
+    if (this.filterClosed) {
+      $(".main, .min-height").animate(
+        {
+          left: "280px"
+        },
+        300
+      );
+    } else {
+      $(".main, .min-height").animate(
+        {
+          left: "0px"
+        },
+        300
+      );
+    }
+
+    this.filterClosed = !this.filterClosed;
+    return;
   }
 }

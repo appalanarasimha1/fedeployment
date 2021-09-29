@@ -1137,3 +1137,35 @@ display: block;
 padding-left: 15px;
 color: #ACACAC;
 }
+
+/* masonry css */
+.min-height{
+  min-height: calc(100vh - 68vh);
+  position: relative;
+}
+.min-height-search{
+  min-height: calc(100vh - 68vh);
+  position: relative;
+}
+.masonry-item {
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  background-size: cover;
+  width: calc(25% - 10px);
+}
+.masonry-item-thumbnail {
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  background-size: cover;
+  width: calc(50% - 10px);
+}
+.cardBlock.newDesign {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
