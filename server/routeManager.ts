@@ -17,7 +17,7 @@ const allowedExt = [
 
 export class RouteManager {
   private readonly app: any;
-  private environment = process.env.NODE_ENV === 'demo' ? 'https://10.101.21.58:8089' : 'https://tomcat-groundx.neom.com:8087';
+  private targetUrl = process.env.NODE_ENV === 'demo' ? 'https://10.101.21.58:8089' : 'https://tomcat-groundx.neom.com:8087';
 
   constructor(app: any) {
     this.app = app;
@@ -34,27 +34,83 @@ export class RouteManager {
     // this.app.use('/api/v1/alerts-management', checkApiAuth, AlertsManagementController.Instance.Router);
     // initialiseServices(app);
 
-    this.app.use('/nuxeo/', createProxyMiddleware({
-      target: this.environment, changeOrigin: true, selfHandleResponse: true,
-      onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
-        // const response = responseBuffer.toString('utf8'); // convert buffer to string
-        try {
-          // console.log('res = ', proxyRes.statusCode);
-          if (res.statusCode === 401) {
-            res.statusCode = 302;
-            proxyRes.headers['location'] = 'https://uatgroundx.neom.com/login';
-          }
-          return responseBuffer;
-        } catch (e) {
-          console.error('error = ', e);
-          return responseBuffer;
-        }
-      })
-    }));
-    this.app.use('/sockjs-node/', createProxyMiddleware({ target: this.environment, changeOrigin: true }));
-    function proxyMiddleware() {
+    const options = {
+      target: this.targetUrl, // target host
+      changeOrigin: true, // needed for virtual hosted sites
+      ws: true, // proxy websockets
+      secure: false, // if you want to verify the certificate
+      // pathRewrite: {
+      //   '^/api/old-path': '/api/new-path', // rewrite path
+      //   '^/api/remove/path': '/path', // remove base path
+      // },
+      // router: {
+      //   // when request.headers.host == 'dev.localhost:3000',
+      //   // override target 'http://www.example.org' to 'http://localhost:8000'
+      //   // 'dev.localhost:3000': 'http://localhost:8000',
+      // },
+      // router: {
+      //     protocol: 'https:', // The : is required
+      //     host: 'localhost',
+      //     port: 8080
+      // }
+      //onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
+      //   // const response = responseBuffer.toString('utf8'); // convert buffer to string
+      //   try {
+      //     // console.log('res = ', proxyRes.statusCode);
+      //     if (res.statusCode === 401) {
+      //       res.statusCode = 302;
+      //       proxyRes.headers['location'] = 'https://uatgroundx.neom.com/login';
+      //     }
+      //     return responseBuffer;
+      //   } catch (e) {
+      //     console.error('error = ', e);
+      //     return responseBuffer;
+      //   }
+      // })
+    };
 
-    }
+    // create the proxy (without context)
+    // const exampleProxy = createProxyMiddleware(options);
+
+    // this.app.use('/nuxeo/', createProxyMiddleware({
+    //   target: this.targetUrl,
+    //   // ws: true,
+    //   secure: false,
+    //   changeOrigin: true,
+    //   // onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
+    //   //   // const response = responseBuffer.toString('utf8'); // convert buffer to string
+    //   //   try {
+    //   //     // console.log('res = ', proxyRes.statusCode);
+    //   //     if (res.statusCode === 401) {
+    //   //       res.statusCode = 302;
+    //   //       proxyRes.headers['location'] = 'https://uatgroundx.neom.com/login';
+    //   //     }
+    //   //     return responseBuffer;
+    //   //   } catch (e) {
+    //   //     console.error('error = ', e);
+    //   //     return responseBuffer;
+    //   //   }
+    //   // })
+    // }));
+    this.app.use('/nuxeo/', createProxyMiddleware(
+      {
+        //   router: {
+        //     '/' : 'http://localhost:8001'
+        // },
+        // router: function () {
+        //   return {
+        //     protocol: 'https:', // The : is required
+        //     host: 'tomcat-groundx.neom.com',
+        //     port: 8087
+        //   }
+        // },
+        target: this.targetUrl, 
+        changeOrigin: true,
+        secure: false,
+        logLevel: 'debug',
+
+      }
+    ));
 
     // Default route.
     this.app.use(express.static(path.resolve(__dirname + '/../../' + '/dist')));

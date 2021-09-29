@@ -80,7 +80,7 @@ export class NuxeoService {
   }
 
   logout(): void {
-    this.http.get(`${this.document.location.origin}/nuxeo/logout`)
+    this.http.get(`${this.baseUrl}/nuxeo/logout`)
       .subscribe((response: any) => {
         // this.cookie.deleteAll();
         // this.nuxeoClient = null;
@@ -97,7 +97,7 @@ export class NuxeoService {
   authenticateUser(username: string, password: string) {
     this.nuxeoClient = new Nuxeo({
       // baseURL: `${this.baseUrl}/nuxeo/`,
-      baseURL: `${this.document.location.origin}/nuxeo/`,
+      baseURL: `${this.baseUrl}/nuxeo/`,
       auth: {
         username,
         password,
@@ -111,7 +111,7 @@ export class NuxeoService {
 
   createClientWithToken(token) {
     this.nuxeoClient = new Nuxeo({
-      baseURL: `${this.document.location.origin}/nuxeo/`,
+      baseURL: `${this.baseUrl}/nuxeo/`,
       auth: {
         method: 'token',
         token
