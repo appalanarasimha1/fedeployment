@@ -50,8 +50,8 @@
     </div>
     <div *ngIf="videos.entries.length || images.entries.length || docs.length" class="container">
       <div class="main-headingSearch flexible pb-4" style="align-items: baseline;">
-        <span class="commonHeading">Traveller</span>
-        <span class="numberFiles">807 files</span>
+        <span class="commonHeading">{{searchTerm.ecm_fulltext}}</span>
+        <span class="numberFiles">{{(videos?.resultsCount || 0) + (images?.resultsCount || 0)}} files</span>
       </div>
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4">

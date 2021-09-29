@@ -20,6 +20,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() images: any;
   @Input() videos: any;
   @Input() audio: any;
+  @Input() searchTerm: {ecm_fulltext: string};
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
 
