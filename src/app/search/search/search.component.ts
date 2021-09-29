@@ -274,10 +274,12 @@ export class SearchComponent implements OnInit {
           });
           queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
         } else {
-          if (queryParams['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
-            queryParams['system_mimetype_agg'] = `[]`;
-            queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          } else queryParams['system_primaryType_agg'] = [];
+          // if (queryParams['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
+          //   queryParams['system_mimetype_agg'] = `[]`;
+          //   queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          // } else {
+          queryParams['system_primaryType_agg'] = [];
+          // }
         }
       }
 
@@ -286,7 +288,7 @@ export class SearchComponent implements OnInit {
         //   const index = queryParams['system_primaryType_agg'].findIndex(item => item === primaryType);
         //   queryParams['system_primaryType_agg'].splice(index, 1);
         // }
-        if (mimeTypeValue.toLowerCase().includes(constants.PICTURE_SMALL_CASE)) {
+        if (mimeTypeValue.toLowerCase().includes(constants.IMAGE_SMALL_CASE)) {
           queryParams['system_primaryType_agg'] = `['${primaryType}']`;
           let newMime = '';
           dataToIterate.map(mimeType => {
@@ -296,10 +298,12 @@ export class SearchComponent implements OnInit {
           });
           queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
         } else {
-          if (queryParams['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
-            queryParams['system_mimetype_agg'] = `[]`;
-            queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          } else queryParams['system_primaryType_agg'] = [];
+          // if (queryParams['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
+          //   queryParams['system_mimetype_agg'] = `[]`;
+          //   queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          // } else {
+            queryParams['system_primaryType_agg'] = [];
+          // }
         }
       }
 
@@ -314,10 +318,12 @@ export class SearchComponent implements OnInit {
           });
           queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
         } else {
-          if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
-            queryParams['system_mimetype_agg'] = `[]`;
-            queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          } else queryParams['system_primaryType_agg'] = [];
+          // if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
+          //   queryParams['system_mimetype_agg'] = `[]`;
+          //   queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          // } else {
+            queryParams['system_primaryType_agg'] = [];
+          // }
         }
       }
     }
@@ -337,11 +343,13 @@ export class SearchComponent implements OnInit {
         } else queryParams['system_primaryType_agg'] = [];
       }
       if (primaryType.toLowerCase() === constants.AUDIO_SMALL_CASE) {
-        if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          queryParams['asset_width_agg'] = `[]`;
-          queryParams['asset_height_agg'] = `[]`;
-        } else queryParams['system_primaryType_agg'] = [];
+        // if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
+        //   queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+        //   queryParams['asset_width_agg'] = `[]`;
+        //   queryParams['asset_height_agg'] = `[]`;
+        // } else {
+          queryParams['system_primaryType_agg'] = [];
+        // }
       }
     }
 
@@ -356,16 +364,20 @@ export class SearchComponent implements OnInit {
         }
       }
       if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
-        if (queryParams['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          queryParams['video_duration_agg'] = `[]`;
-        } else queryParams['system_primaryType_agg'] = [];
+        // if (queryParams['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
+        //   queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+        //   queryParams['video_duration_agg'] = `[]`;
+        // } else {
+          queryParams['system_primaryType_agg'] = [];
+        // }
       }
       if (primaryType.toLowerCase() === constants.AUDIO_SMALL_CASE) {
-        if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          queryParams['video_duration_agg'] = `[]`;
-        } else queryParams['system_primaryType_agg'] = [];
+        // if (queryParams['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
+        //   queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+        //   queryParams['video_duration_agg'] = `[]`;
+        // } else {
+          queryParams['system_primaryType_agg'] = [];
+        // }
       }
     }
 
