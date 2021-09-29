@@ -1,9 +1,8 @@
 
 
-<div class="main slideLeft">
+<div class="main">
     <app-loader [show]="loading"></app-loader>
     <app-sub-header (searchTextOutput)="searchTerm($event)"></app-sub-header>
     <app-side-drawer [inputMetaData]="aggregationsMetaData" (searchTextOutput)="filters($event)"></app-side-drawer>
-    <app-content [images]="images" [videos]="videos" [audio]="audio" [searchTerm]="searchValue" (searchTextOutput)="searchDocuments($event)" (pageCount)="fetchNextPageResults(1, $event)"></app-content>
 </div>
-  <!-- <button (click)="connectToNuxeo()">Connect to nuxeo server</button> -->
+<app-content [images]="images" [videos]="videos" [audio]="audio" [searchTerm]="searchValue" (searchTextOutput)="searchDocuments($event)" (pageCount)="fetchNextPageResults(1, $event)"></app-content>
