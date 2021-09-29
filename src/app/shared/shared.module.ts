@@ -6,6 +6,7 @@ import { NgbModule, NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { ApiService } from '../services/api.service';
 import { SharedService } from '../services/shared.service';
+import { DataService } from '../services/data.service';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { SharedService } from '../services/shared.service';
   ],
   providers: [
     ApiService,
-    SharedService
+    SharedService,
+    DataService
   ],
   imports: [
     CommonModule,

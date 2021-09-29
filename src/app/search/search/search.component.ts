@@ -6,6 +6,7 @@ import { apiRoutes } from 'src/app/common/config';
 // import { ApiService } from '../services/http.service';
 import { SharedService } from "../../services/shared.service";
 import { constants } from 'src/app/common/constant';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-search',
@@ -39,11 +40,14 @@ export class SearchComponent implements OnInit {
   audio: any = { aggregations: {}, entries: [], resultsCount: 0 };
   apiToHit: any = { Picture: {}, Video: {}, Audio: {} };
   count = 0; // for multiple api calls
+  sectors = [];
 
   // TypeScript public modifiers
   constructor(
     public nuxeo: NuxeoService,
-    private router: Router, private sharedService: SharedService,
+    private router: Router,
+    private sharedService: SharedService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
@@ -52,6 +56,10 @@ export class SearchComponent implements OnInit {
       this.sharedService.redirectToLogin();
       return;
     }
+
+    this.dataService.sectorSelected$.subscribe((sectorSelected: IHeaderSearchCriteria) => {
+      this.filters(sectorSelected);
+    });
     // this.connectToNuxeo();
   }
 
@@ -67,6 +75,10 @@ export class SearchComponent implements OnInit {
     // this.extra = this.extra + 1
     // }
   }
+
+  // sectorList(data: string[]) {
+  //   this.sectors = data;
+  // }
 
   filters(data: IHeaderSearchCriteria) {
     // if (this.extra === 0) {

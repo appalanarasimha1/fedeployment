@@ -6,6 +6,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { apiRoutes } from '../config';
+import { DataService } from 'src/app/services/data.service';
 
 
 @Component({
@@ -17,8 +18,9 @@ import { apiRoutes } from '../config';
 export class SideDrawerComponent implements OnInit, OnChanges {
 
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
+  @Output() emitSectorList: EventEmitter<any> = new EventEmitter();
   @Input() inputMetaData = {
-    system_primaryType_agg: { buckets: [], selection: []},
+    system_primaryType_agg: { buckets: [], selection: [] },
     system_mimetype_agg: { buckets: [], selection: [] },
     asset_width_agg: { buckets: [] },
     asset_height_agg: { buckets: [] },
@@ -76,7 +78,8 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   constructor(
     private nuxeo: NuxeoService,
     private http: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private dataService: DataService) { }
 
   ngOnInit(): void {
     if (!this.nuxeo.nuxeoClient) {
@@ -94,6 +97,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       itemsShowLimit: 5,
       allowSearchFilter: false
     };
+    this.dataService.sectorSelected$.subscribe(sector => this.selectSector(sector));
   }
 
   ngOnChanges(changes: any): void {
@@ -146,10 +150,12 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       this.videoSizeData.push({ key: item.key, id: index });
     });
 
-    data.sectors.buckets.map((item: { key: string, index: number }) => {
-      this.sectors.push({ key: item.key, id: item.index });
+    data.sectors.buckets.map((item: { key: string}, index: number) => {
+      this.sectors.push(item.key);
     });
 
+    this.dataService.sectorDataPush(this.sectors);
+    // this.emitSectorList.emit(data.sectors.buckets);
     return;
   }
 
@@ -166,7 +172,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     } else if (this.searchCriteria['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
       this.showImageSize = true;
       this.showVideoSize = true;
-    } else if(this.searchCriteria['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
+    } else if (this.searchCriteria['system_primaryType_agg'].includes(constants.AUDIO_TITLE_CASE)) {
       this.showImageSize = false;
       this.showVideoSize = false;
     }
@@ -244,12 +250,13 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   selectSector(event: any) {
-    if(!event.target.outerText) {
-      return;
-    }
-    const docType = event.target.outerText;
-    const index = this.searchCriteria['sectors'].indexOf(docType);
-    index > -1 ? this.searchCriteria['sectors'].splice(index, 1) : this.searchCriteria['sectors'].push(docType);
+    // if (!event.target.outerText) {
+    //   return;
+    // }
+    this.searchCriteria['sectors'] = [event];
+    // const docType = event.target.outerText;
+    // const index = this.searchCriteria['sectors'].indexOf(docType);
+    // index > -1 ? this.searchCriteria['sectors'].splice(index, 1) : this.searchCriteria['sectors'].push(docType);
     this.emitData(this.searchCriteria);
     return;
   }

@@ -24,15 +24,15 @@
                      </li>
                   </ul>
                </div>
-               <div *ngIf="sectors.length" class="sidebarList pb-3">
+               <!-- <div *ngIf="sectors.length" class="sidebarList pb-3">
                   <h6>Sector</h6>
                   <ul class="flexible pt-2 pb-2 sideList btn-group" (click)=selectSector($event)>
                      <li *ngFor="let sector of sectors; let i = index" class="mr-2 mb-3">
                         <input type="checkbox" class="btn-check" id="env{{i}}" autocomplete="off">
-                        <label [ngClass]="{'active': isActive('sectors', sector.key)}" class="btn btn-outline-primary" [attr.for]="'env'+i">{{sector.key}}</label>
+                        <label [ngClass]="{'active': isActive('sectors', sector)}" class="btn btn-outline-primary" [attr.for]="'env'+i">{{sector}}</label>
                      </li>
                   </ul>
-               </div>
+               </div> -->
                <div class="sidebarList file-type pb-3">
                   <h6>File type</h6>
                   <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">

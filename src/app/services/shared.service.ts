@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import {Moment} from 'moment'; // for interface
-import {startCase, camelCase, isEmpty} from 'lodash';
+import {startCase, camelCase, isEmpty, pluck} from 'lodash';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -18,6 +18,11 @@ export class SharedService {
   public isEmpty(value: any): boolean {
     return isEmpty(value);
   }
+
+  pluck(data, key) {
+    return pluck(data, key);
+  }
+
 
   public getDateRangeArray(differenceFromDate, differenceInDays = 1): Moment[] {
     return [moment(differenceFromDate).subtract(differenceInDays, 'days'), moment(differenceFromDate)];

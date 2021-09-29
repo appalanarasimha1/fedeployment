@@ -1,4 +1,6 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { IHeaderSearchCriteria } from './interface';
 
 @Component({
@@ -7,13 +9,28 @@ import { IHeaderSearchCriteria } from './interface';
   templateUrl: './subHeader.component.html',
   styleUrls: ['./subHeader.component.css']
 })
-export class SubHeaderComponent {
+export class SubHeaderComponent implements OnInit {
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
+  // @Input() sectors: string[];
   searchText: string = '';
   searchCriteria: IHeaderSearchCriteria = {};
+  sectors: string[] = [];
+  sectorSelected;
 
-  constructor() {
+  constructor(
+    private dataService: DataService,
+    private sharedService: SharedService
+    ) {}
 
+  ngOnInit() {
+    this.dataService.sectorChanged$.subscribe((sectors: any) => {
+      this.sectors = sectors;
+    });
+    return;
+  }
+  sectorSelect(value: string) {
+    this.sectorSelected = value;
+    this.dataService.sectorChange(value);
   }
 
   dropdownMenu(event: any): void {
