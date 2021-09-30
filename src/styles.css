@@ -3584,3 +3584,9 @@ element.style {
     border: 1px solid #8E6B0B !important;
     font-size: 12px;
 }
+
+.dropdownBasic2 .tooltip-inner {
+  position: absolute;
+  top: -12px;
+  left: -29px;
+}

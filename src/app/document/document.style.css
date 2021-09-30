@@ -1012,7 +1012,7 @@ background-color:#EBC03F !important;
   text-align: right;
 }
 img.footer-icons {
-  width: 30px;
+  width: 25px;
   display: inline-block;
   margin-left: 30px;
   cursor: pointer;
@@ -1077,12 +1077,7 @@ img.footer-icons {
 .footer-listing .col-md-4:last-child{
   text-align: right;
 }
-img.footer-icons {
-  width: 30px;
-  display: inline-block;
-  margin-left: 30px;
-  cursor: pointer;
-}
+
 .footer-add-items span{
   font-weight: 600;
   padding-right: 40px;
