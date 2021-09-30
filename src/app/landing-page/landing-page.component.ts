@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { apiRoutes } from '../common/config';
 import { NuxeoService } from '../services/nuxeo.service';
 import { SharedService } from '../services/shared.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-landing-page',
@@ -16,6 +17,7 @@ export class LandingPageComponent implements OnInit {
   recentlyViewed = [];
   active = 1;
   loading = false;
+  baseUrl = environment.baseUrl;
 
   constructor(private nuxeo: NuxeoService, private router: Router, private sharedService: SharedService) { }
 
@@ -136,7 +138,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   getAssetUrl(url: string): string {
-    return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
   dateFormat(dateString: string): string {

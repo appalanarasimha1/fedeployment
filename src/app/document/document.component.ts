@@ -54,6 +54,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   public myOptions = {
     gutter: 10
   };
+  baseUrl = environment.baseUrl;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -237,7 +238,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getAssetUrl(url: string): string {
-    return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
   findOriginalUrlFromRenditions(urls: any[]): string {
