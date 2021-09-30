@@ -334,7 +334,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.favourite = !this.favourite;
     const body = {
       context: {},
-      input: this.selectedFile.uid,
+      input: data.uid,
       params: {}
     };
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
