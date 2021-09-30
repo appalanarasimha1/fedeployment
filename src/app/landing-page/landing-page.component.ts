@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { apiRoutes } from '../common/config';
+import { ApiService } from '../services/api.service';
 import { NuxeoService } from '../services/nuxeo.service';
 import { SharedService } from '../services/shared.service';
 
@@ -17,7 +18,11 @@ export class LandingPageComponent implements OnInit {
   active = 1;
   loading = false;
 
-  constructor(private nuxeo: NuxeoService, private router: Router, private sharedService: SharedService) { }
+  constructor(
+    private nuxeo: NuxeoService,
+    private router: Router,
+    private sharedService: SharedService,
+    private apiService: ApiService) { }
 
   ngOnInit(): void {
     if (!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
@@ -134,9 +139,9 @@ export class LandingPageComponent implements OnInit {
         return;
       });
   }
-  
+
   getAssetUrl(url: string) {
-    
+
     return `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // let result = '';
@@ -159,6 +164,10 @@ export class LandingPageComponent implements OnInit {
     //   });
 
     // return `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // this.apiService.get(src, options).subscribe(res => {
+    //   const blob = res.blob();
+    //   result = URL.createObjectURL(blob);
+    // });
   }
 
   dateFormat(dateString: string): string {
