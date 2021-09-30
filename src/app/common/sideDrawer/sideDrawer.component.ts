@@ -134,20 +134,20 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     this.videoSizeData = [];
     this.sectors = [];
 
-    data.system_mimetype_agg.buckets.map((item: { key: string }, index: number) => {
-      this.mimeTypeData.push({ key: item.key, id: index });
+    data.system_mimetype_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
+      this.mimeTypeData.push({ key: item.key, id: index, docCount: item.docCount});
     });
 
-    data.asset_width_agg.buckets.map((item: { key: string }, index: number) => {
-      this.assetWidthData.push({ key: item.key, id: index });
+    data.asset_width_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
+      this.assetWidthData.push({ key: item.key, id: index, docCount: item.docCount });
     });
 
-    data.asset_height_agg.buckets.map((item: { key: string }, index: number) => {
-      this.assetHeightData.push({ key: item.key, id: index });
+    data.asset_height_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
+      this.assetHeightData.push({ key: item.key, id: index, docCount: item.docCount });
     });
 
-    data.video_duration_agg.buckets.map((item: { key: string }, index: number) => {
-      this.videoSizeData.push({ key: item.key, id: index });
+    data.video_duration_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
+      this.videoSizeData.push({ key: item.key, id: index, docCount: item.docCount });
     });
 
     data.sectors.buckets.map((item: { key: string }, index: number) => {
