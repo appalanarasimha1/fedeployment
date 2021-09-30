@@ -376,8 +376,9 @@ export class DocumentComponent implements OnInit, OnChanges {
       parentId: this.selectedFile.uid,
       text: comment
     };
-    this.nuxeo.nuxeoClient.request(route).post(postData).then((doc) => {
-      this.comments.push(doc);
+    this.nuxeo.nuxeoClient.request(route).post({ body: postData}).then((doc) => {
+      this.commentText = '';
+      this.comments.unshift(doc);
       this.loading = false;
     }).catch((err) => {
       console.log('search document error = ', err);
