@@ -18,8 +18,8 @@ export class App {
     this.app.use(morgan('dev'));
     this.app.use(cors());
     const httpsOptions = {
-      key: fs.readFileSync(__dirname + '/../../certs/new-ui.key'),
-      cert: fs.readFileSync(__dirname + '/../../certs/new-ui.crt')
+      key: fs.readFileSync(__dirname + '/../../../certs/new-ui.key'),
+      cert: fs.readFileSync(__dirname + '/../../../certs/new-ui.crt')
     };
     const server = require('https').Server(httpsOptions, this.app);
     this.app['io'] = new Server(server, {
