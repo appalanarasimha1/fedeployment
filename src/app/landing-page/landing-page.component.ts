@@ -115,7 +115,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   getUserProfile() {
-    const queryParams = { };
+    const queryParams = {};
     const headers = { 'enrichers-document': ['thumbnail'], 'enrichers.user': 'userprofile' };
     this.nuxeo.nuxeoClient.request(apiRoutes.USER_PROFILE, { queryParams, headers }).get()
       .then((response) => {
@@ -134,14 +134,36 @@ export class LandingPageComponent implements OnInit {
         return;
       });
   }
+  
+  getAssetUrl(url: string) {
+    
+    return `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // let result = '';
+    // const src = `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // const options = {
+    //   headers: {
+    //     'Access-Control-Allow-Origin': '*',
+    //     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
+    //     // 'enrichers.document': 'thumbnail,permissions,preview',
+    //     Cookie: 'X-Authentication-Token=' + localStorage.getItem('token'),
+    //     // properties: '*',
+    //     // 'CSRF-Token': 'defaults'
+    //   }
+    // };
 
-  getAssetUrl(url: string): string {
-    return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // fetch(src, options)
+    //   .then(res => res.blob())
+    //   .then(blob => {
+    //     result = URL.createObjectURL(blob);
+    //   });
+
+    // return `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
   dateFormat(dateString: string): string {
     const date = new Date(dateString);
-    return `${date.toDateString()} at ${date.getHours() > 12 ? date.getHours() - 12 : date.getHours()}:${date.getMinutes()} ${date.getHours() > 12 ? 'PM' : 'AM'}`;
+    return `${date.toDateString()} at ${date.getHours() > 12 ? date.getHours() - 12 : date.getHours()}: ${date.getMinutes()} ${date.getHours() > 12 ? 'PM' : 'AM'} `;
   }
 
   titleCaseSplit(str: string): string {

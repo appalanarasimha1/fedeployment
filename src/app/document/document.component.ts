@@ -238,6 +238,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   getAssetUrl(url: string): string {
     return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    //return `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
   findOriginalUrlFromRenditions(urls: any[]): string {

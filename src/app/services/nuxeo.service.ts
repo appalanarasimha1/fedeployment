@@ -22,7 +22,7 @@ export class NuxeoService {
   // ---
 
   nuxeoClient: any;
-  private baseUrl: string = environment.baseUrl;
+  private baseUrl: string = 'https://tomcat-groundx.neom.com:8087' || environment.baseUrl;
 
   // Ici no définit le header d'appel de l'API
   private defaultHeader = {
