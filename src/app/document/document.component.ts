@@ -20,7 +20,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() images: any;
   @Input() videos: any;
   @Input() audio: any;
-  @Input() searchTerm: {ecm_fulltext: string};
+  @Input() searchTerm: { ecm_fulltext: string };
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
 
@@ -54,6 +54,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   public myOptions = {
     gutter: 10
   };
+  showRecentlyViewed = true;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -64,7 +65,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED));
+    this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED) || '[]');
+    this.showRecentlyViewed = true;
   }
 
   ngOnChanges(changes: any) {
@@ -73,6 +75,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (changes.images) {
       // if(changes.images?.currentValue?.currentPageIndex && changes.images?.currentValue?.currentPageIndex === 0) {
       this.images = changes.images.currentValue;
+      if(!this.images.length) this.showRecentlyViewed = false;
       // }
       // else if(changes.images?.currentValue?.currentPageIndex > 0) {
       //   this.images.entries.concat(changes.images.currentValue.entries);
@@ -81,6 +84,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
     if (changes.videos) {
       this.videos = changes.videos.currentValue;
+      if(!this.videos.length) this.showRecentlyViewed = false;
     }
     if (changes.audio) {
       this.audio = changes.audio.currentValue;
@@ -101,15 +105,19 @@ export class DocumentComponent implements OnInit, OnChanges {
     return;
   }
 
+  calculateNoResultScreen() {
+  return this.showRecentlyViewed && !this.recentlyViewed.length && !this.videos.entries.length && !this.images.entries.length && !this.docs.length;
+  }
+
   getDataLength(data: any, primaryType: string) {
-    if(primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
+    if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
       if (this.imageSliceInput >= this.images.entries.length) {
         this.hideImageShowMoreBtn = true;
       } else {
         this.hideImageShowMoreBtn = false;
       }
     }
-    if(primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
+    if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
       if (this.videoSliceInput >= this.videos.entries.length) {
         this.hideVideoShowMoreBtn = true;
       } else {
@@ -220,7 +228,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         this.pageCount.emit({ pageNumber: ++this.videos.currentPageIndex, primaryType: 'Video' });
         this.hideVideoShowMoreBtn = false;
       }
-      else if(this.imageSliceInput >= this.videos.resultsCount) {
+      else if (this.imageSliceInput >= this.videos.resultsCount) {
         this.hideVideoShowMoreBtn = true;
       }
       return;
@@ -353,7 +361,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     let error;
     const queryParams = { pageSize: 10, currentPageIndex: 0 };
     const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
-    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: {'enrichers.user': 'userprofile'}})
+    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
       .get().then((docs) => {
         this.comments = docs.entries;
         loading = false;
@@ -377,7 +385,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       parentId: this.selectedFile.uid,
       text: comment
     };
-    this.nuxeo.nuxeoClient.request(route).post({ body: postData}).then((doc) => {
+    this.nuxeo.nuxeoClient.request(route).post({ body: postData }).then((doc) => {
       this.commentText = '';
       this.comments.unshift(doc);
       this.loading = false;
