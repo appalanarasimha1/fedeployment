@@ -10,6 +10,7 @@ var express_1 = __importDefault(require("express"));
 var morgan_1 = __importDefault(require("morgan"));
 var routeManager_1 = require("./routeManager");
 var socket_io_1 = require("socket.io");
+var fs_1 = __importDefault(require("fs"));
 var App = /** @class */ (function () {
     function App() {
         this.app = (0, express_1.default)();
@@ -17,9 +18,13 @@ var App = /** @class */ (function () {
         this.app.use(body_parser_1.default.urlencoded({ extended: false }));
         // parse application/json
         this.app.use(body_parser_1.default.json());
-        this.app.use((0, morgan_1.default)("dev"));
+        this.app.use((0, morgan_1.default)('dev'));
         this.app.use((0, cors_1.default)());
-        var server = require('http').Server(this.app);
+        var httpsOptions = {
+            key: fs_1.default.readFileSync(__dirname + '/../../certs/new-ui.key'),
+            cert: fs_1.default.readFileSync(__dirname + '/../../certs/new-ui.crt')
+        };
+        var server = require('https').Server(httpsOptions, this.app);
         this.app['io'] = new socket_io_1.Server(server, {
             cors: {
                 origin: '*',

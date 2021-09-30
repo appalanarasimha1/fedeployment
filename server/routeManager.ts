@@ -39,20 +39,7 @@ export class RouteManager {
       changeOrigin: true, // needed for virtual hosted sites
       ws: true, // proxy websockets
       secure: false, // if you want to verify the certificate
-      // pathRewrite: {
-      //   '^/api/old-path': '/api/new-path', // rewrite path
-      //   '^/api/remove/path': '/path', // remove base path
-      // },
-      // router: {
-      //   // when request.headers.host == 'dev.localhost:3000',
-      //   // override target 'http://www.example.org' to 'http://localhost:8000'
-      //   // 'dev.localhost:3000': 'http://localhost:8000',
-      // },
-      // router: {
-      //     protocol: 'https:', // The : is required
-      //     host: 'localhost',
-      //     port: 8080
-      // }
+      
       //onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
       //   // const response = responseBuffer.toString('utf8'); // convert buffer to string
       //   try {
@@ -69,42 +56,9 @@ export class RouteManager {
       // })
     };
 
-    // create the proxy (without context)
-    // const exampleProxy = createProxyMiddleware(options);
-
-    // this.app.use('/nuxeo/', createProxyMiddleware({
-    //   target: this.targetUrl,
-    //   // ws: true,
-    //   secure: false,
-    //   changeOrigin: true,
-    //   // onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
-    //   //   // const response = responseBuffer.toString('utf8'); // convert buffer to string
-    //   //   try {
-    //   //     // console.log('res = ', proxyRes.statusCode);
-    //   //     if (res.statusCode === 401) {
-    //   //       res.statusCode = 302;
-    //   //       proxyRes.headers['location'] = 'https://uatgroundx.neom.com/login';
-    //   //     }
-    //   //     return responseBuffer;
-    //   //   } catch (e) {
-    //   //     console.error('error = ', e);
-    //   //     return responseBuffer;
-    //   //   }
-    //   // })
-    // }));
     this.app.use('/nuxeo/', createProxyMiddleware(
       {
-        //   router: {
-        //     '/' : 'http://localhost:8001'
-        // },
-        // router: function () {
-        //   return {
-        //     protocol: 'https:', // The : is required
-        //     host: 'tomcat-groundx.neom.com',
-        //     port: 8087
-        //   }
-        // },
-        target: this.targetUrl, 
+        target: this.targetUrl,
         changeOrigin: true,
         secure: false,
         logLevel: 'debug',

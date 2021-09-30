@@ -9,6 +9,7 @@
     "merge_logs": true,
     "env": {
       "NODE_ENV": "production",
+      "SOCKET_PORT": 8091,
       "PORT": 8090
     }
   }
