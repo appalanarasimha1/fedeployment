@@ -40,7 +40,7 @@ background-color: #FDFDFD;
     border: 1px solid #E5E5E5;
     border-radius: 8px;
     background-color: #FDFDFD;
-    width: 230px;
+    width: 200px;
     position: relative;
     border-top-right-radius: unset;
     border-bottom-right-radius: unset;
@@ -63,6 +63,7 @@ background-color: #FDFDFD;
     padding-top: 15px;
     height: 140px;
     overflow-y: scroll;
+    width: 100%;
 }
 .sectorDropMain::-webkit-scrollbar {
     display: none;
@@ -81,6 +82,7 @@ background-color: #FDFDFD;
     /* padding-bottom: 37px !important; */
     height: 140px;
     background: #fff;
+    width: 100%;
 }
 .dropup .dropdown-toggle::after {
     top: unset;

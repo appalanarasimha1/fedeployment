@@ -13,7 +13,7 @@
           <h2 class=" commonHeading">Recently viewed</h2>
         </div>
         <div class="col-xl-2 col-md-2 mb-4">
-          <p (click)="clearRecentlyViewed()" class="clear">Clear</p>
+          <p (click)="clearRecentlyViewed()" class="clear " style="color: #8E6B0B;">Clear</p>
         </div>
         <div class="col-xl-12 col-md-12">
           
@@ -45,7 +45,11 @@
   <section class="search-subpage pt-2 pb-5" >
     <div *ngIf="!videos.entries.length && !images.entries.length && !docs.length && (!recentlyViewed || !recentlyViewed.length)" class="row">
       <div class="col-xl-12 col-md-12 " >
-        <h2 class="noresult" style="height: 600px;">No results available!</h2>
+        <div class="text-center" style="height: 600px;">
+          <img src="../../assets/images/binacxulor.svg" style="width: 50px;">
+          <h2 class="noresult pb-3 pt-4">No recent searches</h2>
+          <p class="searchcontent">Your recent searches will appear here.</p>
+        </div>
       </div>
     </div>
     <div *ngIf="videos.entries.length || images.entries.length || docs.length" class="container">
@@ -85,9 +89,23 @@
           </div>
         </div>
         <div class="col-xl-4">
+        
+        </div>
+        <div class="col-xl-4 " style="float: right;">
+            <!-- slider -->
+            <!-- <div>
+              <input type="checkbox" id="switch" class="checkbox" />
+              <label for="switch" class="toggle " >    
+                <div class="flexible" style="justify-content: space-between;display: flex;">
+                  <p><img src="../../assets/images/mostrecent-1.svg" width="12">Most Recent</p>   <p><img src="../../assets/images/most-relevant.svg" width="12">Most Relevant</p>      
+                </div>  
+              </label>
+            </div> -->
+
+            <!-- end -->
           <div id="view" class="e-btn-group flexible">
             <div>
-              <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" />
+              <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked/>
               <label class="e-btn" for="left"><img src="../../assets/images/gallery view.png"
                   style="width: 30px;"></label>
             </div>
@@ -205,8 +223,7 @@
             </ul>
           </div>
         </div>
-        <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;">Show
-          more</div>
+        <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;color: #8E6B0B;">Show more</div>
       </div>
       <div *ngIf="getDataLength(videos.entries, 'video')" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
@@ -273,9 +290,8 @@
           </div> -->
 
           
-          <div *ngIf="!hideVideoShowMoreBtn" (click)="showMore('video')" style="text-align: center; cursor: pointer;">
-            Show
-            more</div>
+          <div *ngIf="!hideVideoShowMoreBtn" (click)="showMore('video')" style="text-align: center; cursor: pointer;color: #8E6B0B;">
+            Show more</div>
 
       </div>
 
