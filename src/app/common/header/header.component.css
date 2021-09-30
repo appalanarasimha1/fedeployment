@@ -15,7 +15,7 @@ header{
 }
 .landingLp li.nav-item {
     padding: 0px 15px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 .landingLp .nav-item a{
     font-size: 14px;
@@ -24,6 +24,7 @@ header{
     color: #000000;
     font-weight: 600;
     position: relative;
+    cursor: pointer;
 }
 .landingLp .nav-item a:before{
     content: '';
@@ -71,6 +72,7 @@ header{
     color: #fff;
     font-weight: 600;
     position: relative;
+    cursor: pointer;
 }
 .searchHeading{
     position: fixed;
@@ -96,7 +98,7 @@ header{
 }
 .searchHeading li.nav-item {
     padding: 0px 15px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 .searchHeading .dropdown-item{
     color: #000;
