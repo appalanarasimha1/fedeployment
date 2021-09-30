@@ -54,7 +54,7 @@ var RouteManager = /** @class */ (function () {
             target: this.targetUrl,
             changeOrigin: true,
             ws: true,
-            secure: false, // if you want to verify the certificate
+            secure: true, // if you want to verify the certificate
             // pathRewrite: {
             //   '^/api/old-path': '/api/new-path', // rewrite path
             //   '^/api/remove/path': '/path', // remove base path

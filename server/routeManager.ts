@@ -38,7 +38,7 @@ export class RouteManager {
       target: this.targetUrl, // target host
       changeOrigin: true, // needed for virtual hosted sites
       ws: true, // proxy websockets
-      secure: false, // if you want to verify the certificate
+      secure: true, // if you want to verify the certificate
       // pathRewrite: {
       //   '^/api/old-path': '/api/new-path', // rewrite path
       //   '^/api/remove/path': '/path', // remove base path
