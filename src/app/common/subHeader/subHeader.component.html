@@ -7,13 +7,11 @@
           <div class="flexible" style="justify-content: center">
             <div class="sectorDrop">
               <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-                <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{sectorSelected || 'All sector'}} </button>
+                <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{sectorSelected || 'All sectors'}} </button>
                 <div ngbDropdownMenu aria-labelledby="dropdownManual" class="sectorDropMain" style="z-index: 1;top: -3px;">
+                  <button ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(null)">All sectors</button>
                   <button *ngFor="let sector of sectors" ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(sector)">{{sector}}</button>
                 </div>
-                <!-- <div ngbDropdownMenu aria-labelledby="dropdownBasic4">
-                  <button *ngFor="let sector of sectors" (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem value='dc:created'>Created</button>
-                 </div> -->
               </div>
             </div>
             <!-- <div class="dropdown">

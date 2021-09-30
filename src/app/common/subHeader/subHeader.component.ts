@@ -28,6 +28,7 @@ export class SubHeaderComponent implements OnInit {
     });
     return;
   }
+  
   sectorSelect(value: string) {
     this.sectorSelected = value;
     this.dataService.sectorChange(value);

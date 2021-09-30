@@ -150,7 +150,7 @@
                         <label for="html{{i}}"></label>
                       </div>
                       <div class="hover-icon-group">
-                        <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
+                        <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}" (click)="markFavourite(image, false)"></div>
                         <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
                         <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                       </div>
@@ -193,7 +193,7 @@
                         </div>
                      
                         <div class="hover-icon-group">
-                          <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
+                          <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}" (click)="markFavourite(image, false)"></div>
                           <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
                           <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                         </div>

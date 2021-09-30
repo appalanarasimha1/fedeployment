@@ -150,7 +150,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       this.videoSizeData.push({ key: item.key, id: index });
     });
 
-    data.sectors.buckets.map((item: { key: string}, index: number) => {
+    data.sectors.buckets.map((item: { key: string }, index: number) => {
       this.sectors.push(item.key);
     });
 
@@ -253,7 +253,10 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     // if (!event.target.outerText) {
     //   return;
     // }
-    this.searchCriteria['sectors'] = [event];
+    if (!event)
+      this.searchCriteria['sectors'] = [];
+    else
+      this.searchCriteria['sectors'] = [event];
     // const docType = event.target.outerText;
     // const index = this.searchCriteria['sectors'].indexOf(docType);
     // index > -1 ? this.searchCriteria['sectors'].splice(index, 1) : this.searchCriteria['sectors'].push(docType);

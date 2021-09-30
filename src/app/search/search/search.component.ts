@@ -172,7 +172,7 @@ export class SearchComponent implements OnInit {
     }
     // primaryTypes = this.getPrimeTypeByFilter(primaryTypes, queryParams);
     // let count = primaryTypes.length;
-    this.resetResults();
+    
     for (const primaryType in this.apiToHit) {
       if (!Object.keys(this.apiToHit[primaryType]).length) {
         continue;
