@@ -40,15 +40,24 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="search-subpage pt-2 pb-5" >
-    <div *ngIf="!videos.entries.length && !images.entries.length && !docs.length && (!recentlyViewed || !recentlyViewed.length)" class="row">
+    <div class="row">
       <div class="col-xl-12 col-md-12 " >
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/binacxulor.svg" style="width: 50px;">
           <h2 class="noresult pb-3 pt-4">No recent searches</h2>
           <p class="searchcontent">Your recent searches will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="search-subpage pt-2 pb-5" >
+    <div *ngIf="!videos.entries.length && !images.entries.length && !docs.length" class="row">
+      <div class="col-xl-12 col-md-12 " >
+        <div class="text-center" style="height: 600px;">
+          <img src="../../assets/images/search.svg" style="width: 50px;">
+          <h2 class="noresult pb-3 pt-4">No results found</h2>
+          <p class="searchcontent">Try adjusting your search or filter to find what you are looking for.</p>
         </div>
       </div>
     </div>
@@ -59,9 +68,11 @@
       </div>
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4">
+          <span>Sort By: </span>
           <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
+           
             <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'All assets'}}</button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic4">
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
               <button (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem value='dc:created'>Created</button>
               <button (click)="dropdownMenu($event); sortValue = 'Modified'" ngbDropdownItem value='dc:modified'>Modified</button>
               <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem value='dc:lastContributor'>Last Contibutor</button>
@@ -315,7 +326,7 @@
           <div class="col-xl-4 col-md-4">
             <ul class="flexible">
               <li>
-                <a placement="bottom" ngbTooltip="Favourites">
+                <a placement="bottom" ngbTooltip="This function will be available soon ">
                   <img *ngIf="favourite" (click)="markFavourite(selectedFile, false)"
                     src="../../assets/images/yellow-star.svg">
                   <img *ngIf="!favourite" (click)="markFavourite(selectedFile, true)"
@@ -323,12 +334,12 @@
                 </a>
               </li>
               <li>
-                <a placement="bottom" ngbTooltip="Add">
-                  <img src="../../assets/images/add-circle.svg">
+                <a placement="bottom" ngbTooltip="This function will be available soon ">
+                  <img src="../../assets/images/add-collectionbadge.svg" style="width: 20px;">
                 </a>
               </li>
               <li>
-                <a placement="bottom" ngbTooltip="Download">
+                <a placement="bottom" ngbTooltip="This function will be available soon ">
 
                   <div ngbDropdown class="d-inline-block downloadDrop">
                     <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
@@ -490,7 +501,7 @@
                 <div ngbDropdown class="d-inline-block downloadDrop settingsDropdown">
                   <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img
                       src="../../assets/images/threedots.svg" style="height: 18px;"></a>
-                  <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic2" class="dropdownBasic2">
                     <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Share</a>
                     <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Publish file</a>
                     <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Stop notifications</a>

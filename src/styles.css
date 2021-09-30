@@ -3584,11 +3584,3 @@ element.style {
     border: 1px solid #8E6B0B !important;
     font-size: 12px;
 }
-#dropdownBasic2 div a.dropdown-item{
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-#dropdownBasic2 div a.dropdown-item:hover{
-  background-color: transparent !important;
-  color: #fff !important;
-}
