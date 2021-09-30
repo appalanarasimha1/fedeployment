@@ -3585,8 +3585,16 @@ element.style {
     font-size: 12px;
 }
 
+
 .dropdownBasic2 .tooltip-inner {
   position: absolute;
   top: -12px;
   left: -29px;
+}
+.customtooltip .tooltip-inner{
+  max-width: max-content !important;
+  background-color: #000 !important;
+  border-color: #000 !important;
+  width: unset !important;
+  color: #fff !important;
 }

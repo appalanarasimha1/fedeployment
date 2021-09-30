@@ -1258,3 +1258,15 @@ line-height: 22px;
 text-align: center;
 color: #ACACAC;
 }
+.commentInput{
+  position: relative;
+}
+.enterComment{
+  position: absolute;
+  width: 29px;
+  bottom: -69px;
+  right: 121px;
+  object-fit: contain;
+  filter: invert(1);
+  height: unset !important;
+}
