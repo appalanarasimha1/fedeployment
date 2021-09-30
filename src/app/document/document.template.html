@@ -7,7 +7,7 @@
 <app-loader [show]="loading"></app-loader>
 <section>
   <section>
-    <div *ngIf="recentlyViewed && recentlyViewed.length && !videos.entries.length && !images.entries.entries.length && !docs.length" class="container">
+    <div *ngIf="recentlyViewed && recentlyViewed.length && !videos.entries.length && !images.entries.length && !docs.length" class="container">
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4 col-md-4 mb-4">
           <h2 class=" commonHeading">Recently viewed</h2>
@@ -40,7 +40,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div *ngIf="calculateNoResultScreen()" class="row">
       <div class="col-xl-12 col-md-12 " >
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/binacxulor.svg" style="width: 50px;">
@@ -52,7 +52,7 @@
   </section>
 
   <section class="search-subpage pt-2 pb-5" >
-    <div *ngIf="!videos.entries.length && !images.entries.length && !docs.length" class="row">
+    <div *ngIf="!showRecentlyViewed && !videos.entries.length && !images.entries.length && !docs.length" class="row">
       <div class="col-xl-12 col-md-12 " >
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/search.svg" style="width: 50px;">

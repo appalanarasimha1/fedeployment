@@ -248,6 +248,7 @@ export class SearchComponent implements OnInit {
 
   setData(data: any, primaryType: string, isShowMore: boolean) {
     // TODO: add new primarytype/filetype here
+    this.resetResults();
     switch (primaryType.toLowerCase()) {
       case constants.VIDEO_SMALL_CASE:
         if (isShowMore) this.videos.entries = new Object(this.videos.entries.concat(data.entries)); else this.videos = data;
