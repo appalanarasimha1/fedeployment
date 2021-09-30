@@ -20,7 +20,7 @@
     left: -50px;
 }
 .openbtn {
-    font-size: 20px;
+    font-size: 14px;
     cursor: pointer;
     color: white;
     border: none;
@@ -28,9 +28,29 @@
     background-color: unset;
     z-index: 999;
     position: fixed;
+    top: 32px;
+}
+.openbtn span{
+    padding-left: 10px;
+    display: inline-block;
+}
+.filter1{
+    display: block;
+}
+.filter2{
+    display: none;
 }
 .openbtn:hover {
     background-color: transparent;
+}
+.shiftFilter .openbtn span{
+    display: none;
+}
+.shiftFilter .openbtn .filter1 {
+    display: none;
+}
+.shiftFilter .openbtn .filter2 {
+    display: block;
 }
 #main{
     position: absolute;

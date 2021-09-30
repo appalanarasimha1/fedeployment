@@ -18,6 +18,7 @@
 }
 body{
   font-family: myBrown !important;
+  position: relative;
 }
 /* Change the white to any color */
 input:-webkit-autofill,
@@ -3569,4 +3570,32 @@ li.breadcrumb-item {
 .modal-content {
   padding: 20px 5px;
   margin-top: 111px !important;
+}
+
+element.style {
+}
+.tooltip-inner {
+    max-width: 210px !important;
+    width: 210px ;
+    padding: .25rem .7rem !important;
+    color: #8E6B0B !important;
+    text-align: center;
+    background-color: #F9F7F2 !important;
+    border-radius: 100px !important;
+    border: 1px solid #8E6B0B !important;
+    font-size: 12px;
+}
+
+
+.dropdownBasic2 .tooltip-inner {
+  position: absolute;
+  top: -12px;
+  left: -29px;
+}
+.customtooltip .tooltip-inner{
+  max-width: max-content !important;
+  background-color: #000 !important;
+  border-color: #000 !important;
+  width: unset !important;
+  color: #fff !important;
 }

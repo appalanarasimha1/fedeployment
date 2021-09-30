@@ -40,15 +40,24 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="search-subpage pt-2 pb-5" >
-    <div *ngIf="!videos.entries.length && !images.entries.length && !docs.length && (!recentlyViewed || !recentlyViewed.length)" class="row">
+    <div class="row">
       <div class="col-xl-12 col-md-12 " >
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/binacxulor.svg" style="width: 50px;">
           <h2 class="noresult pb-3 pt-4">No recent searches</h2>
           <p class="searchcontent">Your recent searches will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="search-subpage pt-2 pb-5" >
+    <div *ngIf="!videos.entries.length && !images.entries.length && !docs.length" class="row">
+      <div class="col-xl-12 col-md-12 " >
+        <div class="text-center" style="height: 600px;">
+          <img src="../../assets/images/search.svg" style="width: 50px;">
+          <h2 class="noresult pb-3 pt-4">No results found</h2>
+          <p class="searchcontent">Try adjusting your search or filter to find what you are looking for.</p>
         </div>
       </div>
     </div>
@@ -59,26 +68,11 @@
       </div>
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4">
-          <!-- <p class="pb-3 searchP">Traveller</p> TODO: pass search term from sub-header to search and then to here -->
-          <!-- <div class="dropdown mb-4">
-          <select class="btn" style="    background-color: white;
-          height: 44px;
-          text-align: left;
-          padding: 0px 8px !important;" (change)="dropdownMenu($event)">
-            <option class="dropdown-item" value='' selected>All assets</option>
-            <option class="dropdown-item" value='dc:created'>Created</option>
-            <option class="dropdown-item" value='dc:modified'>Modified</option>
-            <option class="dropdown-item" value='dc:lastContributor'>Last Contibutor</option>
-            <option class="dropdown-item" value='state'>State</option>
-            <option class="dropdown-item" value='dc:nature'>Nature</option>
-            <option class="dropdown-item" value='dc:coverage'>Coverage</option>
-          </select>
-        </div> -->
-
-
+          <span>Sort by: </span>
           <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
+           
             <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'All assets'}}</button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic4">
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
               <button (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem value='dc:created'>Created</button>
               <button (click)="dropdownMenu($event); sortValue = 'Modified'" ngbDropdownItem value='dc:modified'>Modified</button>
               <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem value='dc:lastContributor'>Last Contibutor</button>
@@ -107,12 +101,12 @@
             <div>
               <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked/>
               <label class="e-btn" for="left"><img src="../../assets/images/gallery view.png"
-                  style="width: 30px;"></label>
+                  style="width: 22px;"></label>
             </div>
             <div>
               <input type="radio" (change)="viewChange($event)" id="right" name="align" value="list" />
               <label class="e-btn" for="right"><img src="../../assets/images/list view.png"
-                  style="width: 30px;"></label>
+                  style="width: 22px;"></label>
             </div>
           </div>
         </div>
@@ -332,19 +326,19 @@
           <div class="col-xl-4 col-md-4">
             <ul class="flexible">
               <li>
-                <a placement="bottom" ngbTooltip="Favourites">
+                <a placement="bottom" ngbTooltip="This function will be available soon ">
                   <img *ngIf="favourite" (click)="markFavourite(selectedFile, false)"
                     src="../../assets/images/yellow-star.svg">
                   <img *ngIf="!favourite" (click)="markFavourite(selectedFile, true)"
                     src="../../assets/images/star.svg">
                 </a>
               </li>
-              <li>
-                <a placement="bottom" ngbTooltip="Add">
-                  <img src="../../assets/images/add-circle.svg">
+              <li class="">
+                <a placement="bottom" ngbTooltip="This function will be available soon ">
+                  <img src="../../assets/images/add-collectionbadge.svg" style="width: 20px;">
                 </a>
               </li>
-              <li>
+              <li class="customtooltip">
                 <a placement="bottom" ngbTooltip="Download">
 
                   <div ngbDropdown class="d-inline-block downloadDrop">
@@ -392,7 +386,8 @@
                   </li>
                 </ul>
                 <form (submit)="saveComment(commentText)">
-                  <input type="text" [(ngModel)]="commentText" name="comment" placeholder="Write a comment here">
+                  <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment" placeholder="Write a comment here">
+                  <img src="../../assets/images/entercmment.png" class="enterComment">
                 </form>
               </div>
             </div>
@@ -483,19 +478,19 @@
         
         <div class="flexible" style="align-items: unset;justify-content: end;width: 20%;">
           <ul class="nav nav-tabs iconsList iconsTab"  id="myTab" role="tablist">
-            <li class="nav-item" role="presentation"  >
-              <a class="nav-link "  placement="bottom" ngbTooltip="Timeline" id="home-tab" data-bs-toggle="tab"
+            <li class="nav-item customtooltip" role="presentation"  >
+              <a class="nav-link "   id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline" 
                 (click)="openInfo('timeline')" [ngClass]="{'active': activeTabs['timeline']}" href="#timeline" role="tab" aria-controls="home"
                 aria-selected="true"><img src="../../assets/images/clock.svg"></a>
 
             </li>
-            <li class="nav-item" role="presentation" >
-              <a class="nav-link"  id="profile-tab" placement="bottom" ngbTooltip="Comments" data-bs-toggle="tab"
+            <li class="nav-item customtooltip" role="presentation" >
+              <a class="nav-link "  id="profile-tab"  data-bs-toggle="tab" placement="bottom" ngbTooltip="Comments"
                 (click)="openInfo('comments')" [ngClass]="{'active': activeTabs['comments']}" href="#profile" role="tab" aria-controls="profile"
                 aria-selected="false"><img src="../../assets/images/Comments.svg"></a>
             </li>
-            <li class="nav-item" role="presentation" >
-              <a class="nav-link"  id="contact-tab" placement="bottom" ngbTooltip="Info" data-bs-toggle="tab"
+            <li class="nav-item customtooltip" role="presentation" >
+              <a class="nav-link "  id="contact-tab"  data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
                 (click)="openInfo('info')" [ngClass]="{'active': activeTabs['info']}" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
                 <img src="../../assets/images/Info.svg"></a>
             </li>
@@ -507,15 +502,15 @@
                 <div ngbDropdown class="d-inline-block downloadDrop settingsDropdown">
                   <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img
                       src="../../assets/images/threedots.svg" style="height: 18px;"></a>
-                  <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-                    <a ngbDropdownItem>Share</a>
-                    <a ngbDropdownItem>Publish file</a>
-                    <a ngbDropdownItem>Stop notifications</a>
-                    <a ngbDropdownItem>Add to clipboard</a>
-                    <a ngbDropdownItem>Export</a>
-                    <a ngbDropdownItem>Start process</a>
-                    <a ngbDropdownItem>Replace file</a>
-                    <a ngbDropdownItem>Delete file</a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic2" class="dropdownBasic2">
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Share</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Publish file</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Stop notifications</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Add to clipboard</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Export</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Start process</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Replace file</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Delete file</a>
                   </div>
                 </div>
               </a>
@@ -545,11 +540,11 @@
         <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
       </div> -->
       <div class="col-md-6">
-        <img src="../../assets/images/download-all-as-zip.svg" placement="top" ngbTooltip="Download all as zip" alt="" class="footer-icons" style="    cursor: not-allowed;opacity: 0.4;">
-        <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to collections " style="cursor: not-allowed;opacity: 0.4;">
-        <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to clipboard" style="cursor: not-allowed;opacity: 0.4;">
-        <img src="../../assets/images/upload-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Publish document" style="cursor: not-allowed;opacity: 0.4;">
-        <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" style="height: 30px;" placement="top" ngbTooltip="Delete item(s)" style="cursor: not-allowed;opacity: 0.4;">
+        <img src="../../assets/images/download-all-as-zip.svg" placement="top" ngbTooltip="This function will be available soon" alt="" class="footer-icons" style="    cursor: not-allowed;opacity: 0.4;">
+        <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;">
+        <!-- <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to clipboard" style="cursor: not-allowed;opacity: 0.4;"> -->
+        <img src="../../assets/images/upload-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;">
+        <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;width: 20px;">
       </div>
     </div>
   </div>
