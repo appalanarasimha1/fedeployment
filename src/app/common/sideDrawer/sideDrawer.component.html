@@ -9,7 +9,7 @@
                      src="../../../assets/images/Searchfilterpaneltrigger.png"></button>
             </div>
             <div id="main-sidebar" class="sidepanel closeBtn">
-               <div class=" sidebarList pb-3">
+               <div class=" sidebarList pb-5">
                   <h6>Sort by</h6>
                   <ul class="flexible pt-2 pb-2 sideList btn-group" role="group" aria-label="Basic example">
                      <li class="mr-2">
@@ -33,7 +33,7 @@
                      </li>
                   </ul>
                </div> -->
-               <div class="sidebarList file-type pb-3">
+               <div class="sidebarList file-type pb-5">
                   <h6>File type</h6>
                   <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">
                      <li *ngFor="let fileType of metaData.system_primaryType_agg.buckets; let i = index"
@@ -44,7 +44,7 @@
                      </li>
                   </ul>
                </div>
-               <div class="sidebarList pb-4">
+               <div class="sidebarList pb-5">
                   <!-- <div class="dropdown">
                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                  aria-expanded="false">
@@ -65,7 +65,7 @@
                      (onDeSelect)="deSelectFormat($event)" (onDeSelectAll)="deSelectFormat($event)"></ng-multiselect-dropdown>
                </div>
 
-               <div *ngIf="showImageSize" class="sidebarList pb-3">
+               <div *ngIf="showImageSize" class="sidebarList pb-5">
                   <h6>Width</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assetWidthData"
                      (onSelect)="selectWidth($event)" (onSelectAll)="selectWidth($event)"
@@ -83,7 +83,7 @@
              </ul>
           </div> -->
                </div>
-               <div *ngIf="showImageSize" class="sidebarList pb-3">
+               <div *ngIf="showImageSize" class="sidebarList pb-5">
                   <h6>Height</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assetHeightData"
                      (onSelect)="selectHeight($event)" (onSelectAll)="selectHeight($event)"
@@ -101,14 +101,16 @@
                      </ul>
                   </div> -->
                </div>
-               <div *ngIf="showVideoSize" class="sidebarList pb-3">
+               <div *ngIf="showVideoSize" class="sidebarList pb-5">
 
                   <h6>Video Size</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="videoSizeData"
                      (onSelect)="selectVideoDuration($event)" (onSelectAll)="selectVideoDuration($event)"
                      (onDeSelect)="deSelectVideoDuration($event)"
-                     (onDeSelectAll)="deSelectVideoDuration($event)"></ng-multiselect-dropdown>
-
+                     (onDeSelectAll)="deSelectVideoDuration($event)">
+                     <!-- <span style="display: block;text-align: right;">1</span> -->
+                  </ng-multiselect-dropdown>
+                 
                   <!-- <div class="dropdown">
                      <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -156,13 +158,14 @@
                   </div>
                </div> -->
 
-               <div class="sidebarList pt-3">
+               <div class="sidebarList pb-5">
                   <h6>Updated date</h6>
 
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="modifiedDateDropDown"
                      (onSelect)="selectModifiedDate($event)" (onSelectAll)="selectModifiedDate($event)"
                      (onDeSelect)="deSelectModifiedDate($event)"
                      (onDeSelectAll)="deSelectModifiedDate($event)"></ng-multiselect-dropdown>
+
 
 
 

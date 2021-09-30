@@ -3485,10 +3485,11 @@ li.breadcrumb-item {
 /* forms */
 
 .filter-sidebar .multiselect-dropdown .dropdown-btn{
-  border-radius: 8px !important;
+  border-radius: 0px !important;
   padding: 8px 12px !important;
   color: #fff;
-  border: 1px solid #fff !important;
+  border: unset !important;
+  border-bottom: 1px solid #fff !important;
   font-size: 16px;
   margin-top: 8px
 }
@@ -3507,11 +3508,11 @@ li.breadcrumb-item {
 .filter-sidebar .dropdown-list {
   position: relative !important;
   padding-top: 6px;
-  border: 1px solid #fff !important;
-  border-radius: 8px !important;
+  border: unset !important;
+  border-radius: 0px !important;
   margin-top: 0px !important;
   box-shadow: unset !important;
-  background: transparent !important;
+  background: rgba(0, 0, 0, 0.4) !important;
   color: #fff;
 }
 .filter-sidebar .multiselect-item-checkbox input[type=checkbox] + div{
@@ -3519,30 +3520,44 @@ li.breadcrumb-item {
   font-size: 16px;
 }
 .filter-sidebar .multiselect-item-checkbox input[type=checkbox] + div:before{
-  color: #fff !important;
-  border: 2px solid #fff !important;
+  /* color: #EBC03F !important; */
+  border: 1px solid #fff !important;
 }
 .filter-sidebar .multiselect-item-checkbox input[type=checkbox]:checked + div:before{
-  background-color: transparent !important;
+  background-color: #EBC03F !important;
+  border-color: #EBC03F !important;
 }
 .filter-sidebar .multiselect-dropdown .dropdown-btn .selected-item{
-  border: 1px solid #fff !important;
-  background: #fff !important ;
+  border: 1px solid #EBC03F !important;
+  background: #EBC03F !important ;
   color: #000 !important;
+  border-radius: 100px !important;
 }
 .multiselect-item-checkbox:hover {
-  background-color: #fff !important;
-  color: #000 !important;
+  background-color: transparent !important;
+  /* color: #000 !important; */
+}
+.multiselect-dropdown .dropdown-btn .selected-item a{
+  text-decoration: none;
+    float: left;
+    position: absolute !important;
+}
+.multiselect-dropdown .dropdown-btn .selected-item span {
+  padding-left: 13px !important ;
 }
 .multiselect-item-checkbox:hover input[type=checkbox] + div{
-  color: #000 !important;
+  /* color: #000 !important; */
+}
+.multiselect-item-checkbox input[type=checkbox] + div:after{
+  left: 3px !important;
+  border-color: #000 !important;
 }
 .filter-sidebar .multiselect-item-checkbox:hover input[type=checkbox] + div:before {
   color: #000 !important;
-  border: 2px solid #000!important;
+  border: 1px solid #EBC03F!important;
 }
 .filter-sidebar .multiselect-item-checkbox:hover input[type=checkbox]:checked + div:before{
-  background-color: #000 !important;
+  background-color: #EBC03F !important;
 }
 @media (min-width: 576px){
    .modal-dialog {
