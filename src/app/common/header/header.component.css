@@ -35,11 +35,11 @@ header{
     bottom: 0px;
     left: 0;
 }
-.landingLp .navbar-nav .nav-link.active a::before{
+.landingLp .navbar-nav .nav-link.active::before{
     content: '';
     background-color: #000;
     height: 1.5px;
-    width: 100%;
+    width: 100% !important;
     position: absolute;
     transition: 0.4s;
     bottom: 0px;
@@ -101,11 +101,11 @@ header{
 .searchHeading .dropdown-item{
     color: #000;
 }
-.searchHeading .navbar-nav .nav-link.active a::before{
+.searchHeading .navbar-nav .nav-link.active::before{
     content: '';
     background-color: #fff;
     height: 1.5px;
-    width: 100%;
+    width: 100% !important;
     position: absolute;
     transition: 0.4s;
     bottom: 0px;
@@ -115,7 +115,7 @@ header{
     color: #000 !important;
 }
 .rightNav .nav-item{
-    padding: 0px 10px;
+    padding: 0px 6px !important;
 }
 .navbar-expand-lg .navbar-nav{
     margin: auto;

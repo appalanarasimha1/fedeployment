@@ -183,9 +183,26 @@
     border-radius: 50%;
 }
 
-.shiftFilter{
+/* .shiftFilter{
     left: 10px ;
-}
+} */
 .min-height{
     position: relative;
+}
+.btn-check:active + .btn-outline-primary, .btn-check:checked + .btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active{
+    background-color: #EBC03F;
+    color: #000;
+    border-color: #EBC03F;
+}
+.active .btn-outline-primary, .btn-outline-primary:hover{
+    background-color: #EBC03F;
+    color: #000;
+    border-color: #EBC03F;
+}
+button:focus{
+    box-shadow: unset;
+    outline: 0;
+}
+.btn-check:focus+.btn-outline-primary, .btn-outline-primary:focus{
+    box-shadow: unset;
 }
