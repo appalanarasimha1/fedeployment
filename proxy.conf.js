@@ -5,7 +5,7 @@ const PROXY_CONFIG = [
             "/sockjs-node/",
         ],
         "target": {
-            "host": "tomcat-groundx.neom.com",
+            "host": "10.101.21.63",
             "protocol": "https:",
             "port": 8087
         },
