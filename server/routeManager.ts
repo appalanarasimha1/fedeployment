@@ -38,7 +38,7 @@ export class RouteManager {
       target: this.targetUrl, // target host
       changeOrigin: true, // needed for virtual hosted sites
       ws: true, // proxy websockets
-      secure: true, // if you want to verify the certificate
+      secure: false, // if you want to verify the certificate
       
       //onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
       //   // const response = responseBuffer.toString('utf8'); // convert buffer to string
