@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { apiRoutes } from '../common/config';
 import { ApiService } from '../services/api.service';
 import { NuxeoService } from '../services/nuxeo.service';
@@ -17,6 +18,7 @@ export class LandingPageComponent implements OnInit {
   recentlyViewed = [];
   active = 1;
   loading = false;
+  baseUrl = environment.baseUrl;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -143,7 +145,8 @@ export class LandingPageComponent implements OnInit {
   getAssetUrl(url: string) {
 
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
-    return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // let result = '';
     // const src = `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // const options = {
