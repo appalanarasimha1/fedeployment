@@ -1267,6 +1267,6 @@ color: #ACACAC;
   bottom: -69px;
   right: 121px;
   object-fit: contain;
-  filter: invert(1);
+  /* filter: invert(1); */
   height: unset !important;
 }

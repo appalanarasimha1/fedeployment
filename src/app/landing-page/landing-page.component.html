@@ -6,11 +6,19 @@
             <div class="row">
                 <div class="col-xl-5 col-md-5">
                     <h2>Recent activities</h2>
-    
+  
                      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs mt-5">
                         <li [ngbNavItem]="1">
                           <a ngbNavLink>Recently edited</a>
+                         
                           <ng-template ngbNavContent>
+                            <div class="norecent flexible">
+                                <div>
+                                    <img src="../../assets/images/no-recent.svg" style="width: 40px;margin: auto;">
+                                    <h3 class="noresult pb-3 pt-4">No recent updated files</h3>
+                                    <p class="searchcontent">Recent updated files will appear here.</p>
+                                </div>
+                            </div>
                                 <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
                                     <li *ngFor="let item of recentEdited">
                                         <a href="#">
@@ -18,11 +26,22 @@
                                         </a>
                                     </li>
                                 </ul>
+                                
                           </ng-template>
+                          
                         </li>
+                        
                         <li [ngbNavItem]="2">
                           <a ngbNavLink>Recently viewed</a>
+                        
                           <ng-template ngbNavContent>
+                            <div class="norecent flexible mt-4">
+                                <div>
+                                    <img src="../../assets/images/no-recent.svg" style="width: 40px;margin: auto;">
+                                    <h3 class="noresult pb-3 pt-4">No recently viewed files</h3>
+                                    <p class="searchcontent">Recent updated files will appear here.</p>
+                                </div>
+                            </div>
                             <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
                                 <li *ngFor="let item of recentlyViewed">
                                     <a href="#">
@@ -33,13 +52,16 @@
                             </ul>
                           </ng-template>
                         </li>
+                        
                         <!-- <li [ngbNavItem]="3">
                           <a ngbNavLink>Recently edited</a>
                           <ng-template ngbNavContent>
                             <p>Recently edited content</p>
                           </ng-template>
                         </li> -->
+                        
                       </ul>
+                     
                       <div [ngbNavOutlet]="nav" class="mt-4"></div>      
                 </div>
                 <div class="col-xxl-6 col-xl-6 col-md-6 offset-xxl-1 offset-xl-1 offset-md-1">
