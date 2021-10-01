@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: 'https://10.101.21.63:8087', //https://tomcat-groundx.neom.com:8087
-  redirectBaseUrl: 'https://10.101.21.58:8087/'
+  redirectBaseUrl: 'https://10.101.21.63:8087/'
 };
 
 /*

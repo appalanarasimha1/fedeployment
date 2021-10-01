@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from '../services/api.service';
 import { NuxeoService } from '../services/nuxeo.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   error = false;
   errorMessage = '';
 
-  constructor(private nuxeo: NuxeoService, private router: Router) { }
+  constructor(private nuxeo: NuxeoService, private router: Router, private apiService: ApiService) { }
 
   ngOnInit(): void {
     if (this.nuxeo.nuxeoClient && localStorage.getItem('token')) {
@@ -21,6 +22,20 @@ export class LoginComponent implements OnInit {
       return;
     }
   }
+
+  // login() {
+  //   const url = 'http://10.101.21.31:8080/nuxeo/startup'; //https://tomcat-groundx.neom.com:8087
+  //   const headers = {};
+  //   const body = {
+  //     user_name: 'Administrator',
+  //     user_password: 'Z7DaUfED',
+  //     language: 'en',
+  //     requestedUrl: '/'
+  //   };
+  //   this.apiService.post(url, body).subscribe(data => {
+  //     console.log(data);
+  //   });
+  // }
 
   login() {
     if ((this.username && this.username.trim()) && (this.password)) {

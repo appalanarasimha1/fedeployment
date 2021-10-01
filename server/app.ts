@@ -21,7 +21,7 @@ export class App {
       key: fs.readFileSync(__dirname + '/../../../certs/new-ui.key'),
       cert: fs.readFileSync(__dirname + '/../../../certs/new-ui.crt')
     };
-    const server = require('http').Server(httpsOptions, this.app);
+    const server = require('https').Server(httpsOptions, this.app);
     this.app['io'] = new Server(server, {
       cors: {
         origin: '*',

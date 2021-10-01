@@ -142,8 +142,8 @@ export class LandingPageComponent implements OnInit {
 
   getAssetUrl(url: string) {
 
-    return `http://10.101.21.63:8090/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
+    return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // let result = '';
     // const src = `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // const options = {

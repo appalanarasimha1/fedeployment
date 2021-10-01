@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseUrl: 'http://10.101.21.63:8090',
-  redirectBaseUrl: 'http://10.101.21.63:8090'
+  baseUrl: 'https://10.101.21.63:8087',
+  redirectBaseUrl: 'https://10.101.21.63:8087'
 };

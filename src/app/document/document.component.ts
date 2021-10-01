@@ -245,8 +245,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getAssetUrl(url: string): string {
-    // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    return `http://10.101.21.63:8090/nuxeo/${url.split('/nuxeo/')[1]}`;
+    return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
   findOriginalUrlFromRenditions(urls: any[]): string {
