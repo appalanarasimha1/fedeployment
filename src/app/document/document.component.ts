@@ -76,7 +76,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (changes.images) {
       // if(changes.images?.currentValue?.currentPageIndex && changes.images?.currentValue?.currentPageIndex === 0) {
       this.images = changes.images.currentValue;
-      if(!this.images.length) this.showRecentlyViewed = false;
+      if (!this.images.length) this.showRecentlyViewed = false;
       // }
       // else if(changes.images?.currentValue?.currentPageIndex > 0) {
       //   this.images.entries.concat(changes.images.currentValue.entries);
@@ -85,7 +85,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
     if (changes.videos) {
       this.videos = changes.videos.currentValue;
-      if(!this.videos.length) this.showRecentlyViewed = false;
+      if (!this.videos.length) this.showRecentlyViewed = false;
     }
     if (changes.audio) {
       this.audio = changes.audio.currentValue;
@@ -107,7 +107,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   calculateNoResultScreen() {
-  return this.showRecentlyViewed && !this.recentlyViewed.length && !this.videos.entries.length && !this.images.entries.length && !this.docs.length;
+    return this.showRecentlyViewed && !this.recentlyViewed.length && !this.videos.entries.length && !this.images.entries.length && !this.docs.length;
   }
 
   getDataLength(data: any, primaryType: string) {
@@ -245,10 +245,20 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.display = mode;
   }
 
-  getAssetUrl(url: string): string {
+  getAssetUrl(event: any, url: string): string {
+    if(!event) {
+      return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    }
+
+    const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+      .then(r => r.blob())
+      .then(d =>
+        event.target.src = window.URL.createObjectURL(d)
+      );
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
-    return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
   findOriginalUrlFromRenditions(urls: any[]): string {
@@ -256,7 +266,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       return;
     }
     const matchedUrl = urls.find(url => url.name.toLowerCase().includes('original'));
-    return this.getAssetUrl(matchedUrl.url);
+    return this.getAssetUrl(null, matchedUrl.url);
   }
 
   findOriginalUrlFromViews(urls: any[]): string {
@@ -264,7 +274,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       return;
     }
     const matchedUrl = urls.find(url => url.title.toLowerCase().includes('original'));
-    return this.getAssetUrl(matchedUrl.content.data);
+    return this.getAssetUrl(null, matchedUrl.content.data);
   }
 
   viewChange(e: any): void {
@@ -292,7 +302,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         fileRendition = item;
       }
     });
-    this.selectedFileUrl = this.getAssetUrl(fileRendition.url);
+    this.selectedFileUrl = this.getAssetUrl(null, fileRendition.url);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

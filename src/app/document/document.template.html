@@ -20,7 +20,7 @@
 
           <ngx-masonry [options]="myOptions" [ordered]="true">
             <div ngxMasonryItem class="masonry-item" *ngFor="let file of recentlyViewed; let i = index">
-              <img src="{{getAssetUrl(file.contextParameters.thumbnail.url)}}" alt="{{file.properties['dc:title']}}" (click)="open(preview, file)" />
+              <img src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="{{file.properties['dc:title']}}" (click)="open(preview, file)" />
               <div class="cardBlock newDesign pa-0" >
                 <div [ngClass]="{'activeHover': file.isSelected}">
                   <div class="form-group-custom">
@@ -154,7 +154,7 @@
             <div class="col-xl-12 col-md-12">
               <ngx-masonry [options]="myOptions" [ordered]="true">
                 <div ngxMasonryItem class="masonry-item" *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
-                  <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" alt="{{image.properties['dc:title']}}" (click)="open(preview, image)" />
+                  <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" alt="{{image.properties['dc:title']}}" (click)="open(preview, image)" />
                   <div class="cardBlock newDesign pa-0" >
                     <div [ngClass]="{'activeHover': image.isSelected}">
                       <div class="form-group-custom">
@@ -192,7 +192,7 @@
                         </div>
                       </div>
                       <div (click)="open(preview, image)" class="col-xl-6 col-md-6">
-                        <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded listViewImg" style="width: 100%;border-radius: 8px !important;" alt="" />
+                        <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong rounded listViewImg" style="width: 100%;border-radius: 8px !important;" alt="" />
                        
                       </div>
                     </div>
@@ -229,7 +229,7 @@
           <ul class="flexible videosList">
             <li *ngFor="let v of videos.entries.slice(0, videoSliceInput)" class="">
               <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{v.path}}">
-                <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}">
+                <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)">
               </a>
             </li>
           </ul>
@@ -252,7 +252,7 @@
                         </div>
                         <div  class="col-xl-6 col-md-6">
                           <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{v.path}}">
-                            <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong rounded listViewImg" style="width: 100%;border-radius: 8px !important;">
+                            <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong rounded listViewImg" style="width: 100%;border-radius: 8px !important;">
                           </a>
                         </div>
                       </div>
@@ -298,7 +298,7 @@
           <ul class="flexible docList">
             <li *ngFor="let doc of docs" class="">
               <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{doc.path}}"><img
-                  src="{{getAssetUrl(doc.contextParameters.thumbnail.url)}}"></a>
+                  src (event)="getAssetUrl($event, doc.contextParameters.thumbnail.url)"></a>
             </li>
           </ul>
         </div>
@@ -345,7 +345,7 @@
                     <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
                         src="../../assets/images/black-downloadicon.svg"></a>
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                      <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{getAssetUrl(view.content.data)}}"
+                      <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{getAssetUrl(null, view.content.data)}}"
                         style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}}
                         <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                       </a>

@@ -142,25 +142,31 @@ export class LandingPageComponent implements OnInit {
       });
   }
 
-  getAssetUrl(url: string) {
+  getAssetUrl(event: any, url: string) {
+    const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    fetch(updatedUrl, {headers: {'X-Authentication-Token': localStorage.getItem('token')}})
+    .then(r => r.blob())
+    .then(d =>
+      event.target.src = window.URL.createObjectURL(d)
+    );
 
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // let result = '';
     // const src = `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // const options = {
-    //   headers: {
-    //     'Access-Control-Allow-Origin': '*',
-    //     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-    //     // 'enrichers.document': 'thumbnail,permissions,preview',
-    //     Cookie: 'X-Authentication-Token=' + localStorage.getItem('token'),
-    //     // properties: '*',
-    //     // 'CSRF-Token': 'defaults'
-    //   }
+    // const headers: {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
+    //   // 'enrichers.document': 'thumbnail,permissions,preview',
+    //   // Cookie: 'X-Authentication-Token=' + localStorage.getItem('token'),
+    //   'X-Authentication-Token': localStorage.getItem('token')
+    //   // properties: '*',
+    //   // 'CSRF-Token': 'defaults'
     // };
 
-    // fetch(src, options)
+    // fetch(src, headers)
     //   .then(res => res.blob())
     //   .then(blob => {
     //     result = URL.createObjectURL(blob);
