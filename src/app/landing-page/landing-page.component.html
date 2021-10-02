@@ -12,20 +12,20 @@
                           <a ngbNavLink>Recently edited</a>
                          
                           <ng-template ngbNavContent>
-                            <div class="norecent flexible">
+                            <div *ngIf="!recentEdited.length" class="norecent flexible">
                                 <div>
                                     <img src="../../assets/images/no-recent.svg" style="width: 40px;margin: auto;">
                                     <h3 class="noresult pb-3 pt-4">No recent updated files</h3>
                                     <p class="searchcontent">Recent updated files will appear here.</p>
                                 </div>
                             </div>
-                                <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
-                                    <li *ngFor="let item of recentEdited">
-                                        <a href="#">
-                                            <img src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong "alt="">
-                                        </a>
-                                    </li>
-                                </ul>
+                            <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
+                                <li *ngFor="let item of recentEdited">
+                                    <a href="#">
+                                        <img src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong "alt="">
+                                    </a>
+                                </li>
+                            </ul>
                                 
                           </ng-template>
                           
@@ -35,7 +35,7 @@
                           <a ngbNavLink>Recently viewed</a>
                         
                           <ng-template ngbNavContent>
-                            <div class="norecent flexible mt-4">
+                            <div *ngIf="!recentlyViewed.length" class="norecent flexible mt-4">
                                 <div>
                                     <img src="../../assets/images/no-recent.svg" style="width: 40px;margin: auto;">
                                     <h3 class="noresult pb-3 pt-4">No recently viewed files</h3>
