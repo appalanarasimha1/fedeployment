@@ -312,13 +312,22 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   // }
 
+  findOriginalUrlFromRenditions(event: any, urls: any[]): string {
+    if (!urls || !urls.length) {
+      return;
+    }
+    const matchedUrl = urls.find(url => url.name.toLowerCase().includes('original'));
+    return this.getAssetUrl(null, matchedUrl.content.name);
+  }
+
   findOriginalUrlFromViews(urls: any[]): string {
     if (!urls || !urls.length) {
       return;
     }
     const matchedUrl = urls.find(url => url.title.toLowerCase().includes('original'));
-    return this.getAssetUrl(null, matchedUrl.url);
+    return this.getAssetUrl(null, matchedUrl.content.data);
   }
+
 
   viewChange(e: any): void {
     if (e.target.value.toLowerCase() === 'list') {
