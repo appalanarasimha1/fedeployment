@@ -23,6 +23,34 @@ export class SharedService {
     return pluck(data, key);
   }
 
+  getAssetUrl(event: any, url: string) {
+    if(!event) {
+      return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    }
+
+    const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+      .then(r => {
+        if(r.status === 401) {
+          localStorage.removeItem('token');
+          this.router.navigate(['login']);
+          return;
+        }
+        return r.blob();
+      })
+      .then(d => {
+        event.target.src = window.URL.createObjectURL(d);
+      }
+    ).catch(e => {
+      // TODO: add toastr with message 'Invalid token, please login again'
+      console.log(e);
+      throw e;
+      // if(e.contains(`'fetch' on 'Window'`)) {
+      //   this.router.navigate(['login']);
+      // }
+    });
+  }
+
 
   public getDateRangeArray(differenceFromDate, differenceInDays = 1): Moment[] {
     return [moment(differenceFromDate).subtract(differenceInDays, 'days'), moment(differenceFromDate)];

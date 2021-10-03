@@ -1,4 +1,4 @@
-import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject } from '@angular/core';
+import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild } from '@angular/core';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 import { constants, localStorageVars } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
@@ -9,6 +9,8 @@ import { apiRoutes } from '../common/config';
 import * as moment from 'moment';
 import { ApiService } from '../services/api.service';
 import { SharedService } from '../services/shared.service';
+import { Router } from '@angular/router';
+import { NgxMasonryComponent } from 'ngx-masonry';
 @Component({
   selector: 'app-content',
   // Our list of styles in our component. We may add more to compose many styles together
@@ -23,6 +25,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() searchTerm: { ecm_fulltext: string };
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
+
+  @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
 
   // images = [];
   // videos = [];
@@ -52,7 +56,13 @@ export class DocumentComponent implements OnInit, OnChanges {
   activeTabs = { comments: false, info: false, timeline: false };
   loading = false;
   public myOptions = {
-    gutter: 10
+    gutter: 10,
+    // itemSelector: "#fileId",
+    // columnWidth: "#fileId",
+    // horizontalOrder: true,
+    // fitWidth: true,
+    percentPosition: true,
+    animations: {}
   };
   showRecentlyViewed = true;
   baseUrl = environment.baseUrl;
@@ -63,6 +73,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     public nuxeo: NuxeoService,
     private apiService: ApiService,
     private sharedService: SharedService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -251,22 +262,54 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
 
     const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // try{
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
-      .then(r => r.blob())
-      .then(d =>
-        event.target.src = window.URL.createObjectURL(d)
-      );
+      .then(r => {
+        if(r.status === 401) {
+          localStorage.removeItem('token');
+          this.router.navigate(['login']);
+          return;
+        }
+        return r.blob();
+      })
+      .then(d => {
+        event.target.src = window.URL.createObjectURL(d);
+      }
+    ).catch(e => {
+      // TODO: add toastr with message 'Invalid token, please login again'
+      console.log(e);
+      // if(e.contains(`'fetch' on 'Window'`)) {
+      //   
+      //   this.router.navigate(['login']);
+      // }
+      
+    });
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
-  findOriginalUrlFromRenditions(urls: any[]): string {
-    if (!urls || !urls.length) {
+  completeLoadingMasonry(event: any) {
+    this.masonry.layout();
+  }
+
+  // findOriginalUrlFromRenditions(urls: any[]): string {
+  //   if (!urls || !urls.length) {
+  //     return;
+  //   }
+  //   const matchedUrl = urls.find(url => url.name.toLowerCase().includes('original'));
+  //   return this.getAssetUrl(null, matchedUrl.url);
+  // }
+
+  findOriginalUrlFromRenditions(event: any, views: any[]) {
+    if (!views || !views.length) {
       return;
     }
-    const matchedUrl = urls.find(url => url.name.toLowerCase().includes('original'));
-    return this.getAssetUrl(null, matchedUrl.url);
+    const resultView = views.find(url => url.title.toLowerCase().includes('thumbnail'));
+    // event.target.width = resultView.width;
+    // event.target.height = resultView.height;
+    return this.getAssetUrl(event, resultView.content.data);
+
   }
 
   findOriginalUrlFromViews(urls: any[]): string {

@@ -18,9 +18,9 @@
         <div class="col-xl-12 col-md-12">
           
 
-          <ngx-masonry [options]="myOptions" [ordered]="true">
+          <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)">
             <div ngxMasonryItem class="masonry-item" *ngFor="let file of recentlyViewed; let i = index">
-              <img src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="{{file.properties['dc:title']}}" (click)="open(preview, file)" />
+              <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="{{file.properties['dc:title']}}" (click)="open(preview, file)" />
               <div class="cardBlock newDesign pa-0" >
                 <div [ngClass]="{'activeHover': file.isSelected}">
                   <div class="form-group-custom">
@@ -152,8 +152,9 @@
         <div *ngIf="!showListView">
           <div class="row">
             <div class="col-xl-12 col-md-12">
-              <ngx-masonry [options]="myOptions" [ordered]="true">
+              <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)">
                 <div ngxMasonryItem class="masonry-item" *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
+                  <!-- <img masonryLazy loading="lazy" src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" alt="{{image.properties['dc:title']}}" (click)="open(preview, image)" /> -->
                   <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" alt="{{image.properties['dc:title']}}" (click)="open(preview, image)" />
                   <div class="cardBlock newDesign pa-0" >
                     <div [ngClass]="{'activeHover': image.isSelected}">

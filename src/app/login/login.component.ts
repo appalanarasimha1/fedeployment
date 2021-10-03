@@ -41,7 +41,12 @@ export class LoginComponent implements OnInit {
     if ((this.username && this.username.trim()) && (this.password)) {
       this.nuxeo.authenticateUser(this.username, this.password)
         .then((token) => {
-          this.nuxeo.createClientWithToken(token);
+          // this.nuxeo.createClientWithToken(token);
+          if (token.includes('Doctype')) {
+            this.error = true;
+            this.errorMessage = 'Authentication failed, please check username/password and retry';
+            return;
+          }
           localStorage.setItem('token', token);
           this.router.navigate(['/']);
         })
