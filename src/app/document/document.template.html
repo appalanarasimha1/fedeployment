@@ -20,7 +20,7 @@
 
           <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)">
             <div ngxMasonryItem class="masonry-item" *ngFor="let file of recentlyViewed; let i = index">
-              <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="{{file.properties['dc:title']}}" (click)="open(preview, file)" />
+              <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="{{file.properties['dc:title']}}" (click)="open(preview, file, 'image')" />
               <div class="cardBlock newDesign pa-0" >
                 <div [ngClass]="{'activeHover': file.isSelected}">
                   <div class="form-group-custom">
@@ -29,10 +29,10 @@
                   </div>
                   <div class="hover-icon-group">
                     <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}"></div>
-                    <div class="hover-icon plus-icon" (click)="open(preview, file)"></div>
+                    <div class="hover-icon plus-icon"></div>
                     <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
                   </div>
-                  <div class="mouse-hover-bg" (click)="open(preview, file)"></div>
+                  <div class="mouse-hover-bg" (click)="open(preview, file, 'image')"></div>
                 </div>
               </div>
            </div>
@@ -127,7 +127,7 @@
             <div class="cardBlock pa-0" style="">
               <div class="cardBlockContent">
                 <div class="row">
-                  <div (click)="open(preview, image)" class="col-xl-12 col-md-12">
+                  <div (click)="open(preview, image, 'image')" class="col-xl-12 col-md-12">
                       <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong" alt=""/>
                       </div>
                 </div>
@@ -140,10 +140,10 @@
                     </div>
                     <div class="hover-icon-group">
                       <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
-                      <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
+                      <div class="hover-icon plus-icon" (click)="open(preview, image, 'image')"></div>
                       <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                     </div>
-                    <div class="mouse-hover-bg" (click)="open(preview, image)"></div>
+                    <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
               </div>
             </div>
           </li>
@@ -154,8 +154,7 @@
             <div class="col-xl-12 col-md-12">
               <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)">
                 <div ngxMasonryItem class="masonry-item" *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
-                  <!-- <img masonryLazy loading="lazy" src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" alt="{{image.properties['dc:title']}}" (click)="open(preview, image)" /> -->
-                  <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" alt="{{image.properties['dc:title']}}" (click)="open(preview, image)" />
+                  <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" alt="{{image.properties['dc:title']}}" (click)="open(preview, image, 'image')" />
                   <div class="cardBlock newDesign pa-0" >
                     <div [ngClass]="{'activeHover': image.isSelected}">
                       <div class="form-group-custom">
@@ -164,10 +163,10 @@
                       </div>
                       <div class="hover-icon-group">
                         <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}" (click)="markFavourite(image, false)"></div>
-                        <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
+                        <div class="hover-icon plus-icon"></div>
                         <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                       </div>
-                      <div class="mouse-hover-bg" (click)="open(preview, image)"></div>
+                      <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
                     </div>
                   </div>
                </div>
@@ -192,7 +191,7 @@
                           {{image.properties['dc:creator'].id}}
                         </div>
                       </div>
-                      <div (click)="open(preview, image)" class="col-xl-6 col-md-6">
+                      <div (click)="open(preview, image, 'image')" class="col-xl-6 col-md-6">
                         <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong rounded listViewImg" style="width: 100%;border-radius: 8px !important;" alt="" />
                        
                       </div>
@@ -207,10 +206,10 @@
                      
                         <div class="hover-icon-group">
                           <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}" (click)="markFavourite(image, false)"></div>
-                          <div class="hover-icon plus-icon" (click)="open(preview, image)"></div>
+                          <div class="hover-icon plus-icon"></div>
                           <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                         </div>
-                        <div class="mouse-hover-bg" (click)="open(preview, image)"></div>
+                        <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
                      
                   </div>
                 </div>
@@ -229,7 +228,7 @@
         <div class="col-xl-12" *ngIf="!showListView"> <!--  *ngIf="!showListView" -->
           <ul class="flexible videosList">
             <li *ngFor="let v of videos.entries.slice(0, videoSliceInput)" class="">
-              <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{v.path}}">
+              <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{v.path}}"  (click)="open(preview, v, 'video')">
                 <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)">
               </a>
             </li>

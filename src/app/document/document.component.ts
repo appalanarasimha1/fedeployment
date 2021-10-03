@@ -257,7 +257,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getAssetUrl(event: any, url: string): string {
-    if(!event) {
+    if (!event) {
       return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     }
 
@@ -265,7 +265,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     // try{
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {
-        if(r.status === 401) {
+        if (r.status === 401) {
           localStorage.removeItem('token');
           this.router.navigate(['login']);
           return;
@@ -275,15 +275,15 @@ export class DocumentComponent implements OnInit, OnChanges {
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
       }
-    ).catch(e => {
-      // TODO: add toastr with message 'Invalid token, please login again'
-      console.log(e);
-      // if(e.contains(`'fetch' on 'Window'`)) {
-      //   
-      //   this.router.navigate(['login']);
-      // }
-      
-    });
+      ).catch(e => {
+        // TODO: add toastr with message 'Invalid token, please login again'
+        console.log(e);
+        // if(e.contains(`'fetch' on 'Window'`)) {
+        //   
+        //   this.router.navigate(['login']);
+        // }
+
+      });
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
@@ -301,23 +301,23 @@ export class DocumentComponent implements OnInit, OnChanges {
   //   return this.getAssetUrl(null, matchedUrl.url);
   // }
 
-  findOriginalUrlFromRenditions(event: any, views: any[]) {
-    if (!views || !views.length) {
-      return;
-    }
-    const resultView = views.find(url => url.title.toLowerCase().includes('thumbnail'));
-    // event.target.width = resultView.width;
-    // event.target.height = resultView.height;
-    return this.getAssetUrl(event, resultView.content.data);
+  // findOriginalUrlFromRenditions(event: any, views: any[]) {
+  //   if (!views || !views.length) {
+  //     return;
+  //   }
+  //   const resultView = views.find(url => url.title.toLowerCase().includes('thumbnail'));
+  //   // event.target.width = resultView.width;
+  //   // event.target.height = resultView.height;
+  //   return this.getAssetUrl(event, resultView.content.name);
 
-  }
+  // }
 
   findOriginalUrlFromViews(urls: any[]): string {
     if (!urls || !urls.length) {
       return;
     }
     const matchedUrl = urls.find(url => url.title.toLowerCase().includes('original'));
-    return this.getAssetUrl(null, matchedUrl.content.data);
+    return this.getAssetUrl(null, matchedUrl.url);
   }
 
   viewChange(e: any): void {
@@ -330,21 +330,24 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   // added for modal
-  open(content, file) {
+  open(content, file, fileType: string): void {
     this.showShadow = false;
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
     this.activeTabs.info = false;
     let fileRendition;
     this.selectedFile = file;
-    this.getComments();
-    this.favourite = file.contextParameters.favorites.isFavorite;
-    this.markRecentlyViewed(file);
-    file.contextParameters.renditions.map(item => {
-      if (item.url.toLowerCase().includes('original')) {
-        fileRendition = item;
-      }
-    });
+    if(fileType === 'image') {
+      this.getComments();
+      this.markRecentlyViewed(file);
+
+      file.contextParameters.renditions.map(item => {
+        if (item.url.toLowerCase().includes('original')) {
+          fileRendition = item;
+        }
+      });
+      this.favourite = file.contextParameters.favorites.isFavorite;
+    }
     this.selectedFileUrl = this.getAssetUrl(null, fileRendition.url);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
