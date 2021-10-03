@@ -126,13 +126,13 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   //     });
   // }
 
-  manupulateData(data, resetSectors) {
+  manupulateData(data, resetSectors: boolean, initSector: boolean = false) {
 
     this.mimeTypeData = [];
     this.assetWidthData = [];
     this.assetHeightData = [];
     this.videoSizeData = [];
-    if(resetSectors) this.sectors = [];
+    if(resetSectors || initSector) {}this.sectors = [];
 
     data.system_mimetype_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
       this.mimeTypeData.push({ key: item.key, id: index, docCount: item.docCount});
@@ -154,7 +154,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       this.sectors.push(item.key);
     });
 
-    if(resetSectors) this.dataService.sectorDataPush(this.sectors);
+    if(resetSectors || initSector) this.dataService.sectorDataPush(this.sectors);
     // this.emitSectorList.emit(data.sectors.buckets);
     return;
   }
@@ -220,7 +220,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
         if (result && result.aggregations) {
           this.metaData = result.aggregations;
           this.checkSelectedPrimeAndMimeType(result.aggregations);
-          this.manupulateData(result.aggregations, true);
+          this.manupulateData(result.aggregations, true, true);
         }
         this.loading = false;
       }).catch((error) => {
