@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   password: string = '';
   error = false;
   errorMessage = '';
+  loading = false;
 
   constructor(private nuxeo: NuxeoService, private router: Router, private apiService: ApiService) { }
 
@@ -39,10 +40,12 @@ export class LoginComponent implements OnInit {
 
   login() {
     if ((this.username && this.username.trim()) && (this.password)) {
+      this.loading = true;
       this.nuxeo.authenticateUser(this.username, this.password)
         .then((token) => {
           // this.nuxeo.createClientWithToken(token);
-          if (token.includes('Doctype')) {
+          this.loading = false;
+          if (token.toLowerCase().includes('doctype')) {
             this.error = true;
             this.errorMessage = 'Authentication failed, please check username/password and retry';
             return;
@@ -51,6 +54,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/']);
         })
         .catch((err) => {
+          this.loading = false;
           this.error = true;
           this.errorMessage = 'Authentication failed, please check username/password and retry';
           throw err;

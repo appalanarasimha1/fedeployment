@@ -197,7 +197,7 @@
                 </div> -->
 
                 <!-- favourites -->
-               <div class="col-xxl-5 col-xl-5 col-md-5">
+               <div *ngIf="favourites.length" class="col-xxl-5 col-xl-5 col-md-5">
                     <h2>Favourites</h2>
                     <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
                         <li *ngFor="let fav of favourites; let i = index">
