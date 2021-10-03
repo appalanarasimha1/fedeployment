@@ -144,11 +144,27 @@ export class LandingPageComponent implements OnInit {
 
   getAssetUrl(event: any, url: string) {
     const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    fetch(updatedUrl, {headers: {'X-Authentication-Token': localStorage.getItem('token')}})
-    .then(r => r.blob())
-    .then(d =>
-      event.target.src = window.URL.createObjectURL(d)
-    );
+    // fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+    //   .then(r => r.blob())
+    //   .then(d =>
+    //     event.target.src = window.URL.createObjectURL(d)
+    //   );
+    fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+      .then(r => {
+        if (r.status === 401) {
+          localStorage.removeItem('token');
+          this.router.navigate(['login']);
+          return;
+        }
+        return r.blob();
+      })
+      .then(d => {
+        event.target.src = window.URL.createObjectURL(d);
+      })
+      .catch(e => {
+        // TODO: add toastr with message 'Invalid token, please login again'
+        console.log(e);
+      });
 
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
