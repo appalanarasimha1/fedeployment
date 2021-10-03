@@ -16,6 +16,7 @@ export class LandingPageComponent implements OnInit {
   collections = [];
   recentEdited = [];
   recentlyViewed = [];
+  favourites = [];
   active = 1;
   loading = false;
   baseUrl = environment.baseUrl;
@@ -43,6 +44,29 @@ export class LandingPageComponent implements OnInit {
   getFavorites() {
     this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ body: { context: {}, params: {} } })
       .then((response) => {
+        if(response) this.getFavouriteCollection(response.uid);
+
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
+      })
+      .catch((error) => {
+        this.loading = false;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        return;
+      });
+  }
+
+  getFavouriteCollection(favouriteUid: string) {
+    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions'], 'fetch.document': 'properties', properties: '*' };
+    this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
+      .then((response) => {
+        if(response) this.favourites = response?.entries;
         setTimeout(() => {
           this.loading = false;
         }, 0);
