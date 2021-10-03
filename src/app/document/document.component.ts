@@ -1,4 +1,4 @@
-import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild } from '@angular/core';
+import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild, ElementRef } from '@angular/core';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 import { constants, localStorageVars } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
@@ -27,6 +27,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
+  @ViewChild('videoPlayer') videoplayer: ElementRef;
 
   // images = [];
   // videos = [];
@@ -262,7 +263,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
 
     const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // try{
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {
         if (r.status === 401) {
@@ -292,25 +292,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   completeLoadingMasonry(event: any) {
     this.masonry.layout();
   }
-
-  // findOriginalUrlFromRenditions(urls: any[]): string {
-  //   if (!urls || !urls.length) {
-  //     return;
-  //   }
-  //   const matchedUrl = urls.find(url => url.name.toLowerCase().includes('original'));
-  //   return this.getAssetUrl(null, matchedUrl.url);
-  // }
-
-  // findOriginalUrlFromRenditions(event: any, views: any[]) {
-  //   if (!views || !views.length) {
-  //     return;
-  //   }
-  //   const resultView = views.find(url => url.title.toLowerCase().includes('thumbnail'));
-  //   // event.target.width = resultView.width;
-  //   // event.target.height = resultView.height;
-  //   return this.getAssetUrl(event, resultView.content.name);
-
-  // }
 
   findOriginalUrlFromRenditions(event: any, urls: any[]): string {
     if (!urls || !urls.length) {
@@ -344,7 +325,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
     this.activeTabs.info = false;
-    let fileRendition;
+    let fileRenditionUrl;
     this.selectedFile = file;
     if(fileType === 'image') {
       this.getComments();
@@ -352,17 +333,24 @@ export class DocumentComponent implements OnInit, OnChanges {
 
       file.contextParameters.renditions.map(item => {
         if (item.url.toLowerCase().includes('original')) {
-          fileRendition = item;
+          fileRenditionUrl = item.url;
         }
       });
       this.favourite = file.contextParameters.favorites.isFavorite;
+    } else if(fileType === 'video') {
+      fileRenditionUrl = file.properties['file:content'].data;
     }
-    this.selectedFileUrl = this.getAssetUrl(null, fileRendition.url);
+    this.selectedFileUrl = this.getAssetUrl(null, fileRenditionUrl);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  video(event: any) {
+    console.log('im Play!');
+    event.toElement.play();
   }
 
   markRecentlyViewed(data: any) {
