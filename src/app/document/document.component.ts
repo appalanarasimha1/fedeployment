@@ -437,6 +437,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   saveComment(comment: string): void {
+    if(!comment.trim()) {
+      return;
+    }
     let error;
     const route = apiRoutes.SAVE_COMMENT.replace('[assetId]', this.selectedFile.uid);
     const postData = {
