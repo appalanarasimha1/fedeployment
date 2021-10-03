@@ -28,7 +28,7 @@
                     <label for="html{{i}}"></label>
                   </div>
                   <div class="hover-icon-group">
-                    <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}"></div>
+                    <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}" (click)="markFavourite(file, 'recent')"></div>
                     <div class="hover-icon plus-icon"></div>
                     <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
                   </div>

@@ -358,13 +358,15 @@ export class DocumentComponent implements OnInit, OnChanges {
     // tslint:disable-next-line:prefer-const
     let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
     if (recentlyViewed.length) {
-      recentlyViewed.map(item => {
+      recentlyViewed.map((item: any, index: number) => {
         if (item.uid === data.uid) {
           found = true;
+          recentlyViewed[index] = data;
         }
       });
     }
     if (found) {
+      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
       return;
     }
 
@@ -394,7 +396,6 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   markFavourite(data, favouriteValue) {
     let loading = true;
-    let error;
     this.favourite = !this.favourite;
     const body = {
       context: {},
@@ -402,7 +403,10 @@ export class DocumentComponent implements OnInit, OnChanges {
       params: {}
     };
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
-      console.log(docs.entries[0]);
+      data.contextParameters.favorites.isFavorite = this.favourite;
+      if(favouriteValue === 'recent') {
+        this.markRecentlyViewed(data);
+      }
       loading = false;
     });
   }
