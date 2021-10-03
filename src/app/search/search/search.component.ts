@@ -4,7 +4,7 @@ import { IHeaderSearchCriteria } from '../../common/subHeader/interface';
 import { Router } from '@angular/router';
 import { apiRoutes } from 'src/app/common/config';
 // import { ApiService } from '../services/http.service';
-import { SharedService } from "../../services/shared.service";
+import { SharedService } from '../../services/shared.service';
 import { constants } from 'src/app/common/constant';
 import { DataService } from 'src/app/services/data.service';
 
@@ -41,6 +41,7 @@ export class SearchComponent implements OnInit {
   apiToHit: any = { Picture: {}, Video: {}, Audio: {} };
   count = 0; // for multiple api calls
   sectors = [];
+  firstCallResult = true;
 
   // TypeScript public modifiers
   constructor(
@@ -160,6 +161,7 @@ export class SearchComponent implements OnInit {
     // this.resetResults();
     this.cloneQueryParamsForPrimaryTypes(queryParams);
     this.count = 0; // if new primary type comes up then add +1 here
+    this.firstCallResult = true;
     // tslint:disable-next-line:forin
     for (const primaryType in this.apiToHit) {
       this.apiToHit[primaryType] = this.getPrimeTypeByFilter(primaryType, this.apiToHit[primaryType]);
@@ -248,7 +250,8 @@ export class SearchComponent implements OnInit {
 
   setData(data: any, primaryType: string, isShowMore: boolean) {
     // TODO: add new primarytype/filetype here
-    this.resetResults();
+    // tslint:disable-next-line:no-unused-expression
+    this.firstCallResult ? this.resetResults() : '';
     switch (primaryType.toLowerCase()) {
       case constants.VIDEO_SMALL_CASE:
         if (isShowMore) this.videos.entries = new Object(this.videos.entries.concat(data.entries)); else this.videos = data;
@@ -399,6 +402,7 @@ export class SearchComponent implements OnInit {
 
   resetResults() {
     // TODO: add new primarytype/filetype here
+    this.firstCallResult = false;
     this.images = { aggregations: {}, entries: [], resultsCount: 0 };
     this.videos = { aggregations: {}, entries: [], resultsCount: 0 };
     this.audio = { aggregations: {}, entries: [], resultsCount: 0 };
