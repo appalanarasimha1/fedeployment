@@ -23,6 +23,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() videos: any;
   @Input() audio: any;
   @Input() searchTerm: { ecm_fulltext: string };
+  @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
 
@@ -67,6 +68,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   };
   showRecentlyViewed = true;
   baseUrl = environment.baseUrl;
+  tags = [];
+  inputTag: string;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -329,6 +332,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.selectedFile = file;
     if(fileType === 'image') {
       this.getComments();
+      this.getTags();
       this.markRecentlyViewed(file);
 
       file.contextParameters.renditions.map(item => {
@@ -345,6 +349,25 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  getTags() {
+    this.tags = this.selectedFile.properties["nxtag:tags"]?.map(tag => tag.label) || [];
+  }
+
+  addTag(inputTag: string): void {
+    if (!inputTag) return;
+    const route = apiRoutes.ADD_TAG;
+    const apiBody = {
+      input: this.selectedFile.uid,
+      params: {
+        tags: inputTag
+      }
+    };
+    this.apiService.post(route, apiBody).subscribe(response => {
+      this.tags.push(inputTag);
+      this.inputTag = "";
     });
   }
 

@@ -24,7 +24,8 @@ export class SearchComponent implements OnInit {
     asset_width_agg: { buckets: [], selection: [] },
     asset_height_agg: { buckets: [], selection: [] },
     video_duration_agg: { buckets: [], selection: [] },
-    sectors: { buckets: [], selection: [] }
+    sectors: { buckets: [], selection: [] },
+    system_tag_agg: { buckets: [], selection: [] }
   };
   aggregationsMetaData;
   filtersParams = {};
@@ -38,6 +39,7 @@ export class SearchComponent implements OnInit {
   images: any = { aggregations: {}, entries: [], resultsCount: 0 };
   videos: any = { aggregations: {}, entries: [], resultsCount: 0 };
   audio: any = { aggregations: {}, entries: [], resultsCount: 0 };
+  tagsMetadata: any = {bucket: [], selection: []};
   apiToHit: any = { Picture: {}, Video: {}, Audio: {} };
   count = 0; // for multiple api calls
   sectors = [];
@@ -251,7 +253,10 @@ export class SearchComponent implements OnInit {
   setData(data: any, primaryType: string, isShowMore: boolean) {
     // TODO: add new primarytype/filetype here
     // tslint:disable-next-line:no-unused-expression
-    this.firstCallResult ? this.resetResults() : '';
+    if(this.firstCallResult) {
+      this.resetResults();
+      this.resetTagsMetadata();
+    }
     switch (primaryType.toLowerCase()) {
       case constants.VIDEO_SMALL_CASE:
         if (isShowMore) this.videos.entries = new Object(this.videos.entries.concat(data.entries)); else this.videos = data;
@@ -408,10 +413,33 @@ export class SearchComponent implements OnInit {
     this.audio = { aggregations: {}, entries: [], resultsCount: 0 };
   }
 
-  async callRequestByFilterType(filterType, queryParams, headers, pageNumber?: any) {
+  setTagsMetadata(): void {
+    this.tagsMetadata = this.metaData.system_tag_agg;
+  }
 
+  resetTagsMetadata() {
+    this.metaData.system_tag_agg = { buckets: [], selection: [] }
+  }
 
+  resetAggregationsMetaData() {
+    this.aggregationsMetaData = {
+      system_primaryType_agg: { buckets: [], selection: [] },
+      system_mimetype_agg: { buckets: [], selection: [] },
+      asset_width_agg: { buckets: [], selection: [] },
+      asset_height_agg: { buckets: [], selection: [] },
+      video_duration_agg: { buckets: [], selection: [] },
+      sectors: { buckets: [], selection: [] },
+      system_tag_agg: { buckets: [], selection: [] }
+    }
+  }
 
+  resetFilter() {
+    const tmpFilters = Object.assign({}, this.filtersParams);
+    const params = {};
+    params['ecm_fulltext'] = tmpFilters['ecm_fulltext'] || '';
+    params['highlight'] = tmpFilters['highlight'] || '';
+    this.resetAggregationsMetaData();
+    this.filters(params);
   }
 
 }

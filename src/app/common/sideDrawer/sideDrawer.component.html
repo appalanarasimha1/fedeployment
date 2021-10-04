@@ -64,6 +64,7 @@
                </div> -->
                   <h6>Format</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="mimeTypeData"
+                  [ngModel]="searchCriteria.system_mimetype_agg"
                      (onSelect)="selectMimeType($event)" (onSelectAll)="selectMimeType($event)"
                      (onDeSelect)="deSelectFormat($event)" (onDeSelectAll)="deSelectFormat($event)"></ng-multiselect-dropdown>
                </div>
@@ -71,6 +72,7 @@
                <div *ngIf="showImageSize" class="sidebarList pb-5">
                   <h6>Width</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assetWidthData"
+                  [ngModel]="searchCriteria.asset_width_agg"
                      (onSelect)="selectWidth($event)" (onSelectAll)="selectWidth($event)"
                      (onDeSelect)="deSelectWidth($event)" (onDeSelectAll)="deSelectWidth($event)"></ng-multiselect-dropdown>
                   <!-- <div class="dropdown">
@@ -89,6 +91,7 @@
                <div *ngIf="showImageSize" class="sidebarList pb-5">
                   <h6>Height</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="assetHeightData"
+                  [ngModel]="searchCriteria.asset_height_agg"
                      (onSelect)="selectHeight($event)" (onSelectAll)="selectHeight($event)"
                      (onDeSelect)="deSelectHeight($event)" (onDeSelectAll)="deSelectHeight($event)"></ng-multiselect-dropdown>
                   <!-- <div class="dropdown">
@@ -108,6 +111,7 @@
 
                   <h6>Video Size</h6>
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="videoSizeData"
+                  [ngModel]="searchCriteria.video_duration_agg"
                      (onSelect)="selectVideoDuration($event)" (onSelectAll)="selectVideoDuration($event)"
                      (onDeSelect)="deSelectVideoDuration($event)"
                      (onDeSelectAll)="deSelectVideoDuration($event)">
@@ -165,6 +169,7 @@
                   <h6>Updated date</h6>
 
                   <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="modifiedDateDropDown"
+                  [ngModel]="searchCriteria.dc_modified_agg"
                      (onSelect)="selectModifiedDate($event)" (onSelectAll)="selectModifiedDate($event)"
                      (onDeSelect)="deSelectModifiedDate($event)"
                      (onDeSelectAll)="deSelectModifiedDate($event)"></ng-multiselect-dropdown>
@@ -187,6 +192,10 @@
                      </ul>
                   </div> -->
                </div>
+               <div class="resetFilter">
+                  <button (click)="resetFilter()" class="btn-outline-primary">Reset Filter</button>
+               </div>
+
                <!-- <div class="sidebarList file-type pb-3">
                   <h6>Updated date</h6>
                   <ul (click)="selectDoctype($event)" class="flexible pt-2 pb-2 sideList btn-group">

@@ -226,3 +226,6 @@ button:focus{
 .btn-check:focus+.btn-outline-primary, .btn-outline-primary:focus{
     box-shadow: unset;
 }
+.resetFilter {
+    padding: 15px 0px;
+}

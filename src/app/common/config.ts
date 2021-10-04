@@ -8,5 +8,6 @@ export const apiRoutes = {
     MARK_FAVOURITE: '/automation/Document.AddToFavorites',
     FETCH_COMMENTS: '/id/[assetId]/@comment/',
     SAVE_COMMENT: '/id/[assetId]/@comment/',
-    USER_PROFILE: '/user/'
+    USER_PROFILE: '/user/',
+    ADD_TAG: '/automation/Services.TagDocument'
 };

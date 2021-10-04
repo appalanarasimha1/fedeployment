@@ -1275,3 +1275,26 @@ color: #ACACAC;
   /* filter: invert(1); */
   height: unset !important;
 }
+.tag-input {
+  padding: 9px 10px 9px 16px;
+  border-radius: 20px;
+  border: 1px solid;
+  width: 100px;
+}
+.tags-metadata ul {
+  padding-top: 10px;
+}
+.tags-metadata ul li {
+  padding-bottom: 5px;
+}
+.tags-metadata ul li a{
+  background-color: #000;
+  font-size: 14px;
+  line-height: 6px;
+  border-radius: 20px;
+  padding: 17px 22px;
+  color: #fff;
+  text-decoration: unset;
+  margin: 0px 5px;
+  display: inline-block;
+} 

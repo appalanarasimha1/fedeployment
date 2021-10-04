@@ -19,6 +19,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() emitSectorList: EventEmitter<any> = new EventEmitter();
+  @Output() resetFilterOuput: EventEmitter<any> = new EventEmitter();
   @Input() inputMetaData = {
     system_primaryType_agg: { buckets: [], selection: [] },
     system_mimetype_agg: { buckets: [], selection: [] },
@@ -38,7 +39,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   error = undefined;
   filterClosed: boolean = true;
 
-  private searchCriteria: {
+  searchCriteria: {
     quickFilters?: string,
     system_primaryType_agg?: string[],
     system_mimetype_agg?: string[],
@@ -468,5 +469,18 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
     this.filterClosed = !this.filterClosed;
     return;
+  }
+
+  resetFilter() {
+    this.searchCriteria = {
+      system_primaryType_agg: [],
+      system_mimetype_agg: [],
+      asset_width_agg: [],
+      asset_height_agg: [],
+      video_duration_agg: [],
+      sectors: [],
+      dc_modified_agg: []
+    };
+    this.resetFilterOuput.emit();
   }
 }

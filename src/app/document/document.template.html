@@ -112,6 +112,17 @@
         </div>
       </div>
 
+      <div *ngIf="tagsMetadata && tagsMetadata.buckets && tagsMetadata.buckets.length > 0">
+        <span>Related Tags:</span>
+        <div class="tags-metadata pb-5">
+          <ul class="flexible">
+            <li *ngFor="let bucket of tagsMetadata.buckets; let i = index">
+              <a style="cursor: pointer;" >{{bucket.key}} ({{bucket.docCount}})</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div *ngIf="getDataLength(images.entries, 'picture')" class="row">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Images</p>
@@ -524,8 +535,13 @@
 
         <div class="search-tags  pb-5">
           <ul class="flexible">
-            <li *ngFor="let tag of selectedFile.properties['nxtag:tags']; let i = index">
-              <a style="cursor: pointer;" >{{tag.label}}</a>
+            <li *ngFor="let tag of tags; let i = index">
+              <a style="cursor: pointer;" >{{tag}}</a>
+            </li>
+            <li>
+              <form (submit)="addTag(inputTag)">
+                <input class="tag-input" type="text" [(ngModel)]="inputTag" name="tag" placeholder="Add new tag" />
+              </form>
             </li>
           </ul>
         </div>
