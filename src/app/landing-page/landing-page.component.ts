@@ -41,16 +41,37 @@ export class LandingPageComponent implements OnInit {
     // this.getUserProfile();
   }
 
+  // getFavorites() {
+  //   this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ body: { context: {}, params: {} } })
+  //     .then((response) => {
+  //       if(response) this.getFavouriteCollection(response.uid);
+
+  //       setTimeout(() => {
+  //         this.loading = false;
+  //       }, 0);
+  //     })
+  //     .catch((error) => {
+  //       this.loading = false;
+  //       if (error && error.message) {
+  //         if (error.message.toLowerCase() === 'unauthorized') {
+  //           this.sharedService.redirectToLogin();
+  //         }
+  //       }
+  //       return;
+  //     });
+  // }
+
   getFavorites() {
-    this.nuxeo.nuxeoClient.request(apiRoutes.FAVORITE_FETCH).post({ body: { context: {}, params: {} } })
-      .then((response) => {
+    try {
+    this.apiService.post(apiRoutes.FAVORITE_FETCH, { context: {}, params: {} })
+      .subscribe((response: any) => {
         if(response) this.getFavouriteCollection(response.uid);
 
         setTimeout(() => {
           this.loading = false;
         }, 0);
-      })
-      .catch((error) => {
+      });
+    } catch(error) {
         this.loading = false;
         if (error && error.message) {
           if (error.message.toLowerCase() === 'unauthorized') {
@@ -58,7 +79,7 @@ export class LandingPageComponent implements OnInit {
           }
         }
         return;
-      });
+      }
   }
 
   getFavouriteCollection(favouriteUid: string) {

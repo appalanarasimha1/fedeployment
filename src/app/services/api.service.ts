@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-const SERVER_URL = document.location.origin;
+const SERVER_URL = 'https://10.101.21.63:8087';
 const apiVersion1 = '/nuxeo/api/v1';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class ApiService {
     accept: 'text/plain,application/json, application/json',
     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
     'enrichers.document': 'thumbnail,permissions,preview',
-    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    'X-Authentication-Token': localStorage.getItem('token'),
     properties: '*'
   };
 

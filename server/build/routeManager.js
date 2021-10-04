@@ -99,7 +99,7 @@ var RouteManager = /** @class */ (function () {
                         // console.log('res = ', proxyRes.statusCode);
                         if (res.statusCode === 401) {
                             res.statusCode = 302;
-                            proxyRes.headers['location'] = 'http://localhost:4200/login';
+                            proxyRes.headers['location'] = 'http://uatgroundx.neom.com/login';
                         }
                         return [2 /*return*/, responseBuffer];
                     }
