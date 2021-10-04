@@ -436,6 +436,33 @@ export class DocumentComponent implements OnInit, OnChanges {
       });
   }
 
+  // saveComment(comment: string): void {
+  //   if(!comment.trim()) {
+  //     return;
+  //   }
+  //   let error;
+  //   const route = apiRoutes.SAVE_COMMENT.replace('[assetId]', this.selectedFile.uid);
+  //   const postData = {
+  //     'entity-type': 'comment',
+  //     parentId: this.selectedFile.uid,
+  //     text: comment
+  //   };
+  //   this.nuxeo.nuxeoClient.request(route).post({ body: postData }).then((doc) => {
+  //     this.commentText = '';
+  //     this.comments.unshift(doc);
+  //     this.loading = false;
+  //   }).catch((err) => {
+  //     console.log('search document error = ', err);
+  //     error = `${error}. `;
+  //     if (error && error.message) {
+  //       if (error.message.toLowerCase() === 'unauthorized') {
+  //         this.sharedService.redirectToLogin();
+  //       }
+  //     }
+  //     this.loading = false;
+  //   });
+  // }
+
   saveComment(comment: string): void {
     if(!comment.trim()) {
       return;
@@ -447,11 +474,14 @@ export class DocumentComponent implements OnInit, OnChanges {
       parentId: this.selectedFile.uid,
       text: comment
     };
-    this.nuxeo.nuxeoClient.request(route).post({ body: postData }).then((doc) => {
+    try{
+    this.apiService.post(route, { body: postData })
+    .subscribe((doc) => {
       this.commentText = '';
       this.comments.unshift(doc);
       this.loading = false;
-    }).catch((err) => {
+    });
+  } catch(err) {
       console.log('search document error = ', err);
       error = `${error}. `;
       if (error && error.message) {
@@ -460,7 +490,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         }
       }
       this.loading = false;
-    });
+    }
   }
 
   getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
