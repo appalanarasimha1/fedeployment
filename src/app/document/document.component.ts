@@ -364,6 +364,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
+      this.showTagInput = false;
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
