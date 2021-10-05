@@ -29,7 +29,7 @@
                   </div>
                   <div class="hover-icon-group">
                     <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}" (click)="markFavourite(file, 'recent')"></div>
-                    <div class="hover-icon plus-icon"></div>
+                    <div class="hover-icon plus-icon" title="Coming soon"></div>
                     <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
                   </div>
                   <div class="mouse-hover-bg" (click)="open(preview, file, 'image')"></div>
@@ -400,7 +400,7 @@
                     </div>
                   </li>
                 </ul>
-                <form>
+                <form (submit)="saveComment(commentText)">
                   <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment" placeholder="Write a comment here">
                   <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg" class="enterComment" style="cursor: pointer;">
                 </form>
@@ -539,7 +539,8 @@
               <a style="cursor: pointer;" >{{tag}}</a>
             </li>
             <li>
-              <form (submit)="addTag(inputTag)">
+              <img *ngIf="!showTagInput" src="../../assets/images/add-circle.svg" (click)="showTagInput=true" style="margin-left: 6px; width: 32px;">
+              <form *ngIf="showTagInput" (submit)="addTag(inputTag)" style="margin-left: 6px;">
                 <input class="tag-input" type="text" [(ngModel)]="inputTag" name="tag" placeholder="Add new tag" />
               </form>
             </li>
