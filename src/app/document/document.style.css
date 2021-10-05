@@ -1116,9 +1116,9 @@ li .videoBlock  {
 .search-tags ul li a{
   background-color: #000;
   font-size: 14px;
-  line-height: 6px;
+  line-height: 5px;
   border-radius: 20px;
-  padding: 14px 22px 18px 22px;
+  padding: 15px 22px 16px 22px;
   color: #fff;
   text-decoration: unset;
   margin: 0px 5px;
@@ -1276,7 +1276,7 @@ color: #ACACAC;
   height: unset !important;
 }
 .tag-input {
-  padding: 9px 10px 9px 16px;
+  padding: 5px 10px 9px 16px;
   border-radius: 20px;
   border: 1px solid;
   width: 100px;

@@ -340,8 +340,8 @@
           </div>
           <div class="col-xl-4 col-md-4">
             <ul class="flexible">
-              <li>
-                <a placement="bottom" ngbTooltip="This function will be available soon ">
+              <li class="customtooltip">
+                <a placement="bottom" ngbTooltip="Favourite">
                   <img *ngIf="favourite" (click)="markFavourite(selectedFile, false)"
                     src="../../assets/images/yellow-star.svg">
                   <img *ngIf="!favourite" (click)="markFavourite(selectedFile, true)"

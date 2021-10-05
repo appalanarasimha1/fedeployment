@@ -418,14 +418,34 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   markFavourite(data, favouriteValue) {
-    let loading = true;
     this.favourite = !this.favourite;
+    if(!this.favourite) {
+      this.unmarkFavourite(data, favouriteValue);
+      return;
+    }
     const body = {
       context: {},
       input: data.uid,
       params: {}
     };
+    let loading = true;
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
+      data.contextParameters.favorites.isFavorite = this.favourite;
+      if(favouriteValue === 'recent') {
+        this.markRecentlyViewed(data);
+      }
+      loading = false;
+    });
+  }
+
+  unmarkFavourite(data, favouriteValue) {
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {}
+    };
+    let loading = true;
+    this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
       data.contextParameters.favorites.isFavorite = this.favourite;
       if(favouriteValue === 'recent') {
         this.markRecentlyViewed(data);
