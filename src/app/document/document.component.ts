@@ -353,7 +353,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getTags() {
-    this.tags = this.selectedFile.properties["nxtag:tags"]?.map(tag => tag.label) || [];
+    this.tags = this.selectedFile.contextParameters["tags"]?.map(tag => tag) || [];
   }
 
   addTag(inputTag: string): void {
@@ -518,7 +518,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       text: comment
     };
     try{
-    this.apiService.post(route, { body: postData })
+    this.apiService.post(route, postData)
     .subscribe((doc) => {
       this.commentText = '';
       this.comments.unshift(doc);
