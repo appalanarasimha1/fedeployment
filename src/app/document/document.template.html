@@ -20,7 +20,7 @@
 
           <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)">
             <div ngxMasonryItem class="masonry-item" *ngFor="let file of recentlyViewed; let i = index">
-              <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="{{file.properties['dc:title']}}" (click)="open(preview, file, 'image')" />
+              <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="" (click)="open(preview, file, 'image')" />
               <div class="cardBlock newDesign pa-0" >
                 <div [ngClass]="{'activeHover': file.isSelected}">
                   <div class="form-group-custom">

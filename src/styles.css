@@ -3602,5 +3602,11 @@ element.style {
 
 
 .multiselect-dropdown .dropdown-btn .selected-item {
-  padding: 3px 5px 0 0 !important;
+  padding: 2px 5px 0 0 !important;
+}
+
+
+img[src=""],
+img:not([src]) {
+  visibility: hidden;
 }
