@@ -384,6 +384,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     };
     this.apiService.post(route, apiBody).subscribe(response => {
       this.tags.push(inputTag);
+      this.selectedFile.contextParameters["tags"].push(inputTag);
       this.inputTag = "";
     });
   }
