@@ -46,7 +46,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   closeResult = '';
   selectedFile: any; // TODO: add interface, search result entires
   selectedFileUrl: string;
-  favourite: boolean;
+  // favourite: boolean;
   active = 1;
   showShadow = false;
   selectedTab;
@@ -355,7 +355,7 @@ export class DocumentComponent implements OnInit, OnChanges {
           fileRenditionUrl = item.url;
         }
       });
-      this.favourite = file.contextParameters.favorites.isFavorite;
+      // this.favourite = file.contextParameters.favorites.isFavorite;
     } else if(fileType === 'video') {
       fileRenditionUrl = file.properties['file:content'].data;
     }
@@ -433,8 +433,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   markFavourite(data, favouriteValue) {
-    this.favourite = !this.favourite;
-    if(!this.favourite) {
+    // this.favourite = !this.favourite;
+    if(data.contextParameters.favorites.isFavorite) {
       this.unmarkFavourite(data, favouriteValue);
       return;
     }
@@ -445,7 +445,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     };
     let loading = true;
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
-      data.contextParameters.favorites.isFavorite = this.favourite;
+      data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
       if(favouriteValue === 'recent') {
         this.markRecentlyViewed(data);
       }
@@ -461,7 +461,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     };
     let loading = true;
     this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
-      data.contextParameters.favorites.isFavorite = this.favourite;
+      // data.contextParameters.favorites.isFavorite = this.favourite;
+      data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
       if(favouriteValue === 'recent') {
         this.markRecentlyViewed(data);
       }

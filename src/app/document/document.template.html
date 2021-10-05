@@ -342,9 +342,9 @@
             <ul class="flexible">
               <li class="customtooltip">
                 <a placement="bottom" ngbTooltip="Favourite">
-                  <img *ngIf="favourite" (click)="markFavourite(selectedFile, false)"
+                  <img *ngIf="selectedFile.contextParameters.favorites.isFavorite" (click)="markFavourite(selectedFile, false)"
                     src="../../assets/images/yellow-star.svg">
-                  <img *ngIf="!favourite" (click)="markFavourite(selectedFile, true)"
+                  <img *ngIf="!selectedFile.contextParameters.favorites.isFavorite" (click)="markFavourite(selectedFile, true)"
                     src="../../assets/images/star.svg">
                 </a>
               </li>
