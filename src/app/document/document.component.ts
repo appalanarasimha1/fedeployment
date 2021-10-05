@@ -80,6 +80,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   baseUrl = environment.baseUrl;
   tags = [];
   inputTag: string;
+  showTagInput = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
