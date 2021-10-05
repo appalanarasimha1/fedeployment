@@ -6,7 +6,10 @@
     <app-side-drawer [inputMetaData]="aggregationsMetaData" (searchTextOutput)="filters($event)"></app-side-drawer>
  -->
  <app-loader [show]="loading"></app-loader>
-  <app-sub-header (searchTextOutput)="searchTerm($event)"></app-sub-header>
+<app-sub-header 
+  (searchTextOutput)="searchTerm($event)"
+  [tagsMetadata]="tagsMetadata">
+</app-sub-header>
   <app-side-drawer
     [inputMetaData]="aggregationsMetaData"
     (searchTextOutput)="filters($event)"
@@ -21,7 +24,6 @@
   [videos]="videos"
   [audio]="audio"
   [searchTerm]="searchValue"
-  [tagsMetadata]="tagsMetadata"
   (searchTextOutput)="searchDocuments($event)"
   (pageCount)="fetchNextPageResults(1, $event)"
 ></app-content>

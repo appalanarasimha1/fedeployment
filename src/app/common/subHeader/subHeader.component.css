@@ -139,3 +139,46 @@ background-color: #fff;
     margin: 0px 5px;
     display: block;
 }
+
+.tags-metadata ul {
+    padding-top: 10px;
+  }
+  .tags-metadata ul li {
+    padding-bottom: 5px;
+  }
+  .tags-metadata ul li a{
+    background-color: #000;
+    font-size: 14px;
+    line-height: 6px;
+    border-radius: 20px;
+    padding: 17px 22px;
+    color: #fff;
+    text-decoration: unset;
+    margin: 0px 5px;
+    display: inline-block;
+  } 
+  .scrolling-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    max-width: 610px;
+    margin: 0 auto;
+}
+.scrolling-wrapper .card {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    background-size: cover;
+    position: relative;
+    margin-left: 5px;
+    overflow: hidden;
+    background-color: black;
+    color: white;
+    border-radius: 24px;
+    border: 0px;
+    padding: 5px 10px;
+    text-align: center;
+}
+::-webkit-scrollbar {
+    display: none;
+  }

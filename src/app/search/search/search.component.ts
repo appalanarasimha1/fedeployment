@@ -188,20 +188,23 @@ export class SearchComponent implements OnInit {
 
   fetchApiResult(data: { primaryType: string, queryParams: any }, isShowMore: boolean = false) {
     const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
-    this.loading = true;
+    // this.loading = true;
+    this.dataService.loaderValueChange(true);
     this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams: data.queryParams, headers })
       .get().then((docs) => {
         this.setData(docs, data.primaryType, isShowMore);
         if (--this.count === 0) {
           this.getAggregationValues();
-          this.loading = false;
+          this.dataService.loaderValueChange(false);
+          // this.loading = false;
         }
       }).catch((error) => {
         console.log('search document error = ', error);
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         if (--this.count === 0) {
           this.getAggregationValues();
-          this.loading = false;
+          // this.loading = false;
+          this.dataService.loaderValueChange(false);
         }
       });
   }
@@ -232,6 +235,7 @@ export class SearchComponent implements OnInit {
       this.setUniqueBucketValues(this.audio);
     }
     this.aggregationsMetaData = Object.assign({}, this.metaData);
+    this.setTagsMetadata();
   }
 
   setUniqueBucketValues(primaryTypeData: any): void {
@@ -255,8 +259,8 @@ export class SearchComponent implements OnInit {
     // tslint:disable-next-line:no-unused-expression
     if(this.firstCallResult) {
       this.resetResults();
-      this.resetTagsMetadata();
     }
+    this.resetTagsMetadata();
     switch (primaryType.toLowerCase()) {
       case constants.VIDEO_SMALL_CASE:
         if (isShowMore) this.videos.entries = new Object(this.videos.entries.concat(data.entries)); else this.videos = data;
@@ -430,7 +434,7 @@ export class SearchComponent implements OnInit {
       video_duration_agg: { buckets: [], selection: [] },
       sectors: { buckets: [], selection: [] },
       system_tag_agg: { buckets: [], selection: [] }
-    }
+    };
   }
 
   resetFilter() {

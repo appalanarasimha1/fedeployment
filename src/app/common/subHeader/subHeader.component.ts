@@ -10,6 +10,7 @@ import { IHeaderSearchCriteria } from './interface';
   styleUrls: ['./subHeader.component.css']
 })
 export class SubHeaderComponent implements OnInit {
+  @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   // @Input() sectors: string[];
   searchText: string = '';

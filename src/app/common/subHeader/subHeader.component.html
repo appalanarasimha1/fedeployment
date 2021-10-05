@@ -38,12 +38,19 @@
             </div>
           </div>
         </form>
-        <!-- <div class="search-tags pt-5">
-          <ul class="flexible">
-            <li>
-              <a href="#">Travel</a>
-            </li>
-            <li>
+        <div class="search-tags pt-5">
+
+          <div class="scrolling-wrapper">
+            <div *ngFor="let bucket of tagsMetadata.buckets; let i = index" class="card">
+              <a style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
+            </div>
+        </div>
+
+          <!-- <ul class="flexible">
+            <li  *ngFor="let bucket of tagsMetadata.buckets; let i = index">
+              <a style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}} ({{bucket.docCount}})</a>
+            </li> -->
+            <!-- <li>
               <a href="#">Hotel</a>
             </li>
             <li>
@@ -54,9 +61,9 @@
             </li>
             <li>
               <a href="#">Tourism Industry</a>
-            </li>
-          </ul>
-        </div> -->
+            </li> -->
+          <!-- </ul> -->
+        </div>
       </div>
 
     </div>

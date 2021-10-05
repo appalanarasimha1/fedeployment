@@ -3599,3 +3599,8 @@ element.style {
   width: unset !important;
   color: #fff !important;
 }
+
+
+.multiselect-dropdown .dropdown-btn .selected-item {
+  padding: 3px 5px 0 0 !important;
+}

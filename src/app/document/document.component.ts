@@ -11,6 +11,7 @@ import { ApiService } from '../services/api.service';
 import { SharedService } from '../services/shared.service';
 import { Router } from '@angular/router';
 import { NgxMasonryComponent } from 'ngx-masonry';
+import { DataService } from '../services/data.service';
 @Component({
   selector: 'app-content',
   // Our list of styles in our component. We may add more to compose many styles together
@@ -23,7 +24,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() videos: any;
   @Input() audio: any;
   @Input() searchTerm: { ecm_fulltext: string };
-  @Input() tagsMetadata: any;
+  // @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
 
@@ -64,7 +65,16 @@ export class DocumentComponent implements OnInit, OnChanges {
     // horizontalOrder: true,
     // fitWidth: true,
     percentPosition: true,
-    animations: {}
+    animations: {
+    //   show: [
+    //   style({opacity: 0}),
+    //   animate('400ms ease-in', style({opacity: 1})),
+    // ],
+    // hide: [
+    //   style({opacity: '*'}),
+    //   animate('400ms ease-in', style({opacity: 0})),
+    // ]
+  }
   };
   showRecentlyViewed = true;
   baseUrl = environment.baseUrl;
@@ -77,16 +87,21 @@ export class DocumentComponent implements OnInit, OnChanges {
     public nuxeo: NuxeoService,
     private apiService: ApiService,
     private sharedService: SharedService,
-    private router: Router
+    private router: Router,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
     this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED) || '[]');
     this.showRecentlyViewed = true;
+    this.dataService.showHideLoader$.subscribe((value) => {
+      this.loading = value;
+    });
   }
 
   ngOnChanges(changes: any) {
     this.recentlyViewed = [];
+    // console.log('metaDataTags = ', this.tagsMetadata);
     // this.resetValues();
     if (changes.images) {
       // if(changes.images?.currentValue?.currentPageIndex && changes.images?.currentValue?.currentPageIndex === 0) {

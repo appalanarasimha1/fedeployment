@@ -52,7 +52,7 @@
   </section>
 
   <section class="search-subpage pt-2 pb-5" >
-    <div *ngIf="!showRecentlyViewed && !videos.entries.length && !images.entries.length && !docs.length" class="row">
+    <div *ngIf="!loading && !showRecentlyViewed && !videos.entries.length && !images.entries.length && !docs.length" class="row">
       <div class="col-xl-12 col-md-12 " >
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/search.svg" style="width: 50px;">
@@ -112,7 +112,7 @@
         </div>
       </div>
 
-      <div *ngIf="tagsMetadata && tagsMetadata.buckets && tagsMetadata.buckets.length > 0">
+      <!-- <div *ngIf="tagsMetadata && tagsMetadata.buckets && tagsMetadata.buckets.length > 0">
         <span>Related Tags:</span>
         <div class="tags-metadata pb-5">
           <ul class="flexible">
@@ -121,7 +121,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div> -->
 
       <div *ngIf="getDataLength(images.entries, 'picture')" class="row">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
