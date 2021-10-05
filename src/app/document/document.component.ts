@@ -137,7 +137,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   calculateNoResultScreen() {
-    return this.showRecentlyViewed && !this.recentlyViewed.length && !this.videos.entries.length && !this.images.entries.length && !this.docs.length;
+    return !this.loading && this.showRecentlyViewed && !this.recentlyViewed.length && !this.videos.entries.length && !this.images.entries.length && !this.docs.length;
   }
 
   getDataLength(data: any, primaryType: string) {
