@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   baseUrl: 'https://uatgroundx.neom.com', //https://tomcat-groundx.neom.com:8087
   redirectBaseUrl: 'https://uatgroundx.neom.com/',
-  apiBaseUrl: 'https://devtomcatgroundx.neom.com:8087',
+  apiBaseUrl: 'https://dev1groundx.neom.com', // 'https://devtomcatgroundx.neom.com:8087',
   apiVersion: '/nuxeo/api/v1'
 };
 
