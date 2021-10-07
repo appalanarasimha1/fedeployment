@@ -174,7 +174,7 @@
                       </div>
                       <div class="hover-icon-group">
                         <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}" (click)="markFavourite(image, false)"></div>
-                        <div class="hover-icon plus-icon"></div>
+                        <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"></div>
                         <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                       </div>
                       <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
@@ -217,7 +217,7 @@
                      
                         <div class="hover-icon-group">
                           <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}" (click)="markFavourite(image, false)"></div>
-                          <div class="hover-icon plus-icon"></div>
+                          <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"></div>
                           <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                         </div>
                         <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
