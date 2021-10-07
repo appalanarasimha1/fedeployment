@@ -4,6 +4,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { IHeaderSearchCriteria } from './interface';
  import { CarouselModule } from 'ngx-owl-carousel-o';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { unescapeIdentifier } from '@angular/compiler';
 @Component({
   selector: 'app-sub-header',
   // directives: [Search],
@@ -70,6 +71,9 @@ export class SubHeaderComponent implements OnInit {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
+    autoWidth:true,
+    items: 6,
+    margin: 10,
     navText: ['<img src="../../../assets/images/leftArrow.svg">', '<img src="../../../assets/images/rightArrow.svg">'],
 
     responsive: {

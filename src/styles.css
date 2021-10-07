@@ -3605,6 +3605,9 @@ element.style {
   left: -206px !important;
   top: 36px !important;
 }
+.owl-item{
+  width: auto !important;
+}
 
 .multiselect-dropdown .dropdown-btn .selected-item {
   padding: 2px 5px 0 0 !important;
@@ -3621,7 +3624,7 @@ img:not([src]) {
 } */
 .owl-theme {
   display: block;
-  max-width: 600px;
+  max-width: 590px;
   margin: auto;
   height: 100px;
   padding-top: 22px;

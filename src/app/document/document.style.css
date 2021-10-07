@@ -1310,5 +1310,5 @@ color: #ACACAC;
 
 /* <!-- sprint12-fixes end --> */
 .masonry-item.masonryOpenDrawer{
-  width: calc(33.33% - 10px) !important;
+  /* width: calc(33.33% - 10px) !important; */
 }
