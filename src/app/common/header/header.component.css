@@ -125,3 +125,9 @@ header{
 .tooltipCustom:before{
     display: none;
 }
+/* <!-- sprint12-fixes start --> */
+header.pt-4.pb-4.searchHeading.openDrawer {
+    width: calc(100% - 280px);
+    margin-left: 280px;
+}
+/* <!-- sprint12-fixes end --> */

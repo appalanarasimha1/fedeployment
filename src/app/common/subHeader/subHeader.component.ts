@@ -2,7 +2,8 @@ import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { IHeaderSearchCriteria } from './interface';
-
+ import { CarouselModule } from 'ngx-owl-carousel-o';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
   selector: 'app-sub-header',
   // directives: [Search],
@@ -61,5 +62,30 @@ export class SubHeaderComponent implements OnInit {
   emitData(data: IHeaderSearchCriteria): void {
     this.searchTextOutput.emit(data);
     return;
+  }
+    customOptions: OwlOptions = {
+    loop: false,
+    mouseDrag: false,
+    touchDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 700,
+    navText: ['<img src="../../../assets/images/leftArrow.svg">', '<img src="../../../assets/images/rightArrow.svg">'],
+
+    responsive: {
+      0: {
+        items: 1
+      },
+      400: {
+        items: 6
+      },
+      740: {
+        items: 6
+      },
+      940: {
+        items:6,
+      }
+    },
+    nav: true
   }
 }

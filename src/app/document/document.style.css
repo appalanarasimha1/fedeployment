@@ -780,7 +780,7 @@ background-color:#EBC03F !important;
   cursor: pointer;
 }
 
-.activeHover .form-group-custom label{
+.activeHover .form-group-custom label, .form-group-custom:hover label{
   background: #006B44;
 }
 .form-group-custom label {
@@ -795,7 +795,7 @@ background-color:#EBC03F !important;
   padding: 0px;
 }
 
-.form-group-custom label:before {
+.form-group-custom label:before, .form-group-custom:hover label:before {
   content:'';
   -webkit-appearance: none;
   border: 2px solid #006B44;
@@ -820,7 +820,7 @@ background-color:#EBC03F !important;
 }
 
 .form-group-custom input:checked + label:after,
-.form-group-custom input + label:after {
+.form-group-custom input + label:after , .form-group-custom:hover input + label:after{
   content: '';
   display: block;
   position: absolute;
@@ -962,19 +962,28 @@ background-color:#EBC03F !important;
   -o-transition: .5s ease all;
   transition: .5s ease all;
 }
-.hover-icon.star-icon:hover, .hover-icon.star-icon.active{
+.hover-icon.star-icon:hover{
   background: url(~/../../../../assets/images/whitestar.png) no-repeat center center #e0b803;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
 }
-.hover-icon.plus-icon:hover{
-  background: url(~/../../../../assets/images/add-collectionbadgeWhite.svg) no-repeat center center #e0b803;
+.hover-icon.star-icon.active{
+  background: url(~/../../../../assets/images/yellowStar.svg) no-repeat center center #fff;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  background-size: 22px;
+
+}
+.hover-icon.plus-icon:hover{
+  /* background: url(~/../../../../assets/images/add-collectionbadgeWhite.svg) no-repeat center center #e0b803;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all; */
 }
 .hover-icon.download-icon:hover{
   background: url(~/../../../../assets/images/download-white.svg) no-repeat center center #006B44;
@@ -1298,3 +1307,8 @@ color: #ACACAC;
   margin: 0px 5px;
   display: inline-block;
 } 
+
+/* <!-- sprint12-fixes end --> */
+.masonry-item.masonryOpenDrawer{
+  width: calc(33.33% - 10px) !important;
+}

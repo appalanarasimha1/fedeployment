@@ -19,6 +19,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { FooterComponent } from './common/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +35,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+  
   ],
   providers: [
     CookieService,

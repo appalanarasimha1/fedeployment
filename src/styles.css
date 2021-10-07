@@ -1,6 +1,7 @@
 /* @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700"); */
 @import url('./../node_modules/bootstrap/dist/css/bootstrap.min.css');
+
 /* @import '~ngx-bar-rating/themes/br-default-theme.css';
 @import '~ngx-bar-rating/themes/br-horizontal-theme.css';
 @import "../node_modules/c3/c3.min.css";
@@ -3586,7 +3587,6 @@ element.style {
     font-size: 12px;
 }
 
-
 .dropdownBasic2 .tooltip-inner {
   position: absolute;
   top: -12px;
@@ -3600,13 +3600,49 @@ element.style {
   color: #fff !important;
 }
 
+.hover-icon-group .tooltip-inner{
+  position: absolute !important;
+  left: -206px !important;
+  top: 36px !important;
+}
 
 .multiselect-dropdown .dropdown-btn .selected-item {
   padding: 2px 5px 0 0 !important;
 }
 
 
+
 img[src=""],
 img:not([src]) {
   visibility: hidden;
+}
+/* .owl-item{
+  width: 98px !important;
+} */
+.owl-theme {
+  display: block;
+  max-width: 600px;
+  margin: auto;
+  height: 100px;
+  padding-top: 22px;
+}
+.owl-theme .owl-nav {
+  margin-top: 10px;
+  position: absolute;
+  top: 11px;
+  left: 0;
+  right: 0;
+}
+.owl-theme .owl-nav [class*=owl-]{
+  background: unset !important;
+  padding: unset !important;
+}
+.owl-prev {
+    position: absolute;
+    left: -29px !important;
+}
+
+.owl-next {
+    position: absolute;
+    right: -29px !important;
 }

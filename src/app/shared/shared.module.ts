@@ -7,7 +7,7 @@ import { LoaderComponent } from '../common/loader/loader.component';
 import { ApiService } from '../services/api.service';
 import { SharedService } from '../services/shared.service';
 import { DataService } from '../services/data.service';
-
+// import { OwlModule  } from 'ngx-owl-carousel-o';
 
 @NgModule({
   declarations: [
@@ -16,20 +16,24 @@ import { DataService } from '../services/data.service';
   providers: [
     ApiService,
     SharedService,
-    DataService
+    DataService,
+    
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    //  OwlModule 
+    
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
-    LoaderComponent
+    LoaderComponent,
+    // OwlModule
   ]
 })
 export class SharedModule { }

@@ -12,6 +12,8 @@ import { SharedService } from '../services/shared.service';
 import { Router } from '@angular/router';
 import { NgxMasonryComponent } from 'ngx-masonry';
 import { DataService } from '../services/data.service';
+
+
 @Component({
   selector: 'app-content',
   // Our list of styles in our component. We may add more to compose many styles together
@@ -57,15 +59,22 @@ export class DocumentComponent implements OnInit, OnChanges {
   fileSelected = [];
   sortValue = '';
   activeTabs = { comments: false, info: false, timeline: false };
-  loading = false;
+  
+  // /* <!-- sprint12-fixes start --> */
   public myOptions = {
     gutter: 10,
+    resize: true
+  };
+  public updateMasonryLayout = false;
+  // /* <!-- sprint12-fixes end --> */
+  // public myOptions = {
+  //   gutter: 10,
     // itemSelector: "#fileId",
     // columnWidth: "#fileId",
     // horizontalOrder: true,
     // fitWidth: true,
-    percentPosition: true,
-    animations: {
+    // percentPosition: true,
+    // animations: {
     //   show: [
     //   style({opacity: 0}),
     //   animate('400ms ease-in', style({opacity: 1})),
@@ -74,13 +83,14 @@ export class DocumentComponent implements OnInit, OnChanges {
     //   style({opacity: '*'}),
     //   animate('400ms ease-in', style({opacity: 0})),
     // ]
-  }
-  };
+  // }
+  // };
   showRecentlyViewed = true;
   baseUrl = environment.baseUrl;
   tags = [];
   inputTag: string;
   showTagInput = false;
+  loading: boolean;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -98,6 +108,11 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.dataService.showHideLoader$.subscribe((value) => {
       this.loading = value;
     });
+    // /* <!-- sprint12-fixes start --> */
+    this.sharedService.getSidebarToggle().subscribe(() => {
+      this.updateMasonryLayout = !this.updateMasonryLayout;
+    });
+    // /* <!-- sprint12-fixes end --> */
   }
 
   ngOnChanges(changes: any) {
@@ -634,4 +649,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   //       break;
   //   }
   // }
+
+
 }

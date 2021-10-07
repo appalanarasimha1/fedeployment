@@ -1,7 +1,7 @@
 <section class="sub-header" >
   <div class="container">
     <div class="row">
-      <div class="col-xl-12 text-center">
+      <div class="col-xl-8 offset-xl-2 text-center">
         <h2 class="pb-4"><a href="/" style="color: #fff;">GROUND X</a></h2>
         <form>
           <div class="flexible" style="justify-content: center">
@@ -41,28 +41,27 @@
         <div class="search-tags pt-5">
 
           <div class="scrolling-wrapper">
-            <div *ngFor="let bucket of tagsMetadata.buckets; let i = index" class="card">
+            <!-- <div *ngFor="let bucket of tagsMetadata.buckets; let i = index" class="card">
               <a style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
-            </div>
-        </div>
+            </div> -->
+            <owl-carousel-o [options]="customOptions">
 
-          <!-- <ul class="flexible">
-            <li  *ngFor="let bucket of tagsMetadata.buckets; let i = index">
-              <a style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}} ({{bucket.docCount}})</a>
-            </li> -->
-            <!-- <li>
-              <a href="#">Hotel</a>
-            </li>
-            <li>
-              <a href="#">Tourist</a>
-            </li>
-            <li>
-              <a href="#">Tourism Industry</a>
-            </li>
-            <li>
-              <a href="#">Tourism Industry</a>
-            </li> -->
-          <!-- </ul> -->
+              <ng-container *ngFor="let bucket of tagsMetadata.buckets; let i = index" >
+                <ng-template carouselSlide [id]="bucket.id">
+                  <a class="card" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
+                </ng-template>
+              </ng-container>
+            </owl-carousel-o>
+            <!-- <owl-carousel-o [options]="customOptions">
+
+              <ng-container *ngFor="let slide of slidesStore">
+                <ng-template carouselSlide [id]="slide.id">
+                  <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+                </ng-template>
+              </ng-container>
+          
+            </owl-carousel-o> -->
+        </div>
         </div>
       </div>
 

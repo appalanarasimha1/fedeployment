@@ -12,6 +12,10 @@
                   </button>
             </div>
             <div id="main-sidebar" class="sidepanel closeBtn">
+               <div class=" sidebarList pb-5 flexible" style="justify-content: space-between;">
+                  <h6>Narrow search result by:</h6>
+                  <img src="../../../assets/images/reset.svg" (click)="resetFilter()" style="cursor: pointer;">
+               </div>
                <div class=" sidebarList pb-5">
                   <h6>Sort by</h6>
                   <ul class="flexible pt-2 pb-2 sideList btn-group" role="group" aria-label="Basic example">
@@ -192,9 +196,9 @@
                      </ul>
                   </div> -->
                </div>
-               <div class="resetFilter">
+               <!-- <div class="resetFilter">
                   <button (click)="resetFilter()" class="btn-outline-primary">Reset Filter</button>
-               </div>
+               </div> -->
 
                <!-- <div class="sidebarList file-type pb-3">
                   <h6>Updated date</h6>

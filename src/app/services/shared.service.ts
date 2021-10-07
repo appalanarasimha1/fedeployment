@@ -3,6 +3,8 @@ import * as moment from 'moment';
 import {Moment} from 'moment'; // for interface
 import {startCase, camelCase, isEmpty, pluck} from 'lodash';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,16 @@ export class SharedService {
   public todaysDateUTC = new Date().toUTCString();
   public todayDateKSAInMilli = new Date().getTime() + 3 * 60 * 60 * 1000;
   public MeterType;
+
+// /* <!-- sprint12-fixes start --> */
+public sidebarToggleResize = new BehaviorSubject(false);
+setSidebarToggle(slideToggle){
+  this.sidebarToggleResize.next(slideToggle);
+}
+getSidebarToggle(){
+  return this.sidebarToggleResize;
+}
+// /* <!-- sprint12-fixes end --> */
 
   constructor(private router: Router) {
   }

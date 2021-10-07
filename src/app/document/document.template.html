@@ -18,7 +18,7 @@
         <div class="col-xl-12 col-md-12">
           
 
-          <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)">
+          <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)"  [updateLayout]="updateMasonryLayout">
             <div ngxMasonryItem class="masonry-item" *ngFor="let file of recentlyViewed; let i = index">
               <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="" (click)="open(preview, file, 'image')" />
               <div class="cardBlock newDesign pa-0" >
@@ -29,7 +29,7 @@
                   </div>
                   <div class="hover-icon-group">
                     <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}" (click)="markFavourite(file, 'recent')"></div>
-                    <div class="hover-icon plus-icon" title="Coming soon"></div>
+                    <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"></div>
                     <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
                   </div>
                   <div class="mouse-hover-bg" (click)="open(preview, file, 'image')"></div>
@@ -68,7 +68,7 @@
       </div>
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4">
-          <span>Sort by: </span>
+          <span><b>Sort by:</b> </span>
           <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
            
             <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'All assets'}}</button>

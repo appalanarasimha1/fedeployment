@@ -12,7 +12,7 @@ import { NgxMasonryModule } from 'ngx-masonry';
 // import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { HttpInterceptorService } from '../services/http-interceptor.service';
 // import { NuxeoService } from '../services/nuxeo.service';
-
+import { CarouselModule  } from 'ngx-owl-carousel-o'; 
 @NgModule({
   declarations: [
     SearchComponent,
@@ -25,7 +25,8 @@ import { NgxMasonryModule } from 'ngx-masonry';
     SharedModule,
     SearchRoutingModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgxMasonryModule
+    NgxMasonryModule,
+    CarouselModule 
   ],
   // providers: [NuxeoService, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}]
 })

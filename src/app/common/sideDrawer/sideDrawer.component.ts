@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { apiRoutes } from '../config';
 import { DataService } from 'src/app/services/data.service';
-
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-side-drawer',
@@ -75,6 +75,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   dropdownSettings = {};
 
   modifiedDateDropDown = [{ key: 'last24h', id: 0 }, { key: 'lastWeek', id: 1 }, { key: 'lastMonth', id: 2 }, { key: 'lastYear', id: 3 }, { key: 'priorToLastYear', id: 4 }];
+  sharedService: any;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -451,24 +452,51 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     document.getElementById("main").classList.toggle('shiftFilter');
     document.getElementById("main-sidebar").classList.toggle("closeBtn");
 
+
+
+    
+    // /* <!-- sprint12-fixes start --> */
     if (this.filterClosed) {
-      $(".main, .min-height").animate(
+      $(".main").animate(
         {
-          left: "280px"
+          marginLeft: "280px"
         },
         300
       );
+      $(".min-height").animate(
+        {
+          marginLeft: "300px"
+        },
+        300
+      );
+
+      $(".searchHeading").addClass('openDrawer');
+      $(".masonry-item").addClass('masonryOpenDrawer');
+      setTimeout(() => {
+        this.sharedService.setSidebarToggle(true);
+      }, 300);
+
+      window.onresize = function(event) {
+
+      };
     } else {
       $(".main, .min-height").animate(
         {
-          left: "0px"
+          marginLeft: "0px"
         },
-        300
+        500
       );
+
+      $(".searchHeading").removeClass('openDrawer');
+      $(".masonry-item").removeClass('masonryOpenDrawer');
+      setTimeout(() => {
+        this.sharedService.setSidebarToggle(false);
+      }, 300);
     }
 
     this.filterClosed = !this.filterClosed;
     return;
+    // /* <!-- sprint12-fixes end --> */
   }
 
   resetFilter() {
