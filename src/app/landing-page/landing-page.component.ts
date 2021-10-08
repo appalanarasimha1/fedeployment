@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { apiRoutes } from '../common/config';
+import { localStorageVars } from '../common/constant';
 import { ApiService } from '../services/api.service';
 import { NuxeoService } from '../services/nuxeo.service';
 import { SharedService } from '../services/shared.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-landing-page',
@@ -20,12 +23,23 @@ export class LandingPageComponent implements OnInit {
   active = 1;
   loading = false;
   baseUrl = environment.baseUrl;
+  showShadow = false;
+  activeTabs = { comments: false, info: false, timeline: false };
+  selectedFile: any; // TODO: add interface, search result entires
+  selectedFileUrl: string;
+  showTagInput = false;
+  tags = [];
+  comments = [];
+  inputTag: string;
+  selectedTab;
+  commentText: string;
 
   constructor(
     private nuxeo: NuxeoService,
     private router: Router,
     private sharedService: SharedService,
-    private apiService: ApiService) { }
+    private apiService: ApiService,
+    private modalService: NgbModal) { }
 
   ngOnInit(): void {
     if (!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
@@ -84,7 +98,7 @@ export class LandingPageComponent implements OnInit {
 
   getFavouriteCollection(favouriteUid: string) {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions'], 'fetch.document': 'properties', properties: '*' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch.document': 'properties', properties: '*' };
     this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
       .then((response) => {
         if(response) this.favourites = response?.entries;
@@ -105,7 +119,7 @@ export class LandingPageComponent implements OnInit {
 
   getTasks() {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, userId: 'Administrator' };
-    const headers = { 'fetch-task': 'targetDocumentIds,actors', properties: 'dublincore,common,file,uid' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch-task': 'targetDocumentIds,actors', properties: 'dublincore,common,file,uid' };
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_TASKS, { queryParams, headers }).get()
       .then((response) => {
         this.tasks = response.entries;
@@ -126,7 +140,7 @@ export class LandingPageComponent implements OnInit {
 
   getCollections() {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40, sortBy: 'dc:modified', sortOrder: 'desc', searchTerm: '%', user: '%currentUser' };
-    const headers = { 'fetch-task': 'targetDocumentIds,actors', properties: 'dublincore,common,file,uid' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch-task': 'targetDocumentIds,actors', properties: 'dublincore,common,file,uid' };
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_COLLECTIONS, { queryParams, headers }).get()
       .then((response) => {
         this.collections = response.entries;
@@ -146,8 +160,8 @@ export class LandingPageComponent implements OnInit {
   }
 
   getEdited() {
-    const queryParams = { currentPageIndex: 0, offset: 10, pageSize: 16, queryParams: '/' };
-    const headers = { 'enrichers-document': ['thumbnail'], 'fetch-task': 'actors' };
+    const queryParams = { currentPageIndex: 0, offset: 10, pageSize: 16, queryParams: '/', system_primaryType_agg: `["Picture"]` };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch-task': 'actors' };
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_RECENT_EDITED, { queryParams, headers }).get()
       .then((response) => {
         this.recentEdited = response.entries;
@@ -188,12 +202,11 @@ export class LandingPageComponent implements OnInit {
   }
 
   getAssetUrl(event: any, url: string) {
+    if (!event) {
+      return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    }
+
     const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
-    //   .then(r => r.blob())
-    //   .then(d =>
-    //     event.target.src = window.URL.createObjectURL(d)
-    //   );
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {
         if (r.status === 401) {
@@ -210,34 +223,232 @@ export class LandingPageComponent implements OnInit {
         // TODO: add toastr with message 'Invalid token, please login again'
         console.log(e);
       });
+  }
 
-    // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // let result = '';
-    // const src = `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // const options = {
-    // const headers: {
-    //   'Access-Control-Allow-Origin': '*',
-    //   'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-    //   // 'enrichers.document': 'thumbnail,permissions,preview',
-    //   // Cookie: 'X-Authentication-Token=' + localStorage.getItem('token'),
-    //   'X-Authentication-Token': localStorage.getItem('token')
-    //   // properties: '*',
-    //   // 'CSRF-Token': 'defaults'
-    // };
+  open(content, file, fileType: string): void {
+    this.showShadow = false;
+    this.activeTabs.comments = false;
+    this.activeTabs.timeline = false;
+    this.activeTabs.info = false;
+    let fileRenditionUrl;
+    this.selectedFile = file;
+    if(fileType === 'image') {
+      this.getComments();
+      this.getTags();
+      this.markRecentlyViewed(file);
 
-    // fetch(src, headers)
-    //   .then(res => res.blob())
-    //   .then(blob => {
-    //     result = URL.createObjectURL(blob);
-    //   });
+      file.contextParameters.renditions.map(item => {
+        if (item.url.toLowerCase().includes('original')) {
+          fileRenditionUrl = item.url;
+        }
+      });
+      // this.favourite = file.contextParameters.favorites.isFavorite;
+    } else if(fileType === 'video') {
+      fileRenditionUrl = file.properties['file:content'].data;
+    }
+    this.selectedFileUrl = this.getAssetUrl(null, fileRenditionUrl);
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.showTagInput = false;
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
 
-    // return `https://tomcat-groundx.neom.com:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // this.apiService.get(src, options).subscribe(res => {
-    //   const blob = res.blob();
-    //   result = URL.createObjectURL(blob);
-    // });
+  getComments() {
+    let loading = true;
+    let error;
+    const queryParams = { pageSize: 10, currentPageIndex: 0 };
+    const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
+    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
+      .get().then((docs) => {
+        this.comments = docs.entries;
+        loading = false;
+      }).catch((err) => {
+        console.log('search document error = ', err);
+        error = `${error}. `;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        loading = false;
+      });
+  }
+
+  getTags() {
+    this.tags = this.selectedFile.contextParameters["tags"]?.map(tag => tag) || [];
+  }
+
+  markRecentlyViewed(data: any) {
+    let found = false;
+    // tslint:disable-next-line:prefer-const
+    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+    if (recentlyViewed.length) {
+      recentlyViewed.map((item: any, index: number) => {
+        if (item.uid === data.uid) {
+          found = true;
+          recentlyViewed[index] = data;
+        }
+      });
+    }
+    if (found) {
+      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+      return;
+    }
+
+    data['isSelected'] = false;
+    recentlyViewed.push(data);
+    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+    return;
+  }
+
+  addTag(inputTag: string): void {
+    if (!inputTag) return;
+    const route = apiRoutes.ADD_TAG;
+    const apiBody = {
+      input: this.selectedFile.uid,
+      params: {
+        tags: inputTag
+      }
+    };
+    this.apiService.post(route, apiBody).subscribe(response => {
+      this.tags.push(inputTag);
+      this.selectedFile.contextParameters["tags"].push(inputTag);
+      this.inputTag = "";
+    });
+  }
+
+  openInfo(tabName: string) {
+    if (!this.showShadow || this.selectedTab === tabName) {
+      this.showShadow = !this.showShadow;
+    }
+    this.selectedTab = tabName;
+    this.activeTabs[tabName] = this.showShadow;
+  }
+
+  getDownloadFileEstimation(data: any) {
+    return `${(data / 1024) > 1024 ? ((data / 1024) / 1024).toFixed(2) + ' MB' : (data / 1024).toFixed(2) + ' KB'}`;
+  }
+
+  getNames(users: any) {
+    let result = '';
+    users.map(user => {
+      result += user.id + ', ';
+    });
+    return result;
+  }
+
+  toDateString(date: string): string {
+    return `${new Date(date).toDateString()}`;
+  }
+
+  saveComment(comment: string): void {
+    if(!comment.trim()) {
+      return;
+    }
+    let error;
+    const route = apiRoutes.SAVE_COMMENT.replace('[assetId]', this.selectedFile.uid);
+    const postData = {
+      'entity-type': 'comment',
+      parentId: this.selectedFile.uid,
+      text: comment
+    };
+    try{
+    this.apiService.post(route, postData)
+    .subscribe((doc) => {
+      this.commentText = '';
+      this.comments.unshift(doc);
+      this.loading = false;
+    });
+  } catch(err) {
+      console.log('search document error = ', err);
+      error = `${error}. `;
+      if (error && error.message) {
+        if (error.message.toLowerCase() === 'unauthorized') {
+          this.sharedService.redirectToLogin();
+        }
+      }
+      this.loading = false;
+    }
+  }
+
+  getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
+    if (!fromDate) { //NOTE: when in development phase, for the notifications which did not have createdOn field
+      return showHours ? `yesterday` : `1 day`;
+    }
+    const today = toDate ? toDate : moment();
+
+    const daysDifference = moment(today).diff(moment(fromDate), 'days');
+    if (daysDifference === 0) {
+      let output = `${this.getDoubleDigit(new Date(fromDate).getUTCHours() + 3)}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
+      if (!showHours) {
+        output = `${moment(today).diff(moment(fromDate), 'hours')} hours`;
+      }
+      return output;
+    } else if (daysDifference === 1) {
+      return showHours ? 'yesterday' : `1 day`;
+    } else {
+      return showHours ? `${daysDifference} days ago` : `${daysDifference} days`;
+    }
+  }
+
+  getDoubleDigit(value: number) {
+    if (value < 10) {
+      return '0' + value;
+    }
+    return value;
+  }
+
+  getEventString(event: string): string {
+    let result = event;
+    switch (event) {
+      case 'download':
+        result = 'downloaded';
+        break;
+      case 'documentCreated':
+        result = 'created document';
+        break;
+    }
+    return result;
+  }
+
+  markFavourite(data, favouriteValue) {
+    // this.favourite = !this.favourite;
+    if(data.contextParameters.favorites.isFavorite) {
+      this.unmarkFavourite(data, favouriteValue);
+      return;
+    }
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {}
+    };
+    let loading = true;
+    this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
+      data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
+      if(favouriteValue === 'recent') {
+        this.markRecentlyViewed(data);
+      }
+      loading = false;
+    });
+  }
+
+  unmarkFavourite(data, favouriteValue) {
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {}
+    };
+    let loading = true;
+    this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
+      // data.contextParameters.favorites.isFavorite = this.favourite;
+      data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
+      if(favouriteValue === 'recent') {
+        this.markRecentlyViewed(data);
+      }
+      loading = false;
+    });
   }
 
   dateFormat(dateString: string): string {
