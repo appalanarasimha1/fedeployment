@@ -461,13 +461,13 @@ export class DocumentComponent implements OnInit, OnChanges {
       input: data.uid,
       params: {}
     };
-    let loading = true;
+    this.loading = true;
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
       if(favouriteValue === 'recent') {
         this.markRecentlyViewed(data);
       }
-      loading = false;
+      this.loading = false;
     });
   }
 
@@ -477,14 +477,14 @@ export class DocumentComponent implements OnInit, OnChanges {
       input: data.uid,
       params: {}
     };
-    let loading = true;
+    this.loading = true;
     this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
       // data.contextParameters.favorites.isFavorite = this.favourite;
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
       if(favouriteValue === 'recent') {
         this.markRecentlyViewed(data);
       }
-      loading = false;
+      this.loading = false;
     });
   }
 
