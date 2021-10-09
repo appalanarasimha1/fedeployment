@@ -408,7 +408,7 @@ font-weight: 600;
 .nav-link.active{
     position: relative;
 }
-.nav-link.active::before {
+#myTab .nav-link.active::before {
     content: '' !important;
     background-image: url(../../assets/images/trianglearrow.svg) !important;
     height: 18px !important;

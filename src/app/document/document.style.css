@@ -119,6 +119,7 @@ font-weight: 600;
   position: relative;
   transition: 0.4s;
   margin-bottom: 15px;
+  width: 31%;
 }
 .videosList li a{
   position: relative;

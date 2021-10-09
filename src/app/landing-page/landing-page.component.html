@@ -8,7 +8,7 @@
                     <h2>Recent activities</h2>
   
                      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs mt-5">
-                        <li [ngbNavItem]="1">
+                        <li [ngbNavItem]="2">
                           <a ngbNavLink>Recently edited</a>
                          
                           <ng-template ngbNavContent>
@@ -32,7 +32,7 @@
                           
                         </li>
                         
-                        <li [ngbNavItem]="2">
+                        <li [ngbNavItem]="1">
                           <a ngbNavLink>Recently viewed</a>
                         
                           <ng-template ngbNavContent>
@@ -40,7 +40,7 @@
                                 <div>
                                     <img src="../../assets/images/no-recent.svg" style="width: 40px;margin: auto;">
                                     <h3 class="noresult pb-3 pt-4">No recently viewed files</h3>
-                                    <p class="searchcontent">Recent updated files will appear here.</p>
+                                    <p class="searchcontent">Your recently viewed files will appear here.</p>
                                 </div>
                             </div>
                             <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
