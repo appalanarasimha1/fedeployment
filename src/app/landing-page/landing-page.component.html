@@ -320,7 +320,7 @@
     
                       <div ngbDropdown class="d-inline-block downloadDrop">
                         <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
-                            src="../../assets/images/black-downloadicon.svg"></a>
+                            src="../../assets/images/downlload-arrow-black.svg"></a>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                           <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{getAssetUrl(null, view.content.data)}}"
                             style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}}
@@ -503,7 +503,7 @@
                 <li>
                   <img *ngIf="!showTagInput" src="../../assets/images/add-circle.svg" (click)="showTagInput=true" style="margin-left: 6px; width: 32px;">
                   <form *ngIf="showTagInput" (submit)="addTag(inputTag)" style="margin-left: 6px;">
-                    <input class="tag-input" type="text" [(ngModel)]="inputTag" name="tag" placeholder="Add new tag" />
+                    <input class="tag-input" type="text" [(ngModel)]="inputTag" name="tag" />
                   </form>
                 </li>
               </ul>

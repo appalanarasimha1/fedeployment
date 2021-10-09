@@ -52,7 +52,7 @@ header{
 .landingLp .nav-item a:hover::before{
     width: 100%;
 }
-.landingLp .rightDrop .nav-item a::before{
+.rightDrop .nav-item a::before{
     display: none;
 }
 .navbar-expand-lg .navbar-nav .dropdown-menu{
