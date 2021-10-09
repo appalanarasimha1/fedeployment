@@ -986,7 +986,7 @@ background-color:#EBC03F !important;
   transition: .5s ease all; */
 }
 .hover-icon.download-icon:hover{
-  background: url(~/../../../../assets/images/download-white.svg) no-repeat center center #006B44;
+  background: url(~/../../../../assets/images/downlload-arrow.svg) no-repeat center center #006B44;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
