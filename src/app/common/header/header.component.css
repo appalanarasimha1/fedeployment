@@ -93,8 +93,9 @@ header{
     bottom: 0px;
     left: 0;
 }
-.searchHeading .nav-item a:hover{
-    color: #fff;
+.searchHeading .nav-item a:hover::before{
+    /* color: #fff; */
+    width: 100%;
 }
 .searchHeading li.nav-item {
     padding: 0px 15px;
