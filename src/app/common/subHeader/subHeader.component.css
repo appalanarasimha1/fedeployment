@@ -64,6 +64,7 @@ background-color: #FDFDFD;
     height: 140px;
     overflow-y: scroll;
     width: 100%;
+    z-index: 2 !important;
 }
 .sectorDropMain::-webkit-scrollbar {
     display: none;
