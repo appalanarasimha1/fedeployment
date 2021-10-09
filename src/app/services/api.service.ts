@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-const SERVER_URL = 'https://10.101.21.63:8087';
-const apiVersion1 = '/nuxeo/api/v1';
+const SERVER_URL = environment.apiBaseUrl;
+const apiVersion1 = environment.apiVersion;
 
 @Injectable({
   providedIn: 'root'

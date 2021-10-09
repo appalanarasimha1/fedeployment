@@ -22,7 +22,8 @@
                             <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
                                 <li *ngFor="let item of recentEdited">
                                     <a href="#">
-                                        <img src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong "alt="">
+                                        <img src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong "
+                                        alt="" (click)="open(preview, item, 'image')">
                                     </a>
                                 </li>
                             </ul>
@@ -46,7 +47,7 @@
                                 <li *ngFor="let item of recentlyViewed">
                                     <a href="#">
                                         <img src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong rounded"
-                                        alt="">
+                                        alt="" (click)="open(preview, item, 'image')">
                                     </a>
                                 </li>
                             </ul>
@@ -203,53 +204,9 @@
                         <li *ngFor="let fav of favourites; let i = index">
                             <a>
                                 <img src (error)="getAssetUrl($event, fav.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong rounded"
-                                alt="">
+                                alt="" (click)="open(preview, fav, 'image')" >
                             </a>
                         </li>
-                        <!-- <li>
-                            <a href="#">
-                                <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
-                                alt="">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
-                                alt="">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
-                                alt="">
-                            </a>
-                        </li>
-
-
-                        <li>
-                            <a href="#">
-                                <img src="../../assets/images/gallery-2.png" class="w-100 shadow-1-strong rounded"
-                                alt="">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="../../assets/images/gallery-4.png" class="w-100 shadow-1-strong rounded"
-                                alt="">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="../../assets/images/gallery-3.png" class="w-100 shadow-1-strong rounded"
-                                alt="">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="../../assets/images/gallery-img1.png" class="w-100 shadow-1-strong rounded"
-                                alt="">
-                            </a>
-                        </li> -->
                     </ul>
                 </div> 
             </div>
@@ -326,4 +283,232 @@
             </div>
         </div>
     </section>
+
+    <ng-template #preview let-modal class="imgPopUpTab">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <!-- <span aria-hidden="true">&times;</span> -->
+            <span aria-hidden="true"><img src="../../assets/images/modalclose.svg"></span>
+          </button>
+        </div>
+        <div class="modal-body ">
+          <div class="modalHead">
+            <div class="row flexible" style="justify-content: space-between;">
+              <div class="col-xl-4 col-md-4">
+                <!-- <img src="../../assets/images/User.svg" style="width: 50px;"> -->
+                <img src="../../assets/images/black-user.png" style="width: 50px;
+                margin-right: 10px;">
+                <span>{{selectedFile.properties['dc:creator'].id}}</span>
+              </div>
+              <div class="col-xl-4 col-md-4">
+                <ul class="flexible">
+                  <li class="customtooltip">
+                    <a placement="bottom" ngbTooltip="Favourite">
+                      <img *ngIf="selectedFile.contextParameters.favorites.isFavorite" (click)="markFavourite(selectedFile, false)"
+                        src="../../assets/images/yellow-star.svg">
+                      <img *ngIf="!selectedFile.contextParameters.favorites.isFavorite" (click)="markFavourite(selectedFile, true)"
+                        src="../../assets/images/star.svg">
+                    </a>
+                  </li>
+                  <li class="">
+                    <a placement="bottom" ngbTooltip="This function will be available soon ">
+                      <img src="../../assets/images/add-collectionbadge.svg" style="width: 20px;">
+                    </a>
+                  </li>
+                  <li class="customtooltip">
+                    <a placement="bottom" ngbTooltip="Download">
+    
+                      <div ngbDropdown class="d-inline-block downloadDrop">
+                        <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
+                            src="../../assets/images/black-downloadicon.svg"></a>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                          <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{getAssetUrl(null, view.content.data)}}"
+                            style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}}
+                            <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                          </a>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="popupTabSec">
+            <img src="{{selectedFileUrl}}" style="width: 100%;">
+            <div class="myTabContentMain" [ngClass]="{'hide': !showShadow}">
+              <div class="tab-content myTabContent" id="myTabContent">
+                <!-- use class myTabContent -->
+                <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
+                  <div class="timeline-content">
+                    <ul>
+                      <li *ngFor="let log of selectedFile.contextParameters.audit">
+                        <p><span>{{log.principalName}}</span> {{getEventString(log.eventId)}} {{getTime(log.eventDate,
+                          false)}} ago</p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                  <div class="comment-content">
+                    <ul>
+                      <li *ngFor="let comment of comments" class="flexible" style="align-items: unset;">
+                        <div>
+                          <img src=".../../assets/images/black-user.png">
+                        </div>
+                        <div>
+                          <p>{{comment.author}} <span>{{getTime(comment.creationDate, false)}} ago</span></p>
+                          <p>{{comment.text}}</p>
+                        </div>
+                      </li>
+                    </ul>
+                    <form (submit)="saveComment(commentText)">
+                      <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment" placeholder="Write a comment here">
+                      <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg" class="enterComment" style="cursor: pointer;">
+                    </form>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                  <div class="info-content">
+                    <div class="row">
+                      <div class="col-xl-6 col-md-6">
+                        <ul>
+                          <li>
+                            Created {{toDateString(selectedFile.properties['dc:created'])}} by
+                            <span style="color: #EBC03F;">{{selectedFile.properties['dc:creator'].id}}</span>
+                          </li>
+    
+                          <li>State <br><span style="opacity: 0.7;">{{selectedFile.state}}</span></li>
+    
+                          <li>Version</li>
+    
+                          <li>Last Modified <br><span style="opacity: 0.7;">{{toDateString(selectedFile.lastModified)}}</span></li>
+    
+                          <li>Contributors <br><span
+                              style="color: #EBC03F;">{{getNames(selectedFile.properties['dc:contributors'])}}</span>
+                          </li>
+    
+                          <li>
+                            Dimensions <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].width}} x
+                            {{selectedFile.properties['picture:info'].height}}</span>
+                          </li>
+    
+                          <li>
+                            Format <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].format}}</span>
+                          </li>
+                          <li>
+                            Colour Profile <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].colorSpace}}</span>
+                          </li>
+                          <li>
+                            Bit Depth per Channel <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].depth}}</span>
+                          </li>
+                          <li>
+                            Weight <br><span style="opacity: 0.7;">{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-xl-6 col-md-6">
+                        <ul>
+                          <li>
+                            Description <br><span style="opacity: 0.7;">{{selectedFile.properties['dc:description'] ||
+                            selectedFile.properties['imd:image_description']}}</span>
+                          </li>
+                          <li>EXIF
+                            <br>
+                            Date <span style="opacity: 0.7;">{{selectedFile.properties['dc:created']}}</span>
+                            <br>
+                            Orientation <span style="opacity: 0.7;">{{selectedFile.properties['imd:orientation']}}</span>
+                            <br>
+                            Aperture <span style="opacity: 0.7;">{{selectedFile.properties['imd:fnumber']}}</span>
+                            <br>
+                            Exposure <span style="opacity: 0.7;">{{selectedFile.properties['imd:exposure_time']}}</span>
+                            <br>
+                            ISO <span style="opacity: 0.7;">{{selectedFile.properties['imd:iso_speed_ratings']}}</span>
+                            <br>
+                            Focal Length <span style="opacity: 0.7;">{{selectedFile.properties['imd:focalLength']}}</span>
+                          </li>
+                          <li>IPTC
+                            <br>
+                            Copyright <span style="opacity: 0.7;">{{selectedFile.properties['imd:copyright']}}</span>
+                            <br>
+                            Rights <span style="opacity: 0.7;">{{selectedFile.properties['dc:rights']}}</span>
+                            <br>
+                            Source <span style="opacity: 0.7;">{{selectedFile.properties['picture:source']}}</span>
+                            <br>
+                            Description <span style="opacity: 0.7;">{{selectedFile.properties['dc:description']}}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset;">
+            <div class="mb-4" style="width: 80%">
+              <span class="main-heading">{{selectedFile.properties['dc:title']}}</span>
+              <span class="yellowBtn">Internal Use ©</span>
+              <h5 class="pt-3 weightSize" >{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</h5>
+            </div>
+            
+            <div class="flexible" style="align-items: unset;justify-content: end;width: 20%;">
+              <ul class="nav nav-tabs iconsList iconsTab"  id="myTab" role="tablist">
+                <li class="nav-item customtooltip" role="presentation"  >
+                  <a class="nav-link "   id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline" 
+                    (click)="openInfo('timeline')" [ngClass]="{'active': activeTabs['timeline']}" href="#timeline" role="tab" aria-controls="home"
+                    aria-selected="true"><img src="../../assets/images/clock.svg"></a>
+    
+                </li>
+                <li class="nav-item customtooltip" role="presentation" >
+                  <a class="nav-link "  id="profile-tab"  data-bs-toggle="tab" placement="bottom" ngbTooltip="Comments"
+                    (click)="openInfo('comments')" [ngClass]="{'active': activeTabs['comments']}" href="#profile" role="tab" aria-controls="profile"
+                    aria-selected="false"><img src="../../assets/images/Comments.svg"></a>
+                </li>
+                <li class="nav-item customtooltip" role="presentation" >
+                  <a class="nav-link "  id="contact-tab"  data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
+                    (click)="openInfo('info')" [ngClass]="{'active': activeTabs['info']}" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
+                    <img src="../../assets/images/Info.svg"></a>
+                </li>
+              </ul>
+    
+              <ul class="iconsList">
+                <li>
+                  <a>
+                    <div ngbDropdown class="d-inline-block downloadDrop settingsDropdown">
+                      <a class="" id="dropdownBasic2" placement="bottom-left" ngbDropdownToggle><img
+                          src="../../assets/images/threedots.svg" style="height: 18px;"></a>
+                      <div ngbDropdownMenu aria-labelledby="dropdownBasic2" class="dropdownBasic2">
+                        <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Share</a>
+                        <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Publish file</a>
+                        <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Stop notifications</a>
+                        <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Add to clipboard</a>
+                        <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Export</a>
+                        <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Start process</a>
+                        <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Replace file</a>
+                        <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Delete file</a>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+    
+            <div class="search-tags  pb-5">
+              <ul class="flexible">
+                <li *ngFor="let tag of tags; let i = index">
+                  <a style="cursor: pointer;" >{{tag}}</a>
+                </li>
+                <li>
+                  <img *ngIf="!showTagInput" src="../../assets/images/add-circle.svg" (click)="showTagInput=true" style="margin-left: 6px; width: 32px;">
+                  <form *ngIf="showTagInput" (submit)="addTag(inputTag)" style="margin-left: 6px;">
+                    <input class="tag-input" type="text" [(ngModel)]="inputTag" name="tag" placeholder="Add new tag" />
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </ng-template>
 </section>
