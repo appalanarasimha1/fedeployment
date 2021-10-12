@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-const SERVER_URL = environment.apiBaseUrl;
+const SERVER_URL = environment.apiServiceBaseUrl;
 const apiVersion1 = environment.apiVersion;
 
 @Injectable({

@@ -86,7 +86,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   // }
   // };
   showRecentlyViewed = true;
-  baseUrl = environment.baseUrl;
+  baseUrl = environment.nuxeoServiceBaseUrl;
   tags = [];
   inputTag: string;
   showTagInput = false;
@@ -293,7 +293,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   getAssetUrl(event: any, url: string): string {
     if (!event) {
-      return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+      return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     }
 
     const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;

@@ -22,7 +22,7 @@ export class LandingPageComponent implements OnInit {
   favourites = [];
   active = 1;
   loading = false;
-  baseUrl = environment.baseUrl;
+  // baseUrl = environment.baseUrl;
   showShadow = false;
   activeTabs = { comments: false, info: false, timeline: false };
   selectedFile: any; // TODO: add interface, search result entires
