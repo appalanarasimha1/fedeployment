@@ -191,7 +191,7 @@ export class SearchComponent implements OnInit {
     const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions', 'preview'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
     // this.loading = true;
     this.dataService.loaderValueChange(true);
-    const url = data.primaryType.toLowerCase() !== 'file' ? apiRoutes.SEARCH_PP_ASSETS : apiRoutes.DEFAULT_SEARCH;
+    const url = data.primaryType.toLowerCase() !== constants.FILE_SMALL_CASE ? apiRoutes.SEARCH_PP_ASSETS : apiRoutes.DEFAULT_SEARCH;
     this.nuxeo.nuxeoClient.request(url, { queryParams: data.queryParams, headers })
       .get().then((docs) => {
         this.setData(docs, data.primaryType, isShowMore);
