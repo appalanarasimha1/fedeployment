@@ -530,7 +530,7 @@
           </video>
         </div>
         <div *ngIf="selectedFile.type === 'File'">
-          <iframe style="width: 100%; height: 600px;" [src]="selectedFileUrl | safe"></iframe>
+          <iframe style="width: 100%; height: 600px;" [src]="getAssetUrl(null, selectedFileUrl) | safe"></iframe>
         </div>
         <div class="myTabContentMain" [ngClass]="{'hide': !showShadow}">
           <div class="tab-content myTabContent" id="myTabContent">
