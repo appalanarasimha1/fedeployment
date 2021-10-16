@@ -75,13 +75,14 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   dropdownSettings = {};
 
   modifiedDateDropDown = [{ key: 'last24h', id: 0 }, { key: 'lastWeek', id: 1 }, { key: 'lastMonth', id: 2 }, { key: 'lastYear', id: 3 }, { key: 'priorToLastYear', id: 4 }];
-  sharedService: any;
+  // sharedService: any;
 
   constructor(
     private nuxeo: NuxeoService,
     private http: HttpClient,
     private router: Router,
-    private dataService: DataService) { }
+    private dataService: DataService,
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
     if (!this.nuxeo.nuxeoClient) {

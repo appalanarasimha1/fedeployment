@@ -25,6 +25,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() images: any;
   @Input() videos: any;
   @Input() audio: any;
+  @Input() files: any;
   @Input() searchTerm: { ecm_fulltext: string };
   // @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
@@ -41,8 +42,10 @@ export class DocumentComponent implements OnInit, OnChanges {
   public display = 1;
   imageSliceInput = 9;
   videoSliceInput = 6;
+  fileSliceInput = 6;
   hideImageShowMoreBtn = true;
   hideVideoShowMoreBtn = true;
+  hideFileShowMoreBtn = true;
   redirectBaseUrl = environment.redirectBaseUrl;
   showListView = false;
   closeResult = '';
@@ -136,6 +139,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (changes.audio) {
       this.audio = changes.audio.currentValue;
     }
+    if (changes.files) {
+      this.files = changes.files.currentValue;
+    }
     // this.resetValues();
     // this.segregateDocuments(changes.documents.currentValue);
     if (this.imageSliceInput >= this.images.entries.length) {
@@ -147,6 +153,12 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.hideVideoShowMoreBtn = true;
     } else {
       this.hideVideoShowMoreBtn = false;
+    }
+
+    if (this.fileSliceInput >= this.files.entries.length) {
+      this.hideFileShowMoreBtn = true;
+    } else {
+      this.hideFileShowMoreBtn = false;
     }
 
     return;
@@ -164,11 +176,20 @@ export class DocumentComponent implements OnInit, OnChanges {
         this.hideImageShowMoreBtn = false;
       }
     }
+
     if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
       if (this.videoSliceInput >= this.videos.entries.length) {
         this.hideVideoShowMoreBtn = true;
       } else {
         this.hideVideoShowMoreBtn = false;
+      }
+    }
+
+    if (primaryType.toLowerCase() === constants.FILE_SMALL_CASE) {
+      if (this.fileSliceInput >= this.files.entries.length) {
+        this.hideFileShowMoreBtn = true;
+      } else {
+        this.hideFileShowMoreBtn = false;
       }
     }
     return data.length;
@@ -179,6 +200,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.videos = [];
     this.audio = [];
     this.docs = [];
+    this.files = [];
     return;
   }
 
@@ -224,7 +246,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   segregateDocuments(documents: any[]): void {
-    documents.map(item => {
+    documents.forEach(item => {
       item['isSelected'] = false;
       switch (item.type.toLowerCase()) {
         case constants.AUDIO_SMALL_CASE:
@@ -235,6 +257,9 @@ export class DocumentComponent implements OnInit, OnChanges {
           break;
         case constants.VIDEO_SMALL_CASE:
           this.videos.push(item);
+          break;
+        case constants.FILE_SMALL_CASE:
+          this.files.push(item);
           break;
         default:
           this.docs.push(item);
@@ -280,6 +305,18 @@ export class DocumentComponent implements OnInit, OnChanges {
       }
       return;
     }
+
+    if (docType === constants.FILE_SMALL_CASE) {
+      this.fileSliceInput += 9;
+      if (this.fileSliceInput >= this.files.entries.length) {
+        this.pageCount.emit({ pageNumber: ++this.files.currentPageIndex, primaryType: 'File' });
+        this.hideFileShowMoreBtn = false;
+      }
+      else if (this.fileSliceInput >= this.files.resultsCount) {
+        this.hideFileShowMoreBtn = true;
+      }
+      return;
+    }
   }
 
   emitData(data: IHeaderSearchCriteria): void {
@@ -292,28 +329,33 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getAssetUrl(event: any, url: string): string {
+    if(!url) return '';
     if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     }
 
     const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    this.loading = true;
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {
         if (r.status === 401) {
           localStorage.removeItem('token');
           this.router.navigate(['login']);
+          this.loading = false;
           return;
         }
         return r.blob();
       })
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
+        this.loading = false;
+        // event.target.src = new Blob(d);
       }
       ).catch(e => {
         // TODO: add toastr with message 'Invalid token, please login again'
-        console.log(e);
+          this.loading = false;
+          console.log(e);
         // if(e.contains(`'fetch' on 'Window'`)) {
-        //   
         //   this.router.navigate(['login']);
         // }
 
@@ -366,22 +408,30 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.getTags();
       this.markRecentlyViewed(file);
 
-      file.contextParameters.renditions.map(item => {
-        if (item.url.toLowerCase().includes('original')) {
-          fileRenditionUrl = item.url;
-        }
-      });
+      // file.contextParameters.renditions.map(item => {
+      //   if (item.url.toLowerCase().includes('original')) {
+      //     fileRenditionUrl = item.url;
+      //   }
+      // });
+      fileRenditionUrl = file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
     } else if(fileType === 'video') {
-      fileRenditionUrl = file.properties['file:content'].data;
+      fileRenditionUrl = file.properties['vid:transcodedVideos'][0]?.content.data || "";
+    } else if (fileType === 'file') {
+      const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
+      fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
     }
-    this.selectedFileUrl = this.getAssetUrl(null, fileRenditionUrl);
+    this.selectedFileUrl = fileType === 'image' ? this.getAssetUrl(null, fileRenditionUrl) : fileRenditionUrl;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.showTagInput = false;
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  getNuxeoPdfViewerURL = () => {
+    return `${this.baseUrl}/nuxeo/ui//vendor/pdfjs/web/viewer.html?file=`;
   }
 
   getTags() {

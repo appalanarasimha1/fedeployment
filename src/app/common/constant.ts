@@ -7,6 +7,8 @@ export const constants = {
     VIDEO_SMALL_CASE: 'video',
     PICTURE_TITLE_CASE: 'Picture',
     PICTURE_SMALL_CASE: 'picture',
+    FILE_TITLE_CASE: 'File',
+    FILE_SMALL_CASE: 'file',
 };
 
 export const localStorageVars = {

@@ -7,7 +7,9 @@
 <app-loader [show]="loading"></app-loader>
 <section class="min-height">
   <section>
-    <div *ngIf="recentlyViewed && recentlyViewed.length && !videos.entries.length && !images.entries.length && !docs.length" class="container">
+    <div
+      *ngIf="recentlyViewed && recentlyViewed.length && !videos.entries.length && !images.entries.length && !files.entries.length && !docs.length"
+      class="container">
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4 col-md-4 mb-4">
           <h2 class=" commonHeading">Recently viewed</h2>
@@ -16,32 +18,37 @@
           <p (click)="clearRecentlyViewed()" class="clear " style="color: #8E6B0B;">Clear</p>
         </div>
         <div class="col-xl-12 col-md-12">
-          
-
-          <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)"  [updateLayout]="updateMasonryLayout">
+          <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)"
+            [updateLayout]="updateMasonryLayout">
             <div ngxMasonryItem class="masonry-item" *ngFor="let file of recentlyViewed; let i = index">
-              <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt="" (click)="open(preview, file, 'image')" />
-              <div class="cardBlock newDesign pa-0" >
+              <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt=""
+                (click)="open(preview, file, 'image')" />
+              <div class="cardBlock newDesign pa-0">
                 <div [ngClass]="{'activeHover': file.isSelected}">
                   <div class="form-group-custom">
-                    <input type="checkbox" id="html{{i}}"  [checked]="file.isSelected" [(ngModel)]="file.isSelected" (change)="selectImage($event, file, i)">
+                    <input type="checkbox" id="html{{i}}" [checked]="file.isSelected" [(ngModel)]="file.isSelected"
+                      (change)="selectImage($event, file, i)">
                     <label for="html{{i}}"></label>
                   </div>
                   <div class="hover-icon-group">
-                    <div class="hover-icon star-icon" [ngClass]="{'active': file.contextParameters.favorites.isFavorite}" (click)="markFavourite(file, 'recent')"></div>
-                    <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"></div>
-                    <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
+                    <div class="hover-icon star-icon"
+                      [ngClass]="{'active': file.contextParameters.favorites.isFavorite}"
+                      (click)="markFavourite(file, 'recent')"></div>
+                    <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
+                      style="cursor: not-allowed;opacity: 0.4;"></div>
+                    <a class="hover-icon download-icon"
+                      href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
                   </div>
                   <div class="mouse-hover-bg" (click)="open(preview, file, 'image')"></div>
                 </div>
               </div>
-           </div>
+            </div>
           </ngx-masonry>
         </div>
       </div>
     </div>
     <div *ngIf="calculateNoResultScreen()" class="row">
-      <div class="col-xl-12 col-md-12 " >
+      <div class="col-xl-12 col-md-12 ">
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/binacxulor.svg" style="width: 50px;">
           <h2 class="noresult pb-3 pt-4">No recently viewed files</h2>
@@ -51,9 +58,11 @@
     </div>
   </section>
 
-  <section class="search-subpage pt-2 pb-5" >
-    <div *ngIf="!loading && !showRecentlyViewed && !videos.entries.length && !images.entries.length && !docs.length" class="row">
-      <div class="col-xl-12 col-md-12 " >
+  <section class="search-subpage pt-2 pb-5">
+    <div
+      *ngIf="!loading && !showRecentlyViewed && !videos.entries.length && !images.entries.length && !files.entries.length && !docs.length"
+      class="row">
+      <div class="col-xl-12 col-md-12 ">
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/search.svg" style="width: 50px;">
           <h2 class="noresult pb-3 pt-4">No results found</h2>
@@ -61,21 +70,26 @@
         </div>
       </div>
     </div>
-    <div *ngIf="videos.entries.length || images.entries.length || docs.length" class="container">
+    <div *ngIf="videos.entries.length || images.entries.length || docs.length || files.entries.length"
+      class="container">
       <div class="main-headingSearch flexible pb-4" style="align-items: baseline;">
         <span class="commonHeading">{{searchTerm.ecm_fulltext}}</span>
-        <span class="numberFiles">{{(videos?.resultsCount || 0) + (images?.resultsCount || 0)}} files</span>
+        <span class="numberFiles">{{(videos?.resultsCount || 0) + (images?.resultsCount || 0) + (files?.resultsCount ||
+          0)}} files</span>
       </div>
       <div class="row flexible" style="justify-content: space-between;">
         <div class="col-xl-4">
           <span><b>Sort by:</b> </span>
           <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
-           
+
             <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'All assets'}}</button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
-              <button (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem value='dc:created'>Created</button>
-              <button (click)="dropdownMenu($event); sortValue = 'Modified'" ngbDropdownItem value='dc:modified'>Modified</button>
-              <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem value='dc:lastContributor'>Last Contibutor</button>
+              <button (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem
+                value='dc:created'>Created</button>
+              <button (click)="dropdownMenu($event); sortValue = 'Modified'" ngbDropdownItem
+                value='dc:modified'>Modified</button>
+              <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem
+                value='dc:lastContributor'>Last Contibutor</button>
               <!-- <button (click)="dropdownMenu($event); sortValue = 'State'" ngbDropdownItem value='state'>State</button>
               <button (click)="dropdownMenu($event); sortValue = 'Nature'" ngbDropdownItem value='dc:nature'>Nature</button>
               <button (click)="dropdownMenu($event); sortValue = 'Coverage'" ngbDropdownItem value='dc:coverage'>Coverage</button> -->
@@ -83,11 +97,11 @@
           </div>
         </div>
         <div class="col-xl-4">
-        
+
         </div>
         <div class="col-xl-4 " style="float: right;">
-            <!-- slider -->
-            <!-- <div>
+          <!-- slider -->
+          <!-- <div>
               <input type="checkbox" id="switch" class="checkbox" />
               <label for="switch" class="toggle " >    
                 <div class="flexible" style="justify-content: space-between;display: flex;">
@@ -96,10 +110,10 @@
               </label>
             </div> -->
 
-            <!-- end -->
+          <!-- end -->
           <div id="view" class="e-btn-group flexible">
             <div>
-              <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked/>
+              <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked />
               <label class="e-btn" for="left"><img src="../../assets/images/gallery view.png"
                   style="width: 22px;"></label>
             </div>
@@ -164,23 +178,31 @@
           <div class="row">
             <div class="col-xl-12 col-md-12">
               <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)">
-                <div ngxMasonryItem class="masonry-item" *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
-                  <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" alt="{{image.properties['dc:title']}}" (click)="open(preview, image, 'image')" />
-                  <div class="cardBlock newDesign pa-0" >
+                <div ngxMasonryItem class="masonry-item"
+                  *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
+                  <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)"
+                    alt="{{image.properties['dc:title']}}" (click)="open(preview, image, 'image')" />
+                  <div class="cardBlock newDesign pa-0">
                     <div [ngClass]="{'activeHover': image.isSelected}">
                       <div class="form-group-custom">
-                        <input type="checkbox" id="html{{i}}"  [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
+                        <input type="checkbox" id="html{{i}}" [checked]="image.isSelected"
+                          [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
                         <label for="html{{i}}"></label>
                       </div>
                       <div class="hover-icon-group">
-                        <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}" (click)="markFavourite(image, false)"></div>
-                        <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"></div>
-                        <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
+                        <div class="hover-icon star-icon"
+                          [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"
+                          (click)="markFavourite(image, false)"></div>
+                        <div class="hover-icon plus-icon" placement="top"
+                          ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;">
+                        </div>
+                        <a class="hover-icon download-icon"
+                          href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
                       </div>
                       <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
                     </div>
                   </div>
-               </div>
+                </div>
               </ngx-masonry>
             </div>
           </div>
@@ -203,32 +225,41 @@
                         </div>
                       </div>
                       <div (click)="open(preview, image, 'image')" class="col-xl-6 col-md-6">
-                        <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong rounded listViewImg" style="width: 100%;border-radius: 8px !important;" alt="" />
-                       
+                        <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)"
+                          class="w-100 shadow-1-strong rounded listViewImg"
+                          style="width: 100%;border-radius: 8px !important;" alt="" />
+
                       </div>
                     </div>
                   </div>
                   <div [ngClass]="{'activeHover': image.isSelected}">
-                   
-                        <div class="form-group-custom">
-                          <input type="checkbox" id="html{{i}}" [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
-                          <label for="html{{i}}"></label>
-                        </div>
-                     
-                        <div class="hover-icon-group">
-                          <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}" (click)="markFavourite(image, false)"></div>
-                          <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"></div>
-                          <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
-                        </div>
-                        <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
-                     
+
+                    <div class="form-group-custom">
+                      <input type="checkbox" id="html{{i}}" [checked]="image.isSelected" [(ngModel)]="image.isSelected"
+                        (change)="selectImage($event, image, i)">
+                      <label for="html{{i}}"></label>
+                    </div>
+
+                    <div class="hover-icon-group">
+                      <div class="hover-icon star-icon"
+                        [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"
+                        (click)="markFavourite(image, false)"></div>
+                      <div class="hover-icon plus-icon" placement="top"
+                        ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;">
+                      </div>
+                      <a class="hover-icon download-icon"
+                        href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
+                    </div>
+                    <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
+
                   </div>
                 </div>
               </li>
             </ul>
           </div>
         </div>
-        <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')" style="text-align: center; cursor: pointer;color: #8E6B0B;">Show more</div>
+        <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')"
+          style="text-align: center; cursor: pointer;color: #8E6B0B;">Show more</div>
       </div>
       <div *ngIf="getDataLength(videos.entries, 'video')" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
@@ -236,49 +267,80 @@
           <a class="fileCount pb-4">{{videos.resultsCount}} videos</a>
         </div>
 
-        <div class="col-xl-12" *ngIf="!showListView"> <!--  *ngIf="!showListView" -->
+        <div class="col-xl-12" *ngIf="!showListView">
+          <!--  *ngIf="!showListView" -->
           <ul class="flexible videosList">
-            <li *ngFor="let v of videos.entries.slice(0, videoSliceInput)" class="">
-              <a href="{{getAssetUrl(null, v.properties['file:content'].data)}}"> 
-                <!--  (click)="open(previewVideo, v, 'video')" -->
-                <!-- href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{v.path}}" -->
+            <li *ngFor="let v of videos.entries.slice(0, videoSliceInput); let i = index" class="">
+              <a href="javascript:void(0);" (click)="open(preview, v, 'video')">
                 <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)">
               </a>
+              <div class="cardBlock newDesign pa-0">
+                <div [ngClass]="{'activeHover': v.isSelected}">
+                  <div class="form-group-custom">
+                    <input type="checkbox" id="video-{{i}}" [checked]="v.isSelected" [(ngModel)]="v.isSelected"
+                      (change)="selectImage($event, v, i)">
+                    <label for="video-{{i}}"></label>
+                  </div>
+                  <div class="hover-icon-group">
+                    <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
+                      (click)="markFavourite(v, 'recent')"></div>
+                    <div class="hover-icon plus-icon" title="Coming soon"></div>
+                    <a class="hover-icon download-icon" href="{{v?.properties['file:content']?.data || ''}}"></a>
+                  </div>
+                  <div class="mouse-hover-bg" (click)="open(preview, v, 'video')"></div>
+                </div>
+              </div>
             </li>
           </ul>
-          </div>
-          <div class="col-xl-12 col-md-12">
-            <div *ngIf="showListView" class="card-view">
-              <ul class="flexible videosList1">
-                <li *ngFor="let v of videos.entries.slice(0, videoSliceInput)">
-                  <div class="videoBlock">
-                    <div class="cardBlockContent">
-                      <div class="row">
-                        <div class="col-xl-6 col-md-6" style="position: relative;">
-                          <p>{{v.properties['dc:title']}}</p>
-                          <div class="username">
-                            <span>
-                              <img src="../../assets/images/black-user.png">
-                            </span>
-                            {{v.properties['dc:creator'].id}}
-                          </div>
+        </div>
+        <div class="col-xl-12 col-md-12">
+          <div *ngIf="showListView" class="card-view">
+            <ul class="flexible videosList1">
+              <li *ngFor="let v of videos.entries.slice(0, videoSliceInput); let i = index">
+                <div class="cardBlock" style="border-radius: 8px;">
+                  <div class="cardBlockContent">
+                    <div class="row">
+                      <div class="col-xl-6 col-md-6" style="position: relative;">
+                        <p>{{v.properties['dc:title']}}</p>
+                        <div class="username">
+                          <span>
+                            <img src="../../assets/images/black-user.png">
+                          </span>
+                          {{v.properties['dc:creator'].id}}
                         </div>
-                        <div  class="col-xl-6 col-md-6">
-                          <a href="{{getAssetUrl(null, v.properties['file:content'].data)}}">
-                            <!-- (click)="open(previewVideo, v, 'video')" -->
-                            <!-- href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{v.path}}"  -->
-                            <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong rounded listViewImg" style="width: 100%;border-radius: 8px !important;">
-                          </a>
-                        </div>
+                      </div>
+                      <div class="col-xl-6 col-md-6">
+                        <a href="javascript:void(0);" (click)="open(preview, v, 'video')">
+                          <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)"
+                            class="w-100 shadow-1-strong rounded listViewImg"
+                            style="width: 100%;border-radius: 8px !important;">
+                        </a>
                       </div>
                     </div>
                   </div>
-                </li>
-              </ul>
-            </div>
+                  <div [ngClass]="{'activeHover': v.isSelected}">
+
+                    <div class="form-group-custom">
+                      <input type="checkbox" id="video-{{i}}" [checked]="v.isSelected" [(ngModel)]="v.isSelected"
+                        (change)="selectImage($event, v, i)">
+                      <label for="video-{{i}}"></label>
+                    </div>
+
+                    <div class="hover-icon-group">
+                      <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
+                        (click)="markFavourite(v, false)"></div>
+                      <div class="hover-icon plus-icon"></div>
+                      <a class="hover-icon download-icon" href="{{v.properties['file:content'].data || ''}}"></a>
+                    </div>
+                    <div class="mouse-hover-bg" (click)="open(preview, v, 'video')"></div>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
-          <!-- TODO: video card view -->
-          <!-- <div class="col-xl-12 col-md-12">
+        </div>
+        <!-- TODO: video card view -->
+        <!-- <div class="col-xl-12 col-md-12">
             <div *ngIf="showListView" class="card-view">
               <ul class="flexible">
                 <li *ngFor="let v of videos.slice(0, videoSliceInput); let i = index">
@@ -298,26 +360,108 @@
             </div>
           </div> -->
 
-          
-          <div *ngIf="!hideVideoShowMoreBtn" (click)="showMore('video')" style="text-align: center; cursor: pointer;color: #8E6B0B;">
-            Show more</div>
+
+        <div *ngIf="!hideVideoShowMoreBtn" (click)="showMore('video')"
+          style="text-align: center; cursor: pointer;color: #8E6B0B;">
+          Show more</div>
 
       </div>
-
-      <div *ngIf="getDataLength(docs, 'docs')" class="row pt-5">
+      <div *ngIf="getDataLength(files.entries, 'file')" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
-          <p class="imgHead pb-4">Documents</p>
-          <a class="fileCount pb-4" href="#">{{docs.length}} documents</a>
+          <p class="imgHead pb-4">Files</p>
+          <a class="fileCount pb-4">{{files.resultsCount}} files</a>
         </div>
-        <div class="col-xl-12">
-          <ul class="flexible docList">
-            <li *ngFor="let doc of docs" class="">
-              <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{doc.path}}"><img
-                  src (event)="getAssetUrl($event, doc.contextParameters.thumbnail.url)"></a>
+
+        <div class="col-xl-12" *ngIf="!showListView">
+          <ul class="flexible videosList">
+            <li *ngFor="let v of files.entries.slice(0, fileSliceInput); let i = index" class="">
+              <a href="javascript:void(0);" (click)="open(preview, v, 'file')">
+                <img style="max-width: 250px;" src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)">
+              </a>
+              <div class="cardBlock newDesign pa-0">
+                <div [ngClass]="{'activeHover': v.isSelected}">
+                  <div class="form-group-custom">
+                    <input type="checkbox" id="file-{{i}}" [checked]="v.isSelected" [(ngModel)]="v.isSelected"
+                      (change)="selectImage($event, v, i)">
+                    <label for="file-{{i}}"></label>
+                  </div>
+                  <div class="hover-icon-group">
+                    <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
+                      (click)="markFavourite(v, 'recent')"></div>
+                    <div class="hover-icon plus-icon" title="Coming soon"></div>
+                    <a class="hover-icon download-icon" href="{{v.properties['file:content'].data || ''}}"></a>
+                  </div>
+                  <div class="mouse-hover-bg" (click)="open(preview, v, 'file')"></div>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
+        <div class="col-xl-12 col-md-12">
+          <div *ngIf="showListView" class="card-view">
+            <ul class="flexible videosList1">
+              <li *ngFor="let v of files.entries.slice(0, fileSliceInput); let i = index">
+                <div class="cardBlock" style="border-radius: 8px;">
+                  <div class="cardBlockContent">
+                    <div class="row">
+                      <div class="col-xl-6 col-md-6" style="position: relative;">
+                        <p>{{v.properties['dc:title']}}</p>
+                        <div class="username">
+                          <span>
+                            <img src="../../assets/images/black-user.png">
+                          </span>
+                          {{v.properties['dc:creator'].id}}
+                        </div>
+                      </div>
+                      <div class="col-xl-6 col-md-6">
+                        <a href="javascript:void(0);" (click)="open(preview, v, 'file')">
+                          <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)"
+                            class="w-100 shadow-1-strong rounded listViewImg"
+                            style="width: 100%;border-radius: 8px !important; max-width: 250px;">
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div [ngClass]="{'activeHover': v.isSelected}">
 
+                    <div class="form-group-custom">
+                      <input type="checkbox" id="file-{{i}}" [checked]="v.isSelected" [(ngModel)]="v.isSelected"
+                        (change)="selectImage($event, v, i)">
+                      <label for="file-{{i}}"></label>
+                    </div>
+
+                    <div class="hover-icon-group">
+                      <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
+                        (click)="markFavourite(v, false)"></div>
+                      <div class="hover-icon plus-icon"></div>
+                      <a class="hover-icon download-icon" href="{{v.properties['file:content'].data || ''}}"></a>
+                    </div>
+                    <div class="mouse-hover-bg" (click)="open(preview, v, 'file')"></div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="!hideFileShowMoreBtn" (click)="showMore('file')"
+          style="text-align: center; cursor: pointer;color: #8E6B0B;">
+          Show more</div>
+
+        <div *ngIf="getDataLength(docs, 'docs')" class="row pt-5">
+          <div class="col-xl-12 flexible" style="justify-content: space-between;">
+            <p class="imgHead pb-4">Documents</p>
+            <a class="fileCount pb-4" href="#">{{docs.length}} documents</a>
+          </div>
+          <div class="col-xl-12">
+            <ul class="flexible docList">
+              <li *ngFor="let doc of docs" class="">
+                <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{doc.path}}"><img src
+                    (event)="getAssetUrl($event, doc.contextParameters.thumbnail.url)"></a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
       </div>
     </div>
   </section>
@@ -342,10 +486,10 @@
             <ul class="flexible">
               <li class="customtooltip">
                 <a placement="bottom" ngbTooltip="Favourite">
-                  <img *ngIf="selectedFile.contextParameters.favorites.isFavorite" (click)="markFavourite(selectedFile, false)"
-                    src="../../assets/images/yellow-star.svg">
-                  <img *ngIf="!selectedFile.contextParameters.favorites.isFavorite" (click)="markFavourite(selectedFile, true)"
-                    src="../../assets/images/star.svg">
+                  <img *ngIf="selectedFile.contextParameters.favorites.isFavorite"
+                    (click)="markFavourite(selectedFile, false)" src="../../assets/images/yellow-star.svg">
+                  <img *ngIf="!selectedFile.contextParameters.favorites.isFavorite"
+                    (click)="markFavourite(selectedFile, true)" src="../../assets/images/star.svg">
                 </a>
               </li>
               <li class="">
@@ -354,18 +498,23 @@
                 </a>
               </li>
               <li class="customtooltip">
-                <a placement="bottom" ngbTooltip="Download">
+                <a *ngIf="selectedFile.type === 'Picture'" placement="bottom" ngbTooltip="Download">
 
                   <div ngbDropdown class="d-inline-block downloadDrop">
                     <a class="" id="dropdownBasic1" placement="bottom-left" ngbDropdownToggle><img
                         src="../../assets/images/downlload-arrow-black.svg"></a>
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                      <a *ngFor="let view of selectedFile.properties['picture:views']" href="{{getAssetUrl(null, view.content.data)}}"
-                        style="color: white" ngbDropdownItem>{{view.width}} * {{view.height}}
+                      <a *ngFor="let view of selectedFile.properties['picture:views']"
+                        href="{{getAssetUrl(null, view.content.data) || ''}}" style="color: white"
+                        ngbDropdownItem>{{view.width}} * {{view.height}}
                         <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                       </a>
                     </div>
                   </div>
+                </a>
+                <a *ngIf="selectedFile.type !== 'Picture'" placement="bottom" ngbTooltip="Download">
+                  <a href="{{getAssetUrl(null, selectedFile?.properties['file:content']?.data) || ''}}"
+                    placement="bottom-left"><img src="../../assets/images/black-downloadicon.svg"></a>
                 </a>
               </li>
             </ul>
@@ -373,7 +522,16 @@
         </div>
       </div>
       <div class="popupTabSec">
-        <img src="{{selectedFileUrl}}" style="width: 100%;">
+        <img *ngIf="selectedFile.type === 'Picture'" src="{{selectedFileUrl}}" style="width: 100%;">
+        <div *ngIf="selectedFile.type === 'Video'">
+          <video controls style="width: 100%; max-height: 600px;" src (error)="getAssetUrl($event, selectedFileUrl)">
+            <!-- <source src="{{selectedFileUrl}}"> -->
+            <!-- <source> -->
+          </video>
+        </div>
+        <div *ngIf="selectedFile.type === 'File'">
+          <iframe style="width: 100%; height: 600px;" [src]="selectedFileUrl | safe"></iframe>
+        </div>
         <div class="myTabContentMain" [ngClass]="{'hide': !showShadow}">
           <div class="tab-content myTabContent" id="myTabContent">
             <!-- use class myTabContent -->
@@ -401,8 +559,10 @@
                   </li>
                 </ul>
                 <form (submit)="saveComment(commentText)">
-                  <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment" placeholder="Write a comment here">
-                  <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg" class="enterComment" style="cursor: pointer;">
+                  <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
+                    placeholder="Write a comment here">
+                  <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
+                    class="enterComment" style="cursor: pointer;">
                 </form>
               </div>
             </div>
@@ -412,68 +572,74 @@
                   <div class="col-xl-6 col-md-6">
                     <ul>
                       <li>
-                        Created {{toDateString(selectedFile.properties['dc:created'])}} by
-                        <span style="color: #EBC03F;">{{selectedFile.properties['dc:creator'].id}}</span>
+                        Created {{toDateString(selectedFile?.properties['dc:created'])}} by
+                        <span style="color: #EBC03F;">{{selectedFile?.properties['dc:creator']?.id}}</span>
                       </li>
 
-                      <li>State <br><span style="opacity: 0.7;">{{selectedFile.state}}</span></li>
+                      <li>State <br><span style="opacity: 0.7;">{{selectedFile?.state}}</span></li>
 
                       <li>Version</li>
 
-                      <li>Last Modified <br><span style="opacity: 0.7;">{{toDateString(selectedFile.lastModified)}}</span></li>
+                      <li>Last Modified <br><span
+                          style="opacity: 0.7;">{{toDateString(selectedFile?.lastModified)}}</span></li>
 
                       <li>Contributors <br><span
-                          style="color: #EBC03F;">{{getNames(selectedFile.properties['dc:contributors'])}}</span>
+                          style="color: #EBC03F;">{{getNames(selectedFile?.properties['dc:contributors'])}}</span>
                       </li>
 
                       <li>
-                        Dimensions <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].width}} x
-                        {{selectedFile.properties['picture:info'].height}}</span>
+                        Dimensions <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info']?.width}} x
+                          {{selectedFile.properties['picture:info']?.height}}</span>
                       </li>
 
                       <li>
-                        Format <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].format}}</span>
+                        Format <br><span
+                          style="opacity: 0.7;">{{selectedFile.properties['picture:info']?.format}}</span>
                       </li>
                       <li>
-                        Colour Profile <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].colorSpace}}</span>
+                        Colour Profile <br><span
+                          style="opacity: 0.7;">{{selectedFile.properties['picture:info']?.colorSpace}}</span>
                       </li>
                       <li>
-                        Bit Depth per Channel <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].depth}}</span>
+                        Bit Depth per Channel <br><span
+                          style="opacity: 0.7;">{{selectedFile.properties['picture:info']?.depth}}</span>
                       </li>
                       <li>
-                        Weight <br><span style="opacity: 0.7;">{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</span>
+                        Weight <br><span
+
+                        style="opacity: 0.7;">{{getDownloadFileEstimation(selectedFile?.properties['file:content']?.length)}}</span>
                       </li>
                     </ul>
                   </div>
                   <div class="col-xl-6 col-md-6">
                     <ul>
                       <li>
-                        Description <br><span style="opacity: 0.7;">{{selectedFile.properties['dc:description'] ||
-                        selectedFile.properties['imd:image_description']}}</span>
+                        Description <br><span style="opacity: 0.7;">{{selectedFile?.properties['dc:description'] ||
+                          selectedFile?.properties['imd:image_description']}}</span>
                       </li>
                       <li>EXIF
                         <br>
-                        Date <span style="opacity: 0.7;">{{selectedFile.properties['dc:created']}}</span>
+                        Date <span style="opacity: 0.7;">{{selectedFile?.properties['dc:created']}}</span>
                         <br>
-                        Orientation <span style="opacity: 0.7;">{{selectedFile.properties['imd:orientation']}}</span>
+                        Orientation <span style="opacity: 0.7;">{{selectedFile?.properties['imd:orientation']}}</span>
                         <br>
-                        Aperture <span style="opacity: 0.7;">{{selectedFile.properties['imd:fnumber']}}</span>
+                        Aperture <span style="opacity: 0.7;">{{selectedFile?.properties['imd:fnumber']}}</span>
                         <br>
-                        Exposure <span style="opacity: 0.7;">{{selectedFile.properties['imd:exposure_time']}}</span>
+                        Exposure <span style="opacity: 0.7;">{{selectedFile?.properties['imd:exposure_time']}}</span>
                         <br>
-                        ISO <span style="opacity: 0.7;">{{selectedFile.properties['imd:iso_speed_ratings']}}</span>
+                        ISO <span style="opacity: 0.7;">{{selectedFile?.properties['imd:iso_speed_ratings']}}</span>
                         <br>
-                        Focal Length <span style="opacity: 0.7;">{{selectedFile.properties['imd:focalLength']}}</span>
+                        Focal Length <span style="opacity: 0.7;">{{selectedFile?.properties['imd:focalLength']}}</span>
                       </li>
                       <li>IPTC
                         <br>
-                        Copyright <span style="opacity: 0.7;">{{selectedFile.properties['imd:copyright']}}</span>
+                        Copyright <span style="opacity: 0.7;">{{selectedFile?.properties['imd:copyright']}}</span>
                         <br>
-                        Rights <span style="opacity: 0.7;">{{selectedFile.properties['dc:rights']}}</span>
+                        Rights <span style="opacity: 0.7;">{{selectedFile?.properties['dc:rights']}}</span>
                         <br>
-                        Source <span style="opacity: 0.7;">{{selectedFile.properties['picture:source']}}</span>
+                        Source <span style="opacity: 0.7;">{{selectedFile?.properties['picture:source']}}</span>
                         <br>
-                        Description <span style="opacity: 0.7;">{{selectedFile.properties['dc:description']}}</span>
+                        Description <span style="opacity: 0.7;">{{selectedFile?.properties['dc:description']}}</span>
                       </li>
                     </ul>
                   </div>
@@ -486,27 +652,28 @@
 
       <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset;">
         <div class="mb-4" style="width: 80%">
-          <span class="main-heading">{{selectedFile.properties['dc:title']}}</span>
+          <span class="main-heading">{{selectedFile?.properties['dc:title']}}</span>
           <span class="yellowBtn">Internal Use ©</span>
-          <h5 class="pt-3 weightSize" >{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</h5>
+          <h5 class="pt-3 weightSize">{{getDownloadFileEstimation(selectedFile?.properties['file:content']?.length)}}</h5>
         </div>
-        
+
         <div class="flexible" style="align-items: unset;justify-content: end;width: 20%;">
-          <ul class="nav nav-tabs iconsList iconsTab"  id="myTab" role="tablist">
-            <li class="nav-item customtooltip" role="presentation"  >
-              <a class="nav-link "   id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline" 
-                (click)="openInfo('timeline')" [ngClass]="{'active': activeTabs['timeline']}" href="#timeline" role="tab" aria-controls="home"
-                aria-selected="true"><img src="../../assets/images/clock.svg"></a>
+          <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
+            <li class="nav-item customtooltip" role="presentation">
+              <a class="nav-link " id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
+                (click)="openInfo('timeline')" [ngClass]="{'active': activeTabs['timeline']}" href="#timeline"
+                role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg"></a>
 
             </li>
-            <li class="nav-item customtooltip" role="presentation" >
-              <a class="nav-link "  id="profile-tab"  data-bs-toggle="tab" placement="bottom" ngbTooltip="Comments"
-                (click)="openInfo('comments')" [ngClass]="{'active': activeTabs['comments']}" href="#profile" role="tab" aria-controls="profile"
-                aria-selected="false"><img src="../../assets/images/Comments.svg"></a>
+            <li class="nav-item customtooltip" role="presentation">
+              <a class="nav-link " id="profile-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Comments"
+                (click)="openInfo('comments')" [ngClass]="{'active': activeTabs['comments']}" href="#profile" role="tab"
+                aria-controls="profile" aria-selected="false"><img src="../../assets/images/Comments.svg"></a>
             </li>
-            <li class="nav-item customtooltip" role="presentation" >
-              <a class="nav-link "  id="contact-tab"  data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
-                (click)="openInfo('info')" [ngClass]="{'active': activeTabs['info']}" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
+            <li class="nav-item customtooltip" role="presentation">
+              <a class="nav-link " id="contact-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
+                (click)="openInfo('info')" [ngClass]="{'active': activeTabs['info']}" href="#contact" role="tab"
+                aria-controls="contact" aria-selected="false">
                 <img src="../../assets/images/Info.svg"></a>
             </li>
           </ul>
@@ -519,13 +686,19 @@
                       src="../../assets/images/threedots.svg" style="height: 18px;"></a>
                   <div ngbDropdownMenu aria-labelledby="dropdownBasic2" class="dropdownBasic2">
                     <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Share</a>
-                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Publish file</a>
-                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Stop notifications</a>
-                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Add to clipboard</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Publish
+                      file</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Stop
+                      notifications</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Add to
+                      clipboard</a>
                     <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Export</a>
-                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Start process</a>
-                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Replace file</a>
-                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Delete file</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Start
+                      process</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Replace
+                      file</a>
+                    <a ngbDropdownItem placement="bottom" ngbTooltip="This function will be available soon">Delete
+                      file</a>
                   </div>
                 </div>
               </a>
@@ -536,10 +709,11 @@
         <div class="search-tags  pb-5">
           <ul class="flexible">
             <li *ngFor="let tag of tags; let i = index">
-              <a style="cursor: pointer;" >{{tag}}</a>
+              <a style="cursor: pointer;">{{tag}}</a>
             </li>
             <li>
-              <img *ngIf="!showTagInput" src="../../assets/images/add-circle.svg" (click)="showTagInput=true" style="margin-left: 6px; width: 32px;">
+              <img *ngIf="!showTagInput" src="../../assets/images/add-circle.svg" (click)="showTagInput=true"
+                style="margin-left: 6px; width: 32px;">
               <form *ngIf="showTagInput" (submit)="addTag(inputTag)" style="margin-left: 6px;">
                 <input class="tag-input" type="text" [(ngModel)]="inputTag" name="tag" placeholder="Add new tag" />
               </form>
@@ -561,11 +735,15 @@
         <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
       </div> -->
       <div class="col-md-6">
-        <img src="../../assets/images/download-all-as-zip.svg" placement="top" ngbTooltip="This function will be available soon" alt="" class="footer-icons" style="    cursor: not-allowed;opacity: 0.4;">
-        <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;">
+        <img src="../../assets/images/download-all-as-zip.svg" placement="top"
+          ngbTooltip="This function will be available soon" alt="" class="footer-icons"
+          style="    cursor: not-allowed;opacity: 0.4;">
+        <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top"
+          ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;">
         <!-- <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to clipboard" style="cursor: not-allowed;opacity: 0.4;"> -->
         <!-- <img src="../../assets/images/upload-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
-        <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;width: 20px;">
+        <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" placement="top"
+          ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;width: 20px;">
       </div>
     </div>
   </div>

@@ -12,13 +12,16 @@ import { NgxMasonryModule } from 'ngx-masonry';
 // import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { HttpInterceptorService } from '../services/http-interceptor.service';
 // import { NuxeoService } from '../services/nuxeo.service';
-import { CarouselModule  } from 'ngx-owl-carousel-o'; 
+import { CarouselModule  } from 'ngx-owl-carousel-o';
+import { SafePipe } from '../shared/safe.pipe';
+
 @NgModule({
   declarations: [
     SearchComponent,
     SideDrawerComponent,
     SubHeaderComponent,
-    DocumentComponent
+    DocumentComponent,
+    SafePipe
   ],
   imports: [
     // HttpClientModule,

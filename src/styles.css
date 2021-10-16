@@ -3652,3 +3652,12 @@ img:not([src]) {
     position: absolute;
     right: -29px !important;
 }
+
+
+.modal {
+  z-index: 9999 !important;
+}
+
+.modal-backdrop {
+  z-index: 9999 !important;
+}
