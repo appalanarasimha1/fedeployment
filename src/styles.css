@@ -209,7 +209,7 @@ h1, h2, h3, h4, h5, h6, p {
   margin: 2px 0px;
 }
 .multiselect-dropdown .dropdown-btn .selected-item{
-  max-width: 94px !important;
+  max-width: 100% !important;
   font-size: 13px !important;
   height: 24px !important;
 }

@@ -399,9 +399,10 @@ export class SearchComponent implements OnInit {
         // } else {
         queryParams['system_primaryType_agg'] = [];
         // }
-      } else {
-        queryParams['system_primaryType_agg'] = [];
       }
+      // else {
+      //   queryParams['system_primaryType_agg'] = [];
+      // }
     }
 
     if (queryParams['video_duration_agg']) {

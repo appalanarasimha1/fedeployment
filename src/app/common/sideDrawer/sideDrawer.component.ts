@@ -1,6 +1,11 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges } from '@angular/core';
 import { IHeaderSearchCriteria } from './interface';
-import { constants } from '../constant';
+import { 
+  constants,
+  assetDimension,
+  reverseAssetDimension,
+  videoDurationDictionary,
+  reverseVideoDurationDictionary } from '../constant';
 import { NuxeoService } from '../../services/nuxeo.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { HttpClient } from '@angular/common/http';
@@ -142,15 +147,15 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     });
 
     data.asset_width_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
-      this.assetWidthData.push({ key: item.key, id: index, docCount: item.docCount });
+      this.assetWidthData.push({ key: assetDimension[item.key], id: index, docCount: item.docCount });
     });
 
     data.asset_height_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
-      this.assetHeightData.push({ key: item.key, id: index, docCount: item.docCount });
+      this.assetHeightData.push({ key: assetDimension[item.key], id: index, docCount: item.docCount });
     });
 
     data.video_duration_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
-      this.videoSizeData.push({ key: item.key, id: index, docCount: item.docCount });
+      this.videoSizeData.push({ key: videoDurationDictionary[item.key], id: index, docCount: item.docCount });
     });
 
     data.sectors.buckets.map((item: { key: string }, index: number) => {
@@ -335,10 +340,10 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     if (Array.isArray(data)) {
       this.searchCriteria['asset_width_agg'] = [];
       data.map((item: { key: string }) => {
-        this.searchCriteria['asset_width_agg'].push(item.key);
+        this.searchCriteria['asset_width_agg'].push(reverseAssetDimension[item.key]);
       });
     } else {
-      this.searchCriteria['asset_width_agg'].push(data.key);
+      this.searchCriteria['asset_width_agg'].push(reverseAssetDimension[data.key]);
     }
     this.emitData(this.searchCriteria);
     return;
@@ -350,7 +355,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       this.emitData(this.searchCriteria);
       return;
     }
-    const mimeType = data.key;
+    const mimeType = reverseAssetDimension[data.key];
     const index = this.searchCriteria['asset_width_agg'].indexOf(mimeType);
     this.searchCriteria['asset_width_agg'].splice(index, 1);
     this.emitData(this.searchCriteria);
@@ -361,10 +366,10 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     if (Array.isArray(data)) {
       this.searchCriteria['asset_height_agg'] = [];
       data.map((item: { key: string }) => {
-        this.searchCriteria['asset_height_agg'].push(item.key);
+        this.searchCriteria['asset_height_agg'].push(reverseAssetDimension[item.key]);
       });
     } else {
-      this.searchCriteria['asset_height_agg'].push(data.key);
+      this.searchCriteria['asset_height_agg'].push(reverseAssetDimension[data.key]);
     }
     this.emitData(this.searchCriteria);
     return;
@@ -376,7 +381,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       this.emitData(this.searchCriteria);
       return;
     }
-    const mimeType = data.key;
+    const mimeType = reverseAssetDimension[data.key];
     const index = this.searchCriteria['asset_height_agg'].indexOf(mimeType);
     this.searchCriteria['asset_height_agg'].splice(index, 1);
     this.emitData(this.searchCriteria);
@@ -387,10 +392,10 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     if (Array.isArray(data)) {
       this.searchCriteria['video_duration_agg'] = [];
       data.map((item: { key: string }) => {
-        this.searchCriteria['video_duration_agg'].push(item.key);
+        this.searchCriteria['video_duration_agg'].push(reverseVideoDurationDictionary[item.key]);
       });
     } else {
-      this.searchCriteria['video_duration_agg'].push(data.key);
+      this.searchCriteria['video_duration_agg'].push(reverseVideoDurationDictionary[data.key]);
     }
     this.emitData(this.searchCriteria);
     return;
@@ -402,7 +407,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       this.emitData(this.searchCriteria);
       return;
     }
-    const mimeType = data.key;
+    const mimeType = reverseVideoDurationDictionary[data.key];
     const index = this.searchCriteria['video_duration_agg'].indexOf(mimeType);
     this.searchCriteria['video_duration_agg'].splice(index, 1);
     this.emitData(this.searchCriteria);
