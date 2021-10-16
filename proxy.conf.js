@@ -4,7 +4,7 @@ const PROXY_CONFIG = [
             "/nuxeo/",
             "/sockjs-node/",
         ],
-        "target": "https://10.101.21.31:8080",
+        "target": "https://10.101.21.31:8090",
         "secure": false,
         "changeOrigin": true
     }];

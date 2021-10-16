@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  nuxeoServiceBaseUrl: 'http://34.219.179.33:8080',
-  redirectBaseUrl: 'http://34.219.179.33:8080/', // for redirecting to old nuxeo ui for video playback
-  apiServiceBaseUrl: 'http://34.219.179.33:8080',
+  nuxeoServiceBaseUrl: 'https://10.101.21.31:8090',
+  redirectBaseUrl: 'https://10.101.21.31:8090/', // for redirecting to old nuxeo ui for video playback
+  apiServiceBaseUrl: 'https://10.101.21.31:8090',
   apiVersion: '/nuxeo/api/v1'
 };
