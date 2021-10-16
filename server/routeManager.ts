@@ -17,7 +17,7 @@ const allowedExt = [
 
 export class RouteManager {
   private readonly app: any;
-  private targetUrl = process.env.NODE_ENV === 'production' ? 'https://10.101.21.31:8090' : 'https://10.101.21.31:8080'; //https://tomcat-groundx.neom.com:8087
+  private targetUrl = process.env.NODE_ENV === 'production' ? 'https://devtomcat-groundx.neom.com' : 'https://10.101.21.31:8080'; //https://tomcat-groundx.neom.com:8087
 
   constructor(app: any) {
     this.app = app;
