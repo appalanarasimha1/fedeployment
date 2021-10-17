@@ -202,7 +202,7 @@
                     <h2>Favourites</h2>
                     <ul  class="set-width portfolio-list" style="list-style: none;margin: unset; padding: 0; align-items: unset;">
                         <li *ngFor="let fav of favourites; let i = index">
-                            <a>
+                            <a style="cursor: pointer;">
                                 <img src (error)="getAssetUrl($event, fav.contextParameters.thumbnail.url)" class="w-100 shadow-1-strong rounded"
                                 alt="" (click)="open(preview, fav, 'image')" >
                             </a>
@@ -298,7 +298,7 @@
                 <!-- <img src="../../assets/images/User.svg" style="width: 50px;"> -->
                 <img src="../../assets/images/black-user.png" style="width: 50px;
                 margin-right: 10px;">
-                <span>{{selectedFile.properties['dc:creator'].id}}</span>
+                <span>{{selectedFile?.properties['dc:creator']?.id}}</span>
               </div>
               <div class="col-xl-4 col-md-4">
                 <ul class="flexible">
@@ -374,68 +374,68 @@
                       <div class="col-xl-6 col-md-6">
                         <ul>
                           <li>
-                            Created {{toDateString(selectedFile.properties['dc:created'])}} by
-                            <span style="color: #EBC03F;">{{selectedFile.properties['dc:creator'].id}}</span>
+                            Created {{toDateString(selectedFile?.properties['dc:created'])}} by
+                            <span style="color: #EBC03F;">{{selectedFile?.properties['dc:creator']?.id}}</span>
                           </li>
     
-                          <li>State <br><span style="opacity: 0.7;">{{selectedFile.state}}</span></li>
+                          <li>State <br><span style="opacity: 0.7;">{{selectedFile?.state}}</span></li>
     
                           <li>Version</li>
     
-                          <li>Last Modified <br><span style="opacity: 0.7;">{{toDateString(selectedFile.lastModified)}}</span></li>
+                          <li>Last Modified <br><span style="opacity: 0.7;">{{toDateString(selectedFile?.lastModified)}}</span></li>
     
                           <li>Contributors <br><span
-                              style="color: #EBC03F;">{{getNames(selectedFile.properties['dc:contributors'])}}</span>
+                              style="color: #EBC03F;">{{getNames(selectedFile?.properties['dc:contributors'])}}</span>
                           </li>
     
                           <li>
-                            Dimensions <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].width}} x
-                            {{selectedFile.properties['picture:info'].height}}</span>
+                            Dimensions <br><span style="opacity: 0.7;">{{selectedFile?.properties['picture:info']?.width}} x
+                            {{selectedFile?.properties['picture:info']?.height}}</span>
                           </li>
     
                           <li>
-                            Format <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].format}}</span>
+                            Format <br><span style="opacity: 0.7;">{{selectedFile?.properties['picture:info']?.format}}</span>
                           </li>
                           <li>
-                            Colour Profile <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].colorSpace}}</span>
+                            Colour Profile <br><span style="opacity: 0.7;">{{selectedFile?.properties['picture:info']?.colorSpace}}</span>
                           </li>
                           <li>
-                            Bit Depth per Channel <br><span style="opacity: 0.7;">{{selectedFile.properties['picture:info'].depth}}</span>
+                            Bit Depth per Channel <br><span style="opacity: 0.7;">{{selectedFile?.properties['picture:info']?.depth}}</span>
                           </li>
                           <li>
-                            Weight <br><span style="opacity: 0.7;">{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</span>
+                            Weight <br><span style="opacity: 0.7;">{{getDownloadFileEstimation(selectedFile?.properties['file:content']?.length)}}</span>
                           </li>
                         </ul>
                       </div>
                       <div class="col-xl-6 col-md-6">
                         <ul>
                           <li>
-                            Description <br><span style="opacity: 0.7;">{{selectedFile.properties['dc:description'] ||
-                            selectedFile.properties['imd:image_description']}}</span>
+                            Description <br><span style="opacity: 0.7;">{{selectedFile?.properties['dc:description'] ||
+                            selectedFile?.properties['imd:image_description']}}</span>
                           </li>
                           <li>EXIF
                             <br>
-                            Date <span style="opacity: 0.7;">{{selectedFile.properties['dc:created']}}</span>
+                            Date <span style="opacity: 0.7;">{{selectedFile?.properties['dc:created']}}</span>
                             <br>
-                            Orientation <span style="opacity: 0.7;">{{selectedFile.properties['imd:orientation']}}</span>
+                            Orientation <span style="opacity: 0.7;">{{selectedFile?.properties['imd:orientation']}}</span>
                             <br>
-                            Aperture <span style="opacity: 0.7;">{{selectedFile.properties['imd:fnumber']}}</span>
+                            Aperture <span style="opacity: 0.7;">{{selectedFile?.properties['imd:fnumber']}}</span>
                             <br>
-                            Exposure <span style="opacity: 0.7;">{{selectedFile.properties['imd:exposure_time']}}</span>
+                            Exposure <span style="opacity: 0.7;">{{selectedFile?.properties['imd:exposure_time']}}</span>
                             <br>
-                            ISO <span style="opacity: 0.7;">{{selectedFile.properties['imd:iso_speed_ratings']}}</span>
+                            ISO <span style="opacity: 0.7;">{{selectedFile?.properties['imd:iso_speed_ratings']}}</span>
                             <br>
-                            Focal Length <span style="opacity: 0.7;">{{selectedFile.properties['imd:focalLength']}}</span>
+                            Focal Length <span style="opacity: 0.7;">{{selectedFile?.properties['imd:focalLength']}}</span>
                           </li>
                           <li>IPTC
                             <br>
-                            Copyright <span style="opacity: 0.7;">{{selectedFile.properties['imd:copyright']}}</span>
+                            Copyright <span style="opacity: 0.7;">{{selectedFile?.properties['imd:copyright']}}</span>
                             <br>
-                            Rights <span style="opacity: 0.7;">{{selectedFile.properties['dc:rights']}}</span>
+                            Rights <span style="opacity: 0.7;">{{selectedFile?.properties['dc:rights']}}</span>
                             <br>
-                            Source <span style="opacity: 0.7;">{{selectedFile.properties['picture:source']}}</span>
+                            Source <span style="opacity: 0.7;">{{selectedFile?.properties['picture:source']}}</span>
                             <br>
-                            Description <span style="opacity: 0.7;">{{selectedFile.properties['dc:description']}}</span>
+                            Description <span style="opacity: 0.7;">{{selectedFile?.properties['dc:description']}}</span>
                           </li>
                         </ul>
                       </div>
@@ -448,9 +448,9 @@
     
           <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset;">
             <div class="mb-4" style="width: 80%">
-              <span class="main-heading">{{selectedFile.properties['dc:title']}}</span>
+              <span class="main-heading">{{selectedFile?.properties['dc:title']}}</span>
               <span class="yellowBtn">Internal Use ©</span>
-              <h5 class="pt-3 weightSize" >{{getDownloadFileEstimation(selectedFile.properties['file:content'].length)}}</h5>
+              <h5 class="pt-3 weightSize" >{{getDownloadFileEstimation(selectedFile?.properties['file:content']?.length)}}</h5>
             </div>
             
             <div class="flexible" style="align-items: unset;justify-content: end;width: 20%;">

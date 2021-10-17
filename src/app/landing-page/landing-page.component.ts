@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { apiRoutes } from '../common/config';
-import { localStorageVars } from '../common/constant';
+import { constants, localStorageVars } from '../common/constant';
 import { ApiService } from '../services/api.service';
 import { NuxeoService } from '../services/nuxeo.service';
 import { SharedService } from '../services/shared.service';
@@ -161,10 +161,10 @@ export class LandingPageComponent implements OnInit {
 
   getEdited() {
     const queryParams = { currentPageIndex: 0, offset: 10, pageSize: 16, queryParams: '/', system_primaryType_agg: `["Picture"]` };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch-task': 'actors' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch.document': 'properties', properties: '*', 'fetch-task': 'actors' };
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_RECENT_EDITED, { queryParams, headers }).get()
       .then((response) => {
-        this.recentEdited = response.entries;
+        this.recentEdited = response.entries.filter(entry => entry.type.toLowerCase() === constants.PICTURE_SMALL_CASE);
         setTimeout(() => {
           this.loading = false;
         }, 0);
