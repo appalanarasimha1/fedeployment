@@ -278,7 +278,16 @@ export class SearchComponent implements OnInit {
         if (isShowMore) this.images.entries = new Object(this.images.entries.concat(data.entries)); else this.images = data;
         break;
       case constants.FILE_SMALL_CASE:
-        if (isShowMore) this.files.entries = new Object(this.files.entries.concat(data.entries)); else this.files = data;
+        if (isShowMore) {
+          this.files.entries = new Object(this.files.entries.concat(data.entries.map(item => {
+            if(item.type.toLowerCase() === constants.FILE_SMALL_CASE) {
+              return item;
+            }
+          })));
+         } else {
+            this.files = data;
+            this.files.entries = data.entries.filter(item => item.type.toLowerCase() === constants.FILE_SMALL_CASE);
+         }
         break;
     }
     return;

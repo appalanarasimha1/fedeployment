@@ -95,6 +95,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   inputTag: string;
   showTagInput = false;
   loading: boolean;
+  modalLoading = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -433,6 +434,23 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.showTagInput = false;
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  onFileProgress(event: any) {
+    if(!event.loaded) {
+    this.modalLoading = true;
+    }
+    if(((event.loaded / event.total) * 100) > 1) {
+      this.modalLoading = false;
+    }
+  }
+
+  afterFileLoad(event: any) {
+    // this.modalLoading = false;
+  }
+
+  pageInitialized(event: any) {
+    // this.modalLoading = true;
   }
 
   getNuxeoPdfViewerURL = () => {
