@@ -329,7 +329,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.display = mode;
   }
 
-  getAssetUrl(event: any, url: string): string {
+  getAssetUrl(event: any, url: string, type?: string): string {
     if(!url) return '';
     if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
@@ -420,10 +420,13 @@ export class DocumentComponent implements OnInit, OnChanges {
       fileRenditionUrl = file.properties['vid:transcodedVideos'][0]?.content.data || "";
     } else if (fileType === 'file') {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
-      fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
-      // fileRenditionUrl = file.properties['file:content'].data;
+      // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
+      fileRenditionUrl = file.properties['file:content'].data;
     }
     this.selectedFileUrl = fileType === 'image' ? this.getAssetUrl(null, fileRenditionUrl) : fileRenditionUrl;
+    // if(fileType === 'file') {
+    //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
+    // }
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

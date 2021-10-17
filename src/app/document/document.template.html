@@ -376,6 +376,7 @@
           <ul class="flexible videosList">
             <li *ngFor="let v of files.entries.slice(0, fileSliceInput); let i = index" class="">
               <a href="javascript:void(0);" (click)="open(preview, v, 'file')">
+                <!--  (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)" src="../../assets/images/Pin_16.png"-->
                 <img style="max-width: 250px;" src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)">
               </a>
               <div class="cardBlock newDesign pa-0">
@@ -447,7 +448,7 @@
           style="text-align: center; cursor: pointer;color: #8E6B0B;">
           Show more</div>
 
-        <div *ngIf="getDataLength(docs, 'docs')" class="row pt-5">
+        <!-- <div *ngIf="getDataLength(docs, 'docs')" class="row pt-5">
           <div class="col-xl-12 flexible" style="justify-content: space-between;">
             <p class="imgHead pb-4">Documents</p>
             <a class="fileCount pb-4" href="#">{{docs.length}} documents</a>
@@ -455,13 +456,14 @@
           <div class="col-xl-12">
             <ul class="flexible docList">
               <li *ngFor="let doc of docs" class="">
-                <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{doc.path}}"><img src
-                    (event)="getAssetUrl($event, doc.contextParameters.thumbnail.url)"></a>
+                <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{doc.path}}">
+                  <img src="../../assets/images/Pin_16.png">
+                </a>
               </li>
             </ul>
           </div>
 
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -531,7 +533,13 @@
         </div>
         <div *ngIf="selectedFile.type === 'File'">
           <!-- [src]="getAssetUrl(null, selectedFileUrl) | safe" -->
-          <iframe style="width: 100%; height: 600px;" [src]="getAssetUrl(null, selectedFileUrl) | safe"></iframe>
+          <!-- <iframe style="width: 100%; height: 600px;" [src]="getAssetUrl(null, selectedFileUrl) | safe"></iframe> -->
+          <pdf-viewer [src]="getAssetUrl(null, selectedFileUrl)"
+              [render-text]="true"
+              style="display: block; width: 100%; height: 600px;"
+              [original-size]="false"
+              [autoresize]="true"
+  ></pdf-viewer>
           <!-- <div ()="getAssetUrl($event, selectedFileUrl) | safe"></div> -->
         </div>
         <div class="myTabContentMain" [ngClass]="{'hide': !showShadow}">

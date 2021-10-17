@@ -14,6 +14,7 @@ import { NgxMasonryModule } from 'ngx-masonry';
 // import { NuxeoService } from '../services/nuxeo.service';
 import { CarouselModule  } from 'ngx-owl-carousel-o';
 import { SafePipe } from '../shared/safe.pipe';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { SafePipe } from '../shared/safe.pipe';
     SearchRoutingModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxMasonryModule,
-    CarouselModule 
+    CarouselModule,
+    PdfViewerModule
   ],
   // providers: [NuxeoService, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}]
 })
