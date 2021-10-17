@@ -47,6 +47,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   hideVideoShowMoreBtn = true;
   hideFileShowMoreBtn = true;
   redirectBaseUrl = environment.redirectBaseUrl;
+  // baseUrl = environment.apiServiceBaseUrl;
   showListView = false;
   closeResult = '';
   selectedFile: any; // TODO: add interface, search result entires
@@ -420,6 +421,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     } else if (fileType === 'file') {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
       fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
+      // fileRenditionUrl = file.properties['file:content'].data;
     }
     this.selectedFileUrl = fileType === 'image' ? this.getAssetUrl(null, fileRenditionUrl) : fileRenditionUrl;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {

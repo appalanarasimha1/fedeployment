@@ -389,7 +389,7 @@
                     <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
                       (click)="markFavourite(v, 'recent')"></div>
                     <div class="hover-icon plus-icon" title="Coming soon"></div>
-                    <a class="hover-icon download-icon" href="{{v.properties['file:content'].data || ''}}"></a>
+                    <a class="hover-icon download-icon" href="{{v?.properties['file:content']?.data}}"></a>
                   </div>
                   <div class="mouse-hover-bg" (click)="open(preview, v, 'file')"></div>
                 </div>
@@ -434,7 +434,7 @@
                       <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
                         (click)="markFavourite(v, false)"></div>
                       <div class="hover-icon plus-icon"></div>
-                      <a class="hover-icon download-icon" href="{{v.properties['file:content'].data || ''}}"></a>
+                      <a class="hover-icon download-icon" href="{{v?.properties['file:content']?.data}}"></a>
                     </div>
                     <div class="mouse-hover-bg" (click)="open(preview, v, 'file')"></div>
                   </div>
@@ -530,7 +530,9 @@
           </video>
         </div>
         <div *ngIf="selectedFile.type === 'File'">
+          <!-- [src]="getAssetUrl(null, selectedFileUrl) | safe" -->
           <iframe style="width: 100%; height: 600px;" [src]="getAssetUrl(null, selectedFileUrl) | safe"></iframe>
+          <!-- <div ()="getAssetUrl($event, selectedFileUrl) | safe"></div> -->
         </div>
         <div class="myTabContentMain" [ngClass]="{'hide': !showShadow}">
           <div class="tab-content myTabContent" id="myTabContent">
