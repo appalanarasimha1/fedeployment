@@ -469,7 +469,6 @@
   </section>
 
   <ng-template #preview let-modal class="imgPopUpTab">
-    <!-- <app-loader [show]="modalLoading"></app-loader> -->
     <div class="modal-header">
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <!-- <span aria-hidden="true">&times;</span> -->
@@ -525,6 +524,8 @@
         </div>
       </div>
       <div class="popupTabSec">
+
+        <app-loader-small [show]="modalLoading"></app-loader-small>
         <img *ngIf="selectedFile.type === 'Picture'" src="{{selectedFileUrl}}" style="width: 100%;">
         <div *ngIf="selectedFile.type === 'Video'">
           <video controls style="width: 100%; max-height: 600px;" src (error)="getAssetUrl($event, selectedFileUrl)">
