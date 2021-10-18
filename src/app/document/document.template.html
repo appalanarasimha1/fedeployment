@@ -377,7 +377,7 @@
             <li *ngFor="let v of files.entries.slice(0, fileSliceInput); let i = index" class="">
               <a href="javascript:void(0);" (click)="open(preview, v, 'file')">
                 <!--  (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)" src="../../assets/images/Pin_16.png"-->
-                <img style="max-width: 250px;" src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)">
+                <img  src="../../assets/images/pdf.png">
               </a>
               <div class="cardBlock newDesign pa-0">
                 <div [ngClass]="{'activeHover': v.isSelected}">
