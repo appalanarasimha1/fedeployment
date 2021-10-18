@@ -119,12 +119,12 @@ font-weight: 600;
   margin-bottom: 15px;
   width: 31%;
 }
-/* .videosList li a{
+.videosList li a.videoIconn{
   position: relative;
   display: block;
   transition: 0.4s;
 }
-.videosList li a:before{
+.videosList li a.videoIconn:before{
   content: '';
   background-image: url(~/../../../../assets/images/button-play.svg);
   height: 60px;
@@ -139,10 +139,10 @@ font-weight: 600;
   background-size: contain;
   transition: 0.4s;
 } 
-.videosList1 li a{
+.videosList1 li a.videoIconn{
   position: relative;
 } 
-.videosList1 li a:before{
+.videosList1 li a.videoIconn:before{
   content: '';
   background-image: url(~/../../../../assets/images/button-play.svg);
   height: 46px;
@@ -157,12 +157,12 @@ font-weight: 600;
   background-size: contain;
   transition: 0.4s;
 }
-.videosList li:hover a::before{
+.videosList li:hover a.videoIconn::before{
   transform: scale(1.2);
 } 
-.videosList1 li a:hover::before{
+.videosList1 li a.videoIconn:hover::before{
   transform: scale(1.2);
-} */
+}
 .fileCount{
   font-size: 14px;
 line-height: 22px;

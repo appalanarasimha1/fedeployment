@@ -271,7 +271,7 @@
           <!--  *ngIf="!showListView" -->
           <ul class="flexible videosList">
             <li *ngFor="let v of videos.entries.slice(0, videoSliceInput); let i = index" class="">
-              <a href="javascript:void(0);" (click)="open(preview, v, 'video')">
+              <a href="javascript:void(0);" (click)="open(preview, v, 'video')" class="videoIconn">
                 <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)">
               </a>
               <div class="cardBlock newDesign pa-0">
