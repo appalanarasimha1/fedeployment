@@ -527,11 +527,11 @@
 
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <img *ngIf="selectedFile.type === 'Picture'" src="{{selectedFileUrl}}" style="width: 100%;">
-        <div *ngIf="selectedFile.type === 'Video'">
+        <div *ngIf="selectedFile.type === 'Video'" style="max-height: 600;position: relative;">
           <video controls style="width: 100%; max-height: 600px;" src (error)="getAssetUrl($event, selectedFileUrl)">
             <!-- <source src="{{selectedFileUrl}}"> -->
             <!-- <source> -->
-          </video>
+          </video> 
         </div>
         <div *ngIf="selectedFile.type === 'File'">
           <!-- [src]="getAssetUrl(null, selectedFileUrl) | safe" -->
