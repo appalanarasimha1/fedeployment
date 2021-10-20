@@ -46,7 +46,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   hideImageShowMoreBtn = true;
   hideVideoShowMoreBtn = true;
   hideFileShowMoreBtn = true;
-  redirectBaseUrl = environment.redirectBaseUrl;
+  // redirectBaseUrl = environment.redirectBaseUrl;
   // baseUrl = environment.apiServiceBaseUrl;
   showListView = false;
   closeResult = '';
