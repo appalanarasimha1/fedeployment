@@ -73,7 +73,7 @@ var allowedExt = [
 ];
 var RouteManager = /** @class */ (function () {
     function RouteManager(app) {
-        this.targetUrl = process.env.NODE_ENV === 'demo' ? 'https://10.101.21.58:8089' : 'https://10.101.21.63:8087'; //https://tomcat-groundx.neom.com:8087
+        this.targetUrl = process.env.NODE_ENV === 'production' ? 'https://10.101.21.63:8087' : 'https://10.101.21.31:8090';
         this.app = app;
         this.mountRoutes(app);
     }

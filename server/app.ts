@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import { RouteManager } from './routeManager';
 import { Server } from 'socket.io';
 import fs from 'fs';
+import https from 'https';
 
 export class App {
   private readonly app: any;
@@ -21,7 +22,7 @@ export class App {
       key: fs.readFileSync(__dirname + '/../../../certs/new-ui.key'),
       cert: fs.readFileSync(__dirname + '/../../../certs/new-ui.crt')
     };
-    const server = require('https').Server(httpsOptions, this.app);
+    const server = https.createServer(httpsOptions, this.app);
     this.app['io'] = new Server(server, {
       cors: {
         origin: '*',
