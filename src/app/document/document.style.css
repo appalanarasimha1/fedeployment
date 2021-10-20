@@ -1311,3 +1311,7 @@ color: #ACACAC;
 .masonry-item.masonryOpenDrawer{
   /* width: calc(33.33% - 10px) !important; */
 }
+.pdfWhiteBlock{
+  background-color: #fff;
+  padding: 20px;
+}
