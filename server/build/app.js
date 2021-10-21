@@ -9,8 +9,8 @@ var cors_1 = __importDefault(require("cors"));
 var express_1 = __importDefault(require("express"));
 var morgan_1 = __importDefault(require("morgan"));
 var routeManager_1 = require("./routeManager");
-var socket_io_1 = require("socket.io");
 var fs_1 = __importDefault(require("fs"));
+var https_1 = __importDefault(require("https"));
 var App = /** @class */ (function () {
     function App() {
         this.app = (0, express_1.default)();
@@ -24,17 +24,17 @@ var App = /** @class */ (function () {
             key: fs_1.default.readFileSync(__dirname + '/../../../certs/new-ui.key'),
             cert: fs_1.default.readFileSync(__dirname + '/../../../certs/new-ui.crt')
         };
-        var server = require('https').Server(httpsOptions, this.app);
-        this.app['io'] = new socket_io_1.Server(server, {
-            cors: {
-                origin: '*',
-            }
-        });
-        var socketPort = process.env.SOCKET_PORT;
-        server.listen(socketPort);
-        this.app.io.on('connection', function (socket) {
-            console.log('Client connected, socketID = ', socket.id);
-        });
+        var server = https_1.default.createServer(httpsOptions, this.app);
+        // this.app['io'] = new Server(server, {
+        //   cors: {
+        //     origin: '*',
+        //   }
+        // });
+        // const socketPort = process.env.SOCKET_PORT;
+        // server.listen(socketPort);
+        // this.app.io.on('connection', (socket: any) => {
+        //   console.log('Client connected, socketID = ', socket.id);
+        // });
         // Define application routes.
         new routeManager_1.RouteManager(this.app);
     }
