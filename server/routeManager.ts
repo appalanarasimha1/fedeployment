@@ -17,7 +17,7 @@ const allowedExt = [
 
 export class RouteManager {
   private readonly app: any;
-  private targetUrl = process.env.NODE_ENV === 'production' ? 'https://10.101.21.63:8087' : 'https://dev2groundx.neom.com';
+  private targetUrl = process.env.NODE_ENV === 'production' ? 'https://10.101.21.63:8087' : 'https://10.101.21.31:8090';
 
   constructor(app: any) {
     this.app = app;
