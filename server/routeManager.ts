@@ -18,10 +18,34 @@ const allowedExt = [
 
 export class RouteManager {
   private readonly app: any;
-  private targetUrl = process.env.NODE_ENV === 'production' ? 'https://10.101.21.63:8087' : 'https://10.101.21.31:8090';
+  private targetUrl: string;
+  // = process.env.NODE_ENV === 'production' ? 'https://10.101.21.63:8087' : 'https://10.101.21.31:8090';
 
   constructor(app: any) {
     this.app = app;
+    
+    switch (process.env.NODE_ENV) {
+      case 'dev':
+        this.targetUrl = 'http://34.219.179.33:8080';
+        // this.port = 8080;
+        // this.protocol = '';
+        break;
+      case 'demo':
+        this.targetUrl = 'https://10.101.21.31:8080';
+        // this.port = 8080;
+        // this.protocol = 'https:';
+        break;
+      case 'production':
+        this.targetUrl = 'https://10.101.21.63:8087';
+        // this.port = 8087;
+        // this.protocol = 'https:';
+        break;
+      default:
+        this.targetUrl = 'http://34.219.179.33:8087';
+        // this.port = 8080;
+        // this.protocol = 'http:';
+        break;
+    }
     this.mountRoutes(app);
   }
 
