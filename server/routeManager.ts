@@ -53,33 +53,28 @@ export class RouteManager {
    * Function to mount all the application routes under express application.
    */
   private mountRoutes(app: any): void {
-    // Other routes.
-    // this.app.use('/api/v1/user', UserController.Instance.Router);
-    // this.app.use('/api/v1/device-management', checkApiAuth, DeviceManagementController.Instance.Router);
-    // this.app.use('/api/v1/alerts-management', checkApiAuth, AlertsManagementController.Instance.Router);
-    // initialiseServices(app);
 
-    const options = {
-      target: this.targetUrl, // target host
-      changeOrigin: true, // needed for virtual hosted sites
-      ws: true, // proxy websockets
-      secure: false, // if you want to verify the certificate
+    // const options = {
+    //   target: this.targetUrl, // target host
+    //   changeOrigin: true, // needed for virtual hosted sites
+    //   ws: true, // proxy websockets
+    //   secure: false, // if you want to verify the certificate
 
-      // onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
-      //   // const response = responseBuffer.toString('utf8'); // convert buffer to string
-      //   try {
-      //     // console.log('res = ', proxyRes.statusCode);
-      //     if (res.statusCode === 401) {
-      //       res.statusCode = 302;
-      //       proxyRes.headers['location'] = 'http://uatgroundx.neom.com/login';
-      //     }
-      //     return responseBuffer;
-      //   } catch (e) {
-      //     console.error('error = ', e);
-      //     return responseBuffer;
-      //   }
-      // })
-    };
+    //   onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
+    //     // const response = responseBuffer.toString('utf8'); // convert buffer to string
+    //     try {
+    //       // console.log('res = ', proxyRes.statusCode);
+    //       if (res.statusCode === 401) {
+    //         res.statusCode = 302;
+    //         proxyRes.headers['location'] = 'http://uatgroundx.neom.com/login';
+    //       }
+    //       return responseBuffer;
+    //     } catch (e) {
+    //       console.error('error = ', e);
+    //       return responseBuffer;
+    //     }
+    //   })
+    // };
 
     this.app.use('/nuxeo/', createProxyMiddleware(
       {
@@ -87,7 +82,6 @@ export class RouteManager {
         changeOrigin: true,
         secure: false,
         logLevel: 'debug',
-
       }
     ));
     // parse application/x-www-form-urlencoded
@@ -103,18 +97,6 @@ export class RouteManager {
         res.sendFile(path.resolve(__dirname + '/../../' + '/dist/index.html'));
       }
     });
-
-    // function checkApiAuth(req: express.Request | any, res: express.Response, next: express.NextFunction) {
-    //   const token: string = req.headers['access-token'];
-    //   if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-
-    //   const secret = process.env.SECRET;
-    //   jwt.verify(token, secret, function (err, decoded) {
-    //     if (err) return res.status(402).send({ auth: false, message: 'Failed to authenticate token.' });
-
-    //     next();
-    //   });
-    // }
 
   }
 }
