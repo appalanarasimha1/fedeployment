@@ -8,9 +8,7 @@ export const environment = {
   // redirectBaseUrl: 'https://10.101.21.31:8090/', // for redirecting to old nuxeo ui for video playback
   // apiServiceBaseUrl: 'https://10.101.21.31:8090', //
   apiVersion: '/nuxeo/api/v1',
-  nuxeoServiceBaseUrl: 'https://dev2groundx.neom.com', // dns
-  // redirectBaseUrl: 'https://10.101.21.31:8090',
-  apiServiceBaseUrl: 'https://dev2groundx.neom.com',
+  apiServiceBaseUrl: 'http://localhost:8090', //https://dev2groundx.neom.com/
 };
 
 /*

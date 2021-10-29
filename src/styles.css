@@ -1,6 +1,7 @@
 /* @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700"); */
 @import url('./../node_modules/bootstrap/dist/css/bootstrap.min.css');
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 /* @import '~ngx-bar-rating/themes/br-default-theme.css';
 @import '~ngx-bar-rating/themes/br-horizontal-theme.css';
@@ -209,7 +210,7 @@ h1, h2, h3, h4, h5, h6, p {
   margin: 2px 0px;
 }
 .multiselect-dropdown .dropdown-btn .selected-item{
-  max-width: 100% !important;
+  max-width: 94px !important;
   font-size: 13px !important;
   height: 24px !important;
 }
@@ -3661,3 +3662,5 @@ img:not([src]) {
 .modal-backdrop {
   z-index: 9999 !important;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

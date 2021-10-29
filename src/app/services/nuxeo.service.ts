@@ -22,7 +22,7 @@ export class NuxeoService {
   // ---
 
   nuxeoClient: any;
-  private baseUrl: string = environment.nuxeoServiceBaseUrl;
+  private baseUrl: string = environment.apiServiceBaseUrl;
 
   // Ici no définit le header d'appel de l'API
   private defaultHeader = {
