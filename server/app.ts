@@ -12,10 +12,10 @@ export class App {
 
   constructor() {
     this.app = express();
-    // parse application/x-www-form-urlencoded
-    this.app.use(bodyParser.urlencoded({ extended: false }));
-    // parse application/json
-    this.app.use(bodyParser.json());
+    // // parse application/x-www-form-urlencoded
+    // this.app.use(bodyParser.urlencoded({ extended: false }));
+    // // parse application/json
+    // this.app.use(bodyParser.json());
     this.app.use(morgan('dev'));
     this.app.use(cors());
     const httpsOptions = {
