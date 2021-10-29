@@ -37,7 +37,12 @@
     "nuxeo": "^3.18.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "@angular/cdk": "9.2.4",
+    "@angular/material": "9.2.4",
+    "@ng-select/ng-select": "^7.3.0",
+    "font-awesome": "^4.7.0",
+    "ngx-dropzone": "^3.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.15",
