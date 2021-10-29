@@ -18,6 +18,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { CookieService } from 'ngx-cookie-service';
 import { FooterComponent } from './common/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoaderSmallComponent } from './common/loader-small/loader-small.component';
 
 
 
