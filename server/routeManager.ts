@@ -85,7 +85,7 @@ export class RouteManager {
       {
         target: this.targetUrl,
         changeOrigin: true,
-        // secure: false,
+        secure: false,
         logLevel: 'debug',
 
       }
