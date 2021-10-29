@@ -8,6 +8,7 @@ import { ApiService } from '../services/api.service';
 import { SharedService } from '../services/shared.service';
 import { DataService } from '../services/data.service';
 import { LoaderSmallComponent } from '../common/loader-small/loader-small.component';
+import {UploadModalModule} from '../upload-modal/upload-modal.module'
 // import { OwlModule  } from 'ngx-owl-carousel-o';
 
 @NgModule({
@@ -24,7 +25,8 @@ import { LoaderSmallComponent } from '../common/loader-small/loader-small.compon
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    UploadModalModule
   ],
   exports: [
     CommonModule,

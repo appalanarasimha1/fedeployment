@@ -1,0 +1,255 @@
+<div class="upload-modal">
+  <div class="upload-modal-step">{{ stepLabel }}</div>
+  <ngx-dropzone *ngIf="step === 1" (change)="onSelect($event)" class="drag-drop">
+    
+      <ngx-dropzone-label >
+        <div class="flexible" style="height: 230px;justify-content: center;">
+        <div class="upload-label">
+         <img src="../../assets/images/cloud-upload.png" style="width: 40px;margin: auto;">
+          <span><b>Drag and drop assets to upload</b><br>
+            or click to select files to upload</span>
+        </div>
+      </div>
+      </ngx-dropzone-label>
+   
+    
+    <ul class="flexible upload-prevoew">
+      <li  *ngFor="let f of filesMap | keyvalue">
+        <ngx-dropzone-preview class="upload-file-preview" [removable]="true" (removed)="onRemove(f)">
+          <ngx-dropzone-label class="flexible" style="margin: unset;">
+            <div style="width: 80%;text-align: left;">
+              <p class="imgLabel pb-4">{{ f.value.name }}</p>
+              <span class="imgSize">1.12mb</span>
+            </div>
+            <div style="width: 20%; text-align: center;">
+              <img src="../../assets/images/BtnTickbox.png">
+            </div>
+        </ngx-dropzone-label>
+      </ngx-dropzone-preview>
+    
+      </li>
+    </ul>
+  </ngx-dropzone>
+  <div *ngIf="step === 2" class="publish-assets">
+    
+      <ul class="flexible upload-prevoew">
+        <li  style="margin: unset;">
+          <div class="assets-selected"  >
+            <div class="flexible" style="margin: unset;">
+              <div style="width: 80%;text-align: left;">
+                <p class="assets-selected-text pb-4">{{ getSelectedAssetsTitle() }}</p>
+                <span class="imgSize">1.12mb</span>
+              </div>
+              <div style="width: 20%; text-align: center;">
+                <img src="../../assets/images/BtnTickbox.png">
+              </div>
+          </div>
+        </div>
+        </li>
+      </ul>
+   
+    <div class="select-workspace">
+      <div class="select-workspace-menu row">
+        <div class="col-xl-3 col-md-3">
+          <div class="menu-title">Workspace</div>
+        </div>
+        <div class="col-xl-9 col-md-9 flexible">
+          <div>{{ selectedWorkspace.title || "Please select workspace!" }}</div>
+          <div class="select-workspace-menu-btn" (click)="showWorkspaceList()">Change workspace</div>
+        </div>
+        
+      </div>
+      <div *ngIf="showWsList" class="workspace-list">
+        <div *ngFor="let ws of workspaceList">
+          <div
+            class="workspace-title"
+            [class.ws-selected]="selectedWorkspace.id === ws.id"
+            (click)="selectWorkspace(ws)"
+          >
+            {{ ws.title }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedWorkspace.id" class="upload-form">
+      <div class="row upload-form-input">
+        <div class="col-xl-3 col-md-3">
+          <label for="title">Title or Event Name</label>
+          <div id='custom-select-status' class='hidden-visually' aria-live="polite"></div>
+        </div>
+        <div class="col-xl-9 col-md-9 flexible">
+          <div class="custom-select" id="myCustomSelect">
+            <input type="text" id="title" value="{{folderToAdd || selectedFolder?.title}}" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css">
+            <span class="custom-select-icons">
+              <i class="fa fa-caret-down"></i>
+            </span>
+            <ul *ngIf="showCustomDropdown" class="custom-select-options" id="custom-select-list">
+              <li *ngFor="let folder of dropdownFolderList" (click)="selectFolder(folder)" class="styled">{{folder.title}}</li>
+              <li *ngIf="dropdownFolderList.length === 0"><span style="font-style: italic;">-No folder found-</span></li>
+              <li class="styled">
+                <div class="add-new-option">
+                  <div class="flexible">
+                    <mat-icon>add</mat-icon>
+                    <input type="text" id="titleAddNew" #folderToAdd placeholder="Create new folder" class="add-new-input">
+                  </div>
+                  
+                  <mat-icon class="add-new-btn" (click)="addNewFolder(folderToAdd)">check</mat-icon>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <mat-icon class="info-icon" matTooltip="Select an existing folder or create a new folder">info</mat-icon>
+        </div>
+      </div>
+
+      <div class="row upload-form-input">
+        <div class="col-xl-3 col-md-3">
+          <label for="date">Associated Date</label>
+        </div>
+        <div class="col-xl-9 col-md-9 flexible">
+          <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;">
+          <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </div>
+      </div>
+      <div class="upload-form-input row">
+        <div class="col-xl-3 col-md-3">
+          <label for="confidentiality">Confidentiality</label>
+        </div>
+        <div class="col-xl-9 col-md-9 flexible">
+          <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value)" id="confidentiality">
+            <option hidden disabled selected value></option>
+            <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
+          </select>
+          <!-- <button type="button" class=" mr-2" placement="left" ngbTooltip="Confidentiality can't be changed once the asset is published.">
+            <img src="../../assets/images/Info.png">
+          </button> -->
+          <!-- <button type="button" class="btn btn-outline-secondary mr-2" placement="left" ngbTooltip="Tooltip on left">
+            Tooltip on left
+          </button> -->
+          <!-- <mat-icon class="info-icon" matTooltip="Confidentiality can't be changed once the asset is published.">info</mat-icon> -->
+        </div>
+      </div>
+      <div class="upload-form-input row">
+        <div class="col-xl-3 col-md-3">
+          <label for="access">Access</label>
+        </div>
+        <div class="col-xl-9 col-md-3 flexible">
+          <select name="access" (change)="onSelectAccess($event.target.value)" id="access">
+            <option hidden disabled selected value></option>
+            <option [selected]="access === c.value" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
+          </select>
+          <mat-icon class="info-icon" matTooltip="Acess rights can't be changed once the asset is published.">info</mat-icon>
+        </div> 
+      </div>
+
+      <div *ngIf="checkShowUserDropdown()" class="upload-form-input row">
+        <div class="col-xl-3 col-md-3">
+          <label for="user">Users</label>
+        </div>
+        <div class="col-xl-9 col-md-9">
+          <ng-select
+          [items]="userList$ | async"
+          bindLabel="id"
+          bindValue="id"
+          [multiple]="true"
+          [hideSelected]="true"
+          [trackByFn]="trackByFn"
+          [minTermLength]="2"
+          [loading]="userLoading"
+          typeToSearchText="Search users"
+          [typeahead]="userInput$"
+          [(ngModel)]="selectedUsers">
+          <ng-template ng-option-tmp let-item="item">
+            {{item.id}} ({{item.fullname}})
+          </ng-template>
+        </ng-select>
+        </div>
+      </div>
+      <div class="upload-form-input row">
+        <div class="col-xl-3 col-md-3">
+          <label for="title">Event Description (optional)</label>
+        </div>
+        <div class="col-xl-9 col-md-9">
+          <textarea [(ngModel)]="description" id="title" name="Title"></textarea>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div *ngIf="step === 3">
+    <div>Please review the classifications of the uploaded files.</div>
+    <div class="publish-summary">
+      <span>{{ getSelectedAssetsTitle() }}</span>
+      <div class="publish-summary-location">
+        <mat-icon>folder</mat-icon>
+        <span>{{ folderToAdd || selectedFolder?.title }}</span>
+        <mat-icon>calendar_today</mat-icon>
+        <span>{{ showLocaleDate(associatedDate) }}</span>
+      </div>
+    </div>
+    <div class="publish-file-preview-groups">
+      <div *ngFor="let file of filesMap | keyvalue" class="publish-file-preview">
+        <div class="publish-file-preview-img">
+          <img [src]="imageSrc[file.key] || getPreviewSrc(file.value, file.key)" alt="preview" class="preview-img"
+            onerror="this.src='./assets/images/preview-placeholder.png';"/>
+          <span>{{ file.value.name }}</span>
+        </div>
+        <div class="publish-file-preview-access">
+          <div class="upload-form-input">
+            <label for="confidentiality">Confidentiality</label>
+            <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality">
+              <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
+            </select>
+          </div>
+          <div class="upload-form-input">
+            <label for="access">Access</label>
+            <select name="access" (change)="onSelectAccess($event.target.value, file.key)" id="access">
+              <option [selected]="access === c.value" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
+            </select>
+          </div>
+          <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input" style="display: flex;">
+            <label for="user">Users</label>
+            <ng-select
+              [items]="userList$ | async"
+              bindLabel="id"
+              bindValue="id"
+              [multiple]="true"
+              [hideSelected]="true"
+              [trackByFn]="trackByFn"
+              [minTermLength]="2"
+              [loading]="userLoading"
+              typeToSearchText="Search users"
+              [typeahead]="userInput$"
+              [(ngModel)]="customUsersMap[file.key]">
+              <ng-template ng-option-tmp let-item="item">
+                {{item.id}} ({{item.fullname}})
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="step === 4">
+    <div class="finish-screen">
+      <mat-icon>upload</mat-icon>
+      <span>Your assets have been successfully published on Ground X.</span>
+      <div class="destination-folder">
+        <img src="./assets/images/folder-img.png" alt="folder" />
+        <span>{{ folderToAdd || selectedFolder?.title }}</span>
+      </div>
+      <div (click)="closeModal()" class="close-modal">
+        <mat-icon>close</mat-icon>
+        Close
+      </div>
+    </div>
+  </div>
+  <div class="button-groups" *ngIf="step !== 4">
+    <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+    <div class="progress-btns">
+      <button class="back-btn" *ngIf="step > 1" (click)="toPreviousStep()">Back</button>
+      <button class="upload-btn" [disabled]="checkButtonDisabled()" (click)="toNextStep()">{{ buttonLabel }}</button>
+    </div>
+  </div>
+</div>

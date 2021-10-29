@@ -1,5 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { UploadModalComponent } from './upload-modal/upload-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ export class AppComponent implements OnInit{
   title = 'groundx';
   showHeader = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public matDialog: MatDialog) {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         // TODO: will break if we have another url that contains /user.
@@ -30,5 +32,17 @@ export class AppComponent implements OnInit{
     // if(tab.toLowerCase() === 'search') {
     //   this.showHeader =
     // }
+  }
+
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "700px";
+    dialogConfig.maxHeight = "900px"
+    dialogConfig.width = "650px";
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }
 }

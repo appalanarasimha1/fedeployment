@@ -23,9 +23,9 @@ export class ApiService {
   }
 
   get(urlAddress: string, options?: any) {
-    options = options || {};
+    options = options ? Object.assign(options, { headers: this.headers}) : { headers: this.headers};
     return this.http
-      .get<any>(SERVER_URL + apiVersion1 + urlAddress)
+      .get<any>(SERVER_URL + apiVersion1 + urlAddress, options)
       .pipe(map(data => data));
   }
 
@@ -37,21 +37,21 @@ export class ApiService {
   }
 
   put(urlAddress: string, payload: any, options?: any) {
-    options = options || {};
+    options = options || { headers: this.headers };
     return this.http
       .put<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
       .pipe(map(data => data));
   }
 
   delete(urlAddress: string, options?: any) {
-    options = options || {};
+    options = options || { headers: this.headers };
     return this.http
       .delete<any>(SERVER_URL + apiVersion1 + urlAddress)
       .pipe(map(data => data));
   }
 
   streamPost(urlAddress: string, payload: any, options?: any) {
-    options = options || {};
+    options = options || { headers: this.headers };
     return this.http
       .post<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
       .pipe(map(data => {

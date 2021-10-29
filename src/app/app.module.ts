@@ -19,6 +19,10 @@ import { CookieService } from 'ngx-cookie-service';
 import { FooterComponent } from './common/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoaderSmallComponent } from './common/loader-small/loader-small.component';
+import { UploadModalModule } from './upload-modal/upload-modal.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -37,6 +41,10 @@ import { LoaderSmallComponent } from './common/loader-small/loader-small.compone
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatIconModule,
+    UploadModalModule
   
   ],
   providers: [

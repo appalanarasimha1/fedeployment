@@ -11,5 +11,9 @@ export const apiRoutes = {
     FETCH_COMMENTS: '/id/[assetId]/@comment/',
     SAVE_COMMENT: '/id/[assetId]/@comment/',
     USER_PROFILE: '/user/',
-    ADD_TAG: '/automation/Services.TagDocument'
+    ADD_TAG: '/automation/Services.TagDocument',
+    UPLOAD: '/upload',
+    ADVANCE_DOC_PP: '/search/pp/advanced_document_content/execute',
+    SEARCH_USER: '/user/search',
+    ADD_PERMISSION: '/automation/Document.AddPermission'
 };
