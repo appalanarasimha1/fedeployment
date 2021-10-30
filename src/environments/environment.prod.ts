@@ -6,8 +6,6 @@ export const environment = {
   // apiVersion: '/nuxeo/api/v1'
 
   production: true,
-  nuxeoServiceBaseUrl: 'https://uatgroundx.neom.com',
-  // redirectBaseUrl: 'https://10.101.21.63:8087',
   apiServiceBaseUrl: 'https://uatgroundx.neom.com', // for post requests fav, unfav, comment, tag, fetch.fav
   apiVersion: '/nuxeo/api/v1'
 };
