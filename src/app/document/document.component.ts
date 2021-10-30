@@ -90,7 +90,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   // }
   // };
   showRecentlyViewed = true;
-  baseUrl = environment.nuxeoServiceBaseUrl;
+  baseUrl = environment.apiServiceBaseUrl;
   tags = [];
   inputTag: string;
   showTagInput = false;
