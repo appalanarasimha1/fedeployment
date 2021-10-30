@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-// import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +14,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './services/http-interceptor.service';
 import { NuxeoService } from './services/nuxeo.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-import { CookieService } from 'ngx-cookie-service';
+// import { CookieService } from 'ngx-cookie-service';
 import { FooterComponent } from './common/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoaderSmallComponent } from './common/loader-small/loader-small.component';
@@ -23,8 +22,6 @@ import { UploadModalModule } from './upload-modal/upload-modal.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-
-
 
 @NgModule({
   declarations: [
@@ -45,10 +42,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatDialogModule,
     MatIconModule,
     UploadModalModule
-  
+
   ],
   providers: [
-    CookieService,
+    // CookieService,
     NuxeoService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ],

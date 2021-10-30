@@ -8,6 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
 import { UploadModalComponent } from "./upload-modal.component";
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
   declarations: [UploadModalComponent],
@@ -19,7 +20,8 @@ import { UploadModalComponent } from "./upload-modal.component";
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgSelectModule
+    NgSelectModule,
+    SharedModule
   ],
 })
 export class UploadModalModule {}

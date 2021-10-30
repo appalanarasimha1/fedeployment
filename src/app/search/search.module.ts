@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SearchRoutingModule } from './search-routing.module';
@@ -17,6 +17,16 @@ import { SafePipe } from '../shared/safe.pipe';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
+  
+  imports: [
+    // HttpClientModule,
+    NgxMasonryModule,
+    SharedModule,
+    SearchRoutingModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    CarouselModule,
+    PdfViewerModule
+  ],
   declarations: [
     SearchComponent,
     SideDrawerComponent,
@@ -24,15 +34,10 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     DocumentComponent,
     SafePipe
   ],
-  imports: [
-    // HttpClientModule,
-    SharedModule,
-    SearchRoutingModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    NgxMasonryModule,
-    CarouselModule,
-    PdfViewerModule
-  ],
+  schemas: [
+      CUSTOM_ELEMENTS_SCHEMA,
+      NO_ERRORS_SCHEMA
+    ]
   // providers: [NuxeoService, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}]
 })
 export class SearchModule { }

@@ -90,7 +90,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   // }
   // };
   showRecentlyViewed = true;
-  baseUrl = environment.apiServiceBaseUrl;
+  baseUrl = environment.nuxeoServiceBaseUrl;
   tags = [];
   inputTag: string;
   showTagInput = false;
@@ -562,6 +562,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getDownloadFileEstimation(data: any) {
+    if(!data) return;
     return `${(data / 1024) > 1024 ? ((data / 1024) / 1024).toFixed(2) + ' MB' : (data / 1024).toFixed(2) + ' KB'}`;
   }
 

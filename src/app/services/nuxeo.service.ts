@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import Nuxeo from 'nuxeo';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { CookieService } from 'ngx-cookie-service';
+// import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class NuxeoService {
 
@@ -22,7 +22,7 @@ export class NuxeoService {
   // ---
 
   nuxeoClient: any;
-  private baseUrl: string = environment.apiServiceBaseUrl;
+  private baseUrl: string = environment.nuxeoServiceBaseUrl;
 
   // Ici no définit le header d'appel de l'API
   private defaultHeader = {
@@ -40,7 +40,7 @@ export class NuxeoService {
     private router: Router,
     private http: HttpClient,
     @Inject(DOCUMENT) private document: Document,
-    private cookie: CookieService
+    // private cookie: CookieService
   ) {
     const token = localStorage.getItem('token');
     if (!this.isAuthenticated()) {
@@ -70,8 +70,8 @@ export class NuxeoService {
   }
 
   isAuthenticated(): boolean {
-    const token = this.cookie.get('X-Authentication-Token');
-    const sessionId = this.cookie.get('JSESSIONID');
+    // const token = this.cookie.get('X-Authentication-Token');
+    // const sessionId = this.cookie.get('JSESSIONID');
     if (this.nuxeoClient && localStorage.getItem('token')) {
       return true;
     } else {
@@ -87,7 +87,7 @@ export class NuxeoService {
         // this.router.navigate(['login']);
       });
 
-    this.cookie.deleteAll();
+    // this.cookie.deleteAll();
     localStorage.removeItem('token');
     // Document.cookie = "";
     this.nuxeoClient = null;

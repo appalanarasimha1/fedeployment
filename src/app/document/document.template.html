@@ -685,7 +685,7 @@
         <div class="mb-4" style="width: 78%;">
           <span class="main-heading">{{selectedFile?.properties['dc:title']}}</span>
           <span class="yellowBtn">Internal Use ©</span>
-          <h5 class="pt-3 weightSize">{{getDownloadFileEstimation(selectedFile?.properties['file:content']?.length)}}</h5>
+          <h5 class="pt-3 weightSize" >{{getDownloadFileEstimation(selectedFile?.properties['file:content']?.length || null)}}</h5>
         </div>
 
         <div class="flexible" style="align-items: unset;justify-content: end;width: 20%;">

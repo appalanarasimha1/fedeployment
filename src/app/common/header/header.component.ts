@@ -53,6 +53,9 @@ export class HeaderComponent implements OnInit {
     if (tab === 'search') {
       this.router.navigate(['search']);
     }
+    if (tab === 'browse') {
+      this.router.navigate(['browse']);
+    }
   }
 
   logout() {

@@ -159,9 +159,29 @@ export class UploadModalComponent implements OnInit {
   }
 
   async getWsList() {
-    const res = await this.apiService.get("/path/").toPromise();
-    const rootId = res["uid"];
-    this.workspaceList = await this.fetchByParent(rootId);
+    // const res = await this.apiService.get("/path/").toPromise();
+    // const rootId = res["uid"];
+    // this.workspaceList = await this.fetchByParent(rootId);
+    const params = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 1000,
+      queryParams: "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'Domain'",
+    };
+    const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, params).toPromise();
+    this.workspaceList = this.formatWsList(res["entries"]);
+  }
+
+  checkAccessOptionDisabled(access, fileIndex?: any) {
+    const confidentiality =
+      this.customConfidentialityMap[fileIndex] || this.confidentiality;
+    const currentAccess =
+      this.customAccessMap[fileIndex] || this.access;
+    if (!confidentiality || confidentiality === CONFIDENTIALITY.not) return false;
+    if (access === ACCESS.all) {
+      return true;
+    }
+    return false;
   }
 
   async getFolderList(workspaceId) {

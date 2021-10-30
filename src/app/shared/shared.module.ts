@@ -8,7 +8,8 @@ import { ApiService } from '../services/api.service';
 import { SharedService } from '../services/shared.service';
 import { DataService } from '../services/data.service';
 import { LoaderSmallComponent } from '../common/loader-small/loader-small.component';
-import {UploadModalModule} from '../upload-modal/upload-modal.module'
+// import {UploadModalModule} from '../upload-modal/upload-modal.module'
+import { NgxMasonryModule } from 'ngx-masonry';
 // import { OwlModule  } from 'ngx-owl-carousel-o';
 
 @NgModule({
@@ -26,7 +27,8 @@ import {UploadModalModule} from '../upload-modal/upload-modal.module'
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
-    UploadModalModule
+    // UploadModalModule,
+    // NgxMasonryModule
   ],
   exports: [
     CommonModule,
@@ -34,7 +36,8 @@ import {UploadModalModule} from '../upload-modal/upload-modal.module'
     FormsModule,
     NgbModule,
     LoaderComponent,
-    LoaderSmallComponent
+    LoaderSmallComponent,
+    // NgxMasonryModule
     // OwlModule
   ]
 })

@@ -1,0 +1,140 @@
+.sub-header{
+  background-image: url(~/../../../../assets/images/NEOM-banner-Image.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100px;
+}
+
+.main-div {
+  display: flex;
+}
+
+.sidebar {
+  width: 25%;
+}
+
+span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-children {
+  color: 'red'
+}
+.toggle-children-wrapper span.toggle-children {
+  display: block !important;
+}
+
+.menu-icon.active {
+  color: #0dcaf0
+}
+.menu-icon {
+  font-size: 23px;
+  margin-left: 10px;
+}
+
+.main-content {
+  padding-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.block-container {
+  width: 200px;
+  margin: 10px;
+  position: relative;
+}
+.hover-content{
+  display: none;
+  position:absolute;
+  padding: 12px;
+  padding-bottom: 2px;
+}
+.block-container.active .hover-content{
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hover-content .hover-menu-icon {
+  color: rgb(128 128 128 / 57%);
+  font-size: 23px;
+}
+
+.right-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.right-bottom-content {
+  border: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.header-content {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.block-image {
+  height: 123px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background: #8080806e;
+}
+.block-image .icons {
+  font-size: 40px;
+  color: #706f6f;
+}
+.block-title {
+  font-size: 18px;
+  font-weight: 900;
+  margin-top: 10px;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-container {
+  border: 1px solid black;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 15px;
+  margin-top: 25px;
+}
+
+.list-image {
+  height: 73px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background: #80808045;;
+}
+.list-image .icons {
+  font-size: 40px;
+  color: #706f6f;
+}
+.list-title {
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.active-tab {
+  background: #48caf0;
+  color: #fff;
+  font-weight: 900;
+  font-size: 17px;
+  padding: 10px;
+}
+
+.person-icons {
+  color: gray
+}
