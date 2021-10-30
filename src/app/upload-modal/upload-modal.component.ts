@@ -395,6 +395,7 @@ export class UploadModalComponent implements OnInit {
         "dc:parentId": folder.id,
         "dc:title": file.name,
         "dc:parentName": folder.title,
+        "dc:sector": this.selectedWorkspace.title,
       },
       facets: [
         "Versionable",

@@ -1,8 +1,11 @@
 <app-header *ngIf="showHeader" (selectedTab)="checkSelectedTab($event)"></app-header>
 
 <router-outlet></router-outlet>
+<button *ngIf="showAddButton" mat-fab class="float" color="primary" aria-label="Add" (click)="openModal()">
+  <mat-icon>add</mat-icon>
+</button>
 
 <app-footer></app-footer>
-<button mat-fab class="float" color="primary" aria-label="Add" (click)="openModal()">
+<!-- <button mat-fab class="float" color="primary" aria-label="Add" (click)="openModal()">
     <mat-icon>add</mat-icon>
-  </button>
+  </button> -->

@@ -10,48 +10,51 @@ const apiVersion1 = environment.apiVersion;
   providedIn: 'root'
 })
 export class ApiService {
-  headers = {
-    'Access-Control-Allow-Origin': '*',
-    accept: 'text/plain,application/json, application/json',
-    'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-    'enrichers.document': 'thumbnail,permissions,preview',
-    'X-Authentication-Token': localStorage.getItem('token'),
-    properties: '*'
-  };
+
+  private getHeaders() {
+    return {
+      'Access-Control-Allow-Origin': '*',
+      accept: 'text/plain,application/json, application/json',
+      'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
+      'enrichers.document': 'thumbnail,permissions,preview',
+      'X-Authentication-Token': localStorage.getItem('token'),
+      properties: '*'
+    };
+  }
 
   constructor(private http: HttpClient) {
   }
 
   get(urlAddress: string, options?: any) {
-    options = options ? Object.assign(options, { headers: this.headers}) : { headers: this.headers};
+    options = options ? Object.assign(options, { headers: this.getHeaders()}) : { headers: this.getHeaders()};
     return this.http
       .get<any>(SERVER_URL + apiVersion1 + urlAddress, options)
       .pipe(map(data => data));
   }
 
   post(urlAddress: string, payload: any, options?: any) {
-    options = options || { headers: this.headers };
+    options = options || { headers: this.getHeaders() };
     return this.http
       .post<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
       .pipe(map(data => data));
   }
 
   put(urlAddress: string, payload: any, options?: any) {
-    options = options || { headers: this.headers };
+    options = options || { headers: this.getHeaders() };
     return this.http
       .put<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
       .pipe(map(data => data));
   }
 
   delete(urlAddress: string, options?: any) {
-    options = options || { headers: this.headers };
+    options = options || { headers: this.getHeaders() };
     return this.http
       .delete<any>(SERVER_URL + apiVersion1 + urlAddress)
       .pipe(map(data => data));
   }
 
   streamPost(urlAddress: string, payload: any, options?: any) {
-    options = options || { headers: this.headers };
+    options = options || { headers: this.getHeaders() };
     return this.http
       .post<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
       .pipe(map(data => {

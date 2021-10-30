@@ -11,6 +11,7 @@ import { UploadModalComponent } from './upload-modal/upload-modal.component';
 export class AppComponent implements OnInit{
   title = 'groundx';
   showHeader = false;
+  showAddButton = false;
 
   constructor(private router: Router, public matDialog: MatDialog) {
     router.events.forEach((event) => {
@@ -18,8 +19,10 @@ export class AppComponent implements OnInit{
         // TODO: will break if we have another url that contains /user.
         if (event.url.includes('/login')) {
           this.showHeader = false;
+          this.showAddButton = false;
         } else {
           this.showHeader = true;
+          this.showAddButton = true;
         }
       }
     });
