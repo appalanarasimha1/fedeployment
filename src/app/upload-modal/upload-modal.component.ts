@@ -168,7 +168,7 @@ export class UploadModalComponent implements OnInit {
       pageSize: 1000,
       queryParams: "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'Domain'",
     };
-    const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, params).toPromise();
+    const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
     this.workspaceList = this.formatWsList(res["entries"]);
   }
 
@@ -584,7 +584,7 @@ export class UploadModalComponent implements OnInit {
       q: term.toLowerCase(),
       currentPageIndex: 0,
     };
-    return this.apiService.get(apiRoutes.SEARCH_USER, params).pipe(
+    return this.apiService.get(apiRoutes.SEARCH_USER, {params}).pipe(
       map((resp) => {
         return resp["entries"].map((entry) => ({
           id: entry.id,
