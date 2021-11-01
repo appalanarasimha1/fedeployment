@@ -74,7 +74,7 @@
       class="container">
       <div class="main-headingSearch flexible pb-4" style="align-items: baseline;">
         <span class="commonHeading">{{searchTerm.ecm_fulltext}}</span>
-        <span class="numberFiles">{{(videos?.resultsCount || 0) + (images?.resultsCount || 0) + (files?.resultsCount ||
+        <span class="numberFiles">{{(videos?.resultsCount || 0) + (images?.resultsCount || 0) + (files?.entries?.length ||
           0)}} files</span>
       </div>
       <div class="row flexible" style="justify-content: space-between;">
@@ -369,7 +369,7 @@
       <div *ngIf="getDataLength(files.entries, 'file')" class="row pt-5">
         <div class="col-xl-12 flexible" style="justify-content: space-between;">
           <p class="imgHead pb-4">Files</p>
-          <a class="fileCount pb-4">{{files.entries}} files</a>
+          <a class="fileCount pb-4">{{files?.entries?.length || 0}} files</a>
         </div>
 
         <div class="col-xl-12" *ngIf="!showListView">

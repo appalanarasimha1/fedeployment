@@ -37,12 +37,22 @@ export class HeaderComponent implements OnInit {
     } else {
       this.searchHeader = true;
     }
+
+    
+    $(window).on( 'scroll', () => {
+      const scroll = $(window).scrollTop();
+      if (scroll >= 80 && scroll <= 400) {
+        $('.searchHeading').addClass('fixedHeader');
+      } else {
+        $('.searchHeading').removeClass('fixedHeader');
+      }
+    });
   }
 
   ngOnInit() {
-    $(window).on( 'scroll', () => {
+    $(window).on('scroll', () => {
       const scroll = $(window).scrollTop();
-      if (scroll >= 80 && scroll <= 9000) {
+      if (scroll >= 80 && scroll <= 400) {
         $('.searchHeading').addClass('fixedHeader');
       } else {
         $('.searchHeading').removeClass('fixedHeader');
