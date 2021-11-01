@@ -406,8 +406,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     let fileRenditionUrl;
     this.selectedFile = file;
     if(fileType === 'image') {
-      this.getComments();
-      this.getTags();
       this.markRecentlyViewed(file);
 
       // file.contextParameters.renditions.map(item => {
@@ -430,6 +428,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
+    this.getComments();
+    this.getTags();
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
