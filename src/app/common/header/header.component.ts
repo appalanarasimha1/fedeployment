@@ -1,5 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
 import { NuxeoService } from '../../services/nuxeo.service';
 import * as $ from 'jquery';
 
@@ -16,7 +18,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private nuxeo: NuxeoService,
-    private router: Router
+    private router: Router,
+    public matDialog: MatDialog
   ) {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
@@ -60,5 +63,17 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.nuxeo.logout();
+  }
+
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "700px";
+    dialogConfig.maxHeight = "900px"
+    dialogConfig.width = "650px";
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }
 }

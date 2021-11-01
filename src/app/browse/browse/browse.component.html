@@ -1,11 +1,22 @@
-<section class="sub-header"></section>
+<section class="sub-header" style="background-color: #E8E6DF;background-image: unset;">
+
+</section>
+<section  style="background-color: #E8E6DF;padding-bottom: 30px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12">
+        <h2 class="commonHeading" style="font-weight: 600;">Workspace</h2>
+      </div>
+    </div>
+  </div>
+</section>
 <section style="background-color: #F1EFE0;" class="lpBAck">
   <section class="lpSecOne">
-    <div class="row">
-      <div class="col-xl-3 col-md-3 p-5 pt-3 ">
+    <div class="row" style="min-height: 600px;">
+      <div class="col-xl-3 col-md-3 p-5 pt-3 " style="background-color: #F8F8F5;">
         <div class="tree">
           <div class="tree__tree-section">
-            <div>
+            <ul style="list-style: none;" class="leftPanel">
               <li style="padding: 5px" *ngFor="let item of folderStructure;let i = index">
                 <div class="d-flex" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder=item;">
                   <div *ngIf="item.children">
@@ -14,7 +25,7 @@
                   </div>
                   <span style="padding-left: 10px;" >{{item.title}}</span>
                 </div>
-                <ul *ngIf="item.children && item.isExpand" style="padding-left: 15px;">
+                <ul *ngIf="item.children && item.isExpand" class="leftPanel">
                   <li style="padding: 5px" *ngFor="let firstChild of item.children;let fIndex = index">
                     <div class="d-flex" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=firstChild;">
                       <div *ngIf="firstChild.children">
@@ -26,7 +37,7 @@
                       <span style="padding-left: 10px;"
                         >{{firstChild.title}}</span>
                     </div>
-                    <ul *ngIf="firstChild.children && firstChild.isExpand" style="padding-left: 15px;">
+                    <ul *ngIf="firstChild.children && firstChild.isExpand" class="leftPanel">
                       <li style="padding: 5px" *ngFor="let secondChild of firstChild.children;let sIndex = index">
                         <div class="d-flex" [ngClass]="selectedFolder.uid === secondChild.uid ? 'active-tab' : ''" (click)="handleTest(secondChild);selectedFolder=secondChild;">
                           <div>
@@ -42,7 +53,7 @@
                   </li>
                 </ul>
               </li>
-            </div>
+            </ul>
           </div>
         </div>
       </div>
@@ -53,13 +64,17 @@
               <h3>{{selectedFolder?.title}}</h3>
               <h6>/root{{selectedFolder?.path}}</h6>
             </div>
-            <div>
-              <fa-icon [icon]="['fas', 'border-all']" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
-              (click)="handleSelectMenu(0)"></fa-icon>
-              <fa-icon [icon]="['fas', 'list']" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
-                (click)="handleSelectMenu(1)"></fa-icon>
-                <fa-icon [icon]="['fas', 'bars']" class="menu-icon" [ngClass]="selectedMenu ===  2? 'active' : '' "
-                (click)="handleSelectMenu(2)"></fa-icon>
+            <div class="views">
+              <img src="../../../assets/images/gallery view.png" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
+              (click)="handleSelectMenu(0)">
+              <!-- <fa-icon [icon]="['fas', 'border-all']" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
+              (click)="handleSelectMenu(0)"></fa-icon> -->
+                <img src="../../../assets/images/list view.png" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                (click)="handleSelectMenu(1)">
+              <!-- <fa-icon [icon]="['fas', 'list']" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                (click)="handleSelectMenu(1)"></fa-icon> -->
+                <!-- <fa-icon [icon]="['fas', 'bars']" class="menu-icon" [ngClass]="selectedMenu ===  2? 'active' : '' "
+                (click)="handleSelectMenu(2)"></fa-icon> -->
             </div>
           </div>
           <div class="main-content" *ngIf="selectedMenu === 0">

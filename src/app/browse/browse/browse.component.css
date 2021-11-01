@@ -128,13 +128,39 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 }
 
 .active-tab {
-  background: #48caf0;
-  color: #fff;
-  font-weight: 900;
-  font-size: 17px;
-  padding: 10px;
+  /* background: #48caf0; */
+  color: #000;
+  font-weight: 600;
+  font-size: 16px;
+  /* padding: 10px; */
 }
 
 .person-icons {
   color: gray
+}
+.header-content h6{
+  font-size: 16px;
+line-height: 24px;
+color: rgba(35, 33, 30, 0.6);
+}
+.searchHeading .navbar-nav .nav-link.active::before{
+  display: none;
+}
+.views img {
+  margin-left: 15px;
+  opacity: 0.6;
+  width: 24px;
+  cursor: pointer;
+}
+.views img.active{
+  opacity: 1;
+}
+.leftPanel{
+  padding: 0px;
+}
+.leftPanel li span{
+font-size: 16px !important;
+}
+section.lpSecOne {
+  min-height: 600px;
 }

@@ -49,7 +49,7 @@ export class ApiService {
   delete(urlAddress: string, options?: any) {
     options = options || { headers: this.getHeaders() };
     return this.http
-      .delete<any>(SERVER_URL + apiVersion1 + urlAddress)
+      .delete<any>(SERVER_URL + apiVersion1 + urlAddress, options)
       .pipe(map(data => data));
   }
 

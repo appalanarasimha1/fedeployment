@@ -1,7 +1,6 @@
 <div class="upload-modal">
   <div class="upload-modal-step">{{ stepLabel }}</div>
   <ngx-dropzone *ngIf="step === 1" (change)="onSelect($event)" class="drag-drop">
-    
       <ngx-dropzone-label >
         <div class="flexible" style="height: 230px;justify-content: center;">
         <div class="upload-label">
@@ -11,34 +10,34 @@
         </div>
       </div>
       </ngx-dropzone-label>
-   
-    
+
+
     <ul class="flexible upload-prevoew">
       <li  *ngFor="let f of filesMap | keyvalue">
-        <ngx-dropzone-preview class="upload-file-preview" [removable]="true" (removed)="onRemove(f)">
+        <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
           <ngx-dropzone-label class="flexible" style="margin: unset;">
             <div style="width: 80%;text-align: left;">
               <p class="imgLabel pb-4">{{ f.value.name }}</p>
-              <span class="imgSize">1.12mb</span>
+              <span class="imgSize">{{ humanFileSize(f.value.size) }}</span>
             </div>
-            <div style="width: 20%; text-align: center;">
+            <div *ngIf="filesUploadDone[f.key]" style="width: 20%; text-align: center;">
               <img src="../../assets/images/BtnTickbox.png">
             </div>
         </ngx-dropzone-label>
       </ngx-dropzone-preview>
-    
+
       </li>
     </ul>
   </ngx-dropzone>
   <div *ngIf="step === 2" class="publish-assets">
-    
+
       <ul class="flexible upload-prevoew">
         <li  style="margin: unset;">
           <div class="assets-selected"  >
             <div class="flexible" style="margin: unset;">
               <div style="width: 80%;text-align: left;">
                 <p class="assets-selected-text pb-4">{{ getSelectedAssetsTitle() }}</p>
-                <span class="imgSize">1.12mb</span>
+                <span class="imgSize">{{ getTotalFileSize() }}</span>
               </div>
               <div style="width: 20%; text-align: center;">
                 <img src="../../assets/images/BtnTickbox.png">
@@ -47,7 +46,7 @@
         </div>
         </li>
       </ul>
-   
+
     <div class="select-workspace">
       <div class="select-workspace-menu row">
         <div class="col-xl-3 col-md-3">
@@ -57,7 +56,7 @@
           <div>{{ selectedWorkspace.title || "Please select workspace!" }}</div>
           <div class="select-workspace-menu-btn" (click)="showWorkspaceList()">Change workspace</div>
         </div>
-        
+
       </div>
       <div *ngIf="showWsList" class="workspace-list">
         <div *ngFor="let ws of workspaceList">
@@ -71,7 +70,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="selectedWorkspace.id" class="upload-form">
+    <div class="upload-form">
       <div class="row upload-form-input">
         <div class="col-xl-3 col-md-3">
           <label for="title">Title or Event Name</label>
@@ -92,13 +91,17 @@
                     <mat-icon>add</mat-icon>
                     <input type="text" id="titleAddNew" #folderToAdd placeholder="Create new folder" class="add-new-input">
                   </div>
-                  
+
                   <mat-icon class="add-new-btn" (click)="addNewFolder(folderToAdd)">check</mat-icon>
                 </div>
               </li>
             </ul>
           </div>
-          <mat-icon class="info-icon" matTooltip="Select an existing folder or create a new folder">info</mat-icon>
+          <div class="tooltip1">
+            <img src="../../assets/images/Info.png">
+            <span class="tooltiptext">Select an existing folder or create a new folder</span>
+          </div>
+          <!-- <mat-icon class="info-icon" matTooltip="Select an existing folder or create a new folder">info</mat-icon> -->
         </div>
       </div>
 
@@ -107,9 +110,15 @@
           <label for="date">Associated Date</label>
         </div>
         <div class="col-xl-9 col-md-9 flexible">
-          <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;">
+          <!-- <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;"> -->
+          <!-- <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker> -->
+          <input type="date" id="start" name="trip-start"
+      
+        [(ngModel)]="associatedDate" style="border-bottom: 1.5px solid #000;">
+          <!-- <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;">
           <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
-          <mat-datepicker #myDatepicker></mat-datepicker>
+          <mat-datepicker #myDatepicker></mat-datepicker> -->
         </div>
       </div>
       <div class="upload-form-input row">
@@ -128,6 +137,10 @@
             Tooltip on left
           </button> -->
           <!-- <mat-icon class="info-icon" matTooltip="Confidentiality can't be changed once the asset is published.">info</mat-icon> -->
+          <div class="tooltip1">
+            <img src="../../assets/images/Info.png">
+            <span class="tooltiptext">Confidentiality can't be changed once the asset is published.</span>
+          </div>
         </div>
       </div>
       <div class="upload-form-input row">
@@ -139,15 +152,21 @@
             <option hidden disabled selected value></option>
             <option [selected]="access === c.value" [disabled]="checkAccessOptionDisabled(c.value)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
           </select>
-          <mat-icon class="info-icon" matTooltip="Acess rights can't be changed once the asset is published.">info</mat-icon>
+          <!-- <mat-icon class="info-icon" matTooltip="Acess rights can't be changed once the asset is published.">info</mat-icon> -->
+          <div class="tooltip1">
+            <img src="../../assets/images/Info.png">
+            <span class="tooltiptext">Acess rights can't be changed once the asset is published.</span>
+          </div>
         </div> 
       </div>
 
       <div *ngIf="checkShowUserDropdown()" class="upload-form-input row">
         <div class="col-xl-3 col-md-3">
+          
           <label for="user">Users</label>
         </div>
         <div class="col-xl-9 col-md-9">
+          <p class="userText pb-2">Please specify the restricted users</p>
           <ng-select
           [items]="userList$ | async"
           bindLabel="id"
@@ -173,7 +192,7 @@
         <div class="col-xl-9 col-md-9">
           <textarea [(ngModel)]="description" id="title" name="Title"></textarea>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -181,11 +200,18 @@
     <div>Please review the classifications of the uploaded files.</div>
     <div class="publish-summary">
       <span>{{ getSelectedAssetsTitle() }}</span>
-      <div class="publish-summary-location">
-        <mat-icon>folder</mat-icon>
-        <span>{{ folderToAdd || selectedFolder?.title }}</span>
-        <mat-icon>calendar_today</mat-icon>
-        <span>{{ showLocaleDate(associatedDate) }}</span>
+      <div class="publish-summary-location flexible">
+        <div class="flexible">
+          <img src="../../assets/images/upload.png">
+          <!-- <mat-icon>folder</mat-icon> -->
+        <span style="margin-left: 10px; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
+        </div>
+        <div style="margin-left: 20px;" class="flexible">
+          <!-- <mat-icon>calendar_today</mat-icon> -->
+          <img src="../../assets/images/calendar.png">
+          <span style="margin-left: 10px; display: block;">{{ showLocaleDate(associatedDate) }}</span>
+        </div>
+        
       </div>
     </div>
     <div class="publish-file-preview-groups">
@@ -233,14 +259,14 @@
   </div>
   <div *ngIf="step === 4">
     <div class="finish-screen">
-      <mat-icon>upload</mat-icon>
+      <!-- <mat-icon>upload</mat-icon> -->
       <span>Your assets have been successfully published on Ground X.</span>
       <div class="destination-folder">
-        <img src="./assets/images/folder-img.png" alt="folder" />
-        <span>{{ folderToAdd || selectedFolder?.title }}</span>
+        <!-- <img src="./assets/images/folder-img.png" alt="folder" /> -->
+        <span class="assetName">{{ folderToAdd || selectedFolder?.title }}</span>
       </div>
       <div (click)="closeModal()" class="close-modal">
-        <mat-icon>close</mat-icon>
+        <!-- <mat-icon>close</mat-icon> -->
         Close
       </div>
     </div>

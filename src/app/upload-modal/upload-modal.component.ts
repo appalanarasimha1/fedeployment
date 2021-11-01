@@ -76,6 +76,7 @@ export class UploadModalComponent implements OnInit {
   selectedUsers: string[] = [];
   userLoading: boolean = false;
   imageSrc: any = {};
+  filesUploadDone: any = {};
 
   showCustomDropdown: boolean = false;
 
@@ -101,6 +102,9 @@ export class UploadModalComponent implements OnInit {
     this.buttonLabel = BUTTON_LABEL[this.step];
     if (this.step === 3) {
       this.copyUserMap();
+    }
+    if (this.step === 2) {
+      this.showWorkspaceList();
     }
   }
 
@@ -231,10 +235,20 @@ export class UploadModalComponent implements OnInit {
     this.batchId = res["batchId"];
   }
 
+  setUploadProgressBar(index, percentDone) {
+    const element = <HTMLElement> document.getElementsByClassName(`upload-progress-bar-${index}`)[0];
+    const background = `background-image: linear-gradient(to right, rgba(0, 104, 69, 0.1) ${percentDone}%,#ffffff ${percentDone}%) !important;`;
+    let attr = element.getAttribute("style");
+    attr = attr.replace(/background-image:.*?;/g,"");
+    element.setAttribute("style", attr + background);
+  }
+
   uploadFileIndex(index, file) {
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
     const options = {
+      reportProgress: true,
+      observe: 'events',
       headers: {
         "Cache-Control": "no-cache",
         "X-File-Name": encodeURIComponent(blob.name),
@@ -244,22 +258,26 @@ export class UploadModalComponent implements OnInit {
         "X-Authentication-Token": localStorage.getItem("token"),
       },
     };
+    this.filesMap[index] = file;
 
     this.apiService.post(uploadUrl, blob.content, options).subscribe(
       (event) => {
         if (event.type == HttpEventType.UploadProgress) {
           const percentDone = Math.round((100 * event.loaded) / event.total);
           console.log(`File is ${percentDone}% loaded.`);
+          this.setUploadProgressBar(index, percentDone);
         } else if (event instanceof HttpResponse) {
           console.log("File is completely loaded!");
         }
       },
       (err) => {
         console.log("Upload Error:", err);
+        delete this.filesMap[index];
       },
       () => {
+        this.setUploadProgressBar(index, 100);
+        this.filesUploadDone[index] = true;
         console.log("Upload done");
-        this.filesMap[index] = file;
       }
     );
   }
@@ -344,6 +362,19 @@ export class UploadModalComponent implements OnInit {
       this.imageSrc[index] = "none";
     }
     return "";
+  }
+
+  humanFileSize(size) {
+    const i = Math.floor( Math.log(size) / Math.log(1024) );
+    return ( size / Math.pow(1024, i) ).toFixed(2)  + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+  }
+
+  getTotalFileSize() {
+    let size = 0;
+    Object.keys(this.filesMap).forEach(key => {
+      size += this.filesMap[key].size;
+    });
+    return this.humanFileSize(size);
   }
 
   async publishAssets() {
