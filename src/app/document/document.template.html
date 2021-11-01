@@ -382,16 +382,16 @@
               </a>
               <div class="pdfWhiteBlock">
                 <div class="flexible pb-2" style="justify-content: space-between ;">
-                  <p>National Day 2021</p>
+                  <p>{{v.title}}</p>
                   <div style="display: inline-grid;
                   text-align: center;">
                     <img src="../../assets/images/Read.svg" style="    width: 26px;
                     margin: auto;">
-                    <span>3 mins</span>
+                    <!-- <span>3 mins</span> -->
                   </div>
                   
                 </div>
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do traveller eiusmod tempor incididunt ut labore et dolore.</span>
+                <span>{{v['dc:description']}}</span>
               </div>
               <div class="cardBlock newDesign pa-0">
                 <div [ngClass]="{'activeHover': v.isSelected}">
@@ -540,7 +540,7 @@
       <div class="popupTabSec">
 
         <app-loader-small [show]="modalLoading"></app-loader-small>
-        <img *ngIf="selectedFile.type === 'Picture'" src="{{selectedFileUrl}}" style="width: 100%;">
+        <img *ngIf="selectedFile.type === 'Picture'"  src (error)="getAssetUrl($event, selectedFileUrl)" style="width: 100%;">
         <div *ngIf="selectedFile.type === 'Video'" style="height: 600;position: relative;">
 
           <video controls style="width: 100%; height: 600px;" src (error)="getAssetUrl($event, selectedFileUrl)">

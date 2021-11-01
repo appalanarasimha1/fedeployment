@@ -415,7 +415,9 @@ export class DocumentComponent implements OnInit, OnChanges {
       //     fileRenditionUrl = item.url;
       //   }
       // });
-      fileRenditionUrl = file.properties['file:content'].data;
+      
+      const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
+      fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
     } else if(fileType === 'video') {
       fileRenditionUrl = file.properties['vid:transcodedVideos'][0]?.content.data || "";
