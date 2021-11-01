@@ -1,4 +1,4 @@
-<header *ngIf="searchHeader" class="pt-4 pb-4 searchHeading">
+<header *ngIf="searchHeader" class="pt-4 pb-4 searchHeading" [ngClass]="{'fixedHeader': showBrowseHeader}" >
   <div class="container-fluid">
       <div class="row">
           <div class="col-xl-8 offset-xl-2">
@@ -13,10 +13,10 @@
                           <a class="nav-link " aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link tooltipCustom" (click)="selectTab('browse')">Browse</a>
+                          <a class="nav-link " [ngClass]="{'active': showBrowseHeader}" (click)="selectTab('browse')">Browse</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link active" (click)="selectTab('search')">Search</a>
+                          <a class="nav-link" [ngClass]="{'active': !showBrowseHeader}" (click)="selectTab('search')">Search</a>
                         </li>
                         <!-- <li class="nav-item">
                           <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Assets</a>

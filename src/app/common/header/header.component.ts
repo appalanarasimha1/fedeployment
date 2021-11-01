@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
@@ -12,9 +12,11 @@ import * as $ from 'jquery';
 })
 export class HeaderComponent implements OnInit {
   @Output() sendSelectedTab: EventEmitter<any> = new EventEmitter();
+  @HostListener('window:scroll', ['$event'])
 
   selectedTab: string;
   searchHeader: boolean;
+  showBrowseHeader = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -24,6 +26,11 @@ export class HeaderComponent implements OnInit {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         // TODO: will break if we have another url that contains /user.
+        if(event.url === '/browse') {
+          this.showBrowseHeader = true;
+        } else {
+          this.showBrowseHeader = false;
+        }
         if (event.url === '/') {
           this.searchHeader = false;
         } else {
@@ -32,6 +39,12 @@ export class HeaderComponent implements OnInit {
       }
     });
 
+    if( window.location.pathname === '/browse') {
+      this.showBrowseHeader = true;
+    } else {
+      this.showBrowseHeader = false;
+    }
+
     if (window.location.pathname === '/') {
       this.searchHeader = false;
     } else {
@@ -39,15 +52,20 @@ export class HeaderComponent implements OnInit {
     }
 
     
-    $(window).on( 'scroll', () => {
-      const scroll = $(window).scrollTop();
-      if (scroll >= 80 && scroll <= 400) {
-        $('.searchHeading').addClass('fixedHeader');
-      } else {
-        $('.searchHeading').removeClass('fixedHeader');
-      }
-    });
+    // $(window).on( 'scroll', () => {
+    //   const scroll = $(window).scrollTop();
+    //   if (scroll >= 80 && scroll <= 9000) {
+    //     $('.searchHeading').addClass('fixedHeader');
+    //   } else {
+    //     $('.searchHeading').removeClass('fixedHeader');
+    //   }
+    // });
   }
+  
+  
+  // scrollHandler(event) {
+  //   console.debug("Scroll Event");
+  // }
 
   ngOnInit() {
     $(window).on('scroll', () => {

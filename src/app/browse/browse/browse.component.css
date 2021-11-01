@@ -164,3 +164,16 @@ font-size: 16px !important;
 section.lpSecOne {
   min-height: 600px;
 }
+
+.masonry-item {
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  background-size: cover;
+  width: calc(25% - 10px);
+}
+.masonry-item-thumbnail {
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  background-size: cover;
+  width: calc(50% - 10px);
+}
