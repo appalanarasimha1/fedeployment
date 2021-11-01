@@ -131,4 +131,15 @@ header.pt-4.pb-4.searchHeading.openDrawer {
     width: calc(100% - 280px);
     margin-left: 280px;
 }
+.uploadBtn{
+    background: #23211E;
+border-radius: 30px;
+padding-left: 15px !important;
+padding-right: 15px !important;
+}
+.fixedHeader .uploadBtn{
+    background-color: #fff;
+    color: #000 !important;
+    font-weight: 600;
+}
 /* <!-- sprint12-fixes end --> */

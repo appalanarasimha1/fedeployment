@@ -1,7 +1,7 @@
 <div class="upload-modal">
-  <div class="upload-modal-step">{{ stepLabel }}</div>
+  <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div>
   <ngx-dropzone *ngIf="step === 1" (change)="onSelect($event)" class="drag-drop">
-      <ngx-dropzone-label >
+      <ngx-dropzone-label  class="noborder">
         <div class="flexible" style="height: 230px;justify-content: center;">
         <div class="upload-label">
          <img src="../../assets/images/cloud-upload.png" style="width: 40px;margin: auto;">
@@ -30,46 +30,54 @@
     </ul>
   </ngx-dropzone>
   <div *ngIf="step === 2" class="publish-assets">
-
-      <ul class="flexible upload-prevoew">
-        <li  style="margin: unset;">
-          <div class="assets-selected"  >
-            <div class="flexible" style="margin: unset;">
-              <div style="width: 80%;text-align: left;">
-                <p class="assets-selected-text pb-4">{{ getSelectedAssetsTitle() }}</p>
-                <span class="imgSize">{{ getTotalFileSize() }}</span>
-              </div>
-              <div style="width: 20%; text-align: center;">
-                <img src="../../assets/images/BtnTickbox.png">
-              </div>
+<div class="custompadding">
+  <ul class="flexible upload-prevoew">
+    <li  style="margin: unset;">
+      <div class="assets-selected"  >
+        <div class="flexible" style="margin: unset;">
+          <div style="width: 80%;text-align: left;">
+            <p class="assets-selected-text pb-4">{{ getSelectedAssetsTitle() }}</p>
+            <span class="imgSize">{{ getTotalFileSize() }}</span>
           </div>
-        </div>
-        </li>
-      </ul>
-
-    <div class="select-workspace">
-      <div class="select-workspace-menu row">
-        <div class="col-xl-3 col-md-3">
-          <div class="menu-title">Workspace</div>
-        </div>
-        <div class="col-xl-9 col-md-9 flexible">
-          <div>{{ selectedWorkspace.title || "Please select workspace!" }}</div>
-          <div class="select-workspace-menu-btn" (click)="showWorkspaceList()">Change workspace</div>
-        </div>
-
-      </div>
-      <div *ngIf="showWsList" class="workspace-list">
-        <div *ngFor="let ws of workspaceList">
-          <div
-            class="workspace-title"
-            [class.ws-selected]="selectedWorkspace.id === ws.id"
-            (click)="selectWorkspace(ws)"
-          >
-            {{ ws.title }}
+          <div style="width: 20%; text-align: center;">
+            <img src="../../assets/images/BtnTickbox.png">
           </div>
-        </div>
       </div>
     </div>
+    </li>
+  </ul>
+
+<div class="select-workspace">
+  <div class="select-workspace-menu row" style="width: 100%;">
+    <!-- <div class="" > -->
+      <div class="col-xl-3 col-md-3">
+        <div class="menu-title">Workspace</div>
+      </div>
+      <div class="col-xl-9 col-md-9">
+        <div class="flexible">
+          <div class="workshaptitle">{{ selectedWorkspace.title || "Please select workspace!" }}</div>
+          <div class="select-workspace-menu-btn" (click)="showWorkspaceList()">Change workspace</div>
+        </div>
+        
+      </div>
+    <!-- </div> -->
+    
+
+  </div>
+  <div *ngIf="showWsList" class="workspace-list">
+    <div *ngFor="let ws of workspaceList">
+      <div
+        class="workspace-title"
+        [class.ws-selected]="selectedWorkspace.id === ws.id"
+        (click)="selectWorkspace(ws)"
+      >
+        {{ ws.title }}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
     <div class="upload-form">
       <div class="row upload-form-input">
         <div class="col-xl-3 col-md-3">
@@ -222,21 +230,34 @@
           <span>{{ file.value.name }}</span>
         </div>
         <div class="publish-file-preview-access">
-          <div class="upload-form-input">
-            <label for="confidentiality">Confidentiality</label>
-            <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality">
-              <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-            </select>
+          <div class="upload-form-input row">
+            <div class="col-xl-3">
+              <label for="confidentiality">Confidentiality</label>
+            </div>
+            <div class="col-xl-9 ">
+              <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality">
+                <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
+              </select>
+            </div>
+           
           </div>
-          <div class="upload-form-input">
-            <label for="access">Access</label>
-            <select name="access" (change)="onSelectAccess($event.target.value, file.key)" id="access">
-              <option [selected]="access === c.value"  [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-            </select>
+          <div class="upload-form-input row">
+            <div class="col-xl-3">
+              <label for="access">Access</label>
+            </div>
+            <div class="col-xl-9">
+              <select name="access" (change)="onSelectAccess($event.target.value, file.key)" id="access">
+                <option [selected]="access === c.value"  [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
+              </select>
+            </div>
+            
           </div>
-          <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input" style="display: flex;">
-            <label for="user">Users</label>
-            <ng-select
+          <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row" style="display: flex;">
+            <div class="col-xl-3">
+              <label for="user">Users</label>
+            </div>
+            <div class="col-xl-9">
+              <ng-select
               [items]="userList$ | async"
               bindLabel="id"
               bindValue="id"
@@ -252,6 +273,8 @@
                 {{item.id}} ({{item.fullname}})
               </ng-template>
             </ng-select>
+            </div>
+            
           </div>
         </div>
       </div>
@@ -274,7 +297,7 @@
   <div class="button-groups" *ngIf="step !== 4">
     <button (click)="closeModal()" class="cancel-btn">Cancel</button>
     <div class="progress-btns">
-      <button class="back-btn" *ngIf="step > 1" (click)="toPreviousStep()">Back</button>
+      <button class="cancel-btn" *ngIf="step > 1" (click)="toPreviousStep()">Back</button>
       <button class="upload-btn" [disabled]="checkButtonDisabled()" (click)="toNextStep()">{{ buttonLabel }}</button>
     </div>
   </div>

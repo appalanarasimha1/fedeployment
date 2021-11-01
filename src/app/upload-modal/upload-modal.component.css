@@ -119,15 +119,15 @@ color: #C4C4C4;
   margin-left: auto;
 }
 .upload-btn {
-  color: #A3A3A3;
+  color: #fff;
   margin-left: 20px;
-  background: #E5E5E5;
+  background: #000;
   border-radius: 8px !important;
   padding: 8px 32px;
   font-size: 16px;
   line-height: 18px;
   letter-spacing: 0.055em;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #000;
 }
 .cancel-btn{
   color: #23211E;
@@ -167,8 +167,8 @@ px
   margin-left: 20px;
 }
 div.menu-title {
-  font-weight: 600;
-  font-size: 18px;
+  /* font-weight: 600; */
+  font-size: 16px;
   line-height: 24px;
   color: #23211E;
 }
@@ -208,7 +208,7 @@ text-align: center;
 color: #FFFFFF;
 }
 .upload-form {
-
+  margin: 0px  -9px;
 }
 .upload-form-input {
   margin: 20px 0px;
@@ -216,14 +216,14 @@ color: #FFFFFF;
       align-items: end;
 }
 .upload-form-input label {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 24px;
   color: #23211E;
 }
 .upload-form-input input {
   width: calc(100% - 50px);
   border: unset;
-  font-size: 16px;
+  font-size: 14px;
   /* font-weight: 600; */
   /* border-bottom: 1.5px solid #000; */
 }
@@ -232,7 +232,7 @@ color: #FFFFFF;
   height: 30px;
   border: unset;
   border-bottom: 1.5px solid #000;
-  font-size: 16px;
+  font-size: 14px;
   background-color: transparent;
   /* font-weight: 600; */
 }
@@ -367,7 +367,7 @@ ng-select {
   background-color: transparent;
 }
 .publish-file-preview-img span{
-  font-size: 16px;
+  font-size: 13px;
 line-height: 20px;
 letter-spacing: 0.055em;
 
@@ -380,7 +380,7 @@ font-weight: 600;
   padding: 7px;
   border-radius: 48px;
   border-radius: 48px;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 24px;
   display: flex;
   align-items: center;
@@ -459,7 +459,14 @@ border-radius: 8px;
 }
 .publish-file-preview-access label {
   margin-right: 22px;
-}.finish-screen {
+}
+.publish-file-preview-access .upload-form-input select{
+  width: 100% !important;
+}
+.publish-file-preview-access .upload-form-input  ng-select{
+  width: 100% !important;
+}
+.finish-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -473,25 +480,28 @@ color: #23211E;
 font-weight: 600;
 }
 .assetName{
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 16px !important;
+  line-height: 22px !important;
 
   
-  color: #2B2825;
+  color: #2B2825 !important;
 }
 .destination-folder {
   display: flex;
   align-items: center;
   min-width: 300px;
   justify-content: center;
-  min-height: 145px;
-  border: 1px solid;
+  min-height: 120px;
+  background: #F8F8F5;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
   border-radius: 15px
 ;
   padding: 10px
 ;
   margin: 20px 0;
   text-align: center;
+  margin-top: 40px;
 }
 .close-modal{
   font-size: 14px;
@@ -538,10 +548,11 @@ font-weight: 600;
 .tooltip1 .tooltiptext {
   visibility: hidden;
   width: 200px;
-  background-color: #555;
+  background: #23211E;
+box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.25);
+border-radius: 100px;
   color: #fff;
   text-align: center;
-  border-radius: 6px;
   padding: 5px 0;
   position: absolute;
   z-index: 1;
@@ -555,7 +566,7 @@ font-weight: 600;
   padding: 6px 10px;
 }
 
-.tooltip1 .tooltiptext::after {
+/* .tooltip1 .tooltiptext::after {
   content: "";
   position: absolute;
   top: 38%;
@@ -565,7 +576,7 @@ font-weight: 600;
   border-style: solid;
   border-color: #555 transparent transparent transparent;
   transform: rotate(-90deg);
-}
+} */
 
 .tooltip1:hover .tooltiptext {
   visibility: visible;
@@ -575,15 +586,27 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: 20px;
   height: 20px;
   position: absolute;
-  right: 28px;
+  right: 17px;
 }
 .publish-summary span{
   color: #006845;
 }
 .userText{
-  font-size: 18px;
+  font-size: 16px;
   line-height: 24px;
   color: #23211E;
   font-weight: 600;
   padding-bottom: 15px !important;
 }
+::ng-deep input:focus + .noborder{
+  outline: unset !important;
+}
+.workshaptitle{
+  font-size: 16px;
+line-height: 24px;
+padding-left: 4px;
+color: #23211E;
+}
+/* .custompadding{
+  padding: 0px 10px;
+} */
