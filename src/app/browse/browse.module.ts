@@ -4,7 +4,7 @@ import { BrowseComponent } from './browse/browse.component';
 import { BrowseRoutingModule } from './browse-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-// import { NgxMasonryModule } from 'ngx-masonry';
+import { NgxMasonryModule } from 'ngx-masonry';
 import { TreeModule } from 'angular-tree-component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
@@ -20,7 +20,7 @@ import { faBars, faList, faBorderAll, faFolder, faImage, faDownload, faStar, faP
     BrowseRoutingModule,
     NgxDropzoneModule,
     NgMultiSelectDropDownModule.forRoot(),
-    // NgxMasonryModule,
+    NgxMasonryModule,
     FontAwesomeModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

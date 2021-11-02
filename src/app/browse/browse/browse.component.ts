@@ -3,8 +3,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {ApiService} from '../../services/api.service';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxMasonryComponent } from 'ngx-masonry';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { UpdateModalComponent } from '../../update-modal/update-modal.component';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-browse',
@@ -18,9 +21,13 @@ export class BrowseComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
+    public matDialog: MatDialog,
     private http: HttpClient,
     private apiService: ApiService,
-    private router: Router) { }
+    private router: Router,
+    private sharedService: SharedService,
+    private route: ActivatedRoute) { }
+
   faCoffee = faCoffee;
   parentId = "00000000-0000-0000-0000-000000000000";
   search = "/";
@@ -33,9 +40,9 @@ export class BrowseComponent implements OnInit {
   type = null;
   searchList = null;
   subtypes = null;
-  
+
   openDropdown = false;
-  
+
   files: File[] = [];
   selectedFolder = null;
   selectedMenu = 0;
@@ -49,9 +56,15 @@ export class BrowseComponent implements OnInit {
     // horizontalOrder: true
   };
   public updateMasonryLayout = false;
-  
+  sectorOpen = false;
+  ind;
+  callHandClick;
+  callDomain;
+  callFolder;
+
 
   completeLoadingMasonry(event: any) {
+    this.masonry.reloadItems();
     this.masonry.layout();
   }
 
@@ -65,11 +78,28 @@ export class BrowseComponent implements OnInit {
   }]
 
   selectedFile = [];
+  routeParams = {
+    sector: '',
+    folder: ''
+  };
   
       
   ngOnInit(): void {
-    this.selectedFolder = this.folderStructure[0]
-    this.handleClick(this.folderStructure[0],0,null );
+    this.route.queryParams
+      .subscribe(params => {
+        console.log(params); // { orderby: "price" }
+        this.routeParams.sector = params.sector;
+        this.routeParams.folder = params.folder; // price
+        // if(params.sector && params.folder) {
+        //   // this.selectedFolder = {uid: params.sector};
+        //   // this.handleClick(this.selectedFile, 0, null);
+        //   return;
+    
+        // }
+        this.selectedFolder = this.folderStructure[0];
+        this.handleClick(this.folderStructure[0], 0, null);
+      }
+    );
   }
 
   openVerticallyCentered(content) {
@@ -127,7 +157,7 @@ export class BrowseComponent implements OnInit {
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
-  
+
   handleSelectFile(item, index) {
     this.selectedFile.push(item);
     this.searchList[index].isSelected = !this.searchList[index].isSelected;
@@ -135,23 +165,77 @@ export class BrowseComponent implements OnInit {
 
   handleClick(item, index, childIndex?:any) {
     this.selectedFile = [];
+    this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
     .subscribe((docs: any) => {
       this.searchList = docs.entries;
       let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
       if(workSpaceIndex >= 0) {
         this.handleClick(this.searchList[workSpaceIndex],index, childIndex);
+        this.loading = false;
+        return;
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         if(childIndex !== null && childIndex !== undefined) {
           this.folderStructure[index].children[childIndex].children = docs.entries;
           this.folderStructure[index].children[childIndex].isExpand = !this.folderStructure[index].children[childIndex].isExpand;
+          // let ind;
+          // let callHandClick = this.folderStructure[index].children.find((item, i) => {
+          //   if(item.uid === this.routeParams.sector) {
+          //     ind = i;
+          //     return item;
+          //   }
+
+          // });
+          // let callHandleTest = this.folderStructure[index].children.find(item => item.title.toLowerCase() === this.routeParams.folder);
+          // if(callHandleTest) this.handleTest(callHandleTest);
+          // if(callHandClick) this.handleClick(callHandClick, ind, null);
         } else {
-          this.folderStructure[index].children = docs.entries;
-          this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand
+          this.loading = false;
+          if(!this.sectorOpen) {
+            this.folderStructure[index].children = docs.entries; // index = parent index in folder structure
+            this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand;
+            this.callHandClick = this.folderStructure[index].children.find((item, i) => {
+              if(item.uid === this.routeParams.sector) {
+                this.ind = i;
+                this.folderStructure[index].children[this.ind].isExpand = true;
+                return item;
+              }
+            });
+            this.sectorOpen = true;
+            this.callDomain
+          }
+          
+          if(!this.callDomain && this.routeParams.sector) {
+            this.callDomain = true;
+            this.selectedFolder = this.callHandClick;
+            this.handleClick(this.callHandClick, this.ind, null);
+            return;
+          }
+
+          if(!this.callFolder && this.routeParams.folder) {
+            this.folderStructure[index].children[this.ind].children = docs.entries;
+            let lastChild = this.folderStructure[index].children[this.ind].children.find((item, i) => {
+              if(item.title.toLowerCase() === this.routeParams.folder.toLowerCase()) {
+                this.ind = i;
+                this.folderStructure[index].children[this.ind].children.isExpand = true;
+                return item;
+              }
+            });
+            this.selectedFolder = lastChild;
+            this.handleTest(lastChild);
+
+          }
+
+
+
+
+          // let callHandleTest = this.folderStructure[index].children[this.ind].children.find(item => item.title.toLowerCase() === this.routeParams.folder);
+          // if(callHandleTest) this.handleTest(callHandleTest);
+
+          
         }
       }
-      console.log(this.selectedFolder)
     });
   }
 
@@ -166,6 +250,26 @@ export class BrowseComponent implements OnInit {
 
   handleSelectMenu(index) {
     this.selectedMenu = index
+  }
+
+  checkShowUpdateBtn() {
+    return this.searchList?.length > 0 && this.selectedFolder?.type === "Workspace";
+  }
+
+  openUpdateClassModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "700px";
+    dialogConfig.maxHeight = "900px"
+    dialogConfig.width = "650px";
+    dialogConfig.data = {
+      docs: this.searchList,
+      folder: this.selectedFolder
+    }
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(UpdateModalComponent, dialogConfig);
   }
 }
 

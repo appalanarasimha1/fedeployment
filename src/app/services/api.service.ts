@@ -16,7 +16,7 @@ export class ApiService {
       'Access-Control-Allow-Origin': '*',
       accept: 'text/plain,application/json, application/json',
       'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-      'enrichers-document': 'thumbnail,permissions,preview',
+      'enrichers.document': 'thumbnail,permissions,preview,acls',
       'X-Authentication-Token': localStorage.getItem('token'),
       properties: '*'
     };

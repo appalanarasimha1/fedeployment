@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges } from '@angular/core';
 import { IHeaderSearchCriteria } from './interface';
-import { 
+import {
   constants,
   assetDimension,
   reverseAssetDimension,
@@ -460,7 +460,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
 
 
-    
+
     // /* <!-- sprint12-fixes start --> */
     if (this.filterClosed) {
       $(".main").animate(

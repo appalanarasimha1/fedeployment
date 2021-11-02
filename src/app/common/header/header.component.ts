@@ -12,7 +12,6 @@ import * as $ from 'jquery';
 })
 export class HeaderComponent implements OnInit {
   @Output() sendSelectedTab: EventEmitter<any> = new EventEmitter();
-  @HostListener('window:scroll', ['$event'])
 
   selectedTab: string;
   searchHeader: boolean;
@@ -51,26 +50,12 @@ export class HeaderComponent implements OnInit {
       this.searchHeader = true;
     }
 
-    
-    // $(window).on( 'scroll', () => {
-    //   const scroll = $(window).scrollTop();
-    //   if (scroll >= 80 && scroll <= 9000) {
-    //     $('.searchHeading').addClass('fixedHeader');
-    //   } else {
-    //     $('.searchHeading').removeClass('fixedHeader');
-    //   }
-    // });
   }
-  
-  
-  // scrollHandler(event) {
-  //   console.debug("Scroll Event");
-  // }
 
   ngOnInit() {
     $(window).on('scroll', () => {
       const scroll = $(window).scrollTop();
-      if (scroll >= 80 && scroll <= 400) {
+      if (scroll >= 80 && scroll <= 4000) {
         $('.searchHeading').addClass('fixedHeader');
       } else {
         $('.searchHeading').removeClass('fixedHeader');

@@ -22,6 +22,7 @@ import { UploadModalModule } from './upload-modal/upload-modal.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { UpdateModalModule } from './update-modal/update-modal.module';
 
 @NgModule({
   declarations: [
@@ -41,8 +42,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
-    UploadModalModule
-
+    UploadModalModule,
+    UpdateModalModule
   ],
   providers: [
     // CookieService,

@@ -135,8 +135,8 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   background: #E1BB33;
 }
 .set{
-  padding: 10px;
-  width: max-content;
+  padding: 10px 25px;
+  /* width: max-content; */
 /* max-width: 100%; */
 }
 .person-icons {
@@ -149,6 +149,17 @@ color: rgba(35, 33, 30, 0.6);
 }
 .searchHeading .navbar-nav .nav-link.active::before{
   display: none;
+}
+.views {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.update-classifications-btn {
+  color: #E1BB33;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 6px;
 }
 .views img {
   margin-left: 15px;
@@ -173,7 +184,7 @@ section.lpSecOne {
   margin-bottom: 10px;
   background-color: #f1f1f1;
   background-size: cover;
-  width: calc(25% - 10px);
+  width: calc(24% - 8px);
 }
 .masonry-item-thumbnail {
   margin-bottom: 10px;

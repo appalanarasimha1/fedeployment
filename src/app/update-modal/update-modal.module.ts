@@ -7,12 +7,11 @@ import { FormsModule } from "@angular/forms";
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
-import { UploadModalComponent } from "./upload-modal.component";
+import { UpdateModalComponent } from "./update-modal.component";
 import { SharedModule } from "../shared/shared.module";
-import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [UploadModalComponent],
+  declarations: [UpdateModalComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,8 +21,7 @@ import { MatInputModule } from '@angular/material/input';
     MatDatepickerModule,
     MatNativeDateModule,
     NgSelectModule,
-    SharedModule,
-    MatInputModule
+    SharedModule
   ],
 })
-export class UploadModalModule {}
+export class UpdateModalModule {}

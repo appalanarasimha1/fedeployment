@@ -16,6 +16,7 @@ import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
 import { ACCESS, CONFIDENTIALITY, GROUPS } from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
+import { ActivatedRoute, Router } from "@angular/router";
 
 interface FileByIndex {
   [index: string]: File;
@@ -39,14 +40,6 @@ const BUTTON_LABEL = {
   styleUrls: ["./upload-modal.component.css"],
 })
 export class UploadModalComponent implements OnInit {
-  constructor(private apiService: ApiService, public dialogRef: MatDialogRef<UploadModalComponent>) {}
-
-  ngOnInit(): void {
-    this.stepLabel = STEPS[1];
-    this.buttonLabel = BUTTON_LABEL[1];
-    this.loadUsers();
-  }
-
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
 
@@ -79,6 +72,18 @@ export class UploadModalComponent implements OnInit {
   filesUploadDone: any = {};
 
   showCustomDropdown: boolean = false;
+  
+  constructor(
+    private apiService: ApiService,
+    public dialogRef: MatDialogRef<UploadModalComponent>,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.stepLabel = STEPS[1];
+    this.buttonLabel = BUTTON_LABEL[1];
+    this.loadUsers();
+  }
 
   closeModal() {
     this.dialogRef.close();
@@ -131,7 +136,7 @@ export class UploadModalComponent implements OnInit {
       if (
         (!this.selectedFolder && !this.folderToAdd) ||
         !this.access ||
-        !this.associatedDate ||
+        !this.getDateFormat(this.associatedDate) ||
         !this.confidentiality ||
         (this.checkShowUserDropdown() &&
           this.selectedUsers &&
@@ -140,6 +145,10 @@ export class UploadModalComponent implements OnInit {
         return true;
     }
     return false;
+  }
+
+  getDateFormat(date) {
+    return new Date(date).toISOString().split('T')[0];
   }
 
   getSelectedAssetsTitle() {
@@ -160,6 +169,10 @@ export class UploadModalComponent implements OnInit {
     this.showWsList = false;
     this.folderList = await this.getFolderList(ws.id);
     this.dropdownFolderList = [...this.folderList];
+  }
+
+  openBrowseRoute() {
+    this.router.navigate(['/browse'], {queryParams: {sector: this.selectedWorkspace.id, folder: this.selectedFolder.title}});
   }
 
   async getWsList() {
@@ -322,7 +335,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
-    if (fileIndex) {
+    if (fileIndex !== null) {
       this.customConfidentialityMap[fileIndex] = confidentiality;
     } else {
       this.confidentiality = confidentiality;
@@ -331,7 +344,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelectAccess(access, fileIndex?: any) {
-    if (fileIndex) {
+    if (fileIndex !== null) {
       this.customAccessMap[fileIndex] = access;
     } else {
       this.access = access;
