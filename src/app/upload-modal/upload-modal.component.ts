@@ -72,7 +72,7 @@ export class UploadModalComponent implements OnInit {
   filesUploadDone: any = {};
 
   showCustomDropdown: boolean = false;
-  
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -335,7 +335,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
-    if (fileIndex !== null) {
+    if (fileIndex !== null && fileIndex !== undefined) {
       this.customConfidentialityMap[fileIndex] = confidentiality;
     } else {
       this.confidentiality = confidentiality;
@@ -344,7 +344,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelectAccess(access, fileIndex?: any) {
-    if (fileIndex !== null) {
+    if (fileIndex !== null && fileIndex !== undefined) {
       this.customAccessMap[fileIndex] = access;
     } else {
       this.access = access;
