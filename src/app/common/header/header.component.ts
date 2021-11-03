@@ -58,7 +58,9 @@ export class HeaderComponent implements OnInit {
       if (scroll >= 80 && scroll <= 4000) {
         $('.searchHeading').addClass('fixedHeader');
       } else {
-        $('.searchHeading').removeClass('fixedHeader');
+        if( window.location.pathname !== '/browse') {
+          $('.searchHeading').removeClass('fixedHeader');
+        }
       }
     });
   }
