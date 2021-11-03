@@ -136,7 +136,7 @@ export class UploadModalComponent implements OnInit {
       if (
         (!this.selectedFolder && !this.folderToAdd) ||
         !this.access ||
-        !this.getDateFormat(this.associatedDate) ||
+        // !this.getDateFormat(this.associatedDate) ||
         !this.confidentiality ||
         (this.checkShowUserDropdown() &&
           this.selectedUsers &&
