@@ -3664,3 +3664,36 @@ img:not([src]) {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.custom-date-picker .mat-form-field-appearance-fill .mat-form-field-flex {
+  border-radius: 0 !important;
+  padding: 0px !important;
+  background: transparent;
+}
+.custom-date-picker .mat-form-field-appearance-fill .mat-form-field-underline::before,
+.custom-date-picker .mat-form-field-appearance-fill:not(.mat-form-field-disabled) .mat-form-field-flex:hover~.mat-form-field-underline .mat-form-field-ripple {
+  height: 0px !important;
+}
+.custom-date-picker .mat-form-field-wrapper {
+  width: 98%;
+  padding-bottom: 0px;
+}
+.custom-date-picker .mat-button-wrapper {
+  color: #616161;
+}
+.custom-date-picker .mat-form-field-infix {
+  padding: 0px !important;
+  border-top: 0px;
+  line-height: 30px;
+}
+.custom-date-picker .mat-form-field-appearance-fill .mat-form-field-ripple {
+  height: 1px !important;
+  width: 94.2% !important;
+  bottom: -19px !important;
+}
+.custom-date-picker .mat-button-focus-overlay {
+  background: transparent !important;
+}
+.custom-date-picker .mat-form-field {
+  margin-top: -10px;
+}
