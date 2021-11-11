@@ -230,7 +230,7 @@
 
       </div>
     </div>
-    <div class="publish-file-preview-groups">
+    <div class="publish-file-preview-groups fix-scroll">
       <div *ngFor="let file of filesMap | keyvalue" class="publish-file-preview">
         <div class="publish-file-preview-img">
           <img [src]="imageSrc[file.key] || getPreviewSrc(file.value, file.key)" alt="preview" class="preview-img"

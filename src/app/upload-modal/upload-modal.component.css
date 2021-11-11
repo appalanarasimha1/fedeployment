@@ -610,3 +610,9 @@ color: #23211E;
 /* .custompadding{
   padding: 0px 10px;
 } */
+
+.fix-scroll{
+  height: 50vh;
+  overflow: hidden;
+  overflow-y: scroll;
+}
