@@ -4,6 +4,7 @@ import {Moment} from 'moment'; // for interface
 import {startCase, camelCase, isEmpty, pluck} from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { localStorageVars } from '../common/constant';
 
 
 @Injectable({
@@ -35,32 +36,40 @@ getSidebarToggle(){
     return pluck(data, key);
   }
 
-  getAssetUrl(event: any, url: string) {
-    if(!event) {
+  getAssetUrl(event: any, url: string, type?: string): string {
+    if(!url) return '';
+    if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     }
 
     const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // this.modalLoading = true;
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {
-        if(r.status === 401) {
+        if (r.status === 401) {
           localStorage.removeItem('token');
           this.router.navigate(['login']);
+          
+          // this.modalLoading = false;
           return;
         }
         return r.blob();
       })
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
+        
+    // this.modalLoading = false;
       }
-    ).catch(e => {
-      // TODO: add toastr with message 'Invalid token, please login again'
-      console.log(e);
-      throw e;
-      // if(e.contains(`'fetch' on 'Window'`)) {
-      //   this.router.navigate(['login']);
-      // }
-    });
+      ).catch(e => {
+        // TODO: add toastr with message 'Invalid token, please login again'
+          
+          // this.modalLoading = false;
+          console.log(e);
+
+      });
+    // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
 
@@ -194,6 +203,30 @@ getSidebarToggle(){
   redirectToLogin() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  
+  markRecentlyViewed(data: any) {
+    let found = false;
+    // tslint:disable-next-line:prefer-const
+    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+    if (recentlyViewed.length) {
+      recentlyViewed.map((item: any, index: number) => {
+        if (item.uid === data.uid) {
+          found = true;
+          recentlyViewed[index] = data;
+        }
+      });
+    }
+    if (found) {
+      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+      return;
+    }
+
+    data['isSelected'] = false;
+    recentlyViewed.push(data);
+    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+    return;
   }
 
 }

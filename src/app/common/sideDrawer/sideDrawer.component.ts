@@ -26,19 +26,21 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   @Output() emitSectorList: EventEmitter<any> = new EventEmitter();
   @Output() resetFilterOuput: EventEmitter<any> = new EventEmitter();
   @Input() inputMetaData = {
-    system_primaryType_agg: { buckets: [], selection: [] },
+    system_primaryType_agg: { buckets: [], selection: [], extendedBuckets: [] },
     system_mimetype_agg: { buckets: [], selection: [] },
     asset_width_agg: { buckets: [] },
     asset_height_agg: { buckets: [] },
     video_duration_agg: { buckets: [] },
-    sectors: { buckets: [] }
+    dublincore_sector_agg: { buckets: [], selection: [] },
+    dublincore_created_agg: { buckets: [], selection: [] }
   };
   metaData = {
-    system_primaryType_agg: { buckets: [] },
+    system_primaryType_agg: { buckets: [], extendedBuckets: [] },
     system_mimetype_agg: { buckets: [], selection: [] },
     asset_width_agg: { buckets: [] }, asset_height_agg: { buckets: [] },
     video_duration_agg: { buckets: [] },
-    sectors: { buckets: [] }
+    dublincore_sector_agg: { buckets: [], selection: [] },
+    dublincore_created_agg: { buckets: [], selection: [] }
   };
   loading = false;
   error = undefined;
@@ -52,15 +54,16 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     asset_height_agg?: string[],
     video_duration_agg?: string[]
     sectors?: string[],
-    dc_modified_agg: string[]
+    dc_modified_agg: string[],
+    dublincore_created_agg: string[]
   } = {
       system_primaryType_agg: [],
       system_mimetype_agg: [],
       asset_width_agg: [],
       asset_height_agg: [],
       video_duration_agg: [],
-      sectors: [],
-      dc_modified_agg: []
+      dc_modified_agg: [],
+      dublincore_created_agg: []
     };
   // modifiedDate = { dc_modified_agg: [] };
   showImageSize = true;
@@ -74,6 +77,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   assetOrientationData = [];
   updatedDateData = [];
   sectors = [];
+  createdAtData = [];
 
   dropdownList = [];
   selectedItems = [];
@@ -81,6 +85,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
   modifiedDateDropDown = [{ key: 'last24h', id: 0 }, { key: 'lastWeek', id: 1 }, { key: 'lastMonth', id: 2 }, { key: 'lastYear', id: 3 }, { key: 'priorToLastYear', id: 4 }];
   // sharedService: any;
+
+  isOpen = false;
+  selectedType: string;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -109,7 +116,10 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any): void {
+    console.log("ngOnChanges", changes);
     if (changes.inputMetaData.currentValue && Object.keys(changes.inputMetaData.currentValue).length) {
+      console.log("changed");
+
       this.metaData = this.inputMetaData;
       this.checkSelectedPrimeAndMimeType(this.inputMetaData);
       this.manupulateData(this.inputMetaData, false);
@@ -142,24 +152,28 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     this.videoSizeData = [];
     if(resetSectors || initSector) {}this.sectors = [];
 
-    data.system_mimetype_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
+    data.system_mimetype_agg?.buckets.map((item: { key: string, docCount: number }, index: number) => {
       this.mimeTypeData.push({ key: item.key, id: index, docCount: item.docCount});
     });
 
-    data.asset_width_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
+    data.asset_width_agg?.buckets.map((item: { key: string, docCount: number }, index: number) => {
       this.assetWidthData.push({ key: assetDimension[item.key], id: index, docCount: item.docCount });
     });
 
-    data.asset_height_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
+    data.asset_height_agg?.buckets.map((item: { key: string, docCount: number }, index: number) => {
       this.assetHeightData.push({ key: assetDimension[item.key], id: index, docCount: item.docCount });
     });
 
-    data.video_duration_agg.buckets.map((item: { key: string, docCount: number }, index: number) => {
+    data.video_duration_agg?.buckets.map((item: { key: string, docCount: number }, index: number) => {
       this.videoSizeData.push({ key: videoDurationDictionary[item.key], id: index, docCount: item.docCount });
     });
 
-    data.sectors.buckets.map((item: { key: string }, index: number) => {
+    data.sectors?.buckets.map((item: { key: string }, index: number) => {
       this.sectors.push(item.key);
+    });
+
+    data.dublincore_created_agg?.buckets.map((item: { key: string }, index: number) => {
+      this.createdAtData.push(item.key);
     });
 
     if(resetSectors || initSector) this.dataService.sectorDataPush(this.sectors);
@@ -323,6 +337,32 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     return;
   }
 
+  selectCreatedAt(data: any) {
+    if (Array.isArray(data)) {
+      this.searchCriteria['dublincore_created_agg'] = [];
+      data.map((item: { key: string }) => {
+        this.searchCriteria['dublincore_created_agg'].push(item.key);
+      });
+    } else {
+      this.searchCriteria['dublincore_created_agg'].push(data.key);
+    }
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
+  deSelectCreatedAt(data: any): void {
+    if (!data.key && !data.length) {
+      this.searchCriteria['dublincore_created_agg'] = [];
+      this.emitData(this.searchCriteria);
+      return;
+    }
+    const mimeType = data.key;
+    const index = this.searchCriteria['dublincore_created_agg'].indexOf(mimeType);
+    this.searchCriteria['dublincore_created_agg'].splice(index, 1);
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
   deSelectFormat(data: any): void {
     if (!data.key && !data.length) {
       this.searchCriteria['system_mimetype_agg'] = [];
@@ -453,56 +493,27 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   //   return;
   // }
 
-  openNav() {
-    document.getElementById("main-sidebar").style.width = "280px";
-    document.getElementById("main").classList.toggle('shiftFilter');
-    document.getElementById("main-sidebar").classList.toggle("closeBtn");
-
-
-
-
-    // /* <!-- sprint12-fixes start --> */
-    if (this.filterClosed) {
-      $(".main").animate(
-        {
-          marginLeft: "280px"
-        },
-        300
-      );
-      $(".min-height").animate(
-        {
-          marginLeft: "300px"
-        },
-        300
-      );
-
-      $(".searchHeading").addClass('openDrawer');
-      $(".masonry-item").addClass('masonryOpenDrawer');
-      setTimeout(() => {
-        this.sharedService.setSidebarToggle(true);
-      }, 300);
-
-      window.onresize = function(event) {
-
-      };
-    } else {
-      $(".main, .min-height").animate(
-        {
-          marginLeft: "0px"
-        },
-        500
-      );
-
-      $(".searchHeading").removeClass('openDrawer');
-      $(".masonry-item").removeClass('masonryOpenDrawer');
-      setTimeout(() => {
-        this.sharedService.setSidebarToggle(false);
-      }, 300);
+  count() {
+    if (this.selectedType === 'all') {
+      let total = 0;
+      this.inputMetaData.system_primaryType_agg.extendedBuckets.forEach(b => {
+        total += b.docCount;
+      });
+      return total;
     }
+    const bucket = this.inputMetaData.system_primaryType_agg.extendedBuckets.find(b => b.key === this.selectedType);
+    return bucket?.docCount || 0;
+  }
 
-    this.filterClosed = !this.filterClosed;
-    return;
-    // /* <!-- sprint12-fixes end --> */
+  closeModal() {
+    this.isOpen = false;
+  }
+
+  openModal(type) {
+    this.isOpen = true;
+    this.selectedType = type;
+    if(type !== 'all')
+    this.searchCriteria.system_primaryType_agg = [this.selectedType];
   }
 
   resetFilter() {
@@ -513,7 +524,8 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       asset_height_agg: [],
       video_duration_agg: [],
       sectors: [],
-      dc_modified_agg: []
+      dc_modified_agg: [],
+      dublincore_created_agg: []
     };
     this.resetFilterOuput.emit();
   }

@@ -6,6 +6,7 @@ import { SearchComponent } from './search/search.component';
 import { SideDrawerComponent } from '../common/sideDrawer/sideDrawer.component';
 import { SubHeaderComponent } from '../common/subHeader/subHeader.component';
 import { DocumentComponent } from '../document/document.component';
+import { DocumentCardComponent } from '../document-card/document-card.component';
 import { SharedModule } from '../shared/shared.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgxMasonryModule } from 'ngx-masonry';
@@ -15,9 +16,10 @@ import { NgxMasonryModule } from 'ngx-masonry';
 import { CarouselModule  } from 'ngx-owl-carousel-o';
 import { SafePipe } from '../shared/safe.pipe';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
-  
+
   imports: [
     // HttpClientModule,
     NgxMasonryModule,
@@ -25,13 +27,15 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     SearchRoutingModule,
     NgMultiSelectDropDownModule.forRoot(),
     CarouselModule,
-    PdfViewerModule
+    PdfViewerModule,
+    SlickCarouselModule,
   ],
   declarations: [
     SearchComponent,
     SideDrawerComponent,
     SubHeaderComponent,
     DocumentComponent,
+    DocumentCardComponent,
     SafePipe
   ],
   schemas: [

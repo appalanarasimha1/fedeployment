@@ -1,4 +1,4 @@
-<header *ngIf="searchHeader" class="pt-4 pb-4 searchHeading" [ngClass]="{'fixedHeader': showBrowseHeader}" >
+ <header *ngIf="searchHeader" class="pt-4 pb-4 searchHeading" [ngClass]="{'fixedHeader': showBrowseHeader}" >
   <div class="container-fluid">
       <div class="row">
           <div class="col-xl-8 offset-xl-2">
@@ -10,17 +10,12 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                          <a class="nav-link " aria-current="page" href="/">Home</a>
+                          <a class="nav-link active " aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link " [ngClass]="{'active': showBrowseHeader}" (click)="selectTab('browse')">Browse</a>
+                          <a class="nav-link " (click)="selectTab('browse')">Browse</a>
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link" [ngClass]="{'active': !showBrowseHeader}" (click)="selectTab('search')">Search</a>
-                        </li>
-                        <!-- <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Assets</a>
-                        </li> -->
+                       
                         <li class="nav-item">
                           <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
                         </li>
@@ -33,9 +28,6 @@
                         <li class="nav-item">
                           <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload Assets</a>
                         </li>
-                        <!-- <li class="nav-item">
-                          <a class="nav-link"  style="opacity: 0.6;cursor: not-allowed;">Clipboard</a>
-                        </li> -->
                       </ul>
                     </div>
 
@@ -66,9 +58,9 @@
           </div>
       </div>
   </div>
-</header>
+</header> 
 
-<header *ngIf="!searchHeader" class="pt-4 pb-4 landingLp">
+<header *ngIf="!searchHeader" class="pt-4 pb-4 searchHeading fixedHeader">
   <div class="container-fluid">
       <div class="row">
           <div class="col-xl-2 col-md-2">
@@ -87,32 +79,25 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                          <a class="nav-link active" aria-current="page" href="/">Home</a>
+                          <a class="nav-link " aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" (click)="selectTab('browse')">Browse</a>
+                          <a class="nav-link active" (click)="selectTab('browse')">Browse</a>
+                        </li>
+                
+                        <li class="nav-item">
+                          <a class="nav-link "  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" (click)="selectTab('search')">Search</a>
-                        </li>
-                        <!-- <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="opacity: 0.6;cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Assets</a>
-                        </li> -->
-                        <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
+                          <a class="nav-link "  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a>
+                          <a class="nav-link " style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Favourites</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link tooltipCustom" style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Favourites</a>
+                          <a class="nav-link uploadBtn " style="color: white" (click)="openModal()">Upload Assets</a>
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link uploadBtn tooltipCustom" style="color: white" (click)="openModal()">Upload Assets</a>
-                        </li>
-                        <!-- <li class="nav-item">
-                          <a class="nav-link"  style="opacity: 0.6;cursor: not-allowed;">Clipboard</a>
-                        </li> -->
+                      
                       </ul>
                     </div>
 

@@ -14,10 +14,10 @@ input[type="checkbox"][id^="myCheckbox"] {
 
 label.e-btn {
   /* border: 1px solid #fff; */
-  /* padding: 10px; */
+  padding: 10px;
   display: block;
   position: relative;
-  /* margin: 10px; */
+  margin: 10px;
   cursor: pointer;
  opacity: 0.4;
 }
@@ -654,10 +654,10 @@ background-color:#EBC03F !important;
   color: #000 !important;
 }
 .commonHeading{
-  font-size: 16px;
+  font-size: 24px;
+  line-height: 22px;
   font-weight: bold;
   color: #000000;
-  margin-right: 20px;
 }
 
 .clear{
@@ -1315,123 +1315,3 @@ color: #ACACAC;
   background-color: #fff;
   padding: 20px;
 }
-.recentHeading{
-  font-size: 16px;
-  font-weight: bold;
-  color: #000000;
-  margin-right: 20px;
-  cursor: pointer;
-}
-.viewSelected {
-  color: #C49900;
-  border-bottom: 2px solid #C49900;
-  cursor: default !important;
-  padding-bottom: 6px;
-}
-.recentHeader {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
-}
-.slickItem {
-  height: 200px;
-}
-.filterMenuRow {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-.typeSelections {
-  display: flex;
-  flex-direction: row;
-}
-.moreFilter {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.itemCount {
-    border: 1px solid #F6F5F2;
-    border-radius: 24px;
-    padding: 0px 5px;
-    background-color: #F6F5F2;
-    color: black;
-    display: inline-block;
-    font-size: 14px;
-    line-height: 22px;
-}
-.viewSelected .itemCount{
-  border: 1px solid #EBC03F;
-  background-color: #EBC03F;
-  color: black;
-}
-::ng-deep #fileId {
-  height: 170px;
-}
-::ng-deep #fileId2 {
-  height: 103px;
-}
-/* Custom tabs css start 12-Nov-2021 */
-.customTab {
-  padding: 60px 0px 40px;
-}
-.customTab .tab-content {
-  padding: 25px 0px 40px;
-}
-.customTab .nav>li>a {
-  position: relative;
-  display: block;
-  padding: 8px 0px;
-  color: #000000;
-  font-size: 16px;
-}
-.customTab .nav-tabs {
-   border-bottom: 0px;
-}
-.customTab .nav-tabs > li.active:before {
-  border-color: transparent;
-  border-top-color: transparent;
-  border-width: 1px;
-  margin-left: 0;
-  height: 2px;
-  background: #8E6B0B;
-  width: 100%;
-  left: 0px;
-}
-.customTab .nav-tabs > li.active:after {
-  border-color: transparent;
-  border-top-color: transparent;
-  border-width: 0px;
-  margin-left: 0;
-  left: 0px;
-}
-.customTab .nav-tabs > li.active > a, 
-.customTab .nav-tabs > li.active > a:focus, 
-.customTab .nav-tabs > li.active > a:hover{
-  color: #8E6B0B !important;
-  font-weight: bold !important;
-}
-.customTab .nav-tabs>li>a{
-  margin: 0px;
-}
-.customTab .nav-tabs > li {
-  margin-right: 20px;
-}
-.customTab .image-block {
-  margin: 5px;
-  position: relative;
-}
-.customTab .tab-pane {
-  position: relative;
-}
-.customTab .show-all {
-  font-size: 16px;
-  line-height: 24px;
-  color: #040404;
-  position: absolute;
-  top: -50px;
-  right: 90px;
-  cursor: pointer;
-}
-/* Custom tabs css end 12-Nov-2021 */

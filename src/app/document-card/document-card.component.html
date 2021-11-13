@@ -1,0 +1,85 @@
+
+<!-- <app-loader-small [show]="modalLoading"></app-loader-small> -->
+<div *ngIf="viewType === 'GRID'" style="position: relative; margin: 5px;">
+  <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
+    (click)="openPreview()" />
+    
+  
+  <img *ngIf="doc.type === 'File'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
+  <div *ngIf="doc.type === 'File'" class="pdfWhiteBlock">
+    <div class="flexible pb-2" style="justify-content: space-between ;">
+      <p>{{doc.title}}</p>
+      <div style="display: inline-grid;
+      text-align: center;">
+        <img src="../../assets/images/Read.svg" style="    width: 26px;
+        margin: auto;">
+        <!-- <span>3 mins</span> -->
+      </div>
+      
+    </div>
+    <span>{{doc['dc:description']}}</span>
+  </div>
+
+  <div class="cardBlock newDesign pa-0">
+    <div [ngClass]="{'activeHover': doc.isSelected}">
+      <div class="form-group-custom">
+        <input type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
+          (change)="selectImage($event)">
+        <label for="html-{{doc.uid}}"></label>
+      </div>
+      <div class="hover-icon-group">
+        <div class="hover-icon star-icon"
+          [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
+          (click)="markFavourite()"></div>
+        <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
+          style="cursor: not-allowed;"></div>
+        <a class="hover-icon download-icon"
+          href="{{getFileContent()}}"></a>
+      </div>
+      <div class="mouse-hover-bg" (click)="openPreview()"></div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="viewType === 'LIST'" class="cardBlock" style="border-radius: 8px;">
+  <div class="cardBlockContent">
+    <div class="row">
+      <div class="col-xl-6 col-md-6" style="position: relative;">
+        <p>{{doc.properties['dc:title']}}</p>
+        <div class="username">
+          <span>
+            <img src="../../assets/images/black-user.png">
+          </span>
+          {{doc.properties['dc:creator'].id}}
+        </div>
+      </div>
+      <div (click)="openPreview()" class="col-xl-6 col-md-6">
+        <img src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
+          class="w-100 shadow-1-strong rounded listViewImg"
+          style="width: 100%;border-radius: 8px !important;" alt="" />
+
+      </div>
+    </div>
+  </div>
+  <div [ngClass]="{'activeHover': doc.isSelected}">
+
+    <div class="form-group-custom">
+      <input type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
+        (change)="selectImage($event)">
+      <label for="html-{{doc.uid}}"></label>
+    </div>
+
+    <div class="hover-icon-group">
+      <div class="hover-icon star-icon"
+        [ngClass]="{'active': doc.contextParameters.favorites.isFavorite}"
+        (click)="markFavourite()"></div>
+      <div class="hover-icon plus-icon" placement="top"
+        ngbTooltip="This function will be available soon" style="cursor: not-allowed;">
+      </div>
+      <a class="hover-icon download-icon"
+        href="{{getFileContent()}}"></a>
+    </div>
+    <div class="mouse-hover-bg" (click)="openPreview()"></div>
+
+  </div>
+</div>

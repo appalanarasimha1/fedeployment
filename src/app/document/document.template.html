@@ -1,53 +1,134 @@
-<!-- <div class="document">
-  <h4>{{document.title}}</h4>
-  <a href="/nuxeo/nxdoc/default/{{document.uid}}/view_documents">
-    <img src="{{document.contextParameters?.thumbnail.url}}" /> 
-  </a>
-</div> -->
 <app-loader [show]="loading"></app-loader>
 <section class="min-height">
-  <section>
-    <div
-      *ngIf="recentlyViewed && recentlyViewed.length && !videos.entries.length && !images.entries.length && !files.entries.length && !docs.length"
-      class="container">
-      <div class="row flexible" style="justify-content: space-between;">
-        <div class="col-xl-4 col-md-4 mb-4">
-          <h2 class=" commonHeading">Recently viewed</h2>
-        </div>
-        <div class="col-xl-2 col-md-2 mb-4">
-          <p (click)="clearRecentlyViewed()" class="clear " style="color: #8E6B0B;">Clear</p>
-        </div>
-        <div class="col-xl-12 col-md-12">
-          <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)"
-            [updateLayout]="updateMasonryLayout">
-            <div ngxMasonryItem class="masonry-item" *ngFor="let file of recentlyViewed; let i = index">
-              <img id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt=""
-                (click)="open(preview, file, 'image')" />
-              <div class="cardBlock newDesign pa-0">
-                <div [ngClass]="{'activeHover': file.isSelected}">
-                  <div class="form-group-custom">
-                    <input type="checkbox" id="html{{i}}" [checked]="file.isSelected" [(ngModel)]="file.isSelected"
-                      (change)="selectImage($event, file, i)">
-                    <label for="html{{i}}"></label>
-                  </div>
-                  <div class="hover-icon-group">
-                    <div class="hover-icon star-icon"
-                      [ngClass]="{'active': file.contextParameters.favorites.isFavorite}"
-                      (click)="markFavourite(file, 'recent')"></div>
-                    <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
-                      style="cursor: not-allowed;"></div>
-                    <a class="hover-icon download-icon"
-                      href="{{findOriginalUrlFromViews(file.properties['picture:views'])}}"></a>
-                  </div>
-                  <div class="mouse-hover-bg" (click)="open(preview, file, 'image')"></div>
-                </div>
-              </div>
+
+  <div class="customTab" *ngIf="recentDataShow && recentDataShow.length && checkShowRecent()">
+    <div id="exTab2" class="container">
+      <ul class="nav nav-tabs">
+        <li class="active"><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
+        <li><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="recentlyUploaded">
+          <div class="show-all">Show all</div>
+          <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfig"
+          >
+            <div ngxSlickItem *ngFor="let file of recentDataShow; let i = index" class="slide">
+              <document-card
+                [doc]="file"
+                [viewType]="viewType"
+                (onOpenPreview)="open(preview, file, file.type)"
+                (onSelect)="selectImage($event, file, i)"
+                (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+              </document-card>
             </div>
-          </ngx-masonry>
+          </ngx-slick-carousel>
+        </div>
+        <div class="tab-pane" id="recentlyViewed">
+          <div class="show-all">Show all</div>
+          <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfig"
+          >
+            <div ngxSlickItem *ngFor="let file of recentDataShow; let i = index" class="slide">
+              <document-card
+                [doc]="file"
+                [viewType]="viewType"
+                (onOpenPreview)="open(preview, file)"
+                (onSelect)="selectImage($event, file, i)"
+                (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+              </document-card>
+            </div>
+          </ngx-slick-carousel>
         </div>
       </div>
+    </div>   
+    
+    <div id="exTab3" class="container">
+      <ul class="nav nav-tabs">
+        <li><a  href="#favourite" data-toggle="tab">Favourites</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="favourite">
+          <div class="show-all">Show all</div>
+          <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfig"
+          >
+            <div ngxSlickItem *ngFor="let file of favourites; let i = index" class="slide">
+              <document-card
+                [doc]="file"
+                [viewType]="viewType"
+                (onOpenPreview)="open(preview, file, file.type)"
+                (onSelect)="selectImage($event, file, i)"
+                (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+              </document-card>
+            </div>
+          </ngx-slick-carousel>
+        </div>
+      </div>
+    </div>   
+  </div>
+  
+  <!-- <section>
+    <div
+      *ngIf="recentDataShow && recentDataShow.length && checkShowRecent()"
+      class="container">
+      <div class="row flexible" style="justify-content: space-between;">
+        <div class="recentHeader">
+          <div [ngClass]="selectedView === 'recentUpload' ? 'viewSelected' : ''" (click)="selectTab('recentUpload')" class="recentHeading">Recently Uploaded</div>
+          <div [ngClass]="selectedView === 'recentView' ? 'viewSelected' : ''" (click)="selectTab('recentView')" class="recentHeading">Recently Viewed</div>
+        </div>
+        <div class="col-xl-12 col-md-12">
+          <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfig"
+          >
+            <div ngxSlickItem *ngFor="let file of recentDataShow; let i = index" class="slide slickItem">
+              <document-card
+                [doc]="file"
+                [viewType]="viewType"
+                (onOpenPreview)="open(preview, file)"
+                (onSelect)="selectImage($event, file, i)"
+                (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+              </document-card>
+            </div>
+          </ngx-slick-carousel>
+        </div>
+      </div>
+
+      <div class="col-xl-12 col-md-12">
+        Favourites
+        <ngx-slick-carousel
+          class="carousel"
+          #slickModal="slick-carousel"
+          [config]="slideConfig"
+        >
+          <div ngxSlickItem *ngFor="let file of favourites; let i = index" class="slide slickItem">
+            <document-card
+              [doc]="file"
+              [viewType]="viewType"
+              (onOpenPreview)="open(preview, file)"
+              (onSelect)="selectImage($event, file, i)"
+              (onMarkFavourite)="markFavourite(file, 'recent')"
+              >
+            </document-card>
+          </div>
+        </ngx-slick-carousel>
+      </div>
     </div>
-    <div *ngIf="calculateNoResultScreen()" class="row" style="margin: 0px;">
+    <!-- <div *ngIf="calculateNoResultScreen()" class="row" style="margin: 0px;">
       <div class="col-xl-12 col-md-12 ">
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/binacxulor.svg" style="width: 50px;">
@@ -55,153 +136,134 @@
           <p class="searchcontent">Your recently viewed files will appear here.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </div> -/->
+  </section>-->
 
-  <section class="search-subpage pt-2 pb-5">
-    <div
-      *ngIf="!loading && !showRecentlyViewed && !videos.entries.length && !images.entries.length && !files.entries.length && !docs.length"
-      class="row">
-      <div class="col-xl-12 col-md-12 ">
-        <div class="text-center" style="height: 600px;">
-          <img src="../../assets/images/search.svg" style="width: 50px;">
-          <h2 class="noresult pb-3 pt-4">No results found</h2>
-          <p class="searchcontent">Try adjusting your search or filter to find what you are looking for.</p>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="videos.entries.length || images.entries.length || docs.length || files.entries.length"
-      class="container">
-      <div class="main-headingSearch flexible pb-4" style="align-items: baseline;">
-        <span class="commonHeading">{{searchTerm.ecm_fulltext}}</span>
-        <span class="numberFiles">{{(videos?.resultsCount || 0) + (images?.resultsCount || 0) + (files?.entries?.length ||
-          0)}} files</span>
-      </div>
-      <div class="row flexible" style="justify-content: space-between;">
+  <section class="search-subpage pt-5 pb-5">
+   
+    <div *ngIf="!checkShowRecent()" class="container">
+      <div class="row" style="justify-content: space-between">
+        <div class="main-headingSearch flexible pb-4 col-xl-6" style="align-items: baseline;">
+          <span *ngIf="searchTerm.ecm_fulltext" (click)="documents = ''" class="commonHeading" style="font-size: 28px; text-transform: capitalize; cursor: pointer;">{{searchTerm.ecm_fulltext}} <img src="../assets/images/circle-close.png" style="width: 14px;margin-left: 3px;"></span>
+          <!-- <span class="numberFiles">{{documents.resultsCount}} files</span> -->
+       </div>
+       
         <div class="col-xl-4">
-          <span><b>Sort by:</b> </span>
-          <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
-
-            <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'All assets'}}</button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
-              <button (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem
-                value='dc:created'>Created</button>
-              <button (click)="dropdownMenu($event); sortValue = 'Modified'" ngbDropdownItem
-                value='dc:modified'>Modified</button>
-              <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem
-                value='dc:lastContributor'>Last Contibutor</button>
-              <!-- <button (click)="dropdownMenu($event); sortValue = 'State'" ngbDropdownItem value='state'>State</button>
-              <button (click)="dropdownMenu($event); sortValue = 'Nature'" ngbDropdownItem value='dc:nature'>Nature</button>
-              <button (click)="dropdownMenu($event); sortValue = 'Coverage'" ngbDropdownItem value='dc:coverage'>Coverage</button> -->
+          <div class="row" style="">
+            <div class="col-xl-8">
+              <span><b>Sort by:</b> </span>
+              <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
+    
+                <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'All assets'}}</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
+                  <button (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem
+                    value='dc:created'>Created</button>
+                  <button (click)="dropdownMenu($event); sortValue = 'Modified'" ngbDropdownItem
+                    value='dc:modified'>Modified</button>
+                  <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem
+                    value='dc:lastContributor'>Last Contibutor</button>
+                  <!-- <button (click)="dropdownMenu($event); sortValue = 'State'" ngbDropdownItem value='state'>State</button>
+                  <button (click)="dropdownMenu($event); sortValue = 'Nature'" ngbDropdownItem value='dc:nature'>Nature</button>
+                  <button (click)="dropdownMenu($event); sortValue = 'Coverage'" ngbDropdownItem value='dc:coverage'>Coverage</button> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4">
+              <div id="view" class="e-btn-group flexible">
+                <div>
+                  <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked />
+                  <label class="e-btn" for="left"><img src="../../assets/images/gallery view.png"
+                      style="width: 22px;"></label>
+                </div>
+                <div>
+                  <input type="radio" (change)="viewChange($event)" id="right" name="align" value="list" />
+                  <label class="e-btn" for="right"><img src="../../assets/images/list view.png"
+                      style="width: 22px;"></label>
+                </div>
+              </div>
             </div>
           </div>
+          
+         
         </div>
-        <div class="col-xl-4">
-
-        </div>
+        
         <div class="col-xl-4 " style="float: right;">
           <!-- slider -->
           <!-- <div>
               <input type="checkbox" id="switch" class="checkbox" />
-              <label for="switch" class="toggle " >    
+              <label for="switch" class="toggle " >
                 <div class="flexible" style="justify-content: space-between;display: flex;">
-                  <p><img src="../../assets/images/mostrecent-1.svg" width="12">Most Recent</p>   <p><img src="../../assets/images/most-relevant.svg" width="12">Most Relevant</p>      
-                </div>  
+                  <p><img src="../../assets/images/mostrecent-1.svg" width="12">Most Recent</p>   <p><img src="../../assets/images/most-relevant.svg" width="12">Most Relevant</p>
+                </div>
               </label>
             </div> -->
 
           <!-- end -->
-          <div id="view" class="e-btn-group flexible">
-            <div>
-              <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked />
-              <label class="e-btn" for="left"><img src="../../assets/images/gallery view.png"
-                  style="width: 22px;"></label>
-            </div>
-            <div>
-              <input type="radio" (change)="viewChange($event)" id="right" name="align" value="list" />
-              <label class="e-btn" for="right"><img src="../../assets/images/list view.png"
-                  style="width: 22px;"></label>
+         
+        </div>
+      
+      </div>
+      
+   
+
+      <div class="filterMenuRow">
+        <div ngbDropdown class="d-inline-block mb-4 sectorsDropdown">
+          <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'Select a sector'}}</button>
+          <!-- <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
+            <button (click)="dropdownMenu($event); sortValue = 'Picture'" ngbDropdownItem
+              value='dc:created'>Created</button>
+            <button (click)="dropdownMenu($event); sortValue = 'Video'" ngbDropdownItem
+              value='dc:modified'>Modified</button>
+            <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem
+              value='dc:lastContributor'>Last Contibutor</button>
+            <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem
+              value='dc:lastContributor'>Last Contibutor</button>
+          </div> -->
+          <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+            <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{sectorSelected || 'All sectors'}} </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownManual" class="sectorDropMain" style="z-index: 1;top: -3px;">
+              <button ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(null)">All sectors</button>
+              <button *ngFor="let sector of sectors" ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(sector)">{{sector}}</button>
             </div>
           </div>
         </div>
+        <div class="typeSelections">
+          <div [ngClass]="selectedType === 'all' ? 'viewSelected' : ''" (click)="selectType('all')" class="recentHeading">All <span class="itemCount">{{count()}}</span></div>
+          <div [ngClass]="selectedType === 'Picture' ? 'viewSelected' : ''" (click)="selectType('Picture')" class="recentHeading">Images <span class="itemCount">{{count('Picture')}}</span></div>
+          <div [ngClass]="selectedType === 'Video' ? 'viewSelected' : ''" (click)="selectType('Video')" class="recentHeading">Videos <span class="itemCount">{{count('Video')}}</span></div>
+          <div [ngClass]="selectedType === 'File' ? 'viewSelected' : ''" (click)="selectType('File')" class="recentHeading">Documents <span class="itemCount">{{count('File')}}</span></div>
+        </div>
+        <div class="moreFilter">
+          <label (click)="openAdvancedFilter()" class="e-btn" style="opacity: 1" ><img src="../../assets/images/IconFilters.svg"
+            style="width: 20px;"></label>
+          <span>More filters</span>
+        </div>
       </div>
 
-      <!-- <div *ngIf="tagsMetadata && tagsMetadata.buckets && tagsMetadata.buckets.length > 0">
-        <span>Related Tags:</span>
-        <div class="tags-metadata pb-5">
-          <ul class="flexible">
-            <li *ngFor="let bucket of tagsMetadata.buckets; let i = index">
-              <a style="cursor: pointer;" >{{bucket.key}} ({{bucket.docCount}})</a>
-            </li>
-          </ul>
-        </div>
-      </div> -->
-
-      <div *ngIf="getDataLength(images.entries, 'picture')" class="row">
-        <div class="col-xl-12 flexible" style="justify-content: space-between;">
-          <p class="imgHead pb-4">Images</p>
-          <a class="fileCount pb-4">{{images.resultsCount}} images</a>
-        </div>
-        <!-- Gallery -->
-
-        <!-- <ul *ngIf="!showListView" class="set-width portfolio-list"
-          style="list-style: none;margin: unset; padding: 0; align-items: unset;">
-          <li *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
-
-
-            <div class="cardBlock pa-0" style="">
-              <div class="cardBlockContent">
-                <div class="row">
-                  <div (click)="open(preview, image, 'image')" class="col-xl-12 col-md-12">
-                      <img src="{{getAssetUrl(image.contextParameters.thumbnail.url)}}" class="w-100 shadow-1-strong" alt=""/>
-                      </div>
-                </div>
-              </div>
-              <div [ngClass]="{'activeHover': image.isSelected}">
-               
-                    <div class="form-group-custom">
-                      <input type="checkbox" id="html{{i}}"  [checked]="image.isSelected" [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
-                      <label for="html{{i}}"></label>
-                    </div>
-                    <div class="hover-icon-group">
-                      <div class="hover-icon star-icon" [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"></div>
-                      <div class="hover-icon plus-icon" (click)="open(preview, image, 'image')"></div>
-                      <a class="hover-icon download-icon" href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
-                    </div>
-                    <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
-              </div>
-            </div>
-          </li>
-        </ul> -->
-
+      <div class="row">
         <div *ngIf="!showListView">
           <div class="row">
             <div class="col-xl-12 col-md-12">
-              <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)">
+              <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
+                <div ngxMasonryItem class="masonry-item" *ngFor="let doc of masonryImg; let i = index">
+                  <img src="{{doc.url}}" alt="" />
+                </div>
+              </ngx-masonry> -->
+
+
+              <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
                 <div ngxMasonryItem class="masonry-item"
-                  *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
-                  <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)"
-                    alt="{{image.properties['dc:title']}}" (click)="open(preview, image, 'image')" />
-                  <div class="cardBlock newDesign pa-0">
-                    <div [ngClass]="{'activeHover': image.isSelected}">
-                      <div class="form-group-custom">
-                        <input type="checkbox" id="html{{i}}" [checked]="image.isSelected"
-                          [(ngModel)]="image.isSelected" (change)="selectImage($event, image, i)">
-                        <label for="html{{i}}"></label>
-                      </div>
-                      <div class="hover-icon-group">
-                        <div class="hover-icon star-icon"
-                          [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"
-                          (click)="markFavourite(image, false)"></div>
-                        <div class="hover-icon plus-icon" placement="top"
-                          ngbTooltip="This function will be available soon" style="cursor: not-allowed;">
-                        </div>
-                        <a class="hover-icon download-icon"
-                          href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
-                      </div>
-                      <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
-                    </div>
-                  </div>
+                  *ngFor="let doc of documents.entries.slice(0, docSliceInput); let i = index">
+                  <!-- <img *ngIf="doc.type === 'Picture" id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt=""
+                (click)="open(preview, file, 'image')" /> -->
+                  <document-card
+                    [doc]="doc"
+                    [viewType]="viewType"
+                    (onOpenPreview)="open(preview, doc)"
+                    (onSelect)="selectImage($event, doc, i)"
+                    (onMarkFavourite)="markFavourite(doc, false)"
+                    >
+                  </document-card>
                 </div>
               </ngx-masonry>
             </div>
@@ -211,273 +273,30 @@
         <div class="col-xl-12 col-md-12">
           <div *ngIf="showListView" class="card-view">
             <ul class="flexible">
-              <li *ngFor="let image of images.entries.slice(0, imageSliceInput); let i = index">
-                <div class="cardBlock" style="border-radius: 8px;">
-                  <div class="cardBlockContent">
-                    <div class="row">
-                      <div class="col-xl-6 col-md-6" style="position: relative;">
-                        <p>{{image.properties['dc:title']}}</p>
-                        <div class="username">
-                          <span>
-                            <img src="../../assets/images/black-user.png">
-                          </span>
-                          {{image.properties['dc:creator'].id}}
-                        </div>
-                      </div>
-                      <div (click)="open(preview, image, 'image')" class="col-xl-6 col-md-6">
-                        <img src (error)="getAssetUrl($event, image.contextParameters.thumbnail.url)"
-                          class="w-100 shadow-1-strong rounded listViewImg"
-                          style="width: 100%;border-radius: 8px !important;" alt="" />
-
-                      </div>
-                    </div>
-                  </div>
-                  <div [ngClass]="{'activeHover': image.isSelected}">
-
-                    <div class="form-group-custom">
-                      <input type="checkbox" id="html{{i}}" [checked]="image.isSelected" [(ngModel)]="image.isSelected"
-                        (change)="selectImage($event, image, i)">
-                      <label for="html{{i}}"></label>
-                    </div>
-
-                    <div class="hover-icon-group">
-                      <div class="hover-icon star-icon"
-                        [ngClass]="{'active': image.contextParameters.favorites.isFavorite}"
-                        (click)="markFavourite(image, false)"></div>
-                      <div class="hover-icon plus-icon" placement="top"
-                        ngbTooltip="This function will be available soon" style="cursor: not-allowed;">
-                      </div>
-                      <a class="hover-icon download-icon"
-                        href="{{findOriginalUrlFromViews(image.properties['picture:views'])}}"></a>
-                    </div>
-                    <div class="mouse-hover-bg" (click)="open(preview, image, 'image')"></div>
-
-                  </div>
-                </div>
+              <li *ngFor="let doc of documents.entries.slice(0, docSliceInput); let i = index">
+              <document-card
+                [doc]="doc"
+                [viewType]="viewType"
+                (onOpenPreview)="open(preview, doc)"
+                (onSelect)="selectImage($event, doc, i)"
+                (onMarkFavourite)="markFavourite(doc, false)"
+                >
+              </document-card>
               </li>
             </ul>
           </div>
         </div>
-        <div *ngIf="!hideImageShowMoreBtn" (click)="showMore('image')"
+        <div *ngIf="!hideShowMoreBtn" (click)="showMore()"
           style="text-align: center; cursor: pointer;color: #8E6B0B;">Show more</div>
       </div>
-      <div *ngIf="getDataLength(videos.entries, 'video')" class="row pt-5">
-        <div class="col-xl-12 flexible" style="justify-content: space-between;">
-          <p class="imgHead pb-4">Videos</p>
-          <a class="fileCount pb-4">{{videos.resultsCount}} videos</a>
+    </div>
+    <div *ngIf="!loading && !documents?.entries && !checkShowRecent()" class="row">
+      <div class="col-xl-12 col-md-12 ">
+        <div class="text-center" style="height: 600px;">
+          <img src="../../assets/images/search.svg" style="width: 50px;">
+          <h2 class="noresult pb-3 pt-4">No results found</h2>
+          <p class="searchcontent">Try adjusting your search or filter to find what you are looking for.</p>
         </div>
-
-        <div class="col-xl-12" *ngIf="!showListView">
-          <!--  *ngIf="!showListView" -->
-          <ul class="flexible videosList">
-            <li *ngFor="let v of videos.entries.slice(0, videoSliceInput); let i = index" class="">
-              <a href="javascript:void(0);" (click)="open(preview, v, 'video')" class="videoIconn">
-                <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)">
-              </a>
-              <div class="cardBlock newDesign pa-0">
-                <div [ngClass]="{'activeHover': v.isSelected}">
-                  <div class="form-group-custom">
-                    <input type="checkbox" id="video-{{i}}" [checked]="v.isSelected" [(ngModel)]="v.isSelected"
-                      (change)="selectImage($event, v, i)">
-                    <label for="video-{{i}}"></label>
-                  </div>
-                  <div class="hover-icon-group">
-                    <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
-                      (click)="markFavourite(v, 'recent')"></div>
-                    <div class="hover-icon plus-icon" title="Coming soon"></div>
-                    <a class="hover-icon download-icon" href="{{v?.properties['file:content']?.data || ''}}"></a>
-                  </div>
-                  <div class="mouse-hover-bg" (click)="open(preview, v, 'video')"></div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="col-xl-12 col-md-12">
-          <div *ngIf="showListView" class="card-view">
-            <ul class="flexible videosList1">
-              <li *ngFor="let v of videos.entries.slice(0, videoSliceInput); let i = index">
-                <div class="cardBlock" style="border-radius: 8px;">
-                  <div class="cardBlockContent">
-                    <div class="row">
-                      <div class="col-xl-6 col-md-6" style="position: relative;">
-                        <p>{{v.properties['dc:title']}}</p>
-                        <div class="username">
-                          <span>
-                            <img src="../../assets/images/black-user.png">
-                          </span>
-                          {{v.properties['dc:creator'].id}}
-                        </div>
-                      </div>
-                      <div class="col-xl-6 col-md-6">
-                        <a href="javascript:void(0);" (click)="open(preview, v, 'video')">
-                          <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)"
-                            class="w-100 shadow-1-strong rounded listViewImg"
-                            style="width: 100%;border-radius: 8px !important;">
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div [ngClass]="{'activeHover': v.isSelected}">
-
-                    <div class="form-group-custom">
-                      <input type="checkbox" id="video-{{i}}" [checked]="v.isSelected" [(ngModel)]="v.isSelected"
-                        (change)="selectImage($event, v, i)">
-                      <label for="video-{{i}}"></label>
-                    </div>
-
-                    <div class="hover-icon-group">
-                      <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
-                        (click)="markFavourite(v, false)"></div>
-                      <div class="hover-icon plus-icon"></div>
-                      <a class="hover-icon download-icon" href="{{v.properties['file:content'].data || ''}}"></a>
-                    </div>
-                    <div class="mouse-hover-bg" (click)="open(preview, v, 'video')"></div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- TODO: video card view -->
-        <!-- <div class="col-xl-12 col-md-12">
-            <div *ngIf="showListView" class="card-view">
-              <ul class="flexible">
-                <li *ngFor="let v of videos.slice(0, videoSliceInput); let i = index">
-                  <div class="row">
-                    <div class="col-xl-6 col-md-6" style="position: relative;">
-                      <p>{{v.properties['dc:title']}}</p>
-                      <div class="username">
-                        <a href="{{baseUrl}}/nuxeo/ui/#!/browse{{v.path}}">
-                          <img src="{{getAssetUrl(v.contextParameters.thumbnail.url)}}">
-                        </a>
-                        {{v.properties['dc:creator'].id}}
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div> -->
-
-
-        <div *ngIf="!hideVideoShowMoreBtn" (click)="showMore('video')"
-          style="text-align: center; cursor: pointer;color: #8E6B0B;">
-          Show more</div>
-
-      </div>
-      <div *ngIf="getDataLength(files.entries, 'file')" class="row pt-5">
-        <div class="col-xl-12 flexible" style="justify-content: space-between;">
-          <p class="imgHead pb-4">Files</p>
-          <a class="fileCount pb-4">{{files?.entries?.length || 0}} files</a>
-        </div>
-
-        <div class="col-xl-12" *ngIf="!showListView">
-          <ul class="flexible videosList">
-            <li *ngFor="let v of files.entries.slice(0, fileSliceInput); let i = index" class="">
-              <a href="javascript:void(0);" (click)="open(preview, v, 'file')">
-                <!--  (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)" src="../../assets/images/Pin_16.png"-->
-                <img  src="../../assets/images/pdf.png">
-                
-              </a>
-              <div class="pdfWhiteBlock">
-                <div class="flexible pb-2" style="justify-content: space-between ;">
-                  <p>{{v.title}}</p>
-                  <div style="display: inline-grid;
-                  text-align: center;">
-                    <img src="../../assets/images/Read.svg" style="    width: 26px;
-                    margin: auto;">
-                    <!-- <span>3 mins</span> -->
-                  </div>
-                  
-                </div>
-                <span>{{v['dc:description']}}</span>
-              </div>
-              <div class="cardBlock newDesign pa-0">
-                <div [ngClass]="{'activeHover': v.isSelected}">
-                  <div class="form-group-custom">
-                    <input type="checkbox" id="file-{{i}}" [checked]="v.isSelected" [(ngModel)]="v.isSelected"
-                      (change)="selectImage($event, v, i)">
-                    <label for="file-{{i}}"></label>
-                  </div>
-                  <div class="hover-icon-group">
-                    <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
-                      (click)="markFavourite(v, 'recent')"></div>
-                    <div class="hover-icon plus-icon" title="Coming soon"></div>
-                    <a class="hover-icon download-icon" href="{{v?.properties['file:content']?.data}}"></a>
-                  </div>
-                  <div class="mouse-hover-bg" (click)="open(preview, v, 'file')"></div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="col-xl-12 col-md-12">
-          <div *ngIf="showListView" class="card-view">
-            <ul class="flexible videosList1">
-              <li *ngFor="let v of files.entries.slice(0, fileSliceInput); let i = index">
-                <div class="cardBlock" style="border-radius: 8px;">
-                  <div class="cardBlockContent">
-                    <div class="row">
-                      <div class="col-xl-6 col-md-6" style="position: relative;">
-                        <p>{{v.properties['dc:title']}}</p>
-                        <div class="username">
-                          <span>
-                            <img src="../../assets/images/black-user.png">
-                          </span>
-                          {{v.properties['dc:creator'].id}}
-                        </div>
-                      </div>
-                      <div class="col-xl-6 col-md-6">
-                        <a href="javascript:void(0);" (click)="open(preview, v, 'file')">
-                          <img src (error)="getAssetUrl($event, v.contextParameters.thumbnail.url)"
-                            class="w-100 shadow-1-strong rounded listViewImg"
-                            style="width: 100%;border-radius: 8px !important; max-width: 250px;">
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div [ngClass]="{'activeHover': v.isSelected}">
-
-                    <div class="form-group-custom">
-                      <input type="checkbox" id="file-{{i}}" [checked]="v.isSelected" [(ngModel)]="v.isSelected"
-                        (change)="selectImage($event, v, i)">
-                      <label for="file-{{i}}"></label>
-                    </div>
-
-                    <div class="hover-icon-group">
-                      <div class="hover-icon star-icon" [ngClass]="{'active': v.contextParameters.favorites.isFavorite}"
-                        (click)="markFavourite(v, false)"></div>
-                      <div class="hover-icon plus-icon"></div>
-                      <a class="hover-icon download-icon" href="{{v?.properties['file:content']?.data}}"></a>
-                    </div>
-                    <div class="mouse-hover-bg" (click)="open(preview, v, 'file')"></div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div *ngIf="!hideFileShowMoreBtn" (click)="showMore('file')"
-          style="text-align: center; cursor: pointer;color: #8E6B0B;">
-          Show more</div>
-
-        <!-- <div *ngIf="getDataLength(docs, 'docs')" class="row pt-5">
-          <div class="col-xl-12 flexible" style="justify-content: space-between;">
-            <p class="imgHead pb-4">Documents</p>
-            <a class="fileCount pb-4" href="#">{{docs.length}} documents</a>
-          </div>
-          <div class="col-xl-12">
-            <ul class="flexible docList">
-              <li *ngFor="let doc of docs" class="">
-                <a href="{{redirectBaseUrl}}/nuxeo/ui/#!/browse{{doc.path}}">
-                  <img src="../../assets/images/Pin_16.png">
-                </a>
-              </li>
-            </ul>
-          </div>
-
-        </div> -->
       </div>
     </div>
   </section>
@@ -502,10 +321,10 @@
             <ul class="flexible">
               <li class="customtooltip">
                 <a placement="bottom" ngbTooltip="Favourite">
-                  <img *ngIf="selectedFile.contextParameters.favorites.isFavorite"
+                  <img *ngIf="selectedFile.contextParameters.favorites?.isFavorite"
                     (click)="markFavourite(selectedFile, false)" src="../../assets/images/yellow-star.svg">
-                  <img *ngIf="!selectedFile.contextParameters.favorites.isFavorite"
-                    (click)="markFavourite(selectedFile, true)" src="../../assets/images/blackstar.svg">
+                  <img *ngIf="!selectedFile.contextParameters.favorites?.isFavorite"
+                    (click)="markFavourite(selectedFile, true)" src="../../assets/images/star-white.svg">
                 </a>
               </li>
               <li class="">
@@ -544,13 +363,9 @@
         <div *ngIf="selectedFile.type === 'Video'" style="height: 600;position: relative;">
 
           <video controls style="width: 100%; height: 600px;" src (error)="getAssetUrl($event, selectedFileUrl)">
-            <!-- <source src="{{selectedFileUrl}}"> -->
-            <!-- <source> -->
-          </video> 
+          </video>
         </div>
         <div *ngIf="selectedFile.type === 'File'">
-          <!-- [src]="getAssetUrl(null, selectedFileUrl) | safe" -->
-          <!-- <iframe style="width: 100%; height: 600px;" [src]="getAssetUrl(null, selectedFileUrl) | safe"></iframe> -->
           <pdf-viewer [src]="getAssetUrl(null, selectedFileUrl)"
               [render-text]="true"
               style="display: block; width: 100%; height: 600px;"
@@ -561,7 +376,6 @@
               (after-load-complete)="afterFileLoad($event)"
               (pages-initialized)="pageInitialized($event)"
           ></pdf-viewer>
-          <!-- <div ()="getAssetUrl($event, selectedFileUrl) | safe"></div> -->
         </div>
         <div class="myTabContentMain" [ngClass]="{'hide': !showShadow}">
           <div class="tab-content myTabContent" id="myTabContent">

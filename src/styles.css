@@ -3,6 +3,7 @@
 @import url('./../node_modules/bootstrap/dist/css/bootstrap.min.css');
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+@import '~angular-tree-component/dist/angular-tree-component.css';
 /* @import '~ngx-bar-rating/themes/br-default-theme.css';
 @import '~ngx-bar-rating/themes/br-horizontal-theme.css';
 @import "../node_modules/c3/c3.min.css";
@@ -3665,6 +3666,27 @@ img:not([src]) {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+
+/* Tree Css */
+.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-children {
+    background-size: 14px !important;
+    background: url(./assets/images/folder.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 24px;
+}
+
+.toggle-children-wrapper.toggle-children-wrapper-expanded span.toggle-children {
+  background-size: 14px !important;
+  background: url(./assets/images/open-folder.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 24px;
+  transform: unset;
+}
+
 .custom-date-picker .mat-form-field-appearance-fill .mat-form-field-flex {
   border-radius: 0 !important;
   padding: 0px !important;
@@ -3697,3 +3719,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .custom-date-picker .mat-form-field {
   margin-top: -10px;
 }
+/* Custom tabs css start 12-Nov-2021 */
+.customTab .slick-next {
+  right: -10px !important;
+  top: -40px !important;
+}
+.customTab .slick-prev, .customTab .slick-next {
+  height: 40px !important;
+  width: 40px !important;
+}
+.customTab .slick-prev {
+  left: auto;
+  right: 35px;
+  top: -40px;
+}
+.customTab .slick-prev:before, .customTab .slick-next:before {
+  content: "\f104";
+  font: normal normal normal 14px/1 FontAwesome;
+  color: #000;
+  font-size: 40px;
+  width: 40px;
+  display: block;
+  line-height: 40px;
+}
+.customTab .slick-next:before {
+  content: "\f105";
+}
+/* Custom tabs css end 12-Nov-2021 */

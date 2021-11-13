@@ -22,33 +22,24 @@ import { DataService } from '../services/data.service';
   templateUrl: './document.template.html'
 })
 export class DocumentComponent implements OnInit, OnChanges {
-  @Input() images: any;
-  @Input() videos: any;
-  @Input() audio: any;
-  @Input() files: any;
+  @Input() documents: any;
   @Input() searchTerm: { ecm_fulltext: string };
   // @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
+  @Output() selectDocType: EventEmitter<any> = new EventEmitter();
+  @Output() openFilterModal: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('videoPlayer') videoplayer: ElementRef;
 
-  // images = [];
-  // videos = [];
-  // audio = [];
   docs = [];
   private searchCriteria: IHeaderSearchCriteria = {};
   public display = 1;
-  imageSliceInput = 9;
-  videoSliceInput = 6;
-  fileSliceInput = 6;
-  hideImageShowMoreBtn = true;
-  hideVideoShowMoreBtn = true;
-  hideFileShowMoreBtn = true;
-  // redirectBaseUrl = environment.redirectBaseUrl;
-  // baseUrl = environment.apiServiceBaseUrl;
+  docSliceInput = 9;
+  hideShowMoreBtn = true;
   showListView = false;
+  viewType = 'GRID';
   closeResult = '';
   selectedFile: any; // TODO: add interface, search result entires
   selectedFileUrl: string;
@@ -60,35 +51,30 @@ export class DocumentComponent implements OnInit, OnChanges {
   comments = [];
   commentText: string;
   recentlyViewed = [];
+  recentUpdated = [];
+  recentDataShow = [];
   fileSelected = [];
   sortValue = '';
   activeTabs = { comments: false, info: false, timeline: false };
-  
+
+  slideConfig = {
+    arrows: true,
+    dots: false,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 5,
+    centerMode: false,
+    variableWidth: true
+  };
+  selectedView = 'recentUpload';
+  selectedType = 'all';
+
   // /* <!-- sprint12-fixes start --> */
   public myOptions = {
     gutter: 10,
     resize: true
   };
   public updateMasonryLayout = false;
-  // /* <!-- sprint12-fixes end --> */
-  // public myOptions = {
-  //   gutter: 10,
-    // itemSelector: "#fileId",
-    // columnWidth: "#fileId",
-    // horizontalOrder: true,
-    // fitWidth: true,
-    // percentPosition: true,
-    // animations: {
-    //   show: [
-    //   style({opacity: 0}),
-    //   animate('400ms ease-in', style({opacity: 1})),
-    // ],
-    // hide: [
-    //   style({opacity: '*'}),
-    //   animate('400ms ease-in', style({opacity: 0})),
-    // ]
-  // }
-  // };
   showRecentlyViewed = true;
   baseUrl = environment.apiServiceBaseUrl;
   tags = [];
@@ -96,6 +82,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   showTagInput = false;
   loading: boolean;
   modalLoading = false;
+  sectors: string[] = [];
+  sectorSelected;
+  favourites = [];
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -109,6 +98,8 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED) || '[]');
+    this.getRecentUpdated();
+    this.getFavorites();
     this.showRecentlyViewed = true;
     this.dataService.showHideLoader$.subscribe((value) => {
       this.loading = value;
@@ -117,112 +108,101 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.sharedService.getSidebarToggle().subscribe(() => {
       this.updateMasonryLayout = !this.updateMasonryLayout;
     });
+
+    this.dataService.sectorChanged$.subscribe((sectors: any) => {
+      this.sectors = sectors;
+    });
     // /* <!-- sprint12-fixes end --> */
   }
 
   ngOnChanges(changes: any) {
     this.recentlyViewed = [];
-    // console.log('metaDataTags = ', this.tagsMetadata);
-    // this.resetValues();
-    if (changes.images) {
-      // if(changes.images?.currentValue?.currentPageIndex && changes.images?.currentValue?.currentPageIndex === 0) {
-      this.images = changes.images.currentValue;
-      if (!this.images.length) this.showRecentlyViewed = false;
-      // }
-      // else if(changes.images?.currentValue?.currentPageIndex > 0) {
-      //   this.images.entries.concat(changes.images.currentValue.entries);
-      //   this.images.currentPageIndex = changes.images.currentValue.currentPageIndex;
-      // }
-    }
-    if (changes.videos) {
-      this.videos = changes.videos.currentValue;
-      if (!this.videos.length) this.showRecentlyViewed = false;
-    }
-    if (changes.audio) {
-      this.audio = changes.audio.currentValue;
-    }
-    if (changes.files) {
-      this.files = changes.files.currentValue;
-    }
-    // this.resetValues();
-    // this.segregateDocuments(changes.documents.currentValue);
-    if (this.imageSliceInput >= this.images.entries.length) {
-      this.hideImageShowMoreBtn = true;
-    } else {
-      this.hideImageShowMoreBtn = false;
-    }
-    if (this.videoSliceInput >= this.videos.entries.length) {
-      this.hideVideoShowMoreBtn = true;
-    } else {
-      this.hideVideoShowMoreBtn = false;
+    if (changes.documents) {
+      this.documents = changes.documents.currentValue;
     }
 
-    if (this.fileSliceInput >= this.files.entries.length) {
-      this.hideFileShowMoreBtn = true;
+    if (this.docSliceInput >= this.documents?.entries.length) {
+      this.hideShowMoreBtn = true;
     } else {
-      this.hideFileShowMoreBtn = false;
+      this.hideShowMoreBtn = false;
     }
 
     return;
   }
 
+  
+  getFavorites() {
+    try {
+    this.apiService.post(apiRoutes.FAVORITE_FETCH, { context: {}, params: {} })
+      .subscribe((response: any) => {
+        if(response) this.getFavouriteCollection(response.uid);
+
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
+      });
+    } catch(error) {
+        this.loading = false;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        return;
+      }
+  }
+
+  getFavouriteCollection(favouriteUid: string) {
+    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch.document': 'properties', properties: '*' };
+    this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
+      .then((response) => {
+        if(response) this.favourites = response?.entries;
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
+      })
+      .catch((error) => {
+        this.loading = false;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        return;
+      });
+  }
+  
+  sectorSelect(value: string) {
+    this.sectorSelected = value;
+    this.dataService.sectorChange(value);
+  }
+
   calculateNoResultScreen() {
-    return !this.loading && this.showRecentlyViewed && !this.recentlyViewed.length && !this.videos.entries.length && !this.images.entries.length && !this.docs.length;
+    return !this.loading && this.recentDataShow && !this.recentDataShow.length && !this.documents?.entries.length;
   }
 
   getDataLength(data: any, primaryType: string) {
-    if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
-      if (this.imageSliceInput >= this.images.entries.length) {
-        this.hideImageShowMoreBtn = true;
-      } else {
-        this.hideImageShowMoreBtn = false;
-      }
-    }
-
-    if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
-      if (this.videoSliceInput >= this.videos.entries.length) {
-        this.hideVideoShowMoreBtn = true;
-      } else {
-        this.hideVideoShowMoreBtn = false;
-      }
-    }
-
-    if (primaryType.toLowerCase() === constants.FILE_SMALL_CASE) {
-      if (this.fileSliceInput >= this.files.entries.length) {
-        this.hideFileShowMoreBtn = true;
-      } else {
-        this.hideFileShowMoreBtn = false;
-      }
+    if (this.docSliceInput >= this.documents.entries.length) {
+      this.hideShowMoreBtn = true;
+    } else {
+      this.hideShowMoreBtn = false;
     }
     return data.length;
   }
 
   resetValues() {
-    this.images = [];
-    this.videos = [];
-    this.audio = [];
-    this.docs = [];
-    this.files = [];
+    this.documents = [];
     return;
   }
 
   selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
-    if (event.target.checked) {
-      // if (isRecent) {
-      // file['isChecked'] = true;
-      // } else {
-      //   file['isChecked'] = true;
-      // }
+    if (event.checked || event.target?.checked) {
       this.fileSelected.push(file);
     } else {
       if (this.fileSelected.length) {
         let i = -1;
-        // if (isRecent) {
-        // file['isChecked'] = false;
-        // } else {
-        //   file['isChecked'] = false;
-        // }
-        this.fileSelected.map((item, ind) => {
+        this.fileSelected.forEach((item, ind) => {
           if (item.uid === file.uid) {
             i = ind;
           }
@@ -235,7 +215,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   clearSelected() {
-    const dataToIterate = !this.images.length ? this.recentlyViewed : this.images;
+    const dataToIterate = !this.documents.length ? this.recentlyViewed : this.documents;
     for (let i = 0; i < this.fileSelected.length; i++) {
       for (let j = 0; j < dataToIterate.length; j++) {
         if (dataToIterate[j].uid === this.fileSelected[i].uid) {
@@ -245,28 +225,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
     this.fileSelected = [];
     return;
-  }
-
-  segregateDocuments(documents: any[]): void {
-    documents.forEach(item => {
-      item['isSelected'] = false;
-      switch (item.type.toLowerCase()) {
-        case constants.AUDIO_SMALL_CASE:
-          this.audio.push(item);
-          break;
-        case constants.PICTURE_SMALL_CASE:
-          this.images.push(item);
-          break;
-        case constants.VIDEO_SMALL_CASE:
-          this.videos.push(item);
-          break;
-        case constants.FILE_SMALL_CASE:
-          this.files.push(item);
-          break;
-        default:
-          this.docs.push(item);
-      }
-    });
   }
 
   dropdownMenu(event: any): void {
@@ -281,44 +239,16 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.emitData(this.searchCriteria);
   }
 
-  showMore(docType: string) {
-
-    if (docType === constants.IMAGE_SMALL_CASE) {
-      this.imageSliceInput += 9;
-
-      if (this.imageSliceInput >= this.images.entries.length) {
-        this.pageCount.emit({ pageNumber: ++this.images.currentPageIndex, primaryType: 'Picture' });
-        this.hideImageShowMoreBtn = true;
-      }
-      else if (this.imageSliceInput >= this.images.resultsCount) {
-        this.hideImageShowMoreBtn = false;
-      }
-      return;
+  showMore() {
+    this.docSliceInput += 9;
+    if (this.docSliceInput >= this.documents.entries.length) {
+      this.pageCount.emit({ pageNumber: ++this.documents.currentPageIndex });
+      this.hideShowMoreBtn = false;
     }
-
-    if (docType === constants.VIDEO_SMALL_CASE) {
-      this.videoSliceInput += 9;
-      if (this.videoSliceInput >= this.videos.entries.length) {
-        this.pageCount.emit({ pageNumber: ++this.videos.currentPageIndex, primaryType: 'Video' });
-        this.hideVideoShowMoreBtn = false;
-      }
-      else if (this.imageSliceInput >= this.videos.resultsCount) {
-        this.hideVideoShowMoreBtn = true;
-      }
-      return;
+    else if (this.docSliceInput >= this.documents.resultsCount) {
+      this.hideShowMoreBtn = true;
     }
-
-    if (docType === constants.FILE_SMALL_CASE) {
-      this.fileSliceInput += 9;
-      if (this.fileSliceInput >= this.files.entries.length) {
-        this.pageCount.emit({ pageNumber: ++this.files.currentPageIndex, primaryType: 'File' });
-        this.hideFileShowMoreBtn = false;
-      }
-      else if (this.fileSliceInput >= this.files.resultsCount) {
-        this.hideFileShowMoreBtn = true;
-      }
-      return;
-    }
+    return;
   }
 
   emitData(data: IHeaderSearchCriteria): void {
@@ -337,25 +267,28 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
 
     const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    this.loading = true;
+    this.modalLoading = true;
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {
         if (r.status === 401) {
           localStorage.removeItem('token');
           this.router.navigate(['login']);
-          this.loading = false;
+          
+          this.modalLoading = false;
           return;
         }
         return r.blob();
       })
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
-        this.loading = false;
+        
+    this.modalLoading = false;
         // event.target.src = new Blob(d);
       }
       ).catch(e => {
         // TODO: add toastr with message 'Invalid token, please login again'
-          this.loading = false;
+          
+          this.modalLoading = false;
           console.log(e);
         // if(e.contains(`'fetch' on 'Window'`)) {
         //   this.router.navigate(['login']);
@@ -368,6 +301,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   completeLoadingMasonry(event: any) {
+    this.masonry.reloadItems();
     this.masonry.layout();
   }
 
@@ -391,29 +325,38 @@ export class DocumentComponent implements OnInit, OnChanges {
   viewChange(e: any): void {
     if (e.target.value.toLowerCase() === 'list') {
       this.showListView = true;
+      this.viewType = 'LIST';
       return;
     }
     this.showListView = false;
+    this.viewType = 'GRID';
 
   }
 
   // added for modal
-  open(content, file, fileType: string): void {
+  open(content, file, fileType?: string): void {
     this.showShadow = false;
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
     this.activeTabs.info = false;
     let fileRenditionUrl;
     this.selectedFile = file;
+    // if (!fileType) {
+      switch (fileType) {
+        case 'Picture':
+          fileType = 'image';
+          break;
+        case 'Video':
+          fileType = 'video';
+          break;
+        default:
+          fileType = 'file';
+          break;
+      }
+    // }
     if(fileType === 'image') {
       this.markRecentlyViewed(file);
 
-      // file.contextParameters.renditions.map(item => {
-      //   if (item.url.toLowerCase().includes('original')) {
-      //     fileRenditionUrl = item.url;
-      //   }
-      // });
-      
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
@@ -423,6 +366,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
       // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
       fileRenditionUrl = file.properties['file:content'].data;
+      // fileRenditionUrl = url;
     }
     this.selectedFileUrl = fileType === 'image' ? this.getAssetUrl(null, fileRenditionUrl) : fileRenditionUrl;
     // if(fileType === 'file') {
@@ -725,6 +669,55 @@ export class DocumentComponent implements OnInit, OnChanges {
   //       break;
   //   }
   // }
+
+  selectTab(tab) {
+    this.selectedView = tab;
+    if (tab === "recentUpload") {
+      this.recentDataShow = [...this.recentUpdated];
+    } else {
+      this.recentDataShow = [...this.recentlyViewed];
+    }
+  }
+
+  selectType(type) {
+    this.selectedType = type;
+    this.selectDocType.emit(type);
+  }
+
+  openAdvancedFilter() {
+    this.openFilterModal.emit(this.selectedType);
+  }
+
+  count(type?: string) {
+    if (!type) {
+      let total = 0;
+      this.documents.aggregations.system_primaryType_agg.extendedBuckets.forEach(b => {
+        total += b.docCount;
+      });
+      return total;
+    }
+    const bucket = this.documents.aggregations.system_primaryType_agg.extendedBuckets.find(b => b.key === type);
+    return bucket?.docCount || 0;
+  }
+
+  checkShowRecent() {
+    if (this.documents && this.documents["entity-type"]) return false;
+    return true;
+  }
+
+  async getRecentUpdated() {
+    const query = "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND "
+      + "ecm:isTrashed = 0 AND (ecm:primaryType IN ('File') OR ecm:mixinType IN ('Picture', 'Audio', 'Video')) ORDER BY dc:created DESC";
+    const params = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 20,
+      queryParams: query
+    };
+    const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
+    this.recentUpdated = res["entries"].map(e => e);
+    this.recentDataShow = [...this.recentUpdated];
+  }
 
 
 }

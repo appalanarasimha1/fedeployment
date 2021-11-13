@@ -31,9 +31,9 @@ export class HeaderComponent implements OnInit {
           this.showBrowseHeader = false;
         }
         if (event.url === '/') {
-          this.searchHeader = false;
-        } else {
           this.searchHeader = true;
+        } else {
+          this.searchHeader = false;
         }
       }
     });
@@ -45,9 +45,9 @@ export class HeaderComponent implements OnInit {
     }
 
     if (window.location.pathname === '/') {
-      this.searchHeader = false;
-    } else {
       this.searchHeader = true;
+    } else {
+      this.searchHeader = false;
     }
 
   }
