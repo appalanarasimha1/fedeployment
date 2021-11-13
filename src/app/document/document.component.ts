@@ -301,8 +301,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   completeLoadingMasonry(event: any) {
-    this.masonry.reloadItems();
-    this.masonry.layout();
+    this.masonry?.reloadItems();
+    this.masonry?.layout();
   }
 
   findOriginalUrlFromRenditions(event: any, urls: any[]): string {
