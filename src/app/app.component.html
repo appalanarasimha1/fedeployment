@@ -1,16 +1,13 @@
 <app-header *ngIf="showHeader" (selectedTab)="checkSelectedTab($event)"></app-header>
 
 <router-outlet></router-outlet>
-<!-- <div class="tooltip1">
+<div class="tooltip1">
   <button *ngIf="showAddButton" mat-fab class="float" color="primary" aria-label="Add" (click)="openModal()">
     <mat-icon>add</mat-icon>
   </button>
   <span class="tooltiptext">Upload Assets</span>
-</div> -->
+</div>
 
-<!-- <button *ngIf="showAddButton" mat-fab class="float" color="primary" aria-label="Add" (click)="openModal()">
-  <mat-icon>add</mat-icon>
-</button> -->
 
 <app-footer></app-footer>
 <!-- <button mat-fab class="float" color="primary" aria-label="Add" (click)="openModal()">

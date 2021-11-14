@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ApiService } from '../../services/api.service';
-import { UploadModalComponent } from 'src/app/upload-modal/upload-modal.component';
-import { DataService } from 'src/app/services/data.service';
+import {ApiService} from '../../services/api.service';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxMasonryComponent } from 'ngx-masonry';
@@ -18,7 +16,6 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./browse.component.css']
 })
 export class BrowseComponent implements OnInit {
-  
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
 
@@ -71,7 +68,7 @@ export class BrowseComponent implements OnInit {
     this.masonry.layout();
   }
 
-  folderStructure: any = [{
+  folderStructure:any = [{
     uid: '00000000-0000-0000-0000-000000000000',
     title: 'All sectors',
     menuId: '00000000-0000-0000-0000-000000000000',
@@ -85,8 +82,8 @@ export class BrowseComponent implements OnInit {
     sector: '',
     folder: ''
   };
-  breadcrrumb = ""
-    
+  
+      
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
@@ -117,7 +114,6 @@ export class BrowseComponent implements OnInit {
     //   this.searchList = docs.entries;
     // });
     this.selectedFolder = item;
-    this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
     this.selectedFile = [];
     this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${item.uid}&ecm_trashed=false`)
     .subscribe((docs: any) => {
@@ -167,11 +163,7 @@ export class BrowseComponent implements OnInit {
     this.searchList[index].isSelected = !this.searchList[index].isSelected;
   }
 
-  handleClick(item, index, childIndex?: any) {
-    if(this.breadcrrumb.includes(item.title)) {
-      this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
-    }
-    this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
+  handleClick(item, index, childIndex?:any) {
     this.selectedFile = [];
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
@@ -185,7 +177,6 @@ export class BrowseComponent implements OnInit {
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         if(childIndex !== null && childIndex !== undefined) {
-          console.log(docs)
           this.folderStructure[index].children[childIndex].children = docs.entries;
           this.folderStructure[index].children[childIndex].isExpand = !this.folderStructure[index].children[childIndex].isExpand;
           // let ind;
@@ -203,7 +194,6 @@ export class BrowseComponent implements OnInit {
           this.loading = false;
           if(!this.sectorOpen) {
             this.folderStructure[index].children = docs.entries; // index = parent index in folder structure
-            console.log(docs)
             this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand;
             this.callHandClick = this.folderStructure[index].children.find((item, i) => {
               if(item.uid === this.routeParams.sector) {
@@ -218,19 +208,9 @@ export class BrowseComponent implements OnInit {
           
           if(!this.callDomain && this.routeParams.sector) {
             this.callDomain = true;
-            this.callHandClick = this.folderStructure[index].children.find((item, i) => {
-              if(item.uid === this.routeParams.sector) {
-                this.ind = i;
-                this.folderStructure[index].children[this.ind].isExpand = true;
-                return item;
-              }
-            });
-            if(this.callHandClick) {
-              this.selectedFolder = this.callHandClick;
-              
-              this.handleClick(this.callHandClick, this.ind, null);
-              return;
-            } 
+            this.selectedFolder = this.callHandClick;
+            this.handleClick(this.callHandClick, this.ind, null);
+            return;
           }
 
           if(!this.callFolder && this.routeParams.folder) {
@@ -238,16 +218,12 @@ export class BrowseComponent implements OnInit {
             let lastChild = this.folderStructure[index].children[this.ind].children.find((item, i) => {
               if(item.title.toLowerCase() === this.routeParams.folder.toLowerCase()) {
                 this.ind = i;
-                // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
-                console.log(this.callHandClick)
-                this.breadcrrumb = `/All sectors/${this.callHandClick.title}/${item.title}`
+                this.folderStructure[index].children[this.ind].children.isExpand = true;
                 return item;
               }
             });
             this.selectedFolder = lastChild;
-            if(lastChild) {
-              this.handleTest(lastChild);
-            }
+            this.handleTest(lastChild);
 
           }
 
@@ -270,45 +246,6 @@ export class BrowseComponent implements OnInit {
     .subscribe((docs: any) => {
       this.searchList = docs.entries;
     });
-      // .subscribe((docs: any) => {
-      //   this.searchList = docs.entries;
-      //   let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
-      //   if (workSpaceIndex >= 0) {
-      //     this.handleClick(this.searchList[workSpaceIndex], index, childIndex)
-      //   } else {
-      //     if (childIndex !== null && childIndex !== undefined) {
-      //       this.folderStructure[index].children[childIndex].children = docs.entries;
-      //       this.folderStructure[index].children[childIndex].isExpand = !this.folderStructure[index].children[childIndex].isExpand;
-      //     } else {
-      //       this.folderStructure[index].children = docs.entries;
-      //       this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand
-      //     }
-      //   }
-      // });
-  }
-
-
-  handleChangeClick(item, index, selected: any, childIndex?: any) {
-    this.selectedFile = [];
-    this.selectedFolder = {...selected, uid: selected.id};
-    console.log("selected", this.selectedFolder)
-    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
-      .subscribe((docs: any) => {
-        this.searchList = docs.entries;
-        let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
-        if (workSpaceIndex >= 0) {
-          this.handleChangeClick(this.searchList[workSpaceIndex], index, selected, childIndex)
-        } else {
-          if (childIndex !== null && childIndex !== undefined) {
-            this.folderStructure[index].children[childIndex].children = docs.entries;
-            this.folderStructure[index].children[childIndex].isExpand = true;
-            this.handleTest(selected)
-          } else {
-            this.folderStructure[index].children = docs.entries;
-            this.folderStructure[index].isExpand = true
-          }
-        }
-      });
   }
 
   handleSelectMenu(index) {
@@ -320,7 +257,6 @@ export class BrowseComponent implements OnInit {
   }
 
   openUpdateClassModal() {
-  // openModal() {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -334,14 +270,6 @@ export class BrowseComponent implements OnInit {
     }
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UpdateModalComponent, dialogConfig);
-    // https://material.angular.io/components/dialog/overview
-    // const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
-    // modalDialog.afterClosed().subscribe(result => {
-    //   let data = {...result, uid: result.id};
-    //   let findIndex = this.folderStructure?.[0]?.children.findIndex(res => res.path === `/default-domain`);
-    //   let param1 = this.folderStructure[0].children[findIndex]
-    //   this.handleChangeClick(param1, 0, data, findIndex)
-    // });
   }
 }
 

@@ -731,7 +731,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       if (key === "system_primaryType_agg") return;
       const filter = this.filters[key];
       if (Array.isArray(filter) && filter.length > 0) {
-        count += filter.length
+        count += filter.length;
       }
     });
 

@@ -9,9 +9,6 @@ import { TreeModule } from 'angular-tree-component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faBars, faList, faBorderAll, faFolder, faImage, faDownload, faStar, faPlusCircle, faCheckCircle, faAngleDown, faAngleRight, faFolderOpen, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -24,20 +21,9 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
     NgxDropzoneModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxMasonryModule,
-    // NgxMasonryModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
     FontAwesomeModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [
-    // CookieService,
-    {
-      provide: MatDialogRef,
-      useValue: {}
-    },
-   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BrowseModule {
   constructor(private library: FaIconLibrary) {

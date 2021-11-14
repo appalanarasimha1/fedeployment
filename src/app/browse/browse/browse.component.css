@@ -192,9 +192,3 @@ section.lpSecOne {
   background-size: cover;
   width: calc(50% - 10px);
 }
-.float{
-	position:fixed;
-	bottom:40px;
-	right:40px;
-  background-color: #23211E;
-} 

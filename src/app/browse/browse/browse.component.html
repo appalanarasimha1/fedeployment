@@ -66,7 +66,7 @@
             <div class="header-content">
               <div>
                 <h3>{{selectedFolder?.title}}</h3>
-                <h6>{{breadcrrumb.replace("/Workspaces", "")}}</h6>
+                <h6>/root{{selectedFolder?.path}}</h6>
               </div>
               <div class="views">
                 <a class="update-classifications-btn" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
@@ -139,6 +139,3 @@
 
   </section>
 </section>
-<button mat-fab class="float" color="primary" aria-label="Add" (click)="openUpdateClassModal()">
-  <mat-icon>add</mat-icon>
-</button>

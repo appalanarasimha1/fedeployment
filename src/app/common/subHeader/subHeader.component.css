@@ -112,7 +112,7 @@ background-color: #fff;
     top: 19px;
     bottom: 0;
     margin: auto;
-} 
+}
 .search-btn{
     position: absolute;
     right: 0px;
@@ -161,7 +161,7 @@ background-color: #fff;
     text-decoration: unset;
     margin: 0px 5px;
     display: inline-block;
-  } 
+  }
   .scrolling-wrapper {
     overflow-x: scroll;
     overflow-y: hidden;
@@ -187,4 +187,7 @@ background-color: #fff;
 ::-webkit-scrollbar {
     display: none;
   }
- 
+
+::ng-deep .owl-stage {
+    display: flex !important;
+}

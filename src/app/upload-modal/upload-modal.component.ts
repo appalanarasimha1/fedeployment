@@ -86,7 +86,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   closeModal() {
-    this.dialogRef.close(this.selectedFolder);
+    this.dialogRef.close();
   }
 
   onSelect(event) {
@@ -172,7 +172,6 @@ export class UploadModalComponent implements OnInit {
   }
 
   openBrowseRoute() {
-    this.dialogRef.close(this.selectedFolder);
     this.router.navigate(['/browse'], {queryParams: {sector: this.selectedWorkspace.id, folder: this.selectedFolder.title}});
   }
 

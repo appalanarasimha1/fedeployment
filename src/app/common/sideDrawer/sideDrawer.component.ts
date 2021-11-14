@@ -141,6 +141,16 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   //     });
   // }
 
+  filterMimeTypeByType(mimeTypeList) {
+    const filteredList = mimeTypeList.filter(data => {
+      if (this.selectedType === "Picture" && data.key.includes("image/")) return data;
+      if (this.selectedType === "Video" && data.key.includes("video/")) return data;
+      if (this.selectedType === "File" && !data.key.includes("image/") && !data.key.includes("video/")) return data;
+      return data;
+    });
+    this.mimeTypeData = [...filteredList];
+  }
+
   manupulateData(data, resetSectors: boolean, initSector: boolean = false) {
 
     this.mimeTypeData = [];
@@ -149,9 +159,12 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     this.videoSizeData = [];
     if(resetSectors || initSector) {}this.sectors = [];
 
+    const mimeTypeList = [];
+
     data.system_mimetype_agg?.buckets.map((item: { key: string, docCount: number }, index: number) => {
-      this.mimeTypeData.push({ key: item.key, id: index, docCount: item.docCount});
+      mimeTypeList.push({ key: item.key, id: index, docCount: item.docCount});
     });
+    this.filterMimeTypeByType(mimeTypeList);
 
     data.asset_width_agg?.buckets.map((item: { key: string, docCount: number }, index: number) => {
       this.assetWidthData.push({ key: assetDimension[item.key], id: index, docCount: item.docCount });

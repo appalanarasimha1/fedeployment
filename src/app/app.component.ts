@@ -2,7 +2,6 @@ import { Component, OnInit} from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from './upload-modal/upload-modal.component';
-import { DataService } from './services/data.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +13,7 @@ export class AppComponent implements OnInit{
   showHeader = false;
   showAddButton = false;
 
-  constructor(private router: Router, public matDialog: MatDialog, private dataService: DataService) {
+  constructor(private router: Router, public matDialog: MatDialog) {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         // TODO: will break if we have another url that contains /user.
@@ -37,7 +36,7 @@ export class AppComponent implements OnInit{
     //   this.showHeader =
     // }
   }
-  
+
   openModal() {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
