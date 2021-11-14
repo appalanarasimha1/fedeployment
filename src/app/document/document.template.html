@@ -49,8 +49,8 @@
           </ngx-slick-carousel>
         </div>
       </div>
-    </div>   
-    
+    </div>
+
     <div id="exTab3" class="container">
       <ul class="nav nav-tabs">
         <li><a class="commonHeading" style="font-size:28px"  href="#favourite" data-toggle="tab">Favourites</a></li>
@@ -77,9 +77,9 @@
           </ngx-slick-carousel>
         </div>
       </div>
-    </div>   
+    </div>
   </div>
-  
+
   <!-- <section>
     <div
       *ngIf="recentDataShow && recentDataShow.length && checkShowRecent()"
@@ -141,20 +141,20 @@
   </section>-->
 
   <section class="search-subpage pt-5 pb-5">
-   
+
     <div *ngIf="!checkShowRecent()" class="container">
       <div class="row" style="justify-content: space-between">
         <div class="main-headingSearch flexible pb-4 col-xl-8" style="align-items: baseline;">
           <span *ngIf="searchTerm.ecm_fulltext" (click)="documents = ''" class="commonHeading" style="font-size: 28px; text-transform: capitalize; cursor: pointer;">{{searchTerm.ecm_fulltext}} <img src="../assets/images/circle-close.png" style="width: 14px;margin-left: 3px;"></span>
           <!-- <span class="numberFiles">{{documents.resultsCount}} files</span> -->
        </div>
-       
+
         <div class="col-xl-4">
           <div class="row" style="">
             <div class="col-xl-8">
               <span><b>Sort by:</b> </span>
               <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
-    
+
                 <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'All assets'}}</button>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
                   <button (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem
@@ -184,10 +184,10 @@
               </div>
             </div>
           </div>
-          
-         
+
+
         </div>
-        
+
         <div class="col-xl-4 " style="float: right;">
           <!-- slider -->
           <!-- <div>
@@ -200,12 +200,12 @@
             </div> -->
 
           <!-- end -->
-         
+
         </div>
-      
+
       </div>
-      
-   
+
+
 
       <div class="filterMenuRow">
         <div ngbDropdown class="d-inline-block mb-4 sectorsDropdown">
@@ -234,10 +234,13 @@
           <div [ngClass]="selectedType === 'Video' ? 'viewSelected' : ''" (click)="selectType('Video')" class="recentHeading">Videos <span class="itemCount">{{count('Video')}}</span></div>
           <div [ngClass]="selectedType === 'File' ? 'viewSelected' : ''" (click)="selectType('File')" class="recentHeading">Documents <span class="itemCount">{{count('File')}}</span></div>
         </div>
-        <div class="moreFilter">
-          <label (click)="openAdvancedFilter()" class="e-btn" style="opacity: 1" ><img src="../../assets/images/IconFilters.svg"
-            style="width: 20px;"></label>
-          <span>More filters</span>
+        <div class="moreFilter" [ngClass]="filtersCount > 0 ? 'hasFilterSelected' : ''">
+          <button (click)="clearFilter()" *ngIf="filtersCount > 0">Clear</button>
+          <label (click)="openAdvancedFilter()" class="e-btn" style="opacity: 1" >
+            <img *ngIf="filtersCount === 0" src="../../assets/images/IconFilters.svg" style="width: 20px;">
+            <img *ngIf="filtersCount > 0" src="../../assets/images/IconFiltersYellow.svg" style="width: 20px;">
+          </label>
+          <span>More filters</span><span *ngIf="filtersCount > 0" class="itemCount">{{filtersCount}}</span>
         </div>
       </div>
 

@@ -44,7 +44,7 @@ export class DocumentCardComponent implements OnChanges {
     this.onMarkFavourite.emit();
   }
 
-  
+
   getAssetUrl(event: any, url: string, type?: string): string {
     if(!url) return '';
     if (!event) {
@@ -58,7 +58,7 @@ export class DocumentCardComponent implements OnChanges {
         if (r.status === 401) {
           localStorage.removeItem('token');
           this.router.navigate(['login']);
-          
+
           this.modalLoading = false;
           return;
         }
@@ -66,13 +66,13 @@ export class DocumentCardComponent implements OnChanges {
       })
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
-        
+
     this.modalLoading = false;
         // event.target.src = new Blob(d);
       }
       ).catch(e => {
         // TODO: add toastr with message 'Invalid token, please login again'
-          
+
           this.modalLoading = false;
           console.log(e);
         // if(e.contains(`'fetch' on 'Window'`)) {

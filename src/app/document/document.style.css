@@ -173,7 +173,7 @@ padding-right: 10px;
 .dropdown button, .dropup button{
   display: block;
   width: 100%;
-  
+
   text-align: left;
 }
 #dropdownBasic4{
@@ -1458,4 +1458,19 @@ color: #ACACAC;
 /* Custom tabs css end 12-Nov-2021 */
 .tab-pane.show {
   opacity: 1;
+}
+.hasFilterSelected {
+  color: #EBC03F;
+}
+.hasFilterSelected button {
+  color: black;
+  background-color: #EBC03F;
+  border-radius: 15px;
+  margin-right: 8px;
+}
+.hasFilterSelected .itemCount {
+  border: 1px solid #EBC03F;
+  background-color: #EBC03F;
+  color: black;
+  margin-left: 5px;
 }

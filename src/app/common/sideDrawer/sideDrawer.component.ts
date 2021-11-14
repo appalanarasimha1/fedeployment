@@ -116,10 +116,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any): void {
-    console.log("ngOnChanges", changes);
     if (changes.inputMetaData.currentValue && Object.keys(changes.inputMetaData.currentValue).length) {
-      console.log("changed");
-
       this.metaData = this.inputMetaData;
       this.checkSelectedPrimeAndMimeType(this.inputMetaData);
       this.manupulateData(this.inputMetaData, false);

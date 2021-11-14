@@ -178,7 +178,6 @@ export class SearchComponent implements OnInit {
   }
 
   setData(data: any, isShowMore: boolean) {
-    console.log("this.setData", data)
     if (this.firstCallResult) {
       this.resetResults();
     }

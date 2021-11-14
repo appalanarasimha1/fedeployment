@@ -22,8 +22,10 @@
 <app-content
   [documents]="documents"
   [searchTerm]="searchValue"
+  [filters]="filtersParams"
   (searchTextOutput)="searchDocuments($event)"
   (pageCount)="fetchNextPageResults(1, $event)"
   (selectDocType)="selectDocType($event)"
   (openFilterModal)="openFilterModal($event)"
+  (resetFilterOuput)="resetFilter()"
 ></app-content>

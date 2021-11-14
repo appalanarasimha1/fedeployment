@@ -24,11 +24,13 @@ import { DataService } from '../services/data.service';
 export class DocumentComponent implements OnInit, OnChanges {
   @Input() documents: any;
   @Input() searchTerm: { ecm_fulltext: string };
+  @Input() filters: any;
   // @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
   @Output() selectDocType: EventEmitter<any> = new EventEmitter();
   @Output() openFilterModal: EventEmitter<any> = new EventEmitter();
+  @Output() resetFilterOuput: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('videoPlayer') videoplayer: ElementRef;
@@ -86,6 +88,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectorSelected;
   favourites = [];
 
+  filtersCount = 0;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
@@ -113,6 +117,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.sectors = sectors;
     });
     // /* <!-- sprint12-fixes end --> */
+    this.filtersCount = this.getFilterCount();
   }
 
   ngOnChanges(changes: any) {
@@ -126,11 +131,12 @@ export class DocumentComponent implements OnInit, OnChanges {
     } else {
       this.hideShowMoreBtn = false;
     }
+    this.filtersCount = this.getFilterCount();
 
     return;
   }
 
-  
+
   getFavorites() {
     try {
     this.apiService.post(apiRoutes.FAVORITE_FETCH, { context: {}, params: {} })
@@ -172,7 +178,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         return;
       });
   }
-  
+
   sectorSelect(value: string) {
     this.sectorSelected = value;
     this.dataService.sectorChange(value);
@@ -273,7 +279,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         if (r.status === 401) {
           localStorage.removeItem('token');
           this.router.navigate(['login']);
-          
+
           this.modalLoading = false;
           return;
         }
@@ -281,13 +287,13 @@ export class DocumentComponent implements OnInit, OnChanges {
       })
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
-        
+
     this.modalLoading = false;
         // event.target.src = new Blob(d);
       }
       ).catch(e => {
         // TODO: add toastr with message 'Invalid token, please login again'
-          
+
           this.modalLoading = false;
           console.log(e);
         // if(e.contains(`'fetch' on 'Window'`)) {
@@ -717,6 +723,23 @@ export class DocumentComponent implements OnInit, OnChanges {
     const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
     this.recentUpdated = res["entries"].map(e => e);
     this.recentDataShow = [...this.recentUpdated];
+  }
+
+  getFilterCount() {
+    let count = 0;
+    Object.keys(this.filters).forEach(key => {
+      if (key === "system_primaryType_agg") return;
+      const filter = this.filters[key];
+      if (Array.isArray(filter) && filter.length > 0) {
+        count += filter.length
+      }
+    });
+
+    return count;
+  }
+
+  clearFilter() {
+    this.resetFilterOuput.emit();
   }
 
 
