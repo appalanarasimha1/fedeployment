@@ -184,7 +184,7 @@ section.lpSecOne {
   margin-bottom: 10px;
   background-color: #f1f1f1;
   background-size: cover;
-  width: calc(24% - 8px);
+  width: calc(24% - 9px);
 }
 .masonry-item-thumbnail {
   margin-bottom: 10px;
@@ -192,3 +192,9 @@ section.lpSecOne {
   background-size: cover;
   width: calc(50% - 10px);
 }
+.float{
+	position:fixed;
+	bottom:40px;
+	right:40px;
+  background-color: #23211E;
+} 

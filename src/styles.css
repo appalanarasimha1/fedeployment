@@ -3658,6 +3658,7 @@ img:not([src]) {
 
 .modal {
   z-index: 9999 !important;
+  opacity: 1;
 }
 
 .modal-backdrop {

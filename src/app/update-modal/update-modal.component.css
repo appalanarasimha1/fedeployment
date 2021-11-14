@@ -614,3 +614,7 @@ color: #23211E;
   display: flex;
   flex-direction: column;
 }
+.publish-file-preview-groups {
+  height: 300px;
+  overflow: auto;
+}

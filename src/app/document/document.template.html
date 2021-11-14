@@ -3,6 +3,7 @@
 
   <div class="customTab" *ngIf="recentDataShow && recentDataShow.length && checkShowRecent()">
     <div id="exTab2" class="container">
+      <h2 class="commonHeading pb-4" style="font-size: 28px">Recent activities</h2>
       <ul class="nav nav-tabs">
         <li class="active"><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
         <li><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
@@ -52,7 +53,7 @@
     
     <div id="exTab3" class="container">
       <ul class="nav nav-tabs">
-        <li><a  href="#favourite" data-toggle="tab">Favourites</a></li>
+        <li><a class="commonHeading" style="font-size:28px"  href="#favourite" data-toggle="tab">Favourites</a></li>
       </ul>
 
       <div class="tab-content">
@@ -143,7 +144,7 @@
    
     <div *ngIf="!checkShowRecent()" class="container">
       <div class="row" style="justify-content: space-between">
-        <div class="main-headingSearch flexible pb-4 col-xl-6" style="align-items: baseline;">
+        <div class="main-headingSearch flexible pb-4 col-xl-8" style="align-items: baseline;">
           <span *ngIf="searchTerm.ecm_fulltext" (click)="documents = ''" class="commonHeading" style="font-size: 28px; text-transform: capitalize; cursor: pointer;">{{searchTerm.ecm_fulltext}} <img src="../assets/images/circle-close.png" style="width: 14px;margin-left: 3px;"></span>
           <!-- <span class="numberFiles">{{documents.resultsCount}} files</span> -->
        </div>
@@ -208,7 +209,7 @@
 
       <div class="filterMenuRow">
         <div ngbDropdown class="d-inline-block mb-4 sectorsDropdown">
-          <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'Select a sector'}}</button>
+          <!-- <button class="btn" id="dropdownBasic5" ngbDropdownToggle>{{sortValue || 'Select a sector'}}</button> -->
           <!-- <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
             <button (click)="dropdownMenu($event); sortValue = 'Picture'" ngbDropdownItem
               value='dc:created'>Created</button>
@@ -220,7 +221,7 @@
               value='dc:lastContributor'>Last Contibutor</button>
           </div> -->
           <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-            <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{sectorSelected || 'All sectors'}} </button>
+            <button class="sectorrBtn mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{sectorSelected || 'All sectors'}} </button>
             <div ngbDropdownMenu aria-labelledby="dropdownManual" class="sectorDropMain" style="z-index: 1;top: -3px;">
               <button ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(null)">All sectors</button>
               <button *ngFor="let sector of sectors" ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(sector)">{{sector}}</button>
@@ -243,7 +244,7 @@
       <div class="row">
         <div *ngIf="!showListView">
           <div class="row">
-            <div class="col-xl-12 col-md-12">
+            <div class="col-xl-12 col-md-12 pt-4">
               <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
                 <div ngxMasonryItem class="masonry-item" *ngFor="let doc of masonryImg; let i = index">
                   <img src="{{doc.url}}" alt="" />

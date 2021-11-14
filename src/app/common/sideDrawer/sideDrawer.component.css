@@ -43,7 +43,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 45px;
 }
 .filter-form-left {
   width: 40%;
@@ -363,4 +363,15 @@ button:focus {
 }
 .resetFilter {
   padding: 15px 0px;
+}
+::ng-deep .multiselect-dropdown .dropdown-btn .selected-item{
+  max-width: unset !important
+}
+::ng-deep .dropdown-list{
+  background: #000 !important;
+  border-color: #000 !important;
+  box-shadow: unset !important
+}
+::ng-deep .multiselect-item-checkbox input[type=checkbox] + div{
+  color: #fff !important
 }

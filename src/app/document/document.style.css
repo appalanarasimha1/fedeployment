@@ -173,8 +173,13 @@ padding-right: 10px;
 .dropdown button, .dropup button{
   display: block;
   width: 100%;
+  
   text-align: left;
 }
+#dropdownBasic4{
+  color: #C49900;
+}
+
 .imagesList{
   list-style: none;
   padding: 0px;
@@ -382,11 +387,21 @@ color: #000000;
 .downloadDrop .dropdown-toggle::after{
   display: none;
 }
-.dropdown .dropdown-menu.show,.dropup .dropdown-menu.show {
-  left: -150px !important;
-  top: 25px !important;
+.dropdown .dropdown-menu.show, .dropup .dropdown-menu.show {
+  /* left: -150px !important;
+  top: 25px !important; */
   background-color: #000;
   min-width: max-content !important;
+  width: 100%
+}
+.sectorrBtn {
+  background: transparent;
+  border: unset;
+  border-bottom: 1px solid #000;
+  border-radius: 0px;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 6px 6px;
 }
 .settingsDropdown .dropdown-menu.show{
   left: -184px !important;
@@ -627,6 +642,12 @@ font-weight: 600;
 }
 .assetsDropdown.dropdown, .assetsDropdown.dropup {
   border-bottom: 1px solid #000;
+}
+/* #dropdownBasic4{
+  border-bottom:1px solid #C49900
+} */
+.assetsDropdown.dropdown, .assetsDropdown.dropup{
+  border-bottom:1px solid #C49900
 }
 /* .assetsDropdown .dropdown-menu.show .dropdown-item{
   color: #000 ;
@@ -1201,7 +1222,7 @@ color: #ACACAC;
 }
 .masonry-item {
   margin-bottom: 10px;
-  background-color: #f1f1f1;
+  /* background-color: #f1f1f1; */
   background-size: cover;
   width: calc(25% - 10px);
 }
@@ -1366,10 +1387,10 @@ color: #ACACAC;
   background-color: #EBC03F;
   color: black;
 }
-::ng-deep #fileId {
+::ng-deep .slide  #fileId {
   height: 170px;
 }
-::ng-deep #fileId2 {
+::ng-deep .slide  #fileId2 {
   height: 103px;
 }
 /* Custom tabs css start 12-Nov-2021 */
@@ -1395,7 +1416,7 @@ color: #ACACAC;
   border-width: 1px;
   margin-left: 0;
   height: 2px;
-  background: #8E6B0B;
+  background: #C49900;
   width: 100%;
   left: 0px;
 }
@@ -1406,10 +1427,10 @@ color: #ACACAC;
   margin-left: 0;
   left: 0px;
 }
-.customTab .nav-tabs > li.active > a, 
-.customTab .nav-tabs > li.active > a:focus, 
+.customTab .nav-tabs > li.active > a,
+.customTab .nav-tabs > li.active > a:focus,
 .customTab .nav-tabs > li.active > a:hover{
-  color: #8E6B0B !important;
+  color: #C49900 !important;
   font-weight: bold !important;
 }
 .customTab .nav-tabs>li>a{
@@ -1435,3 +1456,6 @@ color: #ACACAC;
   cursor: pointer;
 }
 /* Custom tabs css end 12-Nov-2021 */
+.tab-pane.show {
+  opacity: 1;
+}
