@@ -25,7 +25,7 @@ export class DocumentCardComponent implements OnChanges {
 
 
   getFileContent(): string {
-    return this.doc.properties["file:content"]?.data || "";
+    return this.getAssetUrl(null, this.doc?.properties["file:content"]?.data || "");
   }
 
   openPreview() {
