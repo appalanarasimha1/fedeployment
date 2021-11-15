@@ -191,25 +191,3 @@ background-color: #fff;
 ::ng-deep .owl-stage {
     display: flex !important;
 }
-::ng-deep .owl-theme .owl-nav{
-    position: relative;
-    top: -35px;
-    left: 0;
-    right: 0;
-}
-::ng-deep .owl-prev {
-    position: absolute;
-    left: -25px !important;
-    /* z-index: 99999; */
-    bottom: -10px;
-}
-::ng-deep .owl-stage-outer {
-    width: 590px;
-    overflow: hidden;
-    margin: auto;
-}
-::ng-deep .owl-next {
-    position: absolute;
-    right: -32px !important;
-    bottom: -10px;
-}

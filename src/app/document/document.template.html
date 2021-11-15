@@ -1,17 +1,5 @@
-
 <app-loader [show]="loading"></app-loader>
 <section class="min-height">
-  <!-- <div *ngIf="loading">
-    <div  class="text-center">
-        <div class="overlay">
-            <div class="overlay__inner">
-                <div class="overlay__content"><span class="spinner"></span></div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
 
   <div class="customTab" *ngIf="recentDataShow && recentDataShow.length && checkShowRecent()">
     <div id="exTab2" class="container">
@@ -327,13 +315,13 @@
     <div class="modal-body ">
       <div class="modalHead">
         <div class="row flexible" style="justify-content: space-between;">
-          <div class="col-xl-6 col-md-6">
+          <div class="col-xl-4 col-md-4">
             <!-- <img src="../../assets/images/User.svg" style="width: 50px;"> -->
             <img src="../../assets/images/black-user.png" style="width: 50px;
             margin-right: 10px;">
             <span>{{selectedFile.properties['dc:creator'].id}}</span>
           </div>
-          <div class="col-xl-6 col-md-6">
+          <div class="col-xl-4 col-md-4">
             <ul class="flexible">
               <li class="customtooltip">
                 <a placement="bottom" ngbTooltip="Favourite">

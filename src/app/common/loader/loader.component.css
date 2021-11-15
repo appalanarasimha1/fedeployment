@@ -42,16 +42,15 @@
 }
 
 .spinner {
-  width: 60px;
-  height: 60px;
-  display: inline-block;
-  border-width: 8px;
-  border-color: #DEB31A;
-  border-top-color: #f8eecc;
-  animation: spin 1s infinite linear;
-  border-radius: 100%;
-  border-style: solid;
-  opacity: 1;
+    width: 75px;
+    height: 75px;
+    display: inline-block;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.05);
+    border-top-color: #fff;
+    animation: spin 1s infinite linear;
+    border-radius: 100%;
+    border-style: solid;
 }
 
 @keyframes spin {

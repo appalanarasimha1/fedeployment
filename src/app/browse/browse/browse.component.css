@@ -29,7 +29,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 }
 
 .main-content {
-  padding-top: 30px;
+  padding-top: 10px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -198,24 +198,3 @@ section.lpSecOne {
 	right:40px;
   background-color: #23211E;
 } 
-
-.paddingLeft{
-  padding-left: 40px;
-}
-.paddingLeft1{
-  padding-left: 60px;
-}
-.header-content h3{
-    font-size: 24px;
-    line-height: 22px;
-    color: #000000;
-    font-weight: 600;
-}
-.header-content h6{
-  font-size: 16px;
-line-height: 24px;
-color: rgba(35, 33, 30, 0.6);
-padding-top: 10px;
-
-font-weight: 600;
-}
