@@ -24,7 +24,6 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() emitSectorList: EventEmitter<any> = new EventEmitter();
-  @Output() resetFilterOuput: EventEmitter<any> = new EventEmitter();
   @Input() inputMetaData = {
     system_primaryType_agg: { buckets: [], selection: [], extendedBuckets: [] },
     system_mimetype_agg: { buckets: [], selection: [] },
@@ -85,6 +84,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
   modifiedDateDropDown = [{ key: 'last24h', id: 0 }, { key: 'lastWeek', id: 1 }, { key: 'lastMonth', id: 2 }, { key: 'lastYear', id: 3 }, { key: 'priorToLastYear', id: 4 }];
   // sharedService: any;
+  selectedMimetypeByType = [];
 
   isOpen = false;
   selectedType: string;
@@ -118,8 +118,6 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any): void {
     if (changes.inputMetaData.currentValue && Object.keys(changes.inputMetaData.currentValue).length) {
       this.metaData = this.inputMetaData;
-      this.checkSelectedPrimeAndMimeType(this.inputMetaData);
-      this.manupulateData(this.inputMetaData, false);
     }
   }
 
@@ -143,12 +141,26 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
   filterMimeTypeByType(mimeTypeList) {
     const filteredList = mimeTypeList.filter(data => {
-      if (this.selectedType === "Picture" && data.key.includes("image/")) return data;
-      if (this.selectedType === "Video" && data.key.includes("video/")) return data;
-      if (this.selectedType === "File" && !data.key.includes("image/") && !data.key.includes("video/")) return data;
-      return data;
+      if (!this.selectedType || this.selectedType === "all") return true;
+      if (this.selectedType === "Picture" && data.key.includes("image/")) return true;
+      if (this.selectedType === "Video" && data.key.includes("video/")) return true;
+      if (this.selectedType === "File" && !data.key.includes("image/") && !data.key.includes("video/")) return true;
+      return false;
     });
+
     this.mimeTypeData = [...filteredList];
+  }
+
+  filterSeelectedMimetype(list) {
+    const filteredList = list.filter(data => {
+      if (!this.selectedType || this.selectedType === "all") return true;
+      if (this.selectedType === "Picture" && data.includes("image/")) return true;
+      if (this.selectedType === "Video" && data.includes("video/")) return true;
+      if (this.selectedType === "File" && !data.includes("image/") && !data.includes("video/")) return true;
+      return false;
+    });
+
+    this.selectedMimetypeByType = [...filteredList];
   }
 
   manupulateData(data, resetSectors: boolean, initSector: boolean = false) {
@@ -524,6 +536,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     this.selectedType = type;
     if(type !== 'all')
     this.searchCriteria.system_primaryType_agg = [this.selectedType];
+
+    this.manupulateData(this.inputMetaData, false);
+    this.filterSeelectedMimetype(this.searchCriteria.system_mimetype_agg);
   }
 
   resetFilter() {
@@ -537,6 +552,5 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       dc_modified_agg: [],
       dublincore_created_agg: []
     };
-    this.resetFilterOuput.emit();
   }
 }

@@ -728,7 +728,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   getFilterCount() {
     let count = 0;
     Object.keys(this.filters).forEach(key => {
-      if (key === "system_primaryType_agg") return;
+      if (["system_primaryType_agg", "sectors", "dublincore_sector_agg", "system_tag_agg"].includes(key)) return;
       const filter = this.filters[key];
       if (Array.isArray(filter) && filter.length > 0) {
         count += filter.length;

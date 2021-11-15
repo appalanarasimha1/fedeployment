@@ -341,6 +341,7 @@ export class SearchComponent implements OnInit {
     params['highlight'] = tmpFilters['highlight'] || '';
     this.resetAggregationsMetaData();
     this.filters(params);
+    this.advancedFilter.resetFilter();
   }
 
   openFilterModal(type) {

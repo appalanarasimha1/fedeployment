@@ -64,6 +64,7 @@ export class BrowseComponent implements OnInit {
   callHandClick;
   callDomain;
   callFolder;
+  viewType = 'GRID';
 
 
   completeLoadingMasonry(event: any) {
@@ -328,8 +329,9 @@ export class BrowseComponent implements OnInit {
       });
   }
 
-  handleSelectMenu(index) {
-    this.selectedMenu = index
+  handleSelectMenu(index, type) {
+    this.selectedMenu = index;
+    this.viewType = type;
   }
 
   checkShowUpdateBtn() {

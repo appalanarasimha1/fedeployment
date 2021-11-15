@@ -1,7 +1,9 @@
 
 <!-- <app-loader-small [show]="modalLoading"></app-loader-small> -->
 <div *ngIf="viewType === 'GRID'" style="position: relative; margin: 5px;">
-  <img *ngIf="doc.type !== 'File'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
+  <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
+    (click)="openPreview()" />
+    <img *ngIf="doc.type === 'Video'" class="videoIconn" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" />
     
   

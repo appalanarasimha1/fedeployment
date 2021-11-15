@@ -16,7 +16,7 @@
           <ng-multiselect-dropdown
             [settings]="dropdownSettings"
             [data]="mimeTypeData"
-            [ngModel]="searchCriteria.system_mimetype_agg"
+            [ngModel]="selectedMimetypeByType"
             (onSelect)="selectMimeType($event)"
             (onSelectAll)="selectMimeType($event)"
             (onDeSelect)="deSelectFormat($event)"
@@ -47,31 +47,6 @@
             (onDeSelectAll)="deSelectHeight($event)"
           ></ng-multiselect-dropdown>
         </div>
-
-        <!-- <div *ngIf="selectedType === 'all' || selectedType === 'Video'" class="filter-form-row">
-          <div class="filter-dropdown-label">Video format</div>
-          <ng-multiselect-dropdown
-            [settings]="dropdownSettings"
-            [data]="mimeTypeData"
-            [ngModel]="searchCriteria.system_mimetype_agg"
-            (onSelect)="selectMimeType($event)"
-            (onSelectAll)="selectMimeType($event)"
-            (onDeSelect)="deSelectFormat($event)"
-            (onDeSelectAll)="deSelectFormat($event)"
-          ></ng-multiselect-dropdown>
-        </div>
-        <div *ngIf="selectedType === 'all' || selectedType === 'File'" class="filter-form-row">
-          <div class="filter-dropdown-label">Document format</div>
-          <ng-multiselect-dropdown
-            [settings]="dropdownSettings"
-            [data]="mimeTypeData"
-            [ngModel]="searchCriteria.system_mimetype_agg"
-            (onSelect)="selectMimeType($event)"
-            (onSelectAll)="selectMimeType($event)"
-            (onDeSelect)="deSelectFormat($event)"
-            (onDeSelectAll)="deSelectFormat($event)"
-          ></ng-multiselect-dropdown>
-        </div> -->
       </div>
       <div class="filter-form-right">
         <!-- <div class="filter-form-row">

@@ -72,9 +72,9 @@
                 <a class="update-classifications-btn" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
                 <div>
                   <img src="../../../assets/images/gallery view.png" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
-                  (click)="handleSelectMenu(0)">
+                  (click)="handleSelectMenu(0, 'GRID')">
                     <img src="../../../assets/images/list view.png" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
-                    (click)="handleSelectMenu(1)">
+                    (click)="handleSelectMenu(1, 'List')">
                 </div>
               </div>
             </div>
@@ -82,9 +82,20 @@
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)"
                   [updateLayout]="updateMasonryLayout">
-                  <div ngxMasonryItem class="masonry-item" style="display: inline-block;margin-right: 10px;" *ngFor="let item of searchList">
-                    <img id="fileId" style="max-width: 100%;" src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" alt=""
-                    />
+                  <div ngxMasonryItem class="masonry-item" style="display: inline-block;margin-right: 10px;" *ngFor="let item of searchList; let i = $index">
+                    <!-- <img id="fileId" style="max-width: 100%;" src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" alt="" /> -->
+
+                    <document-card
+                    [doc]="item"
+                    [viewType]="viewType"
+                    
+                   
+                    >
+                    <!-- (onOpenPreview)="open(preview, item, item.type)"
+                      (onSelect)="selectImage($event, item, i)"
+                    (onMarkFavourite)="markFavourite(item, false)" -->
+                  </document-card>
+
                   </div>
                 </ngx-masonry>
               </div>
