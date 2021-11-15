@@ -397,7 +397,7 @@ color: #000000;
 .sectorrBtn {
   background: transparent;
   border: unset;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #C49900;
   border-radius: 0px;
   font-size: 16px;
   line-height: 24px;
@@ -1482,7 +1482,7 @@ color: #ACACAC;
   height: 100%;
   position: absolute;
   /* background: #222; */
-  z-index: 99999;
+  z-index: 999;
   /* opacity: 0.2; */
 }
 
@@ -1502,8 +1502,8 @@ color: #ACACAC;
 }
 
 .spinner {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   display: inline-block;
   border-width: 8px;
   border-color: #DEB31A;
