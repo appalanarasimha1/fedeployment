@@ -502,6 +502,7 @@ font-weight: 600;
   margin: 20px 0;
   text-align: center;
   margin-top: 40px;
+  cursor: pointer;
 }
 .close-modal{
   font-size: 14px;
