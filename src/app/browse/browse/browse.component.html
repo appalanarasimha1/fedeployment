@@ -29,7 +29,7 @@
                   </div>
                   <ul *ngIf="item.children && item.isExpand" class="leftPanel ">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=firstChild;">
+                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=firstChild; routeParams.folder = null">
                         <div *ngIf="firstChild.children" class="">
                           <fa-icon [icon]="['fas', 'angle-down']" style="font-size: 20px;" *ngIf="firstChild.isExpand">
                           </fa-icon>
@@ -83,18 +83,17 @@
                 <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)"
                   [updateLayout]="updateMasonryLayout">
                   <div ngxMasonryItem class="masonry-item" style="display: inline-block;margin-right: 10px;" *ngFor="let item of searchList; let i = $index">
-                    <!-- <img id="fileId" style="max-width: 100%;" src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" alt="" /> -->
+                    <img id="fileId" style="max-width: 100%;" src (error)="getAssetUrl($event, item.contextParameters.thumbnail.url)" alt="" />
 
-                    <document-card
+                    <!-- <document-card
                     [doc]="item"
                     [viewType]="viewType"
-                    
-                   
+                    (onOpenPreview)="open(preview, item, item.type)"
+                    (onSelect)="selectImage($event, item, i)"
+                    (onMarkFavourite)="markFavourite(item, false)"
                     >
-                    <!-- (onOpenPreview)="open(preview, item, item.type)"
-                      (onSelect)="selectImage($event, item, i)"
-                    (onMarkFavourite)="markFavourite(item, false)" -->
-                  </document-card>
+                    
+                  </document-card> -->
 
                   </div>
                 </ngx-masonry>

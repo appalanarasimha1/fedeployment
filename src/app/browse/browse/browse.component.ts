@@ -185,20 +185,9 @@ export class BrowseComponent implements OnInit {
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         if(childIndex !== null && childIndex !== undefined) {
-          console.log(docs)
+          this.loading = false;
           this.folderStructure[index].children[childIndex].children = docs.entries;
-          // this.folderStructure[index].children[childIndex].isExpand = !this.folderStructure[index].children[childIndex].isExpand;
-          // let ind;
-          // let callHandClick = this.folderStructure[index].children.find((item, i) => {
-          //   if(item.uid === this.routeParams.sector) {
-          //     ind = i;
-          //     return item;
-          //   }
-
-          // });
-          // let callHandleTest = this.folderStructure[index].children.find(item => item.title.toLowerCase() === this.routeParams.folder);
-          // if(callHandleTest) this.handleTest(callHandleTest);
-          // if(callHandClick) this.handleClick(callHandClick, ind, null);
+          this.folderStructure[index].children[childIndex].isExpand = true;
 
           if(!this.callFolder && this.routeParams.folder) {
             this.folderStructure[index].children[this.ind].children = docs.entries;
