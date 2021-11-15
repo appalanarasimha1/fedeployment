@@ -68,8 +68,8 @@ export class BrowseComponent implements OnInit {
 
 
   completeLoadingMasonry(event: any) {
-    this.masonry.reloadItems();
-    this.masonry.layout();
+    this.masonry?.reloadItems();
+    this.masonry?.layout();
   }
 
   folderStructure: any = [{
