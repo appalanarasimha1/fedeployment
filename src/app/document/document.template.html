@@ -40,7 +40,7 @@
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
-                (onOpenPreview)="open(preview, file)"
+                (onOpenPreview)="open(preview, file, file.type)"
                 (onSelect)="selectImage($event, file, i)"
                 (onMarkFavourite)="markFavourite(file, 'recent')"
                 >
@@ -99,7 +99,7 @@
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
-                (onOpenPreview)="open(preview, file)"
+                (onOpenPreview)="open(preview, file, file.type)"
                 (onSelect)="selectImage($event, file, i)"
                 (onMarkFavourite)="markFavourite(file, 'recent')"
                 >
@@ -120,7 +120,7 @@
             <document-card
               [doc]="file"
               [viewType]="viewType"
-              (onOpenPreview)="open(preview, file)"
+              (onOpenPreview)="open(preview, file, file.type)"
               (onSelect)="selectImage($event, file, i)"
               (onMarkFavourite)="markFavourite(file, 'recent')"
               >
@@ -263,7 +263,7 @@
                   <document-card
                     [doc]="doc"
                     [viewType]="viewType"
-                    (onOpenPreview)="open(preview, doc)"
+                    (onOpenPreview)="open(preview, doc, doc.type)"
                     (onSelect)="selectImage($event, doc, i)"
                     (onMarkFavourite)="markFavourite(doc, false)"
                     >
@@ -281,7 +281,7 @@
               <document-card
                 [doc]="doc"
                 [viewType]="viewType"
-                (onOpenPreview)="open(preview, doc)"
+                (onOpenPreview)="open(preview, doc, doc.type)"
                 (onSelect)="selectImage($event, doc, i)"
                 (onMarkFavourite)="markFavourite(doc, false)"
                 >
