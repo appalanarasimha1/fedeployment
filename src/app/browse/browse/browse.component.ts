@@ -179,15 +179,14 @@ export class BrowseComponent implements OnInit {
       this.searchList = docs.entries;
       let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
       if(workSpaceIndex >= 0) {
-        this.handleClick(this.searchList[workSpaceIndex],index, childIndex);
         this.loading = false;
-        return;
+        return this.handleClick(this.searchList[workSpaceIndex],index, childIndex);
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         if(childIndex !== null && childIndex !== undefined) {
           console.log(docs)
           this.folderStructure[index].children[childIndex].children = docs.entries;
-          this.folderStructure[index].children[childIndex].isExpand = !this.folderStructure[index].children[childIndex].isExpand;
+          // this.folderStructure[index].children[childIndex].isExpand = !this.folderStructure[index].children[childIndex].isExpand;
           // let ind;
           // let callHandClick = this.folderStructure[index].children.find((item, i) => {
           //   if(item.uid === this.routeParams.sector) {
@@ -199,6 +198,24 @@ export class BrowseComponent implements OnInit {
           // let callHandleTest = this.folderStructure[index].children.find(item => item.title.toLowerCase() === this.routeParams.folder);
           // if(callHandleTest) this.handleTest(callHandleTest);
           // if(callHandClick) this.handleClick(callHandClick, ind, null);
+
+          if(!this.callFolder && this.routeParams.folder) {
+            this.folderStructure[index].children[this.ind].children = docs.entries;
+            let lastChild = this.folderStructure[index].children[this.ind].children.find((item, i) => {
+              if(item.title.toLowerCase() === this.routeParams.folder.toLowerCase()) {
+                this.ind = i;
+                // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
+                console.log(this.callHandClick)
+                this.breadcrrumb = `/All sectors/${this.callHandClick.title}/${item.title}`
+                return item;
+              }
+            });
+            this.selectedFolder = lastChild;
+            if(lastChild) {
+              this.handleTest(lastChild);
+            }
+
+          }
         } else {
           this.loading = false;
           if(!this.sectorOpen) {
@@ -228,7 +245,7 @@ export class BrowseComponent implements OnInit {
             if(this.callHandClick) {
               this.selectedFolder = this.callHandClick;
               
-              this.handleClick(this.callHandClick, this.ind, null);
+              this.handleClick(this.callHandClick, index, this.ind);
               return;
             } 
           }
