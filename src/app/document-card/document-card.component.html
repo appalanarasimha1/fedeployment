@@ -3,8 +3,11 @@
 <div *ngIf="viewType === 'GRID'" style="position: relative; margin: 5px;">
   <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" />
-    <img *ngIf="doc.type === 'Video'" class="videoIconn" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
-    (click)="openPreview()" />
+   
+    <div *ngIf="doc.type === 'Video'" class="videoIconn">
+      <img id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
+      (click)="openPreview()" />
+    </div>
     
   
   <img *ngIf="doc.type === 'File'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
