@@ -10,6 +10,9 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateModalComponent } from '../../update-modal/update-modal.component';
 import { SharedService } from 'src/app/services/shared.service';
+import { localStorageVars } from 'src/app/common/constant';
+import { apiRoutes } from 'src/app/common/config';
+import { NuxeoService } from 'src/app/services/nuxeo.service';
 
 @Component({
   selector: 'app-browse',
@@ -29,7 +32,8 @@ export class BrowseComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private sharedService: SharedService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    public nuxeo: NuxeoService,) { }
 
   faCoffee = faCoffee;
   parentId = "00000000-0000-0000-0000-000000000000";
@@ -65,6 +69,14 @@ export class BrowseComponent implements OnInit {
   callDomain;
   callFolder;
   viewType = 'GRID';
+  showShadow = false;
+  activeTabs = { comments: false, info: false, timeline: false };
+  selectedFile: any;
+  selectedFileUrl: string;
+  tags = [];
+  comments = [];
+  inputTag = '';
+  showTagInput = false;
 
 
   completeLoadingMasonry(event: any) {
@@ -81,7 +93,6 @@ export class BrowseComponent implements OnInit {
     path: ''
   }]
 
-  selectedFile = [];
   routeParams = {
     sector: '',
     folder: ''
@@ -119,7 +130,7 @@ export class BrowseComponent implements OnInit {
     // });
     this.selectedFolder = item;
     this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
-    this.selectedFile = [];
+    // this.selectedFile = [];
     this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${item.uid}&ecm_trashed=false`)
     .subscribe((docs: any) => {
       this.searchList = docs.entries;
@@ -163,17 +174,113 @@ export class BrowseComponent implements OnInit {
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
-  handleSelectFile(item, index) {
-    this.selectedFile.push(item);
-    this.searchList[index].isSelected = !this.searchList[index].isSelected;
+  open(content, file, fileType?: string): void {
+    this.showShadow = false;
+    this.activeTabs.comments = false;
+    this.activeTabs.timeline = false;
+    this.activeTabs.info = false;
+    let fileRenditionUrl;
+    this.selectedFile = file;
+    // if (!fileType) {
+      switch (fileType) {
+        case 'Picture':
+          fileType = 'image';
+          break;
+        case 'Video':
+          fileType = 'video';
+          break;
+        default:
+          fileType = 'file';
+          break;
+      }
+    // }
+    if(fileType === 'image') {
+      this.markRecentlyViewed(file);
+
+      const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
+      fileRenditionUrl = url; // file.properties['file:content'].data;
+      // this.favourite = file.contextParameters.favorites.isFavorite;
+    } else if(fileType === 'video') {
+      fileRenditionUrl = file.properties['vid:transcodedVideos'][0]?.content.data || "";
+    } else if (fileType === 'file') {
+      const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
+      // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
+      fileRenditionUrl = file.properties['file:content'].data;
+      // fileRenditionUrl = url;
+    }
+    this.selectedFileUrl = fileType === 'image' ? this.getAssetUrl(null, fileRenditionUrl) : fileRenditionUrl;
+    // if(fileType === 'file') {
+    //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
+    // }
+    this.getComments();
+    this.getTags();
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.showTagInput = false;
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
+  
+  getComments() {
+    let loading = true;
+    let error;
+    const queryParams = { pageSize: 10, currentPageIndex: 0 };
+    const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
+    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
+      .get().then((docs) => {
+        this.comments = docs.entries;
+        loading = false;
+      }).catch((err) => {
+        console.log('search document error = ', err);
+        error = `${error}. `;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        loading = false;
+      });
+  }
+  
+  getTags() {
+    this.tags = this.selectedFile.contextParameters["tags"]?.map(tag => tag) || [];
+  }
+  
+  markRecentlyViewed(data: any) {
+    let found = false;
+    // tslint:disable-next-line:prefer-const
+    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+    if (recentlyViewed.length) {
+      recentlyViewed.map((item: any, index: number) => {
+        if (item.uid === data.uid) {
+          found = true;
+          recentlyViewed[index] = data;
+        }
+      });
+    }
+    if (found) {
+      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+      return;
+    }
+
+    data['isSelected'] = false;
+    recentlyViewed.push(data);
+    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+    return;
+  }
+
+  // handleSelectFile(item, index) {
+  //   this.selectedFile.push(item);
+  //   this.searchList[index].isSelected = !this.searchList[index].isSelected;
+  // }
 
   handleClick(item, index, childIndex?: any) {
     if(this.breadcrrumb.includes(item.title)) {
       this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
     }
     this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
-    this.selectedFile = [];
+    // this.selectedFile = [];
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
     .subscribe((docs: any) => {
@@ -269,10 +376,28 @@ export class BrowseComponent implements OnInit {
       }
     });
   }
+  
+  addTag(inputTag: string): void {
+    if (!inputTag) return;
+    const route = apiRoutes.ADD_TAG;
+    const apiBody = {
+      input: this.selectedFile.uid,
+      params: {
+        tags: inputTag
+      }
+    };
+    this.loading = true;
+    this.apiService.post(route, apiBody).subscribe(response => {
+      this.loading = true;
+      this.tags.push(inputTag);
+      this.selectedFile.contextParameters["tags"].push(inputTag);
+      this.inputTag = "";
+    });
+  }
 
   fetchAssets(item, index, childIndex?:any) {
     this.selectedFolder = item;
-    this.selectedFile = [];
+    // this.selectedFile = [];
     this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=7d597231-23f8-42e1-9324-c3898517c58a&ecm_trashed=false`)
     .subscribe((docs: any) => {
       this.searchList = docs.entries;
@@ -296,7 +421,7 @@ export class BrowseComponent implements OnInit {
 
 
   handleChangeClick(item, index, selected: any, childIndex?: any) {
-    this.selectedFile = [];
+    // this.selectedFile = [];
     this.selectedFolder = {...selected, uid: selected.id};
     console.log("selected", this.selectedFolder)
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)

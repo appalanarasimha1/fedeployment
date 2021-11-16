@@ -101,7 +101,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED) || '[]');
+    this.getRecentlyViewed();
     this.getRecentUpdated();
     this.getFavorites();
     this.showRecentlyViewed = true;
@@ -133,6 +133,11 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
     this.filtersCount = this.getFilterCount();
 
+    return;
+  }
+
+  getRecentlyViewed() {
+    this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED) || '[]');
     return;
   }
 
@@ -434,6 +439,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     event.toElement.play();
   }
 
+  // TODO: move to shared service
   markRecentlyViewed(data: any) {
     let found = false;
     // tslint:disable-next-line:prefer-const
@@ -681,6 +687,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (tab === "recentUpload") {
       this.recentDataShow = [...this.recentUpdated];
     } else {
+      this.getRecentlyViewed();
       this.recentDataShow = [...this.recentlyViewed];
     }
   }
