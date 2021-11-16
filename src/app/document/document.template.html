@@ -44,7 +44,6 @@
         <div class="tab-pane" id="recentlyViewed">
           <div class="show-all">Show all</div>
           <ngx-slick-carousel
-            *ngIf="!recentDataShow?.length"
             class="carousel"
             #slickModal="slick-carousel"
             [config]="slideConfig"
