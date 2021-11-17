@@ -8,8 +8,9 @@
     "out_file": "../runtime/out.log",
     "merge_logs": true,
     "env": {
-      "NODE_ENV": "demo",
+      "NODE_ENV": "dev",
       "SOCKET_PORT": 8081,
-      "PORT": 8080
+      "PORT": 8080,
+      "API_SERVER": "'https://10.101.21.31:8090"
     }
   }

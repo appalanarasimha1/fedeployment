@@ -8,6 +8,7 @@
     "env": {
       "NODE_ENV": "demo",
       "SOCKET_PORT": 8081,
-      "PORT": 8080
+      "PORT": 8080,
+      "API_SERVER": "ttp://34.219.179.33:5050"    
     }
   }
