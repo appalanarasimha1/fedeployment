@@ -1,0 +1,316 @@
+import { Component, OnInit, OnChanges, Input, ViewChild, TemplateRef } from "@angular/core";
+import { Router } from "@angular/router";
+import * as moment from "moment";
+import { apiRoutes } from "../common/config";
+import { ApiService } from "../services/api.service";
+import { localStorageVars } from "../common/constant";
+import { NuxeoService } from '../services/nuxeo.service';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+
+@Component({
+  selector: "preview-popup",
+  templateUrl: "./preview-popup.component.html",
+  styleUrls: ["./preview-popup.component.css"],
+})
+export class PreviewPopupComponent implements OnInit, OnChanges {
+  @Input() doc: any;
+  @Input() docUrl: string;
+
+  @ViewChild('preview', {static: false}) modalTemp: TemplateRef<void>;
+
+  modalLoading = false;
+  inputTag: string;
+  tags = [];
+  showTagInput = false;
+  showShadow = false;
+  selectedTab;
+  activeTabs = { comments: false, info: false, timeline: false };
+  commentText: string;
+  comments = [];
+
+  constructor(
+    private router: Router,
+    private apiService: ApiService,
+    private modalService: NgbModal,
+    public nuxeo: NuxeoService,
+  ) {}
+
+  ngOnInit(): void {
+    if (this.doc) {
+      this.getTags();
+      this.getComments();
+    }
+  }
+
+  ngOnChanges(): void {
+    if (this.doc) {
+      this.getTags();
+      this.getComments();
+    }
+  }
+
+  open(): void {
+    this.showShadow = false;
+    this.activeTabs.comments = false;
+    this.activeTabs.timeline = false;
+    this.activeTabs.info = false;
+    this.modalService
+      .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
+      .result.then(
+        (result) => {
+          this.modalLoading = false;
+        },
+        (reason) => {
+          this.showTagInput = false;
+          this.modalLoading = false;
+        }
+      );
+  }
+
+  getTags() {
+    this.tags = this.doc.contextParameters["tags"]?.map((tag) => tag) || [];
+  }
+
+  getComments() {
+    const queryParams = { pageSize: 10, currentPageIndex: 0 };
+    const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.doc.uid);
+    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
+      .get().then((docs) => {
+        this.comments = docs.entries;
+      }).catch((err) => {
+        console.log('get comment error', err);
+      });
+  }
+
+  getAssetUrl(event: any, url: string, type?: string): string {
+    if (!url) return "";
+    if (!event) {
+      return `${window.location.origin}/nuxeo/${url.split("/nuxeo/")[1]}`;
+    }
+
+    const updatedUrl = `${window.location.origin}/nuxeo/${
+      url.split("/nuxeo/")[1]
+    }`;
+    this.modalLoading = true;
+    fetch(updatedUrl, {
+      headers: { "X-Authentication-Token": localStorage.getItem("token") },
+    })
+      .then((r) => {
+        if (r.status === 401) {
+          localStorage.removeItem("token");
+          this.router.navigate(["login"]);
+
+          this.modalLoading = false;
+          return;
+        }
+        return r.blob();
+      })
+      .then((d) => {
+        event.target.src = window.URL.createObjectURL(d);
+
+        this.modalLoading = false;
+      })
+      .catch((e) => {
+        // TODO: add toastr with message 'Invalid token, please login again'
+
+        this.modalLoading = false;
+        console.log(e);
+      });
+  }
+
+  getDownloadFileEstimation(data: any) {
+    if (!data) return;
+    return `${
+      data / 1024 > 1024
+        ? (data / 1024 / 1024).toFixed(2) + " MB"
+        : (data / 1024).toFixed(2) + " KB"
+    }`;
+  }
+
+  addTag(inputTag: string): void {
+    if (!inputTag) return;
+    const route = apiRoutes.ADD_TAG;
+    const apiBody = {
+      input: this.doc.uid,
+      params: {
+        tags: inputTag,
+      },
+    };
+    this.apiService.post(route, apiBody).subscribe((response) => {
+      this.tags.push(inputTag);
+      this.doc.contextParameters["tags"].push(inputTag);
+      this.inputTag = "";
+    });
+  }
+
+  openInfo(tabName: string) {
+    if (!this.showShadow || this.selectedTab === tabName) {
+      this.showShadow = !this.showShadow;
+    }
+    this.selectedTab = tabName;
+    this.activeTabs[tabName] = this.showShadow;
+  }
+
+  getNames(users: any) {
+    let result = "";
+    users.map((user) => {
+      result += user.id + ", ";
+    });
+    return result;
+  }
+
+  toDateString(date: string): string {
+    return `${new Date(date).toDateString()}`;
+  }
+
+  saveComment(comment: string): void {
+    if (!comment.trim()) {
+      return;
+    }
+    let error;
+    const route = apiRoutes.SAVE_COMMENT.replace("[assetId]", this.doc.uid);
+    const postData = {
+      "entity-type": "comment",
+      parentId: this.doc.uid,
+      text: comment,
+    };
+    try {
+      this.apiService.post(route, postData).subscribe((doc) => {
+        this.modalLoading = false;
+        this.commentText = "";
+        this.comments.unshift(doc);
+      });
+    } catch (err) {
+      this.modalLoading = false;
+      console.log("save comment error = ", err);
+    }
+  }
+
+  getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
+    if (!fromDate) {
+      //NOTE: when in development phase, for the notifications which did not have createdOn field
+      return showHours ? `yesterday` : `1 day`;
+    }
+    const today = toDate ? toDate : moment();
+
+    const daysDifference = moment(today).diff(moment(fromDate), "days");
+    if (daysDifference === 0) {
+      let output = `${this.getDoubleDigit(
+        new Date(fromDate).getUTCHours() + 3
+      )}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
+      if (!showHours) {
+        output = `${moment(today).diff(moment(fromDate), "hours")} hours`;
+      }
+      return output;
+    } else if (daysDifference === 1) {
+      return showHours ? "yesterday" : `1 day`;
+    } else {
+      return showHours
+        ? `${daysDifference} days ago`
+        : `${daysDifference} days`;
+    }
+  }
+
+  getDoubleDigit(value: number) {
+    if (value < 10) {
+      return "0" + value;
+    }
+    return value;
+  }
+
+  getEventString(event: string): string {
+    let result = event;
+    switch (event) {
+      case "download":
+        result = "downloaded";
+        break;
+      case "documentCreated":
+        result = "created document";
+        break;
+    }
+    return result;
+  }
+
+  onFileProgress(event: any) {
+    if (!event.loaded) {
+      this.modalLoading = true;
+    }
+    if ((event.loaded / event.total) * 100 > 1) {
+      this.modalLoading = false;
+    }
+  }
+
+  markFavourite(data, favouriteValue) {
+    // this.favourite = !this.favourite;
+    if (data.contextParameters.favorites.isFavorite) {
+      this.unmarkFavourite(data, favouriteValue);
+      return;
+    }
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {},
+    };
+    this.modalLoading = true;
+    this.apiService
+      .post(apiRoutes.MARK_FAVOURITE, body)
+      .subscribe((docs: any) => {
+        data.contextParameters.favorites.isFavorite =
+          !data.contextParameters.favorites.isFavorite;
+        if (favouriteValue === "recent") {
+          this.markRecentlyViewed(data);
+        }
+        this.modalLoading = false;
+      });
+  }
+
+  unmarkFavourite(data, favouriteValue) {
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {},
+    };
+    this.modalLoading = true;
+    this.apiService
+      .post(apiRoutes.UNMARK_FAVOURITE, body)
+      .subscribe((docs: any) => {
+        // data.contextParameters.favorites.isFavorite = this.favourite;
+        data.contextParameters.favorites.isFavorite =
+          !data.contextParameters.favorites.isFavorite;
+        if (favouriteValue === "recent") {
+          this.markRecentlyViewed(data);
+        }
+        this.modalLoading = false;
+      });
+  }
+
+  markRecentlyViewed(data: any) {
+    let found = false;
+    // tslint:disable-next-line:prefer-const
+    let recentlyViewed =
+      JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+    if (recentlyViewed.length) {
+      recentlyViewed.map((item: any, index: number) => {
+        if (item.uid === data.uid) {
+          found = true;
+          recentlyViewed[index] = data;
+        }
+      });
+    }
+    if (found) {
+      localStorage.setItem(
+        localStorageVars.RECENTLY_VIEWED,
+        JSON.stringify(recentlyViewed)
+      );
+      return;
+    }
+
+    data["isSelected"] = false;
+    recentlyViewed.push(data);
+    localStorage.setItem(
+      localStorageVars.RECENTLY_VIEWED,
+      JSON.stringify(recentlyViewed)
+    );
+    return;
+  }
+}

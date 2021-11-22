@@ -7,7 +7,7 @@ export const ACCESS = {
 export const CONFIDENTIALITY = {
   "not": "Not Confidential",
   "confidential": "Confidential",
-  "highly": "Highly Confidential",
+  // "highly": "Highly Confidential",
 }
 
 export const GROUPS = {

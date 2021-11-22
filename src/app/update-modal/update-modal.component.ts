@@ -53,9 +53,10 @@ export class UpdateModalComponent implements OnInit {
   userInput$ = new Subject<string>();
   userLoading: boolean = false;
   loading = false;
+  updatedAclValue: any = {};
 
   closeModal() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.updatedAclValue);
   }
 
   initACLValue() {
@@ -83,7 +84,7 @@ export class UpdateModalComponent implements OnInit {
       this.customAccessMap[index] = ACCESS.internal;
       this.customUsersMap[index] = [];
     } else if (users.length > 0) {
-      this.customConfidentialityMap[index] = CONFIDENTIALITY.highly;
+      this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
       this.customAccessMap[index] = ACCESS.restricted;
       this.customUsersMap[index] = [...users];
     }
@@ -154,7 +155,6 @@ export class UpdateModalComponent implements OnInit {
     const confidentiality =
       this.customConfidentialityMap[fileIndex];
     if (
-      (access && confidentiality === CONFIDENTIALITY.highly) ||
       (access === ACCESS.restricted && confidentiality)
     ) {
       return true;
@@ -245,7 +245,8 @@ export class UpdateModalComponent implements OnInit {
       context: {},
       input: doc.uid,
     };
-    this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
+    const result = await this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
+    this.updatedAclValue[index] = result["contextParameters"].acls;
   }
 
   trackByFn(item: any) {
@@ -270,7 +271,7 @@ export class UpdateModalComponent implements OnInit {
     );
   }
 
-  
+
   getAssetUrl(event: any, url: string, type?: string): string {
     if(!url) return '';
     if (!event) {

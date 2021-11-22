@@ -28,7 +28,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    FontAwesomeModule
+    FontAwesomeModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

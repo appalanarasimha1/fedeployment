@@ -12,6 +12,7 @@ import { SharedService } from '../services/shared.service';
 import { Router } from '@angular/router';
 import { NgxMasonryComponent } from 'ngx-masonry';
 import { DataService } from '../services/data.service';
+import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('videoPlayer') videoplayer: ElementRef;
+  @ViewChild('previewModal') previewModal: PreviewPopupComponent;
 
   docs = [];
   private searchCriteria: IHeaderSearchCriteria = {};
@@ -345,7 +347,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   // added for modal
-  open(content, file, fileType?: string): void {
+  open(file, fileType?: string): void {
     this.showShadow = false;
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
@@ -383,14 +385,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
-    this.getComments();
-    this.getTags();
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.showTagInput = false;
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+
+    this.previewModal.open();
   }
 
   onFileProgress(event: any) {
@@ -402,36 +398,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
   }
 
-  afterFileLoad(event: any) {
-    // this.modalLoading = false;
-  }
-
-  pageInitialized(event: any) {
-    // this.modalLoading = true;
-  }
-
   getNuxeoPdfViewerURL = () => {
     return `${this.baseUrl}/nuxeo/ui//vendor/pdfjs/web/viewer.html?file=`;
-  }
-
-  getTags() {
-    this.tags = this.selectedFile.contextParameters["tags"]?.map(tag => tag) || [];
-  }
-
-  addTag(inputTag: string): void {
-    if (!inputTag) return;
-    const route = apiRoutes.ADD_TAG;
-    const apiBody = {
-      input: this.selectedFile.uid,
-      params: {
-        tags: inputTag
-      }
-    };
-    this.apiService.post(route, apiBody).subscribe(response => {
-      this.tags.push(inputTag);
-      this.selectedFile.contextParameters["tags"].push(inputTag);
-      this.inputTag = "";
-    });
   }
 
   video(event: any) {
@@ -517,129 +485,6 @@ export class DocumentComponent implements OnInit, OnChanges {
       }
       this.loading = false;
     });
-  }
-
-  getDownloadFileEstimation(data: any) {
-    if(!data) return;
-    return `${(data / 1024) > 1024 ? ((data / 1024) / 1024).toFixed(2) + ' MB' : (data / 1024).toFixed(2) + ' KB'}`;
-  }
-
-  getComments() {
-    let loading = true;
-    let error;
-    const queryParams = { pageSize: 10, currentPageIndex: 0 };
-    const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
-    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
-      .get().then((docs) => {
-        this.comments = docs.entries;
-        loading = false;
-      }).catch((err) => {
-        console.log('search document error = ', err);
-        error = `${error}. `;
-        if (error && error.message) {
-          if (error.message.toLowerCase() === 'unauthorized') {
-            this.sharedService.redirectToLogin();
-          }
-        }
-        loading = false;
-      });
-  }
-
-  // saveComment(comment: string): void {
-  //   if(!comment.trim()) {
-  //     return;
-  //   }
-  //   let error;
-  //   const route = apiRoutes.SAVE_COMMENT.replace('[assetId]', this.selectedFile.uid);
-  //   const postData = {
-  //     'entity-type': 'comment',
-  //     parentId: this.selectedFile.uid,
-  //     text: comment
-  //   };
-  //   this.nuxeo.nuxeoClient.request(route).post({ body: postData }).then((doc) => {
-  //     this.commentText = '';
-  //     this.comments.unshift(doc);
-  //     this.loading = false;
-  //   }).catch((err) => {
-  //     console.log('search document error = ', err);
-  //     error = `${error}. `;
-  //     if (error && error.message) {
-  //       if (error.message.toLowerCase() === 'unauthorized') {
-  //         this.sharedService.redirectToLogin();
-  //       }
-  //     }
-  //     this.loading = false;
-  //   });
-  // }
-
-  saveComment(comment: string): void {
-    if(!comment.trim()) {
-      return;
-    }
-    let error;
-    const route = apiRoutes.SAVE_COMMENT.replace('[assetId]', this.selectedFile.uid);
-    const postData = {
-      'entity-type': 'comment',
-      parentId: this.selectedFile.uid,
-      text: comment
-    };
-    try{
-    this.apiService.post(route, postData)
-    .subscribe((doc) => {
-      this.commentText = '';
-      this.comments.unshift(doc);
-      this.loading = false;
-    });
-  } catch(err) {
-      console.log('search document error = ', err);
-      error = `${error}. `;
-      if (error && error.message) {
-        if (error.message.toLowerCase() === 'unauthorized') {
-          this.sharedService.redirectToLogin();
-        }
-      }
-      this.loading = false;
-    }
-  }
-
-  getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
-    if (!fromDate) { //NOTE: when in development phase, for the notifications which did not have createdOn field
-      return showHours ? `yesterday` : `1 day`;
-    }
-    const today = toDate ? toDate : moment();
-
-    const daysDifference = moment(today).diff(moment(fromDate), 'days');
-    if (daysDifference === 0) {
-      let output = `${this.getDoubleDigit(new Date(fromDate).getUTCHours() + 3)}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
-      if (!showHours) {
-        output = `${moment(today).diff(moment(fromDate), 'hours')} hours`;
-      }
-      return output;
-    } else if (daysDifference === 1) {
-      return showHours ? 'yesterday' : `1 day`;
-    } else {
-      return showHours ? `${daysDifference} days ago` : `${daysDifference} days`;
-    }
-  }
-
-  getDoubleDigit(value: number) {
-    if (value < 10) {
-      return '0' + value;
-    }
-    return value;
-  }
-
-  getEventString(event: string): string {
-    let result = event;
-    switch (event) {
-      case 'download':
-        result = 'downloaded';
-        break;
-      case 'documentCreated':
-        result = 'created document';
-        break;
-    }
-    return result;
   }
 
   toDateString(date: string): string {

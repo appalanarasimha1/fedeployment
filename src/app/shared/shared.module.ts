@@ -11,11 +11,16 @@ import { LoaderSmallComponent } from '../common/loader-small/loader-small.compon
 // import {UploadModalModule} from '../upload-modal/upload-modal.module'
 import { NgxMasonryModule } from 'ngx-masonry';
 // import { OwlModule  } from 'ngx-owl-carousel-o';
+import { DocumentCardComponent } from '../document-card/document-card.component';
+import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
     LoaderComponent,
-    LoaderSmallComponent
+    LoaderSmallComponent,
+    DocumentCardComponent,
+    PreviewPopupComponent
   ],
   providers: [
     ApiService,
@@ -27,16 +32,20 @@ import { NgxMasonryModule } from 'ngx-masonry';
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
+    PdfViewerModule,
     // UploadModalModule,
     // NgxMasonryModule
   ],
   exports: [
     CommonModule,
+    PdfViewerModule,
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
     LoaderComponent,
     LoaderSmallComponent,
+    DocumentCardComponent,
+    PreviewPopupComponent
     // NgxMasonryModule
     // OwlModule
   ]

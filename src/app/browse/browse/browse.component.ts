@@ -2,15 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../../services/api.service';
-import { UploadModalComponent } from 'src/app/upload-modal/upload-modal.component';
-import { DataService } from 'src/app/services/data.service';
+import { PreviewPopupComponent } from 'src/app/preview-popup/preview-popup.component';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxMasonryComponent } from 'ngx-masonry';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateModalComponent } from '../../update-modal/update-modal.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { localStorageVars } from 'src/app/common/constant';
+import { constants, localStorageVars } from 'src/app/common/constant';
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 
@@ -21,9 +20,10 @@ import { NuxeoService } from 'src/app/services/nuxeo.service';
   styleUrls: ['./browse.component.css']
 })
 export class BrowseComponent implements OnInit {
-  
+
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
+  @ViewChild('previewModal') previewModal: PreviewPopupComponent;
 
   constructor(
     private modalService: NgbModal,
@@ -77,6 +77,7 @@ export class BrowseComponent implements OnInit {
   comments = [];
   inputTag = '';
   showTagInput = false;
+  fileSelected = [];
 
 
   completeLoadingMasonry(event: any) {
@@ -98,7 +99,7 @@ export class BrowseComponent implements OnInit {
     folder: ''
   };
   breadcrrumb = ""
-    
+
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
@@ -109,12 +110,18 @@ export class BrowseComponent implements OnInit {
         //   // this.selectedFolder = {uid: params.sector};
         //   // this.handleClick(this.selectedFile, 0, null);
         //   return;
-    
+
         // }
         this.selectedFolder = this.folderStructure[0];
         this.handleClick(this.folderStructure[0], 0, null);
       }
     );
+  }
+
+  checkAssetType(assetType: string): boolean {
+    const assetTypes = [constants.FILE_SMALL_CASE, constants.PICTURE_SMALL_CASE, constants.VIDEO_SMALL_CASE, constants.AUDIO_SMALL_CASE ];
+    if(assetTypes.indexOf(assetType.toLowerCase()) !== -1) return true;
+    else return false;
   }
 
   openVerticallyCentered(content) {
@@ -174,7 +181,7 @@ export class BrowseComponent implements OnInit {
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
-  open(content, file, fileType?: string): void {
+  open(file, fileType?: string): void {
     this.showShadow = false;
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
@@ -212,41 +219,10 @@ export class BrowseComponent implements OnInit {
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
-    this.getComments();
-    this.getTags();
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.showTagInput = false;
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+
+    this.previewModal.open();
   }
-  
-  getComments() {
-    let loading = true;
-    let error;
-    const queryParams = { pageSize: 10, currentPageIndex: 0 };
-    const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
-    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
-      .get().then((docs) => {
-        this.comments = docs.entries;
-        loading = false;
-      }).catch((err) => {
-        console.log('search document error = ', err);
-        error = `${error}. `;
-        if (error && error.message) {
-          if (error.message.toLowerCase() === 'unauthorized') {
-            this.sharedService.redirectToLogin();
-          }
-        }
-        loading = false;
-      });
-  }
-  
-  getTags() {
-    this.tags = this.selectedFile.contextParameters["tags"]?.map(tag => tag) || [];
-  }
-  
+
   markRecentlyViewed(data: any) {
     let found = false;
     // tslint:disable-next-line:prefer-const
@@ -329,7 +305,7 @@ export class BrowseComponent implements OnInit {
             this.sectorOpen = true;
             this.callDomain
           }
-          
+
           if(!this.callDomain && this.routeParams.sector) {
             this.callDomain = true;
             this.callHandClick = this.folderStructure[index].children.find((item, i) => {
@@ -341,10 +317,10 @@ export class BrowseComponent implements OnInit {
             });
             if(this.callHandClick) {
               this.selectedFolder = this.callHandClick;
-              
+
               this.handleClick(this.callHandClick, index, this.ind);
               return;
-            } 
+            }
           }
 
           if(!this.callFolder && this.routeParams.folder) {
@@ -371,27 +347,9 @@ export class BrowseComponent implements OnInit {
           // let callHandleTest = this.folderStructure[index].children[this.ind].children.find(item => item.title.toLowerCase() === this.routeParams.folder);
           // if(callHandleTest) this.handleTest(callHandleTest);
 
-          
+
         }
       }
-    });
-  }
-  
-  addTag(inputTag: string): void {
-    if (!inputTag) return;
-    const route = apiRoutes.ADD_TAG;
-    const apiBody = {
-      input: this.selectedFile.uid,
-      params: {
-        tags: inputTag
-      }
-    };
-    this.loading = true;
-    this.apiService.post(route, apiBody).subscribe(response => {
-      this.loading = true;
-      this.tags.push(inputTag);
-      this.selectedFile.contextParameters["tags"].push(inputTag);
-      this.inputTag = "";
     });
   }
 
@@ -475,6 +433,68 @@ export class BrowseComponent implements OnInit {
     //   let param1 = this.folderStructure[0].children[findIndex]
     //   this.handleChangeClick(param1, 0, data, findIndex)
     // });
+    modalDialog.afterClosed().subscribe(result => {
+      if (!result) return;
+      Object.keys(result).forEach(key => {
+        this.searchList[key].contextParameters.acls = result[key];
+      });
+    });
+  }
+
+  markFavourite(data, favouriteValue) {
+    // this.favourite = !this.favourite;
+    if(data.contextParameters.favorites.isFavorite) {
+      this.unmarkFavourite(data, favouriteValue);
+      return;
+    }
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {}
+    };
+    this.loading = true;
+    this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
+      data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
+      if(favouriteValue === 'recent') {
+        this.markRecentlyViewed(data);
+      }
+      this.loading = false;
+    });
+  }
+
+  unmarkFavourite(data, favouriteValue) {
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {}
+    };
+    this.loading = true;
+    this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
+      // data.contextParameters.favorites.isFavorite = this.favourite;
+      data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
+      if(favouriteValue === 'recent') {
+        this.markRecentlyViewed(data);
+      }
+      this.loading = false;
+    });
+  }
+
+  selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
+    if (event.checked || event.target?.checked) {
+      this.fileSelected.push(file);
+    } else {
+      if (this.fileSelected.length) {
+        let i = -1;
+        this.fileSelected.forEach((item, ind) => {
+          if (item.uid === file.uid) {
+            i = ind;
+          }
+        });
+        if (i !== -1) {
+          this.fileSelected.splice(i, 1); // remove the file from selected files
+        }
+      }
+    }
   }
 }
 

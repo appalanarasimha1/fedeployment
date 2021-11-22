@@ -45,7 +45,7 @@ import { LoaderYellowComponent } from './common/loader-yellow/loader-yellow.comp
     MatDialogModule,
     MatIconModule,
     UploadModalModule,
-    UpdateModalModule
+    UpdateModalModule,
   ],
   providers: [
     // CookieService,

@@ -72,6 +72,7 @@ export class UploadModalComponent implements OnInit {
   filesUploadDone: any = {};
 
   showCustomDropdown: boolean = false;
+  disableDateInput = false;
 
   constructor(
     private apiService: ApiService,
@@ -231,6 +232,7 @@ export class UploadModalComponent implements OnInit {
       title: entry.title,
       type: entry.type,
       path: entry.path,
+      properties: entry.properties,
     }));
   }
 
@@ -327,12 +329,16 @@ export class UploadModalComponent implements OnInit {
     this.selectedFolder = folder;
     this.folderToAdd = null;
     this.showCustomDropdown = false;
+    this.disableDateInput = true;
+    this.associatedDate = this.selectedFolder.properties["dc:start"];
   }
 
   addNewFolder(folderName) {
     this.folderToAdd = folderName.value;
     this.selectedFolder = null;
     this.showCustomDropdown = false;
+    this.disableDateInput = false;
+    this.associatedDate = "";
   }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
@@ -358,7 +364,6 @@ export class UploadModalComponent implements OnInit {
     const confidentiality =
       this.customConfidentialityMap[fileIndex] || this.confidentiality;
     if (
-      (access && confidentiality === CONFIDENTIALITY.highly) ||
       (access === ACCESS.restricted && confidentiality)
     ) {
       return true;

@@ -182,7 +182,7 @@ section.lpSecOne {
 
 .masonry-item {
   margin-bottom: 10px;
-  background-color: #f1f1f1;
+  /* background-color: #f1f1f1; */
   background-size: cover;
   width: calc(24% - 9px);
 }
@@ -218,4 +218,20 @@ color: rgba(35, 33, 30, 0.6);
 padding-top: 10px;
 
 font-weight: 600;
+}
+.folderCircle{
+  height: 140px;
+  width: 140px;
+  background: #E8E6DF;
+  border-radius: 50%;
+  display: block;
+  font-size: 16px;
+line-height: 22px;
+text-align: center;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #937206;
+font-weight: 600
+
 }
