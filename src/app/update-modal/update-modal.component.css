@@ -447,6 +447,7 @@ border-radius: 8px;
       border-radius: 8px;
       margin-right: 12px;
       height: 112px;
+      object-fit: cover;
 }
 .publish-file-preview-access label {
   /* width: 100px !important; */
@@ -458,7 +459,7 @@ border-radius: 8px;
   /* width: 180px !important; */
 }
 .publish-file-preview-access label {
-  margin-right: 22px;
+  float: right;
 }
 .publish-file-preview-access .upload-form-input select{
   width: 100% !important;

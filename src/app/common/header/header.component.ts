@@ -69,7 +69,7 @@ export class HeaderComponent implements OnInit {
     this.selectedTab = tab;
     this.sendSelectedTab.emit(tab);
     if (tab === 'search') {
-      this.router.navigate(['/']);
+      this.router.navigate(['search']);
     }
     if (tab === 'browse') {
       this.router.navigate(['browse']);

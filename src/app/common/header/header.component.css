@@ -109,9 +109,12 @@ header{
 .searchHeading .dropdown-item{
     color: #000;
 }
+.searchHeading .navbar-nav .nav-link.active{
+    color: #C49900 ;
+}
 .searchHeading .navbar-nav .nav-link.active::before{
     content: '';
-    background-color: #fff;
+    background-color: #C49900 ;
     height: 1.5px;
     width: 100% !important;
     position: absolute;

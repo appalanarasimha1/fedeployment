@@ -411,6 +411,7 @@ color: #000000;
   min-width: -moz-max-content !important;
   min-width: max-content !important;
   width: 200px;
+  height: 240px;
 }
 .dropdown .dropdown-menu.show .dropdown-item, .settingsDropdown .dropdown-menu.show .dropdown-item  ,.dropup .dropdown-menu.show .dropdown-item, .settingsDropdown .dropdown-menu.show .dropdown-item{
   color: #fff ;

@@ -29,7 +29,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 }
 
 .main-content {
-  padding-top: 10px;
+  padding-top: 30px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -198,7 +198,6 @@ section.lpSecOne {
 	right:40px;
   background-color: #23211E;
 } 
-<<<<<<< HEAD
 
 .paddingLeft{
   padding-left: 40px;
@@ -236,5 +235,3 @@ color: #937206;
 font-weight: 600
 
 }
-=======
->>>>>>> 0416e4fb32e4f128c4fa078e23dc3c913964e52a

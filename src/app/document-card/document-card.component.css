@@ -1315,3 +1315,27 @@ color: #ACACAC;
   background-color: #fff;
   padding: 20px;
 }
+
+
+/* video icon */
+.videoIconn{
+  position: relative;
+}
+.videoIconn:before{
+  content: '';
+  background-image: url(~/../../../../assets/images/button-play.svg);
+  height: 46px;
+  width: 46px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: 0.4s;
+}
+.cardBlock:hover .videoIconn::before{
+  transform: scale(1.2);
+}

@@ -30,7 +30,7 @@ const STEPS = {
 
 const BUTTON_LABEL = {
   1: "Upload",
-  2: "Publish",
+  2: "Review",
   3: "Publish",
 };
 

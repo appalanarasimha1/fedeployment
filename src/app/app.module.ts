@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { UpdateModalModule } from './update-modal/update-modal.module';
+import { LoaderYellowComponent } from './common/loader-yellow/loader-yellow.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { UpdateModalModule } from './update-modal/update-modal.module';
     LoginComponent,
     LandingPageComponent,
     FooterComponent,
+    LoaderYellowComponent,
   ],
   imports: [
     CommonModule,

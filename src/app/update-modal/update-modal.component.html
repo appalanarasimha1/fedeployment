@@ -29,10 +29,10 @@
         </div>
         <div class="publish-file-preview-access">
           <div class="upload-form-input row">
-            <div class="col-xl-3">
+            <div class="col-xl-4">
               <label for="confidentiality">Confidentiality</label>
             </div>
-            <div class="col-xl-9 ">
+            <div class="col-xl-8 ">
               <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, i)" id="confidentiality">
                 <option hidden disabled selected value></option>
                 <option [selected]="customConfidentialityMap[i] === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
@@ -41,10 +41,10 @@
 
           </div>
           <div class="upload-form-input row">
-            <div class="col-xl-3">
+            <div class="col-xl-4">
               <label for="access">Access</label>
             </div>
-            <div class="col-xl-9">
+            <div class="col-xl-8">
               <select name="access" (change)="onSelectAccess($event.target.value, i)" id="access">
                 <option hidden disabled selected value></option>
                 <option [selected]="customAccessMap[i] === c.value"  [disabled]="checkAccessOptionDisabled(c.value, i)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
@@ -53,10 +53,10 @@
 
           </div>
           <div *ngIf="checkShowUserDropdown(i)" class="upload-form-input row" style="display: flex;">
-            <div class="col-xl-3">
+            <div class="col-xl-4">
               <label for="user">Users</label>
             </div>
-            <div class="col-xl-9">
+            <div class="col-xl-8">
               <ng-select
               [items]="userList$ | async"
               bindLabel="id"

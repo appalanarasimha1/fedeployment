@@ -143,6 +143,7 @@ button[disabled] {
   background-color: #cccccc;
   color: #666666;
   cursor: no-drop;
+  border-color: #ccc;
   /* display: none; */
 }
 
