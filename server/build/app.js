@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
-var body_parser_1 = __importDefault(require("body-parser"));
 var cors_1 = __importDefault(require("cors"));
 var express_1 = __importDefault(require("express"));
 var morgan_1 = __importDefault(require("morgan"));
@@ -14,15 +13,15 @@ var https_1 = __importDefault(require("https"));
 var App = /** @class */ (function () {
     function App() {
         this.app = (0, express_1.default)();
-        // parse application/x-www-form-urlencoded
-        this.app.use(body_parser_1.default.urlencoded({ extended: false }));
-        // parse application/json
-        this.app.use(body_parser_1.default.json());
+        // // parse application/x-www-form-urlencoded
+        // this.app.use(bodyParser.urlencoded({ extended: false }));
+        // // parse application/json
+        // this.app.use(bodyParser.json());
         this.app.use((0, morgan_1.default)('dev'));
         this.app.use((0, cors_1.default)());
         var httpsOptions = {
-            key: fs_1.default.readFileSync(__dirname + '/../../../certs/new-ui.key'),
-            cert: fs_1.default.readFileSync(__dirname + '/../../../certs/new-ui.crt')
+            // key: fs_1.default.readFileSync(__dirname + '/../../../certs/new-ui.key'),
+            // cert: fs_1.default.readFileSync(__dirname + '/../../../certs/new-ui.crt')
         };
         var server = https_1.default.createServer(httpsOptions, this.app);
         // this.app['io'] = new Server(server, {
