@@ -6,6 +6,6 @@ export const environment = {
   // apiVersion: '/nuxeo/api/v1'
 
   production: true,
-  apiServiceBaseUrl: 'https://groundx.neom.com', // for post requests fav, unfav, comment, tag, fetch.fav
+  apiServiceBaseUrl: 'https://uatgroundx.neom.com', // for post requests fav, unfav, comment, tag, fetch.fav
   apiVersion: '/nuxeo/api/v1'
 };
