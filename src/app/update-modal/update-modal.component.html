@@ -6,6 +6,7 @@
         <span>{{ getSelectedAssetsTitle() }}</span>
         <span style="color: gray;">{{ getSelectedAssetsSize() }}</span>
       </div>
+     
       <div class="publish-summary-location flexible">
         <div class="flexible">
           <img src="../../assets/images/upload.png">
@@ -20,7 +21,8 @@
 
       </div>
     </div>
-    <div class="publish-file-preview-groups">
+   
+    <div class="publish-file-preview-groups" style="width: 100%;" >
       <div *ngFor="let doc of docs; let i = index" class="publish-file-preview">
         <div class="publish-file-preview-img">
           <img src alt="preview" class="preview-img"
@@ -33,7 +35,7 @@
               <label for="confidentiality">Confidentiality</label>
             </div>
             <div class="col-xl-8 ">
-              <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, i)" id="confidentiality">
+              <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, i)" id="confidentiality"  >
                 <option hidden disabled selected value></option>
                 <option [selected]="customConfidentialityMap[i] === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
               </select>
@@ -45,7 +47,7 @@
               <label for="access">Access</label>
             </div>
             <div class="col-xl-8">
-              <select name="access" (change)="onSelectAccess($event.target.value, i)" id="access">
+              <select name="access" (change)="onSelectAccess($event.target.value, i)" id="access" >
                 <option hidden disabled selected value></option>
                 <option [selected]="customAccessMap[i] === c.value"  [disabled]="checkAccessOptionDisabled(c.value, i)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
               </select>
@@ -68,7 +70,8 @@
               [loading]="userLoading"
               typeToSearchText="Search users"
               [typeahead]="userInput$"
-              [(ngModel)]="customUsersMap[i]">
+              [(ngModel)]="customUsersMap[i]"
+              [ngClass]="{'goldenText': customUsersMap[i]}">
               <ng-template ng-option-tmp let-item="item">
                 {{item.id}} ({{item.fullname}})
               </ng-template>
@@ -79,6 +82,7 @@
         </div>
       </div>
     </div>
+
   </div>
   <div *ngIf="step === 2">
     <div class="finish-screen">

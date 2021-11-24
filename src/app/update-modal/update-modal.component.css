@@ -619,3 +619,48 @@ color: #23211E;
   height: 300px;
   overflow: auto;
 }
+
+
+.grid-list-view{
+  padding: 30px 0px;
+}
+.views {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: flex-end;
+}
+.views img {
+  margin-left: 15px;
+  opacity: 0.6;
+  width: 24px;
+  cursor: pointer;
+}
+.views img.active{
+  opacity: 1;
+}
+.form-grid{
+  padding: 40px 70px;
+}
+.form-grid label{
+  width: 100%;
+}
+
+.form-grid select{
+    height: 30px;
+    width: 100%;
+    border: unset;
+    border-bottom: 1.5px solid #000;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+.goldenText{
+  color: #C49900;
+  border-color: #C49900 !important;
+}
+select option{
+  color: #000;
+}
+.goldenText.ng-select .ng-select-container{
+  border-color: #C49900;
+}
