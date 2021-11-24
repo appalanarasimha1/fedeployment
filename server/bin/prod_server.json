@@ -11,6 +11,6 @@
       "NODE_ENV": "production",
       "SOCKET_PORT": 8081,
       "PORT": 8090,
-      "API_SERVER": "https://10.101.21.58:8089"
+      "API_SERVER": "https://10.101.21.63:8089"
     }
   }
