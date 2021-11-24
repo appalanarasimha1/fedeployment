@@ -231,7 +231,7 @@
                  <label for="confidentiality">Confidentiality</label>
               </div>
               <div class="col-xl-8 ">
-                 <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality">
+                 <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
                  <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                  </select>
               </div>
@@ -241,7 +241,7 @@
                  <label for="access">Access</label>
               </div>
               <div class="col-xl-8">
-                 <select name="access" (change)="onSelectAccess($event.target.value, file.key)" id="access">
+                 <select name="access" (change)="onSelectAccess($event.target.value, file.key)" id="access" [ngClass]="{'goldenText': access }" >
                  <option [selected]="access === c.value"  [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                  </select>
               </div>
