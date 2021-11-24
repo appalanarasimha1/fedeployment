@@ -6,7 +6,7 @@
     "out_file": "../runtime/out.log",
     "merge_logs": true,
     "env": {
-      "NODE_ENV": "demo",
+      "NODE_ENV": "dev",
       "SOCKET_PORT": 8081,
       "PORT": 8080,
       "API_SERVER": "http://34.219.179.33:5050"    
