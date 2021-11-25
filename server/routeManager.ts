@@ -32,7 +32,7 @@ export class RouteManager {
         // this.protocol = '';
         break;
       case 'demo':
-        this.targetUrl = 'https://34.219.179.33:5050/';
+        this.targetUrl = 'https://10.101.21.31:8090';
         // this.port = 5050;
         // this.protocol = 'https:';
         break;
