@@ -25,16 +25,13 @@ const STEPS = {
   styleUrls: ["./update-modal.component.css"],
 })
 export class UpdateModalComponent implements OnInit {
-  viewType: any;
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UpdateModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {docs: any, folder: any},
     private router: Router,
-  ) {
-    
-  }
-  selectedMenu = 0;
+  ) {}
+
   ngOnInit(): void {
     this.loadUsers();
     this.docs = this.data.docs;
@@ -274,13 +271,6 @@ export class UpdateModalComponent implements OnInit {
     );
   }
 
-// 
-
-
-handleSelectMenu(index, type) {
-  this.selectedMenu = index;
-  this.viewType = type;
-}
 
   getAssetUrl(event: any, url: string, type?: string): string {
     if(!url) return '';

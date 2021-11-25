@@ -5,6 +5,10 @@ import { IHeaderSearchCriteria } from './interface';
  import { CarouselModule } from 'ngx-owl-carousel-o';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { unescapeIdentifier } from '@angular/compiler';
+
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService } from 'src/app/services/api.service';
+import { apiRoutes } from '../config';
 @Component({
   selector: 'app-sub-header',
   // directives: [Search],
@@ -20,9 +24,17 @@ export class SubHeaderComponent implements OnInit {
   sectors: string[] = [];
   sectorSelected;
 
+  modalOpen: boolean = true;
+  hideVideo: boolean = true;
+  selectArea: boolean = false;
+  modalReference = null; 
+  modalOption: NgbModalOptions = {}; // not null!
+
   constructor(
     private dataService: DataService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private modalService: NgbModal,
+    private apiService: ApiService
     ) {}
 
   ngOnInit() {
@@ -91,5 +103,53 @@ export class SubHeaderComponent implements OnInit {
       }
     },
     nav: true
+  }
+
+  openSm(content) {
+    this.modalOpen = false;
+    this.hideVideo = true;
+    this.selectArea = false;
+    this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', backdrop: 'static', keyboard: false });
+  }
+  closeModal() {
+    this.modalOpen = true;
+    this.modalReference.close();
+  }
+
+  clickVideoIcon() {
+    this.hideVideo = false;
+    this.selectArea = true
+  }
+
+  videoResponse;
+  playPersonalizedVideo() {
+    const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
+    try {
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + body.sector + '&username=' + body.username)
+        .subscribe((response: any) => {
+          this.apiService.getVideo(apiRoutes.FETCH_PERSONALIZED_VIDEO + '/video').subscribe((vidResponse: any) => {
+            console.log('vidResponse = ', vidResponse);
+            this.videoResponse = vidResponse;
+          });
+          // if(response) this.getFavouriteCollection(response.uid);
+          
+          // setTimeout(() => {
+            // this.loading = false;
+          // }, 0);
+        });
+      } catch(error) {
+        console.log('error = ', error);
+          // this.loading = false;
+          // if (error && error.message) {
+          //   if (error.message.toLowerCase() === 'unauthorized') {
+          //     this.sharedService.redirectToLogin();
+          //   }
+          // }
+          return;
+        }
+  }
+
+  onSelectSector(sector: string) {
+    this.sectorSelected = sector;
   }
 }

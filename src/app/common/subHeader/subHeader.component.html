@@ -67,5 +67,50 @@
 
     </div>
   </div>
+
+  <!-- sprint16 start -->
+  <div class="video-icon" (click)="openSm(content)" *ngIf="modalOpen">
+    <div class="playIcon"></div>
+    <img src="https://via.placeholder.com/300x300/3ca2ca/3ca2ca" />
+  </div>
+
+  <ng-template #content let-modal>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); closeModal()">
+      <img src="../../../assets/images/modalclose.svg" />
+    </button>
+    <div class="modal-body">
+      <div class="modal-body-content" *ngIf="hideVideo" (click)="clickVideoIcon()">
+        <div class="playIcon"></div>
+        <img src="https://via.placeholder.com/300x170/3ca2ca/3ca2ca" />
+      </div>
+      <div class="select-an-area" *ngIf="selectArea">
+        <img src="../../../assets/images/logo-neom.png" class="logo" />
+        <h3>Please select an area of interest.</h3>
+        <select  (change)="onSelectSector($event.target.value)">
+          <option *ngFor="let sector of sectors">{{sector}}</option>
+          <!-- <option>Education</option>
+          <option>Sports</option>
+          <option>Entertainment and Culture</option> -->
+        </select>
+        <div class="next-arrow">
+          <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i>
+          <!-- <img src="../../../assets/images/logo-neom.png" class="logo" />   -->
+        </div>
+        
+      </div>
+      
+      <div class="next-arrow" *ngIf="videoResponse">
+        <video
+            controls
+            style="width: 100%; height: 400px"
+            [src]="videoResponse"
+            
+          ></video>
+          <!-- (error)="getAssetUrl($event, docUrl)" -->
+      </div>
+    </div>
+  </ng-template>
+  <!-- sprint16 end -->
+
 </section>
 <!-- <app-search></app-search> -->

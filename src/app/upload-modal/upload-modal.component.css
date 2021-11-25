@@ -143,7 +143,6 @@ button[disabled] {
   background-color: #cccccc;
   color: #666666;
   cursor: no-drop;
-  border-color: #ccc;
   /* display: none; */
 }
 
@@ -222,10 +221,9 @@ color: #FFFFFF;
   color: #23211E;
 }
 .upload-form-input input {
-  /* width: calc(100% - 50px); */
+  width: calc(100% - 50px);
   border: unset;
   font-size: 14px;
-  border-bottom: 1.5px solid #000;
   /* font-weight: 600; */
   /* border-bottom: 1.5px solid #000; */
 }
@@ -257,7 +255,7 @@ color: #FFFFFF;
   width: calc(100% - 50px);
   margin: 0;
   padding: 0;
-  /* border-bottom: 1.5px solid #000; */
+  border-bottom: 1.5px solid #000;
 }
 .select-css {
   display: block;
@@ -277,7 +275,6 @@ color: #FFFFFF;
   z-index: 10;
   border-radius: unset !important;
   border-left: unset !important;
-  
 }
 .select-css::-ms-expand {
   display: none;
@@ -360,10 +357,12 @@ color: #FFFFFF;
   color: green;
   font-weight: 700;
 }
-
+ng-select {
+  width: calc(100% - 50px);
+}
 ::ng-deep .ng-select .ng-select-container{
   border: unset !important;
-  /* border-bottom: 1.5px solid #000 !important; */
+  border-bottom: 1.5px solid #000 !important;
   border-radius: 0px !important;
   background-color: transparent;
 }
@@ -617,25 +616,4 @@ color: #23211E;
   height: 50vh;
   overflow: hidden;
   overflow-y: scroll;
-}
-
-.goldenText{
-  color: #C49900;
-  border-color: #C49900 !important;
-}
-select option{
-  color: #000;
-}
-.goldenText.ng-select .ng-select-container{
-  border-color: #C49900;
-}
-::ng-deep ng-select {
-  width: calc(100% - 50px);
-  border-bottom: 1.5px solid #000 !important;
-}
-::placeholder { 
-  color: #000;
-}
-.publish-file-preview-access label{
-  float: right;
 }

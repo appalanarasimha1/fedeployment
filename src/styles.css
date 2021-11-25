@@ -3747,3 +3747,38 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   content: "\f105";
 }
 /* Custom tabs css end 12-Nov-2021 */
+
+/* sprint16 start */
+.remove-backdrop {
+  background: transparent !important;
+}
+.custom-modal .modal-content {
+  width: 400px;
+  margin: 0px auto;
+  border: 0px;
+  border-radius: 10px;
+  background: transparent;
+}
+.custom-modal button.close {
+  position: absolute;
+  left: -50px;
+  top: 0px;
+  height: 30px;
+  width: 30px;
+  opacity: 1;
+}
+.custom-modal .modal-body {
+  background: #000;
+  padding: 0px !important;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.custom-modal .modal-body img,
+.custom-modal button.close img{
+  max-width: 100%;
+  width: 100%;
+}
+.custom-modal .modal-dialog {
+  margin: 17rem auto 1.75rem auto;
+}
+/* sprint16 end */

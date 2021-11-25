@@ -167,7 +167,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   getFavouriteCollection(favouriteUid: string) {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch.document': 'properties', properties: '*' };
     this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
       .then((response) => {
         if(response) this.favourites = response?.entries;

@@ -16,7 +16,7 @@ export class ApiService {
       'Access-Control-Allow-Origin': '*',
       accept: 'text/plain,application/json, application/json',
       'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-      'enrichers-document': 'thumbnail,permissions,preview,acls,favorites,audit,tags',
+      'enrichers-document': 'thumbnail,permissions,preview,acls,favorites,audit',
       'X-Authentication-Token': localStorage.getItem('token'),
       properties: '*'
     };
@@ -27,6 +27,21 @@ export class ApiService {
 
   get(urlAddress: string, options?: any) {
     options = options ? Object.assign(options, { headers: this.getHeaders()}) : { headers: this.getHeaders()};
+    return this.http
+      .get<any>(SERVER_URL + apiVersion1 + urlAddress, options)
+      .pipe(map(data => data));
+  }
+
+  getVideo(urlAddress: string, options?: any) {
+    options = {
+      'Access-Control-Allow-Origin': '*',
+      accept: '*',
+      'Content-Type': 'video/mp4',
+      'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
+      'enrichers-document': 'thumbnail,permissions,preview,acls,favorites,audit',
+      'X-Authentication-Token': localStorage.getItem('token'),
+      properties: '*'
+    };
     return this.http
       .get<any>(SERVER_URL + apiVersion1 + urlAddress, options)
       .pipe(map(data => data));

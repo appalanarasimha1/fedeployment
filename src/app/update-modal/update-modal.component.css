@@ -447,7 +447,6 @@ border-radius: 8px;
       border-radius: 8px;
       margin-right: 12px;
       height: 112px;
-      object-fit: cover;
 }
 .publish-file-preview-access label {
   /* width: 100px !important; */
@@ -459,7 +458,7 @@ border-radius: 8px;
   /* width: 180px !important; */
 }
 .publish-file-preview-access label {
-  float: right;
+  margin-right: 22px;
 }
 .publish-file-preview-access .upload-form-input select{
   width: 100% !important;
@@ -618,49 +617,4 @@ color: #23211E;
 .publish-file-preview-groups {
   height: 300px;
   overflow: auto;
-}
-
-
-.grid-list-view{
-  padding: 30px 0px;
-}
-.views {
-  display: flex;
-  /* flex-direction: column; */
-  align-items: flex-end;
-}
-.views img {
-  margin-left: 15px;
-  opacity: 0.6;
-  width: 24px;
-  cursor: pointer;
-}
-.views img.active{
-  opacity: 1;
-}
-.form-grid{
-  padding: 40px 70px;
-}
-.form-grid label{
-  width: 100%;
-}
-
-.form-grid select{
-    height: 30px;
-    width: 100%;
-    border: unset;
-    border-bottom: 1.5px solid #000;
-    font-size: 14px;
-    background-color: transparent;
-}
-
-.goldenText{
-  color: #C49900;
-  border-color: #C49900 !important;
-}
-select option{
-  color: #000;
-}
-.goldenText.ng-select .ng-select-container{
-  border-color: #C49900;
 }
