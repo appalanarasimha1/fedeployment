@@ -124,21 +124,26 @@ export class SubHeaderComponent implements OnInit {
   videoResponse;
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
+    this.videoResponse = false;
     try {
       this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + body.sector + '&username=' + body.username)
         .subscribe((response: any) => {
-          this.apiService.getVideo(apiRoutes.FETCH_PERSONALIZED_VIDEO + '/video').subscribe((vidResponse: any) => {
-            console.log('vidResponse = ', vidResponse);
-            this.videoResponse = vidResponse;
-          });
+          this.videoResponse = true;
+          // this.apiService.getVideo(apiRoutes.FETCH_PERSONALIZED_VIDEO + '/video').subscribe((vidResponse: any) => {
+          //   console.log('vidResponse = ', vidResponse);
+          //   // this.videoResponse = vidResponse;
+          // });
           // if(response) this.getFavouriteCollection(response.uid);
           
           // setTimeout(() => {
             // this.loading = false;
           // }, 0);
+
+          
         });
       } catch(error) {
         console.log('error = ', error);
+        this.videoResponse = error.error.text;
           // this.loading = false;
           // if (error && error.message) {
           //   if (error.message.toLowerCase() === 'unauthorized') {
@@ -147,6 +152,40 @@ export class SubHeaderComponent implements OnInit {
           // }
           return;
         }
+  }
+ count = 1;
+  showVideo(event) {
+    // if(!this.count) return;
+    const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
+    fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+      .then(r => {
+        if (r.status === 401) {
+          localStorage.removeItem('token');
+          // this.router.navigate(['login']);
+
+          // this.modalLoading = false;
+          return;
+        }
+        return r.blob();
+      })
+      .then(d => {
+        event.target.src = window.URL.createObjectURL(d);
+        // this.count--;
+        return
+
+      // this.modalLoading = false;
+        // event.target.src = new Blob(d);
+      }
+      ).catch(e => {
+        // TODO: add toastr with message 'Invalid token, please login again'
+
+          // this.modalLoading = false;
+          console.log(e);
+        // if(e.contains(`'fetch' on 'Window'`)) {
+        //   this.router.navigate(['login']);
+        // }
+
+      });
   }
 
   onSelectSector(sector: string) {

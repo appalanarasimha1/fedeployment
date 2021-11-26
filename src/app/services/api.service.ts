@@ -35,8 +35,9 @@ export class ApiService {
   getVideo(urlAddress: string, options?: any) {
     options = {
       'Access-Control-Allow-Origin': '*',
-      accept: '*',
-      'Content-Type': 'video/mp4',
+      accept: '*/*',
+      'Content-Type': '*',
+      responseType: 'arraybuffer',
       'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
       'enrichers-document': 'thumbnail,permissions,preview,acls,favorites,audit',
       'X-Authentication-Token': localStorage.getItem('token'),

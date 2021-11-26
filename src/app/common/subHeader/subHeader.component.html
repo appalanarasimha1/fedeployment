@@ -100,13 +100,13 @@
       </div>
       
       <div class="next-arrow" *ngIf="videoResponse">
-        <video
+       
+         <!-- <video
             controls
-            style="width: 100%; height: 400px"
-            [src]="videoResponse"
-            
-          ></video>
-          <!-- (error)="getAssetUrl($event, docUrl)" -->
+            src
+            (error)="showVideo($event)"
+          ></video> -->
+          
       </div>
     </div>
   </ng-template>
