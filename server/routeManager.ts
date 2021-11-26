@@ -21,32 +21,32 @@ const allowedExt = [
 
 export class RouteManager {
   private readonly app: any;
-  private targetUrl;
+  private targetUrl = process.env.API_SERVER;
   constructor(app: any) {
     this.app = app;
 
-    switch (process.env.NODE_ENV) {
-      case 'dev':
-        this.targetUrl = 'https://10.101.21.31:8090';
-        // this.port = 5050;
-        // this.protocol = '';
-        break;
-      case 'demo':
-        this.targetUrl = 'https://10.101.21.31:8090';
-        // this.port = 5050;
-        // this.protocol = 'https:';
-        break;
-      case 'production':
-        this.targetUrl = 'https://34.219.179.33:5050/';
-        // this.port = 8087;
-        // this.protocol = 'https:';
-        break;
-      default:
-        this.targetUrl = 'https://34.219.179.33:5050/';
-        // this.port = 5050;
-        // this.protocol = 'http:';
-        break;
-    }
+    // switch (process.env.NODE_ENV) {
+    //   case 'dev':
+    //     this.targetUrl = 'https://10.101.21.31:8090';
+    //     // this.port = 5050;
+    //     // this.protocol = '';
+    //     break;
+    //   case 'demo':
+    //     this.targetUrl = 'https://10.101.21.31:8090';
+    //     // this.port = 5050;
+    //     // this.protocol = 'https:';
+    //     break;
+    //   case 'production':
+    //     this.targetUrl = 'https://34.219.179.33:5050/';
+    //     // this.port = 8087;
+    //     // this.protocol = 'https:';
+    //     break;
+    //   default:
+    //     this.targetUrl = 'https://34.219.179.33:5050/';
+    //     // this.port = 5050;
+    //     // this.protocol = 'http:';
+    //     break;
+    // }
     this.mountRoutes(app);
   }
 
