@@ -29,6 +29,7 @@ export class SubHeaderComponent implements OnInit {
   selectArea: boolean = false;
   modalReference = null; 
   modalOption: NgbModalOptions = {}; // not null!
+  allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
 
   constructor(
     private dataService: DataService,
@@ -125,10 +126,13 @@ export class SubHeaderComponent implements OnInit {
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
     this.videoResponse = false;
+    this.modalLoading = true;
     try {
       this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + body.sector + '&username=' + body.username)
         .subscribe((response: any) => {
           this.videoResponse = true;
+          this.modalLoading = false;
+          return;
           // this.apiService.getVideo(apiRoutes.FETCH_PERSONALIZED_VIDEO + '/video').subscribe((vidResponse: any) => {
           //   console.log('vidResponse = ', vidResponse);
           //   // this.videoResponse = vidResponse;
@@ -143,7 +147,7 @@ export class SubHeaderComponent implements OnInit {
         });
       } catch(error) {
         console.log('error = ', error);
-        this.videoResponse = error.error.text;
+        this.modalLoading = false;
           // this.loading = false;
           // if (error && error.message) {
           //   if (error.message.toLowerCase() === 'unauthorized') {
@@ -153,8 +157,10 @@ export class SubHeaderComponent implements OnInit {
           return;
         }
   }
- count = 1;
+//  count = 1;
+  modalLoading = false;
   showVideo(event) {
+    this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
@@ -163,7 +169,7 @@ export class SubHeaderComponent implements OnInit {
           localStorage.removeItem('token');
           // this.router.navigate(['login']);
 
-          // this.modalLoading = false;
+          this.modalLoading = false;
           return;
         }
         return r.blob();
@@ -171,15 +177,15 @@ export class SubHeaderComponent implements OnInit {
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
         // this.count--;
-        return
 
-      // this.modalLoading = false;
+        this.modalLoading = false;
+        return
         // event.target.src = new Blob(d);
       }
       ).catch(e => {
         // TODO: add toastr with message 'Invalid token, please login again'
 
-          // this.modalLoading = false;
+          this.modalLoading = false;
           console.log(e);
         // if(e.contains(`'fetch' on 'Window'`)) {
         //   this.router.navigate(['login']);
