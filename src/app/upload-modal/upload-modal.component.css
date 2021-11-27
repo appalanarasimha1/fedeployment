@@ -107,6 +107,13 @@ letter-spacing: 0.055em;
 
 color: #C4C4C4;
 }
+.upload-loading {
+  color: #006dd4;
+}
+ngx-dropzone-preview:hover {
+  background-color: white !important;
+  border: 2px solid red;
+}
 .button-groups {
   display: flex;
   margin-top: 50px;
@@ -140,9 +147,10 @@ color: #C4C4C4;
   border: 1px solid #23211E;
 }
 button[disabled] {
-  background-color: #cccccc;
-  color: #666666;
+  background-color: #E5E5E5;
   cursor: no-drop;
+  border-color: #E5E5E5;
+  color: rgba(183, 183, 184);
   /* display: none; */
 }
 
@@ -172,7 +180,7 @@ div.menu-title {
   line-height: 24px;
   color: #23211E;
 }
-.workspace-list {
+/* .workspace-list {
   background: #F9F7F2;
   border: 1px dashed #8E6B0B;
   border-radius: 8px;
@@ -182,7 +190,7 @@ div.menu-title {
   flex-flow: wrap;
   max-height: 300px;
   padding: 15px 20px;
-}
+} */
 .workspace-title {
   border: 1px solid #fff;
   border-radius: 50%;
@@ -197,6 +205,7 @@ div.menu-title {
   cursor: pointer;
   background: #FFFFFF;
   font-weight: 600;
+  color: rgba(147, 114, 6, 1);
 }
 .ws-selected {
   background-color: #8E6B0B;
@@ -221,9 +230,11 @@ color: #FFFFFF;
   color: #23211E;
 }
 .upload-form-input input {
-  width: calc(100% - 50px);
+  /* width: calc(100% - 50px); */
   border: unset;
   font-size: 14px;
+  border-bottom: 1.5px solid #000;
+  font-family: myBrown !important;
   /* font-weight: 600; */
   /* border-bottom: 1.5px solid #000; */
 }
@@ -255,7 +266,7 @@ color: #FFFFFF;
   width: calc(100% - 50px);
   margin: 0;
   padding: 0;
-  border-bottom: 1.5px solid #000;
+  /* border-bottom: 1.5px solid #000; */
 }
 .select-css {
   display: block;
@@ -275,6 +286,7 @@ color: #FFFFFF;
   z-index: 10;
   border-radius: unset !important;
   border-left: unset !important;
+
 }
 .select-css::-ms-expand {
   display: none;
@@ -293,6 +305,7 @@ color: #FFFFFF;
   z-index: 20;
   border: 1px solid white;
   background: transparent;
+  height: 22px;
 }
 .custom-select-options {
   border: 1px solid #000;
@@ -357,12 +370,10 @@ color: #FFFFFF;
   color: green;
   font-weight: 700;
 }
-ng-select {
-  width: calc(100% - 50px);
-}
+
 ::ng-deep .ng-select .ng-select-container{
   border: unset !important;
-  border-bottom: 1.5px solid #000 !important;
+  /* border-bottom: 1.5px solid #000 !important; */
   border-radius: 0px !important;
   background-color: transparent;
 }
@@ -483,7 +494,7 @@ font-weight: 600;
   font-size: 16px !important;
   line-height: 22px !important;
 
-  
+
   color: #2B2825 !important;
 }
 .destination-folder {
@@ -508,7 +519,7 @@ font-weight: 600;
   font-size: 14px;
   line-height: 22px;
   text-decoration-line: underline;
-  
+
   color: #937206;
 }
 .destination-folder img {
@@ -527,7 +538,7 @@ font-weight: 600;
 
   align-items: center;
     background: #F9F7F2 !important;
-    border: 1.5px dashed #8E6B0B !important;
+    border: 1px dashed #937206 !important;
     border-radius: 5px;
     color: #000;
     cursor: pointer;
@@ -548,23 +559,24 @@ font-weight: 600;
 }
 .tooltip1 .tooltiptext {
   visibility: hidden;
-  width: 200px;
+  width: 290px;
   background: #23211E;
-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.25);
-border-radius: 100px;
+  box-shadow: 0px 2px 3px rgb(0 0 0 / 25%);
+  border-radius: 100px;
   color: #fff;
   text-align: center;
   padding: 5px 0;
   position: absolute;
   z-index: 1;
   bottom: -60%;
-  left: -762%;
-  margin-left: -60px;
+  right: 30px;
+  margin-left: 0px;
   opacity: 0;
   font-size: 11px;
   transition: opacity 0.3s;
   z-index: 99;
-  padding: 6px 10px;
+  padding: 8px 20px;
+  text-align: left;
 }
 
 /* .tooltip1 .tooltiptext::after {
@@ -617,3 +629,58 @@ color: #23211E;
   overflow: hidden;
   overflow-y: scroll;
 }
+
+.goldenText{
+  color: #C49900;
+  border-color: #C49900 !important;
+}
+select option{
+  color: #000;
+}
+.goldenText.ng-select .ng-select-container{
+  border-color: #C49900;
+}
+::ng-deep ng-select {
+  width: calc(100% - 50px);
+  border-bottom: 1.5px solid #000 !important;
+}
+::placeholder {
+  color: #000;
+}
+.publish-file-preview-access label{
+  float: right;
+}
+/* sprint16-v1 start */
+.workspace-list {
+  position: relative;
+  background: #F9F7F2;
+  border: 1px dashed #8E6B0B;
+  border-radius: 8px;
+  margin: 25px 0px;
+  overflow-y: auto;
+  display: flex;
+  flex-flow: wrap;
+  max-height: 300px;
+  padding: 15px 20px;
+  overflow: visible;
+  justify-content: center;
+  align-items: center;
+  /* border-radius: 0.25em;
+  display: flex; */
+  /* border: 1px dashed grey; */
+ }
+
+.triangle { 
+  display: block;
+  height: 20px;
+  width: 20px;
+  background-color: inherit;
+  border: inherit;
+  position: absolute;
+  top: -10px;
+  left: calc(50% - 80px);
+  clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+  transform: rotate(135deg);
+  border-radius: 0 0 0 0.25em;
+ }
+ /* sprint16-v1 end */

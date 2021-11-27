@@ -224,6 +224,7 @@ color: #FFFFFF;
   width: calc(100% - 50px);
   border: unset;
   font-size: 14px;
+  font-family: myBrown !important;
   /* font-weight: 600; */
   /* border-bottom: 1.5px solid #000; */
 }
@@ -293,6 +294,7 @@ color: #FFFFFF;
   z-index: 20;
   border: 1px solid white;
   background: transparent;
+  height: 22px;
 }
 .custom-select-options {
   border: 1px solid #000;
@@ -447,6 +449,7 @@ border-radius: 8px;
       border-radius: 8px;
       margin-right: 12px;
       height: 112px;
+      object-fit: cover;
 }
 .publish-file-preview-access label {
   /* width: 100px !important; */
@@ -458,7 +461,7 @@ border-radius: 8px;
   /* width: 180px !important; */
 }
 .publish-file-preview-access label {
-  margin-right: 22px;
+  float: right;
 }
 .publish-file-preview-access .upload-form-input select{
   width: 100% !important;
@@ -523,10 +526,9 @@ font-weight: 600;
   cursor: pointer;
 }
 .drag-drop{
-
   align-items: center;
     background: #F9F7F2 !important;
-    border: 1.5px dashed #8E6B0B !important;
+    border: 1px dashed #937206 !important;
     border-radius: 5px;
     color: #000;
     cursor: pointer;
@@ -547,23 +549,24 @@ font-weight: 600;
 }
 .tooltip1 .tooltiptext {
   visibility: hidden;
-  width: 200px;
+  width: 290px;
   background: #23211E;
-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.25);
-border-radius: 100px;
+  box-shadow: 0px 2px 3px rgb(0 0 0 / 25%);
+  border-radius: 100px;
   color: #fff;
   text-align: center;
   padding: 5px 0;
   position: absolute;
   z-index: 1;
   bottom: -60%;
-  left: -762%;
-  margin-left: -60px;
+  right: 30px;
+  margin-left: 0px;
   opacity: 0;
   font-size: 11px;
   transition: opacity 0.3s;
   z-index: 99;
-  padding: 6px 10px;
+  padding: 8px 20px;
+  text-align: left;
 }
 
 /* .tooltip1 .tooltiptext::after {
@@ -617,4 +620,49 @@ color: #23211E;
 .publish-file-preview-groups {
   height: 300px;
   overflow: auto;
+}
+
+
+.grid-list-view{
+  padding: 30px 0px;
+}
+.views {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: flex-end;
+}
+.views img {
+  margin-left: 15px;
+  opacity: 0.6;
+  width: 24px;
+  cursor: pointer;
+}
+.views img.active{
+  opacity: 1;
+}
+.form-grid{
+  padding: 40px 70px;
+}
+.form-grid label{
+  width: 100%;
+}
+
+.form-grid select{
+    height: 30px;
+    width: 100%;
+    border: unset;
+    border-bottom: 1.5px solid #000;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+.goldenText{
+  color: #C49900;
+  border-color: #C49900 !important;
+}
+select option{
+  color: #000;
+}
+.goldenText.ng-select .ng-select-container{
+  border-color: #C49900;
 }

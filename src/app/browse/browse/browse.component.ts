@@ -79,6 +79,9 @@ export class BrowseComponent implements OnInit {
   showTagInput = false;
   fileSelected = [];
 
+  currentLevel = 0;
+  folderAssetsResult: any = {};
+  fetchFolderStatus: any = {};
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -124,11 +127,15 @@ export class BrowseComponent implements OnInit {
     else return false;
   }
 
+  checkWSType(assetType: string) {
+    return assetType === "Workspace";
+  }
+
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
   }
 
-  handleTest(item) {
+  async handleTest(item) {
     // this.selectedFolder = item;
     // this.selectedFile = [];
     // this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
@@ -138,10 +145,12 @@ export class BrowseComponent implements OnInit {
     this.selectedFolder = item;
     this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
     // this.selectedFile = [];
-    this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${item.uid}&ecm_trashed=false`)
-    .subscribe((docs: any) => {
-      this.searchList = docs.entries;
-    });
+    // this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${item.uid}&ecm_trashed=false`)
+    // .subscribe((docs: any) => {
+    //   this.searchList = docs.entries;
+    // });
+    const docs = await this.fetchAssets(item.uid);
+    this.searchList = docs.entries;
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
@@ -251,7 +260,17 @@ export class BrowseComponent implements OnInit {
   //   this.searchList[index].isSelected = !this.searchList[index].isSelected;
   // }
 
+  handleViewClick(item, index) {
+    if (this.currentLevel < 1) {
+      this.handleClick(item, this.currentLevel, index);
+    } else {
+      this.handleTest(item);
+    }
+  }
+
   handleClick(item, index, childIndex?: any) {
+    this.currentLevel = index;
+
     if(this.breadcrrumb.includes(item.title)) {
       this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
     }
@@ -353,28 +372,13 @@ export class BrowseComponent implements OnInit {
     });
   }
 
-  fetchAssets(item, index, childIndex?:any) {
-    this.selectedFolder = item;
-    // this.selectedFile = [];
-    this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=7d597231-23f8-42e1-9324-c3898517c58a&ecm_trashed=false`)
-    .subscribe((docs: any) => {
-      this.searchList = docs.entries;
-    });
-      // .subscribe((docs: any) => {
-      //   this.searchList = docs.entries;
-      //   let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
-      //   if (workSpaceIndex >= 0) {
-      //     this.handleClick(this.searchList[workSpaceIndex], index, childIndex)
-      //   } else {
-      //     if (childIndex !== null && childIndex !== undefined) {
-      //       this.folderStructure[index].children[childIndex].children = docs.entries;
-      //       this.folderStructure[index].children[childIndex].isExpand = !this.folderStructure[index].children[childIndex].isExpand;
-      //     } else {
-      //       this.folderStructure[index].children = docs.entries;
-      //       this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand
-      //     }
-      //   }
-      // });
+  async fetchAssets(id) {
+    if (this.folderAssetsResult[id]) return this.folderAssetsResult[id];
+    const result = await this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${id}&ecm_trashed=false`).toPromise();
+    const res = JSON.stringify(result)
+    this.folderAssetsResult[id] = JSON.parse(res);
+    delete this.fetchFolderStatus[id];
+    return this.folderAssetsResult[id];
   }
 
 
@@ -495,6 +499,17 @@ export class BrowseComponent implements OnInit {
         }
       }
     }
+  }
+
+  getFolderInfo(item) {
+    let count = 0;
+    if (this.folderAssetsResult[item.uid]) count = this.folderAssetsResult[item.uid].resultsCount;
+    else if (this.fetchFolderStatus[item.uid]) count = 0;
+    else {
+      this.fetchFolderStatus[item.uid] = true;
+      this.fetchAssets(item.uid);
+    }
+    return `${count} assets curated by ${item.properties["dc:creator"]}`;
   }
 }
 

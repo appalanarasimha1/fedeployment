@@ -787,8 +787,8 @@ background-color:#EBC03F !important;
   cursor: pointer;
   border: 0px;
   background: #fff;
-  width: 40px;
-  height: 40px;
+  width: 29px;
+  height: 29px;
   border-radius: 8px;
   margin: 0px;
   padding: 0px;
@@ -812,8 +812,8 @@ background-color:#EBC03F !important;
   text-align: left;
   background: #006B44;
   border-radius: 8px;
-  height: 40px;
-  width: 40px;
+  height: 29px;
+  width: 29px;
   left: 0px;
   top: 0px;
 }
@@ -823,10 +823,10 @@ background-color:#EBC03F !important;
   content: '';
   display: block;
   position: absolute;
-  top: 9px;
-  left: 17px;
-  width: 6px;
-  height: 20px;
+  top: 7px;
+      left: 11px;
+      width: 6px;
+      height: 14px;
   border: solid #ffffff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
@@ -919,8 +919,8 @@ background-color:#EBC03F !important;
   display: block;
   background: #fff;
   border-radius: 8px;
-  height: 40px;
-  width: 40px;
+  height: 29px;
+  width: 29px;
   padding: 10px;
   margin-bottom: 15px;
   -webkit-transition: .5s ease all;
@@ -946,6 +946,7 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  background-size: 16px;
 }
 .hover-icon.plus-icon{
   background: url(~/../../../../assets/images/add-collectionbadge.svg) no-repeat center center #fff;
@@ -953,6 +954,7 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  background-size: 12px;
 }
 .hover-icon.download-icon{
   background: url(~/../../../../assets/images/downlload-arrow.svg) no-repeat center center #fff;
@@ -960,6 +962,7 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  background-size: 16px;
 }
 .hover-icon.star-icon:hover{
   background: url(~/../../../../assets/images/whitestar.png) no-repeat center center #e0b803;
@@ -967,6 +970,7 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  background-size: 16px;
 }
 .hover-icon.star-icon.active{
   background: url(~/../../../../assets/images/yellowStar.svg) no-repeat center center #fff;
@@ -975,6 +979,7 @@ background-color:#EBC03F !important;
   -o-transition: .5s ease all;
   transition: .5s ease all;
   background-size: 22px;
+  background-size: 16px;
 
 }
 .hover-icon.plus-icon:hover{
@@ -990,6 +995,7 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  background-size: 16px;
 }
 .username span {
   display: inline-block;
@@ -1339,3 +1345,11 @@ color: #ACACAC;
 .cardBlock:hover .videoIconn::before{
   transform: scale(1.2);
 }
+/* sprint16-v1 start */
+.pdfWhiteBlock p{
+  white-space: nowrap; 
+  width: calc(100% - 40px); 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+/* sprint16-v1 end */

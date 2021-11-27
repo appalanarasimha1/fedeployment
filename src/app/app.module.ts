@@ -24,6 +24,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { UpdateModalModule } from './update-modal/update-modal.module';
 import { LoaderYellowComponent } from './common/loader-yellow/loader-yellow.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { LoaderYellowComponent } from './common/loader-yellow/loader-yellow.comp
     MatIconModule,
     UploadModalModule,
     UpdateModalModule,
+    NgSelectModule
   ],
   providers: [
     // CookieService,
