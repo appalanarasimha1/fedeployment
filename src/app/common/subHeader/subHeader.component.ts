@@ -163,7 +163,7 @@ export class SubHeaderComponent implements OnInit {
     this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-    fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+    fetch(updatedUrl + `?sector=${this.sectorSelected}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {
         if (r.status === 401) {
           localStorage.removeItem('token');
