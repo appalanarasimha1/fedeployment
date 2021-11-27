@@ -114,6 +114,8 @@ export class SubHeaderComponent implements OnInit {
   }
   closeModal() {
     this.modalOpen = true;
+    this.hideVideo = true;
+    this.modalLoading = false;
     this.modalReference.close();
   }
 
