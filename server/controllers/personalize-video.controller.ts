@@ -56,7 +56,7 @@ export class PersonalizedVideoController {
   streamPersonalizedVideo(req: Request, res: Response) {
     try {
       const body: { username?: any, sector?: any } = req.query;
-      const path1 = path.join(__dirname + `/../../../../../personalizedVideo/default/${body.sector}/neomSample_1.mp4`); // TODO: video path and video name to be fetched from params
+      const path1 = path.join(__dirname + `/../../../../../personalizedVideo/default/${body.sector}/default.mp4`); // TODO: video path and video name to be fetched from params
       const stat = fs.statSync(path1);
       const fileSize = stat.size;
       const range = req.headers.range;
