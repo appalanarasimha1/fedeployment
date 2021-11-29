@@ -37,6 +37,13 @@ export class PersonalizedVideoController {
       if (user?.assetSeen?.length) {
         let index = user?.assetSeen.findIndex((item: any) => item.sector.toLowerCase() === body.sector.toLowerCase());
         let video = await dbService.getMatchingVideo(body.sector.toLowerCase(), user.assetSeen[index].videoIds);
+        if(video?.length) {
+          res.send({message: 'done', error: null, videoId: video[0].personalizedVideoId});
+          return;
+        } else {
+          res.send({message: 'done', error: null, videoId: user.assetSeen[index].videoIds[0]});
+          return;
+        }
         // if(video)
       } else {
         // assetSeen not present in user object
@@ -44,19 +51,23 @@ export class PersonalizedVideoController {
         let videoObj = await dbService.getMatchingVideo(body.sector.toLowerCase());
         if (videoObj?.length) {
           const updateResponse = await dbService.setAssetSeen(body.username, videoObj[0]);
-          res.send({ message: 'done', error: null, video: '' });
+          res.send({ message: 'done', error: null, videoId: videoObj[0].personalizedVideoId });
+          return;
         }
       }
-      res.send({ message: 'done' });
+      res.send({ message: 'done', error: null, videoId: 'default', location: 'default' });
+      return;
     } catch (error: any) {
       res.status(500).send({ message: error.message });
+      return;
     }
   }
 
   streamPersonalizedVideo(req: Request, res: Response) {
     try {
-      const body: { username?: any, sector?: any } = req.query;
-      const path1 = path.join(__dirname + `/../../../../../personalizedVideo/default/${body.sector}/default.mp4`); // TODO: video path and video name to be fetched from params
+      const body: { username?: any, sector?: any, videoId?: string, location?: string } = req.query;
+      const videoLocation = body.location?.toLowerCase() === 'default' ? `default/${body.sector}/default.mp4` : `${body.sector}/${body.videoId}.mp4`;
+      const path1 = path.join(__dirname + `/../../../../../personalizedVideo/${videoLocation}`); // TODO: video path and video name to be fetched from params
       const stat = fs.statSync(path1);
       const fileSize = stat.size;
       const range = req.headers.range;

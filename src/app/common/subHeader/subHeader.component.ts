@@ -22,7 +22,6 @@ export class SubHeaderComponent implements OnInit {
   searchText: string = '';
   searchCriteria: IHeaderSearchCriteria = {};
   sectors: string[] = [];
-  sectorSelected;
 
   modalOpen: boolean = true;
   hideVideo: boolean = true;
@@ -30,6 +29,7 @@ export class SubHeaderComponent implements OnInit {
   modalReference = null; 
   modalOption: NgbModalOptions = {}; // not null!
   allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
+  sectorSelected = this.allSectors[0];
 
   constructor(
     private dataService: DataService,
@@ -116,7 +116,7 @@ export class SubHeaderComponent implements OnInit {
     this.modalOpen = true;
     this.hideVideo = true;
     this.modalLoading = false;
-    this.modalReference.close();
+    // this.modalReference.close();
   }
 
   clickVideoIcon() {
@@ -125,6 +125,8 @@ export class SubHeaderComponent implements OnInit {
   }
 
   videoResponse;
+  videoId;
+  videoLocation;
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
     this.videoResponse = false;
@@ -134,6 +136,10 @@ export class SubHeaderComponent implements OnInit {
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
+          if(!response?.error && response.videoId) {
+            this.videoId = response.videoId;
+            this.videoLocation = response.location || null;;
+          }
           return;
           // this.apiService.getVideo(apiRoutes.FETCH_PERSONALIZED_VIDEO + '/video').subscribe((vidResponse: any) => {
           //   console.log('vidResponse = ', vidResponse);
@@ -165,7 +171,7 @@ export class SubHeaderComponent implements OnInit {
     this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-    fetch(updatedUrl + `?sector=${this.sectorSelected}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+    fetch(updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {
         if (r.status === 401) {
           localStorage.removeItem('token');
