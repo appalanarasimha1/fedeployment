@@ -25,8 +25,8 @@ export class MongoDbConnectionManager implements DbConnection {
     if (dbObject) {
       return dbObject;
     } else {
-      console.log(DbConfig.DbUrl)
-      console.log(fileName)
+      // console.log(DbConfig.DbUrl)
+      // console.log(fileName)
       // console.log(__dirname);
       let client: mongodb.MongoClient;
       // if(!process.env.NODE_ENV) {
