@@ -8,7 +8,7 @@
     "out_file": "../runtime/out.log",
     "merge_logs": true,
     "env": {
-      "NODE_ENV": "production",
+      "NODE_ENV": "uat",
       "SOCKET_PORT": 8081,
       "PORT": 8090,
       "API_SERVER": "https://10.101.21.63:8087"

@@ -1,6 +1,7 @@
 import {AppConfigDemo} from './appConfig.demo';
 import {AppConfigProduction} from './appConfig.production';
 import {AppConfigDevelopment} from './appConfig.development';
+import {AppConfigUat} from './appConfig.uat';
 
 
 export class AppConfig {
@@ -10,6 +11,9 @@ export class AppConfig {
   public static get Config(): any {
     console.log('env ===== ',  process.env.NODE_ENV);
     switch (this.env) {
+      case 'uat': {
+        return AppConfigUat.Config;
+      }
       case 'production': {
         return AppConfigProduction.Config;
       }
