@@ -40,4 +40,16 @@ export class DBService {
             throw e;
         }
     }
+
+    public async addInSeenVideo(username: string | undefined, sector: string, videoObj: any) {
+        try {
+            let connection: any = await this.connectionManager.getConnection();
+            const findQuery = {username, "assetSeen.sector": sector};
+            const updateQuery = {$push:{"assetSeen.$.videoIds": videoObj.personalizedVideoId}};
+            return await connection.collection(AppConfig.Config.mongodbTables.USER_TABLE).updateOne(findQuery, updateQuery);
+        } catch (e) {
+            console.error('setAssetSeen: Exception occurred while execution - ', e);
+            throw e;
+        }
+    }
 }

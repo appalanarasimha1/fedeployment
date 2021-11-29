@@ -36,12 +36,18 @@ export class PersonalizedVideoController {
 
       if (user?.assetSeen?.length) {
         let index = user?.assetSeen.findIndex((item: any) => item.sector.toLowerCase() === body.sector.toLowerCase());
+        if(index < 0) {
+          res.send({ message: 'done', error: null, videoId: 'default', location: 'default' });
+          return;
+        }
         let video = await dbService.getMatchingVideo(body.sector.toLowerCase(), user.assetSeen[index].videoIds);
         if(video?.length) {
+          await dbService.addInSeenVideo(body.username, body.sector.toLowerCase(), video[0]);
           res.send({message: 'done', error: null, videoId: video[0].personalizedVideoId});
           return;
         } else {
-          res.send({message: 'done', error: null, videoId: user.assetSeen[index].videoIds[0]});
+          const randomSeenVideo: number = Math.floor(Math.random() * (user.assetSeen[index].videoIds.length - 1));
+          res.send({message: 'done', error: null, videoId: user.assetSeen[index].videoIds[randomSeenVideo]});
           return;
         }
         // if(video)
