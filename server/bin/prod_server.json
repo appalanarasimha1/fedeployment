@@ -6,11 +6,5 @@
     "log_date_format": "YYYY-MM-DD HH:mm Z",
     "error_file": "../runtime/err.log",
     "out_file": "../runtime/out.log",
-    "merge_logs": true,
-    "env": {
-      "NODE_ENV": "production",
-      "SOCKET_PORT": 8081,
-      "PORT": 8090,
-      "API_SERVER": "https://10.101.21.58:8089"
-    }
+    "merge_logs": true
   }
