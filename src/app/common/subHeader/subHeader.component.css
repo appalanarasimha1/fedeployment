@@ -258,7 +258,7 @@ background-color: #fff;
   .select-an-area{
     height: 227px;
     text-align: center;
-    padding: 20px
+    padding: 16px 60px
   }
   .select-an-area .logo {
     max-width: 40px;
@@ -283,5 +283,8 @@ background-color: #fff;
     padding: 0px;
     font-size: 30px;
     color: #7d7d7d;
+  }
+  .modal-body-content {
+      min-height: 226px;
   }
 /* sprint16 end */

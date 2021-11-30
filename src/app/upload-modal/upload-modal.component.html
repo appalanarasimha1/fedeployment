@@ -107,6 +107,14 @@
            <!-- <mat-icon class="info-icon" matTooltip="Select an existing folder or create a new folder">info</mat-icon> -->
         </div>
      </div>
+     <div class="upload-form-input row">
+      <div class="col-xl-3 col-md-3">
+         <label for="title">Description <br><span style="font-size: 14px">(optional)</span></label>
+      </div>
+      <div class="col-xl-9 col-md-9">
+         <textarea [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
+      </div>
+     </div>
      <div class="row upload-form-input custom-date-picker">
         <div class="col-xl-3 col-md-3">
            <label for="date">Associated Date <br><span style="font-size: 14px">(optional)</span></label>
@@ -207,14 +215,6 @@
            </ng-select>
         </div>
      </div>
-     <div class="upload-form-input row">
-        <div class="col-xl-3 col-md-3">
-           <label for="title">Event Description <br><span style="font-size: 14px">(optional)</span></label>
-        </div>
-        <div class="col-xl-9 col-md-9">
-           <textarea [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
-        </div>
-     </div>
   </div>
 </div>
 <div *ngIf="step === 3">
@@ -293,9 +293,13 @@
   <div class="finish-screen">
      <!-- <mat-icon>upload</mat-icon> -->
      <span>Your assets have been successfully published on Ground X.</span>
-     <div class="destination-folder" style="cursor: pointer;" (click)="openBrowseRoute()">
-        <!-- <img src="./assets/images/folder-img.png" alt="folder" /> -->
-        <span class="assetName">{{ folderToAdd || selectedFolder?.title }}</span>
+     <div class="destination-folder-block" (click)="openBrowseRoute()">
+        <div class="destination-img-block">
+         <img src="../../../assets/images/yellow-folder.png" style="max-width: 100%;">
+        </div>
+        <div class="destination-content-block">
+         <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
+        </div>
      </div>
      <div (click)="closeModal()" class="close-modal">
         <!-- <mat-icon>close</mat-icon> -->

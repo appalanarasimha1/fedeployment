@@ -145,8 +145,9 @@ export class SearchComponent implements OnInit {
 
   fetchNextPageResults(count, data: { primaryType: string, pageNumber: number }) {
     this.count = count;
-    const queryParams = Object.assign(this.apiToHit[data.primaryType], { currentPageIndex: data.pageNumber, offset: 0, pageSize: 40 });
-    this.fetchApiResult({ primaryType: data.primaryType, queryParams }, true);
+    // const queryParams = Object.assign(this.apiToHit[data.primaryType], { currentPageIndex: data.pageNumber, offset: 0, pageSize: 40 });
+    const queryParams = { currentPageIndex: data.pageNumber, offset: 0, pageSize: 40 };
+    this.fetchApiResult(queryParams, true);
     return;
   }
 
