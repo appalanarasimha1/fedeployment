@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { IHeaderSearchCriteria } from './interface';
@@ -18,6 +18,7 @@ import { apiRoutes } from '../config';
 export class SubHeaderComponent implements OnInit {
   @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
+  @ViewChild('content') videoModal: ElementRef;
   // @Input() sectors: string[];
   searchText: string = '';
   searchCriteria: IHeaderSearchCriteria = {};
@@ -30,6 +31,9 @@ export class SubHeaderComponent implements OnInit {
   modalOption: NgbModalOptions = {}; // not null!
   allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
   sectorSelected = this.allSectors[0];
+  videoResponse;
+  videoId;
+  videoLocation;
 
   constructor(
     private dataService: DataService,
@@ -44,6 +48,12 @@ export class SubHeaderComponent implements OnInit {
     });
     return;
   }
+
+  ngAfterViewInit() {
+    if(localStorage.getItem('openVideo')) {
+      this.openSm(this.videoModal);
+    }
+    return;  }
   
   sectorSelect(value: string) {
     this.sectorSelected = value;
@@ -110,6 +120,7 @@ export class SubHeaderComponent implements OnInit {
     this.modalOpen = false;
     this.hideVideo = true;
     this.selectArea = false;
+    localStorage.removeItem('openVideo');
     this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', backdrop: 'static', keyboard: false });
   }
   closeModal() {
@@ -124,9 +135,6 @@ export class SubHeaderComponent implements OnInit {
     this.selectArea = true
   }
 
-  videoResponse;
-  videoId;
-  videoLocation;
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
     this.videoResponse = false;
