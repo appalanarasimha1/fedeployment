@@ -15,12 +15,16 @@
   <section class="lpSecOne">
     <div class="container-fluid">
       <div class="row" style="min-height: 600px;">
-        <div class="col-xl-3 col-md-3 pt-3 " style="background-color: #F8F8F5;">
+        <div class="col-xl-3 col-md-3 pt-3 customToggle" style="background-color: #F8F8F5;">
+          <!-- Add custom toggle start -->
+         
+          <!-- Add custom toggle end -->
+
            <div class="tree" style="margin: 0px -11px;">
             <!-- <div class="tree__tree-section"> -->
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder=item;">
+                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand">
                     <div >
                       <!-- /* sprint16-v1 start */ -->
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -33,7 +37,7 @@
                   </div>
                   <ul *ngIf="item.children && item.isExpand" class="leftPanel ">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=firstChild; routeParams.folder = null">
+                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <div class="">
                           <!-- /* sprint16-v1 start */ -->
                           <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />

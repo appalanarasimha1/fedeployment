@@ -119,12 +119,38 @@ export class BrowseComponent implements OnInit {
         this.handleClick(this.folderStructure[0], 0, null);
       }
     );
+
+    $('.acnav__label').click(function () {
+      var label = $(this);
+      var parent = label.parent('.has-children');
+      var list = label.siblings('.acnav__list');
+    
+      if ( parent.hasClass('is-open') ) {
+        list.slideUp('fast');
+        parent.removeClass('is-open');
+      }
+      else {
+        list.slideDown('fast');
+        parent.addClass('is-open');
+      }
+    });
   }
 
   checkAssetType(assetType: string): boolean {
     const assetTypes = [constants.FILE_SMALL_CASE, constants.PICTURE_SMALL_CASE, constants.VIDEO_SMALL_CASE, constants.AUDIO_SMALL_CASE ];
     if(assetTypes.indexOf(assetType.toLowerCase()) !== -1) return true;
     else return false;
+  }
+
+  closeOtherSectore(child, children) {
+    for(let i = 0; i < children.length; i++) {
+      if(child.uid === children[i].uid) {
+        child.isExpand = !child.isExpand;
+      } else {
+        children[i].isExpand = false;
+      }
+    }
+    return;
   }
 
   checkWSType(assetType: string) {

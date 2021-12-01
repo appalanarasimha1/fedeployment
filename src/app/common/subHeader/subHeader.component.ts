@@ -34,13 +34,19 @@ export class SubHeaderComponent implements OnInit {
   videoResponse;
   videoId;
   videoLocation;
+  callInProgress;
+  abortVideoDownload;
+  signal;
 
   constructor(
     private dataService: DataService,
     private sharedService: SharedService,
     private modalService: NgbModal,
     private apiService: ApiService
-    ) {}
+    ) {
+    this.abortVideoDownload = new AbortController();
+    this.signal = this.abortVideoDownload.signal;
+    }
 
   ngOnInit() {
     this.dataService.sectorChanged$.subscribe((sectors: any) => {
@@ -123,10 +129,12 @@ export class SubHeaderComponent implements OnInit {
     localStorage.removeItem('openVideo');
     this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', backdrop: 'static', keyboard: false });
   }
+
   closeModal() {
     this.modalOpen = true;
     this.hideVideo = true;
     this.modalLoading = false;
+    this.abortVideoDownload.abort();
     // this.modalReference.close();
   }
 
@@ -179,7 +187,7 @@ export class SubHeaderComponent implements OnInit {
     this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-    fetch(updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+   fetch(updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') }, signal: this.signal })
       .then(r => {
         if (r.status === 401) {
           localStorage.removeItem('token');

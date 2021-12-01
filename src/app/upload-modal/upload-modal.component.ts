@@ -362,11 +362,8 @@ export class UploadModalComponent implements OnInit {
 
   checkShowUserDropdown(fileIndex?: any) {
     const access = this.customAccessMap[fileIndex] || this.access;
-    const confidentiality =
-      this.customConfidentialityMap[fileIndex] || this.confidentiality;
-    if (
-      (access === ACCESS.restricted && confidentiality)
-    ) {
+    const confidentiality = this.customConfidentialityMap[fileIndex] || this.confidentiality;
+    if ( access === ACCESS.restricted ) {
       return true;
     } else {
       return false;
