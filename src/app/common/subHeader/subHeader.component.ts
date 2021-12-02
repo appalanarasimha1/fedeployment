@@ -44,8 +44,6 @@ export class SubHeaderComponent implements OnInit {
     private modalService: NgbModal,
     private apiService: ApiService
     ) {
-    this.abortVideoDownload = new AbortController();
-    this.signal = this.abortVideoDownload.signal;
     }
 
   ngOnInit() {
@@ -135,7 +133,6 @@ export class SubHeaderComponent implements OnInit {
     this.hideVideo = true;
     this.modalLoading = false;
     this.abortVideoDownload.abort();
-    // this.modalReference.close();
   }
 
   clickVideoIcon() {
@@ -184,6 +181,8 @@ export class SubHeaderComponent implements OnInit {
 //  count = 1;
   modalLoading = false;
   showVideo(event) {
+    this.abortVideoDownload = new AbortController();
+    this.signal = this.abortVideoDownload.signal;
     this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;

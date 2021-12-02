@@ -87,12 +87,6 @@
       <div class="select-an-area" *ngIf="selectArea && !videoResponse">
         <img src="../../../assets/images/logo-neom.png" class="logo" />
         <h3>Please select an area of interest.</h3>
-        <!-- <select  (change)="onSelectSector($event.target.value)">
-          <option *ngFor="let sector of allSectors">{{sector}}</option>
-          <option>Education</option>
-          <option>Sports</option>
-          <option>Entertainment and Culture</option>
-        </select> -->
         <ng-select [items]="allSectors" ngDefaultControl
           placeholder="Select an area" [(ngModel)]="sectorSelected">
         </ng-select>
