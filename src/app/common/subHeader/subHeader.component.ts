@@ -145,7 +145,7 @@ export class SubHeaderComponent implements OnInit {
     this.videoResponse = false;
     this.modalLoading = true;
     try {
-      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + body.sector + '&username=' + body.username)
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + 'sport' + '&username=' + body.username)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
@@ -186,7 +186,7 @@ export class SubHeaderComponent implements OnInit {
     this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-   fetch(updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') }, signal: this.signal })
+   fetch(updatedUrl + `?sector=sport&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') }, signal: this.signal })
       .then(r => {
         if (r.status === 401) {
           localStorage.removeItem('token');

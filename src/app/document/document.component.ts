@@ -124,7 +124,6 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: any) {
     this.recentlyViewed = [];
-    this.totalDocs =+ this.documents.entries.length;
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
     }
@@ -253,14 +252,13 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.emitData(this.searchCriteria);
   }
 
-  totalDocs = 0;
   showMore() {
     this.docSliceInput += 9;
     if (this.docSliceInput >= this.documents.entries.length) {
-      this.pageCount.emit({ pageNumber: ++this.documents.currentPageIndex });
+      this.pageCount.emit({ pageNumber: ++this.documents.currentPageIndex, primaryType: this.selectedType });
       this.hideShowMoreBtn = false;
     }
-    else if (this.docSliceInput >= this.totalDocs) {
+    else if (this.docSliceInput >= this.documents.resultsCount) {
       this.hideShowMoreBtn = true;
     }
     return;
