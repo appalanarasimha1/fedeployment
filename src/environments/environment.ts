@@ -10,7 +10,13 @@ export const environment = {
   apiVersion: '/nuxeo/api/v1',
   // apiServiceBaseUrl: 'https://dev2groundx.neom.com', // 'https://uatgroundx.neom.com'
   // apiServiceBaseUrl:  "http://34.219.179.33:5050",
-  apiServiceBaseUrl: "http://localhost:8090"
+  apiServiceBaseUrl: "http://localhost:8090",
+  // apiServiceBaseUrl: "http://localhost:8090"
+  keycloakConfig: {
+    url: 'https://keycloak.iotsense-prod-tnd.oci.neomos.online/auth',
+    realm: 'GroundX',
+    clientId: 'nuxeo-client-public',
+  }
 };
 
 /*
