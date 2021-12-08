@@ -23,17 +23,6 @@ export class App {
       cert: fs.readFileSync(__dirname + '/../../../certs/new-ui.crt')
     };
     const server = https.createServer(httpsOptions, this.app);
-    // this.app['io'] = new Server(server, {
-    //   cors: {
-    //     origin: '*',
-    //   }
-    // });
-    // const socketPort = process.env.SOCKET_PORT;
-    // server.listen(socketPort);
-
-    // this.app.io.on('connection', (socket: any) => {
-    //   console.log('Client connected, socketID = ', socket.id);
-    // });
 
     // Define application routes.
     new RouteManager(this.app);
