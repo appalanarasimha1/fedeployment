@@ -4,7 +4,7 @@
 }
 
 header{
-    padding: 10px 0px;
+    padding: 10px 0px  6px!important;
     top: 0px;
     position: absolute;
     width: 100%;
@@ -141,9 +141,9 @@ header.pt-4.pb-4.searchHeading.openDrawer {
 }
 .uploadBtn{
     background: #23211E;
-border-radius: 30px;
-padding-left: 15px !important;
-padding-right: 15px !important;
+    border-radius: 50px;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
 }
 .fixedHeader .uploadBtn{
     background-color: #fff;
@@ -151,3 +151,17 @@ padding-right: 15px !important;
     font-weight: 600;
 }
 /* <!-- sprint12-fixes end --> */
+.nav-link.uploadBtn, .nav-link.uploadBtn:hover {
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    font-size: 14px;
+    line-height: 12px;
+    margin-top: 7px;
+    margin-right: 15px;
+}
+header img.header-logo {
+    max-width: 170px;
+    margin-left: 30px;
+    margin-top: 8px;
+}

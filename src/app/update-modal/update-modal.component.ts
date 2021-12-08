@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW } from "../upload-modal/constant";
 import { Router } from "@angular/router";
 
 const STEPS = {
@@ -32,7 +32,7 @@ export class UpdateModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: {docs: any, folder: any},
     private router: Router,
   ) {
-    
+
   }
   selectedMenu = 0;
   ngOnInit(): void {
@@ -44,6 +44,7 @@ export class UpdateModalComponent implements OnInit {
 
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
+  readonly ALLOW = ALLOW;
 
   docs: any;
   step: number = 1;
@@ -52,11 +53,23 @@ export class UpdateModalComponent implements OnInit {
   customAccessMap: any = {};
   customConfidentialityMap: any = {};
   customUsersMap: any = {};
+  customAllowMap: any = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
   userLoading: boolean = false;
   loading = false;
   updatedAclValue: any = {};
+  openCopyrightMap: any = {};
+  copyrightUserMap: any = {};
+  copyrightYearMap: any = {};
+
+  years = [
+    {id: 1, name: '2020'},
+    {id: 2, name: '2021'},
+    {id: 3, name: '2022'},
+    {id: 4, name: '2023'},
+    {id: 5, name: '2024'}
+  ];
 
   closeModal() {
     this.dialogRef.close(this.updatedAclValue);
@@ -151,6 +164,20 @@ export class UpdateModalComponent implements OnInit {
   onSelectAccess(access, fileIndex?: any) {
     this.customAccessMap[fileIndex] = access;
     this.checkShowUserDropdown(fileIndex);
+  }
+
+  onSelectAllow(allow, fileIndex?: any) {
+    if (fileIndex !== null && fileIndex !== undefined) {
+      this.customAllowMap[fileIndex] = allow;
+    }
+  }
+
+  openCopyright(fileIndex) {
+    this.openCopyrightMap[fileIndex] = true;
+  }
+
+  closeCopyright(fileIndex) {
+    this.openCopyrightMap[fileIndex] = false;
   }
 
   checkShowUserDropdown(fileIndex?: any) {
@@ -274,13 +301,11 @@ export class UpdateModalComponent implements OnInit {
     );
   }
 
-// 
 
-
-handleSelectMenu(index, type) {
-  this.selectedMenu = index;
-  this.viewType = type;
-}
+  handleSelectMenu(index, type) {
+    this.selectedMenu = index;
+    this.viewType = type;
+  }
 
   getAssetUrl(event: any, url: string, type?: string): string {
     if(!url) return '';

@@ -1,5 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { ALLOW } from '../upload-modal/constant';
 
 @Component({
   selector: 'document-card',
@@ -15,6 +16,7 @@ export class DocumentCardComponent implements OnChanges {
   @Output() onMarkFavourite = new EventEmitter<any>();
 
   modalLoading = false;
+  isAware = false;
 
   constructor(
     private router: Router
@@ -83,6 +85,26 @@ export class DocumentCardComponent implements OnChanges {
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
+  }
+
+  hasNoRestriction() {
+    return !this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any;
+  }
+
+  hasInternalRestriction() {
+    return this.doc.properties["sa:allow"] === ALLOW.internal;
+  }
+
+  hasRequestRestriction() {
+    return this.doc.properties["sa:allow"] === ALLOW.request;
+  }
+
+  showDownloadDropdown() {
+    return this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware);
+  }
+
+  getCreator() {
+    return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
   }
 
 }

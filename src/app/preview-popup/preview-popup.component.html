@@ -51,8 +51,49 @@
                   />
                 </a>
               </li>
-              <li class="customtooltip">
-                <a
+              <li>
+                <div class="downloadBlock">
+                  <div class="download-icon"></div>
+                  <div *ngIf="doc" class="download-dropdown">
+
+                    <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
+                      <p>Please always credit copyright owners (where applicable) and remember to check with relevant parties before publishing externally.</p>
+                    </div>
+
+                    <div *ngIf="hasInternalRestriction()" class="internal-use">
+                      <p>Please always credit copyright owners (where applicable).</p>
+
+                      <div class="control-group">
+                        <label class="control control--checkbox">I'm aware this asset must NOT be used in public
+                          <input type="checkbox" [(ngModel)]="isAware" checked="isAware"/>
+                          <div class="control__indicator"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div *ngIf="hasRequestRestriction()" class="permission-required">
+                      <p>Please always credit copyright owners (where applicable). <br /><br />To download this asset, please reach out to <a href="#">{{getCreator()}}</a> via Email.</p>
+                    </div>
+
+                    <div *ngIf="showDownloadDropdown()" class="sub-dropdown-block">
+                      <div class="downloadIcon"></div> Download
+                      <div class="down-arrow-icon"></div>
+                      <div class="sub-dropdown-menu">
+                        <ul>
+                          <li
+                            *ngFor="let view of doc.properties['picture:views']">
+                            <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                              {{ view.width }} * {{ view.height }}
+                              <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <a
                   *ngIf="doc.type === 'Picture'"
                   placement="bottom"
                   ngbTooltip="Download"
@@ -63,8 +104,11 @@
                       id="dropdownBasic1"
                       placement="bottom-left"
                       ngbDropdownToggle
-                      ><img src="../../assets/images/downlload-arrow-black.svg"
+                      ><img src="../../assets/images/download-black.svg"
                     /></a>
+
+
+
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                       <a
                         *ngFor="let view of doc.properties['picture:views']"
@@ -94,7 +138,7 @@
                     placement="bottom-left"
                     ><img src="../../assets/images/black-downloadicon.svg"
                   /></a>
-                </a>
+                </a> -->
               </li>
             </ul>
           </div>
@@ -108,6 +152,7 @@
           (error)="getAssetUrl($event, docUrl)"
           style="width: 100%"
         />
+        <span *ngIf="doc.type === 'Picture'" class="picture-copyright">{{getCopyright()}}</span>
         <div
           *ngIf="doc.type === 'Video'"
           style="height: 600; position: relative"
@@ -346,13 +391,26 @@
         <div class="mb-4" style="width: 78%">
           <span class="main-heading">{{ doc?.properties["dc:title"] }}</span>
           <span class="yellowBtn">Internal Use ©</span>
-          <h5 class="pt-3 weightSize">
+          <!-- <h5 class="pt-3 weightSize">
             {{
               getDownloadFileEstimation(
                 doc?.properties["file:content"]?.length || null
               )
             }}
-          </h5>
+          </h5> -->
+          <div class="weight-size-block">
+            <ul>
+              <li>
+                {{ getDownloadFileEstimation(doc?.properties["file:content"]?.length || null) }}
+              </li>
+              <li>
+                <img src="../../assets/images/briefcase.svg" alt="Folder" /> {{getParentFolderName()}}
+              </li>
+              <li>
+                <img src="../../assets/images/pin-1.svg" alt="Tourism" /> Sindalah Island
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div

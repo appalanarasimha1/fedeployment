@@ -10,6 +10,12 @@ export const CONFIDENTIALITY = {
   // "highly": "Highly Confidential",
 }
 
+export const ALLOW = {
+  "any": "Anywhere (including external material)",
+  "internal": "Internal publications only",
+  "request": "Request owner's permission before use"
+}
+
 export const GROUPS = {
   "company": "Company_Employees",
   "all": "All_Application_Users"

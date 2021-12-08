@@ -716,7 +716,7 @@ background-color:#EBC03F !important;
   /* border-radius: 8px; */
   padding: 20px;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   cursor: pointer;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
@@ -767,7 +767,7 @@ background-color:#EBC03F !important;
 .hover-icon-group{
   left: auto;
   right: 15px;
-  width: 40px;
+  width: auto;
 }
 
 .form-group-custom input {
@@ -868,6 +868,7 @@ background-color:#EBC03F !important;
   left: auto;
   right: 15px;
   height: calc(100% - 30px);
+  width: auto;
 }
 .card-view .cardBlockContentHover ol, .set-width .cardBlockContentHover ol{
   list-style: none;
@@ -913,16 +914,17 @@ background-color:#EBC03F !important;
 .hover-icon-group{
   display: block;
   float: right;
-  width: 40px;
+  width: 100%;
 }
 .hover-icon{
-  display: block;
+  display: inline-block;
   background: #fff;
   border-radius: 8px;
   height: 29px;
   width: 29px;
   padding: 10px;
   margin-bottom: 15px;
+  margin-right: 8px;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -937,8 +939,10 @@ background-color:#EBC03F !important;
 }
 .hover-icon.download-icon {
   margin: 0px;
-  bottom: 0px;
-  position: absolute;
+  bottom: auto;
+  position: static;
+  outline: none;
+  vertical-align: top;
 }
 .hover-icon.star-icon{
   background: url(~/../../../../assets/images/star.svg) no-repeat center center #fff;
@@ -957,7 +961,7 @@ background-color:#EBC03F !important;
   background-size: 12px;
 }
 .hover-icon.download-icon{
-  background: url(~/../../../../assets/images/downlload-arrow.svg) no-repeat center center #fff;
+  background: url(~/../../../../assets/images/download-gray.svg) no-repeat center center #fff;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -990,7 +994,7 @@ background-color:#EBC03F !important;
   transition: .5s ease all; */
 }
 .hover-icon.download-icon:hover{
-  background: url(~/../../../../assets/images/downlload-arrow.svg) no-repeat center center #006B44;
+  background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #006B44;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -1347,9 +1351,118 @@ color: #ACACAC;
 }
 /* sprint16-v1 start */
 .pdfWhiteBlock p{
-  white-space: nowrap; 
-  width: calc(100% - 40px); 
+  white-space: nowrap;
+  width: calc(100% - 40px);
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 /* sprint16-v1 end */
+
+.download-disabled:active {
+  pointer-events: none;
+}
+.download-dropdown {
+  position: absolute;
+  width: 346px;
+  min-height: 208px;
+  /* height: auto; */
+  right: -8px;
+  top: 30px;
+  background: #23211E;
+  border-radius: 8px;
+  display: none;
+  z-index: 999999;
+  color: #fff;
+  padding: 30px;
+  cursor: auto;
+}
+.download-icon:hover .download-dropdown {
+  display: block;
+  z-index: 999999;
+}
+.download-dropdown p {
+  font-weight: normal;
+}
+
+.internal-use .control-group {
+  display: block;
+}
+.internal-use .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 40px;
+  border: 0px;
+  margin: 30px 0px 0px;
+}
+.internal-use .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.internal-use .control__indicator {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  background: #e6e6e6;
+  border-radius: 4px;
+}
+.internal-use .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.internal-use .control:hover input ~ .control__indicator,
+.internal-use .control input:focus ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control input:checked ~ .control__indicator {
+  background: #006845;
+}
+.internal-use .control:hover input:not([disabled]):checked ~ .control__indicator,
+.internal-use .control input:checked:focus ~ .control__indicator {
+  background: #006845;
+}
+.internal-use .control input:disabled ~ .control__indicator {
+  background: #006845;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.internal-use .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.internal-use .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.internal-use .control--checkbox .control__indicator:after {
+  left: 8px;
+  top: 4px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.internal-use .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.internal-use .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.internal-use .control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b;
+}
+.download-dropdown a, .download-dropdown a:hover {
+  color: #DAAA00;
+}

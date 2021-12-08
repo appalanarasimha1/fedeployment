@@ -14,7 +14,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS } from "./constant";
+import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS } from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -42,6 +42,7 @@ const BUTTON_LABEL = {
 export class UploadModalComponent implements OnInit {
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
+  readonly ALLOW = ALLOW;
 
   filesMap: FileByIndex = {};
   batchId: string = null;
@@ -61,8 +62,11 @@ export class UploadModalComponent implements OnInit {
   description: string;
   access: string;
   confidentiality: string;
+  allow: string;
   customAccessMap: any = {};
+  customAllowMap: any = {};
   customConfidentialityMap: any = {};
+  copyrightMap: any = {};
   customUsersMap: any = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
@@ -70,9 +74,20 @@ export class UploadModalComponent implements OnInit {
   userLoading: boolean = false;
   imageSrc: any = {};
   filesUploadDone: any = {};
+  openCopyrightMap: any = {};
+  copyrightUserMap: any = {};
+  copyrightYearMap: any = {};
 
   showCustomDropdown: boolean = false;
   disableDateInput = false;
+
+  years = [
+    {id: 1, name: '2020'},
+    {id: 2, name: '2021'},
+    {id: 3, name: '2022'},
+    {id: 4, name: '2023'},
+    {id: 5, name: '2024'}
+  ];
 
   constructor(
     private apiService: ApiService,
@@ -360,6 +375,22 @@ export class UploadModalComponent implements OnInit {
     this.checkShowUserDropdown(fileIndex);
   }
 
+  onSelectAllow(allow, fileIndex?: any) {
+    if (fileIndex !== null && fileIndex !== undefined) {
+      this.customAllowMap[fileIndex] = allow;
+    } else {
+      this.allow = allow;
+    }
+  }
+
+  openCopyright(fileIndex) {
+    this.openCopyrightMap[fileIndex] = true;
+  }
+
+  closeCopyright(fileIndex) {
+    this.openCopyrightMap[fileIndex] = false;
+  }
+
   checkShowUserDropdown(fileIndex?: any) {
     const access = this.customAccessMap[fileIndex] || this.access;
     const confidentiality = this.customConfidentialityMap[fileIndex] || this.confidentiality;
@@ -444,6 +475,13 @@ export class UploadModalComponent implements OnInit {
         "dc:title": file.name,
         "dc:parentName": folder.title,
         "dc:sector": this.selectedWorkspace.title,
+        "dc:start": this.associatedDate ? new Date(this.associatedDate).toISOString() : null,
+        "sa:confidentiality": this.customConfidentialityMap[index] || this.confidentiality,
+        "sa:access": this.customAccessMap[index] || this.access,
+        "sa:users": this.customUsersMap[index],
+        "sa:allow": this.customAllowMap[index] || this.allow,
+        "sa:copyrightName": this.openCopyrightMap[index] ? this.copyrightUserMap[index] : null,
+        "sa:copyrightYear": this.openCopyrightMap[index] ? this.copyrightYearMap[index]?.name : null,
       },
       facets: [
         "Versionable",
@@ -549,6 +587,7 @@ export class UploadModalComponent implements OnInit {
         "webc:moderationType": "aposteriori",
         "dc:path": this.parentFolder.path,
         "dc:parentId": this.parentFolder.id,
+        "dc:description": this.description,
         "dc:title": name,
         "dc:start": new Date(this.associatedDate).toISOString(),
         "dc:parentName": "Workspaces",

@@ -6,6 +6,7 @@ import { ApiService } from "../services/api.service";
 import { localStorageVars } from "../common/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ALLOW } from "../upload-modal/constant";
 
 @Component({
   selector: "preview-popup",
@@ -27,6 +28,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   activeTabs = { comments: false, info: false, timeline: false };
   commentText: string;
   comments = [];
+  isAware = false;
 
   constructor(
     private router: Router,
@@ -54,6 +56,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
     this.activeTabs.info = false;
+    this.isAware = false;
     this.modalService
       .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
       .result.then(
@@ -69,6 +72,12 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   getTags() {
     this.tags = this.doc.contextParameters["tags"]?.map((tag) => tag) || [];
+  }
+
+  getParentFolderName() {
+    if (!this.doc) return '';
+    const split = this.doc.path.split('/');
+    return split[split.length - 2];
   }
 
   getComments() {
@@ -313,4 +322,32 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     );
     return;
   }
+
+  hasNoRestriction() {
+    return !this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any;
+  }
+
+  hasInternalRestriction() {
+    return this.doc.properties["sa:allow"] === ALLOW.internal;
+  }
+
+  hasRequestRestriction() {
+    return this.doc.properties["sa:allow"] === ALLOW.request;
+  }
+
+  showDownloadDropdown() {
+    return this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware);
+  }
+
+  getCreator() {
+    return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
+  }
+
+  getCopyright() {
+    if (this.doc.properties['sa:copyrightName']) {
+      return `©️ ${this.doc.properties['sa:copyrightName']} ${this.doc.properties['sa:copyrightYear']}`;
+    }
+    return '';
+  }
+
 }

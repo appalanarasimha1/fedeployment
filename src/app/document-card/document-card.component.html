@@ -3,13 +3,13 @@
 <div *ngIf="viewType === 'GRID'" style="position: relative; margin: 5px;">
   <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" />
-   
+
     <div *ngIf="doc.type === 'Video'" class="videoIconn">
       <img id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
       (click)="openPreview()" />
     </div>
-    
-  
+
+
   <img *ngIf="doc.type === 'File'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
   <div *ngIf="doc.type === 'File'" class="pdfWhiteBlock">
     <div class="flexible pb-2" style="justify-content: space-between ;">
@@ -20,26 +20,47 @@
         margin: auto;">
         <!-- <span>3 mins</span> -->
       </div>
-      
+
     </div>
     <span>{{doc['dc:description']}}</span>
   </div>
 
   <div class="cardBlock newDesign pa-0">
     <div [ngClass]="{'activeHover': doc.isSelected}">
-      <div class="form-group-custom">
+      <!-- <div class="form-group-custom">
         <input type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
           (change)="selectImage($event)">
         <label for="html-{{doc.uid}}"></label>
-      </div>
+      </div> -->
       <div class="hover-icon-group">
         <div class="hover-icon star-icon"
           [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
           (click)="markFavourite()"></div>
         <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;"></div>
-        <a class="hover-icon download-icon"
-          href="{{getFileContent()}}"></a>
+        <a [ngClass]="showDownloadDropdown() ? '' : 'download-disabled'" class="hover-icon download-icon"
+          href="{{getFileContent()}}">
+          <div *ngIf="doc" class="download-dropdown">
+            <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
+              <p>Please always credit copyright owners (where applicable) and remember to check with relevant parties before publishing externally.</p>
+            </div>
+
+            <div *ngIf="hasInternalRestriction()" class="internal-use">
+              <p>Please always credit copyright owners (where applicable).</p>
+
+              <div class="control-group">
+                <label class="control control--checkbox">I'm aware this asset must NOT be used in public
+                  <input type="checkbox" [(ngModel)]="isAware" checked="isAware"/>
+                  <div class="control__indicator"></div>
+                </label>
+              </div>
+            </div>
+
+            <div *ngIf="hasRequestRestriction()" class="permission-required">
+              <p>Please always credit copyright owners (where applicable). <br /><br />To download this asset, please reach out to <a href="#">{{getCreator()}}</a> via Email.</p>
+            </div>
+          </div>
+        </a>
       </div>
       <div class="mouse-hover-bg" (click)="openPreview()"></div>
     </div>
