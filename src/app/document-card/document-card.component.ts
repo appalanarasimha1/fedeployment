@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { ALLOW } from '../upload-modal/constant';
+import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
 
 @Component({
   selector: 'document-card',
@@ -17,6 +17,7 @@ export class DocumentCardComponent implements OnChanges {
 
   modalLoading = false;
   isAware = false;
+  showLock = false;
 
   constructor(
     private router: Router
@@ -46,6 +47,39 @@ export class DocumentCardComponent implements OnChanges {
     this.onMarkFavourite.emit();
   }
 
+  downloadAsset() {
+    const url = this.getFileContent();
+    fetch(url, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
+      .then(r => {
+        if (r.status === 401) {
+          localStorage.removeItem('token');
+          this.router.navigate(['login']);
+
+          return;
+        }
+        return r.blob();
+      })
+      .then(d => {
+        window.URL.createObjectURL(d);
+        window.open(url);
+
+        // event.target.src = new Blob(d);
+      }
+      ).catch(e => {
+        // TODO: add toastr with message 'Invalid token, please login again'
+
+          console.log(e);
+        // if(e.contains(`'fetch' on 'Window'`)) {
+        //   this.router.navigate(['login']);
+        // }
+
+      });
+    // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
+    // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
+  
+  }
+
 
   getAssetUrl(event: any, url: string, type?: string): string {
     if(!url) return '';
@@ -68,6 +102,7 @@ export class DocumentCardComponent implements OnChanges {
       })
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
+        this.showLock = true;
 
     this.modalLoading = false;
         // event.target.src = new Blob(d);
@@ -105,6 +140,12 @@ export class DocumentCardComponent implements OnChanges {
 
   getCreator() {
     return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
+  }
+
+  showLockIcon(): boolean {
+    if(!this?.doc?.properties['sa:confidentiality']) return false;
+    if(this.doc.properties['sa:confidentiality'].toLowerCase() === CONFIDENTIALITY.confidential.toLowerCase()) return true;
+    else return false;
   }
 
 }

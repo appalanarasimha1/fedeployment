@@ -163,7 +163,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   getNames(users: any) {
     let result = "";
     users.map((user) => {
-      result += user.id + ", ";
+      result += user + ", ";
     });
     return result;
   }
@@ -346,6 +346,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   getCopyright() {
     if (this.doc.properties['sa:copyrightName']) {
       return `©️ ${this.doc.properties['sa:copyrightName']} ${this.doc.properties['sa:copyrightYear']}`;
+    }
+    return '';
+  }
+
+  getUsageAllowed() {
+    if (this.doc.properties['sa:allow'] && this.doc.properties['sa:allow'] !== ALLOW.any) {
+      return `${this.doc.properties['sa:allow']}`;
     }
     return '';
   }

@@ -174,7 +174,7 @@
         </div>
         <div class="col-xl-9 col-md-3 flexible">
          <ng-select placeholder="Specify visibility" (change)="onSelectAccess($event)" [(ngModel)]="access" id="access" [ngClass]="{'goldenText': access}">
-            <ng-option *ngFor="let c of ACCESS | keyvalue" [value]="c.value">
+            <ng-option *ngFor="let c of ACCESS | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
                 {{c.value}}
             </ng-option>
          </ng-select>

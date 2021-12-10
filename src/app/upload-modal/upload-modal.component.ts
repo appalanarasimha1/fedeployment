@@ -189,7 +189,7 @@ export class UploadModalComponent implements OnInit {
 
   openBrowseRoute() {
     this.dialogRef.close(this.selectedFolder);
-    this.router.navigate(['/browse'], {queryParams: {sector: this.selectedWorkspace.id, folder: this.selectedFolder?.title || this.folderToAdd}});
+    this.router.navigate(['/workspace'], {queryParams: {sector: this.selectedWorkspace.id, folder: this.selectedFolder?.title || this.folderToAdd}});
   }
 
   async getWsList() {

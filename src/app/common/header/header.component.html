@@ -1,10 +1,10 @@
  <header *ngIf="searchHeader" class="searchHeading" [ngClass]="{'fixedHeader': showBrowseHeader}" >
-  <div class="container-fluid">
+  <div class="container">
       <div class="row">
           <div class="col-xl-9">
               <nav class="navbar navbar-expand-lg navbar-light ">
                 <div class="logo-block">
-                  <img src="../../../assets/images/groundx-new-logo.svg" alt="Ground-X" class="header-logo" (click)="selectTab('search')" />
+                  <img src="../../../assets/images/groundx-new-logo.svg" alt="Ground-X" class="header-logo" style="cursor: pointer;" (click)="selectTab('search')" />
                 </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                       <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@
                       </ul>
                     </div> -->
 
-                </nav>
+              </nav>
           </div>
           <div class="col-xl-3">
               <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right;">
@@ -58,11 +58,11 @@
                             <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" (click)="selectTab('browse')">Browse</a></li>
+                            <li><a class="dropdown-item" (click)="selectTab('workspace')">Workspace</a></li>
                             <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
                             <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li>
                             <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Favourites</a></li>
-                            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+                            <li class="logout-line"><a class="dropdown-item" (click)="logout()">Logout</a></li>
                           </ul>
                         </li>
                       </ul>
@@ -76,7 +76,78 @@
 
 <header *ngIf="!searchHeader" class="pt-4 pb-4 searchHeading fixedHeader">
   <div class="container-fluid">
-      <div class="row">
+    <div class="row">
+          <div class="col-xl-9">
+              <nav class="navbar navbar-expand-lg navbar-light ">
+                <div class="logo-block">
+                  <img src="../../../assets/images/groundx-new-logo.svg" alt="Ground-X" class="header-logo" style="cursor: pointer;" (click)="selectTab('search')" />
+                </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                          <a class="nav-link active " aria-current="page" (click)="selectTab('search')">Home</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link " (click)="selectTab('browse')">Browse</a>
+                        </li>
+                       
+                        <li class="nav-item">
+                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Favourites</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload</a>
+                        </li>
+                      </ul>
+                    </div> -->
+
+              </nav>
+          </div>
+          <div class="col-xl-3">
+              <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right;">
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav me-auto mb-2 mb-lg-0 rightDrop">
+                        <li>
+                          <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                          <a class="nav-link tooltipCustom" aria-current="page" >
+                            <img src="../../../assets/images/menu-right.svg">
+                          </a>
+                        </li> -->
+                        <li class="nav-item">
+                          <a class="nav-link tooltipCustom" placement="bottom" ngbTooltip="This function will be available soon" aria-current="page"  style="opacity: 0.6;cursor: not-allowed;">
+                            <img src="../../../assets/images/alarm-bell.svg">
+                          </a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" (click)="selectTab('workspace')">Workspace</a></li>
+                            <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
+                            <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li>
+                            <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Favourites</a></li>
+                            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+                          </ul>
+                        </li>
+                      </ul>
+                  </div>
+
+              </nav>
+          </div>
+      </div>
+      <!-- <div class="row">
           <div class="col-xl-2 col-md-2">
               <div class="logo">
                   <a  (click)="selectTab('search')">
@@ -140,6 +211,6 @@
 
               </nav>
           </div>
-      </div>
+      </div> -->
   </div>
 </header>

@@ -3919,3 +3919,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .copyright-form .ng-select{
   width: 100%;
 }
+.masonry-item:nth-child(5),
+.masonry-item:nth-child(6),
+.masonry-item:nth-child(7) {
+  z-index: 1;
+}

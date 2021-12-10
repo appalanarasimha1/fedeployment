@@ -259,6 +259,7 @@ ul.set-width.portfolio-list li .cardBlock  {
 }
 .e-btn-group{
   float: right;
+  margin-right: 5px;
 }
 .card-view ul{
   padding: 0px;
@@ -1372,6 +1373,7 @@ color: #ACACAC;
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-right: 15px;
 }
 .itemCount {
     border: 1px solid #F6F5F2;

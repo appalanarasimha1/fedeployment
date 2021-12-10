@@ -254,6 +254,7 @@ ul.set-width.portfolio-list li .cardBlock  {
 }
 .e-btn-group{
   float: right;
+  margin-right: 5px;
 }
 .card-view ul{
   padding: 0px;
@@ -1364,7 +1365,7 @@ color: #ACACAC;
 .download-dropdown {
   position: absolute;
   width: 346px;
-  min-height: 208px;
+  min-height: auto;
   /* height: auto; */
   right: -8px;
   top: 30px;
@@ -1465,4 +1466,77 @@ color: #ACACAC;
 }
 .download-dropdown a, .download-dropdown a:hover {
   color: #DAAA00;
+}
+.caption-mousehover {
+  position: absolute;
+  bottom: 6px;
+  left: 15px;
+  color: #fff;
+  z-index: 9;
+  opacity: 0;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.caption-mousehover {
+  position: absolute;
+  bottom: 6px;
+  left: 15px;
+  color: #fff;
+  z-index: 8;
+  width: 100%;
+  opacity: 0;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.lock-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  height: 30px;
+  width: 30px;
+  background: #fff;
+  border-radius: 100px;
+  z-index: 8;
+  opacity: 1;
+}
+.lock-icon img {
+  display: block;
+  max-width: 14px;
+  margin: 5px auto;
+}
+.cardBlock:hover .caption-mousehover, .activeHover .caption-mousehover
+/* .cardBlock:hover .lock-icon, .activeHover .lock-icon */ { 
+  opacity: 1;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+}
+.weight-size-block {
+  display: inline-block;
+  width: 100%;
+  padding-top: 5px;
+}
+.weight-size-block ul {
+  display: block;
+  overflow: hidden;
+}
+.weight-size-block ul li {
+  float: left;
+  padding-right: 10px;
+  white-space: nowrap;
+  color: #fff;
+  font-size: 11px;
+  line-height: 16px;
+  font-family: myBrown;
+}
+.weight-size-block ul li img {
+  display: inline-block;
+  max-width: 15px;
+  vertical-align: top;
+  margin-right: 2px;
 }

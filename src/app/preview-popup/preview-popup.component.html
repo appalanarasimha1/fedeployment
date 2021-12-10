@@ -22,7 +22,7 @@
               src="../../assets/images/black-user.png"
               style="width: 50px; margin-right: 10px"
             />
-            <span>{{ doc.properties["dc:creator"].id }}</span>
+            <span>{{ doc.properties["dc:creator"] }}</span>
           </div>
           <div class="col-xl-6 col-md-6">
             <ul class="flexible">
@@ -146,12 +146,18 @@
       </div>
       <div class="popupTabSec">
         <app-loader-small [show]="modalLoading"></app-loader-small>
-        <img
+        <div class="copyright-caption">
+          <div class="image-caption">
+            {{getCopyright()}}
+          </div>
+          <img
           *ngIf="doc.type === 'Picture'"
           [src]="docUrl"
           (error)="getAssetUrl($event, docUrl)"
           style="width: 100%"
         />
+        </div>
+        
         <span *ngIf="doc.type === 'Picture'" class="picture-copyright">{{getCopyright()}}</span>
         <div
           *ngIf="doc.type === 'Video'"
@@ -389,8 +395,8 @@
         style="justify-content: space-between; align-items: unset"
       >
         <div class="mb-4" style="width: 78%">
-          <span class="main-heading">{{ doc?.properties["dc:title"] }}</span>
-          <span class="yellowBtn">Internal Use ©</span>
+          <!-- <span class="main-heading">{{ doc?.properties["dc:title"] }}</span>
+          <span class="yellowBtn">Internal Use ©</span> -->
           <!-- <h5 class="pt-3 weightSize">
             {{
               getDownloadFileEstimation(
@@ -406,8 +412,11 @@
               <li>
                 <img src="../../assets/images/briefcase.svg" alt="Folder" /> {{getParentFolderName()}}
               </li>
-              <li>
+              <!-- <li>
                 <img src="../../assets/images/pin-1.svg" alt="Tourism" /> Sindalah Island
+              </li> -->
+              <li>
+                <span class="yellowBtn">{{getUsageAllowed()}}</span>
               </li>
             </ul>
           </div>

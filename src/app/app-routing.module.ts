@@ -7,7 +7,7 @@ import { LoginComponent } from './login/login.component';
 const routes: Routes = [
   {path: '', loadChildren: () => import('./search/search.module').then(m => m.SearchModule)},
   {path: 'login', component: LoginComponent},
-  {path: 'browse', loadChildren: () => import('./browse/browse.module').then(m => m.BrowseModule)}
+  {path: 'workspace', loadChildren: () => import('./browse/browse.module').then(m => m.BrowseModule)}
 ];
 
 @NgModule({
