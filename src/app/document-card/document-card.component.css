@@ -869,7 +869,8 @@ background-color:#EBC03F !important;
   left: auto;
   right: 15px;
   height: calc(100% - 30px);
-  width: auto;
+  width: calc(100% - 20px);
+  text-align: right;
 }
 .card-view .cardBlockContentHover ol, .set-width .cardBlockContentHover ol{
   list-style: none;
@@ -1364,8 +1365,8 @@ color: #ACACAC;
 }
 .download-dropdown {
   position: absolute;
-  width: 346px;
-  min-height: auto;
+  width: 100%;
+  height: auto;
   /* height: auto; */
   right: -8px;
   top: 30px;
@@ -1374,8 +1375,9 @@ color: #ACACAC;
   display: none;
   z-index: 999999;
   color: #fff;
-  padding: 30px;
+  padding: 20px;
   cursor: auto;
+  text-align: left;
 }
 .download-icon:hover .download-dropdown {
   display: block;
@@ -1539,4 +1541,13 @@ color: #ACACAC;
   max-width: 15px;
   vertical-align: top;
   margin-right: 2px;
+}
+
+.tab-content .cardBlock:hover .hover-icon-group {
+  top: 15px;
+  left: auto;
+  right: 15px;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+  text-align: right;
 }
