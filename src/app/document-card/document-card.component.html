@@ -35,9 +35,11 @@
       <div class="hover-icon-group">
         <div class="hover-icon star-icon"
           [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
-          (click)="markFavourite()"></div>
+          (click)="markFavourite()">
+        </div>
         <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
-          style="cursor: not-allowed;"></div>
+          style="cursor: not-allowed;">
+        </div>
         <a [ngClass]="showDownloadDropdown() ? '' : 'download-disabled'" class="hover-icon download-icon"
           href="{{getFileContent()}}">
           <div *ngIf="doc" class="download-dropdown">
@@ -62,10 +64,13 @@
           </div>
         </a>
       </div>
+      
+      <div class="mouse-hover-bg" (click)="openPreview()">
+      </div>
       <div class="caption-mousehover">
         <div class="weight-size-block">
           <ul>
-            <li>Nov 2, 2021</li>
+            <li>{{getAssetDate()}}</li>
             <!-- <li><img src="../../assets/images/icon_location_white.svg" alt="Tourism"> NEOM airport</li> -->
           </ul>
         </div>
@@ -73,7 +78,7 @@
       <div *ngIf="showLockIcon() && showLock" class="lock-icon">
         <img src="../../assets/images/lock-icon.svg" alt="" />
       </div>
-      <div class="mouse-hover-bg" (click)="openPreview()"></div>
+      
     </div>
   </div>
 </div>

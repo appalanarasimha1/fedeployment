@@ -1,5 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { MONTH_MAP_SHORT } from '../common/constant';
 import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
 
 @Component({
@@ -120,6 +121,10 @@ export class DocumentCardComponent implements OnChanges {
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
+  }
+
+  getAssetDate() {
+    return `${MONTH_MAP_SHORT[new Date(this.doc.lastModified).getMonth()]} ${new Date(this.doc.lastModified).getDate()}, ${new Date(this.doc.lastModified).getFullYear()}`; // ex: Nov 2, 2021
   }
 
   hasNoRestriction() {

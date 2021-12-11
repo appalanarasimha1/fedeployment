@@ -352,6 +352,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   getUsageAllowed() {
     if (this.doc.properties['sa:allow'] && this.doc.properties['sa:allow'] !== ALLOW.any) {
+      if(this.doc.properties['sa:allow'] === ALLOW.request) {
+        return 'Permission required';
+      }
       return `${this.doc.properties['sa:allow']}`;
     }
     return '';

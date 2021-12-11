@@ -45,3 +45,18 @@ export const reverseVideoDurationDictionary = {
     'Between 600 s and 1,800 s': 'from_600_to_1800_s',
     'More than 1,800 s': 'from_1800_s'
 };
+
+export const MONTH_MAP_SHORT = {
+    0: 'Jan',
+    1: 'Feb',
+    2: 'Mar',
+    3: 'Apr',
+    4: 'May',
+    5: 'Jun',
+    6: 'Jul',
+    7: 'Aug',
+    8: 'Sep',
+    9: 'Oct',
+    10: 'Nov',
+    11: 'Dec'
+};
