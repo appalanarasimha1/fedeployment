@@ -65,22 +65,21 @@
         </a>
       </div>
       
-      <div class="mouse-hover-bg" (click)="openPreview()">
-      </div>
-      <div class="caption-mousehover">
+      <!-- <div class="caption-mousehover">
         <div class="weight-size-block">
           <ul>
-            <li>{{getAssetDate()}}</li>
+            <li>{{getAssetDate()}}</li> -->
             <!-- <li><img src="../../assets/images/icon_location_white.svg" alt="Tourism"> NEOM airport</li> -->
-          </ul>
+          <!-- </ul>
         </div>
-      </div>
+      </div> -->
       <div *ngIf="showLockIcon() && showLock" class="lock-icon">
         <img src="../../assets/images/lock-icon.svg" alt="" />
       </div>
-      
     </div>
+    
   </div>
+  <div class="mouse-hover-bg" (click)="openPreview()"></div>
 </div>
 
 <div *ngIf="viewType === 'LIST'" class="cardBlock" style="border-radius: 8px;">
