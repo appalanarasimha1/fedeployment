@@ -18,8 +18,8 @@ export const ALLOW = {
 
 export const ALLOW_VALUE_MAP = {
   "Anywhere (including external material)": '',
-  "Internal publications only": 'Permission Required',
-  "Request owner's permission before use": "Internal Only"
+  "Internal publications only": "Internal Only",
+  "Request owner's permission before use": "Permission Required"
 };
 
 export const GROUPS = {
