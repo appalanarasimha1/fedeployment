@@ -16,6 +16,12 @@ export const ALLOW = {
   "request": "Request owner's permission before use"
 }
 
+export const ALLOW_VALUE_MAP = {
+  "Anywhere (including external material)": '',
+  "Internal publications only": 'Permission Required',
+  "Request owner's permission before use": "Internal Only"
+};
+
 export const GROUPS = {
   "company": "Company_Employees",
   "all": "All_Application_Users"

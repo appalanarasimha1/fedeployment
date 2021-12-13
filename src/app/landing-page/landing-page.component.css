@@ -357,12 +357,15 @@ font-weight: 600;
     font-weight: 600;
 }
 .yellowBtn {
-    background: #F7E6B2;
-    border-radius: 100px;
-    padding: 10px;
-    font-size: 13px;
-    line-height: 13px;
-    color: #8E6B0B;
+  background: #F7E6B2;
+  border-radius: 60px;
+  padding: 0px 10px;
+  font-size: 12px;
+  color: #8E6B0B;
+  height: 23px;
+  width: 100%;
+  display: block;
+  line-height: 23px;
 }
 .weightSize {
     font-weight: 600;

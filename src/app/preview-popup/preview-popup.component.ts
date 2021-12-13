@@ -6,7 +6,7 @@ import { ApiService } from "../services/api.service";
 import { localStorageVars } from "../common/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ALLOW } from "../upload-modal/constant";
+import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
 
 @Component({
   selector: "preview-popup",
@@ -76,8 +76,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   getParentFolderName() {
     if (!this.doc) return '';
-    const split = this.doc.path.split('/');
-    return split[split.length - 2];
+    // const split = this.doc.path.split('/');
+    // return split[split.length - 2];
+    return this.doc.properties['dc:sector'];
   }
 
   getComments() {
@@ -351,13 +352,24 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getUsageAllowed() {
-    if (this.doc.properties['sa:allow'] && this.doc.properties['sa:allow'] !== ALLOW.any) {
-      if(this.doc.properties['sa:allow'] === ALLOW.request) {
-        return 'Permission required';
-      }
-      return `${this.doc.properties['sa:allow']}`;
+    // if (this.doc.properties['sa:allow'] && this.doc.properties['sa:allow'] !== ALLOW.any) {
+    //   if(this.doc.properties['sa:allow'] === ALLOW.request) {
+    //     return 'Permission Required';
+    //   } else 
+    //   return `${this.doc.properties['sa:allow']}`;
+    // }
+
+    switch(this.doc.properties['sa:allow']) {
+      case ALLOW.any:
+        return ALLOW_VALUE_MAP["Anywhere (including external material)"];
+      case ALLOW.internal:
+        return ALLOW_VALUE_MAP["Internal publications only"];
+      case ALLOW.request:
+        return ALLOW_VALUE_MAP["Request owner's permission before use"];
+      default:
+        ALLOW_VALUE_MAP["Anywhere (including external material)"];
     }
-    return '';
+    // return '';
   }
 
 }

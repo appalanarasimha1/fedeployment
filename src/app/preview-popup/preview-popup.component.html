@@ -22,7 +22,7 @@
               src="../../assets/images/black-user.png"
               style="width: 50px; margin-right: 10px"
             />
-            <span>{{ doc.properties["dc:creator"] }}</span>
+            <span class="preview-heading">{{ doc.properties["dc:creator"] }}</span>
           </div>
           <div class="col-xl-6 col-md-6">
             <ul class="flexible">
@@ -57,7 +57,7 @@
                   <div *ngIf="doc" class="download-dropdown">
 
                     <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
-                      <p>Please always credit copyright owners (where applicable) and remember to check with relevant parties before publishing externally.</p>
+                      <p>Please always credit copyright owners (where applicable).</p>
                     </div>
 
                     <div *ngIf="hasInternalRestriction()" class="internal-use">
@@ -415,7 +415,7 @@
               <!-- <li>
                 <img src="../../assets/images/pin-1.svg" alt="Tourism" /> Sindalah Island
               </li> -->
-              <li>
+              <li *ngIf="getUsageAllowed()">
                 <span class="yellowBtn">{{getUsageAllowed()}}</span>
               </li>
             </ul>
