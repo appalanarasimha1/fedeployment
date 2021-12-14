@@ -3,6 +3,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
 import { NuxeoService } from '../../services/nuxeo.service';
+import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
 import { TRIGGERED_FROM_SUB_HEADER } from '../constant';
@@ -23,7 +24,8 @@ export class HeaderComponent implements OnInit {
     private nuxeo: NuxeoService,
     private router: Router,
     public matDialog: MatDialog,
-    public dataService: DataService
+    public dataService: DataService,
+    protected readonly keycloak: KeycloakService,
   ) {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
@@ -96,6 +98,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.nuxeo.logout();
+    this.keycloak.logout(window.location.origin + '/login');
   }
 
   openModal() {

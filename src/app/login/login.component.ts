@@ -41,22 +41,19 @@ export class LoginComponent implements OnInit {
   // }
 
   async checkLoginState() {
+    const keycloakToken = await this.keycloak.getToken();
+    if (!keycloakToken) return;
     let token
     try {
-      token = await this.nuxeo.requestToken();
+      token = await this.nuxeo.requestToken(keycloakToken);
 
       if (token && !token.toLowerCase().includes('doctype')) {
         localStorage.setItem('token', token);
+        await this.nuxeo.createClientWithToken(token);
         this.router.navigate(['/']);
       }
     } catch (e) {
       console.error(e);
-    }
-    const keycloakToken = await this.keycloak.getToken();
-
-    if (!token && keycloakToken) {
-      const location = this.nuxeo.getRedirectLocation();
-      window.location.href = location;
     }
   }
 
@@ -105,7 +102,7 @@ export class LoginComponent implements OnInit {
 
   logout() {
     this.nuxeo.logout();
-    return;
+    this.keycloak.logout(window.location.origin + '/login');
   }
 
 }
