@@ -249,8 +249,8 @@
   <div class="publish-file-preview-groups fix-scroll">
      <div *ngFor="let file of filesMap | keyvalue" class="publish-file-preview">
         <div class="publish-file-preview-img">
-           <!-- <img [src]="imageSrc[file.key] || getPreviewSrc(file.value, file.key)" alt="preview" class="preview-img"
-              onerror="this.src='./assets/images/preview-placeholder.png';"/> -->
+           <img [src]="imageSrc[file.key] || getPreviewSrc(file.value, file.key)" alt="preview" class="preview-img"
+              onerror="this.src='./assets/images/preview-placeholder.png';"/>
            <span>{{ file.value.name }}<br/><br/><span>2.17 MB</span></span>
            <div class="copyright-information">
               <div (click)="openCopyright(file.key)" *ngIf="!openCopyrightMap[file.key]">
