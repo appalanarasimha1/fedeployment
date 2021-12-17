@@ -60,3 +60,21 @@ export const MONTH_MAP_SHORT = {
     10: 'Nov',
     11: 'Dec'
 };
+
+export const TRIGGERED_FROM_SUB_HEADER = 'sub-header';
+export const TRIGGERED_FROM_DOCUMENT = 'document';
+export const WORKSPACE_ROOT = 'All sectors';
+export const ASSET_TYPE = {
+    DOMAIN: 'domain',
+    PICTURE: 'picture',
+    WORKSPACE: 'workspace'
+};
+export const TAG_ATTRIBUTES = {
+    ACTIVITY_DETECTION: 'nxtag:activityDetectionTag',
+    EMOTION_DETECTION: 'nxtag:emotionDetectionTag',
+    OBJECT_DETECTION: 'nxtag:objectDetectionTag',
+    OCR_TAGS: 'nxtag:ocrTag',
+    SCENE_DETECTION: 'nxtag:sceneDetectionTag',
+    NX_TAGS: 'nxtag:tags',
+    WEATHER_CLASSIFICATION: 'nxtag:weatherClassificationTag'
+};

@@ -335,9 +335,12 @@ export class UploadModalComponent implements OnInit {
   }
 
   removeFileIndex(index) {
+    delete this.filesMap[index];
     const url = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     this.apiService.delete(url).subscribe((res) => {
-      delete this.filesMap[index];
+      if(this.filesMap[index]) {
+        delete this.filesMap[index];
+      }
     });
   }
 
@@ -609,7 +612,7 @@ export class UploadModalComponent implements OnInit {
         "dc:parentId": this.parentFolder.id,
         "dc:description": this.description,
         "dc:title": name,
-        "dc:start": new Date(this.associatedDate).toISOString(),
+        "dc:start": this.associatedDate ? new Date(this.associatedDate).toISOString() : null,
         "dc:parentName": "Workspaces",
         "dc:sector": this.selectedWorkspace.title,
         "dc:primaryType": "event",

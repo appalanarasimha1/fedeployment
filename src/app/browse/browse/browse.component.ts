@@ -9,7 +9,7 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateModalComponent } from '../../update-modal/update-modal.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { constants, localStorageVars } from 'src/app/common/constant';
+import { ASSET_TYPE, constants, localStorageVars, WORKSPACE_ROOT } from 'src/app/common/constant';
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 
@@ -101,7 +101,7 @@ export class BrowseComponent implements OnInit {
     sector: '',
     folder: ''
   };
-  breadcrrumb = ""
+  breadcrrumb = `/${WORKSPACE_ROOT}`;
 
   ngOnInit(): void {
     this.route.queryParams
@@ -143,6 +143,7 @@ export class BrowseComponent implements OnInit {
   }
 
   closeOtherSectore(child, children) {
+    this.createBreadCrumb(child.title, child.type, child.path);
     for(let i = 0; i < children.length; i++) {
       if(child.uid === children[i].uid) {
         child.isExpand = !child.isExpand;
@@ -169,7 +170,8 @@ export class BrowseComponent implements OnInit {
     //   this.searchList = docs.entries;
     // });
     this.selectedFolder = item;
-    this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
+    this.createBreadCrumb(item.title, item.type, item.path);
+    // this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
     // this.selectedFile = [];
     // this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${item.uid}&ecm_trashed=false`)
     // .subscribe((docs: any) => {
@@ -294,13 +296,33 @@ export class BrowseComponent implements OnInit {
     }
   }
 
+  createBreadCrumb(title: string, type: string, path?: string): void {
+    if(!type) {
+      this.breadcrrumb = `/${WORKSPACE_ROOT}`;
+      return;
+    }
+    if(type.toLowerCase() === ASSET_TYPE.DOMAIN) {
+      this.breadcrrumb = `/${WORKSPACE_ROOT}/${title}`;
+    } else if(type.toLowerCase() === ASSET_TYPE.WORKSPACE) {
+      const bread = this.breadcrrumb.split('/');
+      const definedPath = path.split('/');
+      this.breadcrrumb = `/${bread[1]}/${(bread[2] === 'undefined' || !bread[2]) ? definedPath[1] : bread[2]}/${title}`;
+    }
+    // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
+  }
+
+  removeWrokspaceFromBreadcrumb(): string {
+    return this.breadcrrumb.replace(/\/workspaces/gi, '');
+  }
+
   handleClick(item, index, childIndex?: any) {
     this.currentLevel = index;
 
-    if(this.breadcrrumb.includes(item.title)) {
-      this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
-    }
-    this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
+    this.createBreadCrumb(item.title, item.type, item.path);
+    // if(this.breadcrrumb.includes(item.title)) {
+    //   this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
+    // }
+    // this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
     // this.selectedFile = [];
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)

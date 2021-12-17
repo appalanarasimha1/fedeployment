@@ -59,10 +59,15 @@
               <label for="confidentiality">Confidentiality</label>
             </div>
             <div class="col-xl-8 ">
-              <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, i)" id="confidentiality" [ngClass]="{'goldenText': customConfidentialityMap[i] }">
+              <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, i)" id="confidentiality" [ngClass]="{'goldenText': customConfidentialityMap[i] }">
                 <option hidden disabled selected value></option>
                 <option [selected]="customConfidentialityMap[i] === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-              </select>
+              </select> -->
+
+              <ng-select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, i)" id="confidentiality" [ngClass]="{'goldenText': customConfidentialityMap[i] }">
+                <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}
+                </ng-option>
+             </ng-select>
             </div>
 
           </div>
@@ -71,10 +76,17 @@
               <label for="access">Show to</label>
             </div>
             <div class="col-xl-8">
-              <select name="access" (change)="onSelectAccess($event.target.value, i)" id="access" [ngClass]="{'goldenText': customAccessMap[i] }" >
+              <!-- <select name="access" (change)="onSelectAccess($event.target.value, i)" id="access" [ngClass]="{'goldenText': customAccessMap[i] }" >
                 <option hidden disabled selected value></option>
                 <option [selected]="customAccessMap[i] === c.value"  [disabled]="checkAccessOptionDisabled(c.value, i)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-              </select>
+              </select> -->
+
+
+              <ng-select name="access" (change)="onSelectAccess($event.target.value, i)" id="access" [ngClass]="{'goldenText': customAccessMap[i] }">
+                <!-- <ng-option  hidden disabled selected value></ng-option> -->
+                <ng-option disabled]="checkAccessOptionDisabled(c.value, i)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}
+                </ng-option>
+             </ng-select>
             </div>
 
           </div>

@@ -1,11 +1,13 @@
 
 <!-- <app-loader-small [show]="modalLoading"></app-loader-small> -->
 <div *ngIf="viewType === 'GRID'" style="position: relative; margin-right: 5px;">
-  <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
+  <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
+    (click)="openPreview()" /> -->
+    <img *ngIf="doc.type === 'Picture'" id="fileId" [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" />
 
     <div *ngIf="doc.type === 'Video'" class="videoIconn">
-      <img id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
+      <img id="fileId" [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" alt=""
       (click)="openPreview()" />
     </div>
 
@@ -38,9 +40,9 @@
           [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
           (click)="markFavourite()">
         </div>
-        <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
+        <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
-        </div>
+        </div> -->
         <a [ngClass]="showDownloadDropdown() ? '' : 'download-disabled'" class="hover-icon download-icon"
           href="{{getFileContent()}}">
           <div *ngIf="doc" class="download-dropdown">

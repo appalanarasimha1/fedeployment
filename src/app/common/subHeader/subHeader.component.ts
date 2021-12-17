@@ -9,6 +9,7 @@ import { unescapeIdentifier } from '@angular/compiler';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
 import { apiRoutes } from '../config';
+import { TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../constant';
 @Component({
   selector: 'app-sub-header',
   // directives: [Search],
@@ -37,6 +38,8 @@ export class SubHeaderComponent implements OnInit {
   callInProgress;
   abortVideoDownload;
   signal;
+  modalLoading = false;
+  defaultVideoSrc;
 
   constructor(
     private dataService: DataService,
@@ -50,6 +53,13 @@ export class SubHeaderComponent implements OnInit {
     this.dataService.sectorChanged$.subscribe((sectors: any) => {
       this.sectors = sectors;
     });
+
+    this.dataService.resetFilter$.subscribe((triggeredFrom: string) => {
+      if(TRIGGERED_FROM_DOCUMENT === triggeredFrom) {
+        this.searchText = '';
+      }
+    });
+
     return;
   }
 
@@ -91,7 +101,8 @@ export class SubHeaderComponent implements OnInit {
     this.searchTextOutput.emit(data);
     return;
   }
-    customOptions: OwlOptions = {
+
+  customOptions: OwlOptions = {
     loop: false,
     mouseDrag: false,
     touchDrag: false,
@@ -132,7 +143,7 @@ export class SubHeaderComponent implements OnInit {
     this.modalOpen = true;
     this.hideVideo = true;
     this.modalLoading = false;
-    this.abortVideoDownload.abort();
+    // this.abortVideoDownload.abort();
   }
 
   clickVideoIcon() {
@@ -151,6 +162,7 @@ export class SubHeaderComponent implements OnInit {
           this.modalLoading = false;
           if(!response?.error && response.videoId) {
             this.videoId = response.videoId;
+            this.showVideo();
             this.videoLocation = response.location || null;;
           }
           return;
@@ -178,46 +190,50 @@ export class SubHeaderComponent implements OnInit {
           return;
         }
   }
-//  count = 1;
-  modalLoading = false;
-  showVideo(event) {
-    this.abortVideoDownload = new AbortController();
-    this.signal = this.abortVideoDownload.signal;
-    this.modalLoading = true;
+  
+  showVideo(event?) {
+    // this.abortVideoDownload = new AbortController();
+    // this.signal = this.abortVideoDownload.signal;
+    // this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-   fetch(updatedUrl + `?sector=sport&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') }, signal: this.signal })
-      .then(r => {
-        if (r.status === 401) {
-          localStorage.removeItem('token');
-          // this.router.navigate(['login']);
+    this.defaultVideoSrc = updatedUrl + `?sector=sport&videoId=${this.videoId}&location=${this.videoLocation}`;
+  //  fetch(updatedUrl + `?sector=sport&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') }, signal: this.signal })
+  //     .then(r => {
+  //       if (r.status === 401) {
+  //         localStorage.removeItem('token');
+  //         // this.router.navigate(['login']);
 
-          this.modalLoading = false;
-          return;
-        }
-        return r.blob();
-      })
-      .then(d => {
-        event.target.src = window.URL.createObjectURL(d);
-        // this.count--;
+  //         this.modalLoading = false;
+  //         return;
+  //       }
+  //       return r.blob();
+  //     })
+  //     .then(d => {
+  //       event.target.src = window.URL.createObjectURL(d);
+  //       // this.count--;
 
-        this.modalLoading = false;
-        return
-        // event.target.src = new Blob(d);
-      }
-      ).catch(e => {
-        // TODO: add toastr with message 'Invalid token, please login again'
+  //       this.modalLoading = false;
+  //       return
+  //       // event.target.src = new Blob(d);
+  //     }
+  //     ).catch(e => {
+  //       // TODO: add toastr with message 'Invalid token, please login again'
 
-          this.modalLoading = false;
-          console.log(e);
-        // if(e.contains(`'fetch' on 'Window'`)) {
-        //   this.router.navigate(['login']);
-        // }
+  //         this.modalLoading = false;
+  //         console.log(e);
+  //       // if(e.contains(`'fetch' on 'Window'`)) {
+  //       //   this.router.navigate(['login']);
+  //       // }
 
-      });
+  //     });
   }
 
   onSelectSector(sector: string) {
     this.sectorSelected = sector;
+  }
+
+  resetSearch() {
+    this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
   }
 }

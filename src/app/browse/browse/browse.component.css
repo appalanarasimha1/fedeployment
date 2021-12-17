@@ -270,11 +270,17 @@ font-weight: 600;
 }
 .all-sectors li {
   display: inline-block;
-  margin-right: 30px;
-  margin-bottom: 30px;
+  margin-right: 15px;
+  margin-bottom: 15px;
   cursor: pointer;
   max-width: 200px;
+  /* max-height: 150px; */
 }
+/* ::ng-deep .all-sectors li #fileId{
+  height: 150px !important;
+  width: 200px !important;
+  object-fit: cover !important;
+} */
 .list-container:after {
   content: '';
   display: block;

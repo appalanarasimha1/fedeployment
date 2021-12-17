@@ -729,3 +729,12 @@ input.copyright-input {
   width: 80px;
   margin-left: 16px;
 }
+::ng-deep ::placeholder{
+  color: #000 !important;
+}
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
+  background-color: #E1BB33;
+}
+::ng-deep .ng-select.ng-select-opened .ng-select-container{
+  background-color: transparent;
+}

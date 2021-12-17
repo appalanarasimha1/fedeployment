@@ -24,7 +24,7 @@
             <!-- <div class="tree__tree-section"> -->
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand">
+                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
                     <div >
                       <!-- /* sprint16-v1 start */ -->
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -78,7 +78,7 @@
             <div class="header-content">
               <div>
                 <h3>{{selectedFolder?.title}}</h3>
-                <h6>{{breadcrrumb.replace("/Workspaces", "")}}</h6>
+                <h6>{{removeWrokspaceFromBreadcrumb()}}</h6>
               </div>
               <div class="views">
                 <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
@@ -95,7 +95,7 @@
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
                 <ul class="all-sectors">
                   <li *ngFor="let item of searchList; let i = index">
-                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item;"
+                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"
                       (click)="handleTest(item);selectedFolder=item;">

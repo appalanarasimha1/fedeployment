@@ -395,7 +395,8 @@ color: #000000;
   top: 25px !important; */
   background-color: #000;
   min-width: max-content !important;
-  width: 100%
+  width: 100%;
+  min-height: 104px;
 }
 .sectorrBtn {
   background: transparent;
@@ -642,6 +643,7 @@ font-weight: 600;
   left: 0px !important;
   top: 0px !important;
   min-width: 100% !important;
+  min-height: 104px;
   /* background-color: #fff !important; */
 }
 .assetsDropdown.dropdown, .assetsDropdown.dropup {
@@ -1342,7 +1344,7 @@ color: #ACACAC;
 }
 .recentHeading{
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 100;
   color: #000000;
   margin-right: 20px;
   cursor: pointer;
@@ -1352,6 +1354,7 @@ color: #ACACAC;
   border-bottom: 2px solid #C49900;
   cursor: default !important;
   padding-bottom: 6px;
+  font-weight: 600;
 }
 .recentHeader {
   display: flex;
@@ -1403,7 +1406,7 @@ color: #ACACAC;
   padding: 60px 0px 40px;
 }
 .customTab .tab-content {
-  padding: 25px 0px 40px;
+  padding: 25px 0px 0px;
 }
 .customTab .nav>li>a {
   position: relative;

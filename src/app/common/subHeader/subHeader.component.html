@@ -28,12 +28,14 @@
             <!-- <app-search></app-search> -->
             <div style="position: relative;">
               <form (ngSubmit)="searchOutputFn(searchText)" autocomplete="off">
+                <button class="primary search-btn"><img
+                  src="../../../assets/images/search.png" /></button>
                 <input [ngModel]="searchText" (ngModelChange)="searchText=$event" [ngModelOptions]="{standalone: true}"
                   type="text" placeholder="Search" class="search-bar">
+                  <img *ngIf="searchText" (click)="resetSearch()" src="../assets/images/circle-close.png" class="placeholder-search">
                   <!-- <img src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search"> -->
                   <!-- <button ngIf="search" class="btn" style="position: absolute; right: 39px; top: 3px;">x</button> -->
-                <button class="primary search-btn"><img
-                    src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" /></button>
+               
               </form>
             </div>
           </div>
@@ -97,14 +99,14 @@
         
       </div>
       
-      <div class="" *ngIf="videoResponse">
+      <div class="" *ngIf="videoResponse && defaultVideoSrc">
        
          <video
             style="width: 100%"
             autoplay
             controls
-            src
-            (error)="showVideo($event)"
+            [src]=defaultVideoSrc
+           
           ></video>
           
       </div>

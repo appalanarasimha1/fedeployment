@@ -20,7 +20,7 @@ public sidebarToggleResize = new BehaviorSubject(false);
 setSidebarToggle(slideToggle){
   this.sidebarToggleResize.next(slideToggle);
 }
-getSidebarToggle(){
+getSidebarToggle() {
   return this.sidebarToggleResize;
 }
 // /* <!-- sprint12-fixes end --> */

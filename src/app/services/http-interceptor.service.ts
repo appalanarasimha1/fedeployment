@@ -10,12 +10,13 @@ import { Router } from '@angular/router';
 @Injectable()
 export class InterceptorService implements HttpInterceptor {
   constructor(private router: Router) { }
-  // console.log('inside interceptor');
   intercept(req: HttpRequest<any>, next: HttpHandler):
     Observable<HttpEvent<any>> {
-    if (req.url.split('nuxeo/')[1] === 'logout') {
-      this.router.navigate(['/login']);
-    }
+      console.log('inside interceptor');
+    
+      req = req.clone(
+        {setHeaders: { 'X-Authentication-Token': localStorage.getItem('token') }
+      });
     return next.handle(req);
   }
 }

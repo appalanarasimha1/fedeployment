@@ -22,7 +22,7 @@
               src="../../assets/images/black-user.png"
               style="width: 50px; margin-right: 10px"
             />
-            <span class="preview-heading">{{ doc.properties["dc:creator"] }}</span>
+            <!-- <span class="preview-heading">{{ doc.properties["dc:creator"] }}</span> -->
           </div>
           <div class="col-xl-6 col-md-6">
             <ul class="flexible">
@@ -36,11 +36,11 @@
                   <img
                     *ngIf="!doc.contextParameters.favorites?.isFavorite"
                     (click)="markFavourite(doc, true)"
-                    src="../../assets/images/star-white.svg"
+                    src="../../assets/images/black-star.png"
                   />
                 </a>
               </li>
-              <li class="">
+              <!-- <li class="">
                 <a
                   placement="bottom"
                   ngbTooltip="This function will be available soon "
@@ -50,7 +50,7 @@
                     style="width: 20px"
                   />
                 </a>
-              </li>
+              </li> -->
               <li>
                 <div class="downloadBlock">
                   <div class="download-icon"></div>
@@ -152,8 +152,7 @@
           </div> -->
           <img
           *ngIf="doc.type === 'Picture'"
-          [src]="docUrl"
-          (error)="getAssetUrl($event, docUrl)"
+          [src]="getAssetUrl(null, docUrl)"
           style="width: 100%"
         />
         </div>
@@ -261,7 +260,7 @@
                         {{ toDateString(doc?.properties["dc:created"]) }}
                         by
                         <span style="color: #ebc03f">{{
-                          doc?.properties["dc:creator"]?.id
+                          doc?.properties["dc:creator"]
                         }}</span>
                       </li>
 
@@ -319,6 +318,12 @@
                   </div>
                   <div class="col-xl-6 col-md-6">
                     <ul>
+                      <li>
+                        Name <br /><span style="opacity: 0.7">{{
+                          doc?.title
+                        }}</span>
+                      </li>
+
                       <li>
                         Description <br /><span style="opacity: 0.7">{{
                           doc?.properties["dc:description"] ||
@@ -443,7 +448,7 @@
                 ><img src="../../assets/images/clock.svg"
               /></a>
             </li>
-            <li class="nav-item customtooltip" role="presentation">
+            <!-- <li class="nav-item customtooltip" role="presentation">
               <a
                 class="nav-link"
                 id="profile-tab"
@@ -458,7 +463,7 @@
                 aria-selected="false"
                 ><img src="../../assets/images/Comments.svg"
               /></a>
-            </li>
+            </li> -->
             <li class="nav-item customtooltip" role="presentation">
               <a
                 class="nav-link"
@@ -478,7 +483,7 @@
             </li>
           </ul>
 
-          <ul class="iconsList">
+          <!-- <ul class="iconsList">
             <li>
               <a>
                 <div
@@ -551,7 +556,7 @@
                 </div>
               </a>
             </li>
-          </ul>
+          </ul> -->
         </div>
 
         <div class="search-tags pb-5">

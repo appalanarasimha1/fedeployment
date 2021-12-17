@@ -258,6 +258,7 @@ color: #FFFFFF;
   border: unset;
   border-bottom: 1.5px solid #000;
   vertical-align: top;
+  background-color: transparent;
 }
 
 /* custom drowndown */
@@ -774,4 +775,14 @@ input.copyright-input {
 .copyright-form li:last-child {
   width: 80px;
   margin-left: 16px;
+}
+::ng-deep ::placeholder{
+  color: #000 !important;
+}
+
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+    color: #000;
+}
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
+  background-color: #E1BB33 !important;
 }

@@ -1,6 +1,6 @@
 import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild, ElementRef } from '@angular/core';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
-import { constants, localStorageVars } from '../common/constant';
+import { constants, localStorageVars, TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
 import { environment } from '../../environments/environment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -119,6 +119,11 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.sectors = sectors;
     });
     // /* <!-- sprint12-fixes end --> */
+    this.dataService.resetFilter$.subscribe((triggeredFrom: string) => {
+      if(TRIGGERED_FROM_SUB_HEADER === triggeredFrom) {
+        this.resetResult();
+      }
+    })
     this.filtersCount = this.getFilterCount();
   }
 
@@ -136,6 +141,12 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.filtersCount = this.getFilterCount();
 
     return;
+  }
+
+  resetResult() {
+    this.documents = '';
+    this.selectTab('recentUpload');
+    this.dataService.resetFilterInit(TRIGGERED_FROM_DOCUMENT);
   }
 
   getRecentlyViewed() {

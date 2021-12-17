@@ -62,6 +62,10 @@ export class SearchComponent implements OnInit {
     this.dataService.sectorSelected$.subscribe((sectorSelected: IHeaderSearchCriteria) => {
       this.filters(sectorSelected);
     });
+
+    // this.dataService.resetFilter$.subscribe(() => {
+    //   this.resetFilter();
+    // });
     // this.connectToNuxeo();
   }
 
@@ -347,6 +351,7 @@ export class SearchComponent implements OnInit {
     this.resetAggregationsMetaData();
     this.filters(params);
     this.advancedFilter.resetFilter();
+    // this.dataService.resetFilterInit();
   }
 
   openFilterModal(type) {

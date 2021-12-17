@@ -22,7 +22,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 1;
-  overflow-y: scroll
+  overflow-y: scroll;
+  border-radius: 4px;
 }
 .filter-box-header {
   display: flex;
@@ -67,7 +68,7 @@
   border-radius: 0px !important
 }
 ::ng-deep .dropdown-list{
-  position: relative !important;
+  /* position: relative !important; */
   margin-top: 0px !important
 }
 ::ng-deep .multiselect-item-checkbox input[type=checkbox] + div:before{
@@ -374,4 +375,13 @@ button:focus {
 }
 ::ng-deep .multiselect-item-checkbox input[type=checkbox] + div{
   color: #fff !important
+}
+::-webkit-scrollbar {
+  display: none;
+}
+::ng-deep .multiselect-dropdown .dropdown-btn .selected-item a{
+  left: 7px;
+  top: -1px;
+  bottom: 0px;
+  position: relative !important;
 }

@@ -75,8 +75,12 @@
       <ul class="nav nav-tabs">
         <li><a class="commonHeading" style="font-size:28px"  href="#favourite" data-toggle="tab">Favourites</a></li>
       </ul>
-
-      <div class="tab-content">
+      <div *ngIf="!favourites.length"  style="height: 150px;">
+        <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
+        <h2 class="noresult pb-3 pt-4">No favourite assets found</h2>
+        <p class="searchcontent">Mark assets as favourite to show here.</p>
+      </div>
+      <div *ngIf="favourites.length" class="tab-content">
         <div class="tab-pane active" id="favourite">
           <!-- <div class="show-all">Show all</div> -->
           <ngx-slick-carousel
@@ -105,7 +109,7 @@
     <div *ngIf="!checkShowRecent()" class="container">
       <div class="row" style="justify-content: space-between">
         <div class="main-headingSearch flexible pb-4 col-xl-8" style="align-items: baseline;">
-          <span *ngIf="searchTerm.ecm_fulltext" (click)="documents = ''; selectTab('recentUpload')" class="commonHeading" style="font-size: 28px; text-transform: capitalize; cursor: pointer;">
+          <span *ngIf="searchTerm.ecm_fulltext" (click)="resetResult()" class="commonHeading" style="font-size: 28px; text-transform: capitalize; cursor: pointer;">
             {{searchTerm.ecm_fulltext}} <img src="../assets/images/circle-close.png" style="width: 14px;margin-left: 3px;">
           </span>
           <!-- <span class="numberFiles">{{documents.resultsCount}} files</span> -->
@@ -117,14 +121,14 @@
               <span><b>Sort by:</b> </span>
               <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
 
-                <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'All assets'}}</button>
+                <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'Most relevant'}}</button>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
-                  <button (click)="dropdownMenu($event); sortValue = 'Created'" ngbDropdownItem
-                    value='dc:created'>Created</button>
-                  <button (click)="dropdownMenu($event); sortValue = 'Modified'" ngbDropdownItem
-                    value='dc:modified'>Modified</button>
-                  <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem
-                    value='dc:lastContributor'>Last Contibutor</button>
+                  <button (click)="dropdownMenu($event); sortValue = 'Date uploaded'" ngbDropdownItem
+                    value='dc:created'>Date uploaded</button>
+                  <button (click)="dropdownMenu($event); sortValue = 'Most relevant'" ngbDropdownItem
+                    value=''>Most relevant</button>
+                  <!-- <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem
+                    value='dc:lastContributor'>Last Contibutor</button> -->
                   <!-- <button (click)="dropdownMenu($event); sortValue = 'State'" ngbDropdownItem value='state'>State</button>
                   <button (click)="dropdownMenu($event); sortValue = 'Nature'" ngbDropdownItem value='dc:nature'>Nature</button>
                   <button (click)="dropdownMenu($event); sortValue = 'Coverage'" ngbDropdownItem value='dc:coverage'>Coverage</button> -->
