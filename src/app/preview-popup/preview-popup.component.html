@@ -165,8 +165,8 @@
           <video
             controls
             style="width: 100%; height: 600px"
-            [src]="docUrl"
-            (error)="getAssetUrl($event, docUrl)"
+            [src]="getAssetUrl(null, docUrl)"
+            crossorigin="use-credentials"
           ></video>
         </div>
         <div *ngIf="doc.type === 'File'">

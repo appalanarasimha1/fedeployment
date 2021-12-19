@@ -64,7 +64,11 @@
                 <option [selected]="customConfidentialityMap[i] === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
               </select> -->
 
-              <ng-select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, i)" id="confidentiality" [ngClass]="{'goldenText': customConfidentialityMap[i] }">
+              <ng-select name="confidentiality" 
+              (change)="onSelectConfidentiality(i)" 
+              [(ngModel)]="customConfidentialityMap[i]"
+              id="confidentiality"  
+              [ngClass]="{'goldenText': customConfidentialityMap[i] }">
                 <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}
                 </ng-option>
              </ng-select>
@@ -82,9 +86,13 @@
               </select> -->
 
 
-              <ng-select name="access" (change)="onSelectAccess($event.target.value, i)" id="access" [ngClass]="{'goldenText': customAccessMap[i] }">
+              <ng-select name="access" 
+              (change)="onSelectAccess(i)" 
+              id="access" 
+              [(ngModel)]="customAccessMap[i]"
+              [ngClass]="{'goldenText': customAccessMap[i] }">
                 <!-- <ng-option  hidden disabled selected value></ng-option> -->
-                <ng-option disabled]="checkAccessOptionDisabled(c.value, i)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}
+                <ng-option [disabled]="checkAccessOptionDisabled(c.value, i)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}
                 </ng-option>
              </ng-select>
             </div>

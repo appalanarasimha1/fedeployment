@@ -177,13 +177,14 @@ export class UpdateModalComponent implements OnInit {
     return new Date(dateString).toLocaleDateString();
   }
 
-  onSelectConfidentiality(confidentiality, fileIndex?: any) {
-    this.customConfidentialityMap[fileIndex] = confidentiality;
+  onSelectConfidentiality(
+    fileIndex?: any) {
+    // this.customConfidentialityMap[fileIndex] = confidentiality;
     this.checkShowUserDropdown(fileIndex);
   }
 
-  onSelectAccess(access, fileIndex?: any) {
-    this.customAccessMap[fileIndex] = access;
+  onSelectAccess(fileIndex?: any) {
+    // this.customAccessMap[fileIndex] = access;
     this.checkShowUserDropdown(fileIndex);
   }
 
