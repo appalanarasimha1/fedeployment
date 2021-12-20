@@ -12,6 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
+import { NuxeoService } from '../services/nuxeo.service';
 import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW } from "../upload-modal/constant";
 import { Router } from "@angular/router";
 
@@ -28,6 +29,7 @@ export class UpdateModalComponent implements OnInit {
   viewType: any;
   constructor(
     private apiService: ApiService,
+    public nuxeo: NuxeoService,
     public dialogRef: MatDialogRef<UpdateModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {docs: any, folder: any},
     private router: Router,
@@ -56,6 +58,7 @@ export class UpdateModalComponent implements OnInit {
   openCopyrightMap: any = {};
   copyrightUserMap: any = {};
   copyrightYearMap: any = {};
+  updatedDocs: any = {};
 
   years = [
     {id: 1, name: '2000'},
@@ -83,7 +86,7 @@ export class UpdateModalComponent implements OnInit {
     {id: 23, name: '2022'},
     {id: 24, name: '2023'}
   ];
-  
+
   ngOnInit(): void {
     this.loadUsers();
     this.docs = this.data.docs;
@@ -92,7 +95,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   closeModal() {
-    this.dialogRef.close(this.updatedAclValue);
+    this.dialogRef.close(this.updatedDocs);
   }
 
   initACLValue() {
@@ -102,6 +105,15 @@ export class UpdateModalComponent implements OnInit {
   }
 
   computeAclValue(doc, index) {
+    this.customAllowMap[index] = doc.properties['sa:allow'];
+    this.copyrightUserMap[index] = doc.properties['sa:copyrightName'];
+    this.copyrightYearMap[index] = doc.properties['sa:copyrightYear'];
+    if (doc.properties['sa:confidentiality']) {
+      this.customConfidentialityMap[index] = doc.properties['sa:confidentiality'];
+      this.customAccessMap[index] = doc.properties['sa:access'];
+      this.customUsersMap[index] = doc.properties['sa:users'];
+      return;
+    }
     const aces = doc.contextParameters.acls.find(a => a.name === "local");
     if (!aces) {
       this.customConfidentialityMap[index] = "";
@@ -109,7 +121,6 @@ export class UpdateModalComponent implements OnInit {
       this.customUsersMap[index] = [];
       return;
     }
-    this.customAllowMap[index] = doc.properties['sa:allow'];
     const localAces = aces.aces;
     const users = localAces.map(a => a.username);
     if (users.includes(GROUPS.all)) {
@@ -251,8 +262,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   async updateAsset(doc, index) {
-    await this.removeLocalPermission(doc);
-    this.setAssetPermission(doc, index);
+    await this.updateAssetClassification(doc, index);
   }
 
   async removeLocalPermission(doc) {
@@ -298,6 +308,24 @@ export class UpdateModalComponent implements OnInit {
     };
     const result = await this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
     this.updatedAclValue[index] = result["contextParameters"].acls;
+  }
+
+  async updateAssetClassification(doc, index) {
+    const updated = await this.nuxeo.nuxeoClient
+      .operation("Scry.UpdateConfidentiality")
+      .input([doc])
+      .params({
+        confidentiality: this.customConfidentialityMap[index],
+        access: this.customAccessMap[index],
+        allow: this.customAllowMap[index],
+        users: this.customUsersMap[index],
+        copyrightName: this.copyrightUserMap[index],
+        copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index]
+      })
+      .schemas(['scryAccess'])
+      .enrichers({document: ["acls"]})
+      .execute();
+    if (updated.entries[0]) this.updatedDocs[index] = updated.entries[0];
   }
 
   trackByFn(item: any) {

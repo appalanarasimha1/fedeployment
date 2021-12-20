@@ -81,7 +81,7 @@ export class UploadModalComponent implements OnInit {
   showCustomDropdown: boolean = false;
   disableDateInput = false;
 
-  
+
   years = [
     {id: 1, name: '2000'},
     {id: 2, name: '2001'},
@@ -367,6 +367,7 @@ export class UploadModalComponent implements OnInit {
     this.showCustomDropdown = false;
     this.disableDateInput = true;
     this.associatedDate = this.selectedFolder.properties["dc:start"];
+    this.description = this.selectedFolder.properties["dc:description"];
   }
 
   addNewFolder(folderName) {
@@ -375,6 +376,7 @@ export class UploadModalComponent implements OnInit {
     this.showCustomDropdown = false;
     this.disableDateInput = false;
     this.associatedDate = "";
+    this.description = "";
   }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
