@@ -8,11 +8,16 @@
     [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
     alt=""
     (click)="openPreview()"
-    (load)="showLock = true" />
+    (load)="showLock = true"
+    crossorigin="use-credentials"
+    loading="lazy" />
 
     <div *ngIf="doc.type === 'Video'" class="videoIconn">
-      <img id="fileId" [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" alt=""
-      (click)="openPreview()" />
+      <img id="fileId" 
+      [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+      alt=""
+      (click)="openPreview()"
+      crossorigin="use-credentials" />
     </div>
 
 
@@ -120,9 +125,9 @@
       <div class="hover-icon star-icon"
         [ngClass]="{'active': doc.contextParameters.favorites.isFavorite}"
         (click)="markFavourite()"></div>
-      <div class="hover-icon plus-icon" placement="top"
+      <!-- <div class="hover-icon plus-icon" placement="top"
         ngbTooltip="This function will be available soon" style="cursor: not-allowed;">
-      </div>
+      </div> -->
       <a class="hover-icon download-icon"
         href="{{getFileContent()}}"></a>
     </div>

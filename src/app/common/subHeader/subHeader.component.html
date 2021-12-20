@@ -1,4 +1,4 @@
-<section class="sub-header" >
+<section class="sub-header" [ngClass]="{'afterSearch': searched}" >
   <div class="container">
     <div class="row">
       <div class="col-xl-8 offset-xl-2 text-center">
@@ -27,7 +27,7 @@
             </div> -->
             <!-- <app-search></app-search> -->
             <div style="position: relative;">
-              <form (ngSubmit)="searchOutputFn(searchText)" autocomplete="off">
+              <form (ngSubmit)="searchOutputFn(searchText)" style="z-index: 99999999;"autocomplete="off">
                 <button class="primary search-btn"><img
                   src="../../../assets/images/search.png" /></button>
                 <input [ngModel]="searchText" (ngModelChange)="searchText=$event" [ngModelOptions]="{standalone: true}"
@@ -82,11 +82,11 @@
     </button>
     <div class="modal-body">
       <app-loader-small [show]="modalLoading"></app-loader-small>
-      <div class="modal-body-content" *ngIf="hideVideo && !videoResponse" (click)="clickVideoIcon()">
+      <div class="modal-body-content" *ngIf="hideVideo && !videoResponse && !videoCompleted" (click)="clickVideoIcon()">
         <div class="playIcon"></div>
         <img src="https://via.placeholder.com/300x170/3ca2ca/3ca2ca" />
       </div>
-      <div class="select-an-area" *ngIf="selectArea && !videoResponse">
+      <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted">
         <img src="../../../assets/images/logo-neom.png" class="logo" />
         <h3>Please select an area of interest.</h3>
         <ng-select [items]="allSectors" ngDefaultControl
@@ -99,18 +99,38 @@
         
       </div>
       
-      <div class="" *ngIf="videoResponse && defaultVideoSrc">
-       
+      <div class="" *ngIf="videoResponse && defaultVideoSrc && !videoCompleted">
+       <div class="ssector">
+        <span>Change sector</span>
+        <ng-select [items]="allSectors" 
+          ngDefaultControl
+          placeholder="Select an area" 
+          [(ngModel)]="sectorSelected"
+          (change)="playPersonalizedVideo()">
+        </ng-select>
+       </div>
          <video
             style="width: 100%"
             autoplay
             controls
             [src]=defaultVideoSrc
-           
+            (ended)="videoPayEnded($event)"
           ></video>
           
       </div>
+
+
+      <!-- video thankyou section -->
+      <div *ngIf="videoCompleted" class="thankyou-popup text-center">
+        <div class="">
+          <img src="../../../assets/images/logo-neom.png" style="width: 50px;">
+          <h2>Thanks for watching.</h2>
+          <p>Start discovering NEOM’s digital assets by using the search. You can search with a specific keyword, select a sector and get keyword suggestions from the Ground X AI.</p>
+          <img (click)="modal.dismiss('Cross click'); closeModal()" src="../../../assets/images/Btn Next.png" style="width: 30px; cursor: pointer;">
+        </div>
+      </div>
     </div>
+
   </ng-template>
   <!-- sprint16 end -->
 

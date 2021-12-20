@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
           }
           localStorage.setItem('token', token);
           localStorage.setItem('username', this.username);
-          localStorage.setItem('openVideo', '1');
           this.router.navigate(['/']);
         })
         .catch((err) => {

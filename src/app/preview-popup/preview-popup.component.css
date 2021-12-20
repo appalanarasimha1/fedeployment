@@ -289,7 +289,7 @@ color: #000000;
 }
 /* modal css */
 .modalHead{
-  padding: 8px 15px;
+  padding: 10px 15px 25px 15px;
   background-color: #fff;
   border: unset
 }
@@ -1150,7 +1150,10 @@ li .videoBlock  {
 .search-tags ul{
   padding: 0px;
   list-style: none;
-  justify-content: center;
+  /* justify-content: center; */
+}
+.search-tags ul li {
+  margin-bottom: 12px;
 }
 .search-tags ul li a{
   background-color: #000;
@@ -1184,6 +1187,9 @@ color: #C4C4C4;
 .modal-header{
   border-bottom: unset;
   padding: unset;
+  /* display: none; */
+  height: 0px;
+  margin: unset;
 }
 
 .nav-link::before{
@@ -1787,3 +1793,7 @@ line-height: 22px;
 color: #000000;
 font-weight: 600;
 } */
+
+.close{
+  opacity: 1;
+}

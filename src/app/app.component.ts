@@ -49,4 +49,9 @@ export class AppComponent implements OnInit{
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }
+  onActivate() {
+    window.scroll(0,0);
+
 }
+}
+

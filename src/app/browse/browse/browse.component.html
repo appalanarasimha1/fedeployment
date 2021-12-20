@@ -152,15 +152,19 @@
                     <h6>Created by {{item.properties['dc:creator']}}</h6>
                   </div>
                 </div>
-
-                <document-card *ngIf="checkAssetType(item.type)"
-                  [doc]="item"
-                  [viewType]="viewType"
-                  (onOpenPreview)="open(item, item.type)"
-                  (onSelect)="selectImage($event, item, i)"
-                  (onMarkFavourite)="markFavourite(item, false)"
-                  >
-                </document-card>
+<ul>
+<li *ngIf="checkAssetType(item.type)" style="margin-bottom: 20px;">
+  <document-card 
+  [doc]="item"
+  [viewType]="viewType"
+  (onOpenPreview)="open(item, item.type)"
+  (onSelect)="selectImage($event, item, i)"
+  (onMarkFavourite)="markFavourite(item, false)"
+  >
+</document-card>
+</li>
+</ul>
+               
               </div>
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
@@ -179,6 +183,9 @@
   </section>
 
 </section>
-<button mat-fab class="float" color="primary" aria-label="Add" (click)="openUpdateClassModal()">
+<!-- <button mat-fab class="float" color="primary" aria-label="Add" (click)="openUpdateClassModal()">
   <mat-icon>add</mat-icon>
-</button>
+</button> -->
+<!-- <div class="float" (click)="onActivate()">
+  <img src="../assets/images/ArrowUp.svg"  >
+</div> -->

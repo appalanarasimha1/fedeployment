@@ -40,6 +40,8 @@ export class SubHeaderComponent implements OnInit {
   signal;
   modalLoading = false;
   defaultVideoSrc;
+  videoCompleted = false;
+  searched = false;
 
   constructor(
     private dataService: DataService,
@@ -57,6 +59,7 @@ export class SubHeaderComponent implements OnInit {
     this.dataService.resetFilter$.subscribe((triggeredFrom: string) => {
       if(TRIGGERED_FROM_DOCUMENT === triggeredFrom) {
         this.searchText = '';
+        this.searched = false;
       }
     });
 
@@ -64,10 +67,16 @@ export class SubHeaderComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if(localStorage.getItem('openVideo')) {
+    if(!localStorage.getItem('openVideo')) {
       this.openSm(this.videoModal);
+      localStorage.setItem('openVideo', '1');
     }
-    return;  }
+    return;  
+  }
+
+  videoPayEnded(event: any) {
+    this.videoCompleted = true;
+  }
   
   sectorSelect(value: string) {
     this.sectorSelected = value;
@@ -94,10 +103,12 @@ export class SubHeaderComponent implements OnInit {
       delete this.searchCriteria['ecm_fulltext'];
       delete this.searchCriteria['highlight'];
     }
+    // this.dataService.termSearchInit(searchText);
     this.emitData(this.searchCriteria);
   }
 
   emitData(data: IHeaderSearchCriteria): void {
+    this.searched = true;
     this.searchTextOutput.emit(data);
     return;
   }
@@ -135,14 +146,20 @@ export class SubHeaderComponent implements OnInit {
     this.modalOpen = false;
     this.hideVideo = true;
     this.selectArea = false;
-    localStorage.removeItem('openVideo');
-    this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', backdrop: 'static', keyboard: false });
+    // localStorage.removeItem('openVideo');
+    this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', keyboard: false }).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeModal();
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });;
   }
 
   closeModal() {
     this.modalOpen = true;
     this.hideVideo = true;
     this.modalLoading = false;
+    this.videoCompleted = false;
     // this.abortVideoDownload.abort();
   }
 
@@ -234,6 +251,7 @@ export class SubHeaderComponent implements OnInit {
   }
 
   resetSearch() {
+    this.searched = false;
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
   }
 }

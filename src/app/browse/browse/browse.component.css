@@ -191,13 +191,24 @@ section.lpSecOne {
   background-size: cover;
   width: calc(50% - 10px);
 }
-.float{
-	position:fixed;
-	bottom:40px;
-	right:40px;
-  background-color: #23211E;
+/* .float{
+  position: relative;
+  bottom: 50px;
+  right: 40px;
   z-index: 9999;
-}
+  background-color: #23211E;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  cursor: pointer;
+} 
+.float img{
+  width: 15px;
+} */
 
 .paddingLeft{
   padding-left: 40px;
@@ -274,13 +285,13 @@ font-weight: 600;
   margin-bottom: 15px;
   cursor: pointer;
   max-width: 200px;
-  /* max-height: 150px; */
+  max-height: 150px;
 }
-/* ::ng-deep .all-sectors li #fileId{
-  height: 150px !important;
-  width: 200px !important;
+::ng-deep .all-sectors li #fileId{
+  height: 135px !important;
+  width: 178px !important;
   object-fit: cover !important;
-} */
+}
 .list-container:after {
   content: '';
   display: block;
@@ -494,4 +505,7 @@ li.has-children.is-open > .acnav__label {
 }
 .is-open > .acnav__list--level2, .is-open > .acnav__list--level3, .is-open > .acnav__list--level4 {
   display: block;
+}
+.cardBlock{
+  margin-bottom: 20px;
 }

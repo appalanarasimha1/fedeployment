@@ -559,5 +559,9 @@ export class BrowseComponent implements OnInit {
     }
     return `${count} assets curated by ${item.properties["dc:creator"]}`;
   }
+  onActivate(event) {
+    window.scroll(0,0);
+
+}
 }
 

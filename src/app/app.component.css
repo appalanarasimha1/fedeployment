@@ -1,9 +1,21 @@
 .float{
-	position:fixed;
-	bottom:40px;
-	right:40px;
+  position: relative;
+  bottom: 50px;
+  right: 40px;
   z-index: 9999;
+  background-color: #23211E;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  cursor: pointer;
 } 
+.float img{
+  width: 15px;
+}
 .mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary{
 	background-color: #23211E;
 }
@@ -12,7 +24,7 @@
 	display: inline-block;
 	/* border-bottom: 1px dotted black; */
 	margin-left: 10px;
-	width: 20px;
+	width: 20px; 
   }
 /* sprint16-v1 start */
   .tooltip1 .tooltiptext {
