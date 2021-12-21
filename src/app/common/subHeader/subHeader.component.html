@@ -71,7 +71,7 @@
   </div>
 
   <!-- sprint16 start -->
-  <div class="video-icon" (click)="openSm(content)" *ngIf="modalOpen">
+  <div class="video-icon" (click)="openSm(content)" *ngIf="modalOpen && !searched">
     <div class="playIcon"></div>
     <img src="https://via.placeholder.com/300x300/3ca2ca/3ca2ca" />
   </div>
@@ -80,32 +80,39 @@
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); closeModal()">
       <img src="../../../assets/images/modalclose.svg" />
     </button>
-    <div class="modal-body">
+    <div class="modal-body fixx">
       <app-loader-small [show]="modalLoading"></app-loader-small>
-      <div class="modal-body-content" *ngIf="hideVideo && !videoResponse && !videoCompleted" (click)="clickVideoIcon()">
+      <div class="modal-body-content" *ngIf="hideVideo && !videoResponse && !videoCompleted && showItemOnlyOnce" (click)="clickVideoIcon()">
         <div class="playIcon"></div>
         <img src="https://via.placeholder.com/300x170/3ca2ca/3ca2ca" />
       </div>
-      <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted">
+      <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
         <img src="../../../assets/images/logo-neom.png" class="logo" />
         <h3>Please select an area of interest.</h3>
-        <ng-select [items]="allSectors" ngDefaultControl
-          placeholder="Select an area" [(ngModel)]="sectorSelected">
+        <ng-select
+         [items]="allSectors" 
+         ngDefaultControl
+          placeholder="Select a sector" 
+          [(ngModel)]="sectorSelected"
+          bindLabel="label"
+          bindValue="value">
         </ng-select>
-        <div class="next-arrow">
+        <div *ngIf="sectorSelected" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->
           <img src="../../../assets/images/left-arrow-video.svg" class="logo" (click)="playPersonalizedVideo()" style="cursor: pointer;"/>  
         </div>
         
       </div>
       
-      <div class="" *ngIf="videoResponse && defaultVideoSrc && !videoCompleted">
+      <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
        <div class="ssector">
-        <span>Change sector</span>
-        <ng-select [items]="allSectors" 
+        <!-- <span>Change sector</span> -->
+        <ng-select [items]="allSectors" class="sectorsss"
           ngDefaultControl
-          placeholder="Select an area" 
+          placeholder="Select a sector" 
           [(ngModel)]="sectorSelected"
+          bindLabel="label"
+          bindValue="value"
           (change)="playPersonalizedVideo()">
         </ng-select>
        </div>

@@ -368,6 +368,8 @@ nav ul {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 999;
 }
 .modal-content,.modal-body {
   padding: 0px !important;
@@ -3753,7 +3755,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   /* background: transparent !important; */
 }
 .custom-modal .modal-content {
-  width: 400px;
+  width: 476px;
   margin: 0px auto;
   border: 0px;
   border-radius: 10px;
@@ -3761,8 +3763,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .custom-modal button.close {
   position: absolute;
-  left: -50px;
-  top: 0px;
+  left: -37px;
+  top: -30px;
   height: 30px;
   width: 30px;
   opacity: 1;

@@ -17,6 +17,11 @@ export class SharedService {
 
 // /* <!-- sprint12-fixes start --> */
 public sidebarToggleResize = new BehaviorSubject(false);
+
+constructor(private router: Router) {
+}
+
+
 setSidebarToggle(slideToggle){
   this.sidebarToggleResize.next(slideToggle);
 }
@@ -25,8 +30,12 @@ getSidebarToggle() {
 }
 // /* <!-- sprint12-fixes end --> */
 
-  constructor(private router: Router) {
+public stringShortener(str: string, strLength: number): string {
+  if(str.length > strLength) {
+    return str.substring(0, strLength) + '...';
   }
+  else return str;
+}
 
   public isEmpty(value: any): boolean {
     return isEmpty(value);

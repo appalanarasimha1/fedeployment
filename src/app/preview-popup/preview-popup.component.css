@@ -1175,8 +1175,8 @@ color: #C4C4C4;
 }
 .close{
     position: absolute;
-    left: -8%;
-    top: -10%;
+    left: -5%;
+    top: -5%;
     z-index: 9999 !important;
     background-color: transparent;
     border: unset;

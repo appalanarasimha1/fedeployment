@@ -17,6 +17,7 @@ import { apiRoutes } from "../common/config";
 import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS } from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
+import {SharedService} from "../services/shared.service";
 
 interface FileByIndex {
   [index: string]: File;
@@ -112,13 +113,18 @@ export class UploadModalComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
-    private router: Router
+    private router: Router,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
     this.stepLabel = STEPS[1];
     this.buttonLabel = BUTTON_LABEL[1];
     this.loadUsers();
+  }
+
+  shortTheString(str: string, length: number): string {
+    return this.sharedService.stringShortener(str, length);
   }
 
   closeModal() {
@@ -190,7 +196,7 @@ export class UploadModalComponent implements OnInit {
   getSelectedAssetsTitle() {
     const file = this.filesMap[Object.keys(this.filesMap)[0]];
     const len = Object.keys(this.filesMap).length;
-    return `${file.name} ${len > 1 ? `and other ${len - 1} files` : ""}`;
+    return `${this.shortTheString(file.name, 20)} ${len > 1 ? `and other ${len - 1} files` : ""}`;
   }
 
   showWorkspaceList() {
