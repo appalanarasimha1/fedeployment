@@ -74,7 +74,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.tags = this.doc.contextParameters["tags"]?.map((tag) => tag) || [];
     this.doc.properties[TAG_ATTRIBUTES.ACTIVITY_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.EMOTION_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.NX_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
+    // this.doc.properties[TAG_ATTRIBUTES.NX_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.OBJECT_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
