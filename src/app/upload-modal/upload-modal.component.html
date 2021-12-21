@@ -1,6 +1,6 @@
 <div class="upload-modal">
   <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div>
-  <ngx-dropzone *ngIf="step === 1" (change)="onSelect($event)" class="drag-drop">
+  <ngx-dropzone *ngIf="step === 1" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)" class="drag-drop">
   <ngx-dropzone-label  class="noborder">
      <div class="flexible" style="height: 230px;justify-content: center;">
         <div class="upload-label">
@@ -87,9 +87,13 @@
               <i class="fa fa-caret-down"></i>
               </span>
               <ul *ngIf="showCustomDropdown" class="custom-select-options" id="custom-select-list">
+                 <div style="    min-height: 52px;
+                 max-height: 150px;
+                 overflow: auto;">
                  <li *ngFor="let folder of dropdownFolderList" (click)="selectFolder(folder)" class="styled">{{folder.title}}</li>
                  <li *ngIf="!dropdownFolderList || dropdownFolderList.length === 0"><span style="font-style: italic;">-No folder found-</span></li>
-                 <li class="styled">
+                 </div>
+                 <li class="styled yellowfix">
                     <div class="add-new-option">
                        <div class="flexible">
                           <!-- <mat-icon>add</mat-icon> -->
@@ -114,15 +118,15 @@
       <div class="col-xl-3 col-md-3">
          <label for="title">Description <br><span style="font-size: 14px">(optional)</span></label>
       </div>
-      <div class="col-xl-9 col-md-9">
-         <textarea [disabled]="disableDateInput" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
+      <div class="col-xl-9 col-md-9"  [ngClass]="{'grayField': descriptionFilled}">
+         <textarea [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
       </div>
      </div>
      <div class="row upload-form-input custom-date-picker">
         <div class="col-xl-3 col-md-3">
            <label for="date">Associated Date <br><span style="font-size: 14px">(optional)</span></label>
         </div>
-        <div class="col-xl-9 col-md-9 flexible">
+        <div class="col-xl-9 col-md-9 flexible" [ngClass]="{'grayField': disableDateInput}">
            <mat-form-field appearance="fill">
               <!-- <mat-label>Choose a date</mat-label> -->
               <!-- #docregion toggle -->

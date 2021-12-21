@@ -85,6 +85,7 @@ font-size: 20px;
   padding: 15px!important;
   min-width: 100% !important;
   color: #006845;
+  position: relative;
 }
 ::ng-deep ngx-dropzone-remove-badge{
   top: -7px !important;
@@ -365,7 +366,7 @@ color: #FFFFFF;
   border: none;
   margin-right: 10px;
 }
-.custom-select-options li:nth-last-child(1) {
+.yellowfix {
   background: #E1BB33;
 }
 .custom-select-options li.styled:hover input {
@@ -783,7 +784,13 @@ input.copyright-input {
 ::ng-deep ::placeholder{
   color: #000 !important;
 }
-
+::ng-deep .grayField input::placeholder {
+  color: gray !important;
+}
+::ng-deep .grayField input{
+  border-color: gray !important;
+  cursor: not-allowed;
+}
 ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
     color: #000;
 }

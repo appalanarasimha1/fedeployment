@@ -368,8 +368,8 @@ nav ul {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  position: relative;
-  z-index: 999;
+  /* position: relative;
+  z-index: 999; */
 }
 .modal-content,.modal-body {
   padding: 0px !important;
