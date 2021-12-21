@@ -337,7 +337,15 @@ video{
     right: 10px;
     top: 2px;
     z-index: 9;
+    width: 201px;
 }
+::ng-deep .ssector .ng-select{
+    width: 148px;
+}
+/* .ssector .ng-select:focus{
+ outline: none;
+ border: unset;
+} */
 .ssector span{
     font-size: 10px;
     line-height: 47px;

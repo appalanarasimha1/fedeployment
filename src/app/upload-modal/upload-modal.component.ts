@@ -81,6 +81,7 @@ export class UploadModalComponent implements OnInit {
 
   showCustomDropdown: boolean = false;
   disableDateInput = false;
+  descriptionFilled = false;
 
 
   years = [
@@ -122,6 +123,10 @@ export class UploadModalComponent implements OnInit {
     this.buttonLabel = BUTTON_LABEL[1];
     this.loadUsers();
   }
+
+  // descriptionCondition() {
+  //   if(this.description)
+  // }
 
   shortTheString(str: string, length: number): string {
     return this.sharedService.stringShortener(str, length);
@@ -377,9 +382,12 @@ export class UploadModalComponent implements OnInit {
     this.disableDateInput = true;
     this.associatedDate = this.selectedFolder.properties["dc:start"];
     this.description = this.selectedFolder.properties["dc:description"];
+    this.descriptionFilled = true;
   }
 
   addNewFolder(folderName) {
+    this.descriptionFilled = false;
+    this.description = '';
     this.folderToAdd = folderName.value;
     this.selectedFolder = null;
     this.showCustomDropdown = false;

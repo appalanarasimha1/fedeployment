@@ -191,7 +191,8 @@ export class SearchComponent implements OnInit {
       this.resetResults();
     }
     this.resetTagsMetadata();
-    if (isShowMore) this.documents.entries = new Object(this.documents.entries.concat(data.entries)); else this.documents = data;
+    if (isShowMore) this.documents.entries = new Object(this.documents.entries.concat(data.entries)); 
+    else this.documents = data;
   }
 
   getPrimeTypeByFilter(primaryType: string, queryParams: any): string[] {
@@ -325,6 +326,17 @@ export class SearchComponent implements OnInit {
   setTagsMetadata(): void {
     this.tagsMetadata = this.metaData.system_tag_agg;
   }
+  
+  // getTags() {
+  //   this.tags = this.doc.contextParameters["tags"]?.map((tag) => tag) || [];
+  //   this.doc.properties[TAG_ATTRIBUTES.ACTIVITY_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
+  //   this.doc.properties[TAG_ATTRIBUTES.EMOTION_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
+  //   this.doc.properties[TAG_ATTRIBUTES.NX_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
+  //   this.doc.properties[TAG_ATTRIBUTES.OBJECT_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
+  //   this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
+  //   this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
+  //   this.doc.properties[TAG_ATTRIBUTES.WEATHER_CLASSIFICATION]?.map((item) => this.checkDuplicateAndAddTags(item));
+  // }
 
   resetTagsMetadata() {
     this.metaData.system_tag_agg = { buckets: [], selection: [] }
