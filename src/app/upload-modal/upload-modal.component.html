@@ -288,7 +288,7 @@
                  </select> -->
 
 
-                 <ng-select (change)="onSelectConfidentiality($event.target.value, file.key)" name="confidentiality" id="confidentiality"  [ngClass]="{'goldenText': confidentiality }">
+                 <ng-select (change)="onSelectConfidentiality($event, file.key)" name="confidentiality" id="confidentiality" [ngModel]="confidentiality"  [ngClass]="{'goldenText': confidentiality }">
                   <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}" value="{{c.value}}">{{ c.value }}
                   </ng-option>
                   </ng-select>
@@ -304,8 +304,8 @@
                  </select> -->
 
 
-                 <ng-select name="access" (change)="onSelectAccess($event.target.value, file.key)" id="access" [ngClass]="{'goldenText': access }" >
-                  <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}
+                 <ng-select name="access" (change)="onSelectAccess($event, file.key)" id="access" [ngModel]="access" [ngClass]="{'goldenText': access }" >
+                  <ng-option [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}
                   </ng-option>
                   </ng-select>
               </div>
@@ -344,7 +344,7 @@
 
 
 
-                 <ng-select name="allow" (change)="onSelectAllow($event.target.value, file.key)" id="allow" [ngClass]="{'goldenText': allow }" >
+                 <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [ngModel]="allow" [ngClass]="{'goldenText': allow }" >
                   <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
                   </ng-option>
                   </ng-select>
