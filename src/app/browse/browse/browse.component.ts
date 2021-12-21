@@ -31,7 +31,7 @@ export class BrowseComponent implements OnInit {
     private http: HttpClient,
     private apiService: ApiService,
     private router: Router,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private route: ActivatedRoute,
     public nuxeo: NuxeoService,) { }
 
@@ -306,7 +306,7 @@ export class BrowseComponent implements OnInit {
     } else if(type.toLowerCase() === ASSET_TYPE.WORKSPACE) {
       const bread = this.breadcrrumb.split('/');
       const definedPath = path.split('/');
-      this.breadcrrumb = `/${bread[1]}/${(bread[2] === 'undefined' || !bread[2]) ? definedPath[1] : bread[2]}/${title}`;
+      this.breadcrrumb = `/${bread[1]}/${(bread[2] === 'undefined' || !bread[2]) ? definedPath[1] : bread[2]}/${this.sharedService.stringShortener(title, 50)}`;
     }
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
@@ -325,7 +325,7 @@ export class BrowseComponent implements OnInit {
     // this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
     // this.selectedFile = [];
     this.loading = true;
-    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
+    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
     .subscribe((docs: any) => {
       this.searchList = docs.entries;
       let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
@@ -434,7 +434,7 @@ export class BrowseComponent implements OnInit {
     // this.selectedFile = [];
     this.selectedFolder = {...selected, uid: selected.id};
     console.log("selected", this.selectedFolder)
-    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
+    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
       .subscribe((docs: any) => {
         this.searchList = docs.entries;
         let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");

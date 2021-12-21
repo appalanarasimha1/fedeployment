@@ -73,7 +73,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 }
 
 .header-content {
-  height: 50px;
+  /* height: 50px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -153,6 +153,7 @@ color: rgba(35, 33, 30, 0.6);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  width: 42%;
 }
 .update-classifications-btn {
   color: #E1BB33;
@@ -226,7 +227,7 @@ section.lpSecOne {
   font-size: 16px;
 line-height: 24px;
 color: rgba(35, 33, 30, 0.6);
-padding-top: 10px;
+padding-top: 15px;
 
 font-weight: 600;
 }
@@ -285,7 +286,7 @@ font-weight: 600;
   margin-bottom: 15px;
   cursor: pointer;
   max-width: 200px;
-  max-height: 150px;
+  /* max-height: 150px; */
 }
 ::ng-deep .all-sectors li #fileId{
   height: 135px !important;

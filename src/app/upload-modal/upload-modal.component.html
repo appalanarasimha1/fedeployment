@@ -15,7 +15,7 @@
         <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
         <ngx-dropzone-label class="flexible" style="margin: unset;">
            <div style="width: 80%;text-align: left;">
-              <p class="imgLabel pb-4">{{ f.value.name }}</p>
+              <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
               <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
               <span *ngIf="!filesUploadDone[f.key]" class="upload-loading">Uploading...</span>
            </div>
@@ -34,7 +34,7 @@
               <div class="assets-selected"  >
                  <div class="flexible" style="margin: unset;">
                     <div style="width: 80%;text-align: left;">
-                       <p class="assets-selected-text pb-4">{{ getSelectedAssetsTitle() }}</p>
+                       <p class="assets-selected-text">{{ getSelectedAssetsTitle() }}</p>
                        <span class="imgSize">{{ getTotalFileSize() }}</span>
                     </div>
                     <div style="width: 20%; text-align: center;">
@@ -92,10 +92,13 @@
                  <li class="styled">
                     <div class="add-new-option">
                        <div class="flexible">
-                          <mat-icon>add</mat-icon>
+                          <!-- <mat-icon>add</mat-icon> -->
+                          <img src="../../assets/images/Regular.png" style="    width: 14px;
+                          margin-right: 5px;">
                           <input type="text" id="titleAddNew" #folderToAdd placeholder="Create new folder" class="add-new-input">
                        </div>
-                       <mat-icon class="add-new-btn" (click)="addNewFolder(folderToAdd)">check</mat-icon>
+                       <!-- <mat-icon class="add-new-btn" (click)="addNewFolder(folderToAdd)">check</mat-icon> -->
+                       <img src="../../assets/images/Shape.png">
                     </div>
                  </li>
               </ul>

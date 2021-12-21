@@ -30,8 +30,9 @@ export class SubHeaderComponent implements OnInit {
   selectArea: boolean = false;
   modalReference = null; 
   modalOption: NgbModalOptions = {}; // not null!
-  allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
-  sectorSelected = this.allSectors[0];
+  // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
+  allSectors = [{label: 'All NEOM sectors', value: 'default'}, {label: 'Water', value: 'water'}];
+  sectorSelected = this.allSectors[0].value;
   videoResponse;
   videoId;
   videoLocation;
@@ -42,6 +43,7 @@ export class SubHeaderComponent implements OnInit {
   defaultVideoSrc;
   videoCompleted = false;
   searched = false;
+  showItemOnlyOnce = true;
 
   constructor(
     private dataService: DataService,
@@ -62,7 +64,8 @@ export class SubHeaderComponent implements OnInit {
         this.searched = false;
       }
     });
-
+    this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
+    if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
     return;
   }
 
@@ -78,10 +81,10 @@ export class SubHeaderComponent implements OnInit {
     this.videoCompleted = true;
   }
   
-  sectorSelect(value: string) {
-    this.sectorSelected = value;
-    this.dataService.sectorChange(value);
-  }
+  // sectorSelect(value: string) {
+  //   this.sectorSelected = value;
+  //   this.dataService.sectorChange(value);
+  // }
 
   dropdownMenu(event: any): void {
     let sortBy = event.target.value;
@@ -173,14 +176,14 @@ export class SubHeaderComponent implements OnInit {
     this.videoResponse = false;
     this.modalLoading = true;
     try {
-      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + 'sport' + '&username=' + body.username)
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
           if(!response?.error && response.videoId) {
             this.videoId = response.videoId;
+            this.videoLocation = response.location || null;
             this.showVideo();
-            this.videoLocation = response.location || null;;
           }
           return;
           // this.apiService.getVideo(apiRoutes.FETCH_PERSONALIZED_VIDEO + '/video').subscribe((vidResponse: any) => {
@@ -208,13 +211,17 @@ export class SubHeaderComponent implements OnInit {
         }
   }
   
-  showVideo(event?) {
+  showVideo() {
     // this.abortVideoDownload = new AbortController();
     // this.signal = this.abortVideoDownload.signal;
     // this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-    this.defaultVideoSrc = updatedUrl + `?sector=sport&videoId=${this.videoId}&location=${this.videoLocation}`;
+    this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`;
+    if(!localStorage.getItem('videoPlayed')) {
+      localStorage.setItem('videoPlayed', 'true');
+    }
+    this.showItemOnlyOnce = false;
   //  fetch(updatedUrl + `?sector=sport&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') }, signal: this.signal })
   //     .then(r => {
   //       if (r.status === 401) {
@@ -246,9 +253,9 @@ export class SubHeaderComponent implements OnInit {
   //     });
   }
 
-  onSelectSector(sector: string) {
-    this.sectorSelected = sector;
-  }
+  // onSelectSector(sector: string) {
+  //   this.sectorSelected = sector;
+  // }
 
   resetSearch() {
     this.searched = false;
