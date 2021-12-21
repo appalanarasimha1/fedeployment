@@ -124,7 +124,7 @@ export class BrowseComponent implements OnInit {
       var label = $(this);
       var parent = label.parent('.has-children');
       var list = label.siblings('.acnav__list');
-    
+
       if ( parent.hasClass('is-open') ) {
         list.slideUp('fast');
         parent.removeClass('is-open');
@@ -488,7 +488,8 @@ export class BrowseComponent implements OnInit {
     modalDialog.afterClosed().subscribe(result => {
       if (!result) return;
       Object.keys(result).forEach(key => {
-        this.searchList[key].contextParameters.acls = result[key];
+        this.searchList[key].contextParameters.acls = result[key].contextParameters.acls;
+        this.searchList[key].properties = {...this.searchList[key].properties, ...result[key].properties}
       });
     });
   }
