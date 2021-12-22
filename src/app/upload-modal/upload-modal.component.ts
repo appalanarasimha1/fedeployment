@@ -14,7 +14,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS } from "./constant";
+import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS, ACCESS_LABEL, CONFIDENTIALITY_LABEL } from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -44,6 +44,8 @@ export class UploadModalComponent implements OnInit {
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
+  readonly ACCESS_LABEL = ACCESS_LABEL;
+  readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
 
   filesMap: FileByIndex = {};
   batchId: string = null;

@@ -2,14 +2,20 @@
   <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div>
   <ngx-dropzone *ngIf="step === 1" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)" class="drag-drop">
   <ngx-dropzone-label  class="noborder">
-     <div class="flexible" style="height: 230px;justify-content: center;">
+     <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
         <div class="upload-label">
            <img src="../../assets/images/cloud-upload.png" style="width: 40px;margin: auto;">
            <span><b>Drag and drop assets to upload</b><br>
            or click to select files to upload</span>
         </div>
+        <!-- <div class="errortext">
+           <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
+           <p class="errorMsg">Only documents in PDF format are acceptable.<br> 
+            Please make sure all the ducoments are converted into PDFs.</p>
+        </div> -->
      </div>
   </ngx-dropzone-label>
+
   <ul class="flexible upload-prevoew">
      <li  *ngFor="let f of filesMap | keyvalue">
         <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
@@ -27,6 +33,15 @@
      </li>
   </ul>
   </ngx-dropzone>
+  <!-- <div class="flexible pt-3">
+   <a>
+      <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
+   </a>
+   <span class="goldenText">
+      Add more assets
+   </span>
+</div> -->
+<!-- todo -->
   <div *ngIf="step === 2" class="publish-assets">
      <div class="custompadding">
         <ul class="flexible upload-prevoew">
@@ -52,7 +67,7 @@
               </div>
               <div class="col-xl-9 col-md-9">
                  <div class="flexible">
-                    <div class="workshaptitle">{{ selectedWorkspace.title || "Please select workspace!" }}</div>
+                    <div class="workshaptitle">{{ selectedWorkspace.title || "Select workspace" }}</div>
                     <div class="select-workspace-menu-btn" (click)="showWorkspaceList()">Change workspace</div>
                  </div>
               </div>
@@ -93,6 +108,16 @@
                  <li *ngFor="let folder of dropdownFolderList" (click)="selectFolder(folder)" class="styled">{{folder.title}}</li>
                  <li *ngIf="!dropdownFolderList || dropdownFolderList.length === 0"><span style="font-style: italic;">-No folder found-</span></li>
                  </div>
+                 <!-- <li class="styled yellowfix">
+                  <div class="add-new-option">
+                     <div class="flexible">
+                        <img src="../../assets/images/add-circle.svg" style="    width: 18px;
+                        margin-right: 10px;" >
+                        <span>Create a new folder</span>
+                     </div>
+                  </div>
+               </li> -->
+
                  <li class="styled yellowfix">
                     <div class="add-new-option">
                        <div class="flexible">
@@ -152,7 +177,7 @@
         <div class="col-xl-9 col-md-9 flexible">
          <ng-select placeholder="Specify sensitivity" (change)="onSelectConfidentiality($event)" [(ngModel)]="confidentiality" id="confidentiality" [ngClass]="{'goldenText': confidentiality}">
             <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" [value]="c.value">
-                {{c.value}}
+                {{CONFIDENTIALITY_LABEL[c.value]}}
             </ng-option>
          </ng-select>
 
@@ -182,7 +207,7 @@
         <div class="col-xl-9 col-md-3 flexible">
          <ng-select placeholder="Specify visibility" (change)="onSelectAccess($event)" [(ngModel)]="access" id="access" [ngClass]="{'goldenText': access}">
             <ng-option *ngFor="let c of ACCESS | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
-                {{c.value}}
+                {{ACCESS_LABEL[c.value]}}
             </ng-option>
          </ng-select>
 
@@ -202,7 +227,7 @@
            <label for="user">Users</label>
         </div>
         <div class="col-xl-9 col-md-9">
-           <p class="userText pb-2">Please specify the restricted users</p>
+           <p class="userText pb-2">Please mention the specific users</p>
            <ng-select
            [items]="userList$ | async"
            bindLabel="id"
@@ -232,6 +257,10 @@
                 {{c.value}}
             </ng-option>
          </ng-select>
+         <div class="tooltip1">
+            <img src="../../assets/images/Info-icon.svg">
+            <span class="tooltiptext">Ground X advises users of permissible usage as specified here. You may also choose to give your permission for each download request.</span>
+         </div>
         </div>
      </div>
   </div>
@@ -295,8 +324,8 @@
                  </select> -->
 
 
-                 <ng-select (change)="onSelectConfidentiality($event, file.key)" name="confidentiality" id="confidentiality" [ngModel]="confidentiality"  [ngClass]="{'goldenText': confidentiality }">
-                  <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}" value="{{c.value}}">{{ c.value }}
+                 <ng-select (change)="onSelectConfidentiality($event.target.value, file.key)" name="confidentiality" id="confidentiality"  [ngClass]="{'goldenText': confidentiality }">
+                  <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                   </ng-option>
                   </ng-select>
               </div>
@@ -311,8 +340,8 @@
                  </select> -->
 
 
-                 <ng-select name="access" (change)="onSelectAccess($event, file.key)" id="access" [ngModel]="access" [ngClass]="{'goldenText': access }" >
-                  <ng-option [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}
+                 <ng-select name="access" (change)="onSelectAccess($event.target.value, file.key)" id="access" [ngClass]="{'goldenText': access }" >
+                  <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
                   </ng-option>
                   </ng-select>
               </div>

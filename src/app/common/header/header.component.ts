@@ -4,6 +4,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
 import { NuxeoService } from '../../services/nuxeo.service';
 import * as $ from 'jquery';
+import { DataService } from '../../services/data.service';
+import { TRIGGERED_FROM_SUB_HEADER } from '../constant';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +22,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private nuxeo: NuxeoService,
     private router: Router,
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    public dataService: DataService
   ) {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
@@ -63,6 +66,16 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+  }
+
+  resetFilter() {
+    this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+  }
+
+  toFavouriteSection() {
+    setTimeout(() => {
+      window.scrollTo(0,document.body.scrollHeight);
+    }, 0);
   }
 
   selectTab(tab: string) {

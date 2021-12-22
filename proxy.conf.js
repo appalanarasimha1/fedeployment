@@ -4,7 +4,7 @@ const PROXY_CONFIG = [
             "/nuxeo/",
             "/sockjs-node/",
         ],
-        "target": "https://dev2groundx.neom.com",    // "https://dev2groundx.neom.com",
+        "target": "https://groundx.neom.com",    // "https://dev2groundx.neom.com",
         "secure": false,
         "changeOrigin": true
     }];

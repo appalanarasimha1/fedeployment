@@ -13,7 +13,7 @@ import {
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
 import { NuxeoService } from '../services/nuxeo.service';
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, CONFIDENTIALITY_LABEL } from "../upload-modal/constant";
 import { Router } from "@angular/router";
 
 const STEPS = {
@@ -41,6 +41,8 @@ export class UpdateModalComponent implements OnInit {
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
+  readonly ACCESS_LABEL = ACCESS_LABEL;
+  readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
 
   docs: any;
   step: number = 1;
