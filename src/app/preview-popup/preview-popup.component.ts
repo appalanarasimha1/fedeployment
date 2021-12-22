@@ -84,7 +84,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   checkDuplicateAndAddTags(tag: string): void {
     if(this.tags.indexOf(tag) !== -1) {
       return;
-    } else if(unwantedTags.indexOf(tag.toLowerCase()) !== -1) {
+    } else if(unwantedTags.indexOf(tag.toLowerCase()) === -1) {
       this.tags.push(tag);
     }
     return;
