@@ -189,3 +189,6 @@ header img.header-logo {
     padding-right: 0px;
     margin-right: -10px;
 }
+a.dropdown-item:hover {
+    opacity: 0.5;
+}

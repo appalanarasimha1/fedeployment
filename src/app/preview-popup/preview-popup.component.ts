@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import * as moment from "moment";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
-import { localStorageVars, TAG_ATTRIBUTES } from "../common/constant";
+import { localStorageVars, TAG_ATTRIBUTES, unwantedTags } from "../common/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
@@ -74,7 +74,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.tags = this.doc.contextParameters["tags"]?.map((tag) => tag) || [];
     this.doc.properties[TAG_ATTRIBUTES.ACTIVITY_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.EMOTION_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.NX_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
+    // this.doc.properties[TAG_ATTRIBUTES.NX_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.OBJECT_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
@@ -84,7 +84,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   checkDuplicateAndAddTags(tag: string): void {
     if(this.tags.indexOf(tag) !== -1) {
       return;
-    } else {
+    } else if(unwantedTags.indexOf(tag.toLowerCase()) !== -1) {
       this.tags.push(tag);
     }
     return;

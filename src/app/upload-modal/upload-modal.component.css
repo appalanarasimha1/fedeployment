@@ -332,8 +332,8 @@ color: #FFFFFF;
 }
 .custom-select-options li.styled:hover {
   background:#E1BB33;
-  border: 1px solid #000;
-  border-width: 0 0 0 1px;
+  /* border: 1px solid #000;
+  border-width: 0 0 0 1px; */
 }
 
 .custom-select-options li.styled:focus {
@@ -551,7 +551,7 @@ font-weight: 600;
     cursor: pointer;
     display: unset;
     font-size: 16px;
-    height: 237px !important;
+    height: 282px !important;
     overflow-x: auto;
 }
 .tooltip1 {
@@ -784,16 +784,39 @@ input.copyright-input {
 ::ng-deep ::placeholder{
   color: #000 !important;
 }
-::ng-deep .grayField input::placeholder {
-  color: gray !important;
+::ng-deep .grayField input::placeholder, ::ng-deep .grayField textarea::placeholder {
+opacity: 0.5;
 }
-::ng-deep .grayField input{
-  border-color: gray !important;
-  cursor: not-allowed;
+::ng-deep .grayField input, ::ng-deep .grayField textarea{
+opacity: 0.5;
 }
 ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
     color: #000;
 }
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
   background-color: #E1BB33 !important;
+}
+.errorInfotxt{
+  font-size: 16px;
+line-height: 22px;
+color: #DEB31A;
+}
+.errorMsg{
+  font-size: 16px;
+line-height: 20px;
+color: #E03C31;
+border: 1px solid #E03C31;
+border-radius: 100px;
+background: #FFF1F1;
+padding: 10px 18px
+}
+.errortext{
+  position: absolute;
+  bottom: -12px;
+}
+::ng-deep .grayField .mat-form-field-suffix {
+  opacity: 0.5;
+}
+.ng-select-focused{
+  display: none;
 }

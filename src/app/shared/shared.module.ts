@@ -20,10 +20,6 @@ import { InterceptorService } from '../services/http-interceptor.service';
 
 @NgModule({
   providers: [
-    ApiService,
-    SharedService,
-    DataService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ],
   declarations: [
     LoaderComponent,

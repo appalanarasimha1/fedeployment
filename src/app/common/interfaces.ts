@@ -22,7 +22,7 @@ export interface ISearchResponse {
        "sectors":{
           "entity-type": string;
           "id": string;
-          "field":"dc:sector",
+          "field":string,
           "properties":{
              
           },
@@ -35,22 +35,22 @@ export interface ISearchResponse {
           "type":"terms",
           "buckets":[
              {
-                "key":"Marketing",
-                "docCount":1
+                "key": string,
+                "docCount": number
              },
              {
                 "key":"Sport",
-                "docCount":1
+                "docCount": number
              }
           ],
           "extendedBuckets":[
              {
-                "key":"Marketing",
-                "docCount":1
+                "key": string,
+                "docCount": number
              },
              {
                 "key":"Sport",
-                "docCount":1
+                "docCount": number
              }
           ]
        },

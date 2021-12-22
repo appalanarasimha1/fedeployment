@@ -78,3 +78,5 @@ export const TAG_ATTRIBUTES = {
     NX_TAGS: 'nxtag:tags',
     WEATHER_CLASSIFICATION: 'nxtag:weatherClassificationTag'
 };
+
+export const unwantedTags = ['man-made', 'no horizon', 'vertical components', 'horizontal components'];

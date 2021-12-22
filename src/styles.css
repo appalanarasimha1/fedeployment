@@ -38,8 +38,11 @@ a, a:hover, a:visited, a:focus,button:focus {
 
 *:focus{
   outline: 0;
+  border: unset;
 }
-
+ .ng-select-focused{
+  display: none;
+}
 ul{
   list-style-type: none;
   padding: 0;
