@@ -43,6 +43,9 @@ a, a:hover, a:visited, a:focus,button:focus {
  .ng-select-focused{
   display: none;
 }
+::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+  box-shadow: unset !important;
+}
 ul{
   list-style-type: none;
   padding: 0;

@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         // TODO: will break if we have another url that contains /user.
-        if(event.url === '/workspace') {
+        if(event.url === '/workspace' || event.url === '/common/terms') {
           this.showBrowseHeader = true;
         } else {
           this.showBrowseHeader = false;
@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    if( window.location.pathname === '/workspace') {
+    if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms') {
       this.showBrowseHeader = true;
     } else {
       this.showBrowseHeader = false;
@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit {
       if (scroll >= 80 && scroll <= 4000) {
         $('.searchHeading').addClass('fixedHeader');
       } else {
-        if( window.location.pathname !== '/workspace') {
+        if( window.location.pathname !== '/workspace' && window.location.pathname !== '/common/terms') {
           $('.searchHeading').removeClass('fixedHeader');
         }
       }

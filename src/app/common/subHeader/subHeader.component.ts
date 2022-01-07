@@ -31,7 +31,7 @@ export class SubHeaderComponent implements OnInit {
   modalReference = null; 
   modalOption: NgbModalOptions = {}; // not null!
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
-  allSectors = [{label: 'All NEOM sectors', value: 'default'}]; // , {label: 'Water', value: 'water'}
+  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sport', value: 'sport'}, {label: 'Water', value: 'water'}]; // , {label: 'Water', value: 'water'}
   sectorSelected = this.allSectors[0].value;
   videoResponse;
   videoId;

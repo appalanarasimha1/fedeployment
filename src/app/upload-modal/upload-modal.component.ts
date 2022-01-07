@@ -30,7 +30,7 @@ const STEPS = {
 };
 
 const BUTTON_LABEL = {
-  1: "Upload",
+  1: "Next",
   2: "Review",
   3: "Publish",
 };
@@ -85,6 +85,7 @@ export class UploadModalComponent implements OnInit {
   disableDateInput = false;
   descriptionFilled = false;
   showFolderNameField = false;
+  agreeTerms = false;
 
   
   years = [
@@ -180,7 +181,8 @@ export class UploadModalComponent implements OnInit {
 
   checkButtonDisabled() {
     if (this.step === 1) {
-      if (Object.keys(this.filesMap).length === 0) return true;
+      if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) return true;
+      // else if(!this.agreeTerms) return true;
     }
     if (this.step === 2) {
       if (
@@ -729,7 +731,7 @@ export class UploadModalComponent implements OnInit {
       })
     );
   }
-
+  
   getAssetNumber(): number {
     return Object.keys(this.filesMap).length;
   }
