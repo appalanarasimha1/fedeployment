@@ -32,7 +32,7 @@ export class SubHeaderComponent implements OnInit {
   modalOption: NgbModalOptions = {}; // not null!
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
   allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'}]; // , {label: 'Water', value: 'water'}
-  sectorSelected = this.allSectors[0].value;
+  sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
   videoResponse;
   videoId;
   videoLocation;
@@ -173,6 +173,7 @@ export class SubHeaderComponent implements OnInit {
 
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
+    localStorage.setItem('videoSector', this.sectorSelected);
     this.videoResponse = false;
     this.modalLoading = true;
     try {

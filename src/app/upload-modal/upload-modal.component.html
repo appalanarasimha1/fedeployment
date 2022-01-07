@@ -401,7 +401,7 @@
 
 
 
-                 <ng-select name="allow" (change)="onSelectAllow($event.target.value, file.key)" id="allow" [ngClass]="{'goldenText': allow }" >
+                 <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [ngModel]="allow" [ngClass]="{'goldenText': allow }" >
                   <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
                   </ng-option>
                   </ng-select>
