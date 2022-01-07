@@ -1,38 +1,58 @@
 <div class="upload-modal">
   <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div>
-  <ngx-dropzone *ngIf="step === 1" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)" class="drag-drop">
-  <ngx-dropzone-label  class="noborder">
-     <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
-        <div class="upload-label">
-           <img src="../../assets/images/cloud-upload.png" style="width: 40px;margin: auto;">
-           <span><b>Drag and drop assets to upload</b><br>
-           or click to select files to upload</span>
-        </div>
-        <!-- <div class="errortext">
-           <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
-           <p class="errorMsg">Only documents in PDF format are acceptable.<br> 
-            Please make sure all the ducoments are converted into PDFs.</p>
-        </div> -->
-     </div>
-  </ngx-dropzone-label>
+  <ngx-dropzone *ngIf="step === 1" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)" class="drag-drop" #drop>
+   <ngx-dropzone-label  class="noborder">
+      <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
+         <div class="upload-label">
+            <img src="../../assets/images/cloud-upload.png" style="width: 40px;margin: auto;">
+            <span><b>Drag and drop assets to upload</b><br>
+            or click to select files to upload</span>
+         </div>
+         <!-- <div class="errortext">
+            <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
+            <p class="errorMsg">Only documents in PDF format are acceptable.<br> 
+               Please make sure all the ducoments are converted into PDFs.</p>
+         </div> -->
+      </div>
+   </ngx-dropzone-label>
 
-  <ul class="flexible upload-prevoew">
-     <li  *ngFor="let f of filesMap | keyvalue">
-        <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
-        <ngx-dropzone-label class="flexible" style="margin: unset;">
-           <div style="width: 80%;text-align: left;">
-              <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
-              <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
-              <span *ngIf="!filesUploadDone[f.key]" class="upload-loading">Uploading...</span>
-           </div>
-           <div *ngIf="filesUploadDone[f.key]" style="width: 20%; text-align: center;">
-              <img src="../../assets/images/BtnTickbox.png">
-           </div>
-        </ngx-dropzone-label>
-        </ngx-dropzone-preview>
-     </li>
-  </ul>
+   <ul class="flexible upload-prevoew">
+      <li  *ngFor="let f of filesMap | keyvalue">
+         <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
+         <ngx-dropzone-label class="flexible" style="margin: unset;">
+            <div style="width: 80%;text-align: left;">
+               <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
+               <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
+               <span *ngIf="!filesUploadDone[f.key]" class="upload-loading">Uploading...</span>
+            </div>
+            <div *ngIf="filesUploadDone[f.key]" style="width: 20%; text-align: center;">
+               <img src="../../assets/images/BtnTickbox.png">
+            </div>
+         </ngx-dropzone-label>
+         </ngx-dropzone-preview>
+      </li>
+   </ul>
   </ngx-dropzone>
+  <div *ngIf="step === 1" class="row pt-2" style="display: flex; align-items: baseline;">
+      <div class="col-xl-3">
+         <div *ngIf="false && getAssetNumber()" class="flexible pt-3 pointer">
+            <a>
+               <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
+            </a>
+            <span class="goldenText">
+               Add more assets
+            </span>
+         </div>
+      </div>
+     <div class="col-xl-9 flexible">
+      <label class="control control--checkbox">Where any of the assets being uploaded contains a photo of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo and make accessible to other users across NEOM
+         <input type="checkbox" checked="checked"
+         [(ngModel)]="agreeTerms"
+         [ngModelOptions]="{standalone: true}"/>
+         <div class="control__indicator"></div>
+       </label>
+     </div>
+  </div>
   <!-- <div class="flexible pt-3">
    <a>
       <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
@@ -75,8 +95,8 @@
            </div>
            <div *ngIf="showWsList" class="workspace-list">
                <span class="triangle"></span>
-              <div *ngFor="let ws of workspaceList">
-                 <div
+               <div *ngFor="let ws of workspaceList">
+                 <div *ngIf="filterWorkspaces(ws.title)"
                  class="workspace-title"
                  [class.ws-selected]="selectedWorkspace.id === ws.id"
                  (click)="selectWorkspace(ws)"
@@ -108,22 +128,20 @@
                  <li *ngFor="let folder of dropdownFolderList" (click)="selectFolder(folder)" class="styled">{{folder.title}}</li>
                  <li *ngIf="!dropdownFolderList || dropdownFolderList.length === 0"><span style="font-style: italic;">-No folder found-</span></li>
                  </div>
-                 <!-- <li class="styled yellowfix">
+                 <li *ngIf="!showFolderNameField" class="styled yellowfix">
                   <div class="add-new-option">
-                     <div class="flexible">
-                        <img src="../../assets/images/add-circle.svg" style="    width: 18px;
-                        margin-right: 10px;" >
+                     <div class="flexible" (click)="showFolderNameField = true">
+                        <img src="../../assets/images/add-circle.svg" style="width: 18px; margin-right: 10px;" >
                         <span>Create a new folder</span>
                      </div>
                   </div>
-               </li> -->
+               </li>
 
-                 <li class="styled yellowfix">
+                 <li *ngIf="showFolderNameField" class="styled yellowfix">
                     <div class="add-new-option">
                        <div class="flexible">
                           <!-- <mat-icon>add</mat-icon> -->
-                          <img src="../../assets/images/Regular.png" style="    width: 14px;
-                          margin-right: 5px;" (click)="addNewFolder(folderToAdd)">
+                          <img src="../../assets/images/Regular.png" style="width: 14px; margin-right: 5px;" (click)="showFolderNameField = false">
                           <input type="text" id="titleAddNew" #folderToAdd placeholder="Create new folder" class="add-new-input">
                        </div>
                        <!-- <mat-icon class="add-new-btn" (click)="addNewFolder(folderToAdd)">check</mat-icon> -->
@@ -299,14 +317,16 @@
                     </li>
                     <li>
                        <div class="copyright-input-block">
-                        Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input">
+                        Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
                        </div>
                     </li>
                     <li>
                         <ng-select [items]="years"
                            bindLabel="name"
                            [(ngModel)]="copyrightYearMap[file.key]"
-                           placeholder="Year" ngDefaultControl>
+                           placeholder="Year" ngDefaultControl
+                           [ngClass]="{'goldenText': copyrightYearMap[file.key] }"
+                           >
                         </ng-select>
                     </li>
                  </ul>
@@ -362,7 +382,8 @@
                  [loading]="userLoading"
                  typeToSearchText="Search users"
                  [typeahead]="userInput$"
-                 [(ngModel)]="customUsersMap[file.key]">
+                 [(ngModel)]="customUsersMap[file.key]"
+                 [ngClass]="{'goldenText': customUsersMap[file.key] }" >
                  <ng-template ng-option-tmp let-item="item">
                     {{item.id}} ({{item.fullname}})
                  </ng-template>
@@ -380,7 +401,7 @@
 
 
 
-                 <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [ngModel]="allow" [ngClass]="{'goldenText': allow }" >
+                 <ng-select name="allow" (change)="onSelectAllow($event.target.value, file.key)" id="allow" [ngClass]="{'goldenText': allow }" >
                   <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
                   </ng-option>
                   </ng-select>
@@ -400,6 +421,7 @@
         </div>
         <div class="destination-content-block">
          <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
+         <p class="numberAssets">{{ getAssetNumber() }} assets</p>
         </div>
      </div>
      <div (click)="closeModal()" class="close-modal">

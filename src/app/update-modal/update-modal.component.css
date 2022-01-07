@@ -361,10 +361,11 @@ color: #FFFFFF;
 }
 ng-select {
   width: calc(100% - 50px);
+  border-bottom: 1px solid #000;
 }
 ::ng-deep .ng-select .ng-select-container{
   border: unset !important;
-  border-bottom: 1.5px solid #000 !important;
+  /* border-bottom: 1.5px solid #000 !important; */
   border-radius: 0px !important;
   background-color: transparent;
 }
@@ -743,6 +744,6 @@ input.copyright-input {
 ::ng-deep .ng-select.ng-select-opened .ng-select-container{
   background-color: transparent;
 }
-.ng-select-focused{
-  display: none;
+::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+  box-shadow: unset !important;
 }

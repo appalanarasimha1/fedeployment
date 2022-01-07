@@ -43,6 +43,9 @@ a, a:hover, a:visited, a:focus,button:focus {
  .ng-select-focused{
   display: none;
 }
+::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+  box-shadow: unset !important;
+}
 ul{
   list-style-type: none;
   padding: 0;
@@ -3967,4 +3970,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .masonry-item:nth-child(41) {z-index: 1;}
 .customTab {
   overflow-x: hidden;
+}
+
+.pointer {
+  cursor: pointer;
 }

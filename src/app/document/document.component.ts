@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { NgxMasonryComponent } from 'ngx-masonry';
 import { DataService } from '../services/data.service';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
+import { UNWANTED_WORKSPACES } from '../upload-modal/constant';
 
 
 @Component({
@@ -116,7 +117,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
 
     this.dataService.sectorChanged$.subscribe((sectors: any) => {
-      this.sectors = sectors;
+      this.sectors = sectors.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.toLowerCase()) === -1);
     });
     // /* <!-- sprint12-fixes end --> */
     this.dataService.resetFilter$.subscribe((triggeredFrom: string) => {

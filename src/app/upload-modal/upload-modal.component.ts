@@ -14,7 +14,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS, ACCESS_LABEL, CONFIDENTIALITY_LABEL } from "./constant";
+import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS, ACCESS_LABEL, CONFIDENTIALITY_LABEL, UNWANTED_WORKSPACES } from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -30,7 +30,7 @@ const STEPS = {
 };
 
 const BUTTON_LABEL = {
-  1: "Upload",
+  1: "Next",
   2: "Review",
   3: "Publish",
 };
@@ -84,8 +84,10 @@ export class UploadModalComponent implements OnInit {
   showCustomDropdown: boolean = false;
   disableDateInput = false;
   descriptionFilled = false;
+  showFolderNameField = false;
+  agreeTerms = false;
 
-
+  
   years = [
     {id: 1, name: '2000'},
     {id: 2, name: '2001'},
@@ -179,7 +181,8 @@ export class UploadModalComponent implements OnInit {
 
   checkButtonDisabled() {
     if (this.step === 1) {
-      if (Object.keys(this.filesMap).length === 0) return true;
+      if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) return true;
+      // else if(!this.agreeTerms) return true;
     }
     if (this.step === 2) {
       if (
@@ -237,6 +240,13 @@ export class UploadModalComponent implements OnInit {
     };
     const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
     this.workspaceList = this.formatWsList(res["entries"]);
+  }
+
+  filterWorkspaces(title: string): boolean {
+    if(UNWANTED_WORKSPACES.indexOf(title.toLowerCase()) === -1) {
+      return true;
+    } 
+    return false;
   }
 
   checkAccessOptionDisabled(access, fileIndex?: any) {
@@ -383,7 +393,6 @@ export class UploadModalComponent implements OnInit {
     this.showCustomDropdown = false;
     this.disableDateInput = true;
     this.associatedDate = this.selectedFolder.properties["dc:start"];
-    this.description = this.selectedFolder.properties["dc:description"];
     this.descriptionFilled = true;
   }
 
@@ -395,7 +404,6 @@ export class UploadModalComponent implements OnInit {
     this.showCustomDropdown = false;
     this.disableDateInput = false;
     this.associatedDate = "";
-    this.description = "";
   }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
@@ -722,5 +730,9 @@ export class UploadModalComponent implements OnInit {
         }));
       })
     );
+  }
+  
+  getAssetNumber(): number {
+    return Object.keys(this.filesMap).length;
   }
 }

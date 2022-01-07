@@ -37,3 +37,5 @@ export const GROUPS = {
   "company": "Company_Employees",
   "all": "All_Application_Users"
 }
+
+export const UNWANTED_WORKSPACES = ['domain'];

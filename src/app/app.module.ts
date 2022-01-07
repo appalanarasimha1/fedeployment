@@ -27,6 +27,7 @@ import { LoaderYellowComponent } from './common/loader-yellow/loader-yellow.comp
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DataService } from './services/data.service';
 import { CoreModuleModule } from './common/core-module/core-module.module';
+import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.component';
 
 @NgModule({
   declarations: [
