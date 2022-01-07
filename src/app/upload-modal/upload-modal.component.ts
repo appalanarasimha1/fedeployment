@@ -729,4 +729,8 @@ export class UploadModalComponent implements OnInit {
       })
     );
   }
+
+  getAssetNumber(): number {
+    return Object.keys(this.filesMap).length;
+  }
 }
