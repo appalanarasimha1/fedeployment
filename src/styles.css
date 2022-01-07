@@ -38,8 +38,11 @@ a, a:hover, a:visited, a:focus,button:focus {
 
 *:focus{
   outline: 0;
+  border: unset;
 }
-
+ .ng-select-focused{
+  display: none;
+}
 ul{
   list-style-type: none;
   padding: 0;
@@ -3964,4 +3967,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .masonry-item:nth-child(41) {z-index: 1;}
 .customTab {
   overflow-x: hidden;
+}
+
+.pointer {
+  cursor: pointer;
 }

@@ -20,8 +20,6 @@ export class DataService {
   resetFilter$ = this.resetFilter.asObservable();
   termSearch$ = this.termSearch.asObservable();
 
-
-  // Service message commands
   sectorDataPush(sector) {
     this.sectorChangedSource.next(sector);
   }

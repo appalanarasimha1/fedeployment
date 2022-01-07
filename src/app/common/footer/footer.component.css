@@ -5,3 +5,30 @@ footer{
     bottom: 0px;
     width: 100%; */
 }
+.footerList{
+    list-style: none;
+    padding: 0px;
+    margin: unset;
+}
+.footerList li{
+    position: relative;margin: 0px 20px;
+}
+.footerList li::before{
+    content: '';
+    background-color: #C49900;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+    position: absolute;
+}
+.footerList li p{
+    font-size: 16px;
+    line-height: 24px;
+    font-feature-settings: 'cpsp' on, 'kern' off;
+    color: #FFFFFF;
+    padding-left: 44px;
+}

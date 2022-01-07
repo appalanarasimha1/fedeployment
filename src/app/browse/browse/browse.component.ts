@@ -12,6 +12,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ASSET_TYPE, constants, localStorageVars, WORKSPACE_ROOT } from 'src/app/common/constant';
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
+import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
 
 @Component({
   selector: 'app-browse',
@@ -124,7 +125,7 @@ export class BrowseComponent implements OnInit {
       var label = $(this);
       var parent = label.parent('.has-children');
       var list = label.siblings('.acnav__list');
-
+    
       if ( parent.hasClass('is-open') ) {
         list.slideUp('fast');
         parent.removeClass('is-open');
@@ -178,7 +179,7 @@ export class BrowseComponent implements OnInit {
     //   this.searchList = docs.entries;
     // });
     const docs = await this.fetchAssets(item.uid);
-    this.searchList = docs.entries;
+    this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
@@ -327,7 +328,7 @@ export class BrowseComponent implements OnInit {
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
     .subscribe((docs: any) => {
-      this.searchList = docs.entries;
+      this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
       let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
       if(workSpaceIndex >= 0) {
         this.loading = false;
@@ -336,11 +337,11 @@ export class BrowseComponent implements OnInit {
       } else {
         if(childIndex !== null && childIndex !== undefined) {
           this.loading = false;
-          this.folderStructure[index].children[childIndex].children = docs.entries;
+          this.folderStructure[index].children[childIndex].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
           this.folderStructure[index].children[childIndex].isExpand = true;
 
           if(!this.callFolder && this.routeParams.folder) {
-            this.folderStructure[index].children[this.ind].children = docs.entries;
+            this.folderStructure[index].children[this.ind].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
             let lastChild = this.folderStructure[index].children[this.ind].children.find((item, i) => {
               if(item.title.toLowerCase() === this.routeParams.folder.toLowerCase()) {
                 this.ind = i;
@@ -359,7 +360,7 @@ export class BrowseComponent implements OnInit {
         } else {
           this.loading = false;
           if(!this.sectorOpen) {
-            this.folderStructure[index].children = docs.entries; // index = parent index in folder structure
+            this.folderStructure[index].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1); // index = parent index in folder structure
             console.log(docs)
             this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand;
             this.callHandClick = this.folderStructure[index].children.find((item, i) => {
@@ -436,7 +437,7 @@ export class BrowseComponent implements OnInit {
     console.log("selected", this.selectedFolder)
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
       .subscribe((docs: any) => {
-        this.searchList = docs.entries;
+        this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
         let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
         if (workSpaceIndex >= 0) {
           this.handleChangeClick(this.searchList[workSpaceIndex], index, selected, childIndex)
@@ -488,8 +489,7 @@ export class BrowseComponent implements OnInit {
     modalDialog.afterClosed().subscribe(result => {
       if (!result) return;
       Object.keys(result).forEach(key => {
-        this.searchList[key].contextParameters.acls = result[key].contextParameters.acls;
-        this.searchList[key].properties = {...this.searchList[key].properties, ...result[key].properties}
+        this.searchList[key].contextParameters.acls = result[key];
       });
     });
   }

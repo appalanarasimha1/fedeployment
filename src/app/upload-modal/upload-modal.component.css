@@ -221,12 +221,12 @@ text-align: center;
 color: #FFFFFF;
 }
 .upload-form {
-  margin: 0px  -9px;
+  margin: 0px  2px;
 }
 .upload-form-input {
-  margin: 20px 0px;
-      display: flex;
-      align-items: end;
+  margin-bottom: 20px;
+      /* display: flex;
+      align-items: end; */
 }
 .upload-form-input label {
   font-size: 16px;
@@ -332,8 +332,8 @@ color: #FFFFFF;
 }
 .custom-select-options li.styled:hover {
   background:#E1BB33;
-  border: 1px solid #000;
-  border-width: 0 0 0 1px;
+  /* border: 1px solid #000;
+  border-width: 0 0 0 1px; */
 }
 
 .custom-select-options li.styled:focus {
@@ -382,6 +382,8 @@ color: #FFFFFF;
   /* border-bottom: 1.5px solid #000 !important; */
   border-radius: 0px !important;
   background-color: transparent;
+  height: unset !important;
+  min-height: unset;
 }
 .publish-file-preview-img span{
   font-size: 13px;
@@ -444,11 +446,9 @@ border-radius: 8px;
 }
 .publish-file-preview {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   background-color: #F8F8F5;
   margin: 10px 0;
-  padding: 15px;
+  padding:30px 15px;
 }
 .publish-file-preview-img {
   display: block;
@@ -551,7 +551,7 @@ font-weight: 600;
     cursor: pointer;
     display: unset;
     font-size: 16px;
-    height: 237px !important;
+    height: 282px !important;
     overflow-x: auto;
 }
 .tooltip1 {
@@ -693,8 +693,8 @@ select option{
  /* sprint16-v1 end */
 .destination-folder-block{
   display: table;
-  min-width: 350px;
-  min-height: 120px;
+  min-width: 395px;
+  min-height: 110px;
   background: #F8F8F5;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
@@ -709,7 +709,7 @@ select option{
 .destination-img-block img{
   object-fit: cover;
   width: 100%;
-  height: 150px;
+  height: 110px;
   padding: 0px;
   border-radius: 8px;
 }
@@ -752,8 +752,8 @@ select option{
   width: 230px;
   font-size: 16px;
   font-weight: 600;
-  height: 38px;
-  line-height: 38px;
+  /* height: 38px;
+  line-height: 38px; */
   color: #040404;
 }
 .copyright-input-block:after {
@@ -784,12 +784,11 @@ input.copyright-input {
 ::ng-deep ::placeholder{
   color: #000 !important;
 }
-::ng-deep .grayField input::placeholder {
-  color: gray !important;
+::ng-deep .grayField input::placeholder, ::ng-deep .grayField textarea::placeholder {
+opacity: 0.5;
 }
-::ng-deep .grayField input{
-  border-color: gray !important;
-  cursor: not-allowed;
+::ng-deep .grayField input, ::ng-deep .grayField textarea{
+opacity: 0.5;
 }
 ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
     color: #000;
@@ -797,3 +796,27 @@ input.copyright-input {
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
   background-color: #E1BB33 !important;
 }
+.errorInfotxt{
+  font-size: 16px;
+line-height: 22px;
+color: #DEB31A;
+}
+.errorMsg{
+  font-size: 16px;
+line-height: 20px;
+color: #E03C31;
+border: 1px solid #E03C31;
+border-radius: 100px;
+background: #FFF1F1;
+padding: 10px 18px
+}
+.errortext{
+  position: absolute;
+  bottom: -12px;
+}
+::ng-deep .grayField .mat-form-field-suffix {
+  opacity: 0.5;
+}
+/* .ng-select-focused{
+  display: none;
+} */

@@ -14,7 +14,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS } from "./constant";
+import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS, ACCESS_LABEL, CONFIDENTIALITY_LABEL, UNWANTED_WORKSPACES } from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -44,6 +44,8 @@ export class UploadModalComponent implements OnInit {
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
+  readonly ACCESS_LABEL = ACCESS_LABEL;
+  readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
 
   filesMap: FileByIndex = {};
   batchId: string = null;
@@ -82,8 +84,9 @@ export class UploadModalComponent implements OnInit {
   showCustomDropdown: boolean = false;
   disableDateInput = false;
   descriptionFilled = false;
+  showFolderNameField = false;
 
-
+  
   years = [
     {id: 1, name: '2000'},
     {id: 2, name: '2001'},
@@ -237,6 +240,13 @@ export class UploadModalComponent implements OnInit {
     this.workspaceList = this.formatWsList(res["entries"]);
   }
 
+  filterWorkspaces(title: string): boolean {
+    if(UNWANTED_WORKSPACES.indexOf(title.toLowerCase()) === -1) {
+      return true;
+    } 
+    return false;
+  }
+
   checkAccessOptionDisabled(access, fileIndex?: any) {
     const confidentiality =
       this.customConfidentialityMap[fileIndex] || this.confidentiality;
@@ -381,7 +391,6 @@ export class UploadModalComponent implements OnInit {
     this.showCustomDropdown = false;
     this.disableDateInput = true;
     this.associatedDate = this.selectedFolder.properties["dc:start"];
-    this.description = this.selectedFolder.properties["dc:description"];
     this.descriptionFilled = true;
   }
 
@@ -393,7 +402,6 @@ export class UploadModalComponent implements OnInit {
     this.showCustomDropdown = false;
     this.disableDateInput = false;
     this.associatedDate = "";
-    this.description = "";
   }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {

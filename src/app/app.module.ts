@@ -25,6 +25,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { UpdateModalModule } from './update-modal/update-modal.module';
 import { LoaderYellowComponent } from './common/loader-yellow/loader-yellow.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { DataService } from './services/data.service';
+import { CoreModuleModule } from './common/core-module/core-module.module';
+import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   ],
   imports: [
     CommonModule,
+    CoreModuleModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -51,8 +55,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
   ],
   providers: [
     // CookieService,
-    NuxeoService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+    // DataService,
+    // NuxeoService,
+    // { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })

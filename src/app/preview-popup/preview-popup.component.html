@@ -400,8 +400,8 @@
         style="justify-content: space-between; align-items: unset"
       >
         <div class="mb-4" style="width: 78%">
-          <!-- <span class="main-heading">{{ doc?.properties["dc:title"] }}</span>
-          <span class="yellowBtn">Internal Use ©</span> -->
+          <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
+          <!-- <span class="yellowBtn">Internal Use ©</span> -->
           <!-- <h5 class="pt-3 weightSize">
             {{
               getDownloadFileEstimation(
@@ -562,7 +562,7 @@
         <div class="search-tags pb-5">
           <ul class="flexible">
             <li *ngFor="let tag of tags; let i = index">
-              <a style="cursor: pointer">{{ tag }}</a>
+              <a >{{ tag }}</a>
             </li>
             <li>
               <img
