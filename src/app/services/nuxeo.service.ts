@@ -105,7 +105,7 @@ export class NuxeoService {
   requestToken(token) {
     if (!this.nuxeoClient) {
       const options = {
-        baseURL: `${this.baseUrl}/nuxeo/`,
+        baseURL: `${environment.nuxeoServerUrl || this.baseUrl}/nuxeo/`,
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
