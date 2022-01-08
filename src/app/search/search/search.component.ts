@@ -87,7 +87,7 @@ export class SearchComponent implements OnInit {
   searchDocuments(dataParam: IHeaderSearchCriteria, pageNumber?: any) {
 
     this.error = undefined;
-    this.filtersParams['ecm_fulltext'] = this.searchValue.ecm_fulltext.toLowerCase() || '';
+    this.filtersParams['ecm_fulltext'] = this.searchValue?.ecm_fulltext?.toLowerCase() || '';
     this.filtersParams['highlight'] = this.searchValue.highlight || '';
     this.filtersParams['sortBy'] = dataParam['sortBy'] || '';
     this.filtersParams['sortOrder'] = dataParam['sortOrder'] || '';
