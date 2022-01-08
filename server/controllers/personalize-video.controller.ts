@@ -37,7 +37,7 @@ export class PersonalizedVideoController {
       if (user?.assetSeen?.length) {
         let index = user?.assetSeen.findIndex((item: any) => item.sector.toLowerCase() === body.sector.toLowerCase());
         if(index < 0) {
-          res.send({ message: 'done', error: null, videoId: 'default', location: 'default' });
+          res.send({ message: 'done', error: null, videoId: 'default', location: 'general' });
           return;
         }
         let video = await dbService.getMatchingVideo(body.sector.toLowerCase(), user.assetSeen[index].videoIds);
@@ -61,7 +61,7 @@ export class PersonalizedVideoController {
           return;
         }
       }
-      res.send({ message: 'done', error: null, videoId: 'default', location: 'default' });
+      res.send({ message: 'done', error: null, videoId: 'default', location: 'general' });
       return;
     } catch (error: any) {
       res.status(500).send({ message: error.message });
@@ -72,7 +72,7 @@ export class PersonalizedVideoController {
   streamPersonalizedVideo(req: Request, res: Response) {
     try {
       const body: { username?: any, sector?: any, videoId?: string, location?: string } = req.query;
-      const videoLocation = body.location?.toLowerCase() === 'default' ? `default/${body.sector}/default.mp4` : `${body.sector}/${body.videoId}.mp4`;
+      const videoLocation = body.location?.toLowerCase() === 'general' ? `general/${body.sector}/default.mp4` : `${body.sector}/${body.videoId}.mp4`;
       const path1 = path.join(__dirname + `/../../../../../personalizedVideo/${videoLocation}`); // TODO: video path and video name to be fetched from params
       const stat = fs.statSync(path1);
       const fileSize = stat.size;
