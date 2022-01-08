@@ -89,9 +89,10 @@
       <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
         <img src="../../../assets/images/logo-neom.png" class="logo" />
         <h3>Please select an area of interest.</h3>
-        <ng-select
-         [items]="allSectors" 
-         ngDefaultControl
+        <ng-select 
+          class="pointer"
+          [items]="allSectors" 
+          ngDefaultControl
           placeholder="Select a sector" 
           [(ngModel)]="sectorSelected"
           bindLabel="label"
@@ -99,7 +100,7 @@
         </ng-select>
         <div *ngIf="sectorSelected" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->
-          <img src="../../../assets/images/left-arrow-video.svg" class="logo" (click)="playPersonalizedVideo()" style="cursor: pointer;"/>  
+          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />  
         </div>
         
       </div>
