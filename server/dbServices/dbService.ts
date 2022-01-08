@@ -33,7 +33,7 @@ export class DBService {
         try {
             let connection: any = await this.connectionManager.getConnection();
             const findQuery = {username};
-            const updateQuery = {'$set': {'assetSeen': [{sector: videoObj.sector, videoIds: [videoObj.personalizedVideoId]}]}};
+            const updateQuery = {'$push': {'assetSeen': {sector: videoObj.sector, videoIds: [videoObj.personalizedVideoId]}}};
             return await connection.collection(AppConfig.Config.mongodbTables.USER_TABLE).updateOne(findQuery, updateQuery);
         } catch (e) {
             console.error('setAssetSeen: Exception occurred while execution - ', e);
