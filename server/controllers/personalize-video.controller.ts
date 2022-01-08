@@ -72,7 +72,7 @@ export class PersonalizedVideoController {
   streamPersonalizedVideo(req: Request, res: Response) {
     try {
       const body: { username?: any, sector?: any, videoId?: string, location?: string } = req.query;
-      const videoLocation = body.location?.toLowerCase() === 'general' ? `general/${body.sector}/default.mp4` : `${body.sector}/${body.videoId}.mp4`;
+      const videoLocation =  `${body.sector}/${body.videoId}.mp4`; //body.location?.toLowerCase() === 'general' ? `${body.sector}/default.mp4` :
       const path1 = path.join(__dirname + `/../../../../../personalizedVideo/${videoLocation}`); // TODO: video path and video name to be fetched from params
       const stat = fs.statSync(path1);
       const fileSize = stat.size;
