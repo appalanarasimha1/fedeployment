@@ -37,6 +37,7 @@ export class PersonalizedVideoController {
       if (user?.assetSeen?.length) {
         let index = user?.assetSeen.findIndex((item: any) => item.sector.toLowerCase() === body.sector.toLowerCase());
         if(index < 0) {
+          await dbService.setAssetSeen(body.username, {sector: body.sector.toLowerCase(), personalizedVideoId: 'default'});
           res.send({ message: 'done', error: null, videoId: 'default', location: 'general' });
           return;
         }
@@ -56,7 +57,7 @@ export class PersonalizedVideoController {
         //send random video of the matching sector
         let videoObj = await dbService.getMatchingVideo(body.sector.toLowerCase());
         if (videoObj?.length) {
-          const updateResponse = await dbService.setAssetSeen(body.username, videoObj[0]);
+          await dbService.setAssetSeen(body.username, videoObj[0]);
           res.send({ message: 'done', error: null, videoId: videoObj[0].personalizedVideoId });
           return;
         }

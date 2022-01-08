@@ -29,7 +29,7 @@ export class DBService {
         }
     }
 
-    public async setAssetSeen(username: string | undefined, videoObj: any) {
+    public async setAssetSeen(username: string | undefined, videoObj: {sector: string, personalizedVideoId: string}) {
         try {
             let connection: any = await this.connectionManager.getConnection();
             const findQuery = {username};
