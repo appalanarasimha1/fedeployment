@@ -80,18 +80,11 @@ export class NuxeoService {
   }
 
   logout(): void {
+    localStorage.removeItem('token');
+    this.nuxeoClient = null;
     this.http.get(`${this.baseUrl}/nuxeo/logout`)
       .subscribe((response: any) => {
-        // this.cookie.deleteAll();
-        // this.nuxeoClient = null;
-        // this.router.navigate(['login']);
       });
-
-    // this.cookie.deleteAll();
-    localStorage.removeItem('token');
-    // Document.cookie = "";
-    this.nuxeoClient = null;
-    this.router.navigate(['login']);
   }
 
   authenticateUser(username: string, password: string) {
@@ -106,7 +99,28 @@ export class NuxeoService {
       headers: this.defaultHeader
     });
 
+    return this.requestToken(null);
+  }
+
+  requestToken(token) {
+    if (!this.nuxeoClient) {
+      const options = {
+        baseURL: `${environment.nuxeoServerUrl || this.baseUrl}/nuxeo/`,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
+        }
+      }
+      if (token) options.headers['Authorization'] = `Bearer ${token}`;
+      this.nuxeoClient = new Nuxeo(options);
+    }
     return this.nuxeoClient.requestAuthenticationToken('My App', '123', 'my-device', 'rw');
+  }
+
+  getRedirectLocation() {
+    const redirectUri = window.location.origin + '/';
+    const location = `${this.baseUrl}/nuxeo/oauth2/authorize?client_id=angular-client&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}`
+    return location;
   }
 
   createClientWithToken(token) {

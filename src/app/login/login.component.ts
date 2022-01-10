@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { NuxeoService } from '../services/nuxeo.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-login',
@@ -14,14 +15,16 @@ export class LoginComponent implements OnInit {
   error = false;
   errorMessage = '';
   loading = false;
+  keycloakLoading = false;
 
-  constructor(private nuxeo: NuxeoService, private router: Router, private apiService: ApiService) { }
+  constructor(private nuxeo: NuxeoService, private router: Router, private apiService: ApiService, protected readonly keycloak: KeycloakService) { }
 
   ngOnInit(): void {
     if (this.nuxeo.nuxeoClient && localStorage.getItem('token')) {
       this.router.navigate(['/']);
       return;
     }
+    this.checkLoginState();
   }
 
   // login() {
@@ -37,6 +40,33 @@ export class LoginComponent implements OnInit {
   //     console.log(data);
   //   });
   // }
+
+  async checkLoginState() {
+    this.keycloakLoading = true;
+    try {
+      const keycloakToken = await this.keycloak.getToken();
+
+      if (!keycloakToken) {
+        this.keycloakLoading = false;
+        return;
+      }
+      let token = await this.nuxeo.requestToken(keycloakToken);
+
+      if (token && !token.toLowerCase().includes('doctype')) {
+        localStorage.setItem('token', token);
+        await this.nuxeo.createClientWithToken(token);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    this.keycloakLoading = false;
+  }
+
+  loginKeycloak() {
+    this.keycloak.login({
+      redirectUri: window.location.origin,
+    });
+  }
 
   login() {
     if ((this.username && this.username.trim()) && (this.password)) {
@@ -77,7 +107,7 @@ export class LoginComponent implements OnInit {
 
   logout() {
     this.nuxeo.logout();
-    return;
+    this.keycloak.logout(window.location.origin + '/login');
   }
 
 }

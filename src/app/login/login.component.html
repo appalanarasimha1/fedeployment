@@ -1,5 +1,5 @@
 
-<app-loader [show]="loading"></app-loader>
+<app-loader [show]="loading || keycloakLoading" [hasOverlay]="keycloakLoading ? false : true"></app-loader>
 <section class="login flexible" style="justify-content: center">
     <div class="container">
         <div class="row">
@@ -18,10 +18,11 @@
                     <div class="mb-4">
                       <!-- <a href="">Forgot Password</a> -->
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary loginBtn"(click)="login()">Login</button>
+                    <button type="submit" class="btn btn-primary loginKeycloakBtn"(click)="loginKeycloak()">Login with Keycloak</button>
                     <!-- <button type="button" class="btn btn-primary"(click)="logout()">Logout</button> -->
-                    
+
                   </form>
             </div>
         </div>

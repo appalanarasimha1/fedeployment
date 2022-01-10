@@ -9,8 +9,9 @@ import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { InterceptorService } from './services/http-interceptor.service';
 import { NuxeoService } from './services/nuxeo.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
@@ -28,6 +29,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { DataService } from './services/data.service';
 import { CoreModuleModule } from './common/core-module/core-module.module';
 import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.component';
+import { initializer } from './AppInit';
 
 @NgModule({
   declarations: [
@@ -51,13 +53,23 @@ import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.componen
     MatIconModule,
     UploadModalModule,
     UpdateModalModule,
-    NgSelectModule
+    NgSelectModule,
+    KeycloakAngularModule,
   ],
   providers: [
     // CookieService,
     // DataService,
     // NuxeoService,
     // { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+    NuxeoService,
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    KeycloakService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializer,
+      multi: true,
+      deps: [KeycloakService],
+    }
   ],
   bootstrap: [AppComponent]
 })

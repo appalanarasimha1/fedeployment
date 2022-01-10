@@ -57,3 +57,16 @@ button.btn-primary:focus, button.btn-primary:hover{
     outline: 0  !important;
     box-shadow: unset !important;
   }
+.loginKeycloakBtn{
+    margin-top: 10px;
+    width: 100%;
+    background-color: #13100D;
+    color: #fff;
+    border-radius: 8px;
+    padding: 12px 0px;
+    border: 1px solid #13100D;
+    letter-spacing: normal;
+}
+.loginKeycloakBtn:hover{
+    background-color: #13100D;
+}
