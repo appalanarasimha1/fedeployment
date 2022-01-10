@@ -9,19 +9,8 @@ export const environment = {
   // apiServiceBaseUrl: 'https://10.101.21.31:8090', //
   apiVersion: '/nuxeo/api/v1',
   // apiServiceBaseUrl: 'https://dev2groundx.neom.com', // 'https://uatgroundx.neom.com'
-<<<<<<< HEAD
   // apiServiceBaseUrl:  "http://34.219.179.33:5050",
   apiServiceBaseUrl: "http://localhost:8090"
-=======
-  nuxeoServerUrl: 'https://dev1groundx.neom.com',
-  // apiServiceBaseUrl:  "http://34.219.179.33:5050",
-  apiServiceBaseUrl: "http://localhost:8090",
-  keycloakConfig: {
-    url: 'https://keycloak.iotsense-prod-tnd.oci.neomos.online/auth',
-    realm: 'GroundX',
-    clientId: 'nuxeo-client-public',
-  }
->>>>>>> f6100857 (sprint19: Mismatch in count of assets and actual search result)
 };
 
 /*

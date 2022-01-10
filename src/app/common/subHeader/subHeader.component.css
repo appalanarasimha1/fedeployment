@@ -337,7 +337,8 @@ video{
     right: 10px;
     top: 2px;
     z-index: 9;
-    width: 201px;
+    width: 148px;
+    cursor: pointer !important;
 }
 ::ng-deep .ssector .ng-select{
     width: 148px;
