@@ -147,6 +147,10 @@ export class DocumentComponent implements OnInit, OnChanges {
   resetResult() {
     this.documents = '';
     this.selectTab('recentUpload');
+    this.docSliceInput = 9;
+    this.hideShowMoreBtn = false;
+    this.showListView = false;
+    this.viewType = 'GRID';
     this.dataService.resetFilterInit(TRIGGERED_FROM_DOCUMENT);
   }
 
