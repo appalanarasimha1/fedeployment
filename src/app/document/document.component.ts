@@ -1,12 +1,11 @@
 import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild, ElementRef } from '@angular/core';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
-import { constants, localStorageVars, TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../common/constant';
+import { ASSET_SEARCH_PAGE_SIZE, constants, localStorageVars, TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
 import { environment } from '../../environments/environment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NuxeoService } from '../services/nuxeo.service';
 import { apiRoutes } from '../common/config';
-import * as moment from 'moment';
 import { ApiService } from '../services/api.service';
 import { SharedService } from '../services/shared.service';
 import { Router } from '@angular/router';
@@ -270,7 +269,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   showMore() {
     this.docSliceInput += 9;
-    if (this.docSliceInput >= this.documents.entries.length) {
+    if (this.docSliceInput > ASSET_SEARCH_PAGE_SIZE && this.docSliceInput < this.documents.resultsCount) {
       this.pageCount.emit({ pageNumber: ++this.documents.currentPageIndex, primaryType: this.selectedType });
       this.hideShowMoreBtn = false;
     }
