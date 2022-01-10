@@ -51,6 +51,12 @@ ul{
   padding: 0;
   margin: 0;
 }
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input, ::ng-deep .ng-select-container {
+  cursor: pointer !important;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container{
+  height: 36px !important;
+}
 
 a {
   color: #078fcc;
