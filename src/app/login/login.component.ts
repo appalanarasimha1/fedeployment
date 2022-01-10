@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   error = false;
   errorMessage = '';
   loading = false;
+  keycloakLoading = false;
 
   constructor(private nuxeo: NuxeoService, private router: Router, private apiService: ApiService, protected readonly keycloak: KeycloakService) { }
 
@@ -41,20 +42,24 @@ export class LoginComponent implements OnInit {
   // }
 
   async checkLoginState() {
-    const keycloakToken = await this.keycloak.getToken();
-    if (!keycloakToken) return;
-    let token
+    this.keycloakLoading = true;
     try {
-      token = await this.nuxeo.requestToken(keycloakToken);
+      const keycloakToken = await this.keycloak.getToken();
+
+      if (!keycloakToken) {
+        this.keycloakLoading = false;
+        return;
+      }
+      let token = await this.nuxeo.requestToken(keycloakToken);
 
       if (token && !token.toLowerCase().includes('doctype')) {
         localStorage.setItem('token', token);
         await this.nuxeo.createClientWithToken(token);
-        this.router.navigate(['/']);
       }
     } catch (e) {
       console.error(e);
     }
+    this.keycloakLoading = false;
   }
 
   loginKeycloak() {
