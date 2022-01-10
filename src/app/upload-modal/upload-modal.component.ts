@@ -128,6 +128,10 @@ export class UploadModalComponent implements OnInit {
     this.loadUsers();
   }
 
+  openFileSelect(event) {
+    console.log(event);
+  }
+
   // descriptionCondition() {
   //   if(this.description)
   // }

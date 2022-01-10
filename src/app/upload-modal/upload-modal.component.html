@@ -1,58 +1,60 @@
 <div class="upload-modal">
-  <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div>
-  <ngx-dropzone *ngIf="step === 1" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)" class="drag-drop" #drop>
-   <ngx-dropzone-label  class="noborder">
-      <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
-         <div class="upload-label">
-            <img src="../../assets/images/cloud-upload.png" style="width: 40px;margin: auto;">
-            <span><b>Drag and drop assets to upload</b><br>
-            or click to select files to upload</span>
-         </div>
-         <div class="errortext">
-            <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
-            <!-- <p class="errorMsg">Only documents in PDF format are acceptable.<br> 
-               Please make sure all the ducoments are converted into PDFs.</p> -->
-         </div>
-      </div>
-   </ngx-dropzone-label>
-
-   <ul class="flexible upload-prevoew">
-      <li  *ngFor="let f of filesMap | keyvalue">
-         <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
-         <ngx-dropzone-label class="flexible" style="margin: unset;">
-            <div style="width: 80%;text-align: left;">
-               <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
-               <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
-               <span *ngIf="!filesUploadDone[f.key]" class="upload-loading">Uploading...</span>
-            </div>
-            <div *ngIf="filesUploadDone[f.key]" style="width: 20%; text-align: center;">
-               <img src="../../assets/images/BtnTickbox.png">
+   <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div>
+   <div *ngIf="step === 1">
+      <ngx-dropzone #drop class="drag-drop" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)">
+         <ngx-dropzone-label  class="noborder">
+            <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
+               <div class="upload-label">
+                  <img src="../../assets/images/cloud-upload.png" style="width: 40px;margin: auto;">
+                  <span><b>Drag and drop assets to upload</b><br>
+                  or click to select files to upload</span>
+               </div>
+               <div class="errortext">
+                  <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
+                  <!-- <p class="errorMsg">Only documents in PDF format are acceptable.<br> 
+                     Please make sure all the ducoments are converted into PDFs.</p> -->
+               </div>
             </div>
          </ngx-dropzone-label>
-         </ngx-dropzone-preview>
-      </li>
-   </ul>
-  </ngx-dropzone>
-  <div *ngIf="step === 1" class="row pt-2" style="display: flex; align-items: baseline;">
-      <div class="col-xl-3">
-         <div *ngIf="false && getAssetNumber()" class="flexible pt-3 pointer">
-            <a>
-               <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
-            </a>
-            <span class="goldenText">
-               Add more assets
-            </span>
+
+         <ul class="flexible upload-prevoew">
+            <li  *ngFor="let f of filesMap | keyvalue">
+               <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
+               <ngx-dropzone-label class="flexible" style="margin: unset;">
+                  <div style="width: 80%;text-align: left;">
+                     <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
+                     <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
+                     <span *ngIf="!filesUploadDone[f.key]" class="upload-loading">Uploading...</span>
+                  </div>
+                  <div *ngIf="filesUploadDone[f.key]" style="width: 20%; text-align: center;">
+                     <img src="../../assets/images/BtnTickbox.png">
+                  </div>
+               </ngx-dropzone-label>
+               </ngx-dropzone-preview>
+            </li>
+         </ul>
+      </ngx-dropzone>
+      <div class="row pt-2" style="display: flex; align-items: baseline;">
+         <div class="col-xl-3">
+            <div *ngIf="getAssetNumber()" class="flexible pt-3 pointer" (click)="drop.showFileSelector()">
+               <a>
+                  <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
+               </a>
+               <span class="goldenText">
+                  Add more assets
+               </span>
+            </div>
+         </div>
+         <div class="col-xl-9 flexible">
+         <label class="control control--checkbox">Where any of the assets being uploaded contains a photo of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo and make accessible to other users across NEOM
+            <input type="checkbox" checked="checked"
+            [(ngModel)]="agreeTerms"
+            [ngModelOptions]="{standalone: true}"/>
+            <div class="control__indicator"></div>
+            </label>
          </div>
       </div>
-     <div class="col-xl-9 flexible">
-      <label class="control control--checkbox">Where any of the assets being uploaded contains a photo of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo and make accessible to other users across NEOM
-         <input type="checkbox" checked="checked"
-         [(ngModel)]="agreeTerms"
-         [ngModelOptions]="{standalone: true}"/>
-         <div class="control__indicator"></div>
-       </label>
-     </div>
-  </div>
+   </div>
   <!-- <div class="flexible pt-3">
    <a>
       <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
