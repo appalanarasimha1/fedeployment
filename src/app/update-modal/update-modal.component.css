@@ -747,3 +747,15 @@ input.copyright-input {
 ::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
   box-shadow: unset !important;
 }
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
+  position: unset !important;
+}
+::ng-deep .ng-select{
+  height: 30px !important;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
+  overflow: visible !important;
+}
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input, ::ng-deep .ng-select-container {
+  cursor: pointer !important;
+}

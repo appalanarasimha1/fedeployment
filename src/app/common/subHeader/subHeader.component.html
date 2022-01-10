@@ -96,7 +96,8 @@
           placeholder="Select a sector" 
           [(ngModel)]="sectorSelected"
           bindLabel="label"
-          bindValue="value">
+          bindValue="value"
+          [closeOnSelect]>
         </ng-select>
         <div *ngIf="sectorSelected" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->
@@ -115,6 +116,7 @@
           bindLabel="label"
           bindValue="value"
           (change)="playPersonalizedVideo()"
+          [closeOnSelect]
           >
         </ng-select>
        </div>
