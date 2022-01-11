@@ -64,6 +64,12 @@ export class SubHeaderComponent implements OnInit {
         this.searched = false;
       }
     });
+    
+    this.dataService.termSearch$.subscribe((searchTerm: string) => {
+      this.searchText = searchTerm;
+      this.searched = true;
+    });
+
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
     return;
