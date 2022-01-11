@@ -7,6 +7,7 @@ import { localStorageVars, TAG_ATTRIBUTES, unwantedTags } from "../common/consta
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
+import { DataService } from "../services/data.service";
 
 @Component({
   selector: "preview-popup",
@@ -35,6 +36,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     private apiService: ApiService,
     private modalService: NgbModal,
     public nuxeo: NuxeoService,
+    public dataService: DataService
   ) {}
 
   ngOnInit(): void {
@@ -386,6 +388,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         ALLOW_VALUE_MAP["Anywhere (including external material)"];
     }
     // return '';
+  }
+
+  search(searchTerm: string) {
+    this.dataService.termSearchInit(searchTerm);
+    this.modalService.dismissAll();
   }
 
 }

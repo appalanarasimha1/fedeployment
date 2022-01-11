@@ -1,6 +1,6 @@
 import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild, ElementRef } from '@angular/core';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
-import { ASSET_SEARCH_PAGE_SIZE, constants, localStorageVars, TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../common/constant';
+import { ASSET_SEARCH_PAGE_SIZE, localStorageVars, TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
 import { environment } from '../../environments/environment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';

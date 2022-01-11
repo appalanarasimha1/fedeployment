@@ -63,6 +63,14 @@ export class SearchComponent implements OnInit {
       this.filters(sectorSelected);
     });
 
+    this.dataService.termSearch$.subscribe((searchTerm: string) => {
+      let data: IHeaderSearchCriteria = {
+        ecm_fulltext: searchTerm,
+        highlight: "dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name"
+      };
+      this.searchTerm(data);
+    });
+
     // this.dataService.resetFilter$.subscribe(() => {
     //   this.resetFilter();
     // });

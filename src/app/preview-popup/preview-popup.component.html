@@ -562,7 +562,7 @@
         <div class="search-tags pb-5">
           <ul class="flexible">
             <li *ngFor="let tag of tags; let i = index">
-              <a >{{ tag }}</a>
+              <a class="pointer" (click)="search(tag)" >{{ tag }}</a>
             </li>
             <li>
               <img
