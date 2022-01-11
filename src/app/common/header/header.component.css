@@ -91,6 +91,7 @@ header{
 }
 .fixedHeader{
     background-color: #000;
+    z-index: 9999;
 }
 .searchHeading .nav-item a:before{
     content: '';
