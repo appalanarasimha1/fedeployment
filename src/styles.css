@@ -3933,7 +3933,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .copyright-form .ng-select{
   width: 100%;
 }
-.tab-content .slick-list {padding-bottom: 40px !important; overflow: inherit !important;}
+.tab-content .slick-list {padding-bottom: 40px !important; overflow: visible !important;}
 .tab-content .slick-list.draggable:before {content: '';display: block;width: 100%;left: -100%;top: 0px;background: #f6f7fa;position: absolute;height: 100%; z-index: 1;}
 .tab-content .slick-list.draggable:after {content: '';display: block;width: 100%;right: -100%;top: 0px;background: #f6f7fa;position: absolute;height: 100%; z-index: 1;}
 .masonry-item:nth-child(4) {z-index: 38;}

@@ -783,6 +783,7 @@ input.copyright-input {
   font-size: 14px;
   font-weight: normal;
   padding: 0px 0px 0px 10px;
+  font-weight: 600;
 }
 .copyright-form img {
   width: 29px !important;
@@ -803,6 +804,7 @@ opacity: 0.5;
 }
 ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
     color: #000;
+    font-weight: 400;
 }
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
   background-color: #E1BB33 !important;
@@ -860,24 +862,29 @@ padding: 10px 18px
 .control__indicator {
   position: absolute;
   top: 2px;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  background: #e6e6e6;
+  left: 6px;
+  height: 17px;
+  width: 17px;
+  /* background: #e6e6e6; */
+  border: 1px solid #000;
+  border-radius: 4px;
+
 }
 .control--radio .control__indicator {
   border-radius: 50%;
 }
 .control:hover input ~ .control__indicator,
 .control input:focus ~ .control__indicator {
-  background: #ccc;
+  background: #fff;
 }
 .control input:checked ~ .control__indicator {
   background: #2C6946;
+  border-color: #2C6946;
 }
 .control:hover input:not([disabled]):checked ~ .control__indicator,
 .control input:checked:focus ~ .control__indicator {
   background: #2C6946;
+  border-color: #2C6946;
 }
 .control__indicator:after {
   content: '';
@@ -888,14 +895,15 @@ padding: 10px 18px
   display: block;
 }
 .control--checkbox .control__indicator:after {
-  left: 7px;
+  left: 5px;
   top: 1px;
-  width: 7px;
-  height: 13px;
+  width: 6px;
+  height: 11px;
   border: solid #fff;
   border-width: 0 2px 2px 0;
-  transform: rotate(
-45deg);
+  transform: rotate( 
+45deg
+);
 }
 
 .control--radio .control__indicator:after {
@@ -988,4 +996,48 @@ color: #737373;
 }
 .goldenText .copyright-input-block{
   color: unset;
+}
+input.copyright-input::placeholder{
+  color: #cccac4 !important;
+  font-weight: 400 !important;
+}
+::ng-deep .mat-datepicker-popup {
+  width: 296px !important;
+  position: absolute !important;
+  right: 0px !important;
+  box-shadow: 2px 2px 6px 3px rgb(0 0 0 / 25%);
+  border-radius: 8px;
+  left: 848px !important;
+  bottom: 83px !important;
+}
+::ng-deep .mat-calendar-body-today.mat-calendar-body-selected{
+  box-shadow: unset !important;
+}
+::ng-deep .mat-calendar-body-selected {
+  background-color: #EDD580;
+  color: #000;
+}
+::ng-deep th.mat-header-cell, ::ng-deep th.mat-header-cell button, ::ng-deep th{
+  border-bottom: unset !important;
+}
+::ng-deep .mat-calendar-arrow{
+  background-image: url(../../assets/images/down.png);
+  border: unset !important;
+  height: 6px !important;
+  width: 12px !important;
+  right: 0px;
+  z-index: 99;
+  position: relative;
+  background-size: 11px;
+  background-repeat: no-repeat;
+  /* top: 4px; */
+}
+::ng-deep .mat-calendar-table-header-divider::after{
+  display: none !important;
+}
+/* ::ng-deep .mat-calendar-body-label{
+  opacity: 0;
+} */
+::ng-deep .cdk-text-field-autofill-monitored:not(:-webkit-autofill){
+  animation:  unset !important
 }

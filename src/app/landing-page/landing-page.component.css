@@ -514,3 +514,6 @@ font-weight: 600;
     display: none;
 } */
   /* end */
+  .tab-content .slick-list{
+    overflow: visible !important;
+  }
