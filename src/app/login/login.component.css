@@ -5,9 +5,11 @@
     background-repeat: no-repeat;
 }
 .login form{
-    width: 320px;
+    width: 420px;
     margin: auto;
-
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 40px 50px;
 }
 .login form label{
     font-weight: 400;
@@ -28,9 +30,36 @@
 }
 .form-control{
     border-radius: 8px;
-    padding: 12px 15px;
-    border: unset;
+    padding: 22px 15px;
+    /* border: unset; */
     font-family: myBrown;
+    border: 1px solid;
+}
+.orText{
+    position: relative;
+    font-size: 18px;
+}
+.orText::before{
+    content: '';
+    background-color: #b6b6b6;
+    position: absolute;
+    height: 1px;
+    width: 46%;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+}
+.orText::after{
+    content: '';
+    background-color: #b6b6b6;
+    position: absolute;
+    height: 1px;
+    width: 46%;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
 }
 .loginBtn{
     width: 100%;
