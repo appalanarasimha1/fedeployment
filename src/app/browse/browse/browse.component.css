@@ -137,7 +137,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 .active-tab:before {
   content: "";
   position: absolute;
-  left: -62px;
+  left: -100%;
   background: #e1bb40;
   height: 100%;
   z-index: 9;
