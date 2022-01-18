@@ -113,9 +113,9 @@
                       (onMarkFavourite)="markFavourite(item, false)"
                       >
                     </document-card>
-
                   </li>
                 </ul>
+                <button *ngIf="checkWSType(selectedFolder.type)">Show more</button>
                 <!-- </ngx-masonry> -->
               </div>
 
@@ -152,20 +152,20 @@
                     <h6>Created by {{item.properties['dc:creator']}}</h6>
                   </div>
                 </div>
-<ul>
-<li *ngIf="checkAssetType(item.type)" style="margin-bottom: 20px;">
-  <document-card 
-  [doc]="item"
-  [viewType]="viewType"
-  (onOpenPreview)="open(item, item.type)"
-  (onSelect)="selectImage($event, item, i)"
-  (onMarkFavourite)="markFavourite(item, false)"
-  >
-</document-card>
-</li>
-</ul>
-               
+                <ul>
+                  <li *ngIf="checkAssetType(item.type)" style="margin-bottom: 20px;">
+                    <document-card 
+                      [doc]="item"
+                      [viewType]="viewType"
+                      (onOpenPreview)="open(item, item.type)"
+                      (onSelect)="selectImage($event, item, i)"
+                      (onMarkFavourite)="markFavourite(item, false)"
+                      >
+                    </document-card>
+                  </li>
+                </ul>
               </div>
+              <button *ngIf="checkWSType(selectedFolder.type)">Show more</button>
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
               <div class="col-xl-12 col-md-12 list-container" *ngFor="let item of searchList">
