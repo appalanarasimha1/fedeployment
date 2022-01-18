@@ -83,6 +83,8 @@ export class BrowseComponent implements OnInit {
   currentLevel = 0;
   folderAssetsResult: any = {};
   fetchFolderStatus: any = {};
+  currentPageCount = 0;
+  showMoreButton = true;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -422,12 +424,26 @@ export class BrowseComponent implements OnInit {
   }
 
   async fetchAssets(id) {
-    if (this.folderAssetsResult[id]) return this.folderAssetsResult[id];
+    this.currentPageCount = 0;
+    this.showMoreButton = true;
+    if (this.folderAssetsResult[id]) {
+      return this.folderAssetsResult[id];
+    }
     const result = await this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`).toPromise();
     const res = JSON.stringify(result)
     this.folderAssetsResult[id] = JSON.parse(res);
     delete this.fetchFolderStatus[id];
     return this.folderAssetsResult[id];
+  }
+
+  async showMore(id: string) {
+    if(this.searchList.length < this.folderAssetsResult[id].resultsCount) {
+      this.currentPageCount++;
+      const result: any = await this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`).toPromise();
+      this.searchList = this.searchList.concat(result.entries);
+      return;
+    }
+    this.showMoreButton = false;
   }
 
 
