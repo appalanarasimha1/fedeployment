@@ -9,7 +9,7 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateModalComponent } from '../../update-modal/update-modal.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { ASSET_TYPE, constants, localStorageVars, PAGE_SIZE_200, PAGE_SIZE_40, WORKSPACE_PAGE_SIZE, WORKSPACE_ROOT } from 'src/app/common/constant';
+import { ASSET_TYPE, constants, localStorageVars, PAGE_SIZE_200, PAGE_SIZE_40, WORKSPACE_ROOT } from 'src/app/common/constant';
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
