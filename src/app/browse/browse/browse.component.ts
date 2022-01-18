@@ -447,6 +447,7 @@ export class BrowseComponent implements OnInit {
   }
 
 
+
   handleChangeClick(item, index, selected: any, childIndex?: any) {
     // this.selectedFile = [];
     this.selectedFolder = {...selected, uid: selected.id};
