@@ -1375,7 +1375,7 @@ color: #ACACAC;
 }
 .download-dropdown {
   position: absolute;
-  width: 290px;
+  width: 220px;
   height: auto;
   /* height: auto; */
   right: 0;
@@ -1385,7 +1385,7 @@ color: #ACACAC;
   display: none;
   z-index: 999999;
   color: #fff;
-  padding: 20px;
+  padding: 15px;
   cursor: auto;
   text-align: left;
 }
