@@ -79,6 +79,16 @@ export const TAG_ATTRIBUTES = {
     WEATHER_CLASSIFICATION: 'nxtag:weatherClassificationTag'
 };
 
+export const AGGREGATE_TAGS = {
+    SYSTEM_TAG: 'system_tag_agg',
+    ACTIVITY_DETECTION: 'nxtag_activityDetectionTag_agg',
+    EMOTION_DETECTION: 'nxtag_emotionDetectionTag_agg',
+    OBJECT_DETECTION: 'nxtag_objectDetectionTag_agg',
+    OCR_TAGS: 'nxtag_ocrTag_agg',
+    SCENE_DETECTION: 'nxtag_sceneDetectionTag_agg',
+    WEATHER_CLASSIFICATION: 'nxtag_weatherClassificationTag_agg',
+};
+
 export const unwantedTags = ['man-made', 'no horizon', 'vertical components', 'horizontal components'];
 
 export const ASSET_SEARCH_PAGE_SIZE = 40;

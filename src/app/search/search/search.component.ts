@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { apiRoutes } from 'src/app/common/config';
 // import { ApiService } from '../services/http.service';
 import { SharedService } from '../../services/shared.service';
-import { constants } from 'src/app/common/constant';
+import { AGGREGATE_TAGS, constants, TAG_ATTRIBUTES, unwantedTags } from 'src/app/common/constant';
 import { DataService } from 'src/app/services/data.service';
 import { SideDrawerComponent } from 'src/app/common/sideDrawer/sideDrawer.component';
 
@@ -27,6 +27,12 @@ export class SearchComponent implements OnInit {
     asset_height_agg: { buckets: [], selection: [] },
     video_duration_agg: { buckets: [], selection: [] },
     system_tag_agg: { buckets: [], selection: [] },
+    nxtag_activityDetectionTag_agg: { buckets: [], selection: [] },
+    nxtag_emotionDetectionTag_agg: { buckets: [], selection: [] },
+    nxtag_objectDetectionTag_agg: { buckets: [], selection: [] },
+    nxtag_ocrTag_agg: { buckets: [], selection: [] },
+    nxtag_sceneDetectionTag_agg: { buckets: [], selection: [] },
+    nxtag_weatherClassificationTag_agg: { buckets: [], selection: [] },
     dublincore_sector_agg: { buckets: [], selection: [] },
     dublincore_created_agg: { buckets: [], selection: [] }
   };
@@ -331,20 +337,29 @@ export class SearchComponent implements OnInit {
     this.documents = { aggregations: {}, entries: [], resultsCount: 0 };
   }
 
-  setTagsMetadata(): void {
-    this.tagsMetadata = this.metaData.system_tag_agg;
-  }
-  
-  // getTags() {
-  //   this.tags = this.doc.contextParameters["tags"]?.map((tag) => tag) || [];
-  //   this.doc.properties[TAG_ATTRIBUTES.ACTIVITY_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-  //   this.doc.properties[TAG_ATTRIBUTES.EMOTION_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-  //   this.doc.properties[TAG_ATTRIBUTES.NX_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
-  //   this.doc.properties[TAG_ATTRIBUTES.OBJECT_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-  //   this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
-  //   this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-  //   this.doc.properties[TAG_ATTRIBUTES.WEATHER_CLASSIFICATION]?.map((item) => this.checkDuplicateAndAddTags(item));
+  // setTagsMetadata(): void {
+  //   this.tagsMetadata = this.metaData.system_tag_agg;
   // }
+  
+  setTagsMetadata() {
+    this.tagsMetadata = this.metaData.system_tag_agg || [];
+    this.metaData[AGGREGATE_TAGS.ACTIVITY_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    this.metaData[AGGREGATE_TAGS.EMOTION_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    // this.metaData[AGGREGATE_TAGS.NX_TAGS]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    this.metaData[AGGREGATE_TAGS.OBJECT_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    this.metaData[AGGREGATE_TAGS.OCR_TAGS]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    this.metaData[AGGREGATE_TAGS.SCENE_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    this.metaData[AGGREGATE_TAGS.WEATHER_CLASSIFICATION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+  }
+
+  checkDuplicateAndAddTags(tag: {key: string, count: number}): void {
+    if(this.tagsMetadata.buckets.find(item => item.id === tag.key)) {
+      return;
+    } else if(unwantedTags.indexOf(tag.key.toLowerCase()) === -1) {
+      this.tagsMetadata.buckets.push(tag);
+    }
+    return;
+  }
 
   resetTagsMetadata() {
     this.metaData.system_tag_agg = { buckets: [], selection: [] }
