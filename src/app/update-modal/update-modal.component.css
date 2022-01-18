@@ -759,3 +759,9 @@ input.copyright-input {
 ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input, ::ng-deep .ng-select-container {
   cursor: pointer !important;
 }
+::ng-deep .ng-select .ng-clear-wrapper{
+  display: none;
+}
+::ng-deep .ng-select .ng-select-container:hover{
+  box-shadow: unset;
+}

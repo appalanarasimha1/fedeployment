@@ -1527,7 +1527,7 @@ color: #ACACAC;
   transform: rotate(360deg);
 }
 }
-::ng-deep document-card img {
+/* ::ng-deep document-card img {
   max-height: 170px;
   min-width: 230px;
-}
+} */

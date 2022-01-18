@@ -117,8 +117,8 @@
            <div id='custom-select-status' class='hidden-visually' aria-live="polite"></div>
         </div>
         <div class="col-xl-9 col-md-9 flexible">
-           <div class="custom-select" id="myCustomSelect">
-              <input type="text" id="title" value="{{folderToAdd || selectedFolder?.title}}" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Search for existing folder or create new folder" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd}">
+           <div class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd}">
+              <input type="text" id="title" value="{{folderToAdd || selectedFolder?.title}}" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Search for existing folder or create new folder" >
 
               <span class="custom-select-icons">
               <i class="fa fa-caret-down"></i>
@@ -323,7 +323,7 @@
                        </div>
                     </li>
                     <li>
-                        <ng-select [items]="years"
+                        <ng-select [items]="years" class="yearssss"
                            bindLabel="name"
                            [(ngModel)]="copyrightYearMap[file.key]"
                            placeholder="Year" ngDefaultControl
