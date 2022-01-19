@@ -765,3 +765,33 @@ input.copyright-input {
 ::ng-deep .ng-select .ng-select-container:hover{
   box-shadow: unset;
 }
+::ng-deep .ng-arrow-wrapper .ng-arrow {
+  content: "";
+  background-image: url(../../assets/images/black-downarrow.png);
+  background-position: 0px 4px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 10px !important;
+    width: 10px !important;
+}
+ .goldenText ::ng-deep .ng-arrow-wrapper .ng-arrow {
+  background-image: url(../../assets/images/golden-arrow.png) !important ;
+  height: 10px !important;
+  width: 10px !important;
+}
+.publish-assets .fa-caret-down:before {
+  content: "";
+  background-image: url(../../assets/images/black-downarrow.png);
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 9px;
+  height: 8px;
+  position: absolute;
+  top: 5px;
+  left: -11px;
+  z-index: 99;
+}
+.publish-assets .goldenText  .fa-caret-down:before {
+  background-image: url(../../assets/images/golden-arrow.png);
+}

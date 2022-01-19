@@ -68,7 +68,7 @@
                     <option [selected]="customConfidentialityMap[i] === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                   </select> -->
     
-                  <ng-select name="confidentiality" 
+                  <ng-select name="confidentiality"  [searchable]="false" [clearable]="false"
                   (change)="onSelectConfidentiality(i)" 
                   [(ngModel)]="customConfidentialityMap[i]"
                   id="confidentiality"  
@@ -90,7 +90,7 @@
                   </select> -->
     
     
-                  <ng-select name="access" 
+                  <ng-select name="access" [searchable]="false" [clearable]="false"
                   (change)="onSelectAccess(i)" 
                   id="access" 
                   [(ngModel)]="customAccessMap[i]"

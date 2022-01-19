@@ -195,7 +195,7 @@
            <label for="confidentiality">Confidentiality</label>
         </div>
         <div class="col-xl-9 col-md-9 flexible">
-         <ng-select placeholder="Specify sensitivity" (change)="onSelectConfidentiality($event)" [(ngModel)]="confidentiality" id="confidentiality" [ngClass]="{'goldenText': confidentiality}">
+         <ng-select placeholder="Specify sensitivity" (change)="onSelectConfidentiality($event)" [searchable]="false" [clearable]="false" [(ngModel)]="confidentiality" id="confidentiality" [ngClass]="{'goldenText': confidentiality}">
             <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" [value]="c.value">
                 {{CONFIDENTIALITY_LABEL[c.value]}}
             </ng-option>
@@ -225,7 +225,7 @@
            <label for="access">Show to</label>
         </div>
         <div class="col-xl-9 col-md-3 flexible">
-         <ng-select placeholder="Specify visibility" (change)="onSelectAccess($event)" [(ngModel)]="access" id="access" [ngClass]="{'goldenText': access}">
+         <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="access" id="access" [ngClass]="{'goldenText': access}">
             <ng-option *ngFor="let c of ACCESS | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
                 {{ACCESS_LABEL[c.value]}}
             </ng-option>
@@ -272,7 +272,7 @@
            <label for="allow">Allow use in</label>
         </div>
         <div class="col-xl-9 col-md-3 flexible">
-         <ng-select placeholder="Specify permissible usage" (change)="onSelectAllow($event)" [(ngModel)]="allow" id="allow" [ngClass]="{'goldenText': allow}">
+         <ng-select placeholder="Specify permissible usage" [searchable]="false" [clearable]="false" (change)="onSelectAllow($event)" [(ngModel)]="allow" id="allow" [ngClass]="{'goldenText': allow}">
             <ng-option *ngFor="let c of ALLOW | keyvalue" [value]="c.value">
                 {{c.value}}
             </ng-option>
@@ -323,7 +323,7 @@
                        </div>
                     </li>
                     <li>
-                        <ng-select [items]="years" class="yearssss"
+                        <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
                            bindLabel="name"
                            [(ngModel)]="copyrightYearMap[file.key]"
                            placeholder="Year" ngDefaultControl
@@ -346,7 +346,7 @@
                  </select> -->
 
 
-                 <ng-select (change)="onSelectConfidentiality($event, file.key)" name="confidentiality" id="confidentiality" [ngModel]="confidentiality"  [ngClass]="{'goldenText': confidentiality }">
+                 <ng-select (change)="onSelectConfidentiality($event, file.key)" [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [ngModel]="confidentiality"  [ngClass]="{'goldenText': confidentiality }">
                   <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                   </ng-option>
                   </ng-select>
@@ -362,7 +362,7 @@
                  </select> -->
 
 
-                 <ng-select name="access" (change)="onSelectAccess($event, file.key)" id="access" [ngModel]="access" [ngClass]="{'goldenText': access }" >
+                 <ng-select name="access" (change)="onSelectAccess($event, file.key)" [searchable]="false" [clearable]="false" id="access" [ngModel]="access" [ngClass]="{'goldenText': access }" >
                   <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
                   </ng-option>
                   </ng-select>
@@ -403,7 +403,7 @@
 
 
 
-                 <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [ngModel]="allow" [ngClass]="{'goldenText': allow }" >
+                 <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [ngModel]="allow" [ngClass]="{'goldenText': allow }" >
                   <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
                   </ng-option>
                   </ng-select>

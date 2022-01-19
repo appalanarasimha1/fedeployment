@@ -3838,36 +3838,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #C49900 !important;
 }
 
-.publish-assets .fa-caret-down:before {
-  content: ">";
-  background-image: url(./assets/images/down-arrow.svg);
-  background-position: 0px 4px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 40px;
-  height: 10px;
-  color: transparent;
-  font-size: 19px;
-}
-.publish-assets .goldenText  .fa-caret-down:before {
-  content: ">";
-  background-image: url(./assets/images/golden-arrow.png);
-  background-position: 0px 4px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 40px;
-  height: 10px;
-  color: transparent;
-  font-size: 19px;
-}
+
 .publish-assets .ng-select .ng-arrow-wrapper .ng-arrow, 
 .publish-file-preview-img .ng-select .ng-arrow-wrapper .ng-arrow {
-  background-image: url(./assets/images/down-arrow.svg);
+  background-image: url(./assets/images/black-downarrow.png);
   background-position: 0px 3px;
   background-repeat: no-repeat;
   background-size: contain;
-  width: 12px;
-  height: 10px;
+  width: 9px !important;
+  height: 10px !important;
   border-width: 0px;
 }
 /* .modal-open {

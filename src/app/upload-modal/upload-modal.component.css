@@ -773,7 +773,7 @@ select option{
   align-items: end;
 }
 .copyright-form ul li:nth-child(2){
-  border-bottom: 1px solid #000;
+  border-bottom: 1.5px solid #000;
 }
 .copyright-input-block{
 
@@ -1046,10 +1046,43 @@ input.copyright-input::placeholder{
   color: #C49900 !important;
   border-color: #C49900 !important;
 }
-::ng-deep .ng-select .ng-clear-wrapper{
+/* ::ng-deep .ng-select .ng-clear-wrapper{
   display: none
-}
-::ng-deep .yearssss ng-dropdown-panel{ 
+} */
+/* ::ng-deep .yearssss ng-dropdown-panel{ 
   max-height: 120px;
   overflow: auto;
+} */
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+  max-height: 120px !important;
+}
+::ng-deep .ng-arrow-wrapper .ng-arrow {
+  content: "";
+  background-image: url(../../assets/images/black-downarrow.png);
+  background-position: 0px 4px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 10px !important;
+    width: 10px !important;
+}
+ .goldenText ::ng-deep .ng-arrow-wrapper .ng-arrow {
+  background-image: url(../../assets/images/golden-arrow.png) !important ;
+  height: 10px !important;
+  width: 10px !important;
+}
+.publish-assets .fa-caret-down:before {
+  content: "";
+  background-image: url(../../assets/images/black-downarrow.png);
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 9px;
+  height: 8px;
+  position: absolute;
+  top: 5px;
+  left: -11px;
+  z-index: 99;
+}
+.publish-assets .goldenText  .fa-caret-down:before {
+  background-image: url(../../assets/images/golden-arrow.png);
 }

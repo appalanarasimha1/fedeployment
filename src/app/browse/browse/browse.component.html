@@ -97,7 +97,7 @@
                   <li *ngFor="let item of searchList; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
-                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"
+                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"  data-toggle="tooltip" data-placement="right" title="{{item.title}}"
                       (click)="handleTest(item);selectedFolder=item;">
                       <img src="../../../assets/images/yellow-folder.png">
                       <div class="folder-content" style="background-color: #F9F7F2;">
@@ -145,7 +145,7 @@
             </div>
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
               <div class="col-xl-6 col-md-6" *ngFor="let item of searchList; let i = $index">
-                <div *ngIf="!checkAssetType(item.type)" class="list-container">
+                <div *ngIf="!checkAssetType(item.type)" class="list-container"  data-toggle="tooltip" data-placement="right" title="{{item.title}}">
                   <div class="list-image col-xl-2 col-md-2">
                     <fa-icon [icon]="['fas', 'image']" class="icons"></fa-icon>
                   </div>
