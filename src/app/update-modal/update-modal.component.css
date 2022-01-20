@@ -659,8 +659,11 @@ color: #23211E;
 }
 
 .goldenText{
-  color: #C49900;
+  color: #C49900  !important;
   border-color: #C49900 !important;
+}
+.goldenText .copyright-input-block{
+  color: #C49900 !important;
 }
 select option{
   color: #000;
@@ -697,7 +700,9 @@ select option{
   width: 20px;
   margin-right: 8px;
 }
-.copyright-form ul {display: block;position: relative;}
+.copyright-form ul {display: flex;
+  align-items: end;
+  position: relative;}
 .copyright-form ul li {
   display: inline-block;
 }
@@ -706,11 +711,12 @@ select option{
   width: 230px;
   font-size: 16px;
   font-weight: 600;
-  height: 38px;
-  line-height: 38px;
+  /* height: 38px;
+  line-height: 38px; */
+  /* height: 30px; */
   color: #040404;
 }
-.copyright-input-block:after {
+/* .copyright-input-block:after {
   content: '';
   position: absolute;
   left: 0px;
@@ -719,7 +725,7 @@ select option{
   height: 1px;
   background: #000;
   z-index: 9;
-}
+} */
 input.copyright-input {
   border: 0px;
   background: transparent;
@@ -750,9 +756,9 @@ input.copyright-input {
 ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
   position: unset !important;
 }
-::ng-deep .ng-select{
+/* ::ng-deep .ng-select{
   height: 30px !important;
-}
+} */
 ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
   overflow: visible !important;
 }
@@ -794,4 +800,23 @@ input.copyright-input {
 }
 .publish-assets .goldenText  .fa-caret-down:before {
   background-image: url(../../assets/images/golden-arrow.png);
+}
+::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow{
+  border-width: unset !important;
+  border-color: unset !important;
+  border-style: unset !important;
+}
+.copyright-form ul li:nth-child(2){
+  border-bottom: 1.5px solid #000;
+}
+.goldenText input {
+  color: #C49900 !important;
+  border-color: #C49900 !important;
+}
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+  max-height: 120px !important;
+}
+::ng-deep ng-select {
+  /* width: calc(100% - 50px); */
+  border-bottom: 1.5px solid #000 !important;
 }
