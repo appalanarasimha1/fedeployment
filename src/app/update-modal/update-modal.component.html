@@ -32,29 +32,29 @@
               <span>{{ doc.title }}</span>
              
               <div class="copyright-information">
-                <div (click)="openCopyright(i)" *ngIf="!openCopyrightMap[i]">
-                 <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
-                </div>
-                <div *ngIf="openCopyrightMap[i] || this.copyrightUserMap[i]" class="copyright-form">
-                   <ul>
-                      <li>
-                         <img (click)="closeCopyright(i)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
-                      </li>
-                      <li [ngClass]="{'goldenText':copyrightUserMap[i] }">
-                         <div class="copyright-input-block" >
-                          Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[i]" class="copyright-input">
-                         </div>
-                      </li>
-                      <li>
-                          <ng-select [items]="years" [searchable]="false" [clearable]="false"
-                             bindLabel="name"
-                             [(ngModel)]="copyrightYearMap[i]"
-                             placeholder="Year"  [ngClass]="{'goldenText': copyrightYearMap[i] }" ngDefaultControl>
-                          </ng-select>
-                      </li>
-                   </ul>
-                </div>
-             </div>
+                 <div (click)="openCopyright(i)" *ngIf="!openCopyrightMap[i]">
+                  <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
+                 </div>
+                 <div *ngIf="openCopyrightMap[i] || this.copyrightUserMap[i]" class="copyright-form">
+                    <ul>
+                       <li>
+                          <img (click)="closeCopyright(i)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
+                       </li>
+                       <li [ngClass]="{'goldenText':copyrightUserMap[i] }">
+                          <div class="copyright-input-block" >
+                           Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[i]" class="copyright-input">
+                          </div>
+                       </li>
+                       <li>
+                           <ng-select [items]="years" [searchable]="false" [clearable]="false"
+                              bindLabel="name"
+                              [(ngModel)]="copyrightYearMap[i]"
+                              placeholder="Year"  [ngClass]="{'goldenText': copyrightYearMap[i] }" ngDefaultControl>
+                           </ng-select>
+                       </li>
+                    </ul>
+                 </div>
+              </div>
             </div>
           </div>
           <div class="col-xl-6">
@@ -139,9 +139,53 @@
                     </ng-option>
                  </ng-select>
                 </div>
-              </div> 
+              </div> -->
+              <div class="upload-form-input row">
+                <div class="col-xl-4">
+                   <label for="allow">Allow use in</label>
+                </div>
+                <div class="col-xl-8">
+                  <ng-select name="allow" [searchable]="false" [clearable]="false"(change)="onSelectAllow($event.target.value, i)" id="allow" [ngClass]="{'goldenText': customAllowMap[i] }" [(ngModel)]="customAllowMap[i]">
+                    <!-- <ng-option  hidden disabled selected value></ng-option> -->
+                    <ng-option [selected]="customAllowMap[i] === c.value" *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
+                    </ng-option>
+                 </ng-select>
+
+
+                   <!-- <select name="allow" (change)="onSelectAllow($event.target.value, i)" id="allow" [ngClass]="{'goldenText': customAllowMap[i] }" >
+                   <option [selected]="customAllowMap[i] === c.value" *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}</option>
+                   </select>
+                </div> -->
+              </div>
             </div>
-          </div> 
+            
+          </div>
+          <!-- <div *ngIf="checkShowUserDropdown(i)" class="upload-form-input row" style="display: flex;">
+            <div class="col-xl-4">
+              <label for="user">Users</label>
+            </div>
+            <div class="col-xl-8">
+              <ng-select
+              [items]="userList$ | async"
+              bindLabel="id"
+              bindValue="id"
+              [multiple]="true"
+              [hideSelected]="true"
+              [trackByFn]="trackByFn"
+              [minTermLength]="2"
+              [loading]="userLoading"
+              typeToSearchText="Search users"
+              [typeahead]="userInput$"
+              [(ngModel)]="customUsersMap[i]"
+              [ngClass]="{'goldenText': customUsersMap[i]}">
+              <ng-template ng-option-tmp let-item="item">
+                {{item.id}} ({{item.fullname}})
+              </ng-template>
+            </ng-select>
+            </div>
+
+          </div> -->
+          
         </div>
         
         
