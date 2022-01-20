@@ -89,7 +89,16 @@ export const AGGREGATE_TAGS = {
     WEATHER_CLASSIFICATION: 'nxtag_weatherClassificationTag_agg',
 };
 
-export const unwantedTags = ['man-made', 'no horizon', 'vertical components', 'horizontal components', 'angry', 'sad', 'fear', 'disgust', 'test tag'];
+export const unwantedTags = [
+    'man-made',
+    'no horizon',
+    'vertical components',
+    'horizontal components',
+    'angry',
+    'sad',
+    'fear',
+    'disgust',
+    'test tag'];
 
 export const ASSET_SEARCH_PAGE_SIZE = 40;
 export const PAGE_SIZE_200 = 200;
