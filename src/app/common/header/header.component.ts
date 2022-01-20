@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     $(window).on('scroll', () => {
       const scroll = $(window).scrollTop();
-      if (scroll >= 80 && scroll <= 4000) {
+      if (scroll >= 80 && scroll <= 20000) {
         $('.searchHeading').addClass('fixedHeader');
       } else {
         if( window.location.pathname !== '/workspace' && window.location.pathname !== '/common/terms') {
