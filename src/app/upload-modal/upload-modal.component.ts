@@ -87,7 +87,7 @@ export class UploadModalComponent implements OnInit {
   showFolderNameField = false;
   agreeTerms = false;
 
-  
+
   years = [
     {id: 1, name: '2000'},
     {id: 2, name: '2001'},
@@ -249,7 +249,7 @@ export class UploadModalComponent implements OnInit {
   filterWorkspaces(title: string): boolean {
     if(UNWANTED_WORKSPACES.indexOf(title.toLowerCase()) === -1) {
       return true;
-    } 
+    }
     return false;
   }
 
@@ -398,6 +398,7 @@ export class UploadModalComponent implements OnInit {
     this.disableDateInput = true;
     this.associatedDate = this.selectedFolder.properties["dc:start"];
     this.descriptionFilled = true;
+    this.description = this.selectedFolder.properties["dc:description"];
   }
 
   addNewFolder(folderName) {
@@ -408,6 +409,7 @@ export class UploadModalComponent implements OnInit {
     this.showCustomDropdown = false;
     this.disableDateInput = false;
     this.associatedDate = "";
+    this.description = "";
   }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
@@ -735,7 +737,7 @@ export class UploadModalComponent implements OnInit {
       })
     );
   }
-  
+
   getAssetNumber(): number {
     return Object.keys(this.filesMap).length;
   }
