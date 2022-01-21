@@ -820,3 +820,13 @@ input.copyright-input {
   /* width: calc(100% - 50px); */
   border-bottom: 1.5px solid #000 !important;
 }
+::ng-deep .ng-select .ng-select-container, ::ng-deep .ng-select.ng-select-single .ng-select-container{
+  min-height: unset !important;
+  height: unset !important;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
+  display: revert !important;
+}
+::ng-deep ng-value-label{
+  padding-left: 27px !important;
+}
