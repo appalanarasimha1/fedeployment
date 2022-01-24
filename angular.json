@@ -73,6 +73,14 @@
                   "with": "src/environments/environment.uat.ts"
                 }
               ]
+            },
+            "development":{
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           }
         },
