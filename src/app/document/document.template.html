@@ -13,7 +13,7 @@
 
 
 
-  <div class="customTab" *ngIf="checkShowRecent()">
+  <div class="customTab" *ngIf="!checkShowDetailview()">
     <div id="exTab2" class="container">
       <h2 class="commonHeading pb-4" style="font-size: 28px">Recent activities</h2>
       <ul class="nav nav-tabs">
@@ -23,7 +23,7 @@
 
       <div class="tab-content">
         <div class="tab-pane active" id="recentlyUploaded">
-          <!-- <div class="show-all">Show all</div> -->
+          <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
             #slickModal="slick-carousel"
@@ -42,7 +42,7 @@
           </ngx-slick-carousel>
         </div>
         <div class="tab-pane" id="recentlyViewed">
-          <!-- <div class="show-all">Show all</div> -->
+          <div (click)="showAll('recentView')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
             #slickModal="slick-carousel"
@@ -82,7 +82,7 @@
       </div>
       <div *ngIf="favourites.length" class="tab-content">
         <div class="tab-pane active" id="favourite">
-          <!-- <div class="show-all">Show all</div> -->
+          <div (click)="showAll('favourite')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
             #slickModal="slick-carousel"
@@ -106,8 +106,14 @@
 
   <section class="search-subpage pt-5 pb-5">
 
-    <div *ngIf="!checkShowRecent()" class="container">
+    <div *ngIf="checkShowDetailview()" class="container">
       <div class="row" style="justify-content: space-between">
+        <div class="back-btn" (click)="resetResult()">
+          &lt; Back
+        </div>
+        <div class="view-title">
+          <span>{{getDetailViewTitle()}}</span>
+        </div>
         <div class="main-headingSearch flexible pb-4 col-xl-8" style="align-items: baseline;">
           <span *ngIf="searchTerm.ecm_fulltext" (click)="resetResult()" class="commonHeading" style="font-size: 28px; text-transform: capitalize; cursor: pointer;">
             {{searchTerm.ecm_fulltext}} <img src="../assets/images/circle-close.png" style="width: 14px;margin-left: 3px;">
@@ -115,7 +121,7 @@
           <!-- <span class="numberFiles">{{documents.resultsCount}} files</span> -->
        </div>
 
-        <div class="col-xl-4">
+        <div class="col-xl-4"  *ngIf="detailView !== 'recentView'">
           <div class="row" style="">
             <div class="col-xl-8">
               <span><b>Sort by:</b> </span>
@@ -173,7 +179,7 @@
 
 
 
-      <div class="filterMenuRow">
+      <div class="filterMenuRow" *ngIf="detailView !== 'recentView'">
         <div ngbDropdown class="d-inline-block mb-4 sectorsDropdown">
           <!-- <button class="btn" id="dropdownBasic5" ngbDropdownToggle>{{sortValue || 'Select a sector'}}</button> -->
           <!-- <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
@@ -223,7 +229,7 @@
 
               <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
                 <div ngxMasonryItem class="masonry-item"
-                  *ngFor="let doc of documents.entries.slice(0, docSliceInput); let i = index">
+                  *ngFor="let doc of documents.entries?.slice(0, docSliceInput); let i = index">
                   <!-- <img *ngIf="doc.type === 'Picture" id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt=""
                 (click)="open(file, 'image')" /> -->
                   <document-card
@@ -260,7 +266,7 @@
           style="text-align: center; cursor: pointer;color: #8E6B0B;">Show more</div>
       </div>
     </div>
-    <div *ngIf="!loading && !documents?.entries?.length && !checkShowRecent()" class="row">
+    <div *ngIf="!loading && !documents?.entries?.length && checkShowDetailview()" class="row">
       <div class="col-xl-12 col-md-12 ">
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/search.svg" style="width: 50px;">

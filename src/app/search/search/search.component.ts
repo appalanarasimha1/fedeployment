@@ -8,6 +8,7 @@ import { SharedService } from '../../services/shared.service';
 import { AGGREGATE_TAGS, constants, TAG_ATTRIBUTES, unwantedTags } from 'src/app/common/constant';
 import { DataService } from 'src/app/services/data.service';
 import { SideDrawerComponent } from 'src/app/common/sideDrawer/sideDrawer.component';
+import { DocumentComponent } from 'src/app/document/document.component';
 
 @Component({
   selector: 'app-search',
@@ -16,6 +17,7 @@ import { SideDrawerComponent } from 'src/app/common/sideDrawer/sideDrawer.compon
 })
 export class SearchComponent implements OnInit {
   @ViewChild('advancedFilter') advancedFilter: SideDrawerComponent;
+  @ViewChild('documentsView') documentsView: DocumentComponent;
   searchValue: IHeaderSearchCriteria = { ecm_fulltext: '', highlight: '' };
   documents: any = { aggregations: {}, entries: [], resultsCount: 0 };
   loading = false;
@@ -50,6 +52,11 @@ export class SearchComponent implements OnInit {
   sectors = [];
   firstCallResult = true;
 
+  detailViewType: string;
+
+  user: any;
+  favoriteCollectionId: string;
+
   // TypeScript public modifiers
   constructor(
     public nuxeo: NuxeoService,
@@ -59,6 +66,8 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.fetchUserData();
+    this.fetchFavoriteCollection();
 
     if (!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
       this.sharedService.redirectToLogin();
@@ -88,6 +97,12 @@ export class SearchComponent implements OnInit {
   }
 
   searchTerm(data: IHeaderSearchCriteria) {
+    if (this.detailViewType) {
+      this.resetFilter(false);
+      this.documentsView.resetView();
+      this.detailViewType = null;
+    }
+
     this.searchValue = data;
 
     this.searchDocuments(data);
@@ -143,8 +158,24 @@ export class SearchComponent implements OnInit {
 
   fetchApiResult(params, isShowMore: boolean = false) {
     const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions', 'preview'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
+    let url = apiRoutes.SEARCH_PP_ASSETS;
+
+    switch(this.detailViewType) {
+      case "recentUpload":
+        url = apiRoutes.FETCH_RECENT_UPLOAD;
+        params.queryParams = this.user;
+        break;
+      case "recentView":
+        url = "";
+        break;
+      case "favourite":
+        url = apiRoutes.FETCH_FAVORITE;
+        params.queryParams = this.favoriteCollectionId;
+        break;
+    }
+    if (!url) return;
+
     this.dataService.loaderValueChange(true);
-    const url = apiRoutes.SEARCH_PP_ASSETS;
     this.nuxeo.nuxeoClient.request(url, { queryParams: params, headers })
       .get().then((docs) => {
         this.setData(docs, isShowMore);
@@ -205,7 +236,7 @@ export class SearchComponent implements OnInit {
       this.resetResults();
     }
     this.resetTagsMetadata();
-    if (isShowMore) this.documents.entries = new Object(this.documents.entries.concat(data.entries)); 
+    if (isShowMore) this.documents.entries = new Object(this.documents.entries.concat(data.entries));
     else this.documents = data;
   }
 
@@ -340,7 +371,7 @@ export class SearchComponent implements OnInit {
   // setTagsMetadata(): void {
   //   this.tagsMetadata = this.metaData.system_tag_agg;
   // }
-  
+
   setTagsMetadata() {
     this.tagsMetadata = this.metaData.system_tag_agg || [];
     this.metaData[AGGREGATE_TAGS.ACTIVITY_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
@@ -378,19 +409,42 @@ export class SearchComponent implements OnInit {
     };
   }
 
-  resetFilter() {
+  resetFilter(reload = true) {
     const tmpFilters = Object.assign({}, this.filtersParams);
     const params = {};
     params['ecm_fulltext'] = tmpFilters['ecm_fulltext'] || '';
     params['highlight'] = tmpFilters['highlight'] || '';
     this.resetAggregationsMetaData();
-    this.filters(params);
+    if (reload) {
+      this.filters(params);
+    } else {
+      this.filtersParams = params;
+    }
     this.advancedFilter.resetFilter();
     // this.dataService.resetFilterInit();
   }
 
   openFilterModal(type) {
     this.advancedFilter.openModal(type);
+  }
+
+  selectDetailViewType(detailViewType) {
+    this.detailViewType = detailViewType;
+    this.resetFilter();
+  }
+
+  async fetchUserData() {
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.connect();
+      this.user = res.user.id;
+    }
+  }
+
+  async fetchFavoriteCollection() {
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.operation("Favorite.Fetch").execute();
+      this.favoriteCollectionId = res.uid;
+    }
   }
 
 }
