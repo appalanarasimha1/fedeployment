@@ -14,7 +14,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS, ACCESS_LABEL, CONFIDENTIALITY_LABEL, UNWANTED_WORKSPACES } from "./constant";
+import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS, ACCESS_LABEL, CONFIDENTIALITY_LABEL, UNWANTED_WORKSPACES, ALLOW_VALUE_MAP } from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -524,6 +524,7 @@ export class UploadModalComponent implements OnInit {
           "upload-batch": this.batchId,
           "upload-fileId": `${index}`,
         },
+        "dc:creator": "mudit",
         "dc:description": this.description,
         "dc:path": folder.path,
         "dc:parentId": folder.id,
@@ -740,5 +741,9 @@ export class UploadModalComponent implements OnInit {
 
   getAssetNumber(): number {
     return Object.keys(this.filesMap).length;
+  }
+
+  checkOwnerDropdown() {
+    return ALLOW_VALUE_MAP[this.allow] === 'Permission Required';
   }
 }

@@ -29,7 +29,7 @@ export const ALLOW = {
 
 export const ALLOW_VALUE_MAP = {
   "Anywhere (including external material)": '',
-  "Internal publications only": "Internal Only",
+  "Internal publications only": "Internal Use",
   "Request owner's permission before use": "Permission Required"
 };
 

@@ -282,7 +282,35 @@
             <span class="tooltiptext">Ground X advises users of permissible usage as specified here. You may also choose to give your permission for each download request.</span>
          </div>
         </div>
-     </div>
+      </div>
+      <div *ngIf="checkOwnerDropdown()" class="upload-form-input row">
+          <div class="col-xl-3 col-md-3">
+             <label for="user">Users</label>
+          </div>
+          <!-- <div class="col-xl-3 col-md-3">
+             <label for="date">Please specific <br><span style="font-size: 14px">the owner</span></label>
+          </div> -->
+          <div class="col-xl-9 col-md-9">
+             <p class="userText pb-2">Please specific the owner</p>
+             <ng-select style="height: unset !important;"
+             [items]="userList$ | async"
+             bindLabel="id"
+             bindValue="id"
+             [multiple]="true"
+             [hideSelected]="true"
+             [trackByFn]="trackByFn"
+             [minTermLength]="2"
+             [loading]="userLoading"
+             typeToSearchText="Search users"
+             [typeahead]="userInput$"
+             [(ngModel)]="selectedUsers"
+             [ngClass]="{'goldenText': selectedUsers }" >
+             <ng-template ng-option-tmp let-item="item">
+                {{item.id}} ({{item.fullname}})
+             </ng-template>
+             </ng-select>
+          </div>
+       </div>
   </div>
 </div>
 <div *ngIf="step === 3">
@@ -409,6 +437,34 @@
                   </ng-select>
               </div>
            </div>
+           <div *ngIf="checkOwnerDropdown()" class="upload-form-input row">
+               <div class="col-xl-3 col-md-3">
+                  <label for="user">Users</label>
+               </div>
+               <!-- <div class="col-xl-3 col-md-3">
+                  <label for="date">Please specific <br><span style="font-size: 14px">the owner</span></label>
+               </div> -->
+               <div class="col-xl-9 col-md-9">
+                  <p class="userText pb-2">Please specific the owner</p>
+                  <ng-select style="height: unset !important;"
+                  [items]="userList$ | async"
+                  bindLabel="id"
+                  bindValue="id"
+                  [multiple]="true"
+                  [hideSelected]="true"
+                  [trackByFn]="trackByFn"
+                  [minTermLength]="2"
+                  [loading]="userLoading"
+                  typeToSearchText="Search users"
+                  [typeahead]="userInput$"
+                  [(ngModel)]="selectedUsers"
+                  [ngClass]="{'goldenText': selectedUsers }" >
+                  <ng-template ng-option-tmp let-item="item">
+                     {{item.id}} ({{item.fullname}})
+                  </ng-template>
+                  </ng-select>
+               </div>
+            </div>
         </div>
      </div>
   </div>
