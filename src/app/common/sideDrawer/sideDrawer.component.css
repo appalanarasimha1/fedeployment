@@ -9,12 +9,14 @@
 }
 .filter-box {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  min-height: 400px;
-  max-height: 550px;
+  top: 0%;
+  left: 0%;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  /* transform: translate(-50%, -50%); */
+  height: max-content;
+  /* max-height: 550px; */
   padding-bottom: 30px;
   width: 630px;
   background-image: url(~/../../../../assets/images/PopUpBackground.png);
@@ -39,6 +41,9 @@
     padding: 5px 26px;
     font-size: 16px;
     font-weight: 600;
+}
+::ng-deep .dropdown-list{
+  position: relative !important;
 }
 .filter-form {
   display: flex;
