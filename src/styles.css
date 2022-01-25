@@ -23,6 +23,9 @@ body{
   font-family: myBrown !important;
   position: relative;
 }
+.mat-stepper-vertical, .mat-stepper-horizontal{
+  font-family: myBrown !important;
+}
 /* Change the white to any color */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

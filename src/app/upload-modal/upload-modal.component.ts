@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { HttpEventType, HttpResponse } from "@angular/common/http";
 import { MatDialogRef } from '@angular/material/dialog';
+// import { MatStepper } from "@angular/material/stepper";
 import Nuxeo from "nuxeo";
 import { concat, Observable, of, Subject } from "rxjs";
 import {
@@ -19,6 +20,7 @@ import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 interface FileByIndex {
   [index: string]: File;
 }
@@ -41,6 +43,7 @@ const BUTTON_LABEL = {
   styleUrls: ["./upload-modal.component.css"],
 })
 export class UploadModalComponent implements OnInit {
+  isLinear = false;
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;

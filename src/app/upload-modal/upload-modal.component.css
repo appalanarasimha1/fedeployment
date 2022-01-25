@@ -120,7 +120,7 @@ ngx-dropzone-preview:hover {
 }
 .button-groups {
   display: flex;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   width: 100%;
 }
 .button-groups button {
@@ -1085,4 +1085,18 @@ input.copyright-input::placeholder{
 }
 .publish-assets .goldenText  .fa-caret-down:before {
   background-image: url(../../assets/images/golden-arrow.png);
+}
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+::ng-deep .mat-step-header .mat-step-icon-selected,::ng-deep .mat-step-header .mat-step-icon-state-done,::ng-deep .mat-step-header .mat-step-icon-state-edit{
+  background-color: #C49900;
+
+}
+::ng-deep .mat-step-header.cdk-keyboard-focused, ::ng-deep .mat-step-header.cdk-program-focused, ::ng-deep .mat-step-header:hover {
+  background-color: unset;
 }
