@@ -9,4 +9,4 @@ export const environment = {
       clientId: 'nuxeo-client-public',
     }
   };
-  
+  import 'zone.js/dist/zone-error';  // Included with Angular CLI.

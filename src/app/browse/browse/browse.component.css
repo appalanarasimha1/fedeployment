@@ -304,10 +304,10 @@ font-weight: 600;
 }
 .all-sectors li {
   display: inline-block;
-  margin-right: 15px;
-  margin-bottom: 15px;
+  margin-right: 5px;
+  margin-bottom: 10px;
   cursor: pointer;
-  max-width: 200px;
+  max-width: 187px;
   /* max-height: 150px; */
 }
 ::ng-deep .all-sectors li #fileId{
