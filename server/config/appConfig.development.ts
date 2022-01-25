@@ -11,7 +11,7 @@ export class AppConfigDevelopment {
       USER_TABLE: 'userDirectory',
       VIDEO_TABLE: 'personalizedVideoInventory'
     },
-    domain: 'https://uatgroundx.neom.com/'
+    domain: 'https://dev2groundx.neom.com/'
   };
 
   public static get Config(): any {
