@@ -92,6 +92,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectors: string[] = [];
   sectorSelected;
   favourites = [];
+  sectorsHomepage: string[] = [];
+  assetsBySector = [];
 
   filtersCount = 0;
 
@@ -112,6 +114,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.getRecentlyViewed();
     this.getFavorites();
+    this.getAssetBySectors();
     this.showRecentlyViewed = true;
     this.dataService.showHideLoader$.subscribe((value) => {
       this.loading = value;
@@ -194,6 +197,33 @@ export class DocumentComponent implements OnInit, OnChanges {
       }
   }
 
+  getAssetBySectors(sector = '') {
+    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16 };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
+    if (sector) {
+      queryParams['dublincore_sector_agg'] = `["${sector}"]`;
+    }
+    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers}).get()
+      .then((response) => {
+        if(response) {
+          this.assetsBySector = response.entries ? flatten(response?.entries) : [];
+          this.sectorsHomepage = response.aggregations['dublincore_sector_agg']?.buckets.map(b => b.key) || [];
+        }
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
+      })
+      .catch((error) => {
+        this.loading = false;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        return;
+      });
+  }
+
   getFavouriteCollection(favouriteUid: string) {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
@@ -218,6 +248,11 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectorSelect(value: string) {
     this.sectorSelected = value;
     this.dataService.sectorChange(value);
+  }
+
+  assetsBySectorSelect(value: string) {
+    this.sectorSelected = value;
+    this.getAssetBySectors(value);
   }
 
   calculateNoResultScreen() {
@@ -647,6 +682,8 @@ export class DocumentComponent implements OnInit, OnChanges {
         return 'Recently Viewed'
       case "favourite":
         return 'Your Favorites';
+      case "sectorPage":
+        return 'Asset by Sectors';
     }
 
     return '';
@@ -657,6 +694,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailView = null;
     this.detailDocuments = null;
     this.selectedType = 'all';
+    if (this.sectorSelected) {
+      this.getAssetBySectors()
+      this.sectorSelected = null;
+    }
   }
 
 

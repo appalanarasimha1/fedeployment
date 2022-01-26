@@ -172,6 +172,10 @@ export class SearchComponent implements OnInit {
         url = apiRoutes.FETCH_FAVORITE;
         params.queryParams = this.favoriteCollectionId;
         break;
+      case "sectorPage":
+        if (this.documentsView.sectorSelected)
+          params['dublincore_sector_agg'] = `["${this.documentsView.sectorSelected}"]`;
+        break;
     }
     if (!url) return;
 
