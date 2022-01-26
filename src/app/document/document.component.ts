@@ -13,6 +13,7 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 import { DataService } from '../services/data.service';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 import { UNWANTED_WORKSPACES } from '../upload-modal/constant';
+import { flatten } from 'lodash';
 
 
 @Component({
@@ -198,7 +199,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
     this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
       .then((response) => {
-        if(response) this.favourites = response?.entries;
+        if(response) this.favourites = response?.entries ? flatten(response?.entries) : [];
         setTimeout(() => {
           this.loading = false;
         }, 0);
