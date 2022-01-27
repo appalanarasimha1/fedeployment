@@ -125,9 +125,11 @@ export class UploadModalComponent implements OnInit {
     infinite: true,
     speed: 300,
     slidesToShow: 14,
+    slidesToScroll : 4,
     centerMode: false,
     variableWidth: true
   };
+  
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
