@@ -1531,3 +1531,12 @@ color: #ACACAC;
   max-height: 170px;
   min-width: 230px;
 } */
+
+.back-btn {
+  cursor: pointer;
+}
+.view-title {
+  font-size: 25px;
+  font-weight: 700;
+  padding: 5px 0;
+}

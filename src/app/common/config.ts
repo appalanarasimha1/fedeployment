@@ -18,5 +18,7 @@ export const apiRoutes = {
     ADD_PERMISSION: '/automation/Document.AddPermission',
     REMOVE_ACL: '/automation/Document.RemoveACL',
     NXQL_SEARCH: '/search/pp/nxql_search/execute',
-    FETCH_PERSONALIZED_VIDEO: '/fetchPersonalizedVideo'
+    FETCH_PERSONALIZED_VIDEO: '/fetchPersonalizedVideo',
+    FETCH_RECENT_UPLOAD: '/search/pp/recent_upload/execute',
+    FETCH_FAVORITE: '/search/pp/favoritepp/execute'
 };
