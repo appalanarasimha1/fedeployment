@@ -472,6 +472,32 @@ export class DocumentComponent implements OnInit, OnChanges {
     event.toElement.play();
   }
 
+  cleanStringify(object) {
+    if (object && typeof object === 'object') {
+        object = copyWithoutCircularReferences([object], object);
+    }
+    return JSON.stringify(object);
+
+    function copyWithoutCircularReferences(references, object) {
+        var cleanObject = {};
+        Object.keys(object).forEach(function(key) {
+            var value = object[key];
+            if (value && typeof value === 'object') {
+                if (references.indexOf(value) < 0) {
+                    references.push(value);
+                    cleanObject[key] = copyWithoutCircularReferences(references, value);
+                    references.pop();
+                } else {
+                    cleanObject[key] = '###_Circular_###';
+                }
+            } else if (typeof value !== 'function') {
+                cleanObject[key] = value;
+            }
+        });
+        return cleanObject;
+    }
+  }
+
   // TODO: move to shared service
   markRecentlyViewed(data: any) {
     let found = false;
@@ -486,13 +512,13 @@ export class DocumentComponent implements OnInit, OnChanges {
       });
     }
     if (found) {
-      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, this.cleanStringify(recentlyViewed));
       return;
     }
 
     data['isSelected'] = false;
     recentlyViewed.push(data);
-    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, this.cleanStringify(recentlyViewed));
     return;
   }
 
