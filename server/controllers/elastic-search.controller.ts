@@ -1,16 +1,18 @@
 import { Request, Response, Router } from 'express';
-import { DBService } from '../services/dbService';
+import { ElasticSearchService } from '../services/elastic.service';
 import fs from 'fs';
 import path from 'path';
-// import { ResponseHandler } from '../common/ResponseHandler';
 
-export class PersonalizedVideoController {
-  private static instance: PersonalizedVideoController;
+export class ElasticSearchController {
+  private static instance: ElasticSearchController;
   private router: Router = Router();
 
   constructor() {
-    this.router.get('/', this.getPersonalizedVideo);
-    this.router.get('/video', this.streamPersonalizedVideo);
+    this.router.get('/', this.getMostSearchedBycount);
+
+  }
+
+  public async getMostSearchedBycount() {
 
   }
 
@@ -69,44 +71,6 @@ export class PersonalizedVideoController {
     }
   }
 
-  streamPersonalizedVideo(req: Request, res: Response) {
-    try {
-      const body: { username?: any, sector?: any, videoId?: string, location?: string } = req.query;
-      const videoLocation =  `${body.sector}/${body.videoId}.mp4`; //body.location?.toLowerCase() === 'general' ? `${body.sector}/default.mp4` :
-      const path1 = path.join(__dirname + `/../../../../../personalizedVideo/${videoLocation}`); // TODO: video path and video name to be fetched from params
-      const stat = fs.statSync(path1);
-      const fileSize = stat.size;
-      const range = req.headers.range;
-      if (range) {
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const end = parts[1]
-          ? parseInt(parts[1], 10)
-          : fileSize - 1;
-        const chunksize = (end - start) + 1;
-        const file = fs.createReadStream(path1, { start, end });
-        const head = {
-          'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-          'Accept-Ranges': 'bytes',
-          'Content-Length': chunksize,
-          'Content-Type': 'video/avi', // TODO: make 'avi' dynamic, get it in params 
-        }
-        res.writeHead(206, head);
-        file.pipe(res);
-      } else {
-        const head = {
-          'Content-Length': fileSize,
-          'Content-Type': 'video/avi', // TODO: make 'avi' dynamic, get it in params 
-        }
-        res.writeHead(200, head);
-        fs.createReadStream(path1).pipe(res);
-      }
-    } catch (e) {
-      console.log(e);
-      res.send({message: e});
-      return;
-    }
-  }
 
   /**
    * Function to return /keywords router.
@@ -117,12 +81,12 @@ export class PersonalizedVideoController {
   }
 
   /**
-   * Function to return instance of PersonalizedVideoController class.
-   * @constructor - PersonalizedVideoController.
+   * Function to return instance of ElasticSearchController class.
+   * @constructor - ElasticSearchController.
    */
-  public static get Instance(): PersonalizedVideoController {
+  public static get Instance(): ElasticSearchController {
     if (!this.instance) {
-      this.instance = new PersonalizedVideoController();
+      this.instance = new ElasticSearchController();
     }
     return this.instance;
   }
