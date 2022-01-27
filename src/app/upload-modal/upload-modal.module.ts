@@ -11,6 +11,7 @@ import { UploadModalComponent } from "./upload-modal.component";
 import { SharedModule } from "../shared/shared.module";
 import { MatInputModule } from '@angular/material/input';
 import {MatStepperModule} from '@angular/material/stepper';
+import {MatExpansionModule} from '@angular/material/expansion';
 @NgModule({
   declarations: [UploadModalComponent],
   imports: [
@@ -24,7 +25,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     NgSelectModule,
     SharedModule,
     MatInputModule,
-    MatStepperModule
+    MatStepperModule,
+    MatExpansionModule
   ],
 })
 export class UploadModalModule {}

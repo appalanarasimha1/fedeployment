@@ -23,7 +23,7 @@ body{
   font-family: myBrown !important;
   position: relative;
 }
-.mat-stepper-vertical, .mat-stepper-horizontal{
+.mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel-header, .mat-expansion-panel-content, .mat-calendar{
   font-family: myBrown !important;
 }
 /* Change the white to any color */

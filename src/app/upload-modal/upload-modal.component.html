@@ -117,7 +117,7 @@
             </div>
          </div>
          <div class="upload-form">
-            <div class="row upload-form-input">
+            <div class="row upload-form-input mb-20">
                <div class="col-xl-3 col-md-3">
                   <label for="title"> Title<br>
                   <span style="font-size: 14px">Project or event name</span></label>
@@ -145,7 +145,6 @@
                             </div>
                          </div>
                       </li>
-       
                         <li *ngIf="showFolderNameField" class="styled yellowfix">
                            <div class="add-new-option">
                               <div class="flexible">
@@ -166,38 +165,58 @@
                   <!-- <mat-icon class="info-icon" matTooltip="Select an existing folder or create a new folder">info</mat-icon> -->
                </div>
             </div>
-            <div class="upload-form-input row">
-             <div class="col-xl-3 col-md-3">
-                <label for="title">Description <br><span style="font-size: 14px">(optional)</span></label>
-             </div>
-             <div class="col-xl-9 col-md-9"  [ngClass]="{'grayField': descriptionFilled}">
-                <textarea [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
-             </div>
+            <div class="update-form-input row mb-20">
+               <div class="col-xl-3 col-md-3"></div>
+          
+            <div class="col-xl-9 col-md-9">
+               <mat-accordion>
+                  <mat-expansion-panel (opened)="panelOpenState = true"
+                  (closed)="panelOpenState = false" >
+                     <mat-expansion-panel-header class="set-width" >
+                   
+                     <mat-panel-description class="goldenText mb-20" style="font-size: 14px !important">
+                      {{panelOpenState ? 'Show' : 'Hide'}} additional information
+                     </mat-panel-description>
+                     </mat-expansion-panel-header>
+                     <div class="upload-form-input row mb-20">
+                        <div class="col-xl-3 col-md-3">
+                           <label for="title">Description <br><span style="font-size: 14px">(optional)</span></label>
+                        </div>
+                        <div class="col-xl-9 col-md-9"  [ngClass]="{'grayField': descriptionFilled}">
+                           <textarea [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
+                        </div>
+                       </div>
+                       <div class="row upload-form-input custom-date-picker mb-20">
+                          <div class="col-xl-3 col-md-3">
+                             <label for="date">Associated Date <br><span style="font-size: 14px">(optional)</span></label>
+                          </div>
+                          <div class="col-xl-9 col-md-9 flexible" [ngClass]="{'grayField': disableDateInput}">
+                             <mat-form-field appearance="fill">
+                                <!-- <mat-label>Choose a date</mat-label> -->
+                                <!-- #docregion toggle -->
+                                <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                                placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()" [disabled]="disableDateInput" [ngClass]="{'goldenText': associatedDate}">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <!-- #enddocregion toggle -->
+                             </mat-form-field>
+                             <!-- <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;"> -->
+                             <!-- <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+                                <mat-datepicker #myDatepicker></mat-datepicker> -->
+                             <!-- <input type="date" id="start" name="trip-start" [(ngModel)]="associatedDate" style="border-bottom: 1.5px solid #000;"> -->
+                             <!-- <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;">
+                                <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+                                <mat-datepicker #myDatepicker></mat-datepicker> -->
+                          </div>
+                       </div>
+                     </mat-expansion-panel>
+                  </mat-accordion>
             </div>
-            <div class="row upload-form-input custom-date-picker">
-               <div class="col-xl-3 col-md-3">
-                  <label for="date">Associated Date <br><span style="font-size: 14px">(optional)</span></label>
-               </div>
-               <div class="col-xl-9 col-md-9 flexible" [ngClass]="{'grayField': disableDateInput}">
-                  <mat-form-field appearance="fill">
-                     <!-- <mat-label>Choose a date</mat-label> -->
-                     <!-- #docregion toggle -->
-                     <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
-                     placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()" [disabled]="disableDateInput" [ngClass]="{'goldenText': associatedDate}">
-                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                     <mat-datepicker #picker></mat-datepicker>
-                     <!-- #enddocregion toggle -->
-                  </mat-form-field>
-                  <!-- <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;"> -->
-                  <!-- <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
-                     <mat-datepicker #myDatepicker></mat-datepicker> -->
-                  <!-- <input type="date" id="start" name="trip-start" [(ngModel)]="associatedDate" style="border-bottom: 1.5px solid #000;"> -->
-                  <!-- <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;">
-                     <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
-                     <mat-datepicker #myDatepicker></mat-datepicker> -->
-               </div>
-            </div>
-            <div class="upload-form-input row">
+            
+         </div>
+
+ 
+            <div class="upload-form-input row mb-20">
                <div class="col-xl-3 col-md-3">
                   <label for="confidentiality">Confidentiality</label>
                </div>
@@ -227,7 +246,7 @@
                   </div>
                </div>
             </div>
-            <div class="upload-form-input row">
+            <div class="upload-form-input row mb-20">
                <div class="col-xl-3 col-md-3">
                   <label for="access">Show to</label>
                </div>
@@ -274,7 +293,7 @@
                   </ng-select>
                </div>
             </div>
-            <div class="upload-form-input row">
+            <div class="upload-form-input row mb-20">
                <div class="col-xl-3 col-md-3">
                   <label for="allow">Allow use in</label>
                </div>

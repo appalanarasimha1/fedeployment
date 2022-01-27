@@ -44,6 +44,7 @@ const BUTTON_LABEL = {
 })
 export class UploadModalComponent implements OnInit {
   isLinear = false;
+  panelOpenState = false;
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;

@@ -223,10 +223,9 @@ color: #FFFFFF;
 .upload-form {
   margin: 0px  2px;
 }
-.upload-form-input {
+
+.mb-20{
   margin-bottom: 20px;
-      /* display: flex;
-      align-items: end; */
 }
 .upload-form-input label {
   font-size: 16px;
@@ -1008,8 +1007,10 @@ input.copyright-input::placeholder{
   right: 0px !important;
   box-shadow: 2px 2px 6px 3px rgb(0 0 0 / 25%);
   border-radius: 8px;
-  left: 848px !important;
+  left: 725px !important;
   bottom: 83px !important;
+  overflow: hidden;
+  height: max-content !important;
 }
 ::ng-deep .mat-calendar-body-today.mat-calendar-body-selected{
   box-shadow: unset !important;
@@ -1099,4 +1100,44 @@ input.copyright-input::placeholder{
 }
 ::ng-deep .mat-step-header.cdk-keyboard-focused, ::ng-deep .mat-step-header.cdk-program-focused, ::ng-deep .mat-step-header:hover {
   background-color: unset;
+}
+::ng-deep mat-expansion-panel.mat-expansion-panel{
+  /* width: calc(100% - 50px); */
+  box-shadow: unset !important;
+  padding: 0px;
+  display: unset;
+}
+::ng-deep .mat-expansion-panel-header{
+  padding: 0px !important
+}
+::ng-deep .mat-expansion-panel-body{
+
+  padding: 0px !important;
+}
+::ng-deep .mat-content{
+  flex: unset !important
+}
+
+.set-width{
+  width: calc(100% - 50px);
+  height: unset !important;
+}
+::ng-deep .mat-expansion-panel-header-description,::ng-deep .mat-expansion-indicator::after{
+  color: #C49900 !important;
+}
+::ng-deep .mat-expansion-indicator::after {
+  border-width: 0 1.5px 1.5px 0px !important;
+  padding: 2.5px !important;
+  transform: rotate(-45deg) !important;
+  position: absolute !important;
+  top: -12px !important;
+}
+::ng-deep .mat-expanded .mat-expansion-indicator::after{
+    top: 6px !important;
+    transform: rotate(
+225deg
+) !important;
+}
+::ng-deep .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]),::ng-deep .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]),::ng-deep .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){
+  background-color: unset !important;
 }
