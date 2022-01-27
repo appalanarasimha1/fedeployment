@@ -134,7 +134,7 @@
                         <div style="    min-height: 52px;
                         max-height: 150px;
                         overflow: auto;">
-                        <li *ngFor="let folder of dropdownFolderList" (click)="selectFolder(folder)" class="styled">{{folder.title}}</li>
+                        <li *ngFor="let folder of dropdownFolderList" (click)="selectFolder(folder)" class="styled"><img src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px;">{{folder.title}}</li>
                         <li *ngIf="!dropdownFolderList || dropdownFolderList.length === 0"><span style="font-style: italic;">-No folder found-</span></li>
                         </div>
                         <li *ngIf="!showFolderNameField" class="styled yellowfix">
