@@ -119,6 +119,15 @@ export class UploadModalComponent implements OnInit {
     {id: 24, name: '2023'}
   ];
 
+  slideConfig = {
+    arrows: true,
+    dots: false,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 14,
+    centerMode: false,
+    variableWidth: true
+  };
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
