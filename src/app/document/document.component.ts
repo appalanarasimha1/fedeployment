@@ -13,8 +13,6 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 import { DataService } from '../services/data.service';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 import { UNWANTED_WORKSPACES } from '../upload-modal/constant';
-import { flatten } from 'lodash';
-
 
 @Component({
   selector: 'app-content',
@@ -206,7 +204,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers}).get()
       .then((response) => {
         if(response) {
-          this.assetsBySector = response.entries ? flatten(response?.entries) : [];
+          this.assetsBySector = response.entries ? response?.entries : [];
           this.sectorsHomepage = response.aggregations['dublincore_sector_agg']?.buckets.map(b => b.key) || [];
         }
         setTimeout(() => {
@@ -229,7 +227,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
     this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
       .then((response) => {
-        if(response) this.favourites = response?.entries ? flatten(response?.entries) : [];
+        if(response) this.favourites = response?.entries ? response?.entries : [];
         setTimeout(() => {
           this.loading = false;
         }, 0);
@@ -472,35 +470,23 @@ export class DocumentComponent implements OnInit, OnChanges {
     event.toElement.play();
   }
 
-  cleanStringify(object) {
-    if (object && typeof object === 'object') {
-        object = copyWithoutCircularReferences([object], object);
-    }
-    return JSON.stringify(object);
-
-    function copyWithoutCircularReferences(references, object) {
-        var cleanObject = {};
-        Object.keys(object).forEach(function(key) {
-            var value = object[key];
-            if (value && typeof value === 'object') {
-                if (references.indexOf(value) < 0) {
-                    references.push(value);
-                    cleanObject[key] = copyWithoutCircularReferences(references, value);
-                    references.pop();
-                } else {
-                    cleanObject[key] = '###_Circular_###';
-                }
-            } else if (typeof value !== 'function') {
-                cleanObject[key] = value;
-            }
-        });
-        return cleanObject;
-    }
+  getCircularReplacer() {
+    const seen = new WeakSet();
+    return (key, value) => {
+      if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    };
   }
 
   // TODO: move to shared service
   markRecentlyViewed(data: any) {
     let found = false;
+
     // tslint:disable-next-line:prefer-const
     let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
     if (recentlyViewed.length) {
@@ -512,13 +498,13 @@ export class DocumentComponent implements OnInit, OnChanges {
       });
     }
     if (found) {
-      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, this.cleanStringify(recentlyViewed));
+      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed, this.getCircularReplacer()));
       return;
     }
 
     data['isSelected'] = false;
     recentlyViewed.push(data);
-    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, this.cleanStringify(recentlyViewed));
+    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed, this.getCircularReplacer()));
     return;
   }
 
