@@ -201,7 +201,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16 };
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
     if (sector) {
-      queryParams['dublincore_sector_agg'] = `["${sector}"]`;
+      queryParams['sectors'] = `["${sector}"]`;
     }
     this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers}).get()
       .then((response) => {
