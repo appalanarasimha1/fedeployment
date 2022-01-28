@@ -1,4 +1,5 @@
 import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 import { ASSET_SEARCH_PAGE_SIZE, localStorageVars, TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
@@ -106,10 +107,17 @@ export class DocumentComponent implements OnInit, OnChanges {
     private apiService: ApiService,
     private sharedService: SharedService,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.route.fragment.subscribe(f => {
+      setTimeout(() => {
+        const element = document.getElementById(f);
+        if (element) element.scrollIntoView();
+      }, 500);
+    });
     this.getRecentlyViewed();
     this.getFavorites();
     this.getAssetBySectors();
