@@ -162,7 +162,7 @@ export class BrowseComponent implements OnInit {
   }
 
   openVerticallyCentered(content) {
-    this.modalService.open(content, { centered: true });
+    this.modalService.open(content, { centered: true, backdrop: 'static' });
   }
 
   async handleTest(item) {
@@ -489,6 +489,7 @@ export class BrowseComponent implements OnInit {
     dialogConfig.height = "700px";
     dialogConfig.maxHeight = "900px"
     dialogConfig.width = "650px";
+    dialogConfig.disableClose = true;
     dialogConfig.data = {
       docs: this.searchList,
       folder: this.selectedFolder
