@@ -9,7 +9,8 @@ import { AGGREGATE_TAGS, constants, TAG_ATTRIBUTES, unwantedTags } from 'src/app
 import { DataService } from 'src/app/services/data.service';
 import { SideDrawerComponent } from 'src/app/common/sideDrawer/sideDrawer.component';
 import { DocumentComponent } from 'src/app/document/document.component';
-
+import { data } from 'jquery';
+import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-search',
   styleUrls: ['./search.component.css'],
@@ -62,10 +63,14 @@ export class SearchComponent implements OnInit {
     public nuxeo: NuxeoService,
     private router: Router,
     private sharedService: SharedService,
-    private dataService: DataService
+    private dataService: DataService,
+    private apiService: ApiService
   ) { }
 
   ngOnInit() {
+    this.apiService.get('/searchTerm/fetch').subscribe((response: any) => {
+      this.tagsMetadata = response?.data?.properties || [];
+    });
     this.fetchUserData();
     this.fetchFavoriteCollection();
 
@@ -148,8 +153,15 @@ export class SearchComponent implements OnInit {
 
   hitSearchApi(queryParams: any, pageNumber) {
     this.firstCallResult = true;
-    const params = this.populateQueryParams(queryParams);
+    const params: any = this.populateQueryParams(queryParams);
     this.fetchApiResult(params);
+    this.insertSearchTerm(params.ecm_fulltext);
+  }
+
+  insertSearchTerm(term: string) {
+    this.apiService.post('/searchTerm/insert?term='+term, {}).subscribe(response => {
+      console.log(response);
+    });
   }
 
   populateQueryParams(queryParams) {
