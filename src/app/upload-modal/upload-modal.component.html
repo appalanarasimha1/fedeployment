@@ -296,15 +296,15 @@
              [items]="userList$ | async"
              bindLabel="id"
              bindValue="id"
-             [multiple]="true"
+             [multiple]="false"
              [hideSelected]="true"
              [trackByFn]="trackByFn"
              [minTermLength]="2"
              [loading]="userLoading"
              typeToSearchText="Search users"
              [typeahead]="userInput$"
-             [(ngModel)]="selectedUsers"
-             [ngClass]="{'goldenText': selectedUsers }" >
+             [(ngModel)]="ownerName"
+             [ngClass]="{'goldenText': ownerName }" >
              <ng-template ng-option-tmp let-item="item">
                 {{item.id}} ({{item.fullname}})
              </ng-template>
@@ -450,15 +450,15 @@
                   [items]="userList$ | async"
                   bindLabel="id"
                   bindValue="id"
-                  [multiple]="true"
+                  [multiple]="false"
                   [hideSelected]="true"
                   [trackByFn]="trackByFn"
                   [minTermLength]="2"
                   [loading]="userLoading"
                   typeToSearchText="Search users"
                   [typeahead]="userInput$"
-                  [(ngModel)]="selectedUsers"
-                  [ngClass]="{'goldenText': selectedUsers }" >
+                  [(ngModel)]="ownerName"
+                  [ngClass]="{'goldenText': ownerName }" >
                   <ng-template ng-option-tmp let-item="item">
                      {{item.id}} ({{item.fullname}})
                   </ng-template>

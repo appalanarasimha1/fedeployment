@@ -160,10 +160,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.showListView = false;
     this.viewType = 'GRID';
     this.dataService.resetFilterInit(TRIGGERED_FROM_DOCUMENT);
-    this.showDetailView = false;
-    this.detailView = null;
-    this.detailDocuments = null;
-    this.searchTerm = {ecm_fulltext : ''}
+    // this.showDetailView = false;
+    // this.detailView = null;
+    // this.detailDocuments = null;
+    // this.searchTerm = {ecm_fulltext : ''}
   }
 
   getRecentlyViewed() {
@@ -220,7 +220,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   calculateNoResultScreen() {
-    if (!this.checkShowDetailview()) return false;
+    // if (!this.checkShowDetailview()) return false;
     return !this.loading && this.recentDataShow && !this.recentDataShow.length && !this.documents?.entries.length;
   }
 
@@ -492,11 +492,21 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.loading = true;
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
-      if(favouriteValue === 'recent') {
-        this.markRecentlyViewed(data);
-      }
+      // if(favouriteValue === 'recent') {
+      //   this.markRecentlyViewed(data);
+      // }
+      this.addToFavorite(data);
       this.loading = false;
     });
+  }
+
+  addToFavorite(data: any) {
+    const favList = [data].concat(this.favourites);
+    this.favourites = [];
+    setTimeout(() => {
+      this.favourites = favList;
+    }, 0);
+    return;
   }
 
   unmarkFavourite(data, favouriteValue) {
@@ -509,11 +519,18 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
       // data.contextParameters.favorites.isFavorite = this.favourite;
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
-      if(favouriteValue === 'recent') {
-        this.markRecentlyViewed(data);
-      }
+      this.removeFromFavorite(data.uid);
+      // if(favouriteValue === 'recent') {
+      //   this.markRecentlyViewed(data);
+      // }
       this.loading = false;
     });
+  }
+
+  removeFromFavorite(uid: string) {
+    const indexOfItemToRemove = this.favourites.findIndex(f => f.uid === uid);
+    this.favourites.splice(indexOfItemToRemove, 1);
+    return;
   }
 
   toDateString(date: string): string {
@@ -573,6 +590,11 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   openAdvancedFilter() {
     this.openFilterModal.emit(this.selectedType);
+  }
+  
+  checkShowRecent() {
+    if (this.documents && this.documents["entity-type"]) return false;
+    return true;
   }
 
   count(type?: string) {

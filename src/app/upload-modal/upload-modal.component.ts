@@ -80,6 +80,7 @@ export class UploadModalComponent implements OnInit {
   openCopyrightMap: any = {};
   copyrightUserMap: any = {};
   copyrightYearMap: any = {};
+  ownerName: string;
 
   showCustomDropdown: boolean = false;
   disableDateInput = false;
@@ -524,7 +525,7 @@ export class UploadModalComponent implements OnInit {
           "upload-batch": this.batchId,
           "upload-fileId": `${index}`,
         },
-        "dc:creator": "mudit",
+        "dc:creator": this.ownerName,
         "dc:description": this.description,
         "dc:path": folder.path,
         "dc:parentId": folder.id,

@@ -50,7 +50,7 @@
 
               <ng-container *ngFor="let bucket of tagsMetadata?.buckets; let i = index" >
                 <ng-template carouselSlide [id]="bucket.id">
-                  <a class="card" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
+                  <a *ngIf="bucket.key" class="card" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
                 </ng-template>
               </ng-container>
             </owl-carousel-o>
