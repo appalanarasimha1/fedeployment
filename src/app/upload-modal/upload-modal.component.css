@@ -196,20 +196,26 @@ div.menu-title {
   padding: 15px 20px;
 } */
 .workspace-title {
-  border: 1px solid #fff;
+  border: 1px solid #E8E6DF;
   border-radius: 50%;
-  height: 100px;
-  width: 100px;
-  margin: 15px;
+  height: 120px;
+  width: 120px;
+  margin: 10px;
   justify-content: center;
   align-items: center;
   text-align: center;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
-  background: #FFFFFF;
+  background: #E8E6DF;
   font-weight: 600;
-  color: rgba(147, 114, 6, 1);
+  transition: 0.4s;
+  color: #937206;
+}
+.workspace-title:hover{
+  background-color: #937206;
+  color: #FFFFFF;
+  border: 1px solid #937206;
 }
 .ws-selected {
   background-color: #8E6B0B;
@@ -664,17 +670,8 @@ select option{
   border: 1px dashed #8E6B0B;
   border-radius: 8px;
   margin: 25px 0px;
-  overflow-y: auto;
-  display: flex;
-  flex-flow: wrap;
   max-height: 300px;
   padding: 15px 20px;
-  overflow: visible;
-  justify-content: center;
-  align-items: center;
-  /* border-radius: 0.25em;
-  display: flex; */
-  /* border: 1px dashed grey; */
  }
 
 .triangle { 
@@ -685,7 +682,7 @@ select option{
   border: inherit;
   position: absolute;
   top: -10px;
-  left: calc(50% - 80px);
+  left: calc(50% - 25px);
   clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
   transform: rotate(135deg);
   border-radius: 0 0 0 0.25em;
@@ -1140,4 +1137,29 @@ input.copyright-input::placeholder{
 }
 ::ng-deep .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]),::ng-deep .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]),::ng-deep .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){
   background-color: unset !important;
+}
+::ng-deep .slick-prev.slick-disabled:before,::ng-deep .slick-next.slick-disabled:before {
+  opacity: 0.25;
+}
+::ng-deep .slick-prev:before, ::ng-deep .slick-next:before{
+  opacity: 1;
+}
+::ng-deep .workspace-list  .slick-prev:before, ::ng-deep .workspace-list .slick-next:before{
+  content: "\f104";
+  font: normal normal normal 14px/1 FontAwesome;
+  color: #937206;
+  font-size: 28px;
+  width: 14px;
+  display: block;
+  left: 0px;
+}
+::ng-deep .workspace-list .slick-next:before {
+  content: "\f105";
+  right: 0px;
+}
+::ng-deep .workspace-list .slick-prev {
+  left: -10px;
+}
+::ng-deep .workspace-list .slick-next {
+  right: -10px;
 }

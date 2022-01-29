@@ -3991,3 +3991,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   0% {transform: scale(0.2)}
   100% {transform: scale(1)}
 }
+
+.tab-content .slick-slide img {
+  max-height: 170px !important;
+}

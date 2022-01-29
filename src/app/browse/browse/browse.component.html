@@ -62,7 +62,7 @@
                               <!-- <fa-icon [icon]="['fas', 'folder-open']" *ngIf="selectedFolder.uid === secondChild.uid"
                                 style="font-size: 20px;"></fa-icon> -->
                             </div>
-                            <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span>
+                            <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span> 
                           </div>
                         </li>
                       </ul>
@@ -77,8 +77,37 @@
           <div *ngIf="selectedFolder">
             <div class="header-content">
               <div>
-                <h3>{{sharedService.stringShortener(selectedFolder?.title, 50)}}</h3>
-                <h6>{{removeWrokspaceFromBreadcrumb()}}</h6>
+                <span style="display: flex;flex-wrap: wrap">
+                  <h3>{{sharedService.stringShortener(selectedFolder?.title, 50)}}</h3>
+              
+                <div class="copy-section">
+                  <a href="" class="flexible">
+                    <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;"> <span class="copy-link">Copy Link</span>
+                  </a>
+                  <div class="copy-box">
+                    <div>
+                      <p class="link-title mb-2">Link to “Conference 2022” created</p>
+                      <p class="please-copy mb-3">Please copy the link below.</p>
+                      <div class="flexible">
+                        <input type="text" name="copy-url" class="copy-url">
+                        <button class="copy-btn">Copy</button>
+                      </div>
+                    </div>
+                    <div>
+                      <p class="link-title mb-2"><img src="../../../assets/images/green-tickbox.png" style="width: 30px;margin-right: 8px;">Link to “Conference 2022” copied</p>
+                    <p class="please-copy mb-3" style="opacity: 0;">.</p>
+                    <div class="flexible">
+                      <input type="text" name="copy-url" class="copy-url">
+                      <button class="copy-btn">Copy</button>
+                    </div>
+                    </div>
+
+
+                  </div>
+                </div>
+                
+              </span>
+              <h6>{{removeWrokspaceFromBreadcrumb()}}</h6>
               </div>
               <div class="views">
                 <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>

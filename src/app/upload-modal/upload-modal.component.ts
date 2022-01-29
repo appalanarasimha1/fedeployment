@@ -120,14 +120,15 @@ export class UploadModalComponent implements OnInit {
   ];
 
   slideConfig = {
-    arrows: true,
-    dots: false,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 14,
-    slidesToScroll : 4,
-    centerMode: false,
-    variableWidth: true
+    rows: 2,
+		dots: false,
+		arrows: true,
+		infinite: false,
+		speed: 300,
+		slidesToShow: 6,
+		slidesToScroll: 6,
+    variableWidth: true,
+    centerMode: false
   };
   
   constructor(
