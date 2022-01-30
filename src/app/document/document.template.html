@@ -21,7 +21,7 @@
         <li>
           <div ngbDropdown class="d-inline-block sectorsDropdown">
             <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-              <button class="sectorrBtn mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{sectorSelected || 'All sectors'}} </button>
+              <button class="sectorrBtn mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{assetsBySectorSelected || 'All sectors'}} </button>
               <div ngbDropdownMenu aria-labelledby="dropdownManual" class="sectorDropMain" style="z-index: 1;top: -3px;">
                 <button ngbDropdownItem class="sectorDropBtn" (click)="assetsBySectorSelect(null)">All sectors</button>
                 <button *ngFor="let sector of sectorsHomepage" ngbDropdownItem class="sectorDropBtn" (click)="assetsBySectorSelect(sector)">{{sector}}</button>
@@ -164,6 +164,11 @@
           </span>
           <!-- <span class="numberFiles">{{documents.resultsCount}} files</span> -->
        </div>
+
+       <ul class="nav nav-tabs">
+         <li [ngClass]="detailView === 'recentUpload' ? 'active' : ''"><a (click)="showAll('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
+         <li [ngClass]="detailView === 'recentView' ? 'active' : ''"><a (click)="showAll('recentView')" data-toggle="tab">Recently Viewed</a></li>
+       </ul>
 
         <div class="col-xl-4"  *ngIf="detailView !== 'recentView'">
           <div class="row" style="">

@@ -75,7 +75,8 @@ export class SearchComponent implements OnInit {
     }
 
     this.dataService.sectorSelected$.subscribe((sectorSelected: IHeaderSearchCriteria) => {
-      this.filters(sectorSelected);
+      this.filtersParams['sectors'] = `["${sectorSelected}"]`;
+      this.filters(this.filtersParams);
     });
 
     this.dataService.termSearch$.subscribe((searchTerm: string) => {
@@ -173,8 +174,9 @@ export class SearchComponent implements OnInit {
         params.queryParams = this.favoriteCollectionId;
         break;
       case "sectorPage":
-        if (this.documentsView.sectorSelected)
-          params['dublincore_sector_agg'] = `["${this.documentsView.sectorSelected}"]`;
+        if (this.documentsView.sectorSelected) {
+          params['sectors'] = `["${this.documentsView.sectorSelected}"]`;
+        }
         break;
     }
     if (!url) return;

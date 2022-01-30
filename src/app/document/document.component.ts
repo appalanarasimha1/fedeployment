@@ -93,6 +93,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   favourites = [];
   sectorsHomepage: string[] = [];
   assetsBySector = [];
+  assetsBySectorSelected;
 
   filtersCount = 0;
 
@@ -143,11 +144,16 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
+    if (changes.searchTerm) {
+      this.searchTerm = changes.searchTerm.currentValue;
+    }
+
     if (this.userId && this.recentUpdated && this.recentUpdated.length === 0) {
       this.getRecentUpdated();
     }
 
-    this.recentlyViewed = [];
+    this.getRecentlyViewed();
+
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
     }
@@ -213,7 +219,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       .then((response) => {
         if(response) {
           this.assetsBySector = response.entries ? response?.entries : [];
-          this.sectorsHomepage = response.aggregations['dublincore_sector_agg']?.buckets.map(b => b.key) || [];
+          this.sectorsHomepage = response.aggregations['sectors']?.buckets.map(b => b.key) || [];
         }
         setTimeout(() => {
           this.loading = false;
@@ -257,7 +263,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   assetsBySectorSelect(value: string) {
-    this.sectorSelected = value;
+    this.assetsBySectorSelected = value;
     this.getAssetBySectors(value);
   }
 
@@ -680,10 +686,14 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   showAll(page) {
+    if (this.detailView === page) return;
     this.showDetailView = true;
     this.detailView = page;
     if (page === "recentView") {
       this.documents = this.createStaticDocumentResults(this.recentlyViewed);
+    }
+    if (page === "sectorPage") {
+      this.sectorSelected = this.assetsBySectorSelected;
     }
     this.selectDetailViewType.emit(page);
   }
@@ -715,7 +725,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailDocuments = null;
     this.selectedType = 'all';
     if (this.sectorSelected) {
-      this.getAssetBySectors()
+      this.getAssetBySectors();
+      this.assetsBySectorSelected = null;
       this.sectorSelected = null;
     }
   }
