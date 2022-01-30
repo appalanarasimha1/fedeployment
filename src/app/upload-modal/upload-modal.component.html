@@ -296,6 +296,34 @@
                   </div>
                </div>
             </div>
+            <div *ngIf="checkOwnerDropdown()" class="upload-form-input row">
+               <div class="col-xl-3 col-md-3">
+                  <label for="user">Users</label>
+               </div>
+               <!-- <div class="col-xl-3 col-md-3">
+                  <label for="date">Please specific <br><span style="font-size: 14px">the owner</span></label>
+               </div> -->
+               <div class="col-xl-9 col-md-9">
+                  <p class="userText pb-2">Please specific the owner</p>
+                  <ng-select style="height: unset !important;"
+                  [items]="userList$ | async"
+                  bindLabel="id"
+                  bindValue="id"
+                  [multiple]="false"
+                  [hideSelected]="true"
+                  [trackByFn]="trackByFn"
+                  [minTermLength]="2"
+                  [loading]="userLoading"
+                  typeToSearchText="Search users"
+                  [typeahead]="userInput$"
+                  [(ngModel)]="ownerName"
+                  [ngClass]="{'goldenText': ownerName }" >
+                  <ng-template ng-option-tmp let-item="item">
+                     {{item.id}} ({{item.fullname}})
+                  </ng-template>
+                  </ng-select>
+               </div>
+            </div>
          </div>
       </mat-step>
 
@@ -371,12 +399,9 @@
                         <label for="access">Show to</label>
                      </div>
                      <div class="col-xl-8">
-                        <!-- <select name="access" (change)="onSelectAccess($event.target.value, file.key)" id="access" [ngClass]="{'goldenText': access }" >
-                           <option [selected]="access === c.value"  [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-                           </select> -->
                         <ng-select name="access" (change)="onSelectAccess($event, file.key)" [searchable]="false" [clearable]="false" id="access" [ngModel]="access" [ngClass]="{'goldenText': access }" >
-                        <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
-                        </ng-option>
+                           <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
+                           </ng-option>
                         </ng-select>
                      </div>
                   </div>
@@ -413,8 +438,33 @@
                            <option [selected]="allow === c.value" *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                            </select> -->
                         <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [ngModel]="allow" [ngClass]="{'goldenText': allow }" >
-                        <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
-                        </ng-option>
+                           <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
+                           </ng-option>
+                        </ng-select>
+                     </div>
+                  </div>
+                  <div *ngIf="checkOwnerDropdown()" class="upload-form-input row">
+                     <div class="col-xl-4">
+                        <label for="user">Users</label>
+                     </div>
+                     <div class="col-xl-8">
+                        <p class="userText pb-2">Please specific the owner</p>
+                        <ng-select style="height: unset !important;"
+                        [items]="userList$ | async"
+                        bindLabel="id"
+                        bindValue="id"
+                        [multiple]="false"
+                        [hideSelected]="true"
+                        [trackByFn]="trackByFn"
+                        [minTermLength]="2"
+                        [loading]="userLoading"
+                        typeToSearchText="Search users"
+                        [typeahead]="userInput$"
+                        [(ngModel)]="ownerName"
+                        [ngClass]="{'goldenText': ownerName }" >
+                        <ng-template ng-option-tmp let-item="item">
+                           {{item.id}} ({{item.fullname}})
+                        </ng-template>
                         </ng-select>
                      </div>
                   </div>
