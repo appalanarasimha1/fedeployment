@@ -86,21 +86,25 @@
                   </a>
                   <div class="copy-box">
                     <div>
-                      <p class="link-title mb-2">Link to “Conference 2022” created</p>
+                      <p class="link-title mb-2">
+                        <img *ngIf="copiedString" src="../../../assets/images/green-tickbox.png" style="width: 30px;margin-right: 8px;">
+                        Link to {{copiedString}} created
+                      </p>
                       <p class="please-copy mb-3">Please copy the link below.</p>
                       <div class="flexible">
-                        <input type="text" name="copy-url" class="copy-url">
-                        <button class="copy-btn">Copy</button>
+                        <input type="text" [defaultValue]="removeWrokspaceFromBreadcrumb()" name="copy-url" class="copy-url">
+                        <button class="copy-btn" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">Copy</button>
                       </div>
                     </div>
-                    <div>
-                      <p class="link-title mb-2"><img src="../../../assets/images/green-tickbox.png" style="width: 30px;margin-right: 8px;">Link to “Conference 2022” copied</p>
+                    <!-- <div>
+                      <p class="link-title mb-2">
+                        Link to “Conference 2022” copied</p>
                     <p class="please-copy mb-3" style="opacity: 0;">.</p>
                     <div class="flexible">
                       <input type="text" name="copy-url" class="copy-url">
                       <button class="copy-btn">Copy</button>
                     </div>
-                    </div>
+                    </div> -->
 
 
                   </div>

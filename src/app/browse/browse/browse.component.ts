@@ -21,8 +21,6 @@ import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
   styleUrls: ['./browse.component.css']
 })
 export class BrowseComponent implements OnInit {
-
-
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('previewModal') previewModal: PreviewPopupComponent;
 
@@ -34,7 +32,7 @@ export class BrowseComponent implements OnInit {
     private router: Router,
     public sharedService: SharedService,
     private route: ActivatedRoute,
-    public nuxeo: NuxeoService,) { }
+    public nuxeo: NuxeoService) { }
 
   faCoffee = faCoffee;
   parentId = "00000000-0000-0000-0000-000000000000";
@@ -85,6 +83,7 @@ export class BrowseComponent implements OnInit {
   fetchFolderStatus: any = {};
   currentPageCount = 0;
   showMoreButton = true;
+  copiedString: string;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -580,7 +579,21 @@ export class BrowseComponent implements OnInit {
   }
   onActivate(event) {
     window.scroll(0,0);
+  }
 
-}
+  copyToClipboard(val: string) {
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = window.location.origin + val;
+    this.copiedString = selBox.value;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
 }
 
