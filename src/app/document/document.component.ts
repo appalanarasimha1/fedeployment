@@ -68,9 +68,12 @@ export class DocumentComponent implements OnInit, OnChanges {
     dots: false,
     infinite: false,
     speed: 300,
+    centerPadding: '0',
     slidesToShow: 5,
+    slidesToScroll: 5,
     centerMode: false,
-    variableWidth: true
+    variableWidth: true,
+    swipe: true,
   };
   selectedView = 'recentUpload';
   selectedType = 'all';

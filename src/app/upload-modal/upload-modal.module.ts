@@ -10,7 +10,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { UploadModalComponent } from "./upload-modal.component";
 import { SharedModule } from "../shared/shared.module";
 import { MatInputModule } from '@angular/material/input';
-
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
   declarations: [UploadModalComponent],
   imports: [
@@ -23,7 +25,10 @@ import { MatInputModule } from '@angular/material/input';
     MatNativeDateModule,
     NgSelectModule,
     SharedModule,
-    MatInputModule
+    MatInputModule,
+    MatStepperModule,
+    MatExpansionModule,
+    SlickCarouselModule
   ],
 })
 export class UploadModalModule {}
