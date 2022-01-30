@@ -80,11 +80,12 @@
                 <span style="display: flex;flex-wrap: wrap">
                   <h3>{{sharedService.stringShortener(selectedFolder?.title, 50)}}</h3>
               
-                <div class="copy-section">
-                  <a href="" class="flexible">
-                    <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;"> <span class="copy-link">Copy Link</span>
+                <div *ngIf="showLinkCopy" class="copy-section">
+                  <a class="flexible">
+                    <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
+                    <span class="copy-link pointer" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
                   </a>
-                  <div class="copy-box">
+                  <!-- <div class="copy-box">
                     <div>
                       <p class="link-title mb-2">
                         <img *ngIf="copiedString" src="../../../assets/images/green-tickbox.png" style="width: 30px;margin-right: 8px;">
@@ -96,18 +97,14 @@
                         <button class="copy-btn" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">Copy</button>
                       </div>
                     </div>
-                    <!-- <div>
-                      <p class="link-title mb-2">
-                        Link to “Conference 2022” copied</p>
-                    <p class="please-copy mb-3" style="opacity: 0;">.</p>
-                    <div class="flexible">
-                      <input type="text" name="copy-url" class="copy-url">
-                      <button class="copy-btn">Copy</button>
-                    </div>
-                    </div> -->
+                  </div> -->
+                    <!-- <ng-template #popTitle>Fancy <b>content!!</b></ng-template>
+                    <ng-template #popContent>Hello, <b>{{name}}</b>!</ng-template>
+                  
+                  <button type="button" class="btn btn-outline-secondary" [popoverTitle]="pop title" 
+                  [autoClose]="'outside'" [ngbPopover]="Click outside or press Escape to close">
+                    Copy Link</button> -->
 
-
-                  </div>
                 </div>
                 
               </span>

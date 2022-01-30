@@ -84,6 +84,7 @@ export class BrowseComponent implements OnInit {
   currentPageCount = 0;
   showMoreButton = true;
   copiedString: string;
+  showLinkCopy = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -171,6 +172,8 @@ export class BrowseComponent implements OnInit {
     // .subscribe((docs: any) => {
     //   this.searchList = docs.entries;
     // });
+    this.showLinkCopy = true;
+    this.copiedString = '';
     this.selectedFolder = item;
     this.createBreadCrumb(item.title, item.type, item.path);
     // this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
@@ -319,6 +322,8 @@ export class BrowseComponent implements OnInit {
 
   handleClick(item, index, childIndex?: any) {
     this.currentLevel = index;
+    this.showLinkCopy = false;
+    this.copiedString = '';
 
     this.createBreadCrumb(item.title, item.type, item.path);
     // if(this.breadcrrumb.includes(item.title)) {
@@ -407,16 +412,7 @@ export class BrowseComponent implements OnInit {
             if(lastChild) {
               this.handleTest(lastChild);
             }
-
           }
-
-
-
-
-          // let callHandleTest = this.folderStructure[index].children[this.ind].children.find(item => item.title.toLowerCase() === this.routeParams.folder);
-          // if(callHandleTest) this.handleTest(callHandleTest);
-
-
         }
       }
     });
@@ -444,8 +440,6 @@ export class BrowseComponent implements OnInit {
     }
     this.showMoreButton = false;
   }
-
-
 
   handleChangeClick(item, index, selected: any, childIndex?: any) {
     // this.selectedFile = [];
@@ -587,13 +581,18 @@ export class BrowseComponent implements OnInit {
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    selBox.value = window.location.origin + val;
+    selBox.value = `${window.location.origin}/workspace?sector=${this.getSectorUidByName(val)}&folder=${val.split('/')[3]}`;
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  getSectorUidByName(breadcrumb: string) {
+    const result = this.folderStructure[0].children.find(item => breadcrumb.includes(item.path));
+    return result.uid;
   }
 }
 
