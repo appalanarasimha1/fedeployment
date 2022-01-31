@@ -1,7 +1,8 @@
-import {AppConfigDemo} from './appConfig.demo';
-import {AppConfigProduction} from './appConfig.production';
-import {AppConfigDevelopment} from './appConfig.development';
-import {AppConfigUat} from './appConfig.uat';
+import { AppConfigDemo } from './appConfig.demo';
+import { AppConfigProduction } from './appConfig.production';
+import { AppConfigDevelopment } from './appConfig.development';
+import { AppConfigUat } from './appConfig.uat';
+import { AppConfigLocal } from './appConfig.local';
 
 
 export class AppConfig {
@@ -22,6 +23,9 @@ export class AppConfig {
       }
       case 'demo': {
         return AppConfigDemo.Config;
+      }
+      case 'local': {
+        return AppConfigLocal.Config;
       }
       default:
         return AppConfigDevelopment.Config;

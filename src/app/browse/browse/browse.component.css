@@ -254,20 +254,26 @@ padding-top: 15px;
 font-weight: 600;
 }
 .folderCircle{
-  height: 140px;
-  width: 140px;
+  height: 120px;
+  width: 120px;
   background: #E8E6DF;
   border-radius: 50%;
   display: block;
-  font-size: 16px;
-line-height: 22px;
+  font-size: 14px;
+/* line-height: 22px; */
 text-align: center;
 display: flex;
 align-items: center;
 justify-content: center;
 color: #937206;
-font-weight: 600
+font-weight: 600;
+padding: 8px;
+transition: 0.4s;
 
+}
+.folderCircle:hover {
+  /* background: ; */
+  color: #C49900;
 }
 .folder-content{
   padding: 15px;
@@ -287,27 +293,27 @@ font-weight: 600;
 }
 .folder-structure {
   /* width: 300px; */
+  max-width: 184.7px;
 }
 .folder-structure img{
  border-top-left-radius: 8px;
  border-top-right-radius: 8px;
  max-width:100%;
+ width: 100%;
 }
-.folderCircle:hover {
-  background: #937206;
-  color: #fff;
-}
+
 
 /* sprint16-v1 start */
 .all-sectors{
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
 }
 .all-sectors li {
-  display: inline-block;
-  margin-right: 5px;
-  margin-bottom: 10px;
+  /* display: inline-block; */
+  margin-right: 8px;
+  margin-bottom: 8px;
   cursor: pointer;
-  max-width: 187px;
+  /* max-width: 200px; */
   /* max-height: 150px; */
 }
 ::ng-deep .all-sectors li #fileId{
@@ -539,4 +545,59 @@ li.has-children.is-open > .acnav__label {
 .tree{
   max-height: 100vh;
   overflow: auto;
+}
+.copy-link{
+  font-size: 16px;
+  line-height: 24px;
+  color: #937206;
+  font-weight: 600;
+}
+.copy-section{
+  position: relative;
+  transition: 0.4s;
+}
+.copy-box{
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  display: none;
+  padding: 20px;
+  position: absolute;
+  z-index: 9;
+  top: 34px;
+  width: max-content;
+}
+.copy-section:hover .copy-box{
+  display: block;
+}
+.link-title{
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #040404;
+}
+.please-copy{
+  font-size: 14px;
+  line-height: 20px;
+  color: #413E3C;
+}
+.copy-url{
+  background: #F6F5F2;
+border-radius: 4px;
+font-size: 16px;
+line-height: 24px;
+color: #937206;
+margin-right: 10px;
+border: unset;
+padding: 3px 10px;
+font-weight: 600;
+}
+.copy-btn{
+  background: #EDD580;
+  border-radius: 24px;
+  color: #040505;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 3px 14px;
+  border: 1px solid #EDD580;
 }

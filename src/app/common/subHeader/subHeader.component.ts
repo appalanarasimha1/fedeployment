@@ -156,7 +156,7 @@ export class SubHeaderComponent implements OnInit {
     this.hideVideo = true;
     this.selectArea = false;
     // localStorage.removeItem('openVideo');
-    this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', keyboard: false }).result.then((result) => {
+    this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
       // this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeModal();

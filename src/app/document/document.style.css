@@ -789,7 +789,10 @@ background-color:#EBC03F !important;
   top: 15px;
   left: 15px;
   z-index: 9;
-  opacity: 0;
+  /* opacity: 0; */
+}
+.form-group-custom{
+
 }
 .hover-icon-group{
   left: auto;
@@ -879,7 +882,7 @@ background-color:#EBC03F !important;
 .cardBlock:hover .cardBlockContentHover,
 .cardBlock:hover .form-group-custom,
 .cardBlock:hover .hover-icon-group{
-  opacity: 1;
+  /* opacity: 1; */
   position: absolute;
   top: 15px;
   left: 15px;
@@ -1531,3 +1534,12 @@ color: #ACACAC;
   max-height: 170px;
   min-width: 230px;
 } */
+
+.back-btn {
+  cursor: pointer;
+}
+.view-title {
+  font-size: 25px;
+  font-weight: 700;
+  padding: 5px 0;
+}
