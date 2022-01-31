@@ -23,7 +23,7 @@
 
       <div class="tab-content">
         <div class="tab-pane active" id="recentlyUploaded">
-          <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
+          <!-- <div (click)="showAll('recentUpload')" class="show-all">Show all</div> -->
           <ngx-slick-carousel
             class="carousel"
             #slickModal="slick-carousel"
@@ -42,7 +42,7 @@
           </ngx-slick-carousel>
         </div>
         <div class="tab-pane" id="recentlyViewed">
-          <div (click)="showAll('recentView')" class="show-all">Show all</div>
+          <!-- <div (click)="showAll('recentView')" class="show-all">Show all</div> -->
           <ngx-slick-carousel
             class="carousel"
             #slickModal="slick-carousel"
@@ -82,7 +82,7 @@
       </div>
       <div *ngIf="favourites.length" class="tab-content">
         <div class="tab-pane active" id="favourite">
-          <div (click)="showAll('favourite')" class="show-all">Show all</div>
+          <!-- <div (click)="showAll('favourite')" class="show-all">Show all</div> -->
           <ngx-slick-carousel
             class="carousel"
             #slickModal="slick-carousel"

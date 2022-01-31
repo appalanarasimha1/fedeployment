@@ -89,14 +89,19 @@ export class SearchComponent implements OnInit {
       this.searchTerm(data);
     });
 
-    // this.dataService.resetFilter$.subscribe(() => {
-    //   this.resetFilter();
-    // });
+    this.dataService.resetFilter$.subscribe(() => {
+      this.fetchMostSearchedTags();
+    });
     // this.connectToNuxeo();
   }
 
   fetchMostSearchedTags() {
     this.apiService.get('/searchTerm/fetch').subscribe((response: any) => {
+      const buckets = response?.data?.properties.buckets.filter(item => {
+        if(item.key.trim())
+         return item;
+      });
+      response.data.properties.buckets = buckets;
       this.tagsMetadata = response?.data?.properties || [];
     });
   }
