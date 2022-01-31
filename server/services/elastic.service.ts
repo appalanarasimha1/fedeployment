@@ -1,7 +1,9 @@
+import { AppConfig } from "../config/appConfigSelection";
+
 const { Client } = require('@elastic/elasticsearch');
 
 export class ElasticSearchService {
-  private client = new Client({ node: 'http://10.101.21.63:9700' });
+  private client = new Client({ node: AppConfig.Config.elasticDbUrl });
   private indexValue = 'searchindex';
 
   public async insertData(searchTerm: any) {
