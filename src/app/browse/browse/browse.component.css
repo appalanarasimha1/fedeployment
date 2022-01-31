@@ -76,7 +76,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   /* height: 50px; */
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
 }
 .block-image {
   height: 123px;
@@ -164,7 +164,7 @@ color: rgba(35, 33, 30, 0.6);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  width: 42%;
+  width: 25%;
 }
 .update-classifications-btn {
   color: #E1BB33;
@@ -239,11 +239,12 @@ section.lpSecOne:before {
 .paddingLeft1{
   padding-left: 60px;
 }
-.header-content h3{
+.header-content .main-title{
     font-size: 24px;
     line-height: 22px;
     color: #000000;
     font-weight: 600;
+    display: contents;
 }
 .header-content h6{
   font-size: 16px;
@@ -555,6 +556,7 @@ li.has-children.is-open > .acnav__label {
 .copy-section{
   position: relative;
   transition: 0.4s;
+  display: inline-block;
 }
 .copy-box{
   background: #FFFFFF;

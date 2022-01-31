@@ -1543,3 +1543,7 @@ color: #ACACAC;
   font-weight: 700;
   padding: 5px 0;
 }
+.sectorsDropdown .dropdown .dropdown-menu.show, .sectorsDropdown .dropup .dropdown-menu.show{
+  min-height: 209px;
+  overflow: scroll;
+}
