@@ -26,7 +26,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     NgSelectModule,
     SharedModule,
     MatInputModule,
-    MatStepperModule,
+    // MatStepperModule,
     MatExpansionModule,
     SlickCarouselModule
   ],

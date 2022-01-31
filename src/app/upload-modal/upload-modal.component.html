@@ -1,9 +1,9 @@
 <div class="upload-modal">
-   <mat-horizontal-stepper *ngIf="step !== 4" linear #stepper>
-      <mat-step  >
+   <mat-horizontal-stepper *ngIf="step !== 4" [linear]="true" #stepper>
+      <mat-step [completed]="!checkUploadStep()">
          <ng-template matStepLabel>Upload</ng-template>
          <!-- <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div> -->
-         <div >
+         <div>
             <ngx-dropzone #drop class="drag-drop" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)">
             <ngx-dropzone-label  class="noborder">
                <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
@@ -57,12 +57,18 @@
                </label>
             </div>
          </div>
-   </div>
+         </div>
+         
+         <div class="button-groups">
+            <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+            <div class="progress-btns">
+               <button mat-button matStepperNext class="upload-btn" [disabled]="checkUploadStep()">Next</button>
+            </div>
+         </div>
       </mat-step>
 
-      <mat-step >
+      <mat-step [completed]="!checkUploadFormStep()">
          <ng-template matStepLabel>Publish assets</ng-template>
-         
          <div  class="publish-assets">
             <div class="custompadding">
                <ul class="flexible upload-prevoew">
@@ -325,6 +331,14 @@
                </div>
             </div>
          </div>
+         
+         <div class="button-groups">
+            <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+            <div class="progress-btns">
+               <button mat-button matStepperPrevious class="cancel-btn">Back</button>
+               <button mat-button matStepperNext class="upload-btn" [disabled]="checkUploadFormStep()">Review</button>
+            </div>
+         </div>
       </mat-step>
 
       <mat-step>
@@ -339,7 +353,7 @@
                      <!-- <mat-icon>folder</mat-icon> -->
                      <span style="margin-left: 10px; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
                   </div>
-                  <div style="margin-left: 20px;" class="flexible">
+                  <div *ngIf="showLocaleDate(associatedDate) !== 'Invalid Date'" style="margin-left: 20px;" class="flexible">
                      <!-- <mat-icon>calendar_today</mat-icon> -->
                      <img src="../../assets/images/calendar.png">
                      <span style="margin-left: 10px; display: block;">{{ showLocaleDate(associatedDate) }}</span>
@@ -472,8 +486,16 @@
             </div>
          </div>
          </div>
+         
+         <div class="button-groups">
+            <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+            <div class="progress-btns">
+               <button mat-button matStepperPrevious class="cancel-btn">Back</button>
+               <button mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
+            </div>
+         </div>
       </mat-step>
-</mat-horizontal-stepper>
+   </mat-horizontal-stepper>
 <!-- <div class="flexible pt-3">
    <a>
       <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
@@ -502,11 +524,11 @@
       </div>
    </div>
 </div>
-<div class="button-groups" *ngIf="step !== 4">
+<!-- <div class="button-groups" *ngIf="step !== 4">
    <button (click)="closeModal()" class="cancel-btn">Cancel</button>
    <div class="progress-btns">
       <button class="cancel-btn" *ngIf="step > 1" (click)="toPreviousStep()">Back</button>
       <button class="upload-btn" [disabled]="checkButtonDisabled()" (click)="toNextStep()">{{ buttonLabel }}</button>
    </div>
-</div>
+</div> -->
 </div>

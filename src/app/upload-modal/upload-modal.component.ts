@@ -172,6 +172,11 @@ export class UploadModalComponent implements OnInit {
     this.removeFileIndex(event.key);
   }
 
+  publish() {
+    this.publishAssets();
+    return;
+  }
+
   toNextStep() {
     
     this.stepper.next();
@@ -207,6 +212,24 @@ export class UploadModalComponent implements OnInit {
     }
   }
 
+  checkUploadStep() {
+    if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) return true;
+    else return false;
+  }
+
+  checkUploadFormStep() {
+    if (
+      (!this.selectedFolder && !this.folderToAdd) ||
+      !this.access ||
+      !this.confidentiality || !this.allow ||
+      (this.checkShowUserDropdown() &&
+        this.selectedUsers &&
+        this.selectedUsers.length === 0)
+    )
+      return true;
+      else return false;
+  }
+
   checkButtonDisabled() {
     if (this.step === 1) {
       if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) return true;
@@ -216,7 +239,6 @@ export class UploadModalComponent implements OnInit {
       if (
         (!this.selectedFolder && !this.folderToAdd) ||
         !this.access ||
-        // !this.getDateFormat(this.associatedDate) ||
         !this.confidentiality ||
         (this.checkShowUserDropdown() &&
           this.selectedUsers &&
@@ -557,7 +579,6 @@ export class UploadModalComponent implements OnInit {
         "dc:title": file.name,
         "dc:parentName": folder.title,
         "dc:sector": this.selectedWorkspace.title,
-        "dc:start": this.associatedDate ? new Date(this.associatedDate).toISOString() : null,
         "sa:confidentiality": this.customConfidentialityMap[index] || this.confidentiality,
         "sa:access": this.customAccessMap[index] || this.access,
         "sa:users": this.customUsersMap[index],
@@ -605,6 +626,9 @@ export class UploadModalComponent implements OnInit {
       ],
       name: file.name,
     };
+    if(this.associatedDate) {
+      payload["dc:start"] = new Date(this.associatedDate).toISOString();
+    }
     const res = await this.apiService.post(url, payload).toPromise();
     return {
       id: res["uid"],
