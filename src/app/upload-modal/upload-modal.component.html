@@ -261,9 +261,9 @@
                   </div>
                </div>
             </div>
-            <div *ngIf="checkShowUserDropdown()" class="upload-form-input row">
+            <div *ngIf="checkShowUserDropdown()" class="upload-form-input row mb-20">
                <div class="col-xl-3 col-md-3">
-                  <label for="user">Users</label>
+                  <!-- <label for="user">Users</label> -->
                </div>
                <div class="col-xl-9 col-md-9">
                   <p class="userText pb-2">Please mention the specific users</p>
@@ -302,9 +302,9 @@
                   </div>
                </div>
             </div>
-            <div *ngIf="checkOwnerDropdown()" class="upload-form-input row">
+            <div *ngIf="checkOwnerDropdown()" class="upload-form-input row mb-20">
                <div class="col-xl-3 col-md-3">
-                  <label for="user">Users</label>
+                  <!-- <label for="user">Users</label> -->
                </div>
                <!-- <div class="col-xl-3 col-md-3">
                   <label for="date">Please specific <br><span style="font-size: 14px">the owner</span></label>
@@ -394,7 +394,7 @@
                   </div>
                </div>
                <div class="publish-file-preview-access">
-                  <div class="upload-form-input row">
+                  <div class="upload-form-input row mb-20">
                      <div class="col-xl-4">
                         <label for="confidentiality">Confidentiality</label>
                      </div>
@@ -408,7 +408,7 @@
                         </ng-select>
                      </div>
                   </div>
-                  <div class="upload-form-input row">
+                  <div class="upload-form-input row mb-20">
                      <div class="col-xl-4">
                         <label for="access">Show to</label>
                      </div>
@@ -419,7 +419,7 @@
                         </ng-select>
                      </div>
                   </div>
-                  <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row" style="display: flex;">
+                  <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;">
                      <div class="col-xl-4">
                         <label for="user">Users</label>
                      </div>
@@ -443,7 +443,7 @@
                         </ng-select>
                      </div>
                   </div>
-                  <div class="upload-form-input row">
+                  <div class="upload-form-input row mb-20">
                      <div class="col-xl-4">
                         <label for="allow">Allow use in</label>
                      </div>
@@ -451,18 +451,18 @@
                         <!-- <select name="allow" (change)="onSelectAllow($event.target.value, file.key)" id="allow" [ngClass]="{'goldenText': allow }" >
                            <option [selected]="allow === c.value" *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                            </select> -->
-                        <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [ngModel]="allow" [ngClass]="{'goldenText': allow }" >
+                        <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [(ngModel)]="allow" [ngClass]="{'goldenText': allow }" >
                            <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
                            </ng-option>
                         </ng-select>
                      </div>
                   </div>
-                  <div *ngIf="checkOwnerDropdown()" class="upload-form-input row">
+                  <div *ngIf="checkOwnerDropdown()" class="upload-form-input row mb-20">
                      <div class="col-xl-4">
-                        <label for="user">Users</label>
+                        <label for="user">Owner</label>
                      </div>
                      <div class="col-xl-8">
-                        <p class="userText pb-2">Please specific the owner</p>
+                        <!-- <p class="userText pb-2">Please specific the owner</p> -->
                         <ng-select style="height: unset !important;"
                         [items]="userList$ | async"
                         bindLabel="id"

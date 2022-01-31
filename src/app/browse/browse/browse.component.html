@@ -77,10 +77,10 @@
           <div *ngIf="selectedFolder">
             <div class="header-content">
               <div>
-                <span style="display: flex;flex-wrap: wrap">
-                  <h3>{{sharedService.stringShortener(selectedFolder?.title, 50)}}</h3>
+                <span style="">
+                  <span class="main-title">{{sharedService.stringShortener(selectedFolder?.title, 60)}}</span>
               
-                <div *ngIf="showLinkCopy" class="copy-section">
+                <span *ngIf="showLinkCopy" class="copy-section" >
                   <a class="flexible">
                     <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
                     <span class="copy-link pointer" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
@@ -105,7 +105,7 @@
                   [autoClose]="'outside'" [ngbPopover]="Click outside or press Escape to close">
                     Copy Link</button> -->
 
-                </div>
+                    </span>
                 
               </span>
               <h6>{{removeWrokspaceFromBreadcrumb()}}</h6>

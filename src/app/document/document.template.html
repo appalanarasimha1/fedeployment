@@ -206,6 +206,15 @@
               <button ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(null)">All sectors</button>
               <button *ngFor="let sector of sectors" ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(sector)">{{sector}}</button>
             </div>
+
+            <!-- <ng-select placeholder="All sectors"  [ngClass]="{'goldenText': confidentiality}">
+              <ng-option **ngFor="let sector of sectors" [value]="c.value">
+                {{sector}}
+              </ng-option>
+              </ng-select> -->
+
+
+
           </div>
         </div>
         <div class="typeSelections">
