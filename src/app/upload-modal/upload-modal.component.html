@@ -451,7 +451,7 @@
                         <!-- <select name="allow" (change)="onSelectAllow($event.target.value, file.key)" id="allow" [ngClass]="{'goldenText': allow }" >
                            <option [selected]="allow === c.value" *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                            </select> -->
-                        <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [ngModel]="allow" [ngClass]="{'goldenText': allow }" >
+                        <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [(ngModel)]="allow" [ngClass]="{'goldenText': allow }" >
                            <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
                            </ng-option>
                         </ng-select>
