@@ -68,9 +68,7 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.apiService.get('/searchTerm/fetch').subscribe((response: any) => {
-      this.tagsMetadata = response?.data?.properties || [];
-    });
+    this.fetchMostSearchedTags();
     this.fetchUserData();
     this.fetchFavoriteCollection();
 
@@ -95,6 +93,12 @@ export class SearchComponent implements OnInit {
     //   this.resetFilter();
     // });
     // this.connectToNuxeo();
+  }
+
+  fetchMostSearchedTags() {
+    this.apiService.get('/searchTerm/fetch').subscribe((response: any) => {
+      this.tagsMetadata = response?.data?.properties || [];
+    });
   }
 
   connectToNuxeo() {
@@ -424,6 +428,7 @@ export class SearchComponent implements OnInit {
   resetFilter(reload = true) {
     const tmpFilters = Object.assign({}, this.filtersParams);
     const params = {};
+    // this.fetchMostSearchedTags();
     params['ecm_fulltext'] = tmpFilters['ecm_fulltext'] || '';
     params['highlight'] = tmpFilters['highlight'] || '';
     this.resetAggregationsMetaData();

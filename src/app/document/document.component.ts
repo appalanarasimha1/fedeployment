@@ -458,8 +458,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
 
     data['isSelected'] = false;
-    recentlyViewed.push(data);
-    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+    // recentlyViewed.push(data);
+    // localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
     return;
   }
 
