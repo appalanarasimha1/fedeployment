@@ -583,7 +583,7 @@ export class BrowseComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
     const {uid, sectorName} = this.getSectorUidByName(val);
-    selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${this.selectedFolder.title}`;
+    selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${encodeURIComponent(this.selectedFolder.title)}`;
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
