@@ -582,7 +582,8 @@ export class BrowseComponent implements OnInit {
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    selBox.value = `${window.location.origin}/workspace?sector=${this.getSectorUidByName(val)}&folder=${val.split('/')[3]}`;
+    const {uid, sectorName} = this.getSectorUidByName(val);
+    selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${val.split(`${sectorName}/`)[1]}`;
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
@@ -593,7 +594,7 @@ export class BrowseComponent implements OnInit {
 
   getSectorUidByName(breadcrumb: string) {
     const result = this.folderStructure[0].children.find(item => breadcrumb.includes(item.path));
-    return result.uid;
+    return {uid: result.uid, sectorName: result.title};
   }
 }
 
