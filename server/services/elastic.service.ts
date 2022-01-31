@@ -1,7 +1,7 @@
 const { Client } = require('@elastic/elasticsearch');
 
 export class ElasticSearchService {
-  private client = new Client({ node: 'http://localhost:9200' });
+  private client = new Client({ node: 'http://localhost:9700' });
   private indexValue = 'searchindex';
 
   public async insertData(searchTerm: any) {
