@@ -12,7 +12,7 @@ export class AppConfigDevelopment {
       VIDEO_TABLE: 'personalizedVideoInventory'
     },
     domain: 'https://dev2groundx.neom.com/',
-    elasticDbUrl: 'http://localhost:9700'
+    elasticDbUrl: 'http://10.101.21.31:9700'
   };
 
   public static get Config(): any {
