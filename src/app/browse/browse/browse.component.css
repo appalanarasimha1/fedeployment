@@ -293,6 +293,7 @@ font-weight: 600;
 }
 .folder-structure {
   /* width: 300px; */
+  max-width: 184.7px;
 }
 .folder-structure img{
  border-top-left-radius: 8px;
