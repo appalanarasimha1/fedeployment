@@ -40,6 +40,14 @@
               </document-card>
             </div>
           </ngx-slick-carousel>
+          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
+            <div class="text-center" style="height: 150px;">
+              <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
+              <h2 class="noresult pb-3 pt-4">You have not uploaded any assets</h2>
+              <p class="searchcontent">Your recently uploaded assets will show up here.</p>
+            </div>
+          </div>
+
         </div>
         <div class="tab-pane" id="recentlyViewed">
           <!-- <div (click)="showAll('recentView')" class="show-all">Show all</div> -->

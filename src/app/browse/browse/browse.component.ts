@@ -9,7 +9,7 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateModalComponent } from '../../update-modal/update-modal.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { ASSET_TYPE, constants, localStorageVars, PAGE_SIZE_200, PAGE_SIZE_40, WORKSPACE_ROOT } from 'src/app/common/constant';
+import { ASSET_TYPE, constants, localStorageVars, PAGE_SIZE_200, PAGE_SIZE_1000, PAGE_SIZE_40, WORKSPACE_ROOT } from 'src/app/common/constant';
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
@@ -332,7 +332,7 @@ export class BrowseComponent implements OnInit {
     // this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
     // this.selectedFile = [];
     this.loading = true;
-    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_200}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
+    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
     .subscribe((docs: any) => {
       this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
       let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
@@ -445,7 +445,7 @@ export class BrowseComponent implements OnInit {
     // this.selectedFile = [];
     this.selectedFolder = {...selected, uid: selected.id};
     console.log("selected", this.selectedFolder)
-    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_200}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
+    this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
       .subscribe((docs: any) => {
         this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
         let workSpaceIndex = this.searchList.findIndex(res => res.title === "Workspaces");
@@ -583,7 +583,7 @@ export class BrowseComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
     const {uid, sectorName} = this.getSectorUidByName(val);
-    selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${val.split(`${sectorName}/`)[1]}`;
+    selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${this.selectedFolder.title}`;
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
