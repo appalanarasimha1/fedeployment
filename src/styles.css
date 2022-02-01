@@ -3846,7 +3846,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .publish-assets .ng-select .ng-arrow-wrapper .ng-arrow, 
 .publish-file-preview-img .ng-select .ng-arrow-wrapper .ng-arrow {
-  background-image: url(./assets/images/black-downarrow.png);
+  background-image: url(./assets/images/black-downarrow.png) !important;
   background-position: 0px 3px;
   background-repeat: no-repeat;
   background-size: contain;
