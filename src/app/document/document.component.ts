@@ -1,4 +1,5 @@
 import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 import { ASSET_SEARCH_PAGE_SIZE, localStorageVars, TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../common/constant';
 import { DOCUMENT } from '@angular/common';
@@ -13,7 +14,6 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 import { DataService } from '../services/data.service';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 import { UNWANTED_WORKSPACES } from '../upload-modal/constant';
-
 
 @Component({
   selector: 'app-content',
@@ -94,6 +94,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectors: string[] = [];
   sectorSelected;
   favourites = [];
+  sectorsHomepage: string[] = [];
+  assetsBySector = [];
+  assetsBySectorSelected;
 
   filtersCount = 0;
 
@@ -108,12 +111,20 @@ export class DocumentComponent implements OnInit, OnChanges {
     private apiService: ApiService,
     private sharedService: SharedService,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.route.fragment.subscribe(f => {
+      setTimeout(() => {
+        const element = document.getElementById(f);
+        if (element) element.scrollIntoView();
+      }, 500);
+    });
     this.getRecentlyViewed();
     this.getFavorites();
+    this.getAssetBySectors();
     this.showRecentlyViewed = true;
     this.dataService.showHideLoader$.subscribe((value) => {
       this.loading = value;
@@ -136,11 +147,16 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
+    if (changes.searchTerm) {
+      this.searchTerm = changes.searchTerm.currentValue;
+    }
+
     if (this.userId && this.recentUpdated && this.recentUpdated.length === 0) {
       this.getRecentUpdated();
     }
 
-    this.recentlyViewed = [];
+    this.getRecentlyViewed();
+
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
     }
@@ -163,10 +179,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.showListView = false;
     this.viewType = 'GRID';
     this.dataService.resetFilterInit(TRIGGERED_FROM_DOCUMENT);
-    // this.showDetailView = false;
-    // this.detailView = null;
-    // this.detailDocuments = null;
-    // this.searchTerm = {ecm_fulltext : ''}
+    this.showDetailView = false;
+    this.detailView = null;
+    this.detailDocuments = null;
+    this.searchTerm = {ecm_fulltext : ''}
   }
 
   getRecentlyViewed() {
@@ -196,12 +212,39 @@ export class DocumentComponent implements OnInit, OnChanges {
       }
   }
 
+  getAssetBySectors(sector = '') {
+    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16 };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
+    if (sector) {
+      queryParams['sectors'] = `["${sector}"]`;
+    }
+    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers}).get()
+      .then((response) => {
+        if(response) {
+          this.assetsBySector = response.entries ? response?.entries : [];
+          this.sectorsHomepage = response.aggregations['sectors']?.buckets.map(b => b.key) || [];
+        }
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
+      })
+      .catch((error) => {
+        this.loading = false;
+        if (error && error.message) {
+          if (error.message.toLowerCase() === 'unauthorized') {
+            this.sharedService.redirectToLogin();
+          }
+        }
+        return;
+      });
+  }
+
   getFavouriteCollection(favouriteUid: string) {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
     this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
       .then((response) => {
-        if(response) this.favourites = response?.entries;
+        if(response) this.favourites = response?.entries ? response?.entries : [];
         setTimeout(() => {
           this.loading = false;
         }, 0);
@@ -220,6 +263,11 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectorSelect(value: string) {
     this.sectorSelected = value;
     this.dataService.sectorChange(value);
+  }
+
+  assetsBySectorSelect(value: string) {
+    this.assetsBySectorSelected = value;
+    this.getAssetBySectors(value);
   }
 
   calculateNoResultScreen() {
@@ -439,9 +487,23 @@ export class DocumentComponent implements OnInit, OnChanges {
     event.toElement.play();
   }
 
+  getCircularReplacer() {
+    const seen = new WeakSet();
+    return (key, value) => {
+      if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    };
+  }
+
   // TODO: move to shared service
   markRecentlyViewed(data: any) {
     let found = false;
+
     // tslint:disable-next-line:prefer-const
     let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
     if (recentlyViewed.length) {
@@ -453,13 +515,13 @@ export class DocumentComponent implements OnInit, OnChanges {
       });
     }
     if (found) {
-      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed, this.getCircularReplacer()));
       return;
     }
 
     data['isSelected'] = false;
-    // recentlyViewed.push(data);
-    // localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+    recentlyViewed.push(data);
+    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed, this.getCircularReplacer()));
     return;
   }
 
@@ -649,10 +711,15 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   showAll(page) {
+    if (this.detailView === page) return;
     this.showDetailView = true;
     this.detailView = page;
     if (page === "recentView") {
       this.documents = this.createStaticDocumentResults(this.recentlyViewed);
+      this.documents["entity-type"] = {};
+    }
+    if (page === "sectorPage") {
+      this.sectorSelected = this.assetsBySectorSelected;
     }
     this.selectDetailViewType.emit(page);
   }
@@ -671,6 +738,8 @@ export class DocumentComponent implements OnInit, OnChanges {
         return 'Recently Viewed'
       case "favourite":
         return 'Your Favorites';
+      case "sectorPage":
+        return 'Asset by Sectors';
     }
 
     return '';
@@ -681,6 +750,11 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailView = null;
     this.detailDocuments = null;
     this.selectedType = 'all';
+    if (this.sectorSelected) {
+      this.getAssetBySectors();
+      this.assetsBySectorSelected = null;
+      this.sectorSelected = null;
+    }
   }
 
 
