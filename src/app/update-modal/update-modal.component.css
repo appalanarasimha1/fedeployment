@@ -773,7 +773,7 @@ input.copyright-input {
 }
 ::ng-deep .ng-arrow-wrapper .ng-arrow {
   content: "";
-  background-image: url(../../assets/images/black-downarrow.png);
+  background-image: url(../../assets/images/black-downarrow.png) !important;
   background-position: 0px 4px;
   background-repeat: no-repeat;
   background-size: contain;
