@@ -118,7 +118,7 @@ export class SearchComponent implements OnInit {
       this.detailViewType = null;
     }
 
-    this.searchValue = data;
+    this.searchValue = Object.assign({}, data);
 
     this.searchDocuments(data);
   }
