@@ -45,7 +45,7 @@
                           Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[i]" class="copyright-input">
                          </div>
                       </li>
-                      <li>
+                      <li *ngIf="copyrightYearMap[i]">
                           <ng-select [items]="years" [searchable]="false" [clearable]="false"
                              bindLabel="name"
                              [(ngModel)]="copyrightYearMap[i]"
