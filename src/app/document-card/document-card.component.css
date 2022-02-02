@@ -757,12 +757,12 @@ background-color:#EBC03F !important;
 } */
 
 /* custom checkbox start */
-.form-group-custom,.hover-icon-group {
+.form-group-custom, .hover-icon-group {
   display: block;
   margin-bottom: 0px;
   position: absolute;
   z-index: 9;
-  opacity: 0;
+  /* opacity: 0; */
 
   /* padding: 15px;
   top: 0px;
@@ -858,8 +858,8 @@ background-color:#EBC03F !important;
 .cardBlock:hover .cardBlockContentHover,
 .cardBlock:hover .form-group-custom,
 .cardBlock:hover .hover-icon-group{
-  opacity: 1;
-  position: absolute;
+  /* opacity: 1; */
+   position: absolute;
   top: 15px;
   left: 15px;
   padding: 0px;
@@ -867,10 +867,12 @@ background-color:#EBC03F !important;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
-  transition: .5s ease all;
+  transition: .5s ease all; 
+
+  justify-content: right;
 }
-.cardBlock:hover .hover-icon-group{
-  top: 10px;
+ .hover-icon-group{
+  top: 16.5px;
   left: auto;
   right: 10px;
   height: auto;
@@ -961,7 +963,11 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  opacity: 0;
   background-size: 16px;
+}
+.cardBlock:hover .hover-icon.star-icon{
+  opacity: 1;
 }
 .hover-icon.plus-icon{
   background: url(~/../../../../assets/images/add-collectionbadge.svg) no-repeat center center #fff;
@@ -978,6 +984,10 @@ background-color:#EBC03F !important;
   -o-transition: .5s ease all;
   transition: .5s ease all;
   background-size: 16px;
+  opacity: 0;
+}
+.cardBlock:hover .hover-icon.download-icon{
+  opacity: 1;
 }
 .hover-icon.star-icon:hover{
   background: url(~/../../../../assets/images/whitestar.png) no-repeat center center #e0b803;
@@ -988,12 +998,13 @@ background-color:#EBC03F !important;
   background-size: 16px;
 }
 .hover-icon.star-icon.active{
-  background: url(~/../../../../assets/images/yellowStar.svg) no-repeat center center #fff;
+  background: url(~/../../../../assets/images/whitestar.png) no-repeat center center #e0b803;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
   background-size: 22px;
+  opacity: 1;
   background-size: 16px;
 
 }
