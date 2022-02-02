@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { HttpEventType, HttpResponse } from "@angular/common/http";
 import { MatDialogRef } from '@angular/material/dialog';
+// import { MatStepper } from "@angular/material/stepper";
 import Nuxeo from "nuxeo";
 import { concat, Observable, of, Subject } from "rxjs";
 import {
@@ -14,11 +15,13 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS, ACCESS_LABEL, CONFIDENTIALITY_LABEL, UNWANTED_WORKSPACES } from "./constant";
+import { ACCESS, CONFIDENTIALITY, ALLOW, GROUPS, ACCESS_LABEL, CONFIDENTIALITY_LABEL, UNWANTED_WORKSPACES, ALLOW_VALUE_MAP } from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
 interface FileByIndex {
   [index: string]: File;
 }
@@ -41,6 +44,10 @@ const BUTTON_LABEL = {
   styleUrls: ["./upload-modal.component.css"],
 })
 export class UploadModalComponent implements OnInit {
+  @ViewChild(MatHorizontalStepper) stepper: MatHorizontalStepper;
+
+  isLinear = true;
+  panelOpenState = false;
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
@@ -80,6 +87,7 @@ export class UploadModalComponent implements OnInit {
   openCopyrightMap: any = {};
   copyrightUserMap: any = {};
   copyrightYearMap: any = {};
+  ownerName: string;
 
   showCustomDropdown: boolean = false;
   disableDateInput = false;
@@ -115,6 +123,18 @@ export class UploadModalComponent implements OnInit {
     {id: 24, name: '2023'}
   ];
 
+  slideConfig = {
+    rows: 2,
+		dots: false,
+		arrows: true,
+		infinite: false,
+		speed: 300,
+		slidesToShow: 6,
+		slidesToScroll: 6,
+    variableWidth: true,
+    centerMode: false
+  };
+  
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -152,7 +172,14 @@ export class UploadModalComponent implements OnInit {
     this.removeFileIndex(event.key);
   }
 
+  publish() {
+    this.publishAssets();
+    return;
+  }
+
   toNextStep() {
+    
+    this.stepper.next();
     if (this.step === 3) {
       this.publishAssets();
       return;
@@ -169,6 +196,8 @@ export class UploadModalComponent implements OnInit {
   }
 
   toPreviousStep() {
+    
+    this.stepper.previous();
     if (this.step === 1) return;
     this.step--;
     this.stepLabel = STEPS[this.step];
@@ -183,6 +212,24 @@ export class UploadModalComponent implements OnInit {
     }
   }
 
+  checkUploadStep() {
+    if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) return true;
+    else return false;
+  }
+
+  checkUploadFormStep() {
+    if (
+      (!this.selectedFolder && !this.folderToAdd) ||
+      !this.access ||
+      !this.confidentiality || !this.allow ||
+      (this.checkShowUserDropdown() &&
+        this.selectedUsers &&
+        this.selectedUsers.length === 0)
+    )
+      return true;
+      else return false;
+  }
+
   checkButtonDisabled() {
     if (this.step === 1) {
       if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) return true;
@@ -192,7 +239,6 @@ export class UploadModalComponent implements OnInit {
       if (
         (!this.selectedFolder && !this.folderToAdd) ||
         !this.access ||
-        // !this.getDateFormat(this.associatedDate) ||
         !this.confidentiality ||
         (this.checkShowUserDropdown() &&
           this.selectedUsers &&
@@ -208,6 +254,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   getSelectedAssetsTitle() {
+    if(!Object.keys(this.filesMap).length) return;
     const file = this.filesMap[Object.keys(this.filesMap)[0]];
     const len = Object.keys(this.filesMap).length;
     return `${this.shortTheString(file.name, 20)} ${len > 1 ? `and other ${len - 1} files` : ""}`;
@@ -242,6 +289,7 @@ export class UploadModalComponent implements OnInit {
       pageSize: 1000,
       queryParams: "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'Domain'",
     };
+    // TODO: loader
     const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
     this.workspaceList = this.formatWsList(res["entries"]);
   }
@@ -524,13 +572,13 @@ export class UploadModalComponent implements OnInit {
           "upload-batch": this.batchId,
           "upload-fileId": `${index}`,
         },
+        "dc:creator": this.ownerName,
         "dc:description": this.description,
         "dc:path": folder.path,
         "dc:parentId": folder.id,
         "dc:title": file.name,
         "dc:parentName": folder.title,
         "dc:sector": this.selectedWorkspace.title,
-        "dc:start": this.associatedDate ? new Date(this.associatedDate).toISOString() : null,
         "sa:confidentiality": this.customConfidentialityMap[index] || this.confidentiality,
         "sa:access": this.customAccessMap[index] || this.access,
         "sa:users": this.customUsersMap[index],
@@ -578,6 +626,9 @@ export class UploadModalComponent implements OnInit {
       ],
       name: file.name,
     };
+    if(this.associatedDate) {
+      payload["dc:start"] = new Date(this.associatedDate).toISOString();
+    }
     const res = await this.apiService.post(url, payload).toPromise();
     return {
       id: res["uid"],
@@ -740,5 +791,9 @@ export class UploadModalComponent implements OnInit {
 
   getAssetNumber(): number {
     return Object.keys(this.filesMap).length;
+  }
+
+  checkOwnerDropdown() {
+    return ALLOW_VALUE_MAP[this.allow] === 'Permission Required';
   }
 }

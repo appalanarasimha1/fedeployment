@@ -17,6 +17,7 @@ import { PreviewPopupComponent } from '../preview-popup/preview-popup.component'
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import {SecurePipe} from '../services/secure.pipe';
 import { InterceptorService } from '../services/http-interceptor.service';
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   providers: [
@@ -35,6 +36,7 @@ import { InterceptorService } from '../services/http-interceptor.service';
     FormsModule,
     NgbModule,
     PdfViewerModule,
+    MatStepperModule
     // UploadModalModule,
     // NgxMasonryModule
   ],
@@ -47,7 +49,8 @@ import { InterceptorService } from '../services/http-interceptor.service';
     LoaderComponent,
     LoaderSmallComponent,
     DocumentCardComponent,
-    PreviewPopupComponent
+    PreviewPopupComponent,
+    MatStepperModule
     // NgxMasonryModule
     // OwlModule
   ]

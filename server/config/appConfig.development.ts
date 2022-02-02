@@ -11,7 +11,8 @@ export class AppConfigDevelopment {
       USER_TABLE: 'userDirectory',
       VIDEO_TABLE: 'personalizedVideoInventory'
     },
-    domain: 'https://uatgroundx.neom.com/'
+    domain: 'https://dev2groundx.neom.com/',
+    elasticDbUrl: 'http://10.101.21.31:9700'
   };
 
   public static get Config(): any {

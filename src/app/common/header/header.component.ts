@@ -109,6 +109,7 @@ export class HeaderComponent implements OnInit {
     dialogConfig.height = "700px";
     dialogConfig.maxHeight = "900px"
     dialogConfig.width = "650px";
+    dialogConfig.disableClose = true;
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }

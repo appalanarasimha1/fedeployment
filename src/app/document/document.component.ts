@@ -26,12 +26,14 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() documents: any;
   @Input() searchTerm: { ecm_fulltext: string };
   @Input() filters: any;
+  @Input() userId: string;
   // @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
   @Output() selectDocType: EventEmitter<any> = new EventEmitter();
   @Output() openFilterModal: EventEmitter<any> = new EventEmitter();
   @Output() resetFilterOuput: EventEmitter<any> = new EventEmitter();
+  @Output() selectDetailViewType: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('videoPlayer') videoplayer: ElementRef;
@@ -66,9 +68,12 @@ export class DocumentComponent implements OnInit, OnChanges {
     dots: false,
     infinite: false,
     speed: 300,
+    centerPadding: '0',
     slidesToShow: 5,
+    slidesToScroll: 5,
     centerMode: false,
-    variableWidth: true
+    variableWidth: true,
+    swipe: true,
   };
   selectedView = 'recentUpload';
   selectedType = 'all';
@@ -92,6 +97,10 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   filtersCount = 0;
 
+  showDetailView = false;
+  detailView: string;
+  detailDocuments: any;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
@@ -104,7 +113,6 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getRecentlyViewed();
-    this.getRecentUpdated();
     this.getFavorites();
     this.showRecentlyViewed = true;
     this.dataService.showHideLoader$.subscribe((value) => {
@@ -128,12 +136,16 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
+    if (this.userId && this.recentUpdated && this.recentUpdated.length === 0) {
+      this.getRecentUpdated();
+    }
+
     this.recentlyViewed = [];
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
     }
 
-    if (this.docSliceInput >= this.documents?.entries.length) {
+    if (this.docSliceInput >= this.documents?.entries?.length) {
       this.hideShowMoreBtn = true;
     } else {
       this.hideShowMoreBtn = false;
@@ -151,6 +163,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.showListView = false;
     this.viewType = 'GRID';
     this.dataService.resetFilterInit(TRIGGERED_FROM_DOCUMENT);
+    // this.showDetailView = false;
+    // this.detailView = null;
+    // this.detailDocuments = null;
+    // this.searchTerm = {ecm_fulltext : ''}
   }
 
   getRecentlyViewed() {
@@ -207,6 +223,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   calculateNoResultScreen() {
+    // if (!this.checkShowDetailview()) return false;
     return !this.loading && this.recentDataShow && !this.recentDataShow.length && !this.documents?.entries.length;
   }
 
@@ -441,8 +458,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
 
     data['isSelected'] = false;
-    recentlyViewed.push(data);
-    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+    // recentlyViewed.push(data);
+    // localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
     return;
   }
 
@@ -478,11 +495,21 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.loading = true;
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
-      if(favouriteValue === 'recent') {
-        this.markRecentlyViewed(data);
-      }
+      // if(favouriteValue === 'recent') {
+      //   this.markRecentlyViewed(data);
+      // }
+      this.addToFavorite(data);
       this.loading = false;
     });
+  }
+
+  addToFavorite(data: any) {
+    const favList = [data].concat(this.favourites);
+    this.favourites = [];
+    setTimeout(() => {
+      this.favourites = favList;
+    }, 0);
+    return;
   }
 
   unmarkFavourite(data, favouriteValue) {
@@ -495,11 +522,18 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
       // data.contextParameters.favorites.isFavorite = this.favourite;
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
-      if(favouriteValue === 'recent') {
-        this.markRecentlyViewed(data);
-      }
+      this.removeFromFavorite(data.uid);
+      // if(favouriteValue === 'recent') {
+      //   this.markRecentlyViewed(data);
+      // }
       this.loading = false;
     });
+  }
+
+  removeFromFavorite(uid: string) {
+    const indexOfItemToRemove = this.favourites.findIndex(f => f.uid === uid);
+    this.favourites.splice(indexOfItemToRemove, 1);
+    return;
   }
 
   toDateString(date: string): string {
@@ -560,27 +594,32 @@ export class DocumentComponent implements OnInit, OnChanges {
   openAdvancedFilter() {
     this.openFilterModal.emit(this.selectedType);
   }
-
-  count(type?: string) {
-    if (!type) {
-      let total = 0;
-      this.documents.aggregations.system_primaryType_agg.extendedBuckets.forEach(b => {
-        total += b.docCount;
-      });
-      return total;
-    }
-    const bucket = this.documents.aggregations.system_primaryType_agg.extendedBuckets.find(b => b.key === type);
-    return bucket?.docCount || 0;
-  }
-
+  
   checkShowRecent() {
     if (this.documents && this.documents["entity-type"]) return false;
     return true;
   }
 
+  count(type?: string) {
+    if (!type) {
+      let total = 0;
+      this.documents.aggregations?.system_primaryType_agg?.extendedBuckets.forEach(b => {
+        total += b.docCount;
+      });
+      return total;
+    }
+    const bucket = this.documents.aggregations?.system_primaryType_agg?.extendedBuckets.find(b => b.key === type);
+    return bucket?.docCount || 0;
+  }
+
+  checkShowDetailview() {
+    return this.showDetailView || (this.documents && this.documents.entries?.length > 0) || this.searchTerm.ecm_fulltext;
+  }
+
   async getRecentUpdated() {
     const query = "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND "
-      + "ecm:isTrashed = 0 AND (ecm:primaryType IN ('File') OR ecm:mixinType IN ('Picture', 'Audio', 'Video')) ORDER BY dc:created DESC";
+      + "ecm:isTrashed = 0 AND (ecm:primaryType IN ('File') OR ecm:mixinType IN ('Picture', 'Audio', 'Video')) AND "
+      + `dc:creator = '${this.userId}' ORDER BY dc:created DESC`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -607,6 +646,41 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   clearFilter() {
     this.resetFilterOuput.emit();
+  }
+
+  showAll(page) {
+    this.showDetailView = true;
+    this.detailView = page;
+    if (page === "recentView") {
+      this.documents = this.createStaticDocumentResults(this.recentlyViewed);
+    }
+    this.selectDetailViewType.emit(page);
+  }
+
+  createStaticDocumentResults(docs) {
+    return  {
+      entries: docs
+    }
+  }
+
+  getDetailViewTitle() {
+    switch(this.detailView) {
+      case "recentUpload":
+        return 'Recently Uploaded';
+      case "recentView":
+        return 'Recently Viewed'
+      case "favourite":
+        return 'Your Favorites';
+    }
+
+    return '';
+  }
+
+  resetView() {
+    this.showDetailView = false;
+    this.detailView = null;
+    this.detailDocuments = null;
+    this.selectedType = 'all';
   }
 
 

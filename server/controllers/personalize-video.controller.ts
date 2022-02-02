@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { DBService } from '../dbServices/dbService';
+import { DBService } from '../services/dbService';
 import fs from 'fs';
 import path from 'path';
 // import { ResponseHandler } from '../common/ResponseHandler';
@@ -15,19 +15,18 @@ export class PersonalizedVideoController {
   }
 
   /**
-       * fetch user details from userDirectory - done
-       * in assetSeen: [{sector: sectorname, videoIds: [{data: '_id of videos', count: number}]}] - done
-       * if assetSeen - Done
-       *    search in video_processing table {sector: assetSeen.sector, _id: {$nin: assetSeen.videoSeen}} - done
-       *    if result found - Done
-       *        send 1st object - Done
-       *        update assetSeen with _id of video
-       *    else
-       *        find video of specified sector from video_processing table {sector: assetSeen.sector}, {limit: 1}
-       *        return result
-       * else send video matching the sector and set it in assetSeen - done
+   * fetch user details from userDirectory - done
+   * in assetSeen: [{sector: sectorname, videoIds: [{data: '_id of videos', count: number}]}] - done
+   * if assetSeen - Done
+   *    search in video_processing table {sector: assetSeen.sector, _id: {$nin: assetSeen.videoSeen}} - done
+   *    if result found - Done
+   *        send 1st object - Done
+   *        update assetSeen with _id of video
+   *    else
+   *        find video of specified sector from video_processing table {sector: assetSeen.sector}, {limit: 1}
+   *        return result
+   * else send video matching the sector and set it in assetSeen - done
   */
-
   public async getPersonalizedVideo(req: Request, res: Response) {
     try {
       const dbService: DBService = new DBService();
