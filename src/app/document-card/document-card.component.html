@@ -45,10 +45,7 @@
         <label for="html-{{doc.uid}}"></label>
       </div> -->
       <div class="hover-icon-group">
-        <div class="hover-icon star-icon"
-          [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
-          (click)="markFavourite()">
-        </div>
+        
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
         </div> -->
@@ -75,6 +72,10 @@
             </div>
           </div>
         </a>
+        <div class="hover-icon star-icon"
+          [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
+          (click)="markFavourite()">
+        </div>
       </div>
       
       <div class="caption-mousehover">
@@ -122,14 +123,15 @@
     </div>
 
     <div class="hover-icon-group">
-      <div class="hover-icon star-icon"
-        [ngClass]="{'active': doc.contextParameters.favorites.isFavorite}"
-        (click)="markFavourite()"></div>
+
       <!-- <div class="hover-icon plus-icon" placement="top"
         ngbTooltip="This function will be available soon" style="cursor: not-allowed;">
       </div> -->
       <a class="hover-icon download-icon"
         href="{{getFileContent()}}"></a>
+        <div class="hover-icon star-icon"
+        [ngClass]="{'active': doc.contextParameters.favorites.isFavorite}"
+        (click)="markFavourite()"></div>
     </div>
     <div *ngIf="showLockIcon() && showLock" class="lock-icon">
       <img src="../../assets/images/lock-icon.svg" alt="" />
