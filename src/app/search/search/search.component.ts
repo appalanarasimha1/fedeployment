@@ -78,7 +78,8 @@ export class SearchComponent implements OnInit {
     }
 
     this.dataService.sectorSelected$.subscribe((sectorSelected: IHeaderSearchCriteria) => {
-      this.filters(sectorSelected);
+      this.filtersParams['sectors'] = `["${sectorSelected}"]`;
+      this.filters(this.filtersParams);
     });
 
     this.dataService.termSearch$.subscribe((searchTerm: string) => {
@@ -117,7 +118,7 @@ export class SearchComponent implements OnInit {
       this.detailViewType = null;
     }
 
-    this.searchValue = data;
+    this.searchValue = Object.assign({}, data);
 
     this.searchDocuments(data);
   }
@@ -192,6 +193,11 @@ export class SearchComponent implements OnInit {
       case "favourite":
         url = apiRoutes.FETCH_FAVORITE;
         params.queryParams = this.favoriteCollectionId;
+        break;
+      case "sectorPage":
+        if (this.documentsView.sectorSelected) {
+          params['sectors'] = `["${this.documentsView.sectorSelected}"]`;
+        }
         break;
     }
     if (!url) return;

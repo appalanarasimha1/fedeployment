@@ -22,13 +22,13 @@ export const CONFIDENTIALITY_LABEL = {
 };
 
 export const ALLOW = {
-  "any": "Anywhere (including external material)",
+  "any": "Anywhere (including external publications)",
   "internal": "Internal publications only",
   "request": "Request owner's permission before use"
 }
 
 export const ALLOW_VALUE_MAP = {
-  "Anywhere (including external material)": '',
+  "Anywhere (including external publications)": '',
   "Internal publications only": "Internal Use Only",
   "Request owner's permission before use": "Permission Required"
 };
