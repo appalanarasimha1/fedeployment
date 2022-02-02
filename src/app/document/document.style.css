@@ -1478,6 +1478,7 @@ color: #ACACAC;
   background-color: #EBC03F;
   border-radius: 15px;
   margin-right: 8px;
+  border: unset;
 }
 .hasFilterSelected .itemCount {
   border: 1px solid #EBC03F;
