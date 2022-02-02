@@ -363,8 +363,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getCopyright() {
-    if (this.doc.properties['sa:copyrightName']) {
+    if (this.doc.properties['sa:copyrightName'] && this.doc.properties['sa:copyrightYear']) {
       return `©️ ${this.doc.properties['sa:copyrightName']} ${this.doc.properties['sa:copyrightYear']}`;
+    } else if(this.doc.properties['sa:copyrightName']) {
+      return `©️ ${this.doc.properties['sa:copyrightName']}`;
     }
     return '';
   }
