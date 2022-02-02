@@ -182,7 +182,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.showDetailView = false;
     this.detailView = null;
     this.detailDocuments = null;
-    this.searchTerm = {ecm_fulltext : ''}
+    this.searchTerm = {ecm_fulltext : ''};
+    this.resetView();
   }
 
   getRecentlyViewed() {
