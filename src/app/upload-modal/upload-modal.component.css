@@ -1065,7 +1065,7 @@ input.copyright-input::placeholder{
 }
 ::ng-deep .ng-arrow-wrapper .ng-arrow {
   content: "";
-  background-image: url(../../assets/images/black-downarrow.png);
+  background-image: url(../../assets/images/black-downarrow.png) !important;
   background-position: 0px 4px;
   background-repeat: no-repeat;
   background-size: contain;
@@ -1171,4 +1171,8 @@ input.copyright-input::placeholder{
 }
 ::ng-deep .workspace-list .slick-next {
   right: -10px;
+}
+::ng-deep .ng-dropdown-panel{
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
+  border-radius: 4px;
 }
