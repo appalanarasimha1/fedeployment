@@ -22,6 +22,8 @@
 body{
   font-family: myBrown !important;
   position: relative;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel-header, .mat-expansion-panel-content, .mat-calendar{
   font-family: myBrown !important;
@@ -3969,9 +3971,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .masonry-item:nth-child(39) {z-index: 3;}
 .masonry-item:nth-child(40) {z-index: 2;}
 .masonry-item:nth-child(41) {z-index: 1;}
-.customTab {
+/* .customTab {
   overflow-x: hidden;
-}
+} */
 
 .pointer {
   cursor: pointer;

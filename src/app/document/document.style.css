@@ -1548,3 +1548,8 @@ color: #ACACAC;
   min-height: 209px;
   overflow: scroll;
 }
+.back-btn img {
+  width: 7px;
+  margin-right: 4px;
+  vertical-align: -1px;
+}
