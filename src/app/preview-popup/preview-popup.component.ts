@@ -363,8 +363,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getCopyright() {
-    if (this.doc.properties['sa:copyrightName']) {
+    if (this.doc.properties['sa:copyrightName'] && this.doc.properties['sa:copyrightYear']) {
       return `©️ ${this.doc.properties['sa:copyrightName']} ${this.doc.properties['sa:copyrightYear']}`;
+    } else if(this.doc.properties['sa:copyrightName']) {
+      return `©️ ${this.doc.properties['sa:copyrightName']}`;
     }
     return '';
   }
@@ -379,13 +381,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
     switch(this.doc.properties['sa:allow']) {
       case ALLOW.any:
-        return ALLOW_VALUE_MAP["Anywhere (including external material)"];
+        return ALLOW_VALUE_MAP["Anywhere (including external publications)"];
       case ALLOW.internal:
         return ALLOW_VALUE_MAP["Internal publications only"];
       case ALLOW.request:
         return ALLOW_VALUE_MAP["Request owner's permission before use"];
       default:
-        ALLOW_VALUE_MAP["Anywhere (including external material)"];
+        ALLOW_VALUE_MAP["Anywhere (including external publications)"];
     }
     // return '';
   }
