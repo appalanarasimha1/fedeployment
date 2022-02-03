@@ -1,24 +1,29 @@
 
 <!-- <app-loader-small [show]="modalLoading"></app-loader-small> -->
-<div *ngIf="viewType === 'GRID'" style="position: relative; margin-right: 5px;">
+<div *ngIf="viewType === 'GRID'" class="loader-ing">
   <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" /> -->
-    <img *ngIf="doc.type === 'Picture'" 
-    id="fileId" 
-    [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
-    alt=""
-    (click)="openPreview()"
-    (load)="showLock = true"
-    crossorigin="use-credentials"
-    loading="lazy" />
+    <div style="min-width: 113px;">
+      <img *ngIf="doc.type === 'Picture'" 
+        id="fileId" 
+        [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+        alt=""
+        (click)="openPreview()"
+        (load)="showLock = true"
+        crossorigin="use-credentials"
+        loading="lazy" />
 
-    <div *ngIf="doc.type === 'Video'" class="videoIconn">
-      <img id="fileId" 
-      [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
-      alt=""
-      (click)="openPreview()"
-      crossorigin="use-credentials" />
+        <div *ngIf="doc.type === 'Video'" class="videoIconn">
+          <img id="fileId" 
+          [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+          alt=""
+          (click)="openPreview()"
+          crossorigin="use-credentials" />
+        </div>
+      <span style="width: 1px;
+    height: 1px;"></span>
     </div>
+    
 
 
   <img *ngIf="doc.type === 'File'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
