@@ -182,7 +182,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.showDetailView = false;
     this.detailView = null;
     this.detailDocuments = null;
-    this.searchTerm = {ecm_fulltext : ''}
+    this.searchTerm = {ecm_fulltext : ''};
+    this.resetView();
   }
 
   getRecentlyViewed() {
@@ -212,7 +213,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       }
   }
 
-  getAssetBySectors(sector = '') {
+  getAssetBySectors(sector = '', dontResetSectors: boolean = true) {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16 };
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
     if (sector) {
@@ -222,7 +223,9 @@ export class DocumentComponent implements OnInit, OnChanges {
       .then((response) => {
         if(response) {
           this.assetsBySector = response.entries ? response?.entries : [];
-          this.sectorsHomepage = response.aggregations['sectors']?.buckets.map(b => b.key) || [];
+          if(dontResetSectors) {
+            this.sectorsHomepage = response.aggregations['sectors']?.buckets.map(b => b.key) || [];
+          }
         }
         setTimeout(() => {
           this.loading = false;
@@ -267,7 +270,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   assetsBySectorSelect(value: string) {
     this.assetsBySectorSelected = value;
-    this.getAssetBySectors(value);
+    this.getAssetBySectors(value, false);
   }
 
   calculateNoResultScreen() {
