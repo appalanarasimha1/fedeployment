@@ -1570,6 +1570,7 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
 
 .loader-ing {
   background-color: #e9eaeb !important;
+  position: relative; 
   margin-right: 5px;
   max-width: 100%;
 }
