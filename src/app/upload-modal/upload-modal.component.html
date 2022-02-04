@@ -266,7 +266,7 @@
                   <!-- <label for="user">Users</label> -->
                </div>
                <div class="col-xl-9 col-md-9">
-                  <p class="userText pb-2">Please mention the specific users</p>
+                  <p class="userText pb-2">{{SPECIFIC_USER_LABEL}}</p>
                   <ng-select style="height: unset !important;"
                   [items]="userList$ | async"
                   bindLabel="id"
@@ -310,7 +310,7 @@
                   <label for="date">Please specific <br><span style="font-size: 14px">the owner</span></label>
                </div> -->
                <div class="col-xl-9 col-md-9">
-                  <p class="userText pb-2">Please specific the owner</p>
+                  <p class="userText pb-2">{{OWNER_APPROVAL_LABEL}}</p>
                   <ng-select style="height: unset !important;"
                   [items]="userList$ | async"
                   bindLabel="id"

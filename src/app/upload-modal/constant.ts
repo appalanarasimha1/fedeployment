@@ -5,8 +5,8 @@ export const ACCESS = {
 };
 
 export const ACCESS_LABEL = {
-  "All access": "Anyone (including non-NEOM users)",
-  "Internal access only": "All Internal users (with a NEOM email)",
+  "All access": "Public",
+  "Internal access only": "Users with a NEOM email account only",
   "Restricted access only": "Specific users",
 };
 
@@ -22,15 +22,15 @@ export const CONFIDENTIALITY_LABEL = {
 };
 
 export const ALLOW = {
-  "any": "Anywhere (including external publications)",
-  "internal": "Internal publications only",
-  "request": "Request owner's permission before use"
+  "any": "In external publications",
+  "internal": "In internal publications only",
+  "request": "After owner's approval"
 }
 
 export const ALLOW_VALUE_MAP = {
-  "Anywhere (including external publications)": '',
-  "Internal publications only": "Internal Use Only",
-  "Request owner's permission before use": "Permission Required"
+  "In external publications": '',
+  "In internal publications only": "Internal Use Only",
+  "After owner's approval": "Permission Required"
 };
 
 export const GROUPS = {
@@ -39,3 +39,7 @@ export const GROUPS = {
 }
 
 export const UNWANTED_WORKSPACES = ['domain'];
+
+export const SPECIFIC_USER_LABEL = "Please specify the users";
+
+export const OWNER_APPROVAL_LABEL = "Please specify the approver";
