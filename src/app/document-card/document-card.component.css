@@ -1015,7 +1015,33 @@ background-color:#EBC03F !important;
   -o-transition: .5s ease all;
   transition: .5s ease all; */
 }
-.hover-icon.download-icon:hover{
+/* .hover-icon.download-icon:hover{
+  background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #006B44;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+  background-size: 16px;
+} */
+
+.hover-icon.download-icon.download-disabled:hover {
+  background-color: #EFEEE9;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+  background-size: 16px;
+}
+
+.hover-icon.download-icon.downloadActive{
+  background: url(~/../../../../assets/images/download-green-icon.svg) no-repeat center center #fff;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+  background-size: 16px;
+}
+.hover-icon.download-icon.downloadActive:hover{
   background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #006B44;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;

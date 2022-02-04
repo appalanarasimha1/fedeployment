@@ -54,7 +54,7 @@
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
         </div> -->
-        <a [ngClass]="showDownloadDropdown() ? '' : 'download-disabled'" class="hover-icon download-icon"
+        <a [ngClass]="showDownloadDropdown() ? 'downloadActive' : 'download-disabled'" class="hover-icon download-icon"
           href="{{getFileContent()}}">
           <div *ngIf="doc" class="download-dropdown">
             <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
