@@ -411,7 +411,7 @@ font-weight: 600;
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   white-space: nowrap;
   background: #EDD580;
-  padding: 7px;
+  padding: 2px 7px;
   border-radius: 48px;
   border-radius: 48px;
   font-size: 13px;
@@ -1174,4 +1174,17 @@ input.copyright-input::placeholder{
 }
 ::ng-deep .workspace-list .slick-next {
   right: -10px;
+}
+
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
+  padding: 1px 5px 1px 4px;
+  border: 1px solid transparent !important;
+  height: 16px;
+  width: 16px;
+  line-height: 11px;
+  border-radius: 100px;
+  text-align: center;
+  background: url(../../assets/images/cross-icon.svg) no-repeat center center;
+  background-size: contain;
+  font-size: 0px
 }
