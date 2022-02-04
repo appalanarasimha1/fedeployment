@@ -1100,8 +1100,11 @@ input.copyright-input::placeholder{
 .mat-form-field {
   margin-top: 16px;
 }
+::ng-deep .mat-step-header .mat-step-icon {
+  background-color: #BAB8B2 !important;
+}
 ::ng-deep .mat-step-header .mat-step-icon-selected,::ng-deep .mat-step-header .mat-step-icon-state-done,::ng-deep .mat-step-header .mat-step-icon-state-edit{
-  background-color: #C49900;
+  background-color: #DAAA00 !important;
 
 }
 ::ng-deep .mat-step-header.cdk-keyboard-focused, ::ng-deep .mat-step-header.cdk-program-focused, ::ng-deep .mat-step-header:hover {

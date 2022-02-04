@@ -1,7 +1,7 @@
 <div class="upload-modal">
    <mat-horizontal-stepper *ngIf="step !== 4" [linear]="true" #stepper>
       <mat-step [completed]="!checkUploadStep()">
-         <ng-template matStepLabel>Upload</ng-template>
+         <ng-template matStepLabel>Select asseets</ng-template>
          <!-- <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div> -->
          <div>
             <ngx-dropzone #drop class="drag-drop" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)">
@@ -68,7 +68,7 @@
       </mat-step>
 
       <mat-step [completed]="!checkUploadFormStep()">
-         <ng-template matStepLabel>Publish assets</ng-template>
+         <ng-template matStepLabel>Add information</ng-template>
          <div  class="publish-assets">
             <div class="custompadding">
                <ul class="flexible upload-prevoew">
