@@ -336,7 +336,7 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button mat-button matStepperNext class="upload-btn" [disabled]="checkUploadFormStep()">Review</button>
+               <button mat-button matStepperNext class="upload-btn" (click)="copyUserMap()" [disabled]="checkUploadFormStep()">Review</button>
             </div>
          </div>
       </mat-step>
