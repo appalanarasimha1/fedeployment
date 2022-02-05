@@ -5,8 +5,8 @@ export const ACCESS = {
 };
 
 export const ACCESS_LABEL = {
-  "All access": "Public",
-  "Internal access only": "Users with a NEOM email account only",
+  "All access": "Anyone (including non-NEOM users)",
+  "Internal access only": "All Internal users (with a NEOM email)",
   "Restricted access only": "Specific users",
 };
 
@@ -22,15 +22,15 @@ export const CONFIDENTIALITY_LABEL = {
 };
 
 export const ALLOW = {
-  "any": "In external publications",
-  "internal": "In internal publications only",
-  "request": "After owner's approval"
+  "any": "Anywhere (including external material)",
+  "internal": "Internal publications only",
+  "request": "Request owner's permission before use"
 }
 
 export const ALLOW_VALUE_MAP = {
-  "In external publications": '',
-  "In internal publications only": "Internal Use Only",
-  "After owner's approval": "Permission Required"
+  "Anywhere (including external material)": '',
+  "Internal publications only": "Internal Use Only",
+  "Request owner's permission before use": "Permission Required"
 };
 
 export const GROUPS = {
