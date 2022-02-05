@@ -122,13 +122,13 @@
          <div class="upload-form">
             <div class="row upload-form-input mb-20">
                <div class="col-xl-3 col-md-3">
-                  <label for="title"> Title<br>
-                  <span style="font-size: 14px">Project or event name</span></label>
+                  <label for="title">Folder Name<br>
+                  <span style="font-size: 14px">e.g. Title of project or event</span></label>
                   <div id='custom-select-status' class='hidden-visually' aria-live="polite"></div>
                </div>
                <div class="col-xl-9 col-md-9 flexible">
                   <div class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd}">
-                     <input type="text" id="title" value="{{folderToAdd || selectedFolder?.title}}" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Search for existing folder or create new folder" >
+                     <input type="text" id="title" value="{{folderToAdd || selectedFolder?.title}}" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
                      <span class="custom-select-icons">
                      <i class="fa fa-caret-down"></i>
                      </span>
