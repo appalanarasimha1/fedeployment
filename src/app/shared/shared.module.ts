@@ -15,9 +15,10 @@ import { NgxMasonryModule } from 'ngx-masonry';
 import { DocumentCardComponent } from '../document-card/document-card.component';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import {SecurePipe} from '../services/secure.pipe';
+import {SecurePipe} from '../common/pipe/secure.pipe';
 import { InterceptorService } from '../services/http-interceptor.service';
 import {MatStepperModule} from '@angular/material/stepper';
+import { ReversePipe } from '../common/pipe/reverse.pipe';
 
 @NgModule({
   providers: [
@@ -28,6 +29,7 @@ import {MatStepperModule} from '@angular/material/stepper';
     DocumentCardComponent,
     PreviewPopupComponent,
     SecurePipe,
+    ReversePipe
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     LoaderSmallComponent,
     DocumentCardComponent,
     PreviewPopupComponent,
-    MatStepperModule
+    MatStepperModule,
+    ReversePipe
     // NgxMasonryModule
     // OwlModule
   ]

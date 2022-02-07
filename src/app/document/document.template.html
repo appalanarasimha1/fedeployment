@@ -94,6 +94,7 @@
             </div>
           </div>
         </div>
+        
         <div class="tab-pane" id="recentlyUploaded">
           <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
           <ngx-slick-carousel
@@ -101,7 +102,7 @@
             #slickModal="slick-carousel"
             [config]="slideConfig"
           >
-            <div ngxSlickItem *ngFor="let file of recentDataShow; let i = index" class="slide">
+            <div ngxSlickItem *ngFor="let file of recentDataShow ; let i = index" class="slide">
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
