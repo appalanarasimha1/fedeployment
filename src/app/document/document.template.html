@@ -61,39 +61,13 @@
     <div id="exTab2" class="container">
       <h2 class="commonHeading pb-4" style="font-size: 28px">Recent activities</h2>
       <ul class="nav nav-tabs">
-        <li class="active"><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
-        <li><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
+        <li class="active"><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
+        <li><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
       </ul>
 
       <div class="tab-content">
-        <div class="tab-pane active" id="recentlyUploaded">
-          <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
-          <ngx-slick-carousel
-            class="carousel"
-            #slickModal="slick-carousel"
-            [config]="slideConfig"
-          >
-            <div ngxSlickItem *ngFor="let file of recentDataShow; let i = index" class="slide">
-              <document-card
-                [doc]="file"
-                [viewType]="viewType"
-                (onOpenPreview)="open(file, file.type)"
-                (onSelect)="selectImage($event, file, i)"
-                (onMarkFavourite)="markFavourite(file, 'recent')"
-                >
-              </document-card>
-            </div>
-          </ngx-slick-carousel>
-          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
-            <div class="text-center" style="height: 150px;">
-              <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-              <h2 class="noresult pb-3 pt-4">You have not uploaded any assets</h2>
-              <p class="searchcontent">Your recently uploaded assets will show up here.</p>
-            </div>
-          </div>
-
-        </div>
-        <div class="tab-pane" id="recentlyViewed">
+        
+        <div class="tab-pane active" id="recentlyViewed">
           <div (click)="showAll('recentView')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -117,6 +91,32 @@
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
               <h2 class="noresult pb-3 pt-4">No recenetly viewed asset found</h2>
               <p class="searchcontent">Click on an asset in order to preview it.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="recentlyUploaded">
+          <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
+          <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfig"
+          >
+            <div ngxSlickItem *ngFor="let file of recentDataShow; let i = index" class="slide">
+              <document-card
+                [doc]="file"
+                [viewType]="viewType"
+                (onOpenPreview)="open(file, file.type)"
+                (onSelect)="selectImage($event, file, i)"
+                (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+              </document-card>
+            </div>
+          </ngx-slick-carousel>
+          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
+            <div class="text-center" style="height: 150px;">
+              <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
+              <h2 class="noresult pb-3 pt-4">You have not uploaded any assets</h2>
+              <p class="searchcontent">Your recently uploaded assets will show up here.</p>
             </div>
           </div>
         </div>
