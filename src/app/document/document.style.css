@@ -1548,3 +1548,6 @@ color: #ACACAC;
   min-height: 209px;
   overflow: scroll;
 }
+.slide-inner{
+  padding: 0 5px;
+}

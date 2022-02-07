@@ -66,14 +66,11 @@ export class DocumentComponent implements OnInit, OnChanges {
   slideConfig = {
     arrows: true,
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 300,
-    centerPadding: '0',
     slidesToShow: 5,
     slidesToScroll: 5,
-    centerMode: false,
     variableWidth: true,
-    swipe: true,
   };
   selectedView = 'recentUpload';
   selectedType = 'all';
