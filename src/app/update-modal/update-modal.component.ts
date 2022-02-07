@@ -15,6 +15,7 @@ import { apiRoutes } from "../common/config";
 import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, CONFIDENTIALITY_LABEL } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
+import { SharedService } from "../services/shared.service";
 
 const STEPS = {
   1: "Update Classification",
@@ -33,6 +34,7 @@ export class UpdateModalComponent implements OnInit {
     public dialogRef: MatDialogRef<UpdateModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {docs: any, folder: any},
     private router: Router,
+    public sharedService: SharedService
   ) {
 
   }
@@ -173,7 +175,7 @@ export class UpdateModalComponent implements OnInit {
     // return `${title} ${len > 1 ? `and other ${len - 1} files` : ""}`;
     return `${len} files`;
   }
-  
+
   getSelectedAssetsSize() {
     let size = 0;
     this.docs.forEach(doc => {
