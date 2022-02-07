@@ -170,8 +170,10 @@ export class UpdateModalComponent implements OnInit {
   getSelectedAssetsTitle() {
     const title = this.docs[0].title;
     const len = this.docs.length;
-    return `${title} ${len > 1 ? `and other ${len - 1} files` : ""}`;
+    // return `${title} ${len > 1 ? `and other ${len - 1} files` : ""}`;
+    return `${len} files`;
   }
+  
   getSelectedAssetsSize() {
     let size = 0;
     this.docs.forEach(doc => {
