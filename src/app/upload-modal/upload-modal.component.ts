@@ -150,7 +150,7 @@ export class UploadModalComponent implements OnInit {
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
     private router: Router,
-    private sharedService: SharedService
+    public sharedService: SharedService
   ) {}
 
   ngOnInit(): void {

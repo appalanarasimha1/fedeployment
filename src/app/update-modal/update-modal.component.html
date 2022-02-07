@@ -11,7 +11,7 @@
         <div class="flexible">
           <img src="../../assets/images/upload.png">
           <!-- <mat-icon>folder</mat-icon> -->
-        <span style="margin-left: 10px; display: block;">{{ selectedFolder.title }}</span>
+        <span style="margin-left: 10px; display: block;" [title]="selectedFolder.title">{{ sharedService.stringShortener(selectedFolder.title, 20) }}</span>
         </div>
         <div style="margin-left: 20px;" class="flexible">
           <!-- <mat-icon>calendar_today</mat-icon> -->
@@ -27,9 +27,9 @@
         <div class="row" style="width: 100%;">
           <div class="col-xl-6">
             <div class="publish-file-preview-img">
-              <img src alt="preview" class="preview-img"
-                (error)="getAssetUrl($event, doc.contextParameters.thumbnail?.url)"/>
-              <span>{{ doc.title }}</span>
+              <img alt="preview" class="preview-img"
+                [src]="getAssetUrl(null, doc.contextParameters.thumbnail?.url)"/>
+              <span [title]="doc.title">{{ sharedService.stringShortener(doc.title, 20) }}</span>
              
               <div class="copyright-information">
                 <div (click)="openCopyright(i)" *ngIf="!openCopyrightMap[i]">

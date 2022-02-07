@@ -14,7 +14,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 // import { HttpInterceptorService } from '../services/http-interceptor.service';
 // import { NuxeoService } from '../services/nuxeo.service';
 import { CarouselModule  } from 'ngx-owl-carousel-o';
-import { SafePipe } from '../shared/safe.pipe';
+import { SafePipe } from '../common/pipe/safe.pipe';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({

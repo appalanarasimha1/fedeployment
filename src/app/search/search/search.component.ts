@@ -92,6 +92,8 @@ export class SearchComponent implements OnInit {
 
     this.dataService.resetFilter$.subscribe(() => {
       this.fetchMostSearchedTags();
+      this.filtersParams['ecm_fulltext'] = '';
+      this.searchValue = { ecm_fulltext: '', highlight: '' };
     });
     // this.connectToNuxeo();
   }

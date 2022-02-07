@@ -365,7 +365,11 @@
                   <div class="publish-file-preview-img">
                      <img [src]="imageSrc[file.key] || getPreviewSrc(file.value, file.key)" alt="preview" class="preview-img"
                         onerror="this.src='./assets/images/preview-placeholder.png';"/>
-                     <span>{{ file.value.name }}<br /><br /><span>{{ getTotalFileSize() }}</span></span>
+                     <span [title]="file.value.name" >
+                        {{ sharedService.stringShortener(file.value.name, 20) }}
+                        <br/><br/>
+                        <span>{{ humanFileSize(file.value.size) }}</span>
+                     </span>
                      <div class="copyright-information">
                         <div (click)="openCopyright(file.key)" *ngIf="!openCopyrightMap[file.key]">
                         <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information

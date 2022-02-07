@@ -16,6 +16,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
   declarations: [UploadModalComponent],
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     NgxDropzoneModule,
@@ -24,7 +25,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     MatDatepickerModule,
     MatNativeDateModule,
     NgSelectModule,
-    SharedModule,
     MatInputModule,
     // MatStepperModule,
     MatExpansionModule,

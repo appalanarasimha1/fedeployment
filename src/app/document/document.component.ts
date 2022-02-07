@@ -75,7 +75,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     variableWidth: true,
     swipe: true,
   };
-  selectedView = 'recentUpload';
+  selectedView = 'recentlyViewed';
   selectedType = 'all';
 
   // /* <!-- sprint12-fixes start --> */
@@ -125,6 +125,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.getRecentlyViewed();
     this.getFavorites();
     this.getAssetBySectors();
+    this.selectTab('recentlyViewed');
     this.showRecentlyViewed = true;
     this.dataService.showHideLoader$.subscribe((value) => {
       this.loading = value;
@@ -184,6 +185,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailDocuments = null;
     this.searchTerm = {ecm_fulltext : ''};
     this.resetView();
+    this.selectTab('recentlyViewed');
   }
 
   getRecentlyViewed() {
@@ -693,7 +695,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     };
     const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
     this.recentUpdated = res["entries"].map(e => e);
-    this.recentDataShow = [...this.recentUpdated];
+    // this.recentDataShow = [...this.recentUpdated];
   }
 
   getFilterCount() {
