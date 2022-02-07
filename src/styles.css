@@ -3841,9 +3841,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-color: #333;
   box-shadow: none;
 }
-.goldenText span.ng-value-label.ng-star-inserted {
-  color: #040505 !important;
-}
+/* .goldenText span {
+  color: #C49900 !important;
+} */
 
 
 .publish-assets .ng-select .ng-arrow-wrapper .ng-arrow, 
@@ -3996,4 +3996,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .tab-content .slick-slide img {
   max-height: 170px !important;
+}
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  color: #040505 !important;
 }

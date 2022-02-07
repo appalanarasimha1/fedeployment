@@ -382,14 +382,14 @@ font-weight: 600;
   background: #EDD580;
   padding: 7px;
   border-radius: 48px;
-  border-radius: 48px;
   font-size: 13px;
-  line-height: 24px;
-  display: flex;
+  line-height: 18px;
+  display: flex; 
   align-items: center;
   text-align: center;
   color: #040505;
   font-weight: 600;
+  margin-top: -2px;
 }
 ::ng-deep .ng-value.ng-star-inserted span:nth-child(1) {
   order: 2;
@@ -829,4 +829,24 @@ input.copyright-input {
 }
 ::ng-deep ng-value-label{
   padding-left: 27px !important;
+}
+::ng-deep .upload-form-input span.ng-value-icon.left.ng-star-inserted,
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+  padding: 1px 5px 1px 4px;
+  border: 1px solid transparent !important;
+  height: 16px;
+  width: 16px;
+  line-height: 11px;
+  border-radius: 100px;
+  text-align: center;
+  background: url(../../assets/images/cross-icon.svg) no-repeat center center;
+  background-size: contain;
+  font-size: 0px
+}
+::ng-deep .goldenText span {
+  color: #C49900 !important;
+}
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value, 
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
+  color: #040505 !important;
 }
