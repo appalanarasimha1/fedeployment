@@ -1351,6 +1351,7 @@ color: #ACACAC;
 .pdfWhiteBlock{
   background-color: #fff;
   padding: 20px;
+  /* width: 255px; */
 }
 .recentHeading{
   font-size: 16px;
@@ -1409,9 +1410,9 @@ color: #ACACAC;
   object-fit: fill;
   width: auto;
 }
-::ng-deep .slide  #fileId2 {
+/* ::ng-deep .slide  #fileId2 {
   height: 103px;
-}
+} */
 /* Custom tabs css start 12-Nov-2021 */
 .customTab {
   padding: 60px 0px 40px;
