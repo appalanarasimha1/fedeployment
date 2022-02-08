@@ -16,13 +16,13 @@
           <img src="../../assets/images/calendar.png" style="display: inline-block;padding-right: 0px; vertical-align: top;">
           <span style="margin-left: 5px; display: inline-block; font-weight: 600;">{{ showLocaleDate() }}</span>
         </div>
-        <span style="padding-right: 3px; color: #413E3C;">{{ getSelectedAssetsTitle() }}, </span>
-        <span style="color: #413E3C;">{{ getSelectedAssetsSize() }}</span>
+        <span style="padding-right: 3px; color: #413E3C; font-weight: normal;">{{ getSelectedAssetsTitle() }}, </span>
+        <span style="color: #413E3C;font-weight: normal;">{{ getSelectedAssetsSize() }}</span>
 
       </div>
     </div>
 
-    <div class="publish-file-preview-groups" style="width: 100%;" >
+    <div class="publish-file-preview-groups" style="width: 100%;" id="customScrollBar" >
       <div *ngFor="let doc of docs; let i = index" class="publish-file-preview">
         <div class="row" style="width: 100%;">
           <div class="col-xl-6">

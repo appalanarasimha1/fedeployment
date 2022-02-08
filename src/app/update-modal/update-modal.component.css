@@ -625,6 +625,23 @@ color: #23211E;
   overflow: auto;
 }
 
+#customScrollBar::-webkit-scrollbar-track
+{
+	/* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+	background-color: #BAB8B2;
+}
+
+#customScrollBar::-webkit-scrollbar
+{
+	width: 6px;
+	background-color:#BAB8B2 ;
+}
+
+#customScrollBar::-webkit-scrollbar-thumb
+{
+	background-color: rgba(0,0,0,.54);
+}
+
 
 .grid-list-view{
   padding: 30px 0px;
