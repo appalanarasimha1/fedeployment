@@ -190,6 +190,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   getRecentlyViewed() {
     this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED) || '[]');
+    this.recentlyViewed.reverse();
     return;
   }
 
@@ -562,9 +563,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.loading = true;
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
-      // if(favouriteValue === 'recent') {
-      //   this.markRecentlyViewed(data);
-      // }
+      if(favouriteValue === 'recent') {
+        this.markRecentlyViewed(data);
+      }
       this.addToFavorite(data);
       this.loading = false;
     });
@@ -590,9 +591,9 @@ export class DocumentComponent implements OnInit, OnChanges {
       // data.contextParameters.favorites.isFavorite = this.favourite;
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
       this.removeFromFavorite(data.uid);
-      // if(favouriteValue === 'recent') {
-      //   this.markRecentlyViewed(data);
-      // }
+      if(favouriteValue === 'recent') {
+        this.markRecentlyViewed(data);
+      }
       this.loading = false;
     });
   }
