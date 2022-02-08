@@ -22,8 +22,8 @@
 body{
   font-family: myBrown !important;
   position: relative;
-  overflow: hidden;
-  overflow-y: scroll;
+  /* overflow: hidden;
+  overflow-y: scroll; */
 }
 .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel-header, .mat-expansion-panel-content, .mat-calendar{
   font-family: myBrown !important;
@@ -3662,10 +3662,10 @@ img:not([src]) {
   left: 0;
   right: 0;
 }
-.owl-theme .owl-nav [class*=owl-]{
+/* .owl-theme .owl-nav [class*=owl-]{
   background: unset !important;
   padding: unset !important;
-}
+} */
 .owl-prev {
     position: absolute;
     left: -29px !important;
@@ -3999,4 +3999,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   color: #040505 !important;
+}
+app-search {
+  overflow: hidden;
+  display: block;
+  width: 100%;
 }
