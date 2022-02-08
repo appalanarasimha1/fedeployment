@@ -218,10 +218,17 @@
                   <label for="confidentiality">Confidentiality</label>
                </div>
                <div class="col-xl-8 col-md-8 flexible">
-                  <ng-select placeholder="Specify sensitivity" (change)="onSelectConfidentiality($event)" [searchable]="false" [clearable]="false" [(ngModel)]="confidentiality" id="confidentiality" [ngClass]="{'goldenText': confidentiality}">
-                  <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" [value]="c.value">
-                  {{CONFIDENTIALITY_LABEL[c.value]}}
-                  </ng-option>
+                  <ng-select placeholder="Specify sensitivity" 
+                     (change)="onSelectConfidentiality($event)"
+                     [searchable]="false"
+                     [clearable]="false"
+                     [(ngModel)]="confidentiality"
+                     id="confidentiality"
+                     [ngClass]="{'goldenText': confidentiality}"
+                  >
+                     <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" [value]="c.value">
+                        {{CONFIDENTIALITY_LABEL[c.value]}}
+                     </ng-option>
                   </ng-select>
                   <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
                      <option value="" disabled selected hidden invalid >Specify sensitivity</option>
@@ -407,7 +414,7 @@
                            <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                            </select> -->
                         <ng-select (change)="onSelectConfidentiality($event, file.key)" [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [ngModel]="confidentiality"  [ngClass]="{'goldenText': confidentiality }">
-                        <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
+                        <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                         </ng-option>
                         </ng-select>
                      </div>
