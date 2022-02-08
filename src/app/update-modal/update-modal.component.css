@@ -82,7 +82,7 @@ font-size: 20px;
   width: 100% !important;
   max-width: 100% !important;
   display: block !important;
-  padding: 15px!important;
+  padding: 8px 15px 15px!important;
   min-width: 100% !important;
   color: #006845;
 }
@@ -161,16 +161,16 @@ px
 .select-workspace-menu-btn {
   font-size: 14px;
   line-height: 22px;
-  text-decoration-line: underline;
+  text-decoration-line: none;
   font-weight: 600;
   color: #8E6B0B;
   margin-left: 20px;
 }
 div.menu-title {
-  /* font-weight: 600; */
+  font-weight: 600;
   font-size: 16px;
   line-height: 24px;
-  color: #23211E;
+  color: #040404;
 }
 .workspace-list {
   background: #F9F7F2;
@@ -594,7 +594,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   right: 17px;
 }
 .publish-summary span{
-  color: #006845;
+  color: #413E3C;
+  font-weight: 600;
 }
 .userText{
   font-size: 16px;
