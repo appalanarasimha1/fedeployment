@@ -22,6 +22,8 @@
 body{
   font-family: myBrown !important;
   position: relative;
+  /* overflow: hidden;
+  overflow-y: scroll; */
 }
 .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel-header, .mat-expansion-panel-content, .mat-calendar{
   font-family: myBrown !important;
@@ -3660,10 +3662,10 @@ img:not([src]) {
   left: 0;
   right: 0;
 }
-.owl-theme .owl-nav [class*=owl-]{
+/* .owl-theme .owl-nav [class*=owl-]{
   background: unset !important;
   padding: unset !important;
-}
+} */
 .owl-prev {
     position: absolute;
     left: -29px !important;
@@ -3839,14 +3841,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-color: #333;
   box-shadow: none;
 }
-.goldenText span.ng-value-label.ng-star-inserted {
+/* .goldenText span {
   color: #C49900 !important;
-}
+} */
 
 
 .publish-assets .ng-select .ng-arrow-wrapper .ng-arrow, 
 .publish-file-preview-img .ng-select .ng-arrow-wrapper .ng-arrow {
-  background-image: url(./assets/images/black-downarrow.png);
+  background-image: url(./assets/images/black-downarrow.png) !important;
   background-position: 0px 3px;
   background-repeat: no-repeat;
   background-size: contain;
@@ -3969,9 +3971,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .masonry-item:nth-child(39) {z-index: 3;}
 .masonry-item:nth-child(40) {z-index: 2;}
 .masonry-item:nth-child(41) {z-index: 1;}
-.customTab {
+/* .customTab {
   overflow-x: hidden;
-}
+} */
 
 .pointer {
   cursor: pointer;
@@ -3994,4 +3996,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .tab-content .slick-slide img {
   max-height: 170px !important;
+}
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  color: #040505 !important;
+}
+app-search {
+  overflow: hidden;
+  display: block;
+  width: 100%;
 }

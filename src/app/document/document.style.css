@@ -1344,6 +1344,7 @@ color: #ACACAC;
 .pdfWhiteBlock{
   background-color: #fff;
   padding: 20px;
+  /* width: 255px; */
 }
 .recentHeading{
   font-size: 16px;
@@ -1478,6 +1479,7 @@ color: #ACACAC;
   background-color: #EBC03F;
   border-radius: 15px;
   margin-right: 8px;
+  border: unset;
 }
 .hasFilterSelected .itemCount {
   border: 1px solid #EBC03F;
@@ -1546,4 +1548,9 @@ color: #ACACAC;
 .sectorsDropdown .dropdown .dropdown-menu.show, .sectorsDropdown .dropup .dropdown-menu.show{
   min-height: 209px;
   overflow: scroll;
+}
+.back-btn img {
+  width: 7px;
+  margin-right: 4px;
+  vertical-align: -1px;
 }

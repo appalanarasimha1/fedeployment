@@ -39,3 +39,7 @@ export const GROUPS = {
 }
 
 export const UNWANTED_WORKSPACES = ['domain'];
+
+export const SPECIFIC_USER_LABEL = "Please specify the users";
+
+export const OWNER_APPROVAL_LABEL = "Please specify the approver";

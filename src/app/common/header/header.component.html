@@ -17,7 +17,7 @@
                         <li class="nav-item">
                           <a class="nav-link " (click)="selectTab('browse')">Browse</a>
                         </li>
-                       
+
                         <li class="nav-item">
                           <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
                         </li>
@@ -59,10 +59,10 @@
                             <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" (click)="selectTab('workspace')">Workspace</a></li>
+                            <li><a class="dropdown-item" [routerLink]="['/workspace']" >Workspace</a></li>
                             <!-- <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
                             <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li> -->
-                            <li><a class="dropdown-item"  placement="bottom" (click)="resetFilter(); toFavouriteSection()">Favourites</a></li>
+                            <li><a class="dropdown-item"  placement="bottom" (click)="selectTab('favourite'); toFavouriteSection()" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
                             <li class="logout-line"><a class="dropdown-item" (click)="logout()">Logout</a></li>
                           </ul>
                         </li>
@@ -73,7 +73,7 @@
           </div>
       </div>
   </div>
-</header> 
+</header>
 
 <header *ngIf="!searchHeader" class="pt-4 pb-4 searchHeading fixedHeader">
   <div class="container">
@@ -94,7 +94,7 @@
                         <li class="nav-item">
                           <a class="nav-link " (click)="selectTab('browse')">Browse</a>
                         </li>
-                       
+
                         <li class="nav-item">
                           <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
                         </li>
@@ -135,10 +135,10 @@
                             <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" (click)="selectTab('workspace')">Workspace</a></li>
+                            <li><a class="dropdown-item" [routerLink]="['/workspace']" >Workspace</a></li>
                             <!-- <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
                             <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li> -->
-                            <li><a class="dropdown-item" (click)="selectTab('search'); toFavouriteSection()">Favourites</a></li>
+                            <li><a class="dropdown-item"  (click)="selectTab('favourite'); toFavouriteSection()" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
                             <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
                           </ul>
                         </li>
@@ -170,7 +170,7 @@
                         <li class="nav-item">
                           <a class="nav-link active" (click)="selectTab('browse')">Browse</a>
                         </li>
-                
+
                         <li class="nav-item">
                           <a class="nav-link "  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
                         </li>
@@ -183,7 +183,7 @@
                         <li class="nav-item">
                           <a class="nav-link uploadBtn tooltipCustom" style="color: white" (click)="openModal()">Upload</a>
                         </li>
-                      
+
                       </ul>
                     </div>
 

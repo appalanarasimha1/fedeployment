@@ -92,7 +92,8 @@ export class HeaderComponent implements OnInit {
       return;
     }
     if(tab === 'favourite') {
-      this.router.navigate(['','#exTab3']);
+      this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+      // this.router.navigate(['/','#favorites']);
     }
   }
 

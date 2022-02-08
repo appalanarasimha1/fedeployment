@@ -1,24 +1,29 @@
 
 <!-- <app-loader-small [show]="modalLoading"></app-loader-small> -->
-<div *ngIf="viewType === 'GRID'" style="position: relative; margin-right: 5px;">
+<div *ngIf="viewType === 'GRID'" class="loader-ing">
   <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" /> -->
-    <img *ngIf="doc.type === 'Picture'" 
-    id="fileId" 
-    [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
-    alt=""
-    (click)="openPreview()"
-    (load)="showLock = true"
-    crossorigin="use-credentials"
-    loading="lazy" />
+    <div style="min-width: 113px;">
+      <img *ngIf="doc.type === 'Picture'" 
+        id="fileId" 
+        [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+        alt=""
+        (click)="openPreview()"
+        (load)="showLock = true"
+        crossorigin="use-credentials"
+        loading="lazy" />
 
-    <div *ngIf="doc.type === 'Video'" class="videoIconn">
-      <img id="fileId" 
-      [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
-      alt=""
-      (click)="openPreview()"
-      crossorigin="use-credentials" />
+        <div *ngIf="doc.type === 'Video'" class="videoIconn">
+          <img id="fileId" 
+          [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+          alt=""
+          (click)="openPreview()"
+          crossorigin="use-credentials" />
+        </div>
+      <span style="width: 1px;
+    height: 1px;"></span>
     </div>
+    
 
 
   <img *ngIf="doc.type === 'File'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
@@ -45,14 +50,11 @@
         <label for="html-{{doc.uid}}"></label>
       </div> -->
       <div class="hover-icon-group">
-        <div class="hover-icon star-icon"
-          [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
-          (click)="markFavourite()">
-        </div>
+        
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
         </div> -->
-        <a [ngClass]="showDownloadDropdown() ? '' : 'download-disabled'" class="hover-icon download-icon"
+        <a [ngClass]="showDownloadDropdown() ? 'downloadActive' : 'download-disabled'" class="hover-icon download-icon"
           href="{{getFileContent()}}">
           <div *ngIf="doc" class="download-dropdown">
             <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
@@ -75,6 +77,10 @@
             </div>
           </div>
         </a>
+        <div class="hover-icon star-icon"
+          [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
+          (click)="markFavourite()">
+        </div>
       </div>
       
       <div class="caption-mousehover">
@@ -122,14 +128,15 @@
     </div>
 
     <div class="hover-icon-group">
-      <div class="hover-icon star-icon"
-        [ngClass]="{'active': doc.contextParameters.favorites.isFavorite}"
-        (click)="markFavourite()"></div>
+
       <!-- <div class="hover-icon plus-icon" placement="top"
         ngbTooltip="This function will be available soon" style="cursor: not-allowed;">
       </div> -->
       <a class="hover-icon download-icon"
         href="{{getFileContent()}}"></a>
+        <div class="hover-icon star-icon"
+        [ngClass]="{'active': doc.contextParameters.favorites.isFavorite}"
+        (click)="markFavourite()"></div>
     </div>
     <div *ngIf="showLockIcon() && showLock" class="lock-icon">
       <img src="../../assets/images/lock-icon.svg" alt="" />
