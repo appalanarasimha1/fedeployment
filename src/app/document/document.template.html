@@ -90,7 +90,7 @@
             <div class="text-center" style="height: 150px;">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
               <h2 class="noresult pb-3 pt-4">You have not recently viewed any asset</h2>
-              <p class="searchcontent">Your recently viewed assets will show up here</p>
+              <p class="searchcontent">Your recently viewed assets will show up here.</p>
             </div>
           </div>
         </div>
@@ -130,8 +130,8 @@
       </ul>
       <div *ngIf="!favourites.length"  style="height: 150px;">
         <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-        <h2 class="noresult pb-3 pt-4">No favourite assets found</h2>
-        <p class="searchcontent">Mark assets as favourite to show here.</p>
+        <h2 class="noresult pb-3 pt-4">You have not marked any asset as favourite</h2>
+        <p class="searchcontent">Your favourite assets will show up here.</p>
       </div>
       <div *ngIf="favourites.length" class="tab-content">
         <div class="tab-pane active" id="favourite">

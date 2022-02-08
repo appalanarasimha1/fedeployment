@@ -1224,7 +1224,6 @@ color: #ACACAC;
 .min-height{
   min-height: calc(100vh - 68vh);
   position: relative;
-  overflow: hidden;
 }
 .min-height-search{
   min-height: calc(100vh - 68vh);
