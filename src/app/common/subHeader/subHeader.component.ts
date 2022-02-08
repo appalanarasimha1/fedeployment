@@ -128,11 +128,13 @@ export class SubHeaderComponent implements OnInit {
     touchDrag: false,
     pullDrag: false,
     dots: false,
-    navSpeed: 700,
-    autoWidth:true,
-    items: 6,
-    margin: 10,
-    navText: ['<img src="../../../assets/images/leftArrow.svg">', '<img src="../../../assets/images/rightArrow.svg">'],
+    // navSpeed: 700,
+    // center: false,
+    // autoWidth: false,
+    items: 5,
+    margin: 14,
+    nav: true,
+    // navText: ['<img src="../../../assets/images/leftArrow.svg">', '<img src="../../../assets/images/rightArrow.svg">'],
 
     responsive: {
       0: {
@@ -147,8 +149,7 @@ export class SubHeaderComponent implements OnInit {
       940: {
         items:6,
       }
-    },
-    nav: true
+    }
   }
 
   openSm(content) {
