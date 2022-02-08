@@ -62,7 +62,7 @@
                             <li><a class="dropdown-item" [routerLink]="['/workspace']" >Workspace</a></li>
                             <!-- <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
                             <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li> -->
-                            <li><a class="dropdown-item"  placement="bottom" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
+                            <li><a class="dropdown-item"  placement="bottom" (click)="selectTab('favourite')" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
                             <li class="logout-line"><a class="dropdown-item" (click)="logout()">Logout</a></li>
                           </ul>
                         </li>
@@ -138,7 +138,7 @@
                             <li><a class="dropdown-item" [routerLink]="['/workspace']" >Workspace</a></li>
                             <!-- <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
                             <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li> -->
-                            <li><a class="dropdown-item" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
+                            <li><a class="dropdown-item"  (click)="selectTab('favourite')" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
                             <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
                           </ul>
                         </li>
