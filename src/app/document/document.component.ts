@@ -42,7 +42,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   docs = [];
   private searchCriteria: IHeaderSearchCriteria = {};
   public display = 1;
-  docSliceInput = 9;
+  docSliceInput = 40;
   hideShowMoreBtn = true;
   showListView = false;
   viewType = 'GRID';
@@ -175,7 +175,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   resetResult() {
     this.documents = '';
     this.selectTab('recentUpload');
-    this.docSliceInput = 9;
+    this.docSliceInput = 40;
     this.hideShowMoreBtn = false;
     this.showListView = false;
     this.viewType = 'GRID';
@@ -338,7 +338,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   showMore() {
-    this.docSliceInput += 9;
+    this.docSliceInput += 40;
     if (this.docSliceInput > ASSET_SEARCH_PAGE_SIZE && this.docSliceInput < this.documents.resultsCount) {
       this.pageCount.emit({ pageNumber: ++this.documents.currentPageIndex, primaryType: this.selectedType });
       this.hideShowMoreBtn = false;
