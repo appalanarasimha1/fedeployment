@@ -666,7 +666,7 @@ select option{
   color: #000;
 }
 .goldenText.ng-select .ng-select-container{
-  border-color: #C49900;
+  border-color: #C49900 !important;
 }
 ::ng-deep ng-select {
   width: calc(100% - 50px);
@@ -815,7 +815,7 @@ opacity: 0.5;
 opacity: 0.5;
 }
 ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
-    color: #000;
+    color: #000 !important;
     font-weight: 400;
 }
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
