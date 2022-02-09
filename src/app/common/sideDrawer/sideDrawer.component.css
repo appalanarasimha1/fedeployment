@@ -9,22 +9,24 @@
 }
 .filter-box {
   position: absolute;
-  top: 0%;
+  top: -10%;
   left: 0%;
   bottom: 0;
   right: 0;
   margin: auto;
   /* transform: translate(-50%, -50%); */
   height: max-content;
+  min-height: 400px;
   /* max-height: 550px; */
   padding-bottom: 30px;
-  width: 630px;
+  width: 880px;
   background-image: url(~/../../../../assets/images/PopUpBackground.png);
   color: white;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: bottom;
   opacity: 1;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   border-radius: 4px;
 }
 .filter-box-header {
@@ -42,9 +44,9 @@
     font-size: 16px;
     font-weight: 600;
 }
-::ng-deep .dropdown-list{
+/* ::ng-deep .dropdown-list{
   position: relative !important;
-}
+} */
 .filter-form {
   display: flex;
   flex-direction: row;
