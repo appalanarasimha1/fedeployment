@@ -104,3 +104,4 @@ export const ASSET_SEARCH_PAGE_SIZE = 40;
 export const PAGE_SIZE_200 = 200;
 export const PAGE_SIZE_1000 = 1000;
 export const PAGE_SIZE_40 = 40;
+export const UNWANTED_WORKSPACES = ['domain'];
