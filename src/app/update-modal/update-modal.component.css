@@ -687,7 +687,7 @@ select option{
   color: #000;
 }
 .goldenText.ng-select .ng-select-container{
-  border-color: #C49900;
+  border-color: #C49900 !important;
 }
 /* ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected, .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked{
   background-color: #C49900;
@@ -861,10 +861,14 @@ input.copyright-input {
   background-size: contain;
   font-size: 0px
 }
-::ng-deep .goldenText span {
+/* ::ng-deep .goldenText span {
   color: #C49900 !important;
-}
+} */
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value, 
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
   color: #040505 !important;
+}
+
+::ng-deep .goldenText .ng-value.ng-star-inserted span {
+  color:  #C49900 !important;
 }
