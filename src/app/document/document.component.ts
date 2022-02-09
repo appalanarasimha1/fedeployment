@@ -66,7 +66,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   slideConfig = {
     arrows: true,
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 300,
     slidesToShow: 5,
     slidesToScroll: 5,
