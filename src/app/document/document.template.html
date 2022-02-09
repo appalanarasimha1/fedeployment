@@ -274,11 +274,14 @@
         </div>
         <div class="moreFilter" [ngClass]="filtersCount > 0 ? 'hasFilterSelected' : ''">
           <button (click)="clearFilter()" *ngIf="filtersCount > 0">Clear</button>
-          <label (click)="openAdvancedFilter()" class="e-btn" style="opacity: 1" >
-            <img *ngIf="filtersCount === 0" src="../../assets/images/IconFilters.svg" style="width: 20px;">
-            <img *ngIf="filtersCount > 0" src="../../assets/images/IconFiltersYellow.svg" style="width: 20px;">
-          </label>
-          <span>More filters</span><span *ngIf="filtersCount > 0" class="itemCount">{{filtersCount}}</span>
+          <div (click)="openAdvancedFilter()" class="flexible" style="cursor: pointer;">
+            <label  class="e-btn" style="opacity: 1" >
+              <img *ngIf="filtersCount === 0" src="../../assets/images/IconFilters.svg" style="width: 20px;">
+              <img *ngIf="filtersCount > 0" src="../../assets/images/IconFiltersYellow.svg" style="width: 20px;">
+            </label>
+            <span>More filters</span><span *ngIf="filtersCount > 0" class="itemCount">{{filtersCount}}</span>
+          </div>
+          
         </div>
       </div>
 
