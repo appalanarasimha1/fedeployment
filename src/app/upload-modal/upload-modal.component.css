@@ -248,7 +248,7 @@ color: #FFFFFF;
   margin-bottom: 30px;
 }
 .upload-form-input label {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   color: #040404;
 }
@@ -468,7 +468,8 @@ border-radius: 8px;
   display: flex;
   background-color: #F8F8F5;
   margin: 10px 0;
-  padding:30px 15px;
+  padding:20px 15px;
+  border-radius: 8px;
 }
 .publish-file-preview-img {
   display: block;
@@ -629,7 +630,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   right: 17px;
 }
 .publish-summary span{
-  color: #006845;
+  color: #413E3C;
+  font-weight: 600;
 }
 .userText{
   font-size: 16px;
