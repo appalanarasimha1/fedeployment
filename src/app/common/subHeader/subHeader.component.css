@@ -358,7 +358,7 @@ video{
     padding-right: 15px;
 }
 ::ng-deep .ng-select .ng-select-container {
-    color: #DEB31A;
+    color: #DEB31A !important;
     background-color: transparent;
     border-radius: 0px;
     border: unset;
