@@ -764,7 +764,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (this.sectorSelected) {
       // this.getAssetBySectors();
       // this.assetsBySectorSelected = null;
-      // this.sectorSelected = null;
+      this.sectorSelected = null;
     }
   }
 

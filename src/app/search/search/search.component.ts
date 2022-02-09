@@ -138,6 +138,11 @@ export class SearchComponent implements OnInit {
     this.filtersParams['sortBy'] = dataParam['sortBy'] || '';
     this.filtersParams['sortOrder'] = dataParam['sortOrder'] || '';
 
+    if(this.documentsView.sectorSelected) {
+      this.filtersParams['sectors'] = `["${this.documentsView.sectorSelected}"]`;
+    } else {
+      delete this.filtersParams['sectors'];
+    }
     const data = this.filtersParams;
 
 
@@ -201,6 +206,8 @@ export class SearchComponent implements OnInit {
           params['sectors'] = `["${this.documentsView.sectorSelected}"]`;
         }
         break;
+      // default:
+
     }
     if (!url) return;
 
