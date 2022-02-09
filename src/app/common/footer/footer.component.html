@@ -7,13 +7,16 @@
                 <img src="../../../assets/images/logo-neom.png" style="width: 50px;">
             </a>
         </div>
-        <div class="col-xl-9">
+        <div class="col-xl-11">
             <ul class="flexible footerList">
                 <li>
-                    <a href="mailto:groundxfeedback@neom.com"><p>Feedback</p></a>
+                    <span>Send feedback to: </span><a href="mailto:groundxfeedback@neom.com"><span>groundxfeedback@neom.com</span></a>
                 </li>
                 <li>
-                    <a class="pointer" [routerLink]="['/common/terms']"><p>Acceptable Use Policy</p></a>
+                    <a class="pointer" (click)="openTermsPage()"><span>Acceptable Use Policy</span></a>
+                </li>
+                <li>
+                    <span>© 2022 NEOM</span>
                 </li>
             </ul>
         </div>
