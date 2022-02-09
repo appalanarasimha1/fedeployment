@@ -1554,3 +1554,6 @@ color: #ACACAC;
   margin-right: 4px;
   vertical-align: -1px;
 }
+.slide-inner{
+  padding: 0 5px;
+}
