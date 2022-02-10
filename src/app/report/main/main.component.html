@@ -1,16 +1,44 @@
+<app-loader [show]="loading"></app-loader>
+<div class="reportBlock">
+    <section  style="background-color: #E8E6DF;padding: 30px 0px;">
+    <div class="container">
+        <div class="row">
+        <div class="col-xl-12">
+            <h2 class="commonHeading" style="font-weight: 600;">Report</h2>
+        </div>
+        </div>
+    </div>
+    </section>
 
-<static-card></static-card>
-<static-card></static-card>
-<static-card></static-card>
-<static-card></static-card>
-<static-card></static-card>
+    <div class="container">
+        <div class="displayFlex">
+            <static-card></static-card>
+            <static-card></static-card>
+            <static-card></static-card>
+            <static-card></static-card>
+            <static-card></static-card>
+        </div>
 
+        <h2 class="commonHeading">Consumption</h2>
+        <div class="consumption">
+            <div class="displayFlex pb-10">
+                <app-graph></app-graph>
+                <app-graph></app-graph>
+            </div>
+            <div class="displayFlex pt-none">
+                <app-graph></app-graph>
+                <app-graph></app-graph>
+                <app-graph></app-graph>
+            </div>
+        </div>
 
-<app-graph></app-graph>
-<app-graph></app-graph>
-
-
-
-<app-graph></app-graph>
-<app-graph></app-graph>
-<app-graph></app-graph>
+        <h2 class="commonHeading pb-30">Contribution</h2>
+        <div class="consumption">
+            <div class="displayFlex pt-none">
+                <app-graph></app-graph>
+                <app-graph></app-graph>
+                <app-graph></app-graph>
+            </div>
+        </div>
+    </div>
+</div>

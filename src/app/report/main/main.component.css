@@ -1,0 +1,39 @@
+.pb-10 {
+    padding-bottom: 10px !important;
+}
+.pb-30 {
+    padding-bottom: 30px !important;
+}
+.pt-60 {
+    padding-top: 60px !important;
+}
+.pt-none{
+    padding-top: 0px !important;
+}
+.reportBlock {
+    padding: 74px 0 60px;
+    min-height: calc(100vh - 130px);
+}
+.displayFlex{
+    display: flex;
+    padding: 30px 0px;
+}
+static-card{
+    margin-right: 20px;
+    width: 20%;
+    background: #E8E6DF;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+app-graph{
+    margin-right: 20px;
+    width: 30%;
+    background: #fff;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #E8E6DF;
+    padding: 10px;
+}

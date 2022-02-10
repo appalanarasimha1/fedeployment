@@ -1,0 +1,9 @@
+.graphHeading{
+    padding: 0 0 10px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.graphPlaceholder{
+    min-height: 150px;
+    background: #f0f0f0;
+}
