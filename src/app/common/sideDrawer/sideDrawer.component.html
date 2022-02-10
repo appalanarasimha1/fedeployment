@@ -1,6 +1,9 @@
 <!-- <app-loader [show]="loading"></app-loader> -->
 <section *ngIf="isOpen" class="filter-modal pt-5">
   <div class="filter-box">
+    <div class="filter-background" style="background-image: url(../../../assets/images/PopUpBackground.jpg)">
+
+   
     <div class="filter-box-header">
       <img src="../../assets/images/modalclose.svg" (click)="closeModal()" style="cursor: pointer;width: 20px">
       <span style="font-size: 20px;margin-left: 108px;" *ngIf="selectedType === 'all'"> Filter all assets</span>
@@ -76,5 +79,6 @@
 
       </div>
     </div>
+  </div>
   </div>
 </section>
