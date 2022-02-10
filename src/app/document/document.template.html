@@ -16,7 +16,7 @@
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
     <div id="exTab1" class="container">
-      <a class="commonHeading" style="font-size:28px"  href="#sectors" data-toggle="tab">Asset by Sectors</a>
+      <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">Asset by Sectors</a>
       <ul class="nav nav-tabs">
         <li>
           <div ngbDropdown class="d-inline-block sectorsDropdown">
@@ -59,7 +59,7 @@
     </div>
 
     <div id="exTab2" class="container">
-      <h2 class="commonHeading pb-4" style="font-size: 28px">Your Activity</h2>
+      <h2 class="commonHeading pb-4 recentFont" style="">Your Activity</h2>
       <ul class="nav nav-tabs">
         <li class="active"><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
         <li><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
@@ -129,7 +129,7 @@
 
     <div id="favorites" class="container">
       <ul class="nav nav-tabs">
-        <li><a class="commonHeading" style="font-size:28px"  href="#favourite" data-toggle="tab">Your Favourites</a></li>
+        <li><a class="commonHeading recentFont" style=""  href="#favourite" data-toggle="tab">Your Favourites</a></li>
       </ul>
       <div *ngIf="!favourites.length"  style="height: 150px;">
         <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
@@ -160,11 +160,11 @@
     </div>
   </div>
 
-  <section class="search-subpage pt-5 pb-5">
+  <section class="search-subpage ">
 
     <div *ngIf="!checkShowRecent()" class="container">
       <div class="row" style="justify-content: space-between">
-        <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn" (click)="resetResult()">
+        <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5 " (click)="resetResult()">
           <img src="../../assets/images/back-arrow.svg" /> Back
         </div>
         <div class="view-title">
@@ -207,12 +207,12 @@
               <div id="view" class="e-btn-group flexible">
                 <div>
                   <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked />
-                  <label class="e-btn" for="left"><img src="../../assets/images/gallery view.png"
+                  <label class="e-btn" for="left"><img src="../../assets/images/gallery-view.svg"
                       style="width: 22px;"></label>
                 </div>
                 <div>
                   <input type="radio" (change)="viewChange($event)" id="right" name="align" value="list" />
-                  <label class="e-btn" for="right"><img src="../../assets/images/list view.png"
+                  <label class="e-btn" for="right"><img src="../../assets/images/list-view.svg"
                       style="width: 22px;"></label>
                 </div>
               </div>

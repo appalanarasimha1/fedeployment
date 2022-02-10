@@ -1,7 +1,5 @@
 .sub-header{
-    /* background-color: #000; */
-    /* background-image: url(~/../../../../assets/images/NEOMbannerImage.png); */
-    background-image: url(~/../../../../assets/images/NEOM-banner-Image.png);
+    background-image: url(~/../../../../assets/images/HeaderBackgroundImage.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     padding-top: 145px !important;
@@ -14,7 +12,6 @@
     font-weight: bold;
     font-size: 24px;
     line-height: 28px;
-    /* letter-spacing: 0.31em; */
 }
 .search-bar{
     position: relative;
@@ -22,14 +19,11 @@
     border-radius: 8px;
     border: 1px solid #E5E5E5;
     width: 430px;
-    /* border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px; */
-background-color: #FDFDFD;
-font-weight: bold;
-font-size: 16px;
-line-height: 24px;
-color: #040404;
-/* text-transform: capitalize */
+    background-color: #FDFDFD;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: #040404;
 }
 ::placeholder{
     font-weight: 100 !important
@@ -466,3 +460,47 @@ video{
     cursor: default;
     opacity: 0.6;
   }
+
+  /* mobile responsive */
+  @media(max-width: 991.5px){
+    .search-bar, .searchDiv{
+        width: 100%;
+        z-index: unset !important;
+    }
+    .search-bar{
+        height: 60px;
+    }
+    .sub-header{
+        background-image: url(~/../../../../assets/images/mobileHeaderBackgroundImage.png);
+        height: auto;
+        padding-top: 76px !important;
+        padding-bottom: 35px;
+    }
+    .video-icon{
+        left: 3%;
+        bottom: 17px;
+        height: 46px;
+        width: 46px;
+    }
+    .playIcon{
+        height: 15px;
+        width: 15px;
+        margin: auto;
+        top: 0px;
+        z-index: 9;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-repeat: no-repeat;
+    }
+    .discover{
+        display: none;
+    }
+    .search-btn{
+        bottom: 0px;
+        top: 0px;
+    }
+    .sub-header.afterSearch{
+        padding-top: 76px !important;
+    }
+}

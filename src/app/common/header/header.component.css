@@ -144,13 +144,8 @@ header.pt-4.pb-4.searchHeading.openDrawer {
     width: calc(100% - 280px);
     margin-left: 280px;
 }
-.uploadBtn{
-    background: #937206;
-    border-radius: 50px;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-}
-.fixedHeader .uploadBtn{
+
+.fixedHeader .uploadBtn, .fixedHeader .uploadBtn:hover{
     background-color: #fff;
     color: #000 !important;
     font-weight: 600;
@@ -162,15 +157,15 @@ header.pt-4.pb-4.searchHeading.openDrawer {
     letter-spacing: 0.05em;
     font-size: 14px;
     line-height: 8px;
-    margin-top: 7px;
+    padding: 14px 20px;
+    background: #937206;
+    border-radius: 50px;
+    margin-top: 5px;
     margin-right: 15px;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 header img.header-logo {
     max-width: 170px;
     margin-left: 0px;
-    margin-top: 8px;
 }
 .navbar .dropdown-menu > li > a {
     padding: 0px;
@@ -192,4 +187,26 @@ header img.header-logo {
 }
 a.dropdown-item:hover {
     opacity: 0.5;
+}
+.rightDrop{
+    flex-direction: row;
+}
+
+
+/* mobile responsive */
+@media(max-width:991.5px){
+    .navbar-expand-lg .navbar-nav .dropdown-menu{
+        width: unset;
+        position: absolute;
+    }
+    .searchHeading{
+        position: absolute;
+    }
+    .fixedHeader{
+        background-color: transparent;
+    }
+    header img.header-logo{
+        width: 100px;
+        margin: auto;
+    }
 }

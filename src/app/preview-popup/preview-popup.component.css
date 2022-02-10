@@ -319,7 +319,7 @@ font-weight: 600;
 .yellowBtn{
   background: #F7E6B2;
   border-radius: 60px;
-  padding: 0px 10px;
+  padding: 0px 10px 2px;
   font-size: 12px;
   color: #8E6B0B;
   display: block;
@@ -1165,6 +1165,7 @@ li .videoBlock  {
   text-decoration: unset;
   margin: 0px 5px;
   display: inline-block;
+  text-transform: capitalize;
 }
 .weightSize{
   font-weight: 600;
@@ -1180,6 +1181,7 @@ color: #C4C4C4;
     z-index: 9999 !important;
     background-color: transparent;
     border: unset;
+    width: max-content;
 }
 .modal-header button img{
   width: 35px;

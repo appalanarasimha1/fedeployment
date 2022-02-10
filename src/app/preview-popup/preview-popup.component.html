@@ -5,12 +5,10 @@
         type="button"
         class="close"
         aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
+        (click)="modal.dismiss('Cross click')">
         <!-- <span aria-hidden="true">&times;</span> -->
         <span aria-hidden="true"
-          ><img src="../../assets/images/modalclose.svg"
-        /></span>
+          ><img src="../../assets/images/modalclose.svg"/></span>
       </button>
     </div>
     <div class="modal-body">
@@ -569,7 +567,7 @@
                 *ngIf="!showTagInput"
                 src="../../assets/images/Add a Tag.png"
                 (click)="showTagInput = true"
-                style="margin-left: 6px; width: 32px"
+                style="margin-left: 6px; width: 32px; cursor: pointer;"
               />
               <form
                 *ngIf="showTagInput"

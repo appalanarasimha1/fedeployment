@@ -2,7 +2,7 @@
 <section *ngIf="isOpen" class="filter-modal pt-5">
   <div class="filter-box">
     <div class="filter-box-header">
-      <img src="../../assets/images/close.png" (click)="closeModal()" style="cursor: pointer;width: 20px">
+      <img src="../../assets/images/modalclose.svg" (click)="closeModal()" style="cursor: pointer;width: 20px">
       <span style="font-size: 20px;margin-left: 108px;" *ngIf="selectedType === 'all'"> Filter all assets</span>
       <span style="font-size: 20px;margin-left: 108px;" *ngIf="selectedType === 'Picture'"> Filter images</span>
       <span style="font-size: 20px;margin-left: 108px;" *ngIf="selectedType === 'Video'"> Filter videos</span>

@@ -354,16 +354,18 @@
             <div>Please review the classifications of the uploaded files.</div>
             <div class="publish-summary">
                <!-- <span>{{ getSelectedAssetsTitle() }}</span> -->
-               <div class="publish-summary-location flexible">
+               <div class="assets-details">
                   <div class="flexible">
                      <img src="../../assets/images/upload.png">
                      <!-- <mat-icon>folder</mat-icon> -->
                      <span style="margin-left: 10px; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
                   </div>
-                  <div *ngIf="showLocaleDate(associatedDate) !== 'Invalid Date'" style="margin-left: 20px;" class="flexible">
+               </div>
+               <div class="publish-summary-location flexible">
+                  <div *ngIf="showLocaleDate(associatedDate) !== 'Invalid Date'" style="margin-left: 20px;">
                      <!-- <mat-icon>calendar_today</mat-icon> -->
-                     <img src="../../assets/images/calendar.png">
-                     <span style="margin-left: 10px; display: block;">{{ showLocaleDate(associatedDate) }}</span>
+                     <img src="../../assets/images/calendar.png" style="vertical-align: top;">
+                     <span style="margin-left: 6px; display: inline-block;">{{ showLocaleDate(associatedDate) }}</span>
                   </div>
                </div>
             </div>
