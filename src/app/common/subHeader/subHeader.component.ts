@@ -132,20 +132,17 @@ export class SubHeaderComponent implements OnInit {
     margin: 14,
     nav: true,
     responsive: {
-      0: {
-        items: 1
-      },
+      
       991: {
-        items: 6,
         nav: false,
-        // touchDrag: true,
-        // mouseDrag: true
+        mouseDrag: true,
+        touchDrag: true,
+        pullDrag: true,
       },
-      740: {
-        items: 6
-      },
-      940: {
-        items:6,
+      1024: {
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
       }
     }
   }

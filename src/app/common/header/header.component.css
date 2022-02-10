@@ -145,7 +145,7 @@ header.pt-4.pb-4.searchHeading.openDrawer {
     margin-left: 280px;
 }
 
-.fixedHeader .uploadBtn{
+.fixedHeader .uploadBtn, .fixedHeader .uploadBtn:hover{
     background-color: #fff;
     color: #000 !important;
     font-weight: 600;
