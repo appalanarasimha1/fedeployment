@@ -4005,3 +4005,11 @@ app-search {
   display: block;
   width: 100%;
 }
+
+.modal-open .modal {
+  width: calc(100% + 17px);
+}
+.modal-open {
+  overflow-y: scroll;
+  padding-right: 0px !important;
+}
