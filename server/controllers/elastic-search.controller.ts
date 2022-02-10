@@ -7,6 +7,7 @@ export class ElasticSearchController {
   constructor() {
     this.router.get('/fetch', this.getMostSearchedTerm);
     this.router.post('/insert', this.insertSearchTerm);
+    this.router.get('/docCount', this.getTotalDocCount);
   }
 
   public async getMostSearchedTerm(req: Request, res: Response) {
@@ -21,6 +22,12 @@ export class ElasticSearchController {
     const service = new ElasticSearchService();
     // await service.insertData();
     const result: any = await service.insertData(req.query.term);
+    res.status(200).send({ data: result?.aggregations, message: 'success' });
+  }
+
+  public async getTotalDocCount(req: Request, res: Response) {
+    const service = new ElasticSearchService();
+    const result: any = await service.getDocCount();
     res.status(200).send({ data: result?.aggregations, message: 'success' });
   }
 

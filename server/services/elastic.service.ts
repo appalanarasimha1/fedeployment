@@ -1,5 +1,4 @@
 import { AppConfig } from "../config/appConfigSelection";
-
 const { Client } = require('@elastic/elasticsearch');
 
 export class ElasticSearchService {
@@ -14,7 +13,7 @@ export class ElasticSearchService {
         date: new Date()
       }
     });
-    console.log('insert elsatic data response = ', response);
+    return;
   }
 
   public async findMostSearchedTerm() {
@@ -32,8 +31,24 @@ export class ElasticSearchService {
         }
       }
     });
-    
-    console.log('result found = ', body);
+    return body;
+  }
+
+  public async getDocCount() {
+    const { body } = await this.client.search({
+      index: this.indexValue,
+      body: {
+        "aggs": {
+          "properties": {
+            "terms": {
+              "field": "query", 
+              "order": { "_count": "desc" },
+              "size": 10
+            }
+          }
+        }
+      }
+    });
     return body;
   }
 
