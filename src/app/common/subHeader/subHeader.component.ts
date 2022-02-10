@@ -124,24 +124,22 @@ export class SubHeaderComponent implements OnInit {
 
   customOptions: OwlOptions = {
     loop: false,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
+    // mouseDrag: false,
+    // touchDrag: false,
+    // pullDrag: false,
     dots: false,
-    // navSpeed: 700,
-    // center: false,
-    // autoWidth: false,
     items: 5,
     margin: 14,
     nav: true,
-    // navText: ['<img src="../../../assets/images/leftArrow.svg">', '<img src="../../../assets/images/rightArrow.svg">'],
-
     responsive: {
       0: {
         items: 1
       },
-      400: {
-        items: 6
+      991: {
+        items: 6,
+        nav: false,
+        // touchDrag: true,
+        // mouseDrag: true
       },
       740: {
         items: 6

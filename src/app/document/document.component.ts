@@ -71,6 +71,14 @@ export class DocumentComponent implements OnInit, OnChanges {
     slidesToShow: 5,
     slidesToScroll: 5,
     variableWidth: true,
+    responsive: [
+      {
+        breakpoint: 991,
+        settings: {
+         arrows: false
+        }
+      }
+    ]
   };
   selectedView = 'recentlyViewed';
   selectedType = 'all';
