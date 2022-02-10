@@ -861,9 +861,9 @@ background-color:#EBC03F !important;
   /* opacity: 1; */
    position: absolute;
   top: 15px;
-  left: 15px;
+  right: 15px;
   padding: 0px;
-  width: auto;
+  width: max-content;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
