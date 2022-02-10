@@ -87,11 +87,11 @@ header{
     position: fixed;
     width: 100%;
     	transition: 0.3s;
-    z-index: 999;
+    z-index: 99;
 }
 .fixedHeader{
     background-color: #000;
-    z-index: 9999;
+    z-index: 999;
 }
 .searchHeading .nav-item a:before{
     content: '';
