@@ -9,7 +9,8 @@ const routes: Routes = [
   {path: '', loadChildren: () => import('./search/search.module').then(m => m.SearchModule)},
   {path: 'login', component: LoginComponent},
   {path: 'workspace', loadChildren: () => import('./browse/browse.module').then(m => m.BrowseModule)},
-  {path: 'common', loadChildren: () => import('./common/common-module/common.module').then(m => m.CommonModule)}
+  {path: 'common', loadChildren: () => import('./common/common-module/common.module').then(m => m.CommonModule)},
+  {path: 'report', loadChildren: () => import('./report/report.module').then(m => m.ReportModule)},
 ];
 
 @NgModule({
