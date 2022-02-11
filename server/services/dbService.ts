@@ -52,4 +52,26 @@ export class DBService {
             throw e;
         }
     }
+    
+    public async findUserCount() {
+        try {
+            let connection: any = await this.connectionManager.getConnection();
+            const query = {'email': {'$exists': true}};
+            return await connection.collection(AppConfig.Config.mongodbTables.USER_TABLE).count(query);
+        } catch (e) {
+            console.error('find usercount: Exception occurred while execution - ', e);
+            throw e;
+        }
+    }
+
+    public async findDownloadCount() {
+        try {
+            let connection: any = await this.connectionManager.getConnection();
+            const query = {'$eventId': 'download'};
+            return await connection.collection(AppConfig.Config.mongodbTables.AUDIT_TABLE).count(query);
+        } catch (e) {
+            console.error('find download asset count: Exception occurred while execution - ', e);
+            throw e;
+        }
+    }
 }

@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         // TODO: will break if we have another url that contains /user.
-        if(event.url === '/workspace' || event.url === '/common/terms') {
+        if(event.url === '/workspace' || event.url === '/common/terms' || event.url === 'report') {
           this.showBrowseHeader = true;
         } else {
           this.showBrowseHeader = false;
@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms') {
+    if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
       this.showBrowseHeader = true;
     } else {
       this.showBrowseHeader = false;
@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit {
       if (scroll >= 80 && scroll <= 20000) {
         $('.searchHeading').addClass('fixedHeader');
       } else {
-        if( window.location.pathname !== '/workspace' && window.location.pathname !== '/common/terms') {
+        if( window.location.pathname !== '/workspace' && window.location.pathname !== '/common/terms' &&  window.location.pathname !== '/report') {
           $('.searchHeading').removeClass('fixedHeader');
         }
       }
@@ -87,7 +87,7 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['']);
       return;
     }
-    if (tab === 'workspace') {
+    if (tab === 'workspace' ||tab === 'report') {
       this.router.navigate(['workspace']);
       return;
     }

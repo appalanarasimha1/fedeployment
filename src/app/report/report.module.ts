@@ -4,13 +4,17 @@ import { ReportMainComponent } from './main/main.component';
 import { CardComponent } from './card/card.component';
 import { GraphComponent } from './graph/graph.component';
 import { ReportRoutingModule } from './report-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 
 @NgModule({
-  declarations: [ReportMainComponent, CardComponent, GraphComponent],
+  declarations: [
+    ReportMainComponent,
+    CardComponent,
+    GraphComponent],
   imports: [
-    CommonModule,
+    SharedModule,
     ReportRoutingModule
   ]
 })

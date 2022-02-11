@@ -14,7 +14,8 @@ import { TOTAL_ASSETS_LABEL } from 'src/app/common/constant';
 })
 export class ReportMainComponent implements OnInit {
   totalAssets = 'loading';
-  readonly = TOTAL_ASSETS_LABEL
+  readonly TOTAL_ASSETS_LABEL = TOTAL_ASSETS_LABEL;
+  loading = false;
 
   constructor(
     public nuxeo: NuxeoService,
@@ -32,16 +33,18 @@ export class ReportMainComponent implements OnInit {
     let url = apiRoutes.SEARCH_PP_ASSETS;
     const params = { currentPageIndex: 0, offset: 0, pageSize: 1 };
     this.totalAssets = 'loading';
+    this.loading = true;
 
-    this.dataService.loaderValueChange(true);
+    // this.dataService.loaderValueChange(true);
     this.nuxeo.nuxeoClient.request(url, { queryParams: params, headers })
       .get().then((result) => {
         this.totalAssets = result.resultsCount;
-        this.dataService.loaderValueChange(false);
+        this.loading = false;
+        // this.dataService.loaderValueChange(false);
       }).catch((error) => {
         console.log('report fetch totalasset error = ', error);
-        
-        this.dataService.loaderValueChange(false);
+        this.loading = false;
+        // this.dataService.loaderValueChange(false);
         }
       );
   }
