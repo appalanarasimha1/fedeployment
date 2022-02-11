@@ -189,7 +189,7 @@ section.lpSecOne {
   min-height: 600px;
   position: relative;
 }
-section.lpSecOne:before {
+section.lpBAck:before {
   content: '';
   position: absolute;
   background: #f8f8f5;
