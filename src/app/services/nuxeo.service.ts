@@ -44,12 +44,14 @@ export class NuxeoService {
   ) {
     const token = localStorage.getItem('token');
     if (!this.isAuthenticated()) {
-      if(!token) {
-        this.router.navigate(['login']);
+      // if(!token) {
+      //   this.router.navigate(['login']);
+      //   return;
+      // }
+      if (token) {
+        this.createClientWithToken(token);
         return;
       }
-      this.createClientWithToken(token);
-      return;
     }
     // this.authenticateUser(null, null);
 

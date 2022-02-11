@@ -4,12 +4,13 @@ import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.componen
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { NoContent } from './no-content';
+import { AuthGuard } from './auth/auth.guard';
 
 
 const routes: Routes = [
   {path: '', loadChildren: () => import('./search/search.module').then(m => m.SearchModule)},
   {path: 'login', component: LoginComponent},
-  {path: 'workspace', loadChildren: () => import('./browse/browse.module').then(m => m.BrowseModule)},
+  {path: 'workspace', canActivate: [AuthGuard], loadChildren: () => import('./browse/browse.module').then(m => m.BrowseModule)},
   {path: 'common', loadChildren: () => import('./common/common-module/common.module').then(m => m.CommonModule)},
   {path: '404', component: NoContent}
 ];
