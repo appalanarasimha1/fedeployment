@@ -164,8 +164,8 @@
 
     <div *ngIf="!checkShowRecent()" class="container-fluid">
       <div class="row" style="justify-content: space-between">
-        <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5 " (click)="resetResult()">
-          <img src="../../assets/images/back-arrow.svg" /> Back
+        <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5">
+          <span (click)="resetResult()"><img src="../../assets/images/back-arrow.svg" /> Back</span>
         </div>
         <div class="view-title">
           <span style="padding-left: 11px;">{{getDetailViewTitle()}}</span>
