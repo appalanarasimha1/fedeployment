@@ -1537,7 +1537,7 @@ color: #ACACAC;
   min-width: 230px;
 } */
 
-.back-btn {
+.back-btn span {
   cursor: pointer;
 }
 .view-title {
