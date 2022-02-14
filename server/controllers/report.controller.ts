@@ -1,8 +1,5 @@
 import { Request, Response, Router } from 'express';
 import { DBService } from '../services/dbService';
-import fs from 'fs';
-import path from 'path';
-// import { ResponseHandler } from '../common/ResponseHandler';
 
 export class ReportController {
   private static instance: ReportController;
@@ -10,21 +7,11 @@ export class ReportController {
 
   constructor() {
     this.router.get('/fetch-report', this.fetchReport);
-
   }
 
   /**
-   * fetch user details from userDirectory - done
-   * in assetSeen: [{sector: sectorname, videoIds: [{data: '_id of videos', count: number}]}] - done
-   * if assetSeen - Done
-   *    search in video_processing table {sector: assetSeen.sector, _id: {$nin: assetSeen.videoSeen}} - done
-   *    if result found - Done
-   *        send 1st object - Done
-   *        update assetSeen with _id of video
-   *    else
-   *        find video of specified sector from video_processing table {sector: assetSeen.sector}, {limit: 1}
-   *        return result
-   * else send video matching the sector and set it in assetSeen - done
+   * this API gets total user count.
+   * download count user wise file count.
   */
   public async fetchReport(req: Request, res: Response) {
     try {

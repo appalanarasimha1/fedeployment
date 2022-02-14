@@ -3,6 +3,7 @@ import { DbConnection } from '../connectionManager/DbConnection';
 import { ObjectId } from 'mongodb';
 import * as _ from 'underscore';
 import { AppConfig } from '../config/appConfigSelection';
+import { createDownloadQuery } from '../dbquery';
 
 export class DBService {
     private connectionManager: DbConnection = ConnectionFactory.getConnectionManager();
@@ -67,8 +68,8 @@ export class DBService {
     public async findDownloadCount() {
         try {
             let connection: any = await this.connectionManager.getConnection();
-            const query = {'$eventId': 'download'};
-            return await connection.collection(AppConfig.Config.mongodbTables.AUDIT_TABLE).count(query);
+            const query = createDownloadQuery();
+            return await connection.collection(AppConfig.Config.mongodbTables.AUDIT_TABLE).aggregate(query).toArray();
         } catch (e) {
             console.error('find download asset count: Exception occurred while execution - ', e);
             throw e;

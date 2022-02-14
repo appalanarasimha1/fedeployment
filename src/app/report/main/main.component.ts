@@ -26,12 +26,13 @@ export class ReportMainComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchTotalAssets();
+    this.fetchReportFromMongo();
   }
   
   fetchTotalAssets() {
     const headers = { };
     let url = apiRoutes.SEARCH_PP_ASSETS;
-    const params = { currentPageIndex: 0, offset: 0, pageSize: 1 };
+    const params = { currentPageIndex: 0, offset: 0, pageSize: 1, ecm_fulltext: '', highlight: '' };
     this.totalAssets = 'loading';
     this.loading = true;
 
@@ -48,5 +49,26 @@ export class ReportMainComponent implements OnInit {
         }
       );
   }
+
+  fetchReportFromMongo() {
+    const headers = { };
+    let url = apiRoutes.REPORT_FETCH;
+    this.totalAssets = 'loading';
+    this.loading = true;
+
+    // this.dataService.loaderValueChange(true);
+    this.nuxeo.nuxeoClient.request(url, { headers })
+      .get().then((result) => {
+        this.totalAssets = result.resultsCount;
+        this.loading = false;
+        // this.dataService.loaderValueChange(false);
+      }).catch((error) => {
+        console.log('report fetch totalasset error = ', error);
+        this.loading = false;
+        // this.dataService.loaderValueChange(false);
+        }
+      );
+  }
+
 
 }
