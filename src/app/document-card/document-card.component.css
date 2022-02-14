@@ -1603,3 +1603,7 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
 ::ng-deep .slick-slide{
   margin-right: 5px;
 }
+::ng-deep .slide.slick-slide.slick-current.slick-active .download-dropdown {
+  right: auto !important;
+  left: 0px !important;
+}

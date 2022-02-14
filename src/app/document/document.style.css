@@ -95,8 +95,13 @@ select option {
 
 .dropdown-toggle::after{
   position: absolute;
-  right: 10px;
-  top: 17px;
+  right: 0px;
+  top: 13px;
+  color: transparent;
+  background: url(../../assets/images/down-arrow.svg) no-repeat right center;
+  background-size: contain;
+  width: 29px;
+  height: 12px;
 }
 .searchP{
   font-size: 24px;
@@ -177,7 +182,7 @@ padding-right: 10px;
   text-align: left;
 }
 #dropdownBasic4, #dropdownManual{
-  color: #C49900;
+  color: #040404;
 }
 
 .imagesList{
@@ -401,11 +406,11 @@ color: #000000;
 .sectorrBtn {
   background: transparent;
   border: unset;
-  border-bottom: 1px solid #C49900;
+  border-bottom: 2px solid #413E3C;
   border-radius: 0px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
-  padding: 6px 6px;
+  padding: 6px 0px;
 }
 .settingsDropdown .dropdown-menu.show{
   left: -184px !important;
@@ -684,7 +689,7 @@ background-color:#EBC03F !important;
   font-size: 16px;
   font-weight: bold;
   color: #000000;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .clear{
@@ -1464,7 +1469,7 @@ color: #ACACAC;
   color: #040404;
   position: absolute;
   top: -56px;
-  right: 90px;
+  right: 0px;
   cursor: pointer;
 }
 /* Custom tabs css end 12-Nov-2021 */
@@ -1559,6 +1564,7 @@ color: #ACACAC;
 } */
 .recentFont{
   font-size: 28px !important;
+  vertical-align: 10px;
 }
 
 /* mobile responsive */
