@@ -12,7 +12,7 @@ import { faBars, faList, faBorderAll, faFolder, faImage, faDownload, faStar, faP
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-
+import {MatPaginatorModule} from '@angular/material/paginator';
 @NgModule({
   declarations: [
     BrowseComponent,
@@ -29,6 +29,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
     MatIconModule,
     MatDialogModule,
     FontAwesomeModule,
+    MatPaginatorModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

@@ -74,7 +74,7 @@
   </div>
 </header>
 
-<header *ngIf="!searchHeader" class="pt-4 pb-4 searchHeading fixedHeader">
+<header *ngIf="showBrowseHeader" class="pt-4 pb-4 searchHeading fixedHeader">
   <div class="container">
     <div class="row flexible">
           <div class="col-xl-3 col-xs-3">
@@ -214,3 +214,17 @@
       </div> -->
   </div>
 </header>
+
+<header *ngIf="missingHeader" class="searchHeading missHeader"  >
+  <div class="container">
+      <div class="row flexible">
+          <div class="col-xl-3 col-xs-3">
+              <nav class="navbar navbar-expand-lg navbar-light ">
+                <div class="logo-block">
+                  <img src="../../../assets/images/Logo_Ground_X.svg" alt="Ground-X" class="header-logo" style="cursor: pointer;" (click)="resetFilter(); selectTab('search')" />
+                </div>
+                </nav>
+                </div>
+                </div>
+                </div>
+                </header>
