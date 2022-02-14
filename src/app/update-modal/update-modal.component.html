@@ -135,7 +135,7 @@
                 <div class="col-xl-8">
                   <ng-select name="allow" [searchable]="false" [clearable]="false"(change)="onSelectAllow($event.target.value, i)" id="allow" [ngClass]="{'goldenText': customAllowMap[i] }" [(ngModel)]="customAllowMap[i]">
                     <!-- <ng-option  hidden disabled selected value></ng-option> -->
-                    <ng-option *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
+                    <ng-option *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value)">{{ c.value }}
                     </ng-option>
                  </ng-select>
                 </div>
