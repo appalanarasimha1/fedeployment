@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   selectedTab: string;
   searchHeader: boolean;
   showBrowseHeader = false;
+  missingHeader= false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -40,6 +41,11 @@ export class HeaderComponent implements OnInit {
         } else {
           this.searchHeader = false;
         }
+        if (event.url === '/404') {
+          this.missingHeader = true;
+        } else {
+          this.missingHeader = false;
+        }
       }
     });
 
@@ -53,6 +59,11 @@ export class HeaderComponent implements OnInit {
       this.searchHeader = true;
     } else {
       this.searchHeader = false;
+    }
+    if (window.location.pathname === '/404') {
+      this.missingHeader = true;
+    } else {
+      this.missingHeader = false;
     }
 
   }

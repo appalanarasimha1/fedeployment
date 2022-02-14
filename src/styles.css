@@ -4025,4 +4025,7 @@ app-search {
 .col-xs-9 {
   width: 75% !important;
 }
+.custom-modal .modal-content{
+  width: calc(100% - 90px);
+}
 }

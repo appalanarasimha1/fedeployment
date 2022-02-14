@@ -25,7 +25,13 @@ export class AppComponent implements OnInit{
           setTimeout(()=>{
             this.showFooter = true;
           }, 500);
-        } else {
+        } else if(event.url.includes('/404')){
+          this.showHeader = true;
+          this.showAddButton = false;
+          setTimeout(()=>{
+            this.showFooter = true;
+          }, 500);
+        }else {
           this.showHeader = true;
           setTimeout(()=>{
             this.showFooter = true;

@@ -75,7 +75,7 @@ export class UploadModalComponent implements OnInit {
   workspaceList: any;
   folderList: any;
   dropdownFolderList: any;
-  showWsList: boolean = false;
+  showWsList: boolean = true;
   selectedFolder: any;
   folderToAdd: string;
   parentFolder: any;
@@ -157,6 +157,7 @@ export class UploadModalComponent implements OnInit {
     this.stepLabel = STEPS[1];
     this.buttonLabel = BUTTON_LABEL[1];
     this.loadUsers();
+    this.showWorkspaceList();
   }
 
   openFileSelect(event) {
@@ -280,7 +281,7 @@ export class UploadModalComponent implements OnInit {
 
   async selectWorkspace(ws) {
     this.selectedWorkspace = ws;
-    this.showWsList = false;
+    this.showWsList = true;
     this.folderList = await this.getFolderList(ws.id);
     this.dropdownFolderList = [...this.folderList];
   }
