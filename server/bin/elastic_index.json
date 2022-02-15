@@ -19,7 +19,8 @@
         "type": "keyword"
       },
       "userId": {
-        "type": "keyword"
+        "type": "text",
+        "fielddata": true
       },
       "query": {
         "type": "keyword",

@@ -21,6 +21,7 @@ export class ReportMainComponent implements OnInit {
   totalDownloads: any = 'loading';
   public totalSearches: any = 'loading';
   public searchTermsAndCount = [];
+  public userSearchCount = [];
   readonly TOTAL_ASSETS_LABEL = TOTAL_ASSETS_LABEL;
   loading = false;
   public usersByCountSearchLabels: Label[] = [
@@ -88,6 +89,7 @@ export class ReportMainComponent implements OnInit {
     this.fetchReportFromMongo();
     this.fetchMostSearchedTags();
     this.fetchSearchCount();
+    this.findUserBySearchCount()
   }
   
   fetchTotalAssets() {
@@ -137,11 +139,6 @@ export class ReportMainComponent implements OnInit {
 
   fetchMostSearchedTags() {
     this.apiService.get('/searchTerm/fetch').subscribe((response: any) => {
-      // const buckets = response?.data?.properties.buckets.filter(item => {
-      //   if(item.key.trim())
-      //    return item;
-      // });
-      // response.data.properties.buckets = buckets;
       let data;
       response?.data?.properties.buckets.map(item => {
         if(item.key.trim()) {
@@ -157,6 +154,17 @@ export class ReportMainComponent implements OnInit {
     });
   }
 
+  findUserBySearchCount() {
+    this.apiService.get('/searchTerm/findUserBySearchCount').subscribe((response: any) => {
+      let data;
+      response?.data?.properties.buckets.map(item => {
+        if(item.key.trim()) {
+          data = {name: item.key, count: item.doc_count};
+          this.userSearchCount.push(data);}
+      });
+    });
+  }
+
   calculateTotalDownload(downloadAssetCount: {_id: string, countType: any[]}[]) {
     this.totalDownloads = 0;
     let videoCount = 0;
@@ -167,20 +175,20 @@ export class ReportMainComponent implements OnInit {
       let downloadData = {name: item._id, count: 0};
       item.countType.map(countItem => {
         this.totalDownloads += countItem.count;
+        downloadData.count += countItem.count;
         if(countItem.type.toLowerCase() === 'video') {
           videoCount += countItem.count;
-          downloadData.count += countItem.count;
         }
         if(countItem.type.toLowerCase() === 'picture') {
           pictureCount += countItem.count;
-          downloadData.count += countItem.count;
         }
         if(countItem.type.toLowerCase() === 'file') {
           fileCount += countItem.count;
-          downloadData.count += countItem.count;
         }
       });
-      this.usersByCountDownloadData.push(downloadData);
+      if(this.usersByCountDownloadData.length < 11) {
+        this.usersByCountDownloadData.push(downloadData);
+      }
       // [[10, 20, 30]];
       // ['picture', 'video', 'file'];
     });
@@ -208,7 +216,9 @@ export class ReportMainComponent implements OnInit {
         }
         uploadData.count += countItem.count;
       });
-      this.usersByCountUploadData.push(uploadData);
+      if(this.usersByCountUploadData.length < 11) {
+        this.usersByCountUploadData.push(uploadData);
+      }
     });
     this.uploadByFormatData = [[pictureCount, videoCount, fileCount ]];
   }

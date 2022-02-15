@@ -3,6 +3,7 @@ import { Router, NavigationStart } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from './upload-modal/upload-modal.component';
 import { DataService } from './services/data.service';
+import { NuxeoService } from './services/nuxeo.service';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,17 @@ export class AppComponent implements OnInit{
   showAddButton = false;
   showFooter = false;
 
-  constructor(private router: Router, public matDialog: MatDialog, private dataService: DataService) {
+  constructor(
+    private router: Router, 
+    public matDialog: MatDialog,
+    private dataService: DataService,
+    private nuxeoService: NuxeoService) {
+
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
+        if(!this.nuxeoService.isAuthenticated()) {
+          this.showHeader = false;
+        }
         // TODO: will break if we have another url that contains /user.
         if (event.url.includes('/login')) {
           this.showHeader = false;
@@ -31,7 +40,13 @@ export class AppComponent implements OnInit{
           setTimeout(()=>{
             this.showFooter = true;
           }, 500);
-        }else {
+        // } else if(event.url.includes('common/terms')){
+        //   this.showHeader = false;
+        //   this.showAddButton = true;
+        //   setTimeout(()=>{
+        //     this.showFooter = true;
+        //   }, 500);
+        } else {
           this.showHeader = true;
           setTimeout(()=>{
             this.showFooter = true;

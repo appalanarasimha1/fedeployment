@@ -31,6 +31,7 @@ import { CoreModuleModule } from './common/core-module/core-module.module';
 import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.component';
 import { initializer } from './AppInit';
 import { RoleGuardService } from './services/roleGaurd';
+import { AuthGuardService } from './services/authGaurd';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { RoleGuardService } from './services/roleGaurd';
       multi: true,
       deps: [KeycloakService],
     },
-    RoleGuardService
+    RoleGuardService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

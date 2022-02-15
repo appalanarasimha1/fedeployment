@@ -9,13 +9,18 @@ export class ElasticSearchController {
     this.router.post('/insert', this.insertSearchTerm);
     this.router.get('/searchCount', this.getTotalSearchCount);
     this.router.get('/getSearchCountByUser', this.getSearchCountByUser);
+    this.router.get('/findUserBySearchCount', this.findUserBySearchCount);
   }
 
   public async getMostSearchedTerm(req: Request, res: Response) {
     const service = new ElasticSearchService();
-    console.log('insde eleasticinsert functipn');
-    // await service.insertData();
     const result: any = await service.findMostSearchedTerm();
+    res.status(200).send({ data: result?.aggregations, message: 'success' });
+  }
+  
+  public async findUserBySearchCount(req: Request, res: Response) {
+    const service = new ElasticSearchService();
+    const result: any = await service.findUserBySearchCount();
     res.status(200).send({ data: result?.aggregations, message: 'success' });
   }
 

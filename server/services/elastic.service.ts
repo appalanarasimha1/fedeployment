@@ -10,8 +10,8 @@ export class ElasticSearchService {
       index: this.indexValue,
       body: {
         query: searchTerm,
-        date: new Date(),
-        user: username
+        timestamp: new Date(),
+        userId: username
       }
     });
     return;
@@ -25,6 +25,24 @@ export class ElasticSearchService {
           "properties": {
             "terms": {
               "field": "query", 
+              "order": { "_count": "desc" },
+              "size": 10
+            }
+          }
+        }
+      }
+    });
+    return body;
+  }
+
+  public async findUserBySearchCount() {
+    const { body } = await this.client.search({
+      index: this.indexValue,
+      body: {
+        "aggs": {
+          "properties": {
+            "terms": {
+              "field": "userId", 
               "order": { "_count": "desc" },
               "size": 10
             }

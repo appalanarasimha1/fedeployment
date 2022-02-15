@@ -24,7 +24,7 @@
             <div class="tableGraph pb-10">
                 <app-graph *ngIf="downloadsByFormatData.length" [chartType]="'doughnut'" [title]="'Downloads by Format'" [labels]="downloadsByFormatLabel" [data]="downloadsByFormatData" [legend]="true"></app-graph>
                 <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 users by count of search'" [labels]="usersByCountSearchLabels" [data]="usersByCountSearchData" [legend]="usersByCountSearchLegend"></app-graph> -->
-                <app-table-card [title]="'Top 10 users by count of search'" [data]=""></app-table-card>
+                <app-table-card [title]="'Top 10 users by count of search'" [data]="userSearchCount"></app-table-card>
             </div>
             <div class="pt-none tableGraph">
                 <app-table-card [title]="'Top 10 users by count of download'" [data]="usersByCountDownloadData"></app-table-card>

@@ -15,6 +15,10 @@ export function createDownloadQuery() {
                 _id: '$_id.user',
                 countType: {'$push': {type:'$_id.type', count: '$count'}}
               }
+        },{
+            '$sort': {
+                'countType': -1
+              }
         }
     ];
 }
@@ -35,6 +39,10 @@ export function createUploadQuery() {
             '$group': {
                 _id: '$_id.user',
                 countType: {'$push': {type:'$_id.type', count: '$count'}}
+              }
+        },{
+            '$sort': {
+                'countType': -1
               }
         }
     ];
