@@ -7,6 +7,9 @@
     background-color: #f0f0f0;
 }
 .graphPlaceholder {
-    min-height: 157px;
+    min-height: 345px;
     background: #f0f0f0;
+}
+.mb-0 {
+    margin-bottom: 0px !important;
 }
