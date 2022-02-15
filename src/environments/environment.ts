@@ -8,8 +8,8 @@ export const environment = {
   // redirectBaseUrl: 'https://10.101.21.31:8090/', // for redirecting to old nuxeo ui for video playback
   // apiServiceBaseUrl: 'https://10.101.21.31:8090', //
   apiVersion: '/nuxeo/api/v1',
-  apiServiceBaseUrl: 'http://localhost:8090',//'https://dev2groundx.neom.com', // 'https://uatgroundx.neom.com'
-  nuxeoServerUrl: 'http://localhost:8090',
+  apiServiceBaseUrl: 'http://localhost:4200',//'https://dev2groundx.neom.com', // 'https://uatgroundx.neom.com'
+  nuxeoServerUrl: 'http://localhost:4200',
   // apiServiceBaseUrl:  "http://34.219.179.33:5050",
   // apiServiceBaseUrl: "http://localhost:8090",
   keycloakConfig: {

@@ -20,7 +20,8 @@ export class ReportController {
     //   const user: any = await dbService.findUser(body.username);
         const userCount = await dbService.findUserCount();
         const downloadAssetCount = await dbService.findDownloadCount();
-        res.send({message: 'done', error: null, data: {userCount, downloadAssetCount}});
+        const uploadAssetCount = await dbService.findUploadCount();
+        res.send({message: 'done', error: null, data: {userCount, downloadAssetCount, uploadAssetCount}});
     } catch (error: any) {
       res.status(500).send({ message: error.message });
       return;

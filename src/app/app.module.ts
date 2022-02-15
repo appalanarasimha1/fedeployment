@@ -30,6 +30,7 @@ import { DataService } from './services/data.service';
 import { CoreModuleModule } from './common/core-module/core-module.module';
 import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.component';
 import { initializer } from './AppInit';
+import { RoleGuardService } from './services/roleGaurd';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { initializer } from './AppInit';
       useFactory: initializer,
       multi: true,
       deps: [KeycloakService],
-    }
+    },
+    RoleGuardService
   ],
   bootstrap: [AppComponent]
 })

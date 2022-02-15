@@ -113,4 +113,9 @@ export class HeaderComponent implements OnInit {
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }
+
+  checkForUserGroup() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user?.groups.indexOf('reportAdmin') != -1;
+  }
 }
