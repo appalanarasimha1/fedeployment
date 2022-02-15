@@ -2,7 +2,7 @@
 
 </section>
 <app-loader [show]="loading"></app-loader>
-<section  style="background-color: #E8E6DF;padding: 30px 0px;">
+<!-- <section  style="background-color: #E8E6DF;padding: 30px 0px;">
   <div class="container">
     <div class="row">
       <div class="col-xl-12">
@@ -10,16 +10,35 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 <section style="background-color: #fff;" class="lpBAck">
   <section class="lpSecOne">
     <div class="container">
-      <div class="row" style="min-height: 600px;">
+      <div class="row">
+        <div class="col-xl-3 col-md-3  pb-5 pt-5" >
+          <h2 class="commonHeading" style="font-weight: 600;">Workspace</h2>
+        </div>
+        <div class="col-xl-9 col-md-9 pl-5 pt-5  bg-white">
+          <div class="row">
+            <div class="col-xl-7 col-md-7">
+              <div style="position: relative;">
+                <form  autocomplete="off">
+                  <button class="primary search-btn"><img
+                    src="../../../assets/images/search.png" /></button>
+                  <input type="text" placeholder="Search folder in Education Workspace" class="search-bar">
+                  <img  style="cursor: pointer" src="../assets/images/circle-close.png" class="placeholder-search">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row " >
         <div class="col-xl-3 col-md-3 pt-3 customToggle" style="background-color: #F8F8F5;">
           <!-- Add custom toggle start -->
          
           <!-- Add custom toggle end -->
-
+          
            <div class="tree" id="customScrollBar" >
             <!-- <div class="tree__tree-section"> -->
               <ul style="list-style: none;" class="leftPanel">
@@ -73,7 +92,7 @@
             </div>
           <!-- </div> -->
         </div>
-        <div class="col-xl-9 col-md-9 p-5 pt-5 bg-white">
+        <div class="col-xl-9 col-md-9 pl-5 pt-3  bg-white">
           <div *ngIf="selectedFolder">
             <div class="header-content">
               <div>
@@ -125,8 +144,13 @@
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
                 <ul class="all-sectors">
                   <li *ngFor="let item of searchList; let i = index">
-                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
-                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
+                    <div class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
+                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">
+                      <div class="inner-folder">
+                        <p class="folderTitle">{{item.title}}</p>
+                        <p class="folderAssets">33 photos curated by Jing L.</p>
+                      </div>
+                  </div>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"  data-toggle="tooltip" data-placement="right" title="{{item.title}}"
                       (click)="handleTest(item);selectedFolder=item;">
                       <img src="../../../assets/images/yellow-folder.png">
@@ -208,8 +232,13 @@
               </div>
             </div>
 
+
+           
+
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
+          <mat-paginator [length]="200" [pageSizeOptions]="[10, 50, 100]" aria-label="Select page">
+          </mat-paginator>
         </div>
       </div>
     </div>
