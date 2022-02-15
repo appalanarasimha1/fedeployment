@@ -19,7 +19,7 @@ export class ReportMainComponent implements OnInit {
   totalUsers = 'loading';
   reportData;
   totalDownloads: any = 'loading';
-  searchTermsAndCount;
+  public searchTermsAndCount = [];
   readonly TOTAL_ASSETS_LABEL = TOTAL_ASSETS_LABEL;
   loading = false;
   public usersByCountSearchLabels: Label[] = [
@@ -52,14 +52,14 @@ export class ReportMainComponent implements OnInit {
     'Video',
     'File',
   ];
-  colors: Array<any> = [ { backgroundColor: ['#01dd93', '#4ce7b3', '#99f1d3'], borderColor: 'transparent' } ];
 
-  popularSearchTermData = [[350, 450, 100]];
-  popularSearchTermLabel = [
-    'car',
-    'beach',
-    'neom',
-  ];
+  // popularSearchTermData = [[350, 450, 100]];
+  // popularSearchTermLabel = [
+  //   'car',
+  //   'beach',
+  //   'neom',
+  // ];
+  public popularSearchTermData = [];
 
   assetBySectorAndFormatData = [[350, 450, 100]];
   assetBySectorAndFormatLabel = [];
@@ -140,7 +140,12 @@ export class ReportMainComponent implements OnInit {
       //    return item;
       // });
       // response.data.properties.buckets = buckets;
-      this.searchTermsAndCount = response?.data?.properties.buckets || [];
+      let data;
+      response?.data?.properties.buckets.map(item => {
+        if(item.key.trim()) {
+          data = {name: item.key, count: item.doc_count};
+          this.searchTermsAndCount.push(data);}
+      });
     });
   }
 

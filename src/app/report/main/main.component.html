@@ -28,8 +28,9 @@
             </div>
             <div class="pt-none tableGraph">
                 <app-table-card [title]="'Top 10 users by count of download'" [data]="usersByCountDownloadData"></app-table-card>
+                <app-table-card [title]="'Top 10 Popular Search Terms'" [data]="searchTermsAndCount"></app-table-card>
                 <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 users by count of download'" [labels]="usersByCountDownloadLabels" [data]="usersByCountDownloadData" [legend]="usersByCountDownloadLegend"></app-graph> -->
-                <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 Popular Search Terms'" [labels]="popularSearchTermLabel" [data]="popularSearchTermData" [legend]="true"></app-graph>
+                <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 Popular Search Terms'" [labels]="popularSearchTermLabel" [data]="popularSearchTermData" [legend]="true"></app-graph> -->
                 <!-- <app-graph></app-graph> -->
             </div>
         </div>
