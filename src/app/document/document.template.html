@@ -334,14 +334,13 @@
             </ul>
           </div>
         </div>
-        <div *ngIf="!hideShowMoreBtn" (click)="showMore()"
-          style="text-align: center; cursor: pointer;color: #8E6B0B;">Show more</div>
+        <div *ngIf="!hideShowMoreBtn" (click)="showMore()" class="showMoreBtn">Show more</div>
       </div>
     </div>
     <div *ngIf="!loading && !documents?.entries?.length && !checkShowRecent()" class="row">
       <div class="col-xl-12 col-md-12 ">
         <div class="text-center" style="height: 600px;">
-          <img src="../../assets/images/search.svg" style="width: 50px;">
+          <img src="../../assets/images/search.svg" style="width: 50px;
           <h2 class="noresult pb-3 pt-4">No results found</h2>
           <p class="searchcontent">Try adjusting your search or filter to find what you are looking for.</p>
         </div>
