@@ -50,12 +50,13 @@ export class ReportMainComponent implements OnInit {
     { data: [28, 0, 40, 19, 86, 27, 90], label: 'File', stack: 'a' },
   ];
 
-  downloadsByFormatData = [[350, 450, 100]];
+  downloadsByFormatData = [];
   downloadsByFormatLabel = [
     'Picture',
     'Video',
     'File',
   ];
+  colors: Array<any> = [ { backgroundColor: ['#01dd93', '#4ce7b3', '#99f1d3'], borderColor: 'transparent' } ];
 
   popularSearchTermData = [[350, 450, 100]];
   popularSearchTermLabel = [
@@ -75,8 +76,8 @@ export class ReportMainComponent implements OnInit {
     'Sheriff']];
     mostContributingUserLabel = [];
 
-    uploadByFormatData = [[350, 450, 100]];
-    uploadByFormatLabel = [['Picture', 'Video', 'File']];
+    uploadByFormatData = [];
+    uploadByFormatLabel = ['Picture', 'Video', 'File'];
 
   constructor(
     public nuxeo: NuxeoService,
@@ -88,6 +89,7 @@ export class ReportMainComponent implements OnInit {
   ngOnInit(): void {
     this.fetchTotalAssets();
     this.fetchReportFromMongo();
+    this.fetchMostSearchedTags();
   }
   
   fetchTotalAssets() {
@@ -148,16 +150,49 @@ export class ReportMainComponent implements OnInit {
 
   calculateTotalDownload(downloadAssetCount: {_id: string, countType: any[]}[]) {
     this.totalDownloads = 0;
+    let videoCount = 0;
+    let fileCount = 0;
+    let pictureCount = 0;
     downloadAssetCount.map(item => {
-      item.countType.map(countItem => this.totalDownloads += countItem.count);
+      item.countType.map(countItem => {
+        this.totalDownloads += countItem.count;
+        if(countItem.type.toLowerCase() === 'video') {
+          videoCount += countItem.count;
+        }
+        if(countItem.type.toLowerCase() === 'picture') {
+          pictureCount += countItem.count;
+        }
+        if(countItem.type.toLowerCase() === 'file') {
+          fileCount += countItem.count;
+        }
+      });
+      // [[10, 20, 30]];
+      // ['picture', 'video', 'file'];
     });
+    this.downloadsByFormatData = [[pictureCount, videoCount, fileCount ]];
   }
 
   calculateTotalUpload(uploadAssetCount: {_id: string, countType: any[]}[]) {
     // this.totalUploads = 0;
-    // uploadAssetCount.map(item => {
-    //   item.countType.map(countItem => this.totaluploads += countItem.count);
-    // })
+    let videoCount = 0;
+    let fileCount = 0;
+    let pictureCount = 0;
+
+    uploadAssetCount.map(item => {
+      item.countType.map(countItem => {
+        // this.totaluploads += countItem.count;
+        if(countItem.type.toLowerCase() === 'video') {
+          videoCount += countItem.count;
+        }
+        if(countItem.type.toLowerCase() === 'picture') {
+          pictureCount += countItem.count;
+        }
+        if(countItem.type.toLowerCase() === 'file') {
+          fileCount += countItem.count;
+        }
+      });
+    });
+    this.uploadByFormatData = [[pictureCount, videoCount, fileCount ]];
   }
 
 
