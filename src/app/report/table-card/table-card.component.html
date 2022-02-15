@@ -1,22 +1,10 @@
-<div class="graphHeading">Users by Count of Search</div>
+<div class="graphHeading">{{title}}</div>
 <div class="graphPlaceholder">
   <table class="table grayBg">
     <tbody>
-      <tr>
-        <td>ankur.tiwari@neom.com</td>
-        <td>1800</td>
-      </tr>
-      <tr>
-        <td>Mudit Satija</td>
-        <td>1800</td>
-      </tr>
-      <tr>
-        <td>Umesh Bhati</td>
-        <td>1800</td>
-      </tr>
-      <tr>
-        <td>Umesh Bhati</td>
-        <td>1800</td>
+      <tr *ngFor="let item of data">
+        <td>{{item.name}}</td>
+        <td>{{item.count}}</td>
       </tr>
     </tbody>
   </table>

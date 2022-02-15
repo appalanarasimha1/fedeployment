@@ -36,19 +36,15 @@ export class ReportMainComponent implements OnInit {
     { data: [28, 0, 40, 19, 86, 27, 90], label: 'File', stack: 'a' },
   ];
   
-  public usersByCountDownloadLabels: Label[] = [
-    'Mudit',
-    'Ankur',
-    'Administrator',
-    'Divjot',
-    'Sheriff',
-  ];
-  public usersByCountDownloadLegend = false;
-  public usersByCountDownloadData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Picture', stack: 'a' },
-    { data: [28, 0, 40, 19, 86, 27, 90], label: 'Video', stack: 'a' },
-    { data: [28, 0, 40, 19, 86, 27, 90], label: 'File', stack: 'a' },
-  ];
+  // public usersByCountDownloadLabels: Label[] = [];
+  // public usersByCountDownloadLegend = false;
+  // public usersByCountDownloadData: ChartDataSets[] = [
+  //   { data: [65, 59, 80, 81, 56, 55, 40], label: 'Picture', stack: 'a' },
+  //   { data: [28, 0, 40, 19, 86, 27, 90], label: 'Video', stack: 'a' },
+  //   { data: [28, 0, 40, 19, 86, 27, 90], label: 'File', stack: 'a' },
+  // ];
+  public usersByCountDownloadData = [];
+  public usersByCountUploadData = [];
 
   downloadsByFormatData = [];
   downloadsByFormatLabel = [
@@ -153,19 +149,25 @@ export class ReportMainComponent implements OnInit {
     let videoCount = 0;
     let fileCount = 0;
     let pictureCount = 0;
+
     downloadAssetCount.map(item => {
+      let downloadData = {name: item._id, count: 0};
       item.countType.map(countItem => {
         this.totalDownloads += countItem.count;
         if(countItem.type.toLowerCase() === 'video') {
           videoCount += countItem.count;
+          downloadData.count += countItem.count;
         }
         if(countItem.type.toLowerCase() === 'picture') {
           pictureCount += countItem.count;
+          downloadData.count += countItem.count;
         }
         if(countItem.type.toLowerCase() === 'file') {
           fileCount += countItem.count;
+          downloadData.count += countItem.count;
         }
       });
+      this.usersByCountDownloadData.push(downloadData);
       // [[10, 20, 30]];
       // ['picture', 'video', 'file'];
     });
@@ -179,6 +181,7 @@ export class ReportMainComponent implements OnInit {
     let pictureCount = 0;
 
     uploadAssetCount.map(item => {
+      let uploadData = {name: item._id, count: 0};
       item.countType.map(countItem => {
         // this.totaluploads += countItem.count;
         if(countItem.type.toLowerCase() === 'video') {
@@ -190,7 +193,9 @@ export class ReportMainComponent implements OnInit {
         if(countItem.type.toLowerCase() === 'file') {
           fileCount += countItem.count;
         }
+        uploadData.count += countItem.count;
       });
+      this.usersByCountUploadData.push(uploadData);
     });
     this.uploadByFormatData = [[pictureCount, videoCount, fileCount ]];
   }
