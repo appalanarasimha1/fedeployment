@@ -124,31 +124,27 @@ export class SubHeaderComponent implements OnInit {
 
   customOptions: OwlOptions = {
     loop: false,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
+    // mouseDrag: false,
+    // touchDrag: false,
+    // pullDrag: false,
     dots: false,
-    navSpeed: 700,
-    autoWidth:true,
-    items: 6,
-    margin: 10,
-    navText: ['<img src="../../../assets/images/leftArrow.svg">', '<img src="../../../assets/images/rightArrow.svg">'],
-
+    items: 5,
+    margin: 14,
+    nav: true,
     responsive: {
-      0: {
-        items: 1
+      
+      991: {
+        nav: false,
+        mouseDrag: true,
+        touchDrag: true,
+        pullDrag: true,
       },
-      400: {
-        items: 6
-      },
-      740: {
-        items: 6
-      },
-      940: {
-        items:6,
+      1024: {
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
       }
-    },
-    nav: true
+    }
   }
 
   openSm(content) {

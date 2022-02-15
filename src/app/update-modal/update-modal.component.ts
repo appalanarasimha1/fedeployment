@@ -232,11 +232,13 @@ export class UpdateModalComponent implements OnInit {
     }
   }
 
-  checkAccessOptionDisabled(access, fileIndex?: any) {
-    const confidentiality =
-      this.customConfidentialityMap[fileIndex];
+  checkAccessOptionDisabled(value: string, fileIndex?: any) {
+    const confidentiality = this.customConfidentialityMap[fileIndex];
     if (!confidentiality || confidentiality === CONFIDENTIALITY.not) return false;
-    if (access === ACCESS.all) {
+    if (value === ACCESS.all) {
+      return true;
+    }
+    if (value === ALLOW.any) {
       return true;
     }
     return false;

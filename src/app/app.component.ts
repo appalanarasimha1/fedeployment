@@ -13,6 +13,7 @@ export class AppComponent implements OnInit{
   title = 'groundx';
   showHeader = false;
   showAddButton = false;
+  showFooter = false;
 
   constructor(private router: Router, public matDialog: MatDialog, private dataService: DataService) {
     router.events.forEach((event) => {
@@ -21,8 +22,20 @@ export class AppComponent implements OnInit{
         if (event.url.includes('/login')) {
           this.showHeader = false;
           this.showAddButton = false;
-        } else {
+          setTimeout(()=>{
+            this.showFooter = true;
+          }, 500);
+        } else if(event.url.includes('/404')){
           this.showHeader = true;
+          this.showAddButton = false;
+          setTimeout(()=>{
+            this.showFooter = true;
+          }, 500);
+        }else {
+          this.showHeader = true;
+          setTimeout(()=>{
+            this.showFooter = true;
+          }, 500);
           this.showAddButton = true;
         }
       }

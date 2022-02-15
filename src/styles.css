@@ -1,29 +1,30 @@
-/* @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
-@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700"); */
-@import url('./../node_modules/bootstrap/dist/css/bootstrap.min.css');
+
+
+/* @import url('./../node_modules/bootstrap/dist/css/bootstrap.min.css'); */
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 @import '~angular-tree-component/dist/angular-tree-component.css';
-/* @import '~ngx-bar-rating/themes/br-default-theme.css';
-@import '~ngx-bar-rating/themes/br-horizontal-theme.css';
-@import "../node_modules/c3/c3.min.css";
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css'; */
+
 
 @font-face {
   font-family: myBrown;
-  src: url(./assets/fonts/Brown-Light.otf);
+  src: url(./assets/fonts/Brown-Light.otf) format("opentype");
   font-weight: 400;
-}
-@font-face {
+  font-display: block;
+  
+} 
+ @font-face {
   font-family: myBrown;
-  src: url(./assets/fonts/Brown-Regular.otf);
+  src: url(./assets/fonts/Brown-Regular.otf) format("opentype");
   font-weight: 600;
+  font-display: block;
 }
-body{
+
+body,html{
   font-family: myBrown !important;
   position: relative;
-  overflow: hidden;
-  overflow-y: scroll;
+  /* overflow: hidden;
+  overflow-y: scroll; */
 }
 .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel-header, .mat-expansion-panel-content, .mat-calendar{
   font-family: myBrown !important;
@@ -3662,10 +3663,10 @@ img:not([src]) {
   left: 0;
   right: 0;
 }
-.owl-theme .owl-nav [class*=owl-]{
+/* .owl-theme .owl-nav [class*=owl-]{
   background: unset !important;
   padding: unset !important;
-}
+} */
 .owl-prev {
     position: absolute;
     left: -29px !important;
@@ -3848,7 +3849,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .publish-assets .ng-select .ng-arrow-wrapper .ng-arrow, 
 .publish-file-preview-img .ng-select .ng-arrow-wrapper .ng-arrow {
-  background-image: url(./assets/images/black-downarrow.png);
+  background-image: url(./assets/images/black-downarrow.png) !important;
   background-position: 0px 3px;
   background-repeat: no-repeat;
   background-size: contain;
@@ -3930,10 +3931,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .copyright-form .ng-select{
   width: 100%;
 }
-.tab-content .slick-list {padding-bottom: 60px !important; overflow: visible !important;}
+.tab-content .slick-list {padding-bottom: 60px !important; overflow: visible !important;padding-right: 120px !important;}
 /* .tab-content .slick-list.draggable:before {content: '';display: block;width: 100%;left: -100%;top: 0px;background: #f6f7fa;position: absolute;height: 100%; z-index: 1;} */
 /* .tab-content .slick-list.draggable:after {content: '';display: block;width: 100%;right: -100%;top: 0px;background: #f6f7fa;position: absolute;height: 100%; z-index: 1;} */
-.masonry-item:nth-child(4) {z-index: 38;}
+/* .masonry-item:nth-child(4) {z-index: 38;}
 .masonry-item:nth-child(5) {z-index: 37;}
 .masonry-item:nth-child(6) {z-index: 36;}
 .masonry-item:nth-child(7) {z-index: 35;}
@@ -3970,7 +3971,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .masonry-item:nth-child(38) {z-index: 4;}
 .masonry-item:nth-child(39) {z-index: 3;}
 .masonry-item:nth-child(40) {z-index: 2;}
-.masonry-item:nth-child(41) {z-index: 1;}
+.masonry-item:nth-child(41) {z-index: 1;} */
 /* .customTab {
   overflow-x: hidden;
 } */
@@ -3999,4 +4000,32 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   color: #040505 !important;
+}
+app-search {
+  overflow: hidden;
+  display: block;
+  width: 100%;
+}
+.modal-open .modal {
+  width: calc(100% + 17px);
+}
+.modal-open {
+  overflow-y: scroll;
+  padding-right: 0px !important;
+}
+
+
+
+
+/* mobile responsive */
+@media(max-width: 991.5px){
+  .col-xs-3 {
+    width: 25% !important;
+}
+.col-xs-9 {
+  width: 75% !important;
+}
+.custom-modal .modal-content{
+  width: calc(100% - 90px);
+}
 }

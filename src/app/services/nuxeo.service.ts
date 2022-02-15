@@ -81,6 +81,7 @@ export class NuxeoService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.nuxeoClient = null;
     this.http.get(`${this.baseUrl}/nuxeo/logout`)
       .subscribe((response: any) => {

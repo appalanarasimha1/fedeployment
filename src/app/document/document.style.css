@@ -1224,7 +1224,6 @@ color: #ACACAC;
 .min-height{
   min-height: calc(100vh - 68vh);
   position: relative;
-  overflow: hidden;
 }
 .min-height-search{
   min-height: calc(100vh - 68vh);
@@ -1464,7 +1463,7 @@ color: #ACACAC;
   line-height: 24px;
   color: #040404;
   position: absolute;
-  top: -50px;
+  top: -56px;
   right: 90px;
   cursor: pointer;
 }
@@ -1480,6 +1479,7 @@ color: #ACACAC;
   background-color: #EBC03F;
   border-radius: 15px;
   margin-right: 8px;
+  border: unset;
 }
 .hasFilterSelected .itemCount {
   border: 1px solid #EBC03F;
@@ -1537,7 +1537,7 @@ color: #ACACAC;
   min-width: 230px;
 } */
 
-.back-btn {
+.back-btn span {
   cursor: pointer;
 }
 .view-title {
@@ -1553,4 +1553,25 @@ color: #ACACAC;
   width: 7px;
   margin-right: 4px;
   vertical-align: -1px;
+}
+/* .slide-inner{
+  padding: 0 5px;
+} */
+.recentFont{
+  font-size: 28px !important;
+}
+
+/* mobile responsive */
+@media(max-width: 991.5px){
+  .customTab .show-all{
+    right: 0;
+  }
+  .recentFont{
+    font-size: 21px !important;
+  }
+  .noresult {
+    font-size: 16px;
+    line-height: normal;
+    padding-bottom: 5px !important;
+}
 }
