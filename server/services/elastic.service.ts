@@ -5,12 +5,13 @@ export class ElasticSearchService {
   private client = new Client({ node: AppConfig.Config.elasticDbUrl });
   private indexValue = 'searchindex';
 
-  public async insertData(searchTerm: any) {
+  public async insertData(searchTerm: any, username: any) {
     const response = await this.client.index({
       index: this.indexValue,
       body: {
         query: searchTerm,
-        date: new Date()
+        date: new Date(),
+        user: username
       }
     });
     return;
@@ -34,20 +35,9 @@ export class ElasticSearchService {
     return body;
   }
 
-  public async getDocCount() {
-    const { body } = await this.client.search({
-      index: this.indexValue,
-      body: {
-        "aggs": {
-          "properties": {
-            "terms": {
-              "field": "query", 
-              "order": { "_count": "desc" },
-              "size": 10
-            }
-          }
-        }
-      }
+  public async getTotalSearchCount() {
+    const { body } = await this.client.count({
+      index: this.indexValue
     });
     return body;
   }

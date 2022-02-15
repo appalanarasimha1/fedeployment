@@ -12,7 +12,7 @@ export class AppConfigLocal {
         VIDEO_TABLE: 'personalizedVideoInventory',
         AUDIT_TABLE: 'audit'
       },
-      domain: 'https://dev2groundx.neom.com/',
+      domain: 'https://uatgroundx.neom.com/',
       elasticDbUrl: 'http://localhost:9200'
     };
   

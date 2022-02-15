@@ -19,6 +19,7 @@ export class ReportMainComponent implements OnInit {
   totalUsers = 'loading';
   reportData;
   totalDownloads: any = 'loading';
+  public totalSearches: any = 'loading';
   public searchTermsAndCount = [];
   readonly TOTAL_ASSETS_LABEL = TOTAL_ASSETS_LABEL;
   loading = false;
@@ -86,6 +87,7 @@ export class ReportMainComponent implements OnInit {
     this.fetchTotalAssets();
     this.fetchReportFromMongo();
     this.fetchMostSearchedTags();
+    this.fetchSearchCount();
   }
   
   fetchTotalAssets() {
@@ -146,6 +148,12 @@ export class ReportMainComponent implements OnInit {
           data = {name: item.key, count: item.doc_count};
           this.searchTermsAndCount.push(data);}
       });
+    });
+  }
+
+  fetchSearchCount() {
+    this.apiService.get('/searchTerm/searchCount').subscribe((response: any) => {
+      this.totalSearches = response.data;
     });
   }
 

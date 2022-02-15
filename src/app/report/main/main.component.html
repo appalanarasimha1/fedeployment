@@ -14,7 +14,7 @@
         <div class="displayFlex">
             <static-card [title]="TOTAL_ASSETS_LABEL" [data]="totalAssets"></static-card>
             <static-card [title]="'Total Users'" [data]="totalUsers"></static-card>
-            <static-card [title]="'Total Searches'" [data]="totalAssets"></static-card>
+            <static-card [title]="'Total Searches'" [data]="totalSearches"></static-card>
             <static-card [title]="'Total Downloads'" [data]="totalDownloads"></static-card>
             <!-- <static-card></static-card> -->
         </div>
@@ -36,6 +36,7 @@
         </div>
 
         <div class="consumption">
+            <h2 class="commonHeading pb-30">Contribution</h2>
             <div class="pt-none tableGraph">
                 <app-table-card [title]="'Top 10 contributing users'" [data]="usersByCountUploadData"></app-table-card>
                 <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph>
