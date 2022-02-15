@@ -990,9 +990,9 @@ line-height: 13px;
 color: #737373;
 }
 
-::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
+/* ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
   position: unset !important;
-}
+} */
 ::ng-deep .ng-select{
   height: 30px !important;
 }
