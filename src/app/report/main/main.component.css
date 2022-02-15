@@ -27,7 +27,7 @@ static-card{
     margin-bottom: 20px;
     padding: 10px;
 }
-app-graph{
+app-graph, app-table-card{
     margin-right: 20px;
     width: 30%;
     background: #fff;
