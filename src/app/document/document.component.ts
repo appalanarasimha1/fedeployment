@@ -69,13 +69,41 @@ export class DocumentComponent implements OnInit, OnChanges {
     infinite: false,
     speed: 300,
     slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToScroll: 4,
     variableWidth: true,
+    // responsive: [
+    //   {
+    //     breakpoint: 991,
+    //     settings: {
+    //      arrows: false
+    //     }
+    //   }
+    // ]
     responsive: [
       {
-        breakpoint: 991,
+        breakpoint: 1024,
         settings: {
-         arrows: false
+          slidesToShow: 5,
+          slidesToScroll: 5,
+          infinite: false,
+          dots: false,
+          arrows: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          arrows: false,
+          slidesToShow: 3,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false,
+          slidesToShow: 2,
+          slidesToScroll: 1
         }
       }
     ]

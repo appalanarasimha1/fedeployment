@@ -281,7 +281,7 @@ export class UploadModalComponent implements OnInit {
 
   async selectWorkspace(ws) {
     this.selectedWorkspace = ws;
-    this.showWsList = true;
+    this.showWsList = false;
     this.folderList = await this.getFolderList(ws.id);
     this.dropdownFolderList = [...this.folderList];
   }
