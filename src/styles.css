@@ -3750,6 +3750,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .customTab .slick-prev, .customTab .slick-next {
   height: 40px !important;
   width: 40px !important;
+  z-index: 9 !important;
 }
 /* .customTab .slick-prev {
   left: auto;

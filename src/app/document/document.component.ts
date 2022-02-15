@@ -69,7 +69,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     infinite: false,
     speed: 300,
     slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToScroll: 1,
     variableWidth: true,
     responsive: [
       {
