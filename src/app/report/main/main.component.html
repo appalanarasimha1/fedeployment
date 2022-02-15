@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
         <div class="col-xl-12">
-            <h2 class="commonHeading" style="font-weight: 600;">Report</h2>
+            <h2 class="commonHeading" style="font-weight: 600;">Analytics</h2>
         </div>
         </div>
     </div>
@@ -19,27 +19,40 @@
             <!-- <static-card></static-card> -->
         </div>
 
-        <div class="consumption">
-            <h2 class="commonHeading pb-30">Consumption</h2>
-            <div class="tableGraph pb-10">
-                <app-graph *ngIf="downloadsByFormatData.length" [chartType]="'doughnut'" [title]="'Downloads by Format'" [labels]="downloadsByFormatLabel" [data]="downloadsByFormatData" [legend]="true"></app-graph>
-                <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 users by count of search'" [labels]="usersByCountSearchLabels" [data]="usersByCountSearchData" [legend]="usersByCountSearchLegend"></app-graph> -->
-                <app-table-card [title]="'Top 10 users by count of search'" [data]=""></app-table-card>
-            </div>
-            <div class="pt-none tableGraph">
-                <app-table-card [title]="'Top 10 users by count of download'" [data]="usersByCountDownloadData"></app-table-card>
-                <app-table-card [title]="'Top 10 Popular Search Terms'" [data]="searchTermsAndCount"></app-table-card>
-                <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 users by count of download'" [labels]="usersByCountDownloadLabels" [data]="usersByCountDownloadData" [legend]="usersByCountDownloadLegend"></app-graph> -->
-                <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 Popular Search Terms'" [labels]="popularSearchTermLabel" [data]="popularSearchTermData" [legend]="true"></app-graph> -->
-                <!-- <app-graph></app-graph> -->
-            </div>
-        </div>
-
-        <div class="consumption">
-            <h2 class="commonHeading pb-30">Contribution</h2>
-            <div class="pt-none tableGraph">
-                <app-table-card [title]="'Top 10 contributing users'" [data]="usersByCountUploadData"></app-table-card>
-                <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph>
+        <div class="customTab pt-none">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#consumption" data-toggle="tab">Consumption</a></li>
+                <li><a  href="#contribution" data-toggle="tab">Contribution</a></li>
+            </ul>
+        
+            <div class="tab-content">
+                <div class="tab-pane active" id="consumption">
+                    <div class="consumption">
+                        <!-- <h2 class="commonHeading pb-30">Consumption</h2> -->
+                        <div class="tableGraph pb-10">
+                            <app-graph *ngIf="downloadsByFormatData.length" [chartType]="'doughnut'" [title]="'Downloads by Format'" [labels]="downloadsByFormatLabel" [data]="downloadsByFormatData" [legend]="true"></app-graph>
+                            <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 users by count of search'" [labels]="usersByCountSearchLabels" [data]="usersByCountSearchData" [legend]="usersByCountSearchLegend"></app-graph> -->
+                            <app-table-card [title]="'Top 10 users by count of search'" [data]=""></app-table-card>
+                        </div>
+                        <div class="pt-none tableGraph">
+                            <app-table-card [title]="'Top 10 users by count of download'" [data]="usersByCountDownloadData"></app-table-card>
+                            <app-table-card [title]="'Top 10 Popular Search Terms'" [data]="searchTermsAndCount"></app-table-card>
+                            <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 users by count of download'" [labels]="usersByCountDownloadLabels" [data]="usersByCountDownloadData" [legend]="usersByCountDownloadLegend"></app-graph> -->
+                            <!-- <app-graph [chartType]="'horizontalBar'" [title]="'Top 10 Popular Search Terms'" [labels]="popularSearchTermLabel" [data]="popularSearchTermData" [legend]="true"></app-graph> -->
+                            <!-- <app-graph></app-graph> -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="contribution">
+                    <div class="consumption">
+                        <!-- <h2 class="commonHeading pb-30 pt-30">Contribution</h2> -->
+                        <div class="pt-none tableGraph">
+                            <app-table-card [title]="'Top 10 contributing users'" [data]="usersByCountUploadData"></app-table-card>
+                            <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

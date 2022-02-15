@@ -31,7 +31,8 @@ static-card{
     text-align: center;
     border-radius: 8px;
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 10px 10px 20px;
+    min-height: 130px;
 }
 .tableGraph {
     overflow: hidden;
@@ -45,6 +46,101 @@ app-graph, app-table-card{
     border-radius: 8px;
     margin-bottom: 10px;
     border: 1px solid #E8E6DF;
-    padding: 10px;
+    padding: 20px;
     float: left;
 }
+static-card{
+    background: #fff8e3;
+    color: #333;
+    box-shadow: 0px 0px 10px #e7ddbf;
+}
+/* 
+static-card:nth-child(1){
+    background: #cd6b12;
+    /* background: linear-gradient(177deg, #F68D2E 0%, #cd6b12 100%); 
+    background: linear-gradient(177deg, #f7809a 0%, #ed3e64 100%);
+    color: #fff;
+}
+static-card:nth-child(2){
+    background: #03709f;
+    background: linear-gradient(177deg, #25bbfb 0%, #03709f 100%);
+    color: #fff;
+}
+static-card:nth-child(3){
+    background: #59b25f;
+    background: linear-gradient(177deg, #73e37b 0%, #59b25f 100%);
+    color: #fff;
+}
+static-card:nth-child(4){
+    background: #0076A8;
+    background: linear-gradient(177deg, #0076A8 0%, #015275 100%);
+    color: #fff;
+}
+static-card:nth-child(5){
+    background: #0daec3;
+    background: linear-gradient(177deg, #1ae5ff 0%, #0daec3 100%);
+    color: #fff;
+} */
+/* Custom tabs css start 12-Nov-2021 */
+.customTab {
+    padding: 60px 0px 40px;
+  }
+  .customTab .tab-content {
+    padding: 25px 0px 0px;
+  }
+  .customTab .nav>li>a {
+    position: relative;
+    display: block;
+    padding: 8px 0px;
+    color: #000000;
+    font-size: 16px;
+  }
+  .customTab .nav-tabs {
+     border-bottom: 0px;
+  }
+  .customTab .nav-tabs > li.active:before {
+    border-color: transparent;
+    border-top-color: transparent;
+    border-width: 1px;
+    margin-left: 0;
+    height: 2px;
+    background: #C49900;
+    width: 100%;
+    left: 0px;
+  }
+  .customTab .nav-tabs > li.active:after {
+    border-color: transparent;
+    border-top-color: transparent;
+    border-width: 0px;
+    margin-left: 0;
+    left: 0px;
+  }
+  .customTab .nav-tabs > li.active > a,
+  .customTab .nav-tabs > li.active > a:focus,
+  .customTab .nav-tabs > li.active > a:hover{
+    color: #C49900 !important;
+    font-weight: bold !important;
+  }
+  .customTab .nav-tabs>li>a{
+    margin: 0px;
+  }
+  .customTab .nav-tabs > li {
+    margin-right: 20px;
+  }
+  .customTab .image-block {
+    margin: 5px;
+    position: relative;
+  }
+  .customTab .tab-pane {
+    position: relative;
+  }
+  .customTab .show-all {
+    font-size: 16px;
+    line-height: 24px;
+    color: #040404;
+    position: absolute;
+    top: -56px;
+    right: 90px;
+    cursor: pointer;
+  }
+  /* Custom tabs css end 12-Nov-2021 */
