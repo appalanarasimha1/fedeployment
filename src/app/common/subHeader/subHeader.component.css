@@ -1,7 +1,5 @@
 .sub-header{
-    /* background-color: #000; */
-    /* background-image: url(~/../../../../assets/images/NEOMbannerImage.png); */
-    background-image: url(~/../../../../assets/images/NEOM-banner-Image.png);
+    background-image: url(~/../../../../assets/images/HeaderBackgroundImage.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     padding-top: 145px !important;
@@ -14,22 +12,18 @@
     font-weight: bold;
     font-size: 24px;
     line-height: 28px;
-    /* letter-spacing: 0.31em; */
 }
 .search-bar{
     position: relative;
-    padding: 10px 15px 10px 36px;
+    padding: 10px 40px 10px 36px;
     border-radius: 8px;
     border: 1px solid #E5E5E5;
     width: 430px;
-    /* border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px; */
-background-color: #FDFDFD;
-font-weight: bold;
-font-size: 16px;
-line-height: 24px;
-color: #040404;
-/* text-transform: capitalize */
+    background-color: #FDFDFD;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: #040404;
 }
 ::placeholder{
     font-weight: 100 !important
@@ -170,26 +164,28 @@ background-color: #fff;
     display: inline-block;
   }
   .scrolling-wrapper {
-    overflow-x: scroll;
+    /* overflow-x: scroll;
     overflow-y: hidden;
-    white-space: nowrap;
+    white-space: nowrap; */
     /* max-width: 610px; */
     margin: 0 auto;
 }
 .scrolling-wrapper .card  {
     display: inline-block;
     width: auto;
+    min-width: 70px;
     height: auto;
     background-size: cover;
     position: relative;
-    margin-left: 5px;
-    overflow: hidden;
+    /* margin-left: 5px; */
+    /* overflow: hidden; */
     background-color: black;
     color: white;
     border-radius: 24px;
     border: 0px;
-    padding: 5px 10px 9px 10px;
+    padding: 4px 10px 7px 10px;
     text-align: center;
+    text-transform: capitalize;
 }
 ::-webkit-scrollbar {
     display: none;
@@ -234,7 +230,7 @@ background-color: #fff;
     border-radius: 100px;
     background: #3ca2ca;
     overflow: hidden;
-    z-index: 99;
+    z-index: 1;
     cursor: pointer;
 }
 .video-icon img {
@@ -356,7 +352,7 @@ video{
     padding-right: 15px;
 }
 ::ng-deep .ng-select .ng-select-container {
-    color: #DEB31A;
+    color: #DEB31A !important;
     background-color: transparent;
     border-radius: 0px;
     border: unset;
@@ -441,3 +437,77 @@ video{
   ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input, ::ng-deep .ng-select-container {
     cursor: pointer !important;
   }
+
+  ::ng-deep .owl-prev {
+    background: url(../../../assets/images/arrow-prev-white.svg) no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    text-indent: -9999em;
+    bottom: -18px;
+    width: 17px;
+    height: 17px;
+  }
+  ::ng-deep .owl-next {
+    background: url(../../../assets/images/arrow-next-white.svg) no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    text-indent: -9999em;
+    bottom: -18px;
+    width: 17px;
+    height: 17px;
+  }
+  ::ng-deep .owl-next.disabled, ::ng-deep .owl-prev.disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  /* mobile responsive */
+  @media(max-width: 991.5px){
+    .search-bar, .searchDiv{
+        width: 100%;
+        z-index: unset !important;
+    }
+    .search-bar{
+        height: 60px;
+    }
+    .sub-header{
+        background-image: url(~/../../../../assets/images/mobileHeaderBackgroundImage.png);
+        height: auto;
+        padding-top: 76px !important;
+        padding-bottom: 35px;
+    }
+    .video-icon{
+        left: 3%;
+        bottom: 17px;
+        height: 46px;
+        width: 46px;
+    }
+    .playIcon{
+        height: 15px;
+        width: 15px;
+        margin: auto;
+        top: 0px;
+        z-index: 9;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-repeat: no-repeat;
+    }
+    .discover{
+        display: none;
+    }
+    .search-btn{
+        bottom: 0px;
+        top: 0px;
+    }
+    .sub-header.afterSearch{
+        padding-top: 76px !important;
+    }
+    .fixx{
+        width: 100%;
+        height: 190px;
+    }
+    .modal-body-content img{
+        height: 190px;
+    }
+}

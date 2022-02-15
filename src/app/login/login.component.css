@@ -1,5 +1,6 @@
 .login{
     height: 100vh;
+    min-height: 600px;
     background-image: url('../../assets/images/mountains-image.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -30,7 +31,7 @@
 }
 .form-control{
     border-radius: 8px;
-    padding: 22px 15px;
+    padding: 0px 15px;
     /* border: unset; */
     font-family: myBrown;
     border: 1px solid;
@@ -98,4 +99,10 @@ button.btn-primary:focus, button.btn-primary:hover{
 }
 .loginKeycloakBtn:hover{
     background-color: #13100D;
+}
+/* mobile responsive */
+@media(max-width: 991.5px){
+    .login form{
+        width: 100%;
+    }
 }

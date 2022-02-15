@@ -3,26 +3,26 @@
   <div *ngIf="step === 1">
     <div class="publish-summary">
       <div class="assets-details">
-        <span>{{ getSelectedAssetsTitle() }}</span>
-        <span style="color: gray;">{{ getSelectedAssetsSize() }}</span>
-      </div>
-
-      <div class="publish-summary-location flexible">
         <div class="flexible">
           <img src="../../assets/images/upload.png">
           <!-- <mat-icon>folder</mat-icon> -->
-        <span style="margin-left: 10px; display: block;" [title]="selectedFolder.title">{{ sharedService.stringShortener(selectedFolder.title, 20) }}</span>
+        <span style="margin-left: 10px; display: block;font-weight: 600;" [title]="selectedFolder.title">{{ sharedService.stringShortener(selectedFolder.title, 40) }}</span>
         </div>
-        <div style="margin-left: 20px;" class="flexible">
+      </div>
+
+      <div class="publish-summary-location flexible" style="display: inline-block; text-align: right;">
+        <div style="margin-left: 20px;padding-bottom: 5px;" class="">
           <!-- <mat-icon>calendar_today</mat-icon> -->
-          <img src="../../assets/images/calendar.png">
-          <span style="margin-left: 10px; display: block;">{{ showLocaleDate() }}</span>
+          <img src="../../assets/images/calendar.png" style="display: inline-block;padding-right: 0px; vertical-align: top;">
+          <span style="margin-left: 5px; display: inline-block; font-weight: 600;">{{ showLocaleDate() }}</span>
         </div>
+        <span style="padding-right: 3px; color: #413E3C; font-weight: normal;">{{ getSelectedAssetsTitle() }}, </span>
+        <span style="color: #413E3C;font-weight: normal;">{{ getSelectedAssetsSize() }}</span>
 
       </div>
     </div>
 
-    <div class="publish-file-preview-groups" style="width: 100%;" >
+    <div class="publish-file-preview-groups" style="width: 100%;" id="customScrollBar" >
       <div *ngFor="let doc of docs; let i = index" class="publish-file-preview">
         <div class="row" style="width: 100%;">
           <div class="col-xl-6">
@@ -135,7 +135,7 @@
                 <div class="col-xl-8">
                   <ng-select name="allow" [searchable]="false" [clearable]="false"(change)="onSelectAllow($event.target.value, i)" id="allow" [ngClass]="{'goldenText': customAllowMap[i] }" [(ngModel)]="customAllowMap[i]">
                     <!-- <ng-option  hidden disabled selected value></ng-option> -->
-                    <ng-option *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
+                    <ng-option *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value)">{{ c.value }}
                     </ng-option>
                  </ng-select>
                 </div>

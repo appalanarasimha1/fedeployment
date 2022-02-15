@@ -4,6 +4,7 @@ import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.componen
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { RoleGuardService } from './services/roleGaurd';
+import { NoContent } from './no-content';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
     data: { 
       expectedRole: 'reportAdmin'
     } },
+  {path: '**', component: NoContent}
 ];
 
 @NgModule({

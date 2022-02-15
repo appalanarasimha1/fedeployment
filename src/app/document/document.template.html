@@ -16,7 +16,7 @@
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
     <div id="exTab1" class="container">
-      <a class="commonHeading" style="font-size:28px"  href="#sectors" data-toggle="tab">Asset by Sectors</a>
+      <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">Asset by Sectors</a>
       <ul class="nav nav-tabs">
         <li>
           <div ngbDropdown class="d-inline-block sectorsDropdown">
@@ -59,7 +59,7 @@
     </div>
 
     <div id="exTab2" class="container">
-      <h2 class="commonHeading pb-4" style="font-size: 28px">Recent activities</h2>
+      <h2 class="commonHeading pb-4 recentFont" style="">Your Activity</h2>
       <ul class="nav nav-tabs">
         <li class="active"><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
         <li><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
@@ -75,7 +75,8 @@
             [config]="slideConfig"
           >
             <div ngxSlickItem *ngFor="let file of recentDataShow; let i = index" class="slide">
-              <document-card
+              <!-- <div class="slide-inner"> -->
+                <document-card
                 [doc]="file"
                 [viewType]="viewType"
                 (onOpenPreview)="open(file, file.type)"
@@ -83,6 +84,8 @@
                 (onMarkFavourite)="markFavourite(file, 'recent')"
                 >
               </document-card>
+              <!-- </div> -->
+
             </div>
           </ngx-slick-carousel>
 
@@ -90,7 +93,7 @@
             <div class="text-center" style="height: 150px;">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
               <h2 class="noresult pb-3 pt-4">You have not recently viewed any asset</h2>
-              <p class="searchcontent">Your recently viewed assets will show up here</p>
+              <p class="searchcontent">Your recently viewed assets will show up here.</p>
             </div>
           </div>
         </div>
@@ -126,12 +129,12 @@
 
     <div id="favorites" class="container">
       <ul class="nav nav-tabs">
-        <li><a class="commonHeading" style="font-size:28px"  href="#favourite" data-toggle="tab">Favourites</a></li>
+        <li><a class="commonHeading recentFont" style=""  href="#favourite" data-toggle="tab">Your Favourites</a></li>
       </ul>
       <div *ngIf="!favourites.length"  style="height: 150px;">
         <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-        <h2 class="noresult pb-3 pt-4">No favourite assets found</h2>
-        <p class="searchcontent">Mark assets as favourite to show here.</p>
+        <h2 class="noresult pb-3 pt-4">You have not marked any asset as favourite</h2>
+        <p class="searchcontent">Your favourite assets will show up here.</p>
       </div>
       <div *ngIf="favourites.length" class="tab-content">
         <div class="tab-pane active" id="favourite">
@@ -157,12 +160,12 @@
     </div>
   </div>
 
-  <section class="search-subpage pt-5 pb-5">
+  <section class="search-subpage ">
 
     <div *ngIf="!checkShowRecent()" class="container">
       <div class="row" style="justify-content: space-between">
-        <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn" (click)="resetResult()">
-          <img src="../../assets/images/back-arrow.svg" /> Back
+        <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5">
+          <span (click)="resetResult()"><img src="../../assets/images/back-arrow.svg" /> Back</span>
         </div>
         <div class="view-title">
           <span style="padding-left: 11px;">{{getDetailViewTitle()}}</span>
@@ -204,12 +207,12 @@
               <div id="view" class="e-btn-group flexible">
                 <div>
                   <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked />
-                  <label class="e-btn" for="left"><img src="../../assets/images/gallery view.png"
+                  <label class="e-btn" for="left"><img src="../../assets/images/gallery-view.svg"
                       style="width: 22px;"></label>
                 </div>
                 <div>
                   <input type="radio" (change)="viewChange($event)" id="right" name="align" value="list" />
-                  <label class="e-btn" for="right"><img src="../../assets/images/list view.png"
+                  <label class="e-btn" for="right"><img src="../../assets/images/list-view.svg"
                       style="width: 22px;"></label>
                 </div>
               </div>
@@ -274,11 +277,14 @@
         </div>
         <div class="moreFilter" [ngClass]="filtersCount > 0 ? 'hasFilterSelected' : ''">
           <button (click)="clearFilter()" *ngIf="filtersCount > 0">Clear</button>
-          <label (click)="openAdvancedFilter()" class="e-btn" style="opacity: 1" >
-            <img *ngIf="filtersCount === 0" src="../../assets/images/IconFilters.svg" style="width: 20px;">
-            <img *ngIf="filtersCount > 0" src="../../assets/images/IconFiltersYellow.svg" style="width: 20px;">
-          </label>
-          <span>More filters</span><span *ngIf="filtersCount > 0" class="itemCount">{{filtersCount}}</span>
+          <div (click)="openAdvancedFilter()" class="flexible" style="cursor: pointer;">
+            <label  class="e-btn" style="opacity: 1" >
+              <img *ngIf="filtersCount === 0" src="../../assets/images/IconFilters.svg" style="width: 20px;">
+              <img *ngIf="filtersCount > 0" src="../../assets/images/IconFiltersYellow.svg" style="width: 20px;">
+            </label>
+            <span>More filters</span><span *ngIf="filtersCount > 0" class="itemCount">{{filtersCount}}</span>
+          </div>
+          
         </div>
       </div>
 
