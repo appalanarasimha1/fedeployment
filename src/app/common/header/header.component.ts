@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   @Output() sendSelectedTab: EventEmitter<any> = new EventEmitter();
 
   selectedTab: string;
-  searchHeader: boolean;
+  searchHeader: boolean = true;
   showBrowseHeader = false;
   missingHeader= false;
 
@@ -30,13 +30,14 @@ export class HeaderComponent implements OnInit {
   ) {
     router.events.forEach((event: any) => {
       if (event.url) {
+        console.log('header = ', event);
         // TODO: will break if we have another url that contains /user.
         if(event.url === '/workspace' || event.url === '/common/terms' || event.url === '/report') {
           this.showBrowseHeader = true;
         } else {
           this.showBrowseHeader = false;
         }
-        if (event.url === '/') {
+        if (event.url === '/' || event.url === '/#favorites') {
           this.searchHeader = true;
         } else {
           this.searchHeader = false;
@@ -46,8 +47,11 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
+        console.log('header 1 = ', this.searchHeader, ' = ', this.showBrowseHeader);
       }
+      console.log('header 2 = ', this.searchHeader, ' = ', this.showBrowseHeader);
     });
+    console.log('header 3 = ', this.searchHeader, ' = ', this.showBrowseHeader);
 
     // if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
     //   this.showBrowseHeader = true;

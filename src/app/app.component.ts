@@ -28,7 +28,7 @@ export class AppComponent implements OnInit{
         //   this.showHeader = false;
         // }
         if (event.url && event instanceof NavigationStart) {
-          console.log(event);
+          console.log('app = ', event);
           // TODO: will break if we have another url that contains /user.
           if (event.url.includes('/login')) {
             console.log(event);
@@ -50,7 +50,9 @@ export class AppComponent implements OnInit{
             }, 500);
             this.showAddButton = true;
           }
+          console.log('this.showHeader = ', this.showHeader);
         }
+
       });
   }
 
