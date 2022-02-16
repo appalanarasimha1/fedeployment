@@ -32,17 +32,17 @@ export class HeaderComponent implements OnInit {
       if (event.url) {
         console.log('header = ', event);
         // TODO: will break if we have another url that contains /user.
-        if(event.url === '/workspace' || event.url === '/common/terms' || event.url === '/report') {
+        if(event.url.includes('/workspace') || event.url.includes('/common/terms') || event.url.includes('/report')) {
           this.showBrowseHeader = true;
         } else {
           this.showBrowseHeader = false;
         }
-        if (event.url === '/' || event.url === '/#favorites') {
+        if (event.url === '/' || event.url.includes('/#favorites')) {
           this.searchHeader = true;
         } else {
           this.searchHeader = false;
         }
-        if (event.url === '/404') {
+        if (event.url.includes('/404')) {
           this.missingHeader = true;
         } else {
           this.missingHeader = false;
