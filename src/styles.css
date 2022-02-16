@@ -3631,7 +3631,8 @@ element.style {
   top: 36px !important;
 }
 .owl-item{
-  width: auto !important;
+  /* width: auto !important; */
+  display: inline-block !important;
 }
 #dropdownBasic1 img::after{
   display: none;
@@ -3652,9 +3653,9 @@ img:not([src]) {
 } */
 .owl-theme {
   display: block;
-  max-width: 590px;
+  max-width: 450px;
   margin: auto;
-  height: 100px;
+  /* height: 100px; */
   padding-top: 22px;
 }
 .owl-theme .owl-nav {
@@ -3760,12 +3761,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 } */
 .customTab .slick-prev:before, .customTab .slick-next:before {
   content: "\f104";
-  font: normal normal normal 14px/1 FontAwesome;
-  color: #000;
-  font-size: 40px;
+  font-family: 'FontAwesome';
+  color: #fff;
+  font-size: 30px;
   width: 40px;
   display: block;
   line-height: 40px;
+  background: #000;
+  border-radius: 100px;
 }
 .customTab .slick-next:before {
   content: "\f105";
@@ -3933,7 +3936,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .copyright-form .ng-select{
   width: 100%;
 }
-.tab-content .slick-list {padding-bottom: 60px !important; overflow: visible !important;padding-right: 120px !important;}
+.tab-content .slick-list {padding-bottom: 0px !important; overflow: visible !important;padding-right: 120px !important;}
 /* .tab-content .slick-list.draggable:before {content: '';display: block;width: 100%;left: -100%;top: 0px;background: #f6f7fa;position: absolute;height: 100%; z-index: 1;} */
 /* .tab-content .slick-list.draggable:after {content: '';display: block;width: 100%;right: -100%;top: 0px;background: #f6f7fa;position: absolute;height: 100%; z-index: 1;} */
 /* .masonry-item:nth-child(4) {z-index: 38;}
@@ -4014,6 +4017,13 @@ app-search {
 .modal-open {
   overflow-y: scroll;
   padding-right: 0px !important;
+}
+
+.customTab .slick-prev {
+  left: 0px;
+}
+.customTab .slick-next {
+  right: 0px;
 }
 
 

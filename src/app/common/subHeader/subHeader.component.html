@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-xl-8 offset-xl-2 text-center">
-        <h2 class="pb-4 discover"><a href="/" style="color: #fff;" >Discover NEOM.</a></h2>
+        <!-- <h2 class="pb-4 discover"><a href="/" style="color: #fff;" >Discover NEOM.</a></h2> -->
         <form>
           <div class="flexible" style="justify-content: center">
             <!-- <div class="sectorDrop">
@@ -47,7 +47,6 @@
               <a style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
             </div> -->
             <owl-carousel-o [options]="customOptions">
-
               <ng-container *ngFor="let bucket of tagsMetadata?.buckets; let i = index" >
                 <ng-template carouselSlide [id]="bucket.id">
                   <a class="card" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>

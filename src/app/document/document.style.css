@@ -1596,3 +1596,11 @@ color: #ACACAC;
   cursor: pointer;
   letter-spacing: 0.05em;
 }
+::ng-deep .slick-prev.slick-disabled:before, 
+::ng-deep .slick-next.slick-disabled:before {
+  opacity: 0 !important;
+}
+
+.pb-50{
+  padding-bottom: 50px !important;
+}

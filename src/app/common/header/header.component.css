@@ -5,7 +5,7 @@
 
 header{
     padding: 10px 0px  6px!important;
-    top: 0px;
+    top: 20px;
     position: absolute;
     width: 100%;
     transition: .1s;
@@ -137,7 +137,7 @@ header{
     padding: 0px 6px !important;
 }
 .navbar-expand-lg .navbar-nav{
-    margin: auto;
+    margin: 9px auto 0;
 }
 .tooltipCustom:before{
     display: none;
@@ -195,6 +195,15 @@ a.dropdown-item:hover {
     flex-direction: row;
 }
 
+.logo-block {
+    margin-top: -9px;
+}
+header.searchHeading.fixedHeader {
+    top: 0px;
+}
+header.searchHeading.fixedHeader .navbar-expand-lg .navbar-nav {
+    margin-top: 0px;
+}
 
 /* mobile responsive */
 @media(max-width:991.5px){

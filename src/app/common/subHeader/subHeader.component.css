@@ -2,9 +2,9 @@
     background-image: url(~/../../../../assets/images/HeaderBackgroundImage.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 145px !important;
-    padding-bottom: 100px;
-    height: 400px;
+    padding-top: 50px !important;
+    padding-bottom: 40px;
+    height: auto;
 }
 .sub-header h2{
     color: #fff;
@@ -15,7 +15,7 @@
 }
 .search-bar{
     position: relative;
-    padding: 17px 60px 17px 62px;
+    padding: 15px 60px 15px 62px;
     border-radius: 8px;
     border: 1px solid #E5E5E5;
     width: 500px;
@@ -118,7 +118,7 @@ background-color: #fff;
     left: 0px;
     border-radius: 2px;
     border: unset;
-    padding: 18px 11px 20px 24px;
+    padding: 16px 11px 18px 24px;
     background-color: transparent;
     z-index: 1;
 }
@@ -191,9 +191,11 @@ background-color: #fff;
     display: none;
   }
 
-::ng-deep .owl-stage {
+/* ::ng-deep .owl-stage {
     display: flex !important;
-}
+    display: inline-block !important;
+    float: left !important;
+} */
 ::ng-deep .owl-theme .owl-nav{
     position: relative;
     top: -35px;
@@ -207,13 +209,13 @@ background-color: #fff;
     bottom: -10px;
 }
 ::ng-deep .owl-stage-outer {
-    width: 590px;
+    /* width: 590px; */
     overflow: hidden;
-    margin: auto;
+    margin: 0 auto;
 }
 ::ng-deep .owl-next {
     position: absolute;
-    right: -32px !important;
+    right: -26px !important;
     bottom: -10px;
 }
 
@@ -226,7 +228,7 @@ background-color: #fff;
     width: 80px;
     position: absolute;
     left: 3.75rem;
-    bottom: 3.75rem;
+    bottom: 1.75rem;
     border-radius: 100px;
     background: #3ca2ca;
     overflow: hidden;
@@ -459,6 +461,10 @@ video{
   ::ng-deep .owl-next.disabled, ::ng-deep .owl-prev.disabled {
     cursor: default;
     opacity: 0.6;
+  }
+
+  .owl-item {
+    display: inline-block !important;
   }
 
   /* mobile responsive */

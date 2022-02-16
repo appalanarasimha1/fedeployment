@@ -129,7 +129,7 @@ export class SubHeaderComponent implements OnInit {
     // pullDrag: false,
     dots: false,
     items: 5,
-    margin: 14,
+    margin: 5,
     nav: true,
     responsive: {
       
