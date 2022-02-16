@@ -186,7 +186,7 @@ export class ReportMainComponent implements OnInit {
           fileCount += countItem.count;
         }
       });
-      if(this.usersByCountDownloadData.length < 11) {
+      if(this.usersByCountDownloadData.length < 10) {
         this.usersByCountDownloadData.push(downloadData);
       }
       // [[10, 20, 30]];
@@ -216,7 +216,7 @@ export class ReportMainComponent implements OnInit {
         }
         uploadData.count += countItem.count;
       });
-      if(this.usersByCountUploadData.length < 11) {
+      if(this.usersByCountUploadData.length < 10) {
         this.usersByCountUploadData.push(uploadData);
       }
     });

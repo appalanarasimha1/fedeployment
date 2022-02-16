@@ -26,7 +26,7 @@ export class ElasticSearchService {
             "terms": {
               "field": "query", 
               "order": { "_count": "desc" },
-              "size": 10
+              "size": 11
             }
           }
         }
