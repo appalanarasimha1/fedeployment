@@ -15,6 +15,7 @@ export class FooterComponent implements OnInit {
   }
 
   openTermsPage() {
+    debugger;
     this.router.navigate(['common', 'terms']);
   }
 

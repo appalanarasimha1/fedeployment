@@ -9,7 +9,8 @@ export class AppConfigDevelopment {
     dbName: 'dev_groundx',
     mongodbTables: {
       USER_TABLE: 'userDirectory',
-      VIDEO_TABLE: 'personalizedVideoInventory'
+      VIDEO_TABLE: 'personalizedVideoInventory',
+      AUDIT_TABLE: 'audit'
     },
     domain: 'https://dev2groundx.neom.com/',
     elasticDbUrl: 'http://10.101.21.31:9700'

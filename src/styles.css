@@ -267,7 +267,8 @@ html, body {
   /* overflow-x: hidden; */
   /* background:#f6f9fa;*/
   /*background: #fafafa;*/
-  background: #F6F7FA;
+  /* background: #F6F7FA; */
+  background: #ffffff;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
 }

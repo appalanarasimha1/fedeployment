@@ -1,20 +1,20 @@
 import { AppConfig } from "../config/appConfigSelection";
-
 const { Client } = require('@elastic/elasticsearch');
 
 export class ElasticSearchService {
   private client = new Client({ node: AppConfig.Config.elasticDbUrl });
   private indexValue = 'searchindex';
 
-  public async insertData(searchTerm: any) {
+  public async insertData(searchTerm: any, username: any) {
     const response = await this.client.index({
       index: this.indexValue,
       body: {
         query: searchTerm,
-        date: new Date()
+        timestamp: new Date(),
+        userId: username
       }
     });
-    console.log('insert elsatic data response = ', response);
+    return;
   }
 
   public async findMostSearchedTerm() {
@@ -32,8 +32,31 @@ export class ElasticSearchService {
         }
       }
     });
-    
-    console.log('result found = ', body);
+    return body;
+  }
+
+  public async findUserBySearchCount() {
+    const { body } = await this.client.search({
+      index: this.indexValue,
+      body: {
+        "aggs": {
+          "properties": {
+            "terms": {
+              "field": "userId", 
+              "order": { "_count": "desc" },
+              "size": 10
+            }
+          }
+        }
+      }
+    });
+    return body;
+  }
+
+  public async getTotalSearchCount() {
+    const { body } = await this.client.count({
+      index: this.indexValue
+    });
     return body;
   }
 

@@ -7,21 +7,40 @@ export class ElasticSearchController {
   constructor() {
     this.router.get('/fetch', this.getMostSearchedTerm);
     this.router.post('/insert', this.insertSearchTerm);
+    this.router.get('/searchCount', this.getTotalSearchCount);
+    this.router.get('/getSearchCountByUser', this.getSearchCountByUser);
+    this.router.get('/findUserBySearchCount', this.findUserBySearchCount);
   }
 
   public async getMostSearchedTerm(req: Request, res: Response) {
     const service = new ElasticSearchService();
-    console.log('insde eleasticinsert functipn');
-    // await service.insertData();
     const result: any = await service.findMostSearchedTerm();
+    res.status(200).send({ data: result?.aggregations, message: 'success' });
+  }
+  
+  public async findUserBySearchCount(req: Request, res: Response) {
+    const service = new ElasticSearchService();
+    const result: any = await service.findUserBySearchCount();
     res.status(200).send({ data: result?.aggregations, message: 'success' });
   }
 
   public async insertSearchTerm(req: Request, res: Response) {
     const service = new ElasticSearchService();
     // await service.insertData();
-    const result: any = await service.insertData(req.query.term);
+    const result: any = await service.insertData(req.query.term, req.query.username);
     res.status(200).send({ data: result?.aggregations, message: 'success' });
+  }
+
+  public async getTotalSearchCount(req: Request, res: Response) {
+    const service = new ElasticSearchService();
+    const result: any = await service.getTotalSearchCount();
+    res.status(200).send({ data: result?.count, message: 'success' });
+  }
+  
+  public async getSearchCountByUser(req: Request, res: Response) {
+    const service = new ElasticSearchService();
+    const result: any = await service.getTotalSearchCount();
+    res.status(200).send({ data: result?.count, message: 'success' });
   }
 
   /**
