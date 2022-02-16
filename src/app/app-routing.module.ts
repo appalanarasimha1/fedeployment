@@ -27,7 +27,6 @@ const routes: Routes = [
       import("./common/common-module/common.module").then(
         (m) => m.CommonModule
       ),
-    canActivate: [AuthGuardService],
   },
   {
     path: "report",
