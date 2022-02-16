@@ -4016,7 +4016,14 @@ app-search {
 }
 
 
-
+.masonry-item img {
+  display: block !important;
+  min-height: 100px !important;
+  height: 100% !important;
+}
+img {
+  display: block !important;
+}
 
 /* mobile responsive */
 @media(max-width: 991.5px){
