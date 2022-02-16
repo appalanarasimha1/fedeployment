@@ -1605,6 +1605,9 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
 }
 .masonry-item img {
   display: block !important;
-  min-height: 100px;
-  height: 100%;
+  min-height: 100px !important;
+  height: 100% !important;
+}
+document-card img {
+  display: block !important;
 }
