@@ -28,10 +28,10 @@ export class HeaderComponent implements OnInit {
     public dataService: DataService,
     protected readonly keycloak: KeycloakService,
   ) {
-    router.events.forEach((event) => {
-      if (event instanceof NavigationStart) {
+    router.events.forEach((event: any) => {
+      if (event.url) {
         // TODO: will break if we have another url that contains /user.
-        if(event.url === '/workspace' || event.url === '/common/terms' || event.url === 'report') {
+        if(event.url === '/workspace' || event.url === '/common/terms' || event.url === '/report') {
           this.showBrowseHeader = true;
         } else {
           this.showBrowseHeader = false;
@@ -49,22 +49,22 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
-      this.showBrowseHeader = true;
-    } else {
-      this.showBrowseHeader = false;
-    }
+    // if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
+    //   this.showBrowseHeader = true;
+    // } else {
+    //   this.showBrowseHeader = false;
+    // }
 
-    if (window.location.pathname === '/') {
-      this.searchHeader = true;
-    } else {
-      this.searchHeader = false;
-    }
-    if (window.location.pathname === '/404') {
-      this.missingHeader = true;
-    } else {
-      this.missingHeader = false;
-    }
+    // if (window.location.pathname === '/') {
+    //   this.searchHeader = true;
+    // } else {
+    //   this.searchHeader = false;
+    // }
+    // if (window.location.pathname === '/404') {
+    //   this.missingHeader = true;
+    // } else {
+    //   this.missingHeader = false;
+    // }
 
   }
 
@@ -79,6 +79,13 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+  }
+
+  showHeaderElements() {
+    if(window.location.pathname === '/common/terms' && !this.nuxeo.isAuthenticated()) {
+      return false;
+    }
+    return true;
   }
 
   resetFilter() {

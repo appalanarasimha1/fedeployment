@@ -22,42 +22,44 @@ export class AppComponent implements OnInit{
     private dataService: DataService,
     private nuxeoService: NuxeoService) {
 
-    router.events.forEach((event) => {
-      if (event instanceof NavigationStart) {
-        if(!this.nuxeoService.isAuthenticated()) {
-          this.showHeader = false;
-        }
-        // TODO: will break if we have another url that contains /user.
-        if (event.url.includes('/login')) {
-          this.showHeader = false;
-          this.showAddButton = false;
-          setTimeout(()=>{
-            this.showFooter = true;
-          }, 500);
-        } else if(event.url.includes('/404')){
-          this.showHeader = true;
-          this.showAddButton = false;
-          setTimeout(()=>{
-            this.showFooter = true;
-          }, 500);
-        // } else if(event.url.includes('common/terms')){
+      router.events.forEach((event: any) => {
+        // if(event.urlAfterRedirects === '/login') {
+        //   this.showFooter = true;
         //   this.showHeader = false;
-        //   this.showAddButton = true;
-        //   setTimeout(()=>{
-        //     this.showFooter = true;
-        //   }, 500);
-        } else {
-          this.showHeader = true;
-          setTimeout(()=>{
-            this.showFooter = true;
-          }, 500);
-          this.showAddButton = true;
+        // }
+        if (event.url && event instanceof NavigationStart) {
+          console.log(event);
+          // TODO: will break if we have another url that contains /user.
+          if (event.url.includes('/login')) {
+            console.log(event);
+            this.showHeader = false;
+            this.showAddButton = false;
+            setTimeout(()=>{
+              this.showFooter = true;
+            }, 500);
+          } else if(event.url.includes('/404')){
+            this.showHeader = true;
+            this.showAddButton = false;
+            setTimeout(()=>{
+              this.showFooter = true;
+            }, 500);
+          }else {
+            this.showHeader = true;
+            setTimeout(()=>{
+              this.showFooter = true;
+            }, 500);
+            this.showAddButton = true;
+          }
         }
-      }
-    });
+      });
   }
 
   ngOnInit() {
+    // if(!this.nuxeoService.isAuthenticated()) {
+    //   this.showHeader = false;
+    //   this.showFooter = true;
+    //   return;
+    // }
   }
 
   checkSelectedTab(tab: string) {
