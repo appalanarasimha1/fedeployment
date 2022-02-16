@@ -1560,6 +1560,11 @@ color: #ACACAC;
 .recentFont{
   font-size: 28px !important;
 }
+.masonry-item img {
+  display: block !important;
+  min-height: 100px;
+  height: 100%;
+}
 
 /* mobile responsive */
 @media(max-width: 991.5px){
