@@ -4021,7 +4021,7 @@ app-search {
   min-height: 100px !important;
   height: 100% !important;
 }
-img {
+document-card img {
   display: block !important;
 }
 

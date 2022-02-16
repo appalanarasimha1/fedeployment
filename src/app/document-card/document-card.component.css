@@ -1608,6 +1608,6 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
   min-height: 100px !important;
   height: 100% !important;
 }
-img {
+document-card img {
   display: block !important;
 }
