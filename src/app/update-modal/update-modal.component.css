@@ -122,7 +122,7 @@ color: #C4C4C4;
   color: #fff;
   margin-left: 20px;
   background: #000;
-  border-radius: 8px !important;
+  border-radius: 50px !important;
   padding: 8px 32px;
   font-size: 16px;
   line-height: 18px;
@@ -132,7 +132,7 @@ color: #C4C4C4;
 .cancel-btn{
   color: #23211E;
   background: #fff;
-  border-radius: 8px !important;
+  border-radius: 50px !important;
   padding: 8px 32px;
   font-size: 16px;
   line-height: 18px;
@@ -216,7 +216,7 @@ color: #FFFFFF;
       align-items: end;
 }
 .upload-form-input label {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   color: #23211E;
 }
@@ -625,21 +625,18 @@ color: #23211E;
   overflow: auto;
 }
 
-#customScrollBar::-webkit-scrollbar-track
-{
-	/* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
-	background-color: #BAB8B2;
+#customScrollBar::-webkit-scrollbar-track{
+	background-color: transparent;
 }
 
-#customScrollBar::-webkit-scrollbar
-{
+#customScrollBar::-webkit-scrollbar{
 	width: 6px;
-	background-color:#BAB8B2 ;
+	background-color:transparent;
 }
 
-#customScrollBar::-webkit-scrollbar-thumb
-{
-	background-color: rgba(0,0,0,.54);
+#customScrollBar::-webkit-scrollbar-thumb{
+	background-color: #E8E6DF;
+  border-radius: 10px;
 }
 
 
@@ -771,9 +768,9 @@ input.copyright-input {
 ::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
   box-shadow: unset !important;
 }
-::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
+/* ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
   position: unset !important;
-}
+} */
 /* ::ng-deep .ng-select{
   height: 30px !important;
 } */
@@ -871,4 +868,13 @@ input.copyright-input {
 
 ::ng-deep .goldenText .ng-value.ng-star-inserted span {
   color:  #C49900 !important;
+  white-space: nowrap !important;
+}
+
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
+  overflow: hidden !important;
+}
+::ng-deep .ng-select .ng-select-container .ng-value-container {
+  display: inherit;
+  flex: 1;
 }

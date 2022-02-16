@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { NuxeoService } from '../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
@@ -16,12 +16,20 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   loading = false;
   keycloakLoading = false;
+  redirectURL: string;
 
-  constructor(private nuxeo: NuxeoService, private router: Router, private apiService: ApiService, protected readonly keycloak: KeycloakService) { }
+  constructor(
+    private nuxeo: NuxeoService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private apiService: ApiService,
+    protected readonly keycloak: KeycloakService
+  ) {}
 
   ngOnInit(): void {
+    this.redirectURL = this.route.snapshot.queryParams['redirectURL'] || '/';
     if (this.nuxeo.nuxeoClient && localStorage.getItem('token')) {
-      this.router.navigate(['/']);
+      this.router.navigateByUrl(this.redirectURL);
       return;
     }
     this.checkLoginState();
@@ -55,6 +63,8 @@ export class LoginComponent implements OnInit {
       if (token && !token.toLowerCase().includes('doctype')) {
         localStorage.setItem('token', token);
         await this.nuxeo.createClientWithToken(token);
+        this.keycloakLoading = false;
+        this.router.navigateByUrl(this.redirectURL);
       }
     } catch (e) {
       console.error(e);
@@ -64,7 +74,7 @@ export class LoginComponent implements OnInit {
 
   loginKeycloak() {
     this.keycloak.login({
-      redirectUri: window.location.origin,
+      redirectUri: window.location.href,
     });
   }
 
@@ -82,7 +92,7 @@ export class LoginComponent implements OnInit {
           }
           localStorage.setItem('token', token);
           localStorage.setItem('username', this.username);
-          this.router.navigate(['/']);
+          this.router.navigateByUrl(this.redirectURL);
         })
         .catch((err) => {
           this.loading = false;

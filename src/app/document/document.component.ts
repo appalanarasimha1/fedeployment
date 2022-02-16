@@ -68,12 +68,45 @@ export class DocumentComponent implements OnInit, OnChanges {
     dots: false,
     infinite: false,
     speed: 300,
-    centerPadding: '0',
     slidesToShow: 5,
-    slidesToScroll: 5,
-    centerMode: false,
+    slidesToScroll: 4,
     variableWidth: true,
-    swipe: true,
+    // responsive: [
+    //   {
+    //     breakpoint: 991,
+    //     settings: {
+    //      arrows: false
+    //     }
+    //   }
+    // ]
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+          infinite: false,
+          dots: false,
+          arrows: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          arrows: false,
+          slidesToShow: 3,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false,
+          slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      }
+    ]
   };
   selectedView = 'recentlyViewed';
   selectedType = 'all';
@@ -179,6 +212,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.hideShowMoreBtn = false;
     this.showListView = false;
     this.viewType = 'GRID';
+    this.resetView();
     this.dataService.resetFilterInit(TRIGGERED_FROM_DOCUMENT);
     this.showDetailView = false;
     this.detailView = null;
@@ -227,7 +261,11 @@ export class DocumentComponent implements OnInit, OnChanges {
         if(response) {
           this.assetsBySector = response.entries ? response?.entries : [];
           if(dontResetSectors) {
-            this.sectorsHomepage = response.aggregations['sectors']?.buckets.map(b => b.key) || [];
+            this.sectorsHomepage = response.aggregations['sectors']?.buckets.map(sector => {
+              if(UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1) {
+                return sector.key;
+              }
+            }) || [];
           }
         }
         setTimeout(() => {
@@ -756,9 +794,12 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailView = null;
     this.detailDocuments = null;
     this.selectedType = 'all';
+    this.getAssetBySectors();
+    this.assetsBySectorSelected = null;
+
     if (this.sectorSelected) {
-      this.getAssetBySectors();
-      this.assetsBySectorSelected = null;
+      // this.getAssetBySectors();
+      // this.assetsBySectorSelected = null;
       this.sectorSelected = null;
     }
   }

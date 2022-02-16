@@ -14,7 +14,7 @@
                   </div>
                   <div class="errortext">
                      <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
-                     <!-- <p class="errorMsg">Only documents in PDF format are acceptable.<br> 
+                     <!-- <p class="errorMsg">Only documents in PDF format are acceptable.<br>
                         Please make sure all the ducoments are converted into PDFs.</p> -->
                   </div>
                </div>
@@ -58,7 +58,7 @@
             </div>
          </div>
          </div>
-         
+
          <div class="button-groups">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
@@ -101,11 +101,11 @@
                      </div>
                      <div *ngIf="showWsList" class="workspace-list">
                         <span class="triangle"></span>
-                           <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">    
+                           <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
                                  <li ngxSlickItem  *ngFor="let ws of workspaceList, let i = index"  class="slide">
                                     <div class="workspace-title" [class.ws-selected]="selectedWorkspace.id === ws.id" (click)="selectWorkspace(ws)">{{ ws.title }}</div>
                                  </li>
-                           </ngx-slick-carousel> 
+                           </ngx-slick-carousel>
                            <!-- <div *ngFor="let ws of workspaceList, let i = index">
                               <div *ngIf="filterWorkspaces(ws.title)"
                                  class="workspace-title"
@@ -218,7 +218,7 @@
                   <label for="confidentiality">Confidentiality</label>
                </div>
                <div class="col-xl-8 col-md-8 flexible">
-                  <ng-select placeholder="Specify sensitivity" 
+                  <ng-select placeholder="Specify sensitivity"
                      (change)="onSelectConfidentiality($event)"
                      [searchable]="false"
                      [clearable]="false"
@@ -299,8 +299,8 @@
                </div>
                <div class="col-xl-8 col-md-8 flexible">
                   <ng-select placeholder="Specify permissible usage" [searchable]="false" [clearable]="false" (change)="onSelectAllow($event)" [(ngModel)]="allow" id="allow" [ngClass]="{'goldenText': allow}">
-                  <ng-option *ngFor="let c of ALLOW | keyvalue" [value]="c.value">
-                  {{c.value}}
+                  <ng-option *ngFor="let c of ALLOW | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
+                     {{ALLOW_LABEL[c.value]}}
                   </ng-option>
                   </ng-select>
                   <div class="tooltip1">
@@ -338,7 +338,7 @@
                </div>
             </div>
          </div>
-         
+
          <div class="button-groups">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
@@ -354,16 +354,18 @@
             <div>Please review the classifications of the uploaded files.</div>
             <div class="publish-summary">
                <!-- <span>{{ getSelectedAssetsTitle() }}</span> -->
-               <div class="publish-summary-location flexible">
+               <div class="assets-details">
                   <div class="flexible">
                      <img src="../../assets/images/upload.png">
                      <!-- <mat-icon>folder</mat-icon> -->
                      <span style="margin-left: 10px; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
                   </div>
-                  <div *ngIf="showLocaleDate(associatedDate) !== 'Invalid Date'" style="margin-left: 20px;" class="flexible">
+               </div>
+               <div class="publish-summary-location flexible">
+                  <div *ngIf="showLocaleDate(associatedDate) !== 'Invalid Date'" style="margin-left: 20px;">
                      <!-- <mat-icon>calendar_today</mat-icon> -->
-                     <img src="../../assets/images/calendar.png">
-                     <span style="margin-left: 10px; display: block;">{{ showLocaleDate(associatedDate) }}</span>
+                     <img src="../../assets/images/calendar.png" style="vertical-align: top;">
+                     <span style="margin-left: 6px; display: inline-block;">{{ showLocaleDate(associatedDate) }}</span>
                   </div>
                </div>
             </div>
@@ -463,7 +465,7 @@
                            <option [selected]="allow === c.value" *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                            </select> -->
                         <ng-select name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [(ngModel)]="allow" [ngClass]="{'goldenText': allow }" >
-                           <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}
+                           <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value)">{{ ALLOW_LABEL[c.value] }}
                            </ng-option>
                         </ng-select>
                      </div>
@@ -497,7 +499,7 @@
             </div>
          </div>
          </div>
-         
+
          <div class="button-groups">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
