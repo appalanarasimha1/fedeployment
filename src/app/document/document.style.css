@@ -1566,6 +1566,11 @@ color: #ACACAC;
   font-size: 28px !important;
   vertical-align: 10px;
 }
+.masonry-item img {
+  display: block !important;
+  min-height: 100px;
+  height: 100%;
+}
 
 /* mobile responsive */
 @media(max-width: 991.5px){

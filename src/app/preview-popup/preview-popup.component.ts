@@ -30,6 +30,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   commentText: string;
   comments = [];
   isAware = false;
+  currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
 
   constructor(
@@ -60,6 +61,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.activeTabs.timeline = false;
     this.activeTabs.info = false;
     this.isAware = false;
+    this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
     this.modalService
       .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
       .result.then(
@@ -376,7 +378,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     // if (this.doc.properties['sa:allow'] && this.doc.properties['sa:allow'] !== ALLOW.any) {
     //   if(this.doc.properties['sa:allow'] === ALLOW.request) {
     //     return 'Permission Required';
-    //   } else 
+    //   } else
     //   return `${this.doc.properties['sa:allow']}`;
     // }
 
@@ -399,7 +401,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   showMoreTags() {
-    this.DEFAULT_NUMBER_OF_TAGS_PREVIEW = this.tags.length;
+    this.currentTagLength = this.tags.length;
+  }
+
+  showLessTags() {
+    this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   }
 
 }

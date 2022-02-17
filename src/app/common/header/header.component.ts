@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   @Output() sendSelectedTab: EventEmitter<any> = new EventEmitter();
 
   selectedTab: string;
-  searchHeader: boolean;
+  searchHeader: boolean = true;
   showBrowseHeader = false;
   missingHeader= false;
 
@@ -28,43 +28,47 @@ export class HeaderComponent implements OnInit {
     public dataService: DataService,
     protected readonly keycloak: KeycloakService,
   ) {
-    router.events.forEach((event) => {
-      if (event instanceof NavigationStart) {
+    router.events.forEach((event: any) => {
+      if (event.url) {
+        console.log('header = ', event);
         // TODO: will break if we have another url that contains /user.
-        if(event.url === '/workspace' || event.url === '/common/terms' || event.url === 'report') {
+        if(event.url.includes('/workspace') || event.url.includes('/common/terms') || event.url.includes('/report')) {
           this.showBrowseHeader = true;
         } else {
           this.showBrowseHeader = false;
         }
-        if (event.url === '/') {
+        if (event.url === '/' || event.url.includes('/#favorites')) {
           this.searchHeader = true;
         } else {
           this.searchHeader = false;
         }
-        if (event.url === '/404') {
+        if (event.url.includes('/404')) {
           this.missingHeader = true;
         } else {
           this.missingHeader = false;
         }
+        console.log('header 1 = ', this.searchHeader, ' = ', this.showBrowseHeader);
       }
+      console.log('header 2 = ', this.searchHeader, ' = ', this.showBrowseHeader);
     });
+    console.log('header 3 = ', this.searchHeader, ' = ', this.showBrowseHeader);
 
-    if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
-      this.showBrowseHeader = true;
-    } else {
-      this.showBrowseHeader = false;
-    }
+    // if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
+    //   this.showBrowseHeader = true;
+    // } else {
+    //   this.showBrowseHeader = false;
+    // }
 
-    if (window.location.pathname === '/') {
-      this.searchHeader = true;
-    } else {
-      this.searchHeader = false;
-    }
-    if (window.location.pathname === '/404') {
-      this.missingHeader = true;
-    } else {
-      this.missingHeader = false;
-    }
+    // if (window.location.pathname === '/') {
+    //   this.searchHeader = true;
+    // } else {
+    //   this.searchHeader = false;
+    // }
+    // if (window.location.pathname === '/404') {
+    //   this.missingHeader = true;
+    // } else {
+    //   this.missingHeader = false;
+    // }
 
   }
 
@@ -79,6 +83,13 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+  }
+
+  showHeaderElements() {
+    if(window.location.pathname === '/common/terms' && !this.nuxeo.isAuthenticated()) {
+      return false;
+    }
+    return true;
   }
 
   resetFilter() {

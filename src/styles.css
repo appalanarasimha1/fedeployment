@@ -23,6 +23,9 @@
 body,html{
   font-family: myBrown !important;
   position: relative;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   /* overflow: hidden;
   overflow-y: scroll; */
 }
@@ -4028,7 +4031,14 @@ app-search {
 }
 
 
-
+.masonry-item img {
+  display: block !important;
+  min-height: 100px !important;
+  height: 100% !important;
+}
+document-card img {
+  display: block !important;
+}
 
 /* mobile responsive */
 @media(max-width: 991.5px){
