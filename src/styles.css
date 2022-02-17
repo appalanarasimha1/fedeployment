@@ -3631,8 +3631,9 @@ element.style {
   top: 36px !important;
 }
 .owl-item{
-  /* width: auto !important; */
+  width: auto !important;
   display: inline-block !important;
+  float: left !important;
 }
 #dropdownBasic1 img::after{
   display: none;

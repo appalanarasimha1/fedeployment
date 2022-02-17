@@ -98,7 +98,7 @@ select option {
   right: 0px;
   top: 13px;
   color: transparent;
-  background: url(../../assets/images/down-arrow.svg) no-repeat right center;
+  background: url(../../assets/images/down-arrow-yellow.svg) no-repeat right center;
   background-size: contain;
   width: 29px;
   height: 12px;
@@ -182,7 +182,7 @@ padding-right: 10px;
   text-align: left;
 }
 #dropdownBasic4, #dropdownManual{
-  color: #040404;
+  color: #C49900;
 }
 
 .imagesList{
@@ -406,7 +406,7 @@ color: #000000;
 .sectorrBtn {
   background: transparent;
   border: unset;
-  border-bottom: 2px solid #413E3C;
+  border-bottom: 2px solid #C49900;
   border-radius: 0px;
   font-size: 15px;
   line-height: 24px;
@@ -1595,6 +1595,11 @@ color: #ACACAC;
   line-height: 22px;
   cursor: pointer;
   letter-spacing: 0.05em;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  border: 0px;
 }
 ::ng-deep .slick-prev.slick-disabled:before, 
 ::ng-deep .slick-next.slick-disabled:before {

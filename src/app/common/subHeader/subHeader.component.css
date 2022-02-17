@@ -4,7 +4,7 @@
     background-size: cover;
     padding-top: 50px !important;
     padding-bottom: 40px;
-    height: auto;
+    min-height: 217px;
 }
 .sub-header h2{
     color: #fff;
@@ -123,7 +123,7 @@ background-color: #fff;
     z-index: 1;
 }
 .search-btn img{
-    width: 18px;
+    width: 20px;
 }
 .dropdown-item:focus, .dropdown-item:hover{
     background-color: #5FCAD2;
@@ -211,7 +211,7 @@ background-color: #fff;
 ::ng-deep .owl-stage-outer {
     /* width: 590px; */
     overflow: hidden;
-    margin: 0 auto;
+    margin: 0 !important;
 }
 ::ng-deep .owl-next {
     position: absolute;
@@ -224,13 +224,13 @@ background-color: #fff;
     position: relative;
 }
 .video-icon {
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
     position: absolute;
     left: 3.75rem;
     bottom: 1.75rem;
     border-radius: 100px;
-    background: #3ca2ca;
+    background: transparent;
     overflow: hidden;
     z-index: 1;
     cursor: pointer;
@@ -416,11 +416,11 @@ video{
     background-color: unset;
     font-size: 10px;
 }
-.sub-header.afterSearch {
+/* .sub-header.afterSearch {
     padding-top: 30px !important;
     padding-bottom: 0px !important;
     height: auto;
-}
+} */
 .sub-header.afterSearch h2.pb-4 {
     display: none;
 }
