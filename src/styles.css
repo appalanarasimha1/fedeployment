@@ -23,6 +23,9 @@
 body,html{
   font-family: myBrown !important;
   position: relative;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   /* overflow: hidden;
   overflow-y: scroll; */
 }
