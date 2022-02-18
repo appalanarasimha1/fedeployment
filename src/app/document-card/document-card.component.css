@@ -630,6 +630,8 @@ font-weight: 600;
 }
 .assetsDropdown.dropdown, .assetsDropdown.dropup {
   border-bottom: 1px solid #000;
+  width: 152px;
+  margin-left: 10px;
 }
 /* .assetsDropdown .dropdown-menu.show .dropdown-item{
   color: #000 ;

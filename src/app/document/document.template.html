@@ -162,7 +162,7 @@
 
   <section class="search-subpage ">
 
-    <div *ngIf="!checkShowRecent()" class="container-fluid">
+    <div *ngIf="!checkShowRecent()" class="container">
       <div class="row" style="justify-content: space-between">
         <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5">
           <span (click)="resetResult()"><img src="../../assets/images/back-arrow.svg" /> Back</span>
@@ -340,7 +340,7 @@
     <div *ngIf="!loading && !documents?.entries?.length && !checkShowRecent()" class="row">
       <div class="col-xl-12 col-md-12 ">
         <div class="text-center" style="height: 600px;">
-          <img src="../../assets/images/search.svg" style="width: 50px;
+          <img src="../../assets/images/search.svg" style="width: 50px;">
           <h2 class="noresult pb-3 pt-4">No results found</h2>
           <p class="searchcontent">Try adjusting your search or filter to find what you are looking for.</p>
         </div>

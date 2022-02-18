@@ -67,7 +67,7 @@ export class SubHeaderComponent implements OnInit {
     
     this.dataService.termSearch$.subscribe((searchTerm: string) => {
       this.searchText = searchTerm;
-      this.searched = true;
+      this.searched = false;
     });
 
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
@@ -117,7 +117,7 @@ export class SubHeaderComponent implements OnInit {
   }
 
   emitData(data: IHeaderSearchCriteria): void {
-    this.searched = true;
+    this.searched = false;
     this.searchTextOutput.emit(data);
     return;
   }
@@ -148,7 +148,7 @@ export class SubHeaderComponent implements OnInit {
   }
 
   openSm(content) {
-    this.modalOpen = false;
+    this.modalOpen = true;
     this.hideVideo = true;
     this.selectArea = false;
     // localStorage.removeItem('openVideo');

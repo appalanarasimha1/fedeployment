@@ -3773,6 +3773,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   line-height: 40px;
   background: #000;
   border-radius: 100px;
+  opacity: 0;
+  transition: all 0.3s ease;
 }
 .customTab .slick-next:before {
   content: "\f105";
@@ -4061,4 +4063,24 @@ document-card img {
 }
 .slide.slick-slide.slick-active {
   opacity: 1;
+}
+.customTab #favourite:hover .slick-prev:before, .customTab #favourite:hover .slick-next:before {
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+.customTab .slick-next:before{
+  background-image: url(./assets/images/arrowRightHover.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-indent: -9999em;
+  background-size: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.customTab .slick-prev:before{
+  background-image: url(./assets/images/arrowLeftHover.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-indent: -9999em;
+  background-size: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
 }
