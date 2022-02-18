@@ -8,25 +8,30 @@
   background-color: rgba(0, 0, 0, 0.8);
 }
 .filter-box {
-  position: absolute;
+  /* position: absolute; */
   top: -10%;
   left: 0%;
   bottom: 0;
   right: 0;
   margin: auto;
-  /* transform: translate(-50%, -50%); */
-  height: max-content;
-  min-height: 400px;
-  /* max-height: 550px; */
-  padding-bottom: 30px;
+
   width: 880px;
-  background-image: url(~/../../../../assets/images/PopUpBackground.jpg);
   color: white;
+  opacity: 1;
+  border-radius: 4px;
+}
+.filter-background{
+  /* background-image: url(~/../../../../assets/images/PopUpBackground.jpg); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: bottom;
-  opacity: 1;
-  /* overflow-y: scroll; */
+  height: 100%;
+  height: max-content;
+  margin: auto;
+  min-height: 400px;
+  padding-bottom: 30px;
+  padding-top: 15px;
+  display: block;
   border-radius: 4px;
 }
 .filter-box-header {
@@ -327,7 +332,7 @@
 }
 .search-btn img {
   filter: invert(1);
-  width: 18px;
+  width: 20px;
 }
 .dropdown-item:focus,
 .dropdown-item:hover {

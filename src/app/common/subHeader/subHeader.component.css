@@ -1,12 +1,10 @@
 .sub-header{
-    /* background-color: #000; */
-    /* background-image: url(~/../../../../assets/images/NEOMbannerImage.png); */
-    background-image: url(~/../../../../assets/images/NEOM-banner-Image.png);
+    background-image: url(~/../../../../assets/images/HeaderBackgroundImage.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 145px !important;
-    padding-bottom: 100px;
-    height: 400px;
+    padding-top: 50px !important;
+    padding-bottom: 40px;
+    min-height: 217px;
 }
 .sub-header h2{
     color: #fff;
@@ -14,22 +12,18 @@
     font-weight: bold;
     font-size: 24px;
     line-height: 28px;
-    /* letter-spacing: 0.31em; */
 }
 .search-bar{
     position: relative;
-    padding: 10px 15px 10px 36px;
+    padding: 15px 60px 15px 62px;
     border-radius: 8px;
     border: 1px solid #E5E5E5;
-    width: 430px;
-    /* border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px; */
-background-color: #FDFDFD;
-font-weight: bold;
-font-size: 16px;
-line-height: 24px;
-color: #040404;
-/* text-transform: capitalize */
+    width: 500px;
+    background-color: #FDFDFD;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: #040404;
 }
 ::placeholder{
     font-weight: 100 !important
@@ -40,7 +34,7 @@ color: #040404;
 }
 .placeholder-search{
     position: absolute;
-    right: 15px;
+    right: 26px;
     top: 0px;
     bottom: 0px;
     margin: auto;
@@ -124,12 +118,12 @@ background-color: #fff;
     left: 0px;
     border-radius: 2px;
     border: unset;
-    padding: 10px 10px;
+    padding: 16px 11px 18px 24px;
     background-color: transparent;
     z-index: 1;
 }
 .search-btn img{
-    width: 18px;
+    width: 20px;
 }
 .dropdown-item:focus, .dropdown-item:hover{
     background-color: #5FCAD2;
@@ -197,9 +191,11 @@ background-color: #fff;
     display: none;
   }
 
-::ng-deep .owl-stage {
+/* ::ng-deep .owl-stage {
     display: flex !important;
-}
+    display: inline-block !important;
+    float: left !important;
+} */
 ::ng-deep .owl-theme .owl-nav{
     position: relative;
     top: -35px;
@@ -213,13 +209,13 @@ background-color: #fff;
     bottom: -10px;
 }
 ::ng-deep .owl-stage-outer {
-    width: 590px;
+    /* width: 590px; */
     overflow: hidden;
-    margin: auto;
+    margin: 0 !important;
 }
 ::ng-deep .owl-next {
     position: absolute;
-    right: -32px !important;
+    right: -26px !important;
     bottom: -10px;
 }
 
@@ -228,13 +224,13 @@ background-color: #fff;
     position: relative;
 }
 .video-icon {
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
     position: absolute;
-    left: 50px;
-    bottom: 50px;
+    left: 3.75rem;
+    bottom: 1.75rem;
     border-radius: 100px;
-    background: #3ca2ca;
+    background: transparent;
     overflow: hidden;
     z-index: 1;
     cursor: pointer;
@@ -420,11 +416,11 @@ video{
     background-color: unset;
     font-size: 10px;
 }
-.sub-header.afterSearch {
+/* .sub-header.afterSearch {
     padding-top: 30px !important;
     padding-bottom: 0px !important;
     height: auto;
-}
+} */
 .sub-header.afterSearch h2.pb-4 {
     display: none;
 }
@@ -466,3 +462,58 @@ video{
     cursor: default;
     opacity: 0.6;
   }
+
+  .owl-item {
+    display: inline-block !important;
+  }
+
+  /* mobile responsive */
+  @media(max-width: 991.5px){
+    .search-bar, .searchDiv{
+        width: 100%;
+        z-index: unset !important;
+    }
+    .search-bar{
+        height: 60px;
+    }
+    .sub-header{
+        background-image: url(~/../../../../assets/images/mobileHeaderBackgroundImage.png);
+        height: auto;
+        padding-top: 76px !important;
+        padding-bottom: 35px;
+    }
+    .video-icon{
+        left: 3%;
+        bottom: 17px;
+        height: 46px;
+        width: 46px;
+    }
+    .playIcon{
+        height: 15px;
+        width: 15px;
+        margin: auto;
+        top: 0px;
+        z-index: 9;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-repeat: no-repeat;
+    }
+    .discover{
+        display: none;
+    }
+    .search-btn{
+        bottom: 0px;
+        top: 0px;
+    }
+    .sub-header.afterSearch{
+        padding-top: 76px !important;
+    }
+    .fixx{
+        width: 100%;
+        height: 190px;
+    }
+    .modal-body-content img{
+        height: 190px;
+    }
+}

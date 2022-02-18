@@ -189,7 +189,7 @@ section.lpSecOne {
   min-height: 600px;
   position: relative;
 }
-section.lpSecOne:before {
+section.lpBAck:before {
   content: '';
   position: absolute;
   background: #f8f8f5;
@@ -601,22 +601,38 @@ font-weight: 600;
   border: 1px solid #EDD580;
 }
 
-#customScrollBar::-webkit-scrollbar-track
-{
-	/* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
-	background-color: #BAB8B2;
+#customScrollBar::-webkit-scrollbar-track{
+	background-color: transparent;
 }
 
-#customScrollBar::-webkit-scrollbar
-{
+#customScrollBar::-webkit-scrollbar{
 	width: 6px;
-	background-color:#BAB8B2 ;
+	background-color:transparent;
 }
 
-#customScrollBar::-webkit-scrollbar-thumb
-{
-	background-color: rgba(0,0,0,.54);
+#customScrollBar::-webkit-scrollbar-thumb{
+	background-color: #E8E6DF;
+  border-radius: 10px;
 }
 .assets-selected-text {
   line-height: 16px;
+}
+.showMoreBtn {
+  display: block;
+  margin: 30px auto;
+  width: fit-content;
+  background: #937206;
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 20px 10px;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  border: 0px;
 }

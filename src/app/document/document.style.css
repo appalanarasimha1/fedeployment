@@ -95,8 +95,13 @@ select option {
 
 .dropdown-toggle::after{
   position: absolute;
-  right: 10px;
-  top: 17px;
+  right: 0px;
+  top: 13px;
+  color: transparent;
+  background: url(../../assets/images/down-arrow-yellow.svg) no-repeat right center;
+  background-size: contain;
+  width: 29px;
+  height: 12px;
 }
 .searchP{
   font-size: 24px;
@@ -401,11 +406,11 @@ color: #000000;
 .sectorrBtn {
   background: transparent;
   border: unset;
-  border-bottom: 1px solid #C49900;
+  border-bottom: 2px solid #C49900;
   border-radius: 0px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
-  padding: 6px 6px;
+  padding: 6px 0px;
 }
 .settingsDropdown .dropdown-menu.show{
   left: -184px !important;
@@ -648,12 +653,16 @@ font-weight: 600;
 }
 .assetsDropdown.dropdown, .assetsDropdown.dropup {
   border-bottom: 1px solid #000;
+  width: 152px;
+  margin-left: 10px;
 }
 /* #dropdownBasic4{
   border-bottom:1px solid #C49900
 } */
 .assetsDropdown.dropdown, .assetsDropdown.dropup, .sectorrBtn.dropdown, .sectorrBtn.dropup{
-  border-bottom:1px solid #C49900
+  border-bottom:1px solid #C49900;
+  width: 152px;
+  margin-left: 10px;
 }
 /* .assetsDropdown .dropdown-menu.show .dropdown-item{
   color: #000 ;
@@ -684,7 +693,7 @@ background-color:#EBC03F !important;
   font-size: 16px;
   font-weight: bold;
   color: #000000;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .clear{
@@ -1443,7 +1452,7 @@ color: #ACACAC;
 .customTab .nav-tabs > li.active > a:focus,
 .customTab .nav-tabs > li.active > a:hover{
   color: #C49900 !important;
-  font-weight: bold !important;
+  font-weight: normal !important;
 }
 .customTab .nav-tabs>li>a{
   margin: 0px;
@@ -1463,8 +1472,8 @@ color: #ACACAC;
   line-height: 24px;
   color: #040404;
   position: absolute;
-  top: -50px;
-  right: 90px;
+  top: -56px;
+  right: 0px;
   cursor: pointer;
 }
 /* Custom tabs css end 12-Nov-2021 */
@@ -1537,7 +1546,7 @@ color: #ACACAC;
   min-width: 230px;
 } */
 
-.back-btn {
+.back-btn span {
   cursor: pointer;
 }
 .view-title {
@@ -1557,3 +1566,55 @@ color: #ACACAC;
 /* .slide-inner{
   padding: 0 5px;
 } */
+.recentFont{
+  font-size: 28px !important;
+  vertical-align: 10px;
+}
+.masonry-item img {
+  display: block !important;
+  min-height: 100px;
+  height: 100%;
+}
+
+/* mobile responsive */
+@media(max-width: 991.5px){
+  .customTab .show-all{
+    right: 0;
+  }
+  .recentFont{
+    font-size: 21px !important;
+  }
+  .noresult {
+    font-size: 16px;
+    line-height: normal;
+    padding-bottom: 5px !important;
+}
+}
+
+.showMoreBtn {
+  display: block;
+  margin: 30px auto;
+  width: fit-content;
+  background: #937206;
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 20px 10px;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  border: 0px;
+}
+::ng-deep .slick-prev.slick-disabled:before, 
+::ng-deep .slick-next.slick-disabled:before {
+  opacity: 0 !important;
+}
+
+.pb-50{
+  padding-bottom: 50px !important;
+}

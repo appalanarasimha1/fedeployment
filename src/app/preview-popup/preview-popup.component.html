@@ -154,7 +154,7 @@
           style="width: 100%"
         />
         </div>
-        
+
         <span *ngIf="doc.type === 'Picture'" class="picture-copyright">{{getCopyright()}}</span>
         <div
           *ngIf="doc.type === 'Video'"
@@ -559,10 +559,18 @@
 
         <div class="search-tags pb-5">
           <ul class="flexible">
-            <li *ngFor="let tag of tags; let i = index">
-              <a class="pointer" (click)="search(tag)" >{{ tag }}</a>
+            <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
+              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])" >{{ tags[i] }}</a>
             </li>
-            <li>
+            <li *ngIf="tags.length > currentTagLength">
+              <button class="btn default" (click)="showMoreTags()">show more</button>
+            </li>
+            <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
+              <button class="btn default" (click)="showLessTags()">show less</button>
+            </li>
+
+            <!-- to be enable once added tag requiremnt available -->
+            <!-- <li>
               <img
                 *ngIf="!showTagInput"
                 src="../../assets/images/Add a Tag.png"
@@ -582,7 +590,7 @@
                   placeholder="Add new tag"
                 />
               </form>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>

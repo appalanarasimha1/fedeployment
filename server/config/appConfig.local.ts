@@ -9,9 +9,10 @@ export class AppConfigLocal {
       dbName: 'dev_groundx',
       mongodbTables: {
         USER_TABLE: 'userDirectory',
-        VIDEO_TABLE: 'personalizedVideoInventory'
+        VIDEO_TABLE: 'personalizedVideoInventory',
+        AUDIT_TABLE: 'audit'
       },
-      domain: 'https://dev2groundx.neom.com/',
+      domain: 'https://uatgroundx.neom.com/',
       elasticDbUrl: 'http://localhost:9200'
     };
   

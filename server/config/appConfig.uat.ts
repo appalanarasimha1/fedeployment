@@ -9,7 +9,8 @@ export class AppConfigUat {
       dbName: 'groundx_neom_uat',
       mongodbTables: {
         USER_TABLE: 'userDirectory',
-        VIDEO_TABLE: 'personalizedVideoInventory'
+        VIDEO_TABLE: 'personalizedVideoInventory',
+        AUDIT_TABLE: 'audit'
       },
       domain: 'https://uatgroundx.neom.com/',
       elasticDbUrl: 'http://10.101.21.63:9700'

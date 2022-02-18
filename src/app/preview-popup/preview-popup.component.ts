@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import * as moment from "moment";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
-import { localStorageVars, TAG_ATTRIBUTES, unwantedTags } from "../common/constant";
+import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW } from "../common/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
@@ -30,6 +30,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   commentText: string;
   comments = [];
   isAware = false;
+  currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW
+  DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
 
   constructor(
     private router: Router,
@@ -59,6 +61,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.activeTabs.timeline = false;
     this.activeTabs.info = false;
     this.isAware = false;
+    this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
     this.modalService
       .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
       .result.then(
@@ -375,7 +378,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     // if (this.doc.properties['sa:allow'] && this.doc.properties['sa:allow'] !== ALLOW.any) {
     //   if(this.doc.properties['sa:allow'] === ALLOW.request) {
     //     return 'Permission Required';
-    //   } else 
+    //   } else
     //   return `${this.doc.properties['sa:allow']}`;
     // }
 
@@ -395,6 +398,14 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   search(searchTerm: string) {
     this.dataService.termSearchInit(searchTerm);
     this.modalService.dismissAll();
+  }
+
+  showMoreTags() {
+    this.currentTagLength = this.tags.length;
+  }
+
+  showLessTags() {
+    this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   }
 
 }

@@ -67,7 +67,7 @@ export class SubHeaderComponent implements OnInit {
     
     this.dataService.termSearch$.subscribe((searchTerm: string) => {
       this.searchText = searchTerm;
-      this.searched = true;
+      this.searched = false;
     });
 
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
@@ -117,43 +117,38 @@ export class SubHeaderComponent implements OnInit {
   }
 
   emitData(data: IHeaderSearchCriteria): void {
-    this.searched = true;
+    this.searched = false;
     this.searchTextOutput.emit(data);
     return;
   }
 
   customOptions: OwlOptions = {
     loop: false,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
+    // mouseDrag: false,
+    // touchDrag: false,
+    // pullDrag: false,
     dots: false,
-    // navSpeed: 700,
-    // center: false,
-    // autoWidth: false,
     items: 5,
-    margin: 14,
+    margin: 15,
     nav: true,
-    // navText: ['<img src="../../../assets/images/leftArrow.svg">', '<img src="../../../assets/images/rightArrow.svg">'],
-
     responsive: {
-      0: {
-        items: 1
+      
+      991: {
+        nav: false,
+        mouseDrag: true,
+        touchDrag: true,
+        pullDrag: true,
       },
-      400: {
-        items: 6
-      },
-      740: {
-        items: 6
-      },
-      940: {
-        items:6,
+      1024: {
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
       }
     }
   }
 
   openSm(content) {
-    this.modalOpen = false;
+    this.modalOpen = true;
     this.hideVideo = true;
     this.selectArea = false;
     // localStorage.removeItem('openVideo');

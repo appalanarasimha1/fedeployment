@@ -176,7 +176,8 @@ export class SearchComponent implements OnInit {
   }
 
   insertSearchTerm(term: string) {
-    this.apiService.post('/searchTerm/insert?term='+term, {}).subscribe(response => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.apiService.post('/searchTerm/insert?term='+term+'&username='+user.email, {}).subscribe(response => {
       console.log(response);
     });
   }
