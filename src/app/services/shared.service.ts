@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import {Moment} from 'moment'; // for interface
-import {startCase, camelCase, isEmpty, pluck} from 'lodash';
+import { Moment } from 'moment'; // for interface
+import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { localStorageVars } from '../common/constant';
@@ -15,31 +15,30 @@ export class SharedService {
   public todayDateKSAInMilli = new Date().getTime() + 3 * 60 * 60 * 1000;
   public MeterType;
 
-// /* <!-- sprint12-fixes start --> */
-public sidebarToggleResize = new BehaviorSubject(false);
+  // /* <!-- sprint12-fixes start --> */
+  public sidebarToggleResize = new BehaviorSubject(false);
 
-constructor(private router: Router) {
-}
-
-
-setSidebarToggle(slideToggle){
-  this.sidebarToggleResize.next(slideToggle);
-}
-getSidebarToggle() {
-  return this.sidebarToggleResize;
-}
-// /* <!-- sprint12-fixes end --> */
-
-public stringShortener(str: string, strLength: number): string {
-  if(str.length > strLength) {
-    return str.substring(0, strLength) + '...';
+  constructor(private router: Router) {
   }
-  else return str;
-}
 
-numberComma(number): string {
-  return number.toLocaleString('en-IN');
-}
+  setSidebarToggle(slideToggle) {
+    this.sidebarToggleResize.next(slideToggle);
+  }
+  getSidebarToggle() {
+    return this.sidebarToggleResize;
+  }
+  // /* <!-- sprint12-fixes end --> */
+
+  public stringShortener(str: string, strLength: number): string {
+    if (str.length > strLength) {
+      return str.substring(0, strLength) + '...';
+    }
+    else return str;
+  }
+
+  toUsCommaSystem(number): string {
+    return number.toLocaleString('en-US');
+  }
 
   public isEmpty(value: any): boolean {
     return isEmpty(value);
@@ -50,7 +49,7 @@ numberComma(number): string {
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
-    if(!url) return '';
+    if (!url) return '';
     if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     }
@@ -62,7 +61,7 @@ numberComma(number): string {
         if (r.status === 401) {
           localStorage.removeItem('token');
           this.router.navigate(['login']);
-          
+
           // this.modalLoading = false;
           return;
         }
@@ -70,14 +69,14 @@ numberComma(number): string {
       })
       .then(d => {
         event.target.src = window.URL.createObjectURL(d);
-        
-    // this.modalLoading = false;
+
+        // this.modalLoading = false;
       }
       ).catch(e => {
         // TODO: add toastr with message 'Invalid token, please login again'
-          
-          // this.modalLoading = false;
-          console.log(e);
+
+        // this.modalLoading = false;
+        console.log(e);
 
       });
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
@@ -129,7 +128,7 @@ numberComma(number): string {
   gmtToKSA(dateString: string): string {
     if (!dateString) { return '-'; }
     const timeInMS = new Date(dateString).getTime() + (3 * 60 * 60 * 1000);
-    return `${new Date(timeInMS).getUTCFullYear()}-${this.getDoubleDigit(new Date(timeInMS).getUTCMonth()+1)}-${this.getDoubleDigit(new Date(timeInMS).getUTCDate())} ${this.getDoubleDigit(new Date(timeInMS).getUTCHours())}:${this.getDoubleDigit(new Date(timeInMS).getUTCMinutes())}`;
+    return `${new Date(timeInMS).getUTCFullYear()}-${this.getDoubleDigit(new Date(timeInMS).getUTCMonth() + 1)}-${this.getDoubleDigit(new Date(timeInMS).getUTCDate())} ${this.getDoubleDigit(new Date(timeInMS).getUTCHours())}:${this.getDoubleDigit(new Date(timeInMS).getUTCMinutes())}`;
   }
 
   /**
@@ -155,7 +154,7 @@ numberComma(number): string {
     const today = toDate ? toDate : moment();
 
     const daysDifference = moment(today).diff(moment(fromDate), 'days');
-    if (daysDifference === 0 ) {
+    if (daysDifference === 0) {
       // tslint:disable-next-line:max-line-length
       let output = `${this.getDoubleDigit(new Date(fromDate).getUTCHours() + 3)}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
       if (!showHours) {
@@ -171,7 +170,7 @@ numberComma(number): string {
 
   getDoubleDigit(value: number) {
     if (value < 10) {
-        return '0' + value;
+      return '0' + value;
     }
     return value;
   }
@@ -218,7 +217,7 @@ numberComma(number): string {
     this.router.navigate(['/login']);
   }
 
-  
+
   markRecentlyViewed(data: any) {
     let found = false;
     // tslint:disable-next-line:prefer-const

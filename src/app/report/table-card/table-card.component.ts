@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-table-card',
@@ -9,9 +10,12 @@ export class TableCardComponent implements OnInit {
   @Input() data: any;
   @Input() title: string;
 
-  constructor() { }
+  constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
   }
 
+  getUsCommaSystemString(number: number): string {
+    return this.sharedService.toUsCommaSystem(number);
+  }
 }
