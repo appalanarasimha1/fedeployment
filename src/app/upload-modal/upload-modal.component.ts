@@ -20,9 +20,10 @@ import { ACCESS,
   ALLOW,
   GROUPS,
   ACCESS_LABEL,
+  ALLOW_LABEL,
   CONFIDENTIALITY_LABEL,
   UNWANTED_WORKSPACES,
-  ALLOW_VALUE_MAP, 
+  ALLOW_VALUE_MAP,
   SPECIFIC_USER_LABEL,
   OWNER_APPROVAL_LABEL} from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
@@ -61,6 +62,7 @@ export class UploadModalComponent implements OnInit {
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
   readonly ACCESS_LABEL = ACCESS_LABEL;
+  readonly ALLOW_LABEL = ALLOW_LABEL;
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
   readonly SPECIFIC_USER_LABEL = SPECIFIC_USER_LABEL;
   readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
@@ -75,7 +77,7 @@ export class UploadModalComponent implements OnInit {
   workspaceList: any;
   folderList: any;
   dropdownFolderList: any;
-  showWsList: boolean = false;
+  showWsList: boolean = true;
   selectedFolder: any;
   folderToAdd: string;
   parentFolder: any;
@@ -145,7 +147,7 @@ export class UploadModalComponent implements OnInit {
     variableWidth: true,
     centerMode: false
   };
-  
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -157,6 +159,7 @@ export class UploadModalComponent implements OnInit {
     this.stepLabel = STEPS[1];
     this.buttonLabel = BUTTON_LABEL[1];
     this.loadUsers();
+    this.showWorkspaceList();
   }
 
   openFileSelect(event) {
@@ -189,7 +192,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   toNextStep() {
-    
+
     this.stepper.next();
     if (this.step === 3) {
       this.publishAssets();
@@ -207,7 +210,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   toPreviousStep() {
-    
+
     this.stepper.previous();
     if (this.step === 1) return;
     this.step--;
@@ -312,13 +315,14 @@ export class UploadModalComponent implements OnInit {
     return false;
   }
 
-  checkAccessOptionDisabled(access, fileIndex?: any) {
-    const confidentiality =
-      this.customConfidentialityMap[fileIndex] || this.confidentiality;
-    const currentAccess =
-      this.customAccessMap[fileIndex] || this.access;
+  checkAccessOptionDisabled(value, fileIndex?: any) {
+    const confidentiality = this.customConfidentialityMap[fileIndex] || this.confidentiality;
+    const currentAccess = this.customAccessMap[fileIndex] || this.access;
     if (!confidentiality || confidentiality === CONFIDENTIALITY.not) return false;
-    if (access === ACCESS.all) {
+    if (value === ACCESS.all) {
+      return true;
+    }
+    if (value === ALLOW.any) {
       return true;
     }
     return false;

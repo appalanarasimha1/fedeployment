@@ -17,8 +17,9 @@ export class HeaderComponent implements OnInit {
   @Output() sendSelectedTab: EventEmitter<any> = new EventEmitter();
 
   selectedTab: string;
-  searchHeader: boolean;
+  searchHeader: boolean = true;
   showBrowseHeader = false;
+  missingHeader= false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -27,33 +28,47 @@ export class HeaderComponent implements OnInit {
     public dataService: DataService,
     protected readonly keycloak: KeycloakService,
   ) {
-    router.events.forEach((event) => {
-      if (event instanceof NavigationStart) {
+    router.events.forEach((event: any) => {
+      if (event.url) {
+        console.log('header = ', event);
         // TODO: will break if we have another url that contains /user.
-        if(event.url === '/workspace' || event.url === '/common/terms') {
+        if(event.url.includes('/workspace') || event.url.includes('/common/terms') || event.url.includes('/report')) {
           this.showBrowseHeader = true;
         } else {
           this.showBrowseHeader = false;
         }
-        if (event.url === '/') {
+        if (event.url === '/' || event.url.includes('/#favorites')) {
           this.searchHeader = true;
         } else {
           this.searchHeader = false;
         }
+        if (event.url.includes('/404')) {
+          this.missingHeader = true;
+        } else {
+          this.missingHeader = false;
+        }
+        console.log('header 1 = ', this.searchHeader, ' = ', this.showBrowseHeader);
       }
+      console.log('header 2 = ', this.searchHeader, ' = ', this.showBrowseHeader);
     });
+    console.log('header 3 = ', this.searchHeader, ' = ', this.showBrowseHeader);
 
-    if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms') {
-      this.showBrowseHeader = true;
-    } else {
-      this.showBrowseHeader = false;
-    }
+    // if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
+    //   this.showBrowseHeader = true;
+    // } else {
+    //   this.showBrowseHeader = false;
+    // }
 
-    if (window.location.pathname === '/') {
-      this.searchHeader = true;
-    } else {
-      this.searchHeader = false;
-    }
+    // if (window.location.pathname === '/') {
+    //   this.searchHeader = true;
+    // } else {
+    //   this.searchHeader = false;
+    // }
+    // if (window.location.pathname === '/404') {
+    //   this.missingHeader = true;
+    // } else {
+    //   this.missingHeader = false;
+    // }
 
   }
 
@@ -63,11 +78,18 @@ export class HeaderComponent implements OnInit {
       if (scroll >= 80 && scroll <= 20000) {
         $('.searchHeading').addClass('fixedHeader');
       } else {
-        if( window.location.pathname !== '/workspace' && window.location.pathname !== '/common/terms') {
+        if( window.location.pathname !== '/workspace' && window.location.pathname !== '/common/terms' &&  window.location.pathname !== '/report') {
           $('.searchHeading').removeClass('fixedHeader');
         }
       }
     });
+  }
+
+  showHeaderElements() {
+    if(window.location.pathname === '/common/terms' && !this.nuxeo.isAuthenticated()) {
+      return false;
+    }
+    return true;
   }
 
   resetFilter() {
@@ -87,7 +109,7 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['']);
       return;
     }
-    if (tab === 'workspace') {
+    if (tab === 'workspace' ||tab === 'report') {
       this.router.navigate(['workspace']);
       return;
     }
@@ -113,5 +135,10 @@ export class HeaderComponent implements OnInit {
     dialogConfig.disableClose = true;
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
+  }
+
+  checkForUserGroup() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user?.groups.indexOf('reportAdmin') != -1;
   }
 }

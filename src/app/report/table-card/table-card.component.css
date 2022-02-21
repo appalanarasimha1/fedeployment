@@ -1,0 +1,29 @@
+.graphHeading {
+    padding: 0 0 20px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+}
+.grayBg {
+    background-color: #f0f0f0;
+}
+.graphPlaceholder {
+    min-height: 345px;
+    background: #fff;
+}
+.mb-0 {
+    margin-bottom: 0px !important;
+}
+.table td {
+    font-size: 15px;
+    letter-spacing: 0.05rem;
+}
+.table>tbody>tr:first-child>td {
+    border-top: 1px solid transparent !important;
+}
+.table, .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    border-color: #efefef !important;
+}
+.table>:not(caption)>*>* {
+    border-bottom-width: 0px;
+}

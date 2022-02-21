@@ -11,13 +11,13 @@
     </div>
   </div>
 </section>
-<section style="background-color: #fff;" class="lpBAck">
+<section style="background-color: #fff;position: relative;" class="lpBAck">
   <section class="lpSecOne">
     <div class="container">
       <div class="row" style="min-height: 600px;">
         <div class="col-xl-3 col-md-3 pt-3 customToggle" style="background-color: #F8F8F5;">
           <!-- Add custom toggle start -->
-         
+
           <!-- Add custom toggle end -->
 
            <div class="tree" id="customScrollBar" >
@@ -62,7 +62,7 @@
                               <!-- <fa-icon [icon]="['fas', 'folder-open']" *ngIf="selectedFolder.uid === secondChild.uid"
                                 style="font-size: 20px;"></fa-icon> -->
                             </div>
-                            <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span> 
+                            <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span>
                           </div>
                         </li>
                       </ul>
@@ -79,7 +79,7 @@
               <div>
                 <span style="">
                   <span class="main-title">{{sharedService.stringShortener(selectedFolder?.title, 60)}}</span>
-              
+
                 <span *ngIf="showLinkCopy" class="copy-section" >
                   <a class="flexible">
                     <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
@@ -100,13 +100,13 @@
                   </div> -->
                     <!-- <ng-template #popTitle>Fancy <b>content!!</b></ng-template>
                     <ng-template #popContent>Hello, <b>{{name}}</b>!</ng-template>
-                  
-                  <button type="button" class="btn btn-outline-secondary" [popoverTitle]="pop title" 
+
+                  <button type="button" class="btn btn-outline-secondary" [popoverTitle]="pop title"
                   [autoClose]="'outside'" [ngbPopover]="Click outside or press Escape to close">
                     Copy Link</button> -->
 
                     </span>
-                
+
               </span>
               <h6>{{removeWrokspaceFromBreadcrumb()}}</h6>
               </div>
@@ -146,7 +146,7 @@
                   </li>
                 </ul>
                 <div style="text-align: center;">
-                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != folderAssetsResult[selectedFolder.uid].resultsCount)" style="cursor: pointer; color: #8E6B0B; border: unset; background: unset" (click)="showMore(selectedFolder.uid)">Show more</button>
+                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" style="cursor: pointer; color: #8E6B0B; border: unset; background: unset" (click)="showMore(selectedFolder.uid)">Show more</button>
                 </div>
                 <!-- </ngx-masonry> -->
               </div>
@@ -186,7 +186,7 @@
                 </div>
                 <ul>
                   <li *ngIf="checkAssetType(item.type)" style="margin-bottom: 20px;">
-                    <document-card 
+                    <document-card
                       [doc]="item"
                       [viewType]="viewType"
                       (onOpenPreview)="open(item, item.type)"
@@ -198,7 +198,7 @@
                 </ul>
               </div>
               <div style="text-align: center;">
-                <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != folderAssetsResult[selectedFolder.uid].resultsCount)" style="cursor: pointer; color: #8E6B0B; border: unset; background: unset" (click)="showMore(selectedFolder.uid)">Show more</button>
+                <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" style="cursor: pointer; color: #8E6B0B; border: unset; background: unset" (click)="showMore(selectedFolder.uid)">Show more</button>
               </div>
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
@@ -211,6 +211,11 @@
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
         </div>
+        <!-- <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+</mat-paginator> -->
       </div>
     </div>
 

@@ -164,8 +164,8 @@
 
     <div *ngIf="!checkShowRecent()" class="container">
       <div class="row" style="justify-content: space-between">
-        <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5 " (click)="resetResult()">
-          <img src="../../assets/images/back-arrow.svg" /> Back
+        <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5">
+          <span (click)="resetResult()"><img src="../../assets/images/back-arrow.svg" /> Back</span>
         </div>
         <div class="view-title">
           <span style="padding-left: 11px;">{{getDetailViewTitle()}}</span>
@@ -335,7 +335,7 @@
           </div>
         </div>
         <div *ngIf="!hideShowMoreBtn" (click)="showMore()"
-          style="text-align: center; cursor: pointer;color: #8E6B0B;">Show more</div>
+          style="text-align: center; cursor: pointer;color: #8E6B0B; margin:20px 0px;">Show more</div>
       </div>
     </div>
     <div *ngIf="!loading && !documents?.entries?.length && !checkShowRecent()" class="row">

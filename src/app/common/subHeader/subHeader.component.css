@@ -15,7 +15,7 @@
 }
 .search-bar{
     position: relative;
-    padding: 10px 15px 10px 36px;
+    padding: 10px 40px 10px 36px;
     border-radius: 8px;
     border: 1px solid #E5E5E5;
     width: 430px;
@@ -502,5 +502,12 @@ video{
     }
     .sub-header.afterSearch{
         padding-top: 76px !important;
+    }
+    .fixx{
+        width: 100%;
+        height: 190px;
+    }
+    .modal-body-content img{
+        height: 190px;
     }
 }

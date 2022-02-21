@@ -432,7 +432,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async showMore(id: string) {
-    if(this.searchList.length < this.folderAssetsResult[id].resultsCount) {
+    if(this.searchList.length < this.selectedFolder.contextParameters.folderAssetsCount) {
       this.currentPageCount++;
       const result: any = await this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`).toPromise();
       this.searchList = this.searchList.concat(result.entries);
@@ -563,13 +563,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getFolderInfo(item) {
-    let count = 0;
-    if (this.folderAssetsResult[item.uid]) count = this.folderAssetsResult[item.uid].resultsCount;
-    else if (this.fetchFolderStatus[item.uid]) count = 0;
-    else {
-      this.fetchFolderStatus[item.uid] = true;
-      this.fetchAssets(item.uid);
-    }
+    const count = item.contextParameters?.folderAssetsCount || 0;
     return `${count} assets curated by ${item.properties["dc:creator"]}`;
   }
   onActivate(event) {

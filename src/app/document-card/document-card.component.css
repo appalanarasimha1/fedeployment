@@ -1603,3 +1603,11 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
 ::ng-deep .slick-slide{
   margin-right: 5px;
 }
+.masonry-item img {
+  display: block !important;
+  min-height: 100px !important;
+  height: 100% !important;
+}
+document-card img {
+  display: block !important;
+}

@@ -6,6 +6,7 @@ import { DbConnection } from './connectionManager/DbConnection';
 import bodyParser from 'body-parser';
 import { PersonalizedVideoController } from './controllers/personalize-video.controller';
 import { ElasticSearchController } from './controllers/elastic-search.controller';
+import { ReportController } from './controllers/report.controller';
 
 const allowedExt = [
   '.js',
@@ -37,6 +38,7 @@ export class RouteManager {
     // this.app.use('/api/v1/device-management', checkApiAuth, DeviceManagementController.Instance.Router);
     this.app.use('/nuxeo/api/v1/fetchPersonalizedVideo', PersonalizedVideoController.Instance.Router);
     this.app.use('/nuxeo/api/v1/searchTerm', ElasticSearchController.Instance.Router);
+    this.app.use('/nuxeo/api/v1/report', ReportController.Instance.Router);
     initialiseServices(app);
     
     // this.app.use('/nuxeo/api/v1/fetchPersonalizedVideo', (req: any, res: any) => {

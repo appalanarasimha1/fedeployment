@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, CONFIDENTIALITY_LABEL } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
@@ -44,6 +44,7 @@ export class UpdateModalComponent implements OnInit {
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
   readonly ACCESS_LABEL = ACCESS_LABEL;
+  readonly ALLOW_LABEL = ALLOW_LABEL;
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
 
   docs: any;
@@ -232,11 +233,13 @@ export class UpdateModalComponent implements OnInit {
     }
   }
 
-  checkAccessOptionDisabled(access, fileIndex?: any) {
-    const confidentiality =
-      this.customConfidentialityMap[fileIndex];
+  checkAccessOptionDisabled(value: string, fileIndex?: any) {
+    const confidentiality = this.customConfidentialityMap[fileIndex];
     if (!confidentiality || confidentiality === CONFIDENTIALITY.not) return false;
-    if (access === ACCESS.all) {
+    if (value === ACCESS.all) {
+      return true;
+    }
+    if (value === ALLOW.any) {
       return true;
     }
     return false;

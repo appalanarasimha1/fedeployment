@@ -1537,7 +1537,7 @@ color: #ACACAC;
   min-width: 230px;
 } */
 
-.back-btn {
+.back-btn span {
   cursor: pointer;
 }
 .view-title {
@@ -1559,6 +1559,11 @@ color: #ACACAC;
 } */
 .recentFont{
   font-size: 28px !important;
+}
+.masonry-item img {
+  display: block !important;
+  min-height: 100px;
+  height: 100%;
 }
 
 /* mobile responsive */

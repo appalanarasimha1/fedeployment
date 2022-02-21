@@ -23,6 +23,9 @@
 body,html{
   font-family: myBrown !important;
   position: relative;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   /* overflow: hidden;
   overflow-y: scroll; */
 }
@@ -267,7 +270,8 @@ html, body {
   /* overflow-x: hidden; */
   /* background:#f6f9fa;*/
   /*background: #fafafa;*/
-  background: #F6F7FA;
+  /* background: #F6F7FA; */
+  background: #ffffff;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
 }
@@ -4015,7 +4019,14 @@ app-search {
 }
 
 
-
+.masonry-item img {
+  display: block !important;
+  min-height: 100px !important;
+  height: 100% !important;
+}
+document-card img {
+  display: block !important;
+}
 
 /* mobile responsive */
 @media(max-width: 991.5px){
@@ -4024,5 +4035,8 @@ app-search {
 }
 .col-xs-9 {
   width: 75% !important;
+}
+.custom-modal .modal-content{
+  width: calc(100% - 90px);
 }
 }
