@@ -9,6 +9,7 @@ import { AuthGuardService } from "./services/authGaurd";
 import { AuthGuard } from './auth/auth.guard';
 
 
+
 const routes: Routes = [
   {
     path: "",

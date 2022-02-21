@@ -146,7 +146,7 @@
                   </li>
                 </ul>
                 <div style="text-align: center;">
-                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" style="cursor: pointer; color: #8E6B0B; border: unset; background: unset" (click)="showMore(selectedFolder.uid)">Show more</button>
+                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
                 </div>
                 <!-- </ngx-masonry> -->
               </div>
@@ -198,7 +198,7 @@
                 </ul>
               </div>
               <div style="text-align: center;">
-                <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" style="cursor: pointer; color: #8E6B0B; border: unset; background: unset" (click)="showMore(selectedFolder.uid)">Show more</button>
+                <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
               </div>
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
