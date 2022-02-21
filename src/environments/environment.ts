@@ -13,7 +13,7 @@ export const environment = {
   // apiServiceBaseUrl:  "http://34.219.179.33:5050",
   // apiServiceBaseUrl: "http://localhost:8090",
   keycloakConfig: {
-    url: 'https://keycloak.iotsense-prod-tnd.oci.neomos.online/auth',
+    url: 'https://keycloakgxprod.iotsense-prod-tnd.oci.neomos.online/auth', //'https://keycloak.iotsense-prod-tnd.oci.neomos.online/auth',
     realm: 'GroundX',
     clientId: 'nuxeo-client-public',
   }
