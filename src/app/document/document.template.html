@@ -15,9 +15,9 @@
 
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
-    <div id="exTab1" class="container">
+    <div id="exTab1" class="container-fluid pb-50">
       <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">Asset by Sectors</a>
-      <ul class="nav nav-tabs">
+      <ul class="nav nav-tabs" style="display: inline-block;">
         <li>
           <div ngbDropdown class="d-inline-block sectorsDropdown">
             <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
@@ -58,9 +58,9 @@
       </div>
     </div>
 
-    <div id="exTab2" class="container">
-      <h2 class="commonHeading pb-4 recentFont" style="">Your Activity</h2>
-      <ul class="nav nav-tabs">
+    <div id="exTab2" class="container-fluid pb-50">
+      <h2 class="commonHeading pb-4 recentFont" style="display: inline-block;">Your Activity</h2>
+      <ul class="nav nav-tabs" style="display: inline-block;">
         <li class="active"><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
         <li><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
       </ul>
@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <div id="favorites" class="container">
+    <div id="favorites" class="container-fluid pb-50">
       <ul class="nav nav-tabs">
         <li><a class="commonHeading recentFont" style=""  href="#favourite" data-toggle="tab">Your Favourites</a></li>
       </ul>
@@ -334,8 +334,7 @@
             </ul>
           </div>
         </div>
-        <div *ngIf="!hideShowMoreBtn" (click)="showMore()"
-          style="text-align: center; cursor: pointer;color: #8E6B0B; margin:20px 0px;">Show more</div>
+        <div *ngIf="!hideShowMoreBtn" (click)="showMore()" class="showMoreBtn">Show more</div>
       </div>
     </div>
     <div *ngIf="!loading && !documents?.entries?.length && !checkShowRecent()" class="row">

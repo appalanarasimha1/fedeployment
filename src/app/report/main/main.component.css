@@ -119,7 +119,7 @@ static-card:nth-child(5){
   .customTab .nav-tabs > li.active > a:focus,
   .customTab .nav-tabs > li.active > a:hover{
     color: #C49900 !important;
-    font-weight: bold !important;
+    font-weight: normal !important;
   }
   .customTab .nav-tabs>li>a{
     margin: 0px;
