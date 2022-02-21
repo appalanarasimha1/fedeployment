@@ -78,13 +78,15 @@
             <div class="header-content">
               <div>
                 <!-- <button mat-raised-button
-                  matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 30)}}"
+                  matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
                   aria-label="Button that displays a tooltip when focused or hovered over">
                   {{sharedService.stringShortener(selectedFolder?.title, 30)}}
                 </button> -->
-                <span style="">
+                <span style="overflow: auto;">
                   <span class="main-title"
-                  >{{sharedService.stringShortener(selectedFolder?.title, 30)}}</span>
+                  matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 100)}}"
+                  aria-label="Button that displays a tooltip when focused or hovered over"
+                  >{{sharedService.stringShortener(selectedFolder?.title, 28)}}</span>
               
                   <span *ngIf="showLinkCopy" class="copy-section" >
                   <a class="flexible">
@@ -114,7 +116,9 @@
                     </span>
                 
                 </span>
-              <h6>{{removeWrokspaceFromBreadcrumb()}}</h6>
+              <h6 
+              matTooltip="{{removeWrokspaceFromBreadcrumb()}}"
+              aria-label="Button that displays a tooltip when focused or hovered over">{{removeWrokspaceFromBreadcrumb()}}</h6>
               </div>
               <div class="views">
                 <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
@@ -133,7 +137,10 @@
                   <li *ngFor="let item of searchList; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
-                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"  data-toggle="tooltip" data-placement="right" title="{{item.title}}"
+                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"
+                        matTooltip="{{ getFolderInfo(item) }}"
+                        aria-label="Button that displays a tooltip when focused or hovered over"
+                    title="{{item.title}}"
                       (click)="handleTest(item);selectedFolder=item;">
                       <img src="../../../assets/images/yellow-folder.png">
                       <div class="folder-content" style="background-color: #F9F7F2;">

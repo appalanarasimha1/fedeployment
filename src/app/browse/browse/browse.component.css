@@ -240,7 +240,7 @@ section.lpBAck:before {
     line-height: 22px;
     color: #000000;
     font-weight: 600;
-    display: contents;
+    /* display: contents; */
 }
 .header-content h6{
   font-size: 15px;
@@ -635,4 +635,14 @@ font-weight: 600;
   -moz-appearance: none;
   -o-appearance: none;
   border: 0px;
+}
+::ng-deep .mat-tooltip {
+  border-radius: 50px !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  background: rgb(0 0 0 / 80%)  !important;
+  font-size: 12px  !important;
+  font-family: inherit !important;
+  margin-top: 3px !important;
+  max-width: 100% !important;
 }
