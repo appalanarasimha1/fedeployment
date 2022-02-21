@@ -77,10 +77,16 @@
           <div *ngIf="selectedFolder">
             <div class="header-content">
               <div>
+                <!-- <button mat-raised-button
+                  matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 30)}}"
+                  aria-label="Button that displays a tooltip when focused or hovered over">
+                  {{sharedService.stringShortener(selectedFolder?.title, 30)}}
+                </button> -->
                 <span style="">
-                  <span class="main-title">{{sharedService.stringShortener(selectedFolder?.title, 60)}}</span>
+                  <span class="main-title"
+                  >{{sharedService.stringShortener(selectedFolder?.title, 30)}}</span>
               
-                <span *ngIf="showLinkCopy" class="copy-section" >
+                  <span *ngIf="showLinkCopy" class="copy-section" >
                   <a class="flexible">
                     <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
                     <span class="copy-link pointer" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
@@ -107,7 +113,7 @@
 
                     </span>
                 
-              </span>
+                </span>
               <h6>{{removeWrokspaceFromBreadcrumb()}}</h6>
               </div>
               <div class="views">
