@@ -37,6 +37,10 @@ public stringShortener(str: string, strLength: number): string {
   else return str;
 }
 
+numberComma(number): string {
+  return number.toLocaleString('en-IN');
+}
+
   public isEmpty(value: any): boolean {
     return isEmpty(value);
   }
