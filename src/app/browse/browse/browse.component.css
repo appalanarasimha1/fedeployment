@@ -256,9 +256,9 @@ section.lpSecOne:before {
   color: #737373;
 }
 .folder-content{
-  padding: 15px;
+  /* padding: 15px;
   border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+  border-bottom-right-radius: 8px; */
 }
 .folder-content p{
   font-size: 15px;
@@ -309,10 +309,10 @@ section.lpSecOne:before {
   padding-top: 25px !important;
 }
 .folder-content p{
-  white-space: nowrap; 
+  /* white-space: nowrap; 
   width: 100%; 
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;  */
 }
 /* sprint16-v1 end */
 li.has-children.is-open > .acnav__label {
@@ -675,3 +675,27 @@ color: #413E3C;
 /* .folderListview tr{
   margin: 3px 0px;
 } */
+.createNewFolder{
+  position: relative;
+}
+.creteNewHeading{
+  font-size: 16px;
+  line-height: 24px;
+  color: #937206;
+  font-weight: 600;
+  cursor: pointer;
+}
+.inner-createNewFolder{
+  position: absolute;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 9;
+  width: 430px;
+  right: 0px;
+  top: 34px;
+}
+.inner-createNewFolder input{
+  width: 100%;
+}

@@ -19,7 +19,8 @@
           <h2 class="commonHeading" style="font-weight: 600;">Workspace</h2>
         </div>
         <div class="col-xl-9 col-md-9 pl-5 pt-5  bg-white">
-          <div class="row">
+          <div class="row flexible">
+            
             <div class="col-xl-7 col-md-7">
               <div style="position: relative;">
                 <form  autocomplete="off">
@@ -30,16 +31,33 @@
                 </form>
               </div>
             </div>
+            <!-- <div class="col-xl-5 col-md-5">
+              <div class="createNewFolder"    style="float: right;">
+                <span (click)=toggleDisplayDivIf()  class="creteNewHeading flexible" ><img  src="../../../assets/images/add.svg" style="margin-right: 8px;">Create a new folder</span>
+                <div *ngIf="isShowDivIf" class="inner-createNewFolder">
+                  <form>
+                    <div class="row">
+                      <div class="col-xl-12">
+                        <label>Folder Name</label>
+                      </div>
+                      <div class="col-xl-12">
+                        <input type="text" placeholder="Enter a folder name">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div> -->
           </div>
         </div>
       </div>
-      <div class="row " >
+      <div class="row">
         <div class="col-xl-3 col-md-3 pt-3 customToggle" style="background-color: #F8F8F5;">
           <!-- Add custom toggle start -->
          
           <!-- Add custom toggle end -->
-          
-           <div class="tree" id="customScrollBar" >
+
+           <div class="tree" >
             <!-- <div class="tree__tree-section"> -->
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
@@ -54,13 +72,13 @@
                     </div>
                     <span style="padding-left: 10px;z-index: 9;" >{{item.title}}</span>
                   </div>
-                  <ul *ngIf="item.children " class="leftPanel ">
+                  <ul *ngIf="item.children && item.isExpand" class="leftPanel ">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=item.children; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
+                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <div style="z-index: 9;">
                           <!-- /* sprint16-v1 start */ -->
-                          <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" /> -->
-                          <!-- <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/> -->
+                          <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
+                          <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/>
                           <!-- /* sprint16-v1 end */ -->
                           <!-- <fa-icon [icon]="['fas', 'angle-down']" style="font-size: 20px;" *ngIf="firstChild.isExpand">
                           </fa-icon>
@@ -70,19 +88,21 @@
                         <span style="padding-left: 10px;z-index: 9;"
                           >{{firstChild.title}}</span>
                       </div>
-                      <!-- <ul *ngIf="firstChild.children && firstChild.isExpand" class="leftPanel">
+                      <ul *ngIf="firstChild.children && firstChild.isExpand" class="leftPanel">
                         <li *ngFor="let secondChild of firstChild.children;let sIndex = index"  style="cursor: pointer">
                           <div class="d-flex set paddingLeft1" [ngClass]="selectedFolder.uid === secondChild.uid ? 'active-tab' : ''" (click)="handleTest(secondChild);selectedFolder=secondChild;">
                             <div style="z-index: 9;">
                               <img src="../../../assets/images/folderBlack.png" style="font-size: 20px;" *ngIf="selectedFolder.uid !== secondChild.uid">
-                           
+                              <!-- <fa-icon [icon]="['fas', 'folder']" style="font-size: 20px;"
+                                *ngIf="selectedFolder.uid !== secondChild.uid"></fa-icon> -->
                                 <img src="../../../assets/images/folder-openblack.png" style="font-size: 20px;" *ngIf="selectedFolder.uid === secondChild.uid">
-                           
+                              <!-- <fa-icon [icon]="['fas', 'folder-open']" *ngIf="selectedFolder.uid === secondChild.uid"
+                                style="font-size: 20px;"></fa-icon> -->
                             </div>
                             <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span> 
                           </div>
                         </li>
-                      </ul> -->
+                      </ul>
                     </li>
                   </ul>
                 </li>
@@ -90,7 +110,7 @@
             </div>
           <!-- </div> -->
         </div>
-        <div class="col-xl-9 col-md-9 pl-5 pt-3  bg-white">
+        <div class="col-xl-9 col-md-9 pl-5 pt-3 bg-white">
           <div *ngIf="selectedFolder">
             <div class="header-content">
               <div>
@@ -130,9 +150,9 @@
               <div class="views">
                 <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
                 <div>
-                  <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
+                  <img src="../../../assets/images/gallery view.png" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
-                    <img src="../../../assets/images/list-view.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                    <img src="../../../assets/images/list view.png" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
                     (click)="handleSelectMenu(1, 'LIST')">
                 </div>
               </div>
@@ -142,17 +162,12 @@
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
                 <ul class="all-sectors">
                   <li *ngFor="let item of searchList; let i = index">
-                    <!-- <div class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
-                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">
-                      <div class="inner-folder">
-                        <p class="folderTitle">{{item.title}}</p>
-                        <p class="folderAssets">33 photos curated by Jing L.</p>
-                      </div>
-                  </div> -->
-                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"  data-toggle="tooltip" data-placement="right" title="{{item.title}}"
+                    <!-- <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
+                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span> -->
+                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folderCircle" style=" cursor: pointer;"  data-toggle="tooltip" data-placement="right" title="{{item.title}}"
                       (click)="handleTest(item);selectedFolder=item;">
-                      <img src="../../../assets/images/yellow-folder.png">
-                      <div class="folder-content" style="background-color: #F9F7F2;">
+                      <!-- <img src="../../../assets/images/yellow-folder.png"> -->
+                      <div class="folder-content" >
                         <p>{{item.title}}</p>
                         <span>{{ getFolderInfo(item) }}</span>
                       </div>
@@ -196,10 +211,8 @@
               </div>
             </div>
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
-
-
               <div  class="col-xl-12 col-md-12">
-                <table class="folderListview">
+                <table class="folderListview pb-5">
                     <tr>
                       <th width="30%">Folder Name</th>
                       <th width="20%">Uploaded by</th>
@@ -207,7 +220,7 @@
                       <th width="20%">Updated on</th>
                     </tr>
                     <tr *ngFor="let item of searchList; let i = $index">
-                      <td class="" style="display: flex;"><img src="../../../assets/images/folderBlack.png" style="width: 15px;margin-right: 10px;object-fit: contain;"><p  style="text-align: left">{{item.title}}</p></td>
+                      <td (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;"><img src="../../../assets/images/folderBlack.png" style="width: 15px;margin-right: 10px;object-fit: contain;"><p  style="text-align: left">{{item.title}}</p></td>
                       <td><p>{{item.properties['dc:creator']}}</p></td>
                       <td><p>Luis C</p></td>
                       <td><p>2 days ago</p></td>
@@ -248,13 +261,8 @@
               </div>
             </div>
 
-
-           
-
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
-          <mat-paginator [length]="200" [pageSizeOptions]="[10, 50, 100]" aria-label="Select page">
-          </mat-paginator>
         </div>
       </div>
     </div>
