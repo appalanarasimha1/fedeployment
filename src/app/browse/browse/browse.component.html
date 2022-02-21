@@ -54,13 +54,13 @@
                     </div>
                     <span style="padding-left: 10px;z-index: 9;" >{{item.title}}</span>
                   </div>
-                  <ul *ngIf="item.children && item.isExpand" class="leftPanel ">
+                  <ul *ngIf="item.children " class="leftPanel ">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
+                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=item.children; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <div style="z-index: 9;">
                           <!-- /* sprint16-v1 start */ -->
-                          <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
-                          <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/>
+                          <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" /> -->
+                          <!-- <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/> -->
                           <!-- /* sprint16-v1 end */ -->
                           <!-- <fa-icon [icon]="['fas', 'angle-down']" style="font-size: 20px;" *ngIf="firstChild.isExpand">
                           </fa-icon>
@@ -70,21 +70,19 @@
                         <span style="padding-left: 10px;z-index: 9;"
                           >{{firstChild.title}}</span>
                       </div>
-                      <ul *ngIf="firstChild.children && firstChild.isExpand" class="leftPanel">
+                      <!-- <ul *ngIf="firstChild.children && firstChild.isExpand" class="leftPanel">
                         <li *ngFor="let secondChild of firstChild.children;let sIndex = index"  style="cursor: pointer">
                           <div class="d-flex set paddingLeft1" [ngClass]="selectedFolder.uid === secondChild.uid ? 'active-tab' : ''" (click)="handleTest(secondChild);selectedFolder=secondChild;">
                             <div style="z-index: 9;">
                               <img src="../../../assets/images/folderBlack.png" style="font-size: 20px;" *ngIf="selectedFolder.uid !== secondChild.uid">
-                              <!-- <fa-icon [icon]="['fas', 'folder']" style="font-size: 20px;"
-                                *ngIf="selectedFolder.uid !== secondChild.uid"></fa-icon> -->
+                           
                                 <img src="../../../assets/images/folder-openblack.png" style="font-size: 20px;" *ngIf="selectedFolder.uid === secondChild.uid">
-                              <!-- <fa-icon [icon]="['fas', 'folder-open']" *ngIf="selectedFolder.uid === secondChild.uid"
-                                style="font-size: 20px;"></fa-icon> -->
+                           
                             </div>
                             <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span> 
                           </div>
                         </li>
-                      </ul>
+                      </ul> -->
                     </li>
                   </ul>
                 </li>
@@ -144,13 +142,13 @@
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
                 <ul class="all-sectors">
                   <li *ngFor="let item of searchList; let i = index">
-                    <div class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
+                    <!-- <div class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">
                       <div class="inner-folder">
                         <p class="folderTitle">{{item.title}}</p>
                         <p class="folderAssets">33 photos curated by Jing L.</p>
                       </div>
-                  </div>
+                  </div> -->
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"  data-toggle="tooltip" data-placement="right" title="{{item.title}}"
                       (click)="handleTest(item);selectedFolder=item;">
                       <img src="../../../assets/images/yellow-folder.png">
@@ -198,7 +196,25 @@
               </div>
             </div>
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
-              <div class="col-xl-6 col-md-6" *ngFor="let item of searchList; let i = $index">
+
+
+              <div  class="col-xl-12 col-md-12">
+                <table class="folderListview">
+                    <tr>
+                      <th width="30%">Folder Name</th>
+                      <th width="20%">Uploaded by</th>
+                      <th width="20%">Last Updated by</th>
+                      <th width="20%">Updated on</th>
+                    </tr>
+                    <tr *ngFor="let item of searchList; let i = $index">
+                      <td class="" style="display: flex;"><img src="../../../assets/images/folderBlack.png" style="width: 15px;margin-right: 10px;object-fit: contain;"><p  style="text-align: left">{{item.title}}</p></td>
+                      <td><p>{{item.properties['dc:creator']}}</p></td>
+                      <td><p>Luis C</p></td>
+                      <td><p>2 days ago</p></td>
+                    </tr>
+                </table>
+              </div>
+              <!-- <div class="col-xl-6 col-md-6" *ngFor="let item of searchList; let i = $index">
                 <div *ngIf="!checkAssetType(item.type)" class="list-container"  data-toggle="tooltip" data-placement="right" title="{{item.title}}">
                   <div class="list-image col-xl-2 col-md-2">
                     <fa-icon [icon]="['fas', 'image']" class="icons"></fa-icon>
@@ -220,7 +236,7 @@
                     </document-card>
                   </li>
                 </ul>
-              </div>
+              </div> -->
               <div style="text-align: center;">
                 <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != folderAssetsResult[selectedFolder.uid].resultsCount)" style="cursor: pointer; color: #8E6B0B; border: unset; background: unset" (click)="showMore(selectedFolder.uid)">Show more</button>
               </div>

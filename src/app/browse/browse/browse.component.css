@@ -642,3 +642,36 @@ color: #413E3C;
   margin: auto;
   width: 18px;
 }
+.folderListview th{
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #BAB8B2;
+  border-bottom: unset;
+}
+.folderListview td p{
+  font-size: 16px;
+  line-height: 24px;
+  color: #040404;
+  text-align: center;
+}
+.folderListview td, th{
+  padding: 10px;
+}
+.folderListview tr td:th-child(1) p{
+  text-align: left !important
+}
+.folderListview tr:nth-child(1){
+  background-color:  unset !important
+}
+.folderListview tr:nth-child(odd){
+  background-color: #F6F5F2;
+  border-bottom: 2px solid #fff;
+}
+.folderListview tr:nth-child(even){
+  background-color: #FBF7E6;
+  border-bottom: 2px solid #fff;
+}
+/* .folderListview tr{
+  margin: 3px 0px;
+} */
