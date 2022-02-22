@@ -2,7 +2,7 @@
 
 </section>
 <app-loader [show]="loading"></app-loader>
-<section  style="background-color: #E8E6DF;padding: 30px 0px;">
+<!-- <section  style="background-color: #E8E6DF;padding: 30px 0px;">
   <div class="container">
     <div class="row">
       <div class="col-xl-12">
@@ -10,28 +10,61 @@
       </div>
     </div>
   </div>
-</section>
-<section style="background-color: #fff;position: relative;" class="lpBAck">
+</section> -->
+<section style="background-color: #fff;" class="lpBAck">
   <section class="lpSecOne">
     <div class="container">
-      <div class="row" style="min-height: 600px;">
+      <div class="row">
+        <div class="col-xl-3 col-md-3  pb-5 pt-5" >
+          <h2 class="commonHeading" style="font-weight: 600;">Workspace</h2>
+        </div>
+        <div class="col-xl-9 col-md-9 pl-5 pt-5  bg-white">
+          <div class="row flexible">
+            
+            <div class="col-xl-7 col-md-7">
+              <div style="position: relative;">
+                <form *ngIf="showSearchbar" autocomplete="off">
+                  <button class="primary search-btn"><img
+                    src="../../../assets/images/search.png" /></button>
+                  <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
+                  <img  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
+                </form>
+              </div>
+            </div>
+            <!-- <div class="col-xl-5 col-md-5">
+              <div class="createNewFolder"    style="float: right;">
+                <span (click)=toggleDisplayDivIf()  class="creteNewHeading flexible" ><img  src="../../../assets/images/add.svg" style="margin-right: 8px;">Create a new folder</span>
+                <div *ngIf="isShowDivIf" class="inner-createNewFolder">
+                  <form>
+                    <div class="row">
+                      <div class="col-xl-12">
+                        <label>Folder Name</label>
+                      </div>
+                      <div class="col-xl-12">
+                        <input type="text" placeholder="Enter a folder name">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-xl-3 col-md-3 pt-3 customToggle" style="background-color: #F8F8F5;">
           <!-- Add custom toggle start -->
 
           <!-- Add custom toggle end -->
 
-           <div class="tree" id="customScrollBar" >
-            <!-- <div class="tree__tree-section"> -->
+           <div class="tree" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
+                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="item.isExpand=!item.isExpand">
+                    <!-- (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)" -->
                     <div style="z-index: 9;">
-                      <!-- /* sprint16-v1 start */ -->
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
                       <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!item.isExpand"/>
-                      <!-- /* sprint16-v1 end */ -->
-                      <!-- <fa-icon [icon]="['fas', 'angle-down']" *ngIf="item.isExpand"></fa-icon>
-                      <fa-icon [icon]="['fas', 'angle-right']" *ngIf="!item.isExpand"></fa-icon> -->
                     </div>
                     <span style="padding-left: 10px;z-index: 9;" >{{item.title}}</span>
                   </div>
@@ -39,33 +72,14 @@
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer">
                       <div class="d-flex set paddingLeft" [ngClass]="selectedFolder.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <div style="z-index: 9;">
-                          <!-- /* sprint16-v1 start */ -->
-                          <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
-                          <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/>
-                          <!-- /* sprint16-v1 end */ -->
-                          <!-- <fa-icon [icon]="['fas', 'angle-down']" style="font-size: 20px;" *ngIf="firstChild.isExpand">
-                          </fa-icon>
-                          <fa-icon [icon]="['fas', 'angle-right']" *ngIf="!firstChild.isExpand" style="font-size: 20px;">
-                          </fa-icon> -->
+                          
+                          <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
+                          <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/> -->
+                          
                         </div>
-                        <span style="padding-left: 10px;z-index: 9;"
-                          >{{firstChild.title}}</span>
+                        <span style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span>
                       </div>
-                      <ul *ngIf="firstChild.children && firstChild.isExpand" class="leftPanel">
-                        <li *ngFor="let secondChild of firstChild.children;let sIndex = index"  style="cursor: pointer">
-                          <div class="d-flex set paddingLeft1" [ngClass]="selectedFolder.uid === secondChild.uid ? 'active-tab' : ''" (click)="handleTest(secondChild);selectedFolder=secondChild;">
-                            <div style="z-index: 9;">
-                              <img src="../../../assets/images/folderBlack.png" style="font-size: 20px;" *ngIf="selectedFolder.uid !== secondChild.uid">
-                              <!-- <fa-icon [icon]="['fas', 'folder']" style="font-size: 20px;"
-                                *ngIf="selectedFolder.uid !== secondChild.uid"></fa-icon> -->
-                                <img src="../../../assets/images/folder-openblack.png" style="font-size: 20px;" *ngIf="selectedFolder.uid === secondChild.uid">
-                              <!-- <fa-icon [icon]="['fas', 'folder-open']" *ngIf="selectedFolder.uid === secondChild.uid"
-                                style="font-size: 20px;"></fa-icon> -->
-                            </div>
-                            <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span>
-                          </div>
-                        </li>
-                      </ul>
+                      
                     </li>
                   </ul>
                 </li>
@@ -73,7 +87,7 @@
             </div>
           <!-- </div> -->
         </div>
-        <div class="col-xl-9 col-md-9 p-5 pt-5 bg-white">
+        <div class="col-xl-9 col-md-9 pl-5 pt-3 bg-white">
           <div *ngIf="selectedFolder">
             <div class="header-content">
               <div>
@@ -117,15 +131,17 @@
                 
                 </span>
               <h6 
-              matTooltip="{{removeWrokspaceFromBreadcrumb()}}"
-              aria-label="Button that displays a tooltip when focused or hovered over">{{removeWrokspaceFromBreadcrumb()}}</h6>
+                matTooltip="{{removeWrokspaceFromBreadcrumb()}}"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+                {{removeWrokspaceFromBreadcrumb()}}
+              </h6>
               </div>
               <div class="views">
                 <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
                 <div>
-                  <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
+                  <img src="../../../assets/images/gallery view.png" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
-                    <img src="../../../assets/images/list-view.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                    <img src="../../../assets/images/list view.png" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
                     (click)="handleSelectMenu(1, 'LIST')">
                 </div>
               </div>
@@ -134,7 +150,7 @@
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
                 <ul class="all-sectors">
-                  <li *ngFor="let item of searchList; let i = index">
+                  <li *ngFor="let item of searchList | search: searchBarValue; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"
@@ -142,8 +158,8 @@
                         aria-label="Button that displays a tooltip when focused or hovered over"
                     title="{{item.title}}"
                       (click)="handleTest(item);selectedFolder=item;">
-                      <img src="../../../assets/images/yellow-folder.png">
-                      <div class="folder-content" style="background-color: #F9F7F2;">
+                      <!-- <img src="../../../assets/images/yellow-folder.png"> -->
+                      <div class="folder-content" >
                         <p>{{item.title}}</p>
                         <span>{{ getFolderInfo(item) }}</span>
                       </div>
@@ -164,7 +180,7 @@
                 <!-- </ngx-masonry> -->
               </div>
 
-              <div class="block-container" *ngFor="let item of searchList">
+              <div class="block-container" *ngFor="let item of searchList | search: searchBarValue;">
 
                 <div class="hover-content">
                   <div class="left-content">
@@ -187,7 +203,26 @@
               </div>
             </div>
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
-              <div class="col-xl-6 col-md-6" *ngFor="let item of searchList; let i = $index">
+              <div  class="col-xl-12 col-md-12">
+                <table class="folderListview pb-5">
+                    <tr>
+                      <th width="30%">Folder Name</th>
+                      <th width="20%">Created by</th>
+                      <!-- <th width="20%">Last Updated by</th> -->
+                      <th width="20%">Created on</th>
+                    </tr>
+                    <tr *ngFor="let item of searchList | search: searchBarValue; let i = $index">
+                      <td (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
+                        <img src="../../../assets/images/folderBlack.png" style="width: 15px;margin-right: 10px;object-fit: contain;">
+                        <p style="text-align: left">{{item.title}}</p>
+                      </td>
+                      <td><p>{{item.properties['dc:creator']}}</p></td>
+                      <!-- <td><p>Luis C</p></td> -->
+                      <td><p>2 days ago</p></td>
+                    </tr>
+                </table>
+              </div>
+              <!-- <div class="col-xl-6 col-md-6" *ngFor="let item of searchList; let i = $index">
                 <div *ngIf="!checkAssetType(item.type)" class="list-container"  data-toggle="tooltip" data-placement="right" title="{{item.title}}">
                   <div class="list-image col-xl-2 col-md-2">
                     <fa-icon [icon]="['fas', 'image']" class="icons"></fa-icon>
@@ -209,13 +244,13 @@
                     </document-card>
                   </li>
                 </ul>
-              </div>
+              </div> -->
               <div style="text-align: center;">
                 <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
               </div>
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
-              <div class="col-xl-12 col-md-12 list-container" *ngFor="let item of searchList">
+              <div class="col-xl-12 col-md-12 list-container" *ngFor="let item of searchList | search: searchBarValue;">
                   <h5 class="list-title">{{item.title}}</h5>
                   <h6 class="mt-2">By  <fa-icon [icon]="['fas', 'user-circle']" class="person-icons"></fa-icon> {{item.properties['dc:creator']}}</h6>
               </div>
@@ -224,11 +259,12 @@
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
         </div>
-        <!-- <mat-paginator [length]="100"
-              [pageSize]="10"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              aria-label="Select page">
-</mat-paginator> -->
+        <mat-paginator 
+          [length]="100"
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page">
+        </mat-paginator>
       </div>
     </div>
 

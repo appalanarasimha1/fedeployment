@@ -20,6 +20,7 @@ import { InterceptorService } from '../services/http-interceptor.service';
 import {MatStepperModule} from '@angular/material/stepper';
 import { ReversePipe } from '../common/pipe/reverse.pipe';
 import { ChartsModule } from 'ng2-charts';
+import { SearchPipe } from '../common/pipe/search.pipe';
 
 @NgModule({
   providers: [
@@ -30,7 +31,8 @@ import { ChartsModule } from 'ng2-charts';
     DocumentCardComponent,
     PreviewPopupComponent,
     SecurePipe,
-    ReversePipe
+    ReversePipe,
+    SearchPipe
   ],
   imports: [
     CommonModule,
@@ -56,7 +58,8 @@ import { ChartsModule } from 'ng2-charts';
     PreviewPopupComponent,
     MatStepperModule,
     ReversePipe,
-    ChartsModule
+    ChartsModule,
+    SearchPipe
     // NgxMasonryModule
     // OwlModule
   ]

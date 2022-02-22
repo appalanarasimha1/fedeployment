@@ -85,6 +85,8 @@ export class BrowseComponent implements OnInit {
   showMoreButton = true;
   copiedString: string;
   showLinkCopy = false;
+  showSearchbar = false;
+  searchBarValue = '';
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -173,6 +175,7 @@ export class BrowseComponent implements OnInit {
     //   this.searchList = docs.entries;
     // });
     this.showLinkCopy = true;
+    this.showSearchbar = false;
     this.copiedString = '';
     this.selectedFolder = item;
     this.createBreadCrumb(item.title, item.type, item.path);
@@ -324,6 +327,7 @@ export class BrowseComponent implements OnInit {
     this.currentLevel = index;
     this.showLinkCopy = false;
     this.copiedString = '';
+    this.showSearchbar = false;
 
     this.createBreadCrumb(item.title, item.type, item.path);
     // if(this.breadcrrumb.includes(item.title)) {
@@ -342,6 +346,7 @@ export class BrowseComponent implements OnInit {
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         if(childIndex !== null && childIndex !== undefined) {
+          this.showSearchbar = true;
           this.loading = false;
           this.folderStructure[index].children[childIndex].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
           this.folderStructure[index].children[childIndex].isExpand = true;
@@ -589,6 +594,15 @@ export class BrowseComponent implements OnInit {
   getSectorUidByName(breadcrumb: string) {
     const result = this.folderStructure[0].children.find(item => breadcrumb.includes(item.path));
     return {uid: result.uid, sectorName: result.title};
+  }
+  isShowDivIf = false;
+  
+  toggleDisplayDivIf() {
+    this.isShowDivIf = !this.isShowDivIf;
+  }
+
+  getSearchPlaceholder(): string {
+    return `Search folder in ${this.selectedFolder?.title} workspace`;
   }
 }
 
