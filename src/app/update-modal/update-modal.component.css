@@ -878,3 +878,25 @@ input.copyright-input {
   display: inherit;
   flex: 1;
 }
+.tollTipCustom{
+  position: relative;
+}
+.tollTipCustom .tolltipContent {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.80);
+  padding: 3px 10px;
+  font-size: 11px;
+  color: #fff;
+  font-weight: normal;
+  width: 100%;
+  border-radius: 40px;
+  white-space: nowrap;
+  min-width: 150px;
+  display: none;
+  text-align: center;
+}
+.tollTipCustom:hover .tolltipContent {
+  display: block;
+}
