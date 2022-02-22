@@ -82,8 +82,8 @@
     <div class="modal-body fixx">
       <app-loader-small [show]="modalLoading"></app-loader-small>
       <div class="modal-body-content" *ngIf="hideVideo && !videoResponse && !videoCompleted && showItemOnlyOnce" (click)="clickVideoIcon()">
-        <!-- <div class="playIcon"></div> -->
-        <img src="../../../assets/images/personalizedVideo.svg" />
+        <div class="playIcon"></div>
+        <img src="../../../assets/images/video-background-pic.png" />
       </div>
       <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
         <img src="../../../assets/images/logo-neom.png" class="logo" />

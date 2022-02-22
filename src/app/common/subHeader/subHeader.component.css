@@ -302,7 +302,8 @@ background-color: #fff;
     color: #7d7d7d;
   }
   .modal-body-content {
-      min-height: 290px;
+    min-height: 290px;
+    background-image: linear-gradient(#2b8aa6, #79cad8);
   }
 /* sprint16 end */
 .thankyou-popup{
