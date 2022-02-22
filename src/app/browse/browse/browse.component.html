@@ -211,7 +211,7 @@
                       <!-- <th width="20%">Last Updated by</th> -->
                       <th width="20%">Created on</th>
                     </tr>
-                    <tr *ngFor="let item of searchList; let i = $index">
+                    <tr *ngFor="let item of searchList | search: searchBarValue; let i = $index">
                       <td (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
                         <img src="../../../assets/images/folderBlack.png" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
@@ -250,7 +250,7 @@
               </div>
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
-              <div class="col-xl-12 col-md-12 list-container" *ngFor="let item of searchList">
+              <div class="col-xl-12 col-md-12 list-container" *ngFor="let item of searchList | search: searchBarValue;">
                   <h5 class="list-title">{{item.title}}</h5>
                   <h6 class="mt-2">By  <fa-icon [icon]="['fas', 'user-circle']" class="person-icons"></fa-icon> {{item.properties['dc:creator']}}</h6>
               </div>
@@ -259,11 +259,12 @@
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
         </div>
-        <!-- <mat-paginator [length]="100"
-              [pageSize]="10"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              aria-label="Select page">
-</mat-paginator> -->
+        <mat-paginator 
+          [length]="100"
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page">
+        </mat-paginator>
       </div>
     </div>
 
