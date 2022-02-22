@@ -15,7 +15,7 @@ export class CardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getUsCommaSystemString(number: number|string): string {
+  getUsCommaSystemString(number: number | string): string {
     return this.sharedService.toUsCommaSystem(number);
   }
 
