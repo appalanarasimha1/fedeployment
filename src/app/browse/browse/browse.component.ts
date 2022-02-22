@@ -590,5 +590,10 @@ export class BrowseComponent implements OnInit {
     const result = this.folderStructure[0].children.find(item => breadcrumb.includes(item.path));
     return {uid: result.uid, sectorName: result.title};
   }
+  isShowDivIf = false;
+  
+  toggleDisplayDivIf() {
+    this.isShowDivIf = !this.isShowDivIf;
+  }
 }
 

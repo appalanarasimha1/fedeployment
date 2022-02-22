@@ -31,7 +31,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatDialogModule,
     FontAwesomeModule,
     MatPaginatorModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
