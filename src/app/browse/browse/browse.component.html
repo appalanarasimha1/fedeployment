@@ -17,7 +17,7 @@
       <div class="row" style="min-height: 600px;">
         <div class="col-xl-3 col-md-3 pt-3 customToggle" style="background-color: #F8F8F5;">
           <!-- Add custom toggle start -->
-         
+
           <!-- Add custom toggle end -->
 
            <div class="tree" id="customScrollBar" >
@@ -62,7 +62,7 @@
                               <!-- <fa-icon [icon]="['fas', 'folder-open']" *ngIf="selectedFolder.uid === secondChild.uid"
                                 style="font-size: 20px;"></fa-icon> -->
                             </div>
-                            <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span> 
+                            <span style="padding-left: 10px;z-index: 9;" >{{secondChild.title}}</span>
                           </div>
                         </li>
                       </ul>
@@ -84,7 +84,7 @@
                 </button> -->
                 <span style="overflow: auto;">
                   <span class="main-title"
-                  matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 100)}}"
+                  matTooltip="{{selectedFolder?.title}}"
                   aria-label="Button that displays a tooltip when focused or hovered over"
                   >{{sharedService.stringShortener(selectedFolder?.title, 28)}}</span>
               
@@ -108,8 +108,8 @@
                   </div> -->
                     <!-- <ng-template #popTitle>Fancy <b>content!!</b></ng-template>
                     <ng-template #popContent>Hello, <b>{{name}}</b>!</ng-template>
-                  
-                  <button type="button" class="btn btn-outline-secondary" [popoverTitle]="pop title" 
+
+                  <button type="button" class="btn btn-outline-secondary" [popoverTitle]="pop title"
                   [autoClose]="'outside'" [ngbPopover]="Click outside or press Escape to close">
                     Copy Link</button> -->
 
@@ -159,7 +159,7 @@
                   </li>
                 </ul>
                 <div style="text-align: center;">
-                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != folderAssetsResult[selectedFolder.uid].resultsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
+                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
                 </div>
                 <!-- </ngx-masonry> -->
               </div>
@@ -199,7 +199,7 @@
                 </div>
                 <ul>
                   <li *ngIf="checkAssetType(item.type)" style="margin-bottom: 20px;">
-                    <document-card 
+                    <document-card
                       [doc]="item"
                       [viewType]="viewType"
                       (onOpenPreview)="open(item, item.type)"
@@ -211,7 +211,7 @@
                 </ul>
               </div>
               <div style="text-align: center;">
-                <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != folderAssetsResult[selectedFolder.uid].resultsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
+                <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
               </div>
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
