@@ -890,12 +890,14 @@ input.copyright-input {
   font-size: 11px;
   color: #fff;
   font-weight: normal;
-  width: 100%;
+  width: max-content;
   border-radius: 40px;
   white-space: nowrap;
-  min-width: 150px;
+  min-width: max-content;
   display: none;
   text-align: center;
+  z-index: 99;
+  line-height: normal;
 }
 .tollTipCustom:hover .tolltipContent {
   display: block;

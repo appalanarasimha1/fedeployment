@@ -33,7 +33,7 @@
             <div class="publish-file-preview-img">
               <img alt="preview" class="preview-img"
                 [src]="getAssetUrl(null, doc.contextParameters.thumbnail?.url)"/>
-              <span [title]="doc.title" class="tollTipCustom">{{ sharedService.stringShortener(doc.title, 20) }}
+              <span class="tollTipCustom">{{ sharedService.stringShortener(doc.title, 20) }}
                 <div class="tolltipContent">
                   {{doc.title}}
                 </div>

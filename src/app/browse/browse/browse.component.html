@@ -83,10 +83,12 @@
                   {{sharedService.stringShortener(selectedFolder?.title, 30)}}
                 </button> -->
                 <span style="overflow: auto;">
-                  <span class="main-title"
-                  matTooltip="{{selectedFolder?.title}}"
-                  aria-label="Button that displays a tooltip when focused or hovered over"
-                  >{{sharedService.stringShortener(selectedFolder?.title, 28)}}</span>
+                  <span class="main-title tollTipCustom"
+                  >{{sharedService.stringShortener(selectedFolder?.title, 28)}}
+                  <div class="tolltipContent">
+                    {{selectedFolder?.title}}
+                  </div>
+                </span>
               
                   <span *ngIf="showLinkCopy" class="copy-section" >
                   <a class="flexible">
@@ -116,9 +118,12 @@
                     </span>
                 
                 </span>
-              <h6 
-              matTooltip="{{removeWrokspaceFromBreadcrumb()}}"
-              aria-label="Button that displays a tooltip when focused or hovered over">{{removeWrokspaceFromBreadcrumb()}}</h6>
+              <h6 class="tollTipCustom">
+              {{sharedService.stringShortener(removeWrokspaceFromBreadcrumb(), 70)}}
+              <div class="tolltipContent" style="top: auto; bottom: -30px;">
+                {{removeWrokspaceFromBreadcrumb()}}
+              </div>
+              </h6>
               </div>
               <div class="views">
                 <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
@@ -141,9 +146,15 @@
                       (click)="handleTest(item);selectedFolder=item;">
                       <img src="../../../assets/images/yellow-folder.png">
                       <div class="folder-content" style="background-color: #F9F7F2;">
-                        <p
-                        matTooltip="{{item.title}}"
-                        aria-label="Button that displays a tooltip when focused or hovered over">{{item.title}}</p>
+                        <p class="tollTipCustom" style="    white-space: normal;
+                        width: 100%;
+                        overflow: inherit;
+                        text-overflow: inherit;">
+                          {{sharedService.stringShortener(item.title, 16)}} 
+                          <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
+                            {{item.title}}
+                          </span>
+                        </p>
                         <span>{{ getFolderInfo(item) }}</span>
                       </div>
                     </div>
