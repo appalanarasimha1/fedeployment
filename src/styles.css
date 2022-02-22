@@ -4084,3 +4084,6 @@ document-card img {
   background-size: 10px;
   background-color: rgba(0, 0, 0, 0.4);
 }
+.workspace-list .slick-initialized .slick-slide {
+  opacity: 1 !important;
+}
