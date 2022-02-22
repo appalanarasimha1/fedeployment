@@ -23,10 +23,10 @@
             
             <div class="col-xl-7 col-md-7">
               <div style="position: relative;">
-                <form  autocomplete="off">
+                <form *ngIf="showSearchbar" autocomplete="off">
                   <button class="primary search-btn"><img
                     src="../../../assets/images/search.png" /></button>
-                  <input type="text" placeholder="Search folder in Education Workspace" class="search-bar">
+                  <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
                   <img  style="cursor: pointer" src="../assets/images/circle-close.png" class="placeholder-search">
                 </form>
               </div>
@@ -171,7 +171,7 @@
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
                 <ul class="all-sectors">
-                  <li *ngFor="let item of searchList; let i = index">
+                  <li *ngFor="let item of searchList | search: searchBarValue; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"

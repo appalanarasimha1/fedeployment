@@ -40,7 +40,7 @@ import { AuthGuardService } from './services/authGaurd';
     LoginComponent,
     LandingPageComponent,
     FooterComponent,
-    LoaderYellowComponent,
+    LoaderYellowComponent
   ],
   imports: [
     CommonModule,
