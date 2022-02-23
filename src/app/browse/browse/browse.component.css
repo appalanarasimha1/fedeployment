@@ -634,7 +634,6 @@ font-weight: 600;
   margin-top: 3px !important;
   max-width: 100% !important;
 }
-<<<<<<< HEAD
 .search-bar{
   position: relative;
   padding: 8px 15px 8px 46px;
@@ -732,11 +731,12 @@ color: #413E3C;
 }
 .inner-createNewFolder input{
   width: 100%;
-=======
+}
 
 .tollTipCustom{
   position: relative;
 }
+
 .tollTipCustom .tolltipContent {
   position: absolute;
   top: 30px;
@@ -758,5 +758,4 @@ color: #413E3C;
 }
 .tollTipCustom:hover .tolltipContent {
   display: block;
->>>>>>> sprint22-common-ui
 }
