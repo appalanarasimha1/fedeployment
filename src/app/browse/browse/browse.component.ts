@@ -621,8 +621,6 @@ export class BrowseComponent implements OnInit {
         return '../../../assets/images/folderBlack.png';
       case 'file':
         return '../../../assets/images/folderBlack.png';
-
-
     }
   }
 }
