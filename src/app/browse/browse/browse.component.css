@@ -177,7 +177,6 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 }
 .leftPanel{
   padding: 0px;
-
 }
 .leftPanel li span{
   font-size: 16px !important;
@@ -210,7 +209,7 @@ section.lpBAck:before, .lpSecOne:before {
   width: calc(50% - 10px);
 }
 .paddingLeft{
-  padding-left: 40px;
+  padding-left: 50px;
 }
 .paddingLeft1{
   padding-left: 60px;
@@ -547,7 +546,7 @@ li.has-children.is-open > .acnav__label {
   display: none;
 } */
 .tree{
-  max-height: 100vh;
+  /* max-height: 100vh; */
   overflow: auto;
 }
 .copy-link{
@@ -654,7 +653,7 @@ font-weight: 600;
 }
 .search-bar{
   position: relative;
-  padding: 8px 15px 8px 46px;
+  padding: 8px 45px 8px 46px;
   border-radius: 8px;
   border: 1px solid #F6F5F2;
   width: 100%;
@@ -761,7 +760,7 @@ color: #413E3C;
   left: 0px;
   background: rgba(0, 0, 0, 0.80);
   padding: 3px 10px;
-  font-size: 11px;
+  font-size: 13px;
   color: #fff;
   font-weight: normal;
   width: max-content;
@@ -789,6 +788,22 @@ color: #413E3C;
 .pl-12 {
   padding-left: 12px !important;
 }
-.pt-5 {
-  padding-top: 2.3rem!important;
+.pt-2 {
+  padding-top: 2.6rem!important;
+}
+
+.all-sectors li {
+  width: calc(25% - 8px);
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.all-sectors li:nth-child(4n+4) {
+  margin-right: 0px !important;
+}
+.insideScroll{
+  padding: 0px;
+  max-height: 100vh;
+  overflow: auto;
 }

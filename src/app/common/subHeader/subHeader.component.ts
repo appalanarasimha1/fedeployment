@@ -195,7 +195,7 @@ export class SubHeaderComponent implements OnInit {
   slideConfig = {
     "slidesToShow": 5, 
     // "slidesToScroll": 1,
-    "dots": true,
+    "dots": false,
     "infinite": false,
     "speed": 300,
     "centerMode": false,

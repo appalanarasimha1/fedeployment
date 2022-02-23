@@ -380,16 +380,16 @@ font-weight: 600;
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   white-space: nowrap;
   background: #EDD580;
-  padding: 7px;
+  padding: 2px 7px;
+  border-radius: 48px;
   border-radius: 48px;
   font-size: 13px;
-  line-height: 18px;
-  display: flex; 
+  line-height: 24px;
+  display: flex;
   align-items: center;
   text-align: center;
   color: #040505;
   font-weight: 600;
-  margin-top: -2px;
 }
 ::ng-deep .ng-value.ng-star-inserted span:nth-child(1) {
   order: 2;
@@ -887,7 +887,7 @@ input.copyright-input {
   left: 0px;
   background: rgba(0, 0, 0, 0.80);
   padding: 3px 10px;
-  font-size: 11px;
+  font-size: 13px;
   color: #fff;
   font-weight: normal;
   width: max-content;
