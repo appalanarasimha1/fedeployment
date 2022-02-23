@@ -613,7 +613,7 @@ export class BrowseComponent implements OnInit {
 
   getIconByType(type: string): string {
     switch (type.toLowerCase()) {
-      case 'domain':
+      case 'workspace':
         return '../../../assets/images/folderBlack.png';
       case 'picture':
         return '../../../assets/images/list-viewImg.svg';
