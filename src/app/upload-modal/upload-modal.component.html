@@ -128,7 +128,7 @@
                </div>
                <div class="col-xl-8 col-md-8 flexible">
                   <div class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd}">
-                     <input type="text" id="title" value="{{folderToAdd || selectedFolder?.title}}" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
+                     <input type="text" id="title" #searchFolderInput value="{{folderToAdd || selectedFolder?.title}}" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
                      <span class="custom-select-icons">
                      <i class="fa fa-caret-down"></i>
                      </span>
@@ -139,23 +139,23 @@
                            <li *ngFor="let folder of dropdownFolderList" (click)="selectFolder(folder)" class="styled"><img src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px;">{{folder.title}}</li>
                            <li *ngIf="!dropdownFolderList || dropdownFolderList.length === 0"><span style="font-style: italic;">-No folder found-</span></li>
                         </div>
-                        <li *ngIf="!showFolderNameField" class="styled yellowfix">
+                        <!-- <li *ngIf="!showFolderNameField" class="styled yellowfix">
                            <div class="add-new-option">
                               <div class="flexible" (click)="showFolderNameField = true">
                                  <img src="../../assets/images/add-circle.svg" style="width: 18px; margin-right: 10px;" >
                                  <span>Create a new folder</span>
                               </div>
                            </div>
-                        </li>
-                        <li *ngIf="showFolderNameField" class="styled yellowfix">
+                        </li> -->
+                        <li *ngIf="searchFolderInput.value" class="styled yellowfix" (click)="addNewFolder(searchFolderInput)">
                            <div class="add-new-option">
                               <div class="flexible">
                                  <!-- <mat-icon>add</mat-icon> -->
-                                 <img src="../../assets/images/Regular.png" style="width: 14px; margin-right: 5px;" (click)="showFolderNameField = false">
-                                 <input type="text" id="titleAddNew" #folderToAdd placeholder="Create new folder" class="add-new-input">
+                                 <img src="../../assets/images/add-circle.svg" style="width: 18px; margin-right: 10px;" >
+                                 <span>Create folder "{{searchFolderInput.value}}"</span>
                               </div>
                               <!-- <mat-icon class="add-new-btn" (click)="addNewFolder(folderToAdd)">check</mat-icon> -->
-                              <img src="../../assets/images/Shape.png" (click)="addNewFolder(folderToAdd)">
+                              <!-- <img src="../../assets/images/Shape.png" (click)="addNewFolder(folderToAdd)"> -->
                            </div>
                         </li>
                      </ul>
