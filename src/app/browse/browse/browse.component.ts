@@ -616,11 +616,11 @@ export class BrowseComponent implements OnInit {
       case 'domain':
         return '../../../assets/images/folderBlack.png';
       case 'picture':
-        return '../../../assets/images/folderBlack.png';
+        return '../../../assets/images/list-viewImg.svg';
       case 'video':
-        return '../../../assets/images/folderBlack.png';
+        return '../../../assets/images/list-viewVideo.svg';
       case 'file':
-        return '../../../assets/images/folderBlack.png';
+        return '../../../assets/images/Doc.svg';
     }
   }
 }
