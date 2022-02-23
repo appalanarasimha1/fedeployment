@@ -51,6 +51,7 @@ export class BrowseComponent implements OnInit {
 
   files: File[] = [];
   selectedFolder = null;
+  selectedFolder2 = null;
   selectedMenu = 0;
   uploadSuccess = null;
   pathSuccess = null;
@@ -120,6 +121,7 @@ export class BrowseComponent implements OnInit {
         //   return;
 
         // }
+        this.selectedFolder2 = this.folderStructure[0];
         this.selectedFolder = this.folderStructure[0];
         this.handleClick(this.folderStructure[0], 0, null);
       }
@@ -177,7 +179,7 @@ export class BrowseComponent implements OnInit {
     this.showLinkCopy = true;
     this.showSearchbar = false;
     this.copiedString = '';
-    // this.selectedFolder = item;
+    this.selectedFolder = item;
     this.createBreadCrumb(item.title, item.type, item.path);
     setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
     // this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
