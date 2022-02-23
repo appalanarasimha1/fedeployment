@@ -6,6 +6,9 @@ import { LoginComponent } from "./login/login.component";
 import { RoleGuardService } from "./services/roleGaurd";
 import { NoContent } from "./no-content";
 import { AuthGuardService } from "./services/authGaurd";
+import { AuthGuard } from './auth/auth.guard';
+
+
 
 const routes: Routes = [
   {
@@ -19,7 +22,7 @@ const routes: Routes = [
     path: "workspace",
     loadChildren: () =>
       import("./browse/browse.module").then((m) => m.BrowseModule),
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuard, AuthGuardService],
   },
   {
     path: "common",

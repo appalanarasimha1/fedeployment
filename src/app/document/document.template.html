@@ -15,9 +15,9 @@
 
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
-    <div id="exTab1" class="container">
+    <div id="exTab1" class="container-fluid pb-50">
       <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">Asset by Sectors</a>
-      <ul class="nav nav-tabs">
+      <ul class="nav nav-tabs" style="display: inline-block;">
         <li>
           <div ngbDropdown class="d-inline-block sectorsDropdown">
             <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
@@ -58,9 +58,9 @@
       </div>
     </div>
 
-    <div id="exTab2" class="container">
-      <h2 class="commonHeading pb-4 recentFont" style="">Your Activity</h2>
-      <ul class="nav nav-tabs">
+    <div id="exTab2" class="container-fluid pb-50">
+      <h2 class="commonHeading recentFont" style="display: inline-block;">Your Activity</h2>
+      <ul class="nav nav-tabs" style="display: inline-block;">
         <li class="active"><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
         <li><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
       </ul>
@@ -92,7 +92,7 @@
           <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
             <div class="text-center" style="height: 150px;">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-              <h2 class="noresult pb-3 pt-4">You have not recently viewed any asset</h2>
+              <h2 class="noresult pb-3">You have not recently viewed any asset</h2>
               <p class="searchcontent">Your recently viewed assets will show up here.</p>
             </div>
           </div>
@@ -119,7 +119,7 @@
           <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
             <div class="text-center" style="height: 150px;">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-              <h2 class="noresult pb-3 pt-4">You have not uploaded any assets</h2>
+              <h2 class="noresult pb-3">You have not uploaded any assets</h2>
               <p class="searchcontent">Your recently uploaded assets will show up here.</p>
             </div>
           </div>
@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <div id="favorites" class="container">
+    <div id="favorites" class="container-fluid pb-50">
       <ul class="nav nav-tabs">
         <li><a class="commonHeading recentFont" style=""  href="#favourite" data-toggle="tab">Your Favourites</a></li>
       </ul>
@@ -334,8 +334,7 @@
             </ul>
           </div>
         </div>
-        <div *ngIf="!hideShowMoreBtn" (click)="showMore()"
-          style="text-align: center; cursor: pointer;color: #8E6B0B; margin:20px 0px;">Show more</div>
+        <div *ngIf="!hideShowMoreBtn" (click)="showMore()" class="showMoreBtn">Show more</div>
       </div>
     </div>
     <div *ngIf="!loading && !documents?.entries?.length && !checkShowRecent()" class="row">

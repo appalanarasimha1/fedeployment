@@ -63,7 +63,7 @@ export const MONTH_MAP_SHORT = {
 
 export const TRIGGERED_FROM_SUB_HEADER = 'sub-header';
 export const TRIGGERED_FROM_DOCUMENT = 'document';
-export const WORKSPACE_ROOT = 'All sectors';
+export const WORKSPACE_ROOT = 'All workspaces';
 export const ASSET_TYPE = {
     DOMAIN: 'domain',
     PICTURE: 'picture',

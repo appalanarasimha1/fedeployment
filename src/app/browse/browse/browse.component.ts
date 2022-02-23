@@ -51,6 +51,7 @@ export class BrowseComponent implements OnInit {
 
   files: File[] = [];
   selectedFolder = null;
+  selectedFolder2 = null;
   selectedMenu = 0;
   uploadSuccess = null;
   pathSuccess = null;
@@ -85,6 +86,8 @@ export class BrowseComponent implements OnInit {
   showMoreButton = true;
   copiedString: string;
   showLinkCopy = false;
+  showSearchbar = false;
+  searchBarValue = '';
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -93,7 +96,7 @@ export class BrowseComponent implements OnInit {
 
   folderStructure: any = [{
     uid: '00000000-0000-0000-0000-000000000000',
-    title: 'All sectors',
+    title: 'All workspaces',
     menuId: '00000000-0000-0000-0000-000000000000',
     parentMenuId: null,
     isExpand: false,
@@ -118,6 +121,7 @@ export class BrowseComponent implements OnInit {
         //   return;
 
         // }
+        this.selectedFolder2 = this.folderStructure[0];
         this.selectedFolder = this.folderStructure[0];
         this.handleClick(this.folderStructure[0], 0, null);
       }
@@ -172,10 +176,13 @@ export class BrowseComponent implements OnInit {
     // .subscribe((docs: any) => {
     //   this.searchList = docs.entries;
     // });
+    this.searchBarValue = '';
     this.showLinkCopy = true;
+    this.showSearchbar = false;
     this.copiedString = '';
     this.selectedFolder = item;
     this.createBreadCrumb(item.title, item.type, item.path);
+    setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
     // this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
     // this.selectedFile = [];
     // this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${item.uid}&ecm_trashed=false`)
@@ -324,8 +331,11 @@ export class BrowseComponent implements OnInit {
     this.currentLevel = index;
     this.showLinkCopy = false;
     this.copiedString = '';
+    this.showSearchbar = false;
+    this.searchBarValue = '';
 
     this.createBreadCrumb(item.title, item.type, item.path);
+    setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
     // if(this.breadcrrumb.includes(item.title)) {
     //   this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
     // }
@@ -342,6 +352,7 @@ export class BrowseComponent implements OnInit {
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         if(childIndex !== null && childIndex !== undefined) {
+          this.showSearchbar = true;
           this.loading = false;
           this.folderStructure[index].children[childIndex].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
           this.folderStructure[index].children[childIndex].isExpand = true;
@@ -353,7 +364,7 @@ export class BrowseComponent implements OnInit {
                 this.ind = i;
                 // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
                 console.log(this.callHandClick)
-                this.breadcrrumb = `/All sectors/${this.callHandClick.title}/${item.title}`
+                this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`
                 return item;
               }
             });
@@ -404,7 +415,7 @@ export class BrowseComponent implements OnInit {
                 this.ind = i;
                 // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
                 console.log(this.callHandClick)
-                this.breadcrrumb = `/All sectors/${this.callHandClick.title}/${item.title}`
+                this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`
                 return item;
               }
             });
@@ -432,7 +443,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async showMore(id: string) {
-    if(this.searchList.length < this.folderAssetsResult[id].resultsCount) {
+    if(this.searchList.length < this.selectedFolder.contextParameters.folderAssetsCount) {
       this.currentPageCount++;
       const result: any = await this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`).toPromise();
       this.searchList = this.searchList.concat(result.entries);
@@ -563,13 +574,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getFolderInfo(item) {
-    let count = 0;
-    if (this.folderAssetsResult[item.uid]) count = this.folderAssetsResult[item.uid].resultsCount;
-    else if (this.fetchFolderStatus[item.uid]) count = 0;
-    else {
-      this.fetchFolderStatus[item.uid] = true;
-      this.fetchAssets(item.uid);
-    }
+    const count = item.contextParameters?.folderAssetsCount || 0;
     return `${count} assets curated by ${item.properties["dc:creator"]}`;
   }
   onActivate(event) {
@@ -595,6 +600,36 @@ export class BrowseComponent implements OnInit {
   getSectorUidByName(breadcrumb: string) {
     const result = this.folderStructure[0].children.find(item => breadcrumb.includes(item.path));
     return {uid: result.uid, sectorName: result.title};
+  }
+  isShowDivIf = false;
+  
+  toggleDisplayDivIf() {
+    this.isShowDivIf = !this.isShowDivIf;
+  }
+
+  getSearchPlaceholder(): string {
+    return `Search folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
+  }
+
+  getDateInFormat(date: string): string {
+    return new Date(date).toLocaleString();
+  }
+
+  getIconByType(type: string): string {
+    switch (type.toLowerCase()) {
+      case 'workspace':
+        return '../../../assets/images/folderBlack.png';
+      case 'picture':
+        return '../../../assets/images/list-viewImg.svg';
+      case 'video':
+        return '../../../assets/images/list-viewVideo.svg';
+      case 'file':
+        return '../../../assets/images/Doc.svg';
+    }
+  }
+
+  showGridListButton() {
+    return this.selectedFolder.uid === "00000000-0000-0000-0000-000000000000";
   }
 }
 

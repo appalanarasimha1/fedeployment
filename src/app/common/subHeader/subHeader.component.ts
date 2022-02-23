@@ -31,7 +31,7 @@ export class SubHeaderComponent implements OnInit {
   modalReference = null; 
   modalOption: NgbModalOptions = {}; // not null!
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
-  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'}]; // , {label: 'Water', value: 'water'}
+  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'}, {label: 'Food', value: 'food'}]; // , {label: 'Water', value: 'water'}
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
   videoResponse;
   videoId;
@@ -67,7 +67,7 @@ export class SubHeaderComponent implements OnInit {
     
     this.dataService.termSearch$.subscribe((searchTerm: string) => {
       this.searchText = searchTerm;
-      this.searched = true;
+      this.searched = false;
     });
 
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
@@ -117,7 +117,7 @@ export class SubHeaderComponent implements OnInit {
   }
 
   emitData(data: IHeaderSearchCriteria): void {
-    this.searched = true;
+    this.searched = false;
     this.searchTextOutput.emit(data);
     return;
   }
@@ -129,7 +129,7 @@ export class SubHeaderComponent implements OnInit {
     // pullDrag: false,
     dots: false,
     items: 5,
-    margin: 14,
+    margin: 15,
     nav: true,
     responsive: {
       
@@ -147,8 +147,63 @@ export class SubHeaderComponent implements OnInit {
     }
   }
 
+  // slideConfig = {
+  //   arrows: true,
+  //   dots: false,
+  //   infinite: false,
+  //   speed: 300,
+  //   slidesToShow: 5,
+  //   slidesToScroll: 4,
+  //   variableWidth: true,
+  //   // responsive: [
+  //   //   {
+  //   //     breakpoint: 991,
+  //   //     settings: {
+  //   //      arrows: false
+  //   //     }
+  //   //   }
+  //   // ]
+  //   responsive: [
+  //     {
+  //       breakpoint: 1024,
+  //       settings: {
+  //         slidesToShow: 5,
+  //         slidesToScroll: 5,
+  //         infinite: false,
+  //         dots: false,
+  //         arrows: false
+  //       }
+  //     },
+  //     {
+  //       breakpoint: 600,
+  //       settings: {
+  //         arrows: false,
+  //         slidesToShow: 3,
+  //         slidesToScroll: 1
+  //       }
+  //     },
+  //     {
+  //       breakpoint: 480,
+  //       settings: {
+  //         arrows: false,
+  //         slidesToShow: 2,
+  //         slidesToScroll: 1
+  //       }
+  //     }
+  //   ]
+  // };
+  slideConfig = {
+    "slidesToShow": 5, 
+    // "slidesToScroll": 1,
+    "dots": false,
+    "infinite": false,
+    "speed": 300,
+    "centerMode": false,
+    "variableWidth": true
+  };
+
   openSm(content) {
-    this.modalOpen = false;
+    this.modalOpen = true;
     this.hideVideo = true;
     this.selectArea = false;
     // localStorage.removeItem('openVideo');
@@ -179,7 +234,7 @@ export class SubHeaderComponent implements OnInit {
     this.videoResponse = false;
     this.modalLoading = true;
     try {
-      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)  //TODO: this.sectorSelected
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
@@ -220,7 +275,7 @@ export class SubHeaderComponent implements OnInit {
     // this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-    this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`; //TODO: this.sectorSelected
+    this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`;
     if(!localStorage.getItem('videoPlayed')) {
       localStorage.setItem('videoPlayed', 'true');
     }

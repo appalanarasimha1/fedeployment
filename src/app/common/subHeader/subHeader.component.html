@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-xl-8 offset-xl-2 text-center">
-        <h2 class="pb-4 discover"><a href="/" style="color: #fff;" >Discover NEOM.</a></h2>
+        <!-- <h2 class="pb-4 discover"><a href="/" style="color: #fff;" >Discover NEOM.</a></h2> -->
         <form>
           <div class="flexible" style="justify-content: center">
             <!-- <div class="sectorDrop">
@@ -29,7 +29,7 @@
             <div style="position: relative;z-index: 99;" class="searchDiv">
               <form (ngSubmit)="searchOutputFn(searchText)" autocomplete="off">
                 <button class="primary search-btn"><img
-                  src="../../../assets/images/search.png" /></button>
+                  src="../../../assets/images/search-icon.svg" /></button>
                 <input [ngModel]="searchText" (ngModelChange)="searchText=$event" [ngModelOptions]="{standalone: true}"
                   type="text" placeholder="Search" class="search-bar">
                   <img *ngIf="searchText" style="cursor: pointer" (click)="resetSearch()" src="../assets/images/circle-close.png" class="placeholder-search">
@@ -42,12 +42,39 @@
         </form>
         <div class="search-tags pt-2">
 
-          <div class="scrolling-wrapper">
+          <!-- <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfig"
+          >
+            <div ngxSlickItem *ngFor="let bucket of tagsMetadata?.buckets; let i = index">
+              <document-card
+                [doc]="file"
+                [viewType]="viewType"
+                (onOpenPreview)="open(file, file.type)"
+                (onSelect)="selectImage($event, file, i)"
+                (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+              </document-card>
+            </div>
+          </ngx-slick-carousel> -->
+          <div class="customTagSlider">
+            <ngx-slick-carousel class="carousel" 
+              #slickModal="slick-carousel" 
+              [config]="slideConfig" >
+              <div ngxSlickItem *ngFor="let bucket of tagsMetadata?.buckets; let i = index" class="slide">
+                <div class="item" [id]="bucket.id">
+                  <a class="card" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
+                </div>
+              </div>
+            </ngx-slick-carousel>
+          </div>
+
+          <!-- <div class="scrolling-wrapper">
             <!-- <div *ngFor="let bucket of tagsMetadata.buckets; let i = index" class="card">
               <a style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
-            </div> -->
+            </div> -/->
             <owl-carousel-o [options]="customOptions">
-
               <ng-container *ngFor="let bucket of tagsMetadata?.buckets; let i = index" >
                 <ng-template carouselSlide [id]="bucket.id">
                   <a class="card" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
@@ -62,8 +89,8 @@
                 </ng-template>
               </ng-container>
 
-            </owl-carousel-o> -->
-        </div>
+            </owl-carousel-o> -/->
+        </div> -->
         </div>
       </div>
 
@@ -72,8 +99,8 @@
 
   <!-- sprint16 start -->
   <div class="video-icon" (click)="openSm(content)" *ngIf="modalOpen && !searched">
-    <div class="playIcon"></div>
-    <img src="https://via.placeholder.com/300x300/3ca2ca/3ca2ca" />
+    <!-- <div class="playIcon"></div> -->
+    <img src="../../../assets/images/personalizedVideo.svg" />
   </div>
 
   <ng-template #content let-modal>
@@ -84,7 +111,7 @@
       <app-loader-small [show]="modalLoading"></app-loader-small>
       <div class="modal-body-content" *ngIf="hideVideo && !videoResponse && !videoCompleted && showItemOnlyOnce" (click)="clickVideoIcon()">
         <div class="playIcon"></div>
-        <img src="https://via.placeholder.com/300x170/3ca2ca/3ca2ca" />
+        <img src="../../../assets/images/video-background-pic.png" />
       </div>
       <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
         <img src="../../../assets/images/logo-neom.png" class="logo" />

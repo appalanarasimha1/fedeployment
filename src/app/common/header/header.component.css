@@ -4,7 +4,7 @@
 }
 
 header{
-    padding: 10px 0px  6px!important;
+    padding: 10px 0px  10px!important;
     top: 0px;
     position: absolute;
     width: 100%;
@@ -62,10 +62,11 @@ header{
 }
 .navbar-expand-lg .navbar-nav .dropdown-menu{
     left: auto;
-    right: 0px;
+    right: 10px;
     border-radius: 10px;
     padding: 10px 24px;
     width: 250px;
+    top: 37px;
 }
 .dropdown-item.active, .dropdown-item:active{
     background-color: #000;
@@ -74,7 +75,7 @@ header{
 .dropdown-item.active, .dropdown-item:active a{
     color: #fff !important;
 }
-.searchHeading  .nav-item a{
+.searchHeading .nav-item a{
     font-size: 14px;
     line-height: 22px;
     letter-spacing: 0.055em;
@@ -82,6 +83,10 @@ header{
     /* font-weight: 600; */
     position: relative;
     cursor: pointer;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    padding-right: 0.2rem;
+    padding-right: 0rem;
 }
 .searchHeading{
     position: fixed;
@@ -137,7 +142,7 @@ header{
     padding: 0px 6px !important;
 }
 .navbar-expand-lg .navbar-nav{
-    margin: auto;
+    margin: 0px auto 0;
 }
 .tooltipCustom:before{
     display: none;
@@ -167,7 +172,7 @@ header.pt-4.pb-4.searchHeading.openDrawer {
     margin-right: 15px;
 }
 header img.header-logo {
-    max-width: 170px;
+    max-width: 100%;
     margin-left: 0px;
 }
 .navbar .dropdown-menu > li > a {
@@ -195,7 +200,21 @@ a.dropdown-item:hover {
     flex-direction: row;
 }
 
+/* .logo-block {
+    margin-top: -18px;
+    transition: all 0.3s ease;
+} */
+header.searchHeading.fixedHeader {
+    top: 0px;
+}
+header.searchHeading.fixedHeader .navbar-expand-lg .navbar-nav {
+    margin-top: 0px;
+}
 
+/* header.searchHeading.fixedHeader .logo-block {
+    margin-top: -3px;
+    transition: all 0.3s ease;
+} */
 /* mobile responsive */
 @media(max-width:991.5px){
     .navbar-expand-lg .navbar-nav .dropdown-menu{

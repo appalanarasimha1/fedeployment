@@ -1,6 +1,6 @@
 
 <footer>
-<div class="container">
+<div class="container-fluid">
     <div class="row flexible" >
         <div class="col-xl-1">
             <a href="/">
@@ -10,10 +10,10 @@
         <div class="col-xl-11">
             <ul class="flexible footerList">
                 <li>
-                    <span>Send feedback to: </span><a href="mailto:groundxfeedback@neom.com"><span>groundxfeedback@neom.com</span></a>
+                    <span>Send feedback to: </span><a href="mailto:groundxfeedback@neom.com"><span class="mailLink">groundxfeedback@neom.com</span></a>
                 </li>
                 <li>
-                    <a class="pointer" (click)="openTermsPage()"><span>Acceptable Use Policy</span></a>
+                    <a class="pointer" [routerLink]="['/common/terms']" target="_blank"><span>Acceptable Use Policy</span></a>
                 </li>
                 <li>
                     <span>© 2022 NEOM</span>

@@ -1244,3 +1244,28 @@ input.copyright-input::placeholder{
 ::ng-deep .ng-select .ng-select-container{
   color: inherit;
 }
+
+.tollTipCustom{
+  position: relative;
+}
+.tollTipCustom .tolltipContent {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.80);
+  padding: 3px 10px;
+  font-size: 13px;
+  color: #fff;
+  font-weight: normal;
+  width: max-content;
+  border-radius: 40px;
+  white-space: nowrap;
+  min-width: max-content;
+  display: none;
+  text-align: center;
+  z-index: 99;
+  line-height: normal;
+}
+.tollTipCustom:hover .tolltipContent {
+  display: block;
+}
