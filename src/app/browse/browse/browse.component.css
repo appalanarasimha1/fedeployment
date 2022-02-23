@@ -290,9 +290,9 @@ section.lpBAck:before {
   flex-wrap: wrap;
 }
 .all-sectors li {
-  width: 24%;
-  margin-right: 8px;
-  margin-bottom: 8px;
+  width: calc(25% - 10px);
+  margin-right: 10px;
+  margin-bottom: 10px;
   cursor: pointer;
 }
 ::ng-deep .all-sectors li #fileId,

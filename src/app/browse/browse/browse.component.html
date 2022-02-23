@@ -57,7 +57,7 @@
 
           <!-- Add custom toggle end -->
 
-           <div class="tree" >
+           <div class="tree" id="customScrollBar" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
                   <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="item.isExpand=!item.isExpand">
