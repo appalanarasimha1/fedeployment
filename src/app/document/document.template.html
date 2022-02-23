@@ -59,7 +59,7 @@
     </div>
 
     <div id="exTab2" class="container-fluid pb-50">
-      <h2 class="commonHeading pb-4 recentFont" style="display: inline-block;">Your Activity</h2>
+      <h2 class="commonHeading recentFont" style="display: inline-block;">Your Activity</h2>
       <ul class="nav nav-tabs" style="display: inline-block;">
         <li class="active"><a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
         <li><a  href="#recentlyUploaded" (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
@@ -92,7 +92,7 @@
           <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
             <div class="text-center" style="height: 150px;">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-              <h2 class="noresult pb-3 pt-4">You have not recently viewed any asset</h2>
+              <h2 class="noresult pb-3">You have not recently viewed any asset</h2>
               <p class="searchcontent">Your recently viewed assets will show up here.</p>
             </div>
           </div>
@@ -119,7 +119,7 @@
           <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
             <div class="text-center" style="height: 150px;">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-              <h2 class="noresult pb-3 pt-4">You have not uploaded any assets</h2>
+              <h2 class="noresult pb-3">You have not uploaded any assets</h2>
               <p class="searchcontent">Your recently uploaded assets will show up here.</p>
             </div>
           </div>

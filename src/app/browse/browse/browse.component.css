@@ -295,10 +295,17 @@ section.lpBAck:before {
   margin-bottom: 8px;
   cursor: pointer;
 }
-::ng-deep .all-sectors li #fileId{
+::ng-deep .all-sectors li #fileId,
+::ng-deep .all-sectors li #fileId2{
   height: 135px !important;
   width: 178px !important;
   object-fit: cover !important;
+}
+::ng-deep .all-sectors li .pdfWhiteBlock {
+  background-color: #fff;
+  padding: 10px;
+  width: 178px;
+  font-size: 13px;
 }
 .list-container:after {
   content: '';
@@ -627,6 +634,7 @@ font-weight: 600;
   margin-top: 3px !important;
   max-width: 100% !important;
 }
+<<<<<<< HEAD
 .search-bar{
   position: relative;
   padding: 8px 15px 8px 46px;
@@ -724,4 +732,31 @@ color: #413E3C;
 }
 .inner-createNewFolder input{
   width: 100%;
+=======
+
+.tollTipCustom{
+  position: relative;
+}
+.tollTipCustom .tolltipContent {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.80);
+  padding: 3px 10px;
+  font-size: 11px;
+  color: #fff;
+  font-weight: normal;
+  width: max-content;
+  border-radius: 40px;
+  white-space: nowrap;
+  max-width: max-content;
+  width: max-content;
+  display: none;
+  text-align: center;
+  z-index: 99;
+  line-height: normal;
+}
+.tollTipCustom:hover .tolltipContent {
+  display: block;
+>>>>>>> sprint22-common-ui
 }
