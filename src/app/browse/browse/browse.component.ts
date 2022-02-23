@@ -623,5 +623,9 @@ export class BrowseComponent implements OnInit {
         return '../../../assets/images/folderBlack.png';
     }
   }
+
+  showGridListButton() {
+    return this.selectedFolder.uid === "00000000-0000-0000-0000-000000000000";
+  }
 }
 
