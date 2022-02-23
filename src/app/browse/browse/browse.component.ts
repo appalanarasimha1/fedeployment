@@ -177,7 +177,7 @@ export class BrowseComponent implements OnInit {
     this.showLinkCopy = true;
     this.showSearchbar = false;
     this.copiedString = '';
-    this.selectedFolder = item;
+    // this.selectedFolder = item;
     this.createBreadCrumb(item.title, item.type, item.path);
     setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
     // this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
