@@ -315,7 +315,7 @@ section.lpBAck:before, .lpSecOne:before {
 ::ng-deep .all-sectors li #fileId,
 ::ng-deep .all-sectors li #fileId2{
   height: 135px !important;
-  width: 178px !important;
+  width: 100% !important;
   object-fit: cover !important;
 }
 ::ng-deep .all-sectors li .pdfWhiteBlock {
@@ -806,4 +806,7 @@ color: #413E3C;
   padding: 0px;
   max-height: 100vh;
   overflow: auto;
+}
+::ng-deep .all-sectors li #fileId2 {
+  height: 88px !important;
 }
