@@ -176,6 +176,7 @@ export class BrowseComponent implements OnInit {
     // .subscribe((docs: any) => {
     //   this.searchList = docs.entries;
     // });
+    this.searchBarValue = '';
     this.showLinkCopy = true;
     this.showSearchbar = false;
     this.copiedString = '';
@@ -331,6 +332,7 @@ export class BrowseComponent implements OnInit {
     this.showLinkCopy = false;
     this.copiedString = '';
     this.showSearchbar = false;
+    this.searchBarValue = '';
 
     this.createBreadCrumb(item.title, item.type, item.path);
     setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
