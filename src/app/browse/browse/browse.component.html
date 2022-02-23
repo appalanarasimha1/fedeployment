@@ -22,12 +22,12 @@
           <div class="row flexible">
             
             <div class="col-xl-7 col-md-7">
-              <div style="position: relative;">
-                <form *ngIf="showSearchbar" autocomplete="off">
+              <div *ngIf="showSearchbar" style="position: relative;">
+                <form autocomplete="off">
                   <button class="primary search-btn"><img
                     src="../../../assets/images/search.png" /></button>
                   <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
-                  <img  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
+                  <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
                 </form>
               </div>
             </div>
