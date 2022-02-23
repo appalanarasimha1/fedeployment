@@ -31,7 +31,7 @@ export class SubHeaderComponent implements OnInit {
   modalReference = null; 
   modalOption: NgbModalOptions = {}; // not null!
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
-  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'}]; // , {label: 'Water', value: 'water'}
+  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'},, {label: 'Food', value: 'food'}]; // , {label: 'Water', value: 'water'}
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
   videoResponse;
   videoId;
@@ -234,7 +234,7 @@ export class SubHeaderComponent implements OnInit {
     this.videoResponse = false;
     this.modalLoading = true;
     try {
-      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)  //TODO: this.sectorSelected
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
@@ -275,7 +275,7 @@ export class SubHeaderComponent implements OnInit {
     // this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-    this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`; //TODO: this.sectorSelected
+    this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`;
     if(!localStorage.getItem('videoPlayed')) {
       localStorage.setItem('videoPlayed', 'true');
     }

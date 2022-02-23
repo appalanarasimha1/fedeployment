@@ -132,10 +132,11 @@
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
                 <ul class="all-sectors" >
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
-                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
-                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
+                    <span *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)" class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)">
+                      {{item.title}}
+                    </span>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
-                      (click)="handleTest(item);selectedFolder=item;">
+                      (click)="handleTest(item);">
                       <!-- <img src="../../../assets/images/yellow-folder.png"> -->
                       <div class="folder-content">
                         <p class="tollTipCustom" style="    white-space: normal;
@@ -212,7 +213,7 @@
                       <th width="20%">Created on</th>
                     </tr>
                     <tr *ngFor="let item of searchList | search: searchBarValue; let i = $index">
-                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
+                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);" class="" style="display: flex;cursor: pointer;">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
