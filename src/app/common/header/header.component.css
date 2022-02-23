@@ -196,7 +196,8 @@ a.dropdown-item:hover {
 }
 
 .logo-block {
-    margin-top: -9px;
+    margin-top: -18px;
+    transition: all 0.3s ease;
 }
 header.searchHeading.fixedHeader {
     top: 0px;
@@ -205,6 +206,10 @@ header.searchHeading.fixedHeader .navbar-expand-lg .navbar-nav {
     margin-top: 0px;
 }
 
+header.searchHeading.fixedHeader .logo-block {
+    margin-top: -3px;
+    transition: all 0.3s ease;
+}
 /* mobile responsive */
 @media(max-width:991.5px){
     .navbar-expand-lg .navbar-nav .dropdown-menu{

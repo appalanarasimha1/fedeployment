@@ -6,7 +6,11 @@
         <div class="flexible">
           <img src="../../assets/images/upload.png">
           <!-- <mat-icon>folder</mat-icon> -->
-        <span style="margin-left: 10px; display: block;font-weight: 600;" [title]="selectedFolder.title">{{ sharedService.stringShortener(selectedFolder.title, 40) }}</span>
+        <span style="margin-left: 10px; display: block;font-weight: 600;" class="tollTipCustom">{{ sharedService.stringShortener(selectedFolder.title, 40) }}
+        <div class="tolltipContent">
+          {{selectedFolder.title}}
+        </div>
+      </span>
         </div>
       </div>
 
@@ -29,7 +33,11 @@
             <div class="publish-file-preview-img">
               <img alt="preview" class="preview-img"
                 [src]="getAssetUrl(null, doc.contextParameters.thumbnail?.url)"/>
-              <span [title]="doc.title">{{ sharedService.stringShortener(doc.title, 20) }}</span>
+              <span class="tollTipCustom">{{ sharedService.stringShortener(doc.title, 20) }}
+                <div class="tolltipContent">
+                  {{doc.title}}
+                </div>
+              </span>
 
               <div class="copyright-information">
                 <div (click)="openCopyright(i)" *ngIf="!openCopyrightMap[i]">

@@ -4064,7 +4064,9 @@ document-card img {
 .slide.slick-slide.slick-active {
   opacity: 1;
 }
-.customTab #favourite:hover .slick-prev:before, .customTab #favourite:hover .slick-next:before {
+.customTab #favourite:hover .slick-prev:before, .customTab #favourite:hover .slick-next:before,
+.customTab #recentlyUploaded:hover .slick-prev:before, .customTab #recentlyUploaded:hover .slick-next:before,
+.customTab #recentlyViewed:hover .slick-prev:before, .customTab #recentlyViewed:hover .slick-next:before {
   opacity: 1;
   transition: all 0.3s ease;
 }
@@ -4087,3 +4089,8 @@ document-card img {
 .workspace-list .slick-initialized .slick-slide {
   opacity: 1 !important;
 }
+
+/* .customTab [type=button]:not(:disabled), .customTab [type=reset]:not(:disabled), 
+.customTab [type=submit]:not(:disabled),  .customTab button:not(:disabled) {
+  display: none;
+} */
