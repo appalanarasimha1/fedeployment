@@ -2,7 +2,7 @@
   background-image: url(~/../../../../assets/images/NEOM-banner-Image.png);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 75px;
+  height: 66px;
 }
 
 .main-div {
@@ -144,7 +144,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   top: 0px;
 }
 .set{
-  padding: 10px 25px;
+  padding: 10px 17px;
   /* width: max-content; */
 /* max-width: 100%; */
 }
@@ -780,6 +780,12 @@ color: #413E3C;
 .folderListview {
   text-align: left;
 }
-.inner-sectors{
-  width: unset !important;
+.inner-sectors {
+  width: calc(20% - 8px) !important;
+}
+.inner-sectors:nth-child(5n+5) {
+  margin-right: 0px !important;
+}
+.pl-12 {
+  padding-left: 12px !important;
 }
