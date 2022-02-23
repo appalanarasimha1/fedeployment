@@ -21,8 +21,8 @@
         <div class="col-xl-9 col-md-9 pl-5 pt-5  bg-white">
           <div class="row flexible">
             
-            <div class="col-xl-7 col-md-7">
-              <div *ngIf="showSearchbar" style="position: relative;">
+            <div *ngIf="showSearchbar" class="col-xl-7 col-md-7">
+              <div style="position: relative;">
                 <form autocomplete="off">
                   <button class="primary search-btn"><img
                     src="../../../assets/images/search.png" /></button>
@@ -60,7 +60,7 @@
            <div class="tree" id="customScrollBar" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="item.isExpand=!item.isExpand">
+                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
                     <!-- (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)" -->
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -221,12 +221,12 @@
                     </tr>
                     <tr *ngFor="let item of searchList | search: searchBarValue; let i = $index">
                       <td (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
-                        <img src="../../../assets/images/folderBlack.png" style="width: 15px;margin-right: 10px;object-fit: contain;">
+                        <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
                       <td><p>{{item.properties['dc:creator']}}</p></td>
                       <!-- <td><p>Luis C</p></td> -->
-                      <td><p>2 days ago</p></td>
+                      <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
                     </tr>
                 </table>
               </div>
@@ -267,12 +267,12 @@
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
         </div>
-        <mat-paginator 
+        <!-- <mat-paginator 
           [length]="100"
           [pageSize]="10"
           [pageSizeOptions]="[5, 10, 25, 100]"
           aria-label="Select page">
-        </mat-paginator>
+        </mat-paginator> -->
       </div>
     </div>
 

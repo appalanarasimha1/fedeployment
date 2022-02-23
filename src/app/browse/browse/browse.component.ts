@@ -179,6 +179,7 @@ export class BrowseComponent implements OnInit {
     this.copiedString = '';
     this.selectedFolder = item;
     this.createBreadCrumb(item.title, item.type, item.path);
+    setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
     // this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
     // this.selectedFile = [];
     // this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${item.uid}&ecm_trashed=false`)
@@ -330,6 +331,7 @@ export class BrowseComponent implements OnInit {
     this.showSearchbar = false;
 
     this.createBreadCrumb(item.title, item.type, item.path);
+    setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
     // if(this.breadcrrumb.includes(item.title)) {
     //   this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
     // }
@@ -602,7 +604,26 @@ export class BrowseComponent implements OnInit {
   }
 
   getSearchPlaceholder(): string {
-    return `Search folder in ${this.selectedFolder?.title} workspace`;
+    return `Search folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
+  }
+
+  getDateInFormat(date: string): string {
+    return new Date(date).toLocaleString();
+  }
+
+  getIconByType(type: string): string {
+    switch (type.toLowerCase()) {
+      case 'domain':
+        return '../../../assets/images/folderBlack.png';
+      case 'picture':
+        return '../../../assets/images/folderBlack.png';
+      case 'video':
+        return '../../../assets/images/folderBlack.png';
+      case 'file':
+        return '../../../assets/images/folderBlack.png';
+
+
+    }
   }
 }
 
