@@ -12,55 +12,21 @@
   </div>
 </section> -->
 <section style="background-color: #fff;" class="lpBAck">
-  <section class="lpSecOne">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-3 col-md-3  pb-5 pt-5" >
-          <h2 class="commonHeading" style="font-weight: 600;">Workspace</h2>
-        </div>
-        <div class="col-xl-9 col-md-9 pl-5 pt-5  bg-white">
-          <div class="row flexible">
-            
-            <div class="col-xl-7 col-md-7">
-              <div style="position: relative;">
-                <form *ngIf="showSearchbar" autocomplete="off">
-                  <button class="primary search-btn"><img
-                    src="../../../assets/images/search.png" /></button>
-                  <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
-                  <img  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
-                </form>
-              </div>
-            </div>
-            <!-- <div class="col-xl-5 col-md-5">
-              <div class="createNewFolder"    style="float: right;">
-                <span (click)=toggleDisplayDivIf()  class="creteNewHeading flexible" ><img  src="../../../assets/images/add.svg" style="margin-right: 8px;">Create a new folder</span>
-                <div *ngIf="isShowDivIf" class="inner-createNewFolder">
-                  <form>
-                    <div class="row">
-                      <div class="col-xl-12">
-                        <label>Folder Name</label>
-                      </div>
-                      <div class="col-xl-12">
-                        <input type="text" placeholder="Enter a folder name">
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div> -->
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xl-3 col-md-3 pt-3 customToggle" style="background-color: #F8F8F5;">
+  <section class="lpSecOne ">
+    <div class="container ">
+
+      <div class="row ">
+        <div class="col-xl-3 col-md-3 pt-3 customToggle pt-5" style="background-color: #F8F8F5;">
           <!-- Add custom toggle start -->
 
           <!-- Add custom toggle end -->
-
-           <div class="tree" >
+          <div class="pb-5">
+          <h2 class="commonHeading main-title" style="font-weight: 600;">Workspace</h2>
+        </div>
+           <div class="tree" id="customScrollBar" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="item.isExpand=!item.isExpand">
+                  <div class="d-flex set" [ngClass]="selectedFolder.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
                     <!-- (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)" -->
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -87,7 +53,19 @@
             </div>
           <!-- </div> -->
         </div>
-        <div class="col-xl-9 col-md-9 pl-5 pt-3 bg-white">
+        <div class="col-xl-9 col-md-9 pl-5 pt-5 bg-white">
+          
+          <div *ngIf="showSearchbar" class="  pb-5">
+            <div style="position: relative;">
+              <form autocomplete="off" style="width: 458px;">
+                <button class="primary search-btn"><img
+                  src="../../../assets/images/search.png" /></button>
+                <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
+                <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
+              </form>
+            </div>
+          </div>
+          
           <div *ngIf="selectedFolder">
             <div class="header-content">
               <div>
@@ -141,10 +119,10 @@
               </div>
               <div class="views">
                 <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
-                <div>
-                  <img src="../../../assets/images/gallery view.png" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
+                <div *ngIf="!showGridListButton()">
+                  <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
-                    <img src="../../../assets/images/list view.png" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                    <img src="../../../assets/images/list-view.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
                     (click)="handleSelectMenu(1, 'LIST')">
                 </div>
               </div>
@@ -152,23 +130,41 @@
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                <ul class="all-sectors">
-                  <li *ngFor="let item of searchList | search: searchBarValue; let i = index">
-                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
-                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
-                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="border-radius: 8px; cursor: pointer;"
-                      (click)="handleTest(item);selectedFolder=item;">
-                      <img src="../../../assets/images/yellow-folder.png">
-                      <div class="folder-content" style="background-color: #F9F7F2;">
-                        <p class="tollTipCustom" style="white-space: normal; width: 100%; overflow: inherit; text-overflow: inherit;">
-                          {{sharedService.stringShortener(item.title, 16)}} 
+                <ul class="all-sectors" >
+                  <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
+                    <span *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)" class="folderCircle" (click)="handleViewClick(item, i);selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)">
+                      {{item.title}}
+                    </span>
+                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
+                      (click)="handleTest(item);">
+                      <!-- <img src="../../../assets/images/yellow-folder.png"> -->
+                      <div class="folder-content">
+                        <p class="tollTipCustom" style="    white-space: normal;
+                        width: 100%;
+                        overflow: inherit;
+                        text-overflow: inherit;">
+                         {{sharedService.stringShortener(item.title, 16)}} 
                           <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
                             {{item.title}}
                           </span>
                         </p>
                         <span>{{ getFolderInfo(item) }}</span>
                       </div>
+
                     </div>
+                      <!-- <div class="folder-content" style="background-color: #F9F7F2;">
+                        <p class="tollTipCustom" style="    white-space: normal;
+                        width: 100%;
+                        overflow: inherit;
+                        text-overflow: inherit;">
+                          {{sharedService.stringShortener(item.title, 16)}} 
+                          <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
+                            {{item.title}}
+                          </span>
+                        </p>
+                        <span>{{ getFolderInfo(item) }}</span>
+                      </div> -->
+                    
                     <document-card *ngIf="checkAssetType(item.type)"
                       [doc]="item"
                       [viewType]="viewType"
@@ -217,13 +213,17 @@
                       <th width="20%">Created on</th>
                     </tr>
                     <tr *ngFor="let item of searchList | search: searchBarValue; let i = $index">
-                      <td (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
-                        <img src="../../../assets/images/folderBlack.png" style="width: 15px;margin-right: 10px;object-fit: contain;">
+                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);" class="" style="display: flex;cursor: pointer;">
+                        <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
+                        <p style="text-align: left">{{item.title}}</p>
+                      </td>
+                      <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" class="" style="display: flex;cursor: pointer;">
+                        <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
                       <td><p>{{item.properties['dc:creator']}}</p></td>
                       <!-- <td><p>Luis C</p></td> -->
-                      <td><p>2 days ago</p></td>
+                      <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
                     </tr>
                 </table>
               </div>
@@ -264,12 +264,12 @@
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
         </div>
-        <mat-paginator 
+        <!-- <mat-paginator 
           [length]="100"
           [pageSize]="10"
           [pageSizeOptions]="[5, 10, 25, 100]"
           aria-label="Select page">
-        </mat-paginator>
+        </mat-paginator> -->
       </div>
     </div>
 
