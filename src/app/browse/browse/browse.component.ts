@@ -95,7 +95,7 @@ export class BrowseComponent implements OnInit {
 
   folderStructure: any = [{
     uid: '00000000-0000-0000-0000-000000000000',
-    title: 'All sectors',
+    title: 'All workspaces',
     menuId: '00000000-0000-0000-0000-000000000000',
     parentMenuId: null,
     isExpand: false,
@@ -360,7 +360,7 @@ export class BrowseComponent implements OnInit {
                 this.ind = i;
                 // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
                 console.log(this.callHandClick)
-                this.breadcrrumb = `/All sectors/${this.callHandClick.title}/${item.title}`
+                this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`
                 return item;
               }
             });
@@ -411,7 +411,7 @@ export class BrowseComponent implements OnInit {
                 this.ind = i;
                 // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
                 console.log(this.callHandClick)
-                this.breadcrrumb = `/All sectors/${this.callHandClick.title}/${item.title}`
+                this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`
                 return item;
               }
             });
