@@ -337,15 +337,19 @@ export class BrowseComponent implements OnInit {
     this.searchBarValue = '';
 
     this.createBreadCrumb(item.title, item.type, item.path);
-    setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
     // if(this.breadcrrumb.includes(item.title)) {
     //   this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
     // }
     // this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
     // this.selectedFile = [];
+    if(item?.children?.length) {
+      this.searchList = item.children;
+      return;
+    }
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
     .subscribe((docs: any) => {
+      this.handleSelectMenu(0, 'GRID');
       let result = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
       let workSpaceIndex = result.findIndex(res => res.title === "Workspaces");
       if(workSpaceIndex >= 0) {
@@ -430,6 +434,10 @@ export class BrowseComponent implements OnInit {
         }
       }
     });
+  }
+
+  checkForChildren() {
+    return true;
   }
 
   async fetchAssets(id) {
