@@ -124,7 +124,8 @@
           [(ngModel)]="sectorSelected"
           bindLabel="label"
           bindValue="value"
-          [closeOnSelect]>
+          [closeOnSelect]
+          [searchable]="false" [clearable]="false">
         </ng-select>
         <div *ngIf="sectorSelected" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->

@@ -3940,6 +3940,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .select-an-area .ng-select .ng-arrow-wrapper {
   padding-right: 0px;
+  text-align: right;
 }
 /* sprint16-v1 end */
 .upload-form .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {

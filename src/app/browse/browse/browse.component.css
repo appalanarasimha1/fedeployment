@@ -805,7 +805,7 @@ color: #413E3C;
   height: 88px !important;
 }
 .pb-50 {
-  padding-top: 50px !important;
+  padding-bottom: 50px !important;
 }
 
 
@@ -817,4 +817,7 @@ color: #413E3C;
 }
 .all-sectors li.inner-sectors:nth-child(4n+4) {
   margin-right: 10px !important;
+}
+.pb-5 {
+  padding-bottom: 50px !important;
 }
