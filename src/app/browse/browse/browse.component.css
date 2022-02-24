@@ -230,8 +230,8 @@ section.lpBAck:before, .lpSecOne:before {
   font-weight: normal;
 }
 .folderCircle{
-  height: 136px;
-  width: 136px;
+  height: 138px;
+  width: 138px;
   background: #e8e6df;
   border-radius: 50%;
   display: block;
@@ -779,12 +779,6 @@ color: #413E3C;
 .folderListview {
   text-align: left;
 }
-.inner-sectors {
-  width: calc(20% - 8px) !important;
-}
-.inner-sectors:nth-child(5n+5) {
-  margin-right: 0px !important;
-}
 .pl-12 {
   padding-left: 12px !important;
 }
@@ -809,4 +803,18 @@ color: #413E3C;
 }
 ::ng-deep .all-sectors li #fileId2 {
   height: 88px !important;
+}
+.pb-50 {
+  padding-top: 50px !important;
+}
+
+
+.all-sectors li.inner-sectors {
+  width: calc(20% - 10px) !important;
+}
+.all-sectors li.inner-sectors:nth-child(5n+5) {
+  margin-right: 0px !important;
+}
+.all-sectors li.inner-sectors:nth-child(4n+4) {
+  margin-right: 10px !important;
 }

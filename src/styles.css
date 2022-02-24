@@ -3794,10 +3794,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .custom-modal button.close {
   position: absolute;
-  left: -40px;
-  top: 0px;
-  height: 25px;
-  width: 25px;
+  left: -37px;
+  top: -30px;
+  height: 30px;
+  width: 30px;
   opacity: 1;
 }
 .custom-modal .modal-body {
