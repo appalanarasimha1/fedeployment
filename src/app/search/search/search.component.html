@@ -5,7 +5,7 @@
     <app-sub-header (searchTextOutput)="searchTerm($event)"></app-sub-header>
     <app-side-drawer [inputMetaData]="aggregationsMetaData" (searchTextOutput)="filters($event)"></app-side-drawer>
  -->
- <app-loader [show]="loading"></app-loader>
+ <!-- <app-loader [show]="loading"></app-loader> -->
 <app-sub-header
   (searchTextOutput)="searchTerm($event)"
   [tagsMetadata]="tagsMetadata">
