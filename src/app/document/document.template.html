@@ -1,7 +1,7 @@
 
-<!-- <app-loader [show]="loading"></app-loader> -->
+
 <section class="min-height positionRelative">
-  <app-loader [show]="loading"></app-loader>
+  <app-loader [show]="loading.length && !innerLoading"></app-loader>
   <!-- <div *ngIf="loading">
     <div  class="text-center">
         <div class="overlay">
@@ -293,7 +293,7 @@
         <div *ngIf="!showListView">
           <div class="row">
             <div class="col-xl-12 col-md-12 pt-4 positionRelative">
-              <app-loader [show]="loading"></app-loader>
+              <app-loader [show]="innerLoading && !loading.length"></app-loader>
               <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
                 <div ngxMasonryItem class="masonry-item" *ngFor="let doc of masonryImg; let i = index">
                   <img src="{{doc.url}}" alt="" />
@@ -321,7 +321,8 @@
         </div>
 
         <div class="col-xl-12 col-md-12">
-          <div *ngIf="showListView" class="card-view">
+          <div *ngIf="showListView" class="card-view positionRelative">
+            <app-loader [show]="innerLoading && !loading.length"></app-loader>
             <ul class="flexible">
               <li *ngFor="let doc of documents.entries.slice(0, docSliceInput); let i = index">
               <document-card

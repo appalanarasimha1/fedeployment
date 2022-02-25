@@ -122,7 +122,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   tags = [];
   inputTag: string;
   showTagInput = false;
-  loading: boolean;
+  loading: boolean[] = [];
+  innerLoading: boolean;
   modalLoading = false;
   sectors: string[] = [];
   sectorSelected;
@@ -136,6 +137,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   showDetailView = false;
   detailView: string;
   detailDocuments: any;
+  private favouriteCall;
+  private preFavouriteCall;
+  private assetBySectorCall;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -161,7 +165,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.selectTab('recentlyViewed');
     this.showRecentlyViewed = true;
     this.dataService.showHideLoader$.subscribe((value) => {
-      this.loading = value;
+      // if(value) this.loading.push(value);
+      // else this.loading.pop();
+      this.innerLoading = value;
     });
     // /* <!-- sprint12-fixes start --> */
     this.sharedService.getSidebarToggle().subscribe(() => {
@@ -231,16 +237,14 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   getFavorites() {
     try {
-    this.apiService.post(apiRoutes.FAVORITE_FETCH, { context: {}, params: {} })
+      this.loading.push(true);
+      this.preFavouriteCall = this.apiService.post(apiRoutes.FAVORITE_FETCH, { context: {}, params: {} })
       .subscribe((response: any) => {
+        this.loading.pop();
         if(response) this.getFavouriteCollection(response.uid);
-
-        setTimeout(() => {
-          this.loading = false;
-        }, 0);
       });
     } catch(error) {
-        this.loading = false;
+        this.loading.pop();
         if (error && error.message) {
           if (error.message.toLowerCase() === 'unauthorized') {
             this.sharedService.redirectToLogin();
@@ -256,6 +260,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (sector) {
       queryParams['sectors'] = `["${sector}"]`;
     }
+    this.loading.push(true);
     this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers}).get()
       .then((response) => {
         if(response) {
@@ -268,12 +273,10 @@ export class DocumentComponent implements OnInit, OnChanges {
             }) || [];
           }
         }
-        setTimeout(() => {
-          this.loading = false;
-        }, 0);
+          this.loading.pop();
       })
       .catch((error) => {
-        this.loading = false;
+        this.loading.pop();
         if (error && error.message) {
           if (error.message.toLowerCase() === 'unauthorized') {
             this.sharedService.redirectToLogin();
@@ -286,15 +289,16 @@ export class DocumentComponent implements OnInit, OnChanges {
   getFavouriteCollection(favouriteUid: string) {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
-    this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
+    this.loading.push(true);
+    this.favouriteCall = this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
       .then((response) => {
         if(response) this.favourites = response?.entries ? response?.entries : [];
-        setTimeout(() => {
-          this.loading = false;
-        }, 0);
+        // setTimeout(() => {
+          this.loading.pop();
+        // }, 0);
       })
       .catch((error) => {
-        this.loading = false;
+        this.loading.pop();
         if (error && error.message) {
           if (error.message.toLowerCase() === 'unauthorized') {
             this.sharedService.redirectToLogin();
@@ -598,14 +602,14 @@ export class DocumentComponent implements OnInit, OnChanges {
       input: data.uid,
       params: {}
     };
-    this.loading = true;
+    this.loading.push(true);
     this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
       if(favouriteValue === 'recent') {
         this.markRecentlyViewed(data);
       }
       this.addToFavorite(data);
-      this.loading = false;
+      this.loading.pop();
     });
   }
 
@@ -624,7 +628,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       input: data.uid,
       params: {}
     };
-    this.loading = true;
+    this.loading.push(true);
     this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
       // data.contextParameters.favorites.isFavorite = this.favourite;
       data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
@@ -632,7 +636,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       if(favouriteValue === 'recent') {
         this.markRecentlyViewed(data);
       }
-      this.loading = false;
+      this.loading.pop();
     });
   }
 
