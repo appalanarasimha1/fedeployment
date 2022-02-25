@@ -3879,8 +3879,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-bottom: 1px solid #fff;
   color: #fff;
 }
-.select-an-area .ng-select .ng-select-container .ng-value-container {
+.select-an-area .ng-select .ng-select-container .ng-value-container,
+.ssector .ng-select .ng-select-container .ng-value-container {
   padding-left: 0px;
+}
+.ssector .ng-select .ng-arrow-wrapper {
+  width: 25px;
+  padding-right: 0px;
+  text-align: right !important;
 }
 .modal-body-content img{
   border-radius: 10px;
@@ -3934,6 +3940,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .select-an-area .ng-select .ng-arrow-wrapper {
   padding-right: 0px;
+  text-align: right;
 }
 /* sprint16-v1 end */
 .upload-form .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
