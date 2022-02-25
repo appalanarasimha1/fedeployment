@@ -1802,3 +1802,9 @@ font-weight: 600;
 .close{
   opacity: 1;
 }
+@media (max-width:768px) {
+  .modalHead ul li, .iconsList li {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+}

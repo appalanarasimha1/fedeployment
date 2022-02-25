@@ -199,7 +199,27 @@ export class SubHeaderComponent implements OnInit {
     "infinite": false,
     "speed": 300,
     "centerMode": false,
-    "variableWidth": true
+    "variableWidth": true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          arrows: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          arrows: false
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false
+        }
+      }
+    ]
   };
 
   openSm(content) {

@@ -1618,3 +1618,17 @@ color: #ACACAC;
 .pb-50{
   padding-bottom: 50px !important;
 }
+.positionRelative{
+  position: relative;
+}
+@media (max-width:768px)  {
+  .customTab {
+    padding: 30px 0px 30px !important;
+  }
+  .customTab .pb-50 {
+    padding-bottom: 30px !important;
+  }
+  .customTab .tab-content {
+    padding: 20px 0px 0px !important;
+  }
+}
