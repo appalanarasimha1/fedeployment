@@ -193,6 +193,11 @@ export class BrowseComponent implements OnInit {
     this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
     this.handleSelectMenu(0, 'GRID');
     this.loading = false;
+    setTimeout(() => {
+      var storeHeight = $('.main-content').outerHeight();
+      $('.leftPanel.insideScroll').css("height", storeHeight - 110);
+      console.log('block height', storeHeight);
+    }, 300);
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
@@ -361,6 +366,11 @@ export class BrowseComponent implements OnInit {
         if(childIndex !== null && childIndex !== undefined) {
           this.showSearchbar = true;
           this.loading = false;
+          setTimeout(() => {
+            var storeHeight = $('.main-content').outerHeight();
+            $('.leftPanel.insideScroll').css("height", storeHeight - 80);
+            // console.log('block height', $('.main-content').height());
+          }, 300);
           this.folderStructure[index].children[childIndex].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
           this.folderStructure[index].children[childIndex].isExpand = true;
 
@@ -383,6 +393,11 @@ export class BrowseComponent implements OnInit {
           }
         } else {
           this.loading = false;
+          setTimeout(() => {
+            var storeHeight = $('.main-content').outerHeight();
+            $('.leftPanel.insideScroll').css("height", storeHeight - 80);
+            // console.log('block height', $('.main-content').height());
+          }, 1000);
           if(!this.sectorOpen) {
             this.folderStructure[index].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1); // index = parent index in folder structure
             console.log(docs)

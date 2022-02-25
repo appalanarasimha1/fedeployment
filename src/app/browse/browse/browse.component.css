@@ -798,7 +798,8 @@ color: #413E3C;
 }
 .insideScroll{
   padding: 0px;
-  max-height: 100vh;
+  margin-bottom: 20px;
+  /* min-height: 100vh; */
   overflow: auto;
 }
 ::ng-deep .all-sectors li #fileId2 {
