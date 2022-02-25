@@ -2,7 +2,10 @@
     <!-- <span class="load"></span> -->
     <div [ngClass]="hasOverlay ? 'overlay' : 'white_overlay'">
         <div class="overlay__inner">
-            <div class="overlay__content"><span class="spinner"></span></div>
+            <div class="overlay__content">
+                <span class="spinner"></span>
+                <div class="loadingText">Loading...</div>
+            </div>
         </div>
     </div>
 </div>

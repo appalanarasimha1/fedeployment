@@ -1,6 +1,7 @@
 
-<app-loader [show]="loading"></app-loader>
-<section class="min-height">
+<!-- <app-loader [show]="loading"></app-loader> -->
+<section class="min-height positionRelative">
+  <app-loader [show]="loading"></app-loader>
   <!-- <div *ngIf="loading">
     <div  class="text-center">
         <div class="overlay">
@@ -291,7 +292,8 @@
       <div class="row">
         <div *ngIf="!showListView">
           <div class="row">
-            <div class="col-xl-12 col-md-12 pt-4">
+            <div class="col-xl-12 col-md-12 pt-4 positionRelative">
+              <app-loader [show]="loading"></app-loader>
               <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
                 <div ngxMasonryItem class="masonry-item" *ngFor="let doc of masonryImg; let i = index">
                   <img src="{{doc.url}}" alt="" />
