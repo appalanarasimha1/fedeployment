@@ -250,7 +250,7 @@ section.lpBAck:before, .lpSecOne:before {
 } */
  .folderCircle:hover {
   color: #C49900;
-} 
+}
 .folder-structure{
   height: 130px;
   background: url(~/../../../assets/images/yellow-background.svg);
@@ -290,7 +290,7 @@ section.lpBAck:before, .lpSecOne:before {
   color: #737373;
 }
 /* .folder-structure {
-   width: 300px; 
+   width: 300px;
   max-width: 184.7px;
 }
 .folder-structure img{
@@ -333,8 +333,8 @@ section.lpBAck:before, .lpSecOne:before {
   padding-top: 25px !important;
 }
 .folder-content p{
-  /* white-space: nowrap; 
-  width: 100%; 
+  /* white-space: nowrap;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;  */
 }
@@ -809,4 +809,15 @@ color: #413E3C;
 }
 ::ng-deep .all-sectors li #fileId2 {
   height: 88px !important;
+}
+
+.breadcrumb-active {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.breadcrumb-not-active {
+  cursor: default;
+  text-decoration: none;
+  color: black;
 }
