@@ -759,6 +759,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   showAll(page) {
+    this.unSubscribeCurrentAPICalls();
     if (this.detailView === page) return;
     this.showDetailView = true;
     this.detailView = page;
@@ -770,6 +771,13 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.sectorSelected = this.assetsBySectorSelected;
     }
     this.selectDetailViewType.emit(page);
+  }
+
+  unSubscribeCurrentAPICalls() {
+    if(this.preFavouriteCall!.closed) this.preFavouriteCall.dispose();
+    if(this.favouriteCall) this.favouriteCall.dispose();
+    if(this.assetBySectorCall) this.assetBySectorCall.dispose();
+    return;
   }
 
   createStaticDocumentResults(docs) {
