@@ -207,7 +207,7 @@ export class BrowseComponent implements OnInit {
     setTimeout(() => {
       var storeHeight = $('.main-content').outerHeight();
       $('.leftPanel.insideScroll').css("height", storeHeight - 110);
-      console.log('block height', storeHeight);
+      // console.log('block height', storeHeight);
     }, 300);
   }
 
@@ -354,7 +354,11 @@ export class BrowseComponent implements OnInit {
 
     this.createBreadCrumb(item.title, item.type, item.path);
     this.extractBreadcrumb();
-    setTimeout(() => this.handleSelectMenu(0, 'GRID'), 0);
+    if(item?.uid === ROOT_ID) {
+      this.handleSelectMenu(0, 'GRID');
+    } else {
+      this.handleSelectMenu(1, 'LIST');
+    }
     // if(this.breadcrrumb.includes(item.title)) {
     //   this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
     // }
@@ -367,7 +371,7 @@ export class BrowseComponent implements OnInit {
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
     .subscribe((docs: any) => {
-      this.handleSelectMenu(0, 'GRID');
+      // this.handleSelectMenu(0, 'GRID');
       let result = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
       let workSpaceIndex = result.findIndex(res => res.title === "Workspaces");
       if(workSpaceIndex >= 0) {
@@ -669,7 +673,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getSearchPlaceholder(): string {
-    return `Search folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
+    return `Search for folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
   }
 
   getDateInFormat(date: string): string {

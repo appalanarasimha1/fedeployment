@@ -1,7 +1,6 @@
 <section class="sub-header" style="background-color: #E8E6DF;background-image: unset;">
 
 </section>
-<app-loader [show]="loading"></app-loader>
 <!-- <section  style="background-color: #E8E6DF;padding: 30px 0px;">
   <div class="container">
     <div class="row">
@@ -53,8 +52,8 @@
             </div>
           <!-- </div> -->
         </div>
-        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white">
-          
+        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative">
+          <app-loader [show]="loading"></app-loader>
           <div *ngIf="showSearchbar" class="  pb-5">
             <div style="position: relative;">
               <form autocomplete="off" style="width: 458px; position: relative;">
