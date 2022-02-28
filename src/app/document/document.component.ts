@@ -123,7 +123,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   inputTag: string;
   showTagInput = false;
   loading: boolean[] = [];
-  innerLoading: boolean;
+  innerLoading: boolean[] = [];
   modalLoading = false;
   sectors: string[] = [];
   sectorSelected;
@@ -167,7 +167,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.dataService.showHideLoader$.subscribe((value) => {
       // if(value) this.loading.push(value);
       // else this.loading.pop();
-      this.innerLoading = value;
+      if(value) this.innerLoading.push(value);
+      else this.innerLoading.pop();
     });
     // /* <!-- sprint12-fixes start --> */
     this.sharedService.getSidebarToggle().subscribe(() => {
@@ -286,12 +287,12 @@ export class DocumentComponent implements OnInit, OnChanges {
       });
   }
 
-  getFavouriteCollection(favouriteUid: string) {
+  async getFavouriteCollection(favouriteUid: string) {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
     this.loading.push(true);
-    this.favouriteCall = this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
-      .then((response) => {
+    this.favouriteCall = this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get();
+    this.favouriteCall.then((response) => {
         if(response) this.favourites = response?.entries ? response?.entries : [];
         // setTimeout(() => {
           this.loading.pop();
@@ -320,7 +321,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   calculateNoResultScreen() {
     // if (!this.checkShowDetailview()) return false;
-    return !this.loading && this.recentDataShow && !this.recentDataShow.length && !this.documents?.entries.length;
+    return !this.loading.length && this.recentDataShow && !this.recentDataShow.length && !this.documents?.entries.length;
   }
 
   getDataLength(data: any, primaryType: string) {
@@ -759,7 +760,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   showAll(page) {
-    this.unSubscribeCurrentAPICalls();
+    // this.unSubscribeCurrentAPICalls();
     if (this.detailView === page) return;
     this.showDetailView = true;
     this.detailView = page;
@@ -774,7 +775,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   unSubscribeCurrentAPICalls() {
-    if(this.preFavouriteCall!.closed) this.preFavouriteCall.dispose();
+    if(!this.preFavouriteCall?.closed) this.preFavouriteCall.dispose();
     if(this.favouriteCall) this.favouriteCall.dispose();
     if(this.assetBySectorCall) this.assetBySectorCall.dispose();
     return;

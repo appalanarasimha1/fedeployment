@@ -1,7 +1,7 @@
 
 
 <section class="min-height positionRelative">
-  <app-loader [show]="loading.length && !innerLoading"></app-loader>
+  <app-loader [show]="loading.length && !innerLoading.length"></app-loader>
   <!-- <div *ngIf="loading">
     <div  class="text-center">
         <div class="overlay">
@@ -163,7 +163,7 @@
 
   <section class="search-subpage ">
 
-    <div *ngIf="!checkShowRecent()" class="container">
+    <div *ngIf="!checkShowRecent() || checkShowDetailview()" class="container">
       <div class="row" style="justify-content: space-between">
         <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5">
           <span (click)="resetResult()"><img src="../../assets/images/back-arrow.svg" /> Back</span>
@@ -184,7 +184,7 @@
           <li [ngClass]="detailView === 'recentView' ? 'active' : ''"><a (click)="showAll('recentView')" data-toggle="tab">Recently Viewed</a></li>
         </ul> -->
 
-        <div class="col-xl-4"  *ngIf="!detailView && !checkShowRecent()"> <!-- detailView !== 'recentView' -->
+        <div class="col-xl-4" *ngIf="!detailView"> <!-- detailView !== 'recentView' -->
           <div class="row" style="">
             <div class="col-xl-8">
               <span><b>Sort by:</b> </span>
@@ -292,8 +292,8 @@
       <div class="row">
         <div *ngIf="!showListView">
           <div class="row">
-            <div class="col-xl-12 col-md-12 pt-4 positionRelative">
-              <app-loader [show]="innerLoading && !loading.length"></app-loader>
+            <div class="col-xl-12 col-md-12 pt-4 positionRelative" style="min-height: 300px;">
+              <app-loader [show]="innerLoading.length && !loading.length"></app-loader>
               <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
                 <div ngxMasonryItem class="masonry-item" *ngFor="let doc of masonryImg; let i = index">
                   <img src="{{doc.url}}" alt="" />
@@ -322,7 +322,7 @@
 
         <div class="col-xl-12 col-md-12">
           <div *ngIf="showListView" class="card-view positionRelative">
-            <app-loader [show]="innerLoading && !loading.length"></app-loader>
+            <app-loader [show]="innerLoading.length && !loading.length"></app-loader>
             <ul class="flexible">
               <li *ngFor="let doc of documents.entries.slice(0, docSliceInput); let i = index">
               <document-card
@@ -337,10 +337,10 @@
             </ul>
           </div>
         </div>
-        <div *ngIf="!hideShowMoreBtn" (click)="showMore()" class="showMoreBtn">Show more</div>
+        <div *ngIf="!hideShowMoreBtn && !loading.length && !innerLoading.length" (click)="showMore()" class="showMoreBtn">Show more</div>
       </div>
     </div>
-    <div *ngIf="!loading && !documents?.entries?.length && !checkShowRecent()" class="row">
+    <div *ngIf="!loading.length && !documents?.entries?.length && !checkShowRecent()" class="row">
       <div class="col-xl-12 col-md-12 ">
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/search.svg" style="width: 50px;">
