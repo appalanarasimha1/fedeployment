@@ -9,7 +9,16 @@ import { NgxMasonryComponent } from 'ngx-masonry';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateModalComponent } from '../../update-modal/update-modal.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { ASSET_TYPE, constants, localStorageVars, PAGE_SIZE_200, PAGE_SIZE_1000, PAGE_SIZE_40, WORKSPACE_ROOT } from 'src/app/common/constant';
+import {
+  ASSET_TYPE,
+  constants,
+  localStorageVars,
+  PAGE_SIZE_200,
+  PAGE_SIZE_1000,
+  PAGE_SIZE_40,
+  WORKSPACE_ROOT,
+  ROOT_ID,
+} from "src/app/common/constant";
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
@@ -35,7 +44,7 @@ export class BrowseComponent implements OnInit {
     public nuxeo: NuxeoService) { }
 
   faCoffee = faCoffee;
-  parentId = "00000000-0000-0000-0000-000000000000";
+  parentId = ROOT_ID;
   search = "/";
   folderType = "";
   title = "";
@@ -88,6 +97,7 @@ export class BrowseComponent implements OnInit {
   showLinkCopy = false;
   showSearchbar = false;
   searchBarValue = '';
+  breadCrumb= [];
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -95,9 +105,9 @@ export class BrowseComponent implements OnInit {
   }
 
   folderStructure: any = [{
-    uid: '00000000-0000-0000-0000-000000000000',
+    uid: ROOT_ID,
     title: 'All workspaces',
-    menuId: '00000000-0000-0000-0000-000000000000',
+    menuId: ROOT_ID,
     parentMenuId: null,
     isExpand: false,
     path: ''
@@ -181,6 +191,7 @@ export class BrowseComponent implements OnInit {
     this.showSearchbar = false;
     this.copiedString = '';
     this.selectedFolder = item;
+    this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
     // this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
     // this.selectedFile = [];
@@ -193,6 +204,11 @@ export class BrowseComponent implements OnInit {
     this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
     this.handleSelectMenu(0, 'GRID');
     this.loading = false;
+    setTimeout(() => {
+      var storeHeight = $('.main-content').outerHeight();
+      $('.leftPanel.insideScroll').css("height", storeHeight - 110);
+      // console.log('block height', storeHeight);
+    }, 300);
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
@@ -337,6 +353,12 @@ export class BrowseComponent implements OnInit {
     this.searchBarValue = '';
 
     this.createBreadCrumb(item.title, item.type, item.path);
+    this.extractBreadcrumb();
+    if(item?.uid === ROOT_ID) {
+      this.handleSelectMenu(0, 'GRID');
+    } else {
+      this.handleSelectMenu(1, 'LIST');
+    }
     // if(this.breadcrrumb.includes(item.title)) {
     //   this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
     // }
@@ -349,7 +371,7 @@ export class BrowseComponent implements OnInit {
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
     .subscribe((docs: any) => {
-      this.handleSelectMenu(0, 'GRID');
+      // this.handleSelectMenu(0, 'GRID');
       let result = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
       let workSpaceIndex = result.findIndex(res => res.title === "Workspaces");
       if(workSpaceIndex >= 0) {
@@ -361,6 +383,11 @@ export class BrowseComponent implements OnInit {
         if(childIndex !== null && childIndex !== undefined) {
           this.showSearchbar = true;
           this.loading = false;
+          setTimeout(() => {
+            var storeHeight = $('.main-content').outerHeight();
+            $('.leftPanel.insideScroll').css("height", storeHeight - 80);
+            // console.log('block height', $('.main-content').height());
+          }, 300);
           this.folderStructure[index].children[childIndex].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
           this.folderStructure[index].children[childIndex].isExpand = true;
 
@@ -383,9 +410,13 @@ export class BrowseComponent implements OnInit {
           }
         } else {
           this.loading = false;
+          setTimeout(() => {
+            var storeHeight = $('.main-content').outerHeight();
+            $('.leftPanel.insideScroll').css("height", storeHeight - 80);
+            // console.log('block height', $('.main-content').height());
+          }, 1000);
           if(!this.sectorOpen) {
             this.folderStructure[index].children = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1); // index = parent index in folder structure
-            console.log(docs)
             this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand;
             this.callHandClick = this.folderStructure[index].children.find((item, i) => {
               if(item.uid === this.routeParams.sector) {
@@ -421,7 +452,6 @@ export class BrowseComponent implements OnInit {
               if(item.title.toLowerCase() === this.routeParams.folder.toLowerCase()) {
                 this.ind = i;
                 // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
-                console.log(this.callHandClick)
                 this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`
                 return item;
               }
@@ -438,6 +468,31 @@ export class BrowseComponent implements OnInit {
 
   checkForChildren() {
     return true;
+  }
+  extractBreadcrumb() {
+    if (this.selectedFolder?.contextParameters) {
+      this.breadCrumb = this.selectedFolder?.contextParameters?.breadcrumb.entries.filter(entry => {
+        return entry.type !== "WorkspaceRoot";
+      });
+    }
+  }
+
+  async handleGotoBreadcrumb(item, index) {
+    if (index === this.breadCrumb.length) return;
+    if (index === 0) {
+      this.breadCrumb = [];
+      this.selectedFolder = item;
+      this.handleClick(item, index);
+      return;
+    }
+    this.selectedFolder = await this.fetchFolder(item.uid);
+    this.extractBreadcrumb();
+    this.handleClick(this.selectedFolder, index);
+  }
+
+  async fetchFolder(id) {
+    const result = await this.apiService.get(`/id/${id}`).toPromise();
+    return result;
   }
 
   async fetchAssets(id) {
@@ -466,7 +521,6 @@ export class BrowseComponent implements OnInit {
   handleChangeClick(item, index, selected: any, childIndex?: any) {
     // this.selectedFile = [];
     this.selectedFolder = {...selected, uid: selected.id};
-    console.log("selected", this.selectedFolder)
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
       .subscribe((docs: any) => {
         this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
@@ -613,13 +667,13 @@ export class BrowseComponent implements OnInit {
     return {uid: result.uid, sectorName: result.title};
   }
   isShowDivIf = false;
-  
+
   toggleDisplayDivIf() {
     this.isShowDivIf = !this.isShowDivIf;
   }
 
   getSearchPlaceholder(): string {
-    return `Search folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
+    return `Search for folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
   }
 
   getDateInFormat(date: string): string {
@@ -640,7 +694,7 @@ export class BrowseComponent implements OnInit {
   }
 
   showGridListButton() {
-    return this.selectedFolder.uid === "00000000-0000-0000-0000-000000000000";
+    return this.selectedFolder.uid === ROOT_ID;
   }
 }
 
