@@ -14,7 +14,7 @@ export class RoleGuardService implements CanActivate {
     const expectedRole = route.data.expectedRole;
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (user?.groups.indexOf(expectedRole) != -1) {
+    if ( user?.sector?.toLowerCase().includes(`ceo's office`)) {
       return true;
     }
     this.router.navigate(['/']);
