@@ -15,6 +15,7 @@ import { RoleGuardService } from "./services/roleGaurd";
 import { NoContent } from "./no-content";
 // import { AuthGuard } from './auth/auth.guard';
 import { AuthGuardService } from "./services/authGaurd";
+<<<<<<< HEAD
 
 
 const routes: Routes = [
@@ -25,6 +26,44 @@ const routes: Routes = [
   {path: '404', component: NoContent },
   {path: "report",loadChildren: () => import("./report/report.module").then((m) => m.ReportModule),canActivate: [RoleGuardService],data: {expectedRole: "reportAdmin",},},
   {path: "**", component: NoContent}
+=======
+import { AuthGuard } from './auth/auth.guard';
+import { REPORT_ROLE } from "./common/constant";
+
+
+
+const routes: Routes = [
+  {
+    path: "",
+    loadChildren: () =>
+      import("./search/search.module").then((m) => m.SearchModule),
+    canActivate: [AuthGuardService],
+  },
+  { path: "login", component: LoginComponent },
+  {
+    path: "workspace",
+    loadChildren: () =>
+      import("./browse/browse.module").then((m) => m.BrowseModule),
+    canActivate: [AuthGuard, AuthGuardService],
+  },
+  {
+    path: "common",
+    loadChildren: () =>
+      import("./common/common-module/common.module").then(
+        (m) => m.CommonModule
+      ),
+  },
+  {
+    path: "report",
+    loadChildren: () =>
+      import("./report/report.module").then((m) => m.ReportModule),
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: REPORT_ROLE,
+    },
+  },
+  { path: "**", component: NoContent },
+>>>>>>> 648ff982 (sprint23: report/analytics check on the basis of sector)
 ];
 
 @NgModule({

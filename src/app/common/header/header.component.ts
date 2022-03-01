@@ -6,7 +6,8 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
-import { TRIGGERED_FROM_SUB_HEADER } from '../constant';
+import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER } from '../constant';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
     public matDialog: MatDialog,
     public dataService: DataService,
     protected readonly keycloak: KeycloakService,
+    private sharedService: SharedService
   ) {
     router.events.forEach((event: any) => {
       if (event.url) {
@@ -136,8 +138,7 @@ export class HeaderComponent implements OnInit {
   }
 
   checkForUserGroup() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user?.sector?.toLowerCase().includes(`ceo's office`);
-    // CEO's Office - CEO's Office
+    const expectedRole = REPORT_ROLE;
+    return this.sharedService.chekForReportRoles(expectedRole);
   }
 }
