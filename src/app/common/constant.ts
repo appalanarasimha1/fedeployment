@@ -107,3 +107,4 @@ export const PAGE_SIZE_40 = 40;
 export const TOTAL_ASSETS_LABEL = 'Total Assets';
 export const UNWANTED_WORKSPACES = ['domain'];
 export const DEFAULT_NUMBER_OF_TAGS_PREVIEW = 10;
+export const REPORT_ROLE = 'reportAdmin';

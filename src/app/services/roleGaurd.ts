@@ -4,17 +4,17 @@ import {
   CanActivate,
   ActivatedRouteSnapshot
 } from '@angular/router';
+import { SharedService } from './shared.service';
 
 @Injectable()
 export class RoleGuardService implements CanActivate {
-  constructor(public router: Router) {}
+  constructor(private router: Router, private sharedService: SharedService) {}
   canActivate(route: ActivatedRouteSnapshot): boolean {
     // this will be passed from the route config
     // on the data property
     const expectedRole = route.data.expectedRole;
-    const user = JSON.parse(localStorage.getItem('user'));
 
-    if ( user?.sector?.toLowerCase().includes(`ceo's office`)) {
+    if (this.sharedService.chekForReportRoles(expectedRole)) {
       return true;
     }
     this.router.navigate(['/']);

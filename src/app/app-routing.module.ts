@@ -7,6 +7,7 @@ import { RoleGuardService } from "./services/roleGaurd";
 import { NoContent } from "./no-content";
 import { AuthGuardService } from "./services/authGaurd";
 import { AuthGuard } from './auth/auth.guard';
+import { REPORT_ROLE } from "./common/constant";
 
 
 
@@ -37,7 +38,7 @@ const routes: Routes = [
       import("./report/report.module").then((m) => m.ReportModule),
     canActivate: [RoleGuardService],
     data: {
-      expectedRole: "reportAdmin",
+      expectedRole: REPORT_ROLE,
     },
   },
   { path: "**", component: NoContent },
