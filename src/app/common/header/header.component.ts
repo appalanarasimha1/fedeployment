@@ -47,11 +47,9 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        console.log('header 1 = ', this.searchHeader, ' = ', this.showBrowseHeader);
+        
       }
-      console.log('header 2 = ', this.searchHeader, ' = ', this.showBrowseHeader);
     });
-    console.log('header 3 = ', this.searchHeader, ' = ', this.showBrowseHeader);
 
     // if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
     //   this.showBrowseHeader = true;
@@ -139,6 +137,7 @@ export class HeaderComponent implements OnInit {
 
   checkForUserGroup() {
     const user = JSON.parse(localStorage.getItem('user'));
-    return user?.groups.indexOf('reportAdmin') != -1;
+    return user?.sector?.toLowerCase().includes(`ceo's office`);
+    // CEO's Office - CEO's Office
   }
 }
