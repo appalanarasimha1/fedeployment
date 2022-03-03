@@ -822,3 +822,91 @@ color: #413E3C;
 .pb-5 {
   padding-bottom: 50px !important;
 }
+.createFolder{
+  position: absolute;
+  background: #FFFFFF;
+box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+border-radius: 8px;
+padding: 20px;
+width: 380px;
+right: 0px;
+z-index: 9;
+}
+.createNew{
+  font-size: 16px;
+  line-height: 24px;
+  color: #937206;
+  font-weight: 600;
+}
+.placeholderText{
+  font-size: 14px;
+line-height: 20px;
+color: #BAB8B2;
+float: right;
+}
+.createFolder input{
+  border: unset;
+  border-bottom: 2px solid #413E3C;
+  width: 100%;
+  font-size: 16px;
+  line-height: 24px;
+  color: #040404;
+  padding-bottom: 5px;
+}
+.createFolder input::placeholder{
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #040404 !important;
+}
+.createFolder label{
+  font-size: 16px;
+line-height: 24px;
+color: #040404;
+font-weight: 600;
+}
+.mat-expansion-panel:not([class*=mat-elevation-z]){
+  box-shadow: unset;
+}
+.mat-expansion-panel-header{
+  padding: 0px !important;
+  height: unset !important;
+}
+.mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){
+  background: unset;
+}
+::ng-deep .mat-content{
+  flex: unset !important;
+}
+::ng-deep .mat-expansion-indicator::after {
+  border-style: solid;
+  border-width: 0 1.5px 1.5px 0 !important;
+  content: "";
+  display: inline-block;
+  padding: 2.5px !important;
+  /* transform: rotate(-45deg) !important; */
+  vertical-align: middle;
+  color: #937206;
+}
+::ng-deep .mat-expansion-indicator {
+  /* transform: rotate(-180deg) !important; */
+}
+::ng-deep .mat-expansion-panel-body{
+  padding: 0px !important;
+}
+.createBtn{
+  background-color: #EDD580;
+  border-radius: 24px;
+  float: right;
+  width: unset;
+  font-weight: 600;
+  padding: 6px 19px;
+  font-size: 14px;
+  /* line-height: 20px; */
+  color: #040505;
+}
+::ng-deep .mat-datepicker-popup{
+  left: 819px !important;
+}
+::ng-deep .mat-expansion-panel-header-description{
+  color: #937206;
+}

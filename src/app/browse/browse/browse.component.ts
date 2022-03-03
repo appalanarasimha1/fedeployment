@@ -88,7 +88,7 @@ export class BrowseComponent implements OnInit {
   showLinkCopy = false;
   showSearchbar = false;
   searchBarValue = '';
-
+  panelOpenState = false;
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
     this.masonry?.layout();
@@ -656,6 +656,10 @@ export class BrowseComponent implements OnInit {
 
   showGridListButton() {
     return this.selectedFolder.uid === "00000000-0000-0000-0000-000000000000";
+  }
+   showFolder = false;
+  openNewFolderDiv(){
+    this.showFolder = ! this.showFolder
   }
 }
 
