@@ -241,4 +241,9 @@ export class SharedService {
     return;
   }
 
+  chekForReportRoles(role: string): boolean {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return ["ceo's office", "ground x"].includes(user?.sector?.toLowerCase()) || user?.groups.indexOf(role) != -1;
+  }
+
 }

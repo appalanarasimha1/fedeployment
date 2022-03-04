@@ -109,3 +109,4 @@ export const UNWANTED_WORKSPACES = ['domain'];
 export const DEFAULT_NUMBER_OF_TAGS_PREVIEW = 10;
 
 export const ROOT_ID = '00000000-0000-0000-0000-000000000000';
+export const REPORT_ROLE = 'reportAdmin';
