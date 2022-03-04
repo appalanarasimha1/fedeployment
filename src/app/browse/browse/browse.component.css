@@ -841,3 +841,57 @@ color: #413E3C;
 .header-content h6.tollTipCustom span{
   color: rgba(35, 33, 30, 0.6);
 }
+ul.uploadAssetsClassifications {
+  display: block;
+  margin-bottom: 6px;
+}
+ul.uploadAssetsClassifications li {
+  float: left;
+  padding-left: 20px;
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+}
+ul.uploadAssetsClassifications li img {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  vertical-align: middle;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu {
+  position: absolute;
+  width: 250px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+  top: 35px;
+  right: 0px;
+  z-index: 99;
+  display: none;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu li {
+  margin: 0 0 20px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #040404;
+  cursor: pointer;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu li:last-child {
+  margin-bottom: 0px;
+}
+ul.uploadAssetsClassifications li:hover ul.subDropdownMenu {
+  display: block;
+  cursor: auto;
+}
+ul.uploadAssetsClassifications li:after {
+  content: '';
+  display: block;
+  height: 20px;
+  width: 100%;
+  position: absolute;
+  bottom: -14px;
+  right: 0;
+}

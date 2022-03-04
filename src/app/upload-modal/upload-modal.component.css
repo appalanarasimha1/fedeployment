@@ -572,7 +572,7 @@ font-weight: 600;
     cursor: pointer;
     display: block;
     font-size: 16px;
-    height: 282px !important;
+    height: 320px !important;
     overflow-x: auto;
 }
 .tooltip1 {
@@ -839,7 +839,7 @@ padding: 10px 18px
 }
 .errortext{
   position: absolute;
-  bottom: -12px;
+  bottom: -50px;
 }
 ::ng-deep .grayField .mat-form-field-suffix {
   opacity: 0.5;
@@ -1269,3 +1269,32 @@ input.copyright-input::placeholder{
 .tollTipCustom:hover .tolltipContent {
   display: block;
 }
+
+.uploadAssetsBlock {
+  background: #FFFFFF;
+  border-radius: 8px;
+  width: 436px;
+  height: 100px;
+  filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
+  padding: 22px 20px 22px 13px;
+  margin: 30px 0 20px;
+  text-align: left;
+}
+.folderHeading {
+  font-size: 20px;
+  line-height: 32px;
+  color: #040404;
+}
+.uploadAssetsBlock .folder-img, .uploadAssetsBlock .folder-content {
+  display: inline-block;
+  vertical-align: middle;
+}
+.uploadAssetsBlock .folder-content .folderHeading span {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(35, 33, 30, 0.6);
+}
+/* .uploadAssetsBlock .folder-content  {
+  padding-left: 0px;
+} */

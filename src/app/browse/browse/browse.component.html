@@ -120,7 +120,17 @@
               </h6>
               </div>
               <div class="views">
-                <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
+                <ul class="uploadAssetsClassifications pb-3" *ngIf="checkShowUpdateBtn()">
+                  <li><img src="../../../assets/images/info-icon-yellow.svg" /></li>
+                  <li>
+                    <img src="../../../assets/images/upload-assets.svg" />
+                    <ul class="subDropdownMenu">
+                      <li (click)="openModal()">Upload assets</li>
+                      <li (click)="openUpdateClassModal()">Update classifications</li>
+                    </ul>
+                  </li>
+                </ul>
+                <!-- <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a> -->
                 <div *ngIf="!showGridListButton()">
                   <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">

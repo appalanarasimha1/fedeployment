@@ -22,6 +22,7 @@ import {
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
+import { UploadModalComponent } from 'src/app/upload-modal/upload-modal.component';
 
 @Component({
   selector: 'app-browse',
@@ -695,6 +696,19 @@ export class BrowseComponent implements OnInit {
 
   showGridListButton() {
     return this.selectedFolder.uid === ROOT_ID;
+  }
+  
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "700px";
+    dialogConfig.maxHeight = "900px"
+    dialogConfig.width = "650px";
+    dialogConfig.disableClose = true;
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }
 }
 
