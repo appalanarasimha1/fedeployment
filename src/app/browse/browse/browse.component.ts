@@ -366,6 +366,8 @@ export class BrowseComponent implements OnInit {
     // this.selectedFile = [];
     if(item?.children?.length) {
       this.searchList = item.children;
+      if(item?.uid === ROOT_ID) this.showSearchbar = false;
+      else this.showSearchbar = true;
       return;
     }
     this.loading = true;
