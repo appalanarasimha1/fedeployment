@@ -32,6 +32,7 @@ import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
 export class BrowseComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('previewModal') previewModal: PreviewPopupComponent;
+  private _snackBar: any;
 
   constructor(
     private modalService: NgbModal,
@@ -700,6 +701,15 @@ export class BrowseComponent implements OnInit {
 
   showGridListButton() {
     return this.selectedFolder.uid === ROOT_ID;
+  }
+
+  openSnackBar() {
+    this._snackBar.open('The deleted items will be retained for 180 days in Deleted items.', '', {
+      duration: 3000,
+      // verticalPosition: 'top',
+      horizontalPosition: 'center',
+      panelClass: ['snackBarMiddle'],
+    });
   }
 }
 
