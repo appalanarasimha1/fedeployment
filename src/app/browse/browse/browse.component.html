@@ -57,24 +57,22 @@
 
           <div class="row">
             <div class="col-xl-7">
-              hi
+              <div *ngIf="showSearchbar" class="  pb-5">
+                <div style="position: relative;">
+                  <form autocomplete="off" style="width: 458px; position: relative;">
+                    <button class="primary search-btn"><img
+                      src="../../../assets/images/search.png" /></button>
+                    <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
+                    <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
+                  </form>
+                </div>
+              </div>
             </div>
 
             <div class="col-xl-5" >
               <div style="float: right;">
                 <span class="deleteFolder" (click)="openSnackBar()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
               </div>
-            </div>
-          </div>
-
-          <div *ngIf="showSearchbar" class="  pb-5">
-            <div style="position: relative;">
-              <form autocomplete="off" style="width: 458px; position: relative;">
-                <button class="primary search-btn"><img
-                  src="../../../assets/images/search.png" /></button>
-                <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
-                <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
-              </form>
             </div>
           </div>
 
