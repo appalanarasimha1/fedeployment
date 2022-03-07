@@ -454,6 +454,15 @@ export class UploadModalComponent implements OnInit {
     );
   }
 
+  showCreateFolderButton(input: string): boolean {
+    if(!input.trim()) return false;
+
+    let dropdownFolderList: any[] = this.folderList.filter((folder) =>
+      folder.title.toLowerCase() === input.toLowerCase()
+    );
+    return !dropdownFolderList.length;
+  }
+
   selectFolder(folder) {
     this.selectedFolder = folder;
     this.folderToAdd = null;
