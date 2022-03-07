@@ -305,7 +305,11 @@ export class UploadModalComponent implements OnInit {
     };
     // TODO: loader
     const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
-    this.workspaceList = this.formatWsList(res["entries"]);
+    this.workspaceList = this.formatWsList(res["entries"]).filter(sector => {
+      if(UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
+        return sector;
+      }
+    });
   }
 
   filterWorkspaces(title: string): boolean {

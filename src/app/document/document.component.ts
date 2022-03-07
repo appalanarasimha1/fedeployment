@@ -267,11 +267,13 @@ export class DocumentComponent implements OnInit, OnChanges {
         if(response) {
           this.assetsBySector = response.entries ? response?.entries : [];
           if(dontResetSectors) {
-            this.sectorsHomepage = response.aggregations['sectors']?.buckets.map(sector => {
+            this.sectorsHomepage = [];
+            for(let i = 0; i < response.aggregations['sectors']?.buckets.length; i++) {
+              const sector = response.aggregations['sectors'].buckets[i];
               if(UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1) {
-                return sector.key;
+                this.sectorsHomepage.push(sector.key);
               }
-            }) || [];
+            }
           }
         }
           this.loading.pop();
