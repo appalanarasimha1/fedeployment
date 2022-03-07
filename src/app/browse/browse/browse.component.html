@@ -136,23 +136,36 @@
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
-                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
-                      (click)="handleTest(item);selectedFolder=item;">
-                      <!-- <img src="../../../assets/images/yellow-folder.png"> -->
-                      <div class="folder-content">
-                        <p class="tollTipCustom" style="    white-space: normal;
-                        width: 100%;
-                        overflow: inherit;
-                        text-overflow: inherit;">
-                         {{sharedService.stringShortener(item.title, 16)}}
-                          <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
-                            {{item.title}}
-                          </span>
-                        </p>
-                        <span>{{ getFolderInfo(item) }}</span>
+
+                      <div class="groupFolder">
+                        <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type)">
+                          <div class="control-group">
+                            <label class="control control--checkbox">
+                              <input type="checkbox" />
+                              <div class="control__indicator"></div>
+                            </label>
+                          </div>
+                        </div>
+                        <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
+                          (click)="handleTest(item);selectedFolder=item;">
+                          <!-- <img src="../../../assets/images/yellow-folder.png"> -->
+                          <div class="folder-content">
+                            <p class="tollTipCustom" style="    white-space: normal;
+                            width: 100%;
+                            overflow: inherit;
+                            text-overflow: inherit;">
+                            {{sharedService.stringShortener(item.title, 16)}}
+                              <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
+                                {{item.title}}
+                              </span>
+                            </p>
+                            <span>{{ getFolderInfo(item) }}</span>
+                          </div>
+
+                        </div>
                       </div>
 
-                    </div>
+
                       <!-- <div class="folder-content" style="background-color: #F9F7F2;">
                         <p class="tollTipCustom" style="    white-space: normal;
                         width: 100%;
