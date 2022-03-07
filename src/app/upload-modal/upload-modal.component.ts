@@ -714,7 +714,7 @@ export class UploadModalComponent implements OnInit {
         "dc:parentName": "Workspaces",
         "dc:sector": this.selectedWorkspace.title,
         "dc:primaryType": "event",
-        "dc:folderType": "singleDayEvent",
+        "dc:folderType": this.associatedDate ? "singleDayEvent" : "generic",
       },
       facets: ["Folderish", "NXTag", "SuperSpace"],
       schemas: [
