@@ -47,7 +47,7 @@ export class SubHeaderComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    // private sharedService: SharedService,
+    public sharedService: SharedService,
     private modalService: NgbModal,
     private apiService: ApiService
     ) {

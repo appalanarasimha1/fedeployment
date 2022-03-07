@@ -249,5 +249,12 @@ export class SharedService {
   toTop(): void {
     window.scroll(0,0);
   }
+  
+  capitaliseSelectiveTags(tag: string): string {
+    if(tag.toLowerCase() === 'neom') {
+      return tag.toUpperCase();
+    }
+    return tag;
+  }
 
 }
