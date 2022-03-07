@@ -841,3 +841,111 @@ color: #413E3C;
 .header-content h6.tollTipCustom span{
   color: rgba(35, 33, 30, 0.6);
 }
+
+
+.delete-folder-action .control-group {
+  display: block;
+}
+.delete-folder-action .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 40px;
+  border: 0px;
+  margin: 0px 0px 0px;
+}
+.delete-folder-action .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.delete-folder-action .control__indicator {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  height: 26px;
+  width: 26px;
+  background: #ffffff;
+  border-radius: 8px;
+}
+.delete-folder-action .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.delete-folder-action .control:hover input ~ .control__indicator,
+.delete-folder-action .control input:focus ~ .control__indicator {
+  background: #fff;
+}
+.delete-folder-action .control input:checked ~ .control__indicator {
+  background: #006845;
+}
+.delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
+.delete-folder-action .control input:checked:focus ~ .control__indicator {
+  background: #006845;
+}
+.delete-folder-action .control input:disabled ~ .control__indicator {
+  background: #006845;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.delete-folder-action .control__indicator:after,
+.delete-folder-action .control__indicator:before {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.delete-folder-action .control input:checked ~ .control__indicator:after,
+.delete-folder-action .control input ~ .control__indicator:before {
+  display: block;
+}
+.delete-folder-action .control--checkbox .control__indicator:after,
+.delete-folder-action .control--checkbox .control__indicator:before {
+  left: 10px;
+  top: 6px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.delete-folder-action .control--checkbox .control__indicator:before{
+  border-color: #BAB8B2;
+}
+.delete-folder-action .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.delete-folder-action .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.delete-folder-action .control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b;
+}
+.groupFolder {
+  position: relative;
+}
+.delete-folder-action:after {
+  clear: both;
+  content: '';
+  display: block;
+}
+.delete-folder-action {
+  position: absolute;
+  left: 10px;
+  opacity: 0;
+  transition: transform 0.3s;
+}
+.groupFolder:hover .delete-folder-action {
+  opacity: 1;
+  transition: transform 0.3s;
+}
+.deleteFolder {
+  margin-right: 20px;
+}
