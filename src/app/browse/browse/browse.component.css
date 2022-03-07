@@ -947,5 +947,17 @@ color: #413E3C;
   transition: transform 0.3s;
 }
 .deleteFolder {
+  cursor: pointer;
+  display: inline-block;
   margin-right: 20px;
+}
+.createNew, .deleteFolder{
+  font-size: 16px;
+  line-height: 24px;
+  color: #937206;
+  font-weight: 600;
+  vertical-align: middle;
+}
+.deleteFolder img {
+  margin-right: 8px; margin-top: -4px;
 }
