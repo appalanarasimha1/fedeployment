@@ -22,6 +22,7 @@ import {
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-browse',
@@ -32,7 +33,6 @@ import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
 export class BrowseComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('previewModal') previewModal: PreviewPopupComponent;
-  private _snackBar: any;
 
   constructor(
     private modalService: NgbModal,
@@ -42,7 +42,8 @@ export class BrowseComponent implements OnInit {
     private router: Router,
     public sharedService: SharedService,
     private route: ActivatedRoute,
-    public nuxeo: NuxeoService) { }
+    public nuxeo: NuxeoService,
+    private _snackBar: MatSnackBar) { }
 
   faCoffee = faCoffee;
   parentId = ROOT_ID;
