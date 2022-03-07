@@ -54,6 +54,19 @@
         </div>
         <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative">
           <app-loader [show]="loading"></app-loader>
+
+          <div class="row">
+            <div class="col-xl-7">
+              hi
+            </div>
+
+            <div class="col-xl-5" >
+              <div style="float: right;">
+                <span class="deleteFolder" (click)="openSnackBar()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
+              </div>
+            </div>
+          </div>
+
           <div *ngIf="showSearchbar" class="  pb-5">
             <div style="position: relative;">
               <form autocomplete="off" style="width: 458px; position: relative;">
