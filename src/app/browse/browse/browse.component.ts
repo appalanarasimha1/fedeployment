@@ -704,12 +704,21 @@ export class BrowseComponent implements OnInit {
     return this.selectedFolder.uid === ROOT_ID;
   }
 
-  openSnackBar() {
+  deleteModal() {
     this._snackBar.open('The deleted items will be retained for 180 days in Deleted items.', '', {
       duration: 3000,
       // verticalPosition: 'top',
       horizontalPosition: 'center',
       panelClass: ['snackBarMiddle'],
+    });
+  }
+
+  recoverModal() {
+    this._snackBar.open('Successfully recovered.', '', {
+      duration: 3000,
+      // verticalPosition: 'top',
+      horizontalPosition: 'center',
+      panelClass: ['snackBarMiddleRecover'],
     });
   }
 }

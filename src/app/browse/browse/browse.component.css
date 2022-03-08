@@ -946,20 +946,26 @@ color: #413E3C;
   opacity: 1;
   transition: transform 0.3s;
 }
-.deleteFolder {
+.deleteFolder, .recoverFolder {
   cursor: pointer;
   display: inline-block;
-  margin-right: 20px;
+  margin-right: 0px;
 }
-.createNew, .deleteFolder{
+.createNew, .deleteFolder, .recoverFolder{
   font-size: 16px;
   line-height: 24px;
   color: #937206;
   font-weight: 600;
   vertical-align: middle;
 }
-.deleteFolder img {
+.deleteFolder img, .recoverFolder img {
   margin-right: 8px; margin-top: -4px;
+}
+.createNew {
+  margin-left: 20px;
+}
+.groupFolder.checkDelete .delete-folder-action {
+  opacity: 1;
 }
 ::ng-deep .mat-datepicker-popup{
   left: 819px !important;
@@ -967,16 +973,44 @@ color: #413E3C;
 ::ng-deep .mat-expansion-panel-header-description{
   color: #937206;
 }
-::ng-deep .mat-snack-bar-container.snackBarMiddle{
+::ng-deep .mat-snack-bar-container.snackBarMiddle, ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
   /* transform: translate(-50%, -50%) !important;
   top: 50% !important;
   position: absolute !important;
   left: 50% !important; */
   background: #2D2926 !important;
-  margin: 50% 24px !important;
+  margin: 67% 24px !important;
   font-size: 12px;
   font-weight: normal;
   color: #fff;
   border-radius: 50px;
   box-shadow: none !important;
+}
+::ng-deep .mat-simple-snackbar {
+  font-size: 13px !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  display: inline-block !important;
+}
+::ng-deep .mat-snack-bar-container.snackBarMiddle {
+  text-align: center !important;
+}
+::ng-deep .mat-snack-bar-container.snackBarMiddleRecover{
+  margin: 40% 24px !important;
+  margin: 138% 24px !important;
+  min-width: auto;
+}
+.no-items {
+  width: 100%;
+  height: 500px;
+  text-align: center;
+  padding: 70px 0;
+  color: #BAB8B2;
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 500;
+}
+.no-items img {
+  display: block;
+  margin: 0px auto 14px;
 }
