@@ -256,7 +256,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getAssetBySectors(sector = '', dontResetSectors: boolean = true) {
-    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16 };
+    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, sortBy: 'dc:created', sortOrder: 'desc' };
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
     if (sector) {
       queryParams['sectors'] = `["${sector}"]`;
@@ -707,7 +707,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   openAdvancedFilter() {
     this.openFilterModal.emit(this.selectedType);
   }
-  
+
   checkShowRecent() {
     if (this.documents && this.documents["entity-type"]) return false;
     return true;
