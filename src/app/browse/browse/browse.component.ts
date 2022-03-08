@@ -429,6 +429,7 @@ export class BrowseComponent implements OnInit {
                 return item;
               }
             });
+            this.selectedFolder2 = this.callHandClick;
             this.sectorOpen = true;
             this.callDomain
           }
