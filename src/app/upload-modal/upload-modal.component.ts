@@ -491,7 +491,11 @@ export class UploadModalComponent implements OnInit {
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customConfidentialityMap[fileIndex] = confidentiality;
+      this.customAccessMap[fileIndex] = undefined;
+      this.customAllowMap[fileIndex] = undefined;
     } else {
+      this.allow = undefined;
+      this.access = undefined;
       this.confidentiality = confidentiality;
     }
     this.checkShowUserDropdown(fileIndex);
@@ -501,6 +505,9 @@ export class UploadModalComponent implements OnInit {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAccessMap[fileIndex] = access;
     } else {
+      for(let i = 0; i < this.getAssetNumber(); i++) {
+        this.customAccessMap[i] = access;
+      }
       this.access = access;
     }
     this.checkShowUserDropdown(fileIndex);
@@ -510,6 +517,9 @@ export class UploadModalComponent implements OnInit {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAllowMap[fileIndex] = allow;
     } else {
+      for(let i = 0; i < this.getAssetNumber(); i++) {
+        this.customAllowMap[i] = allow;
+      }
       this.allow = allow;
     }
   }
