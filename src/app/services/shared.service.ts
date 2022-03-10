@@ -246,4 +246,15 @@ export class SharedService {
     return ["ceo's office", "ground x"].includes(user?.sector?.toLowerCase()) || user?.groups.indexOf(role) != -1;
   }
 
+  toTop(): void {
+    window.scroll(0,0);
+  }
+  
+  capitaliseSelectiveTags(tag: string): string {
+    if(tag.toLowerCase() === 'neom') {
+      return tag.toUpperCase();
+    }
+    return tag;
+  }
+
 }

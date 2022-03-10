@@ -204,6 +204,7 @@ export class BrowseComponent implements OnInit {
     this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
     this.handleSelectMenu(0, 'GRID');
     this.loading = false;
+    this.sharedService.toTop();
     setTimeout(() => {
       var storeHeight = $('.main-content').outerHeight();
       $('.leftPanel.insideScroll').css("height", storeHeight - 110);
@@ -351,6 +352,7 @@ export class BrowseComponent implements OnInit {
     this.copiedString = '';
     this.showSearchbar = false;
     this.searchBarValue = '';
+    this.sharedService.toTop();
 
     this.createBreadCrumb(item.title, item.type, item.path);
     this.extractBreadcrumb();
@@ -366,6 +368,8 @@ export class BrowseComponent implements OnInit {
     // this.selectedFile = [];
     if(item?.children?.length) {
       this.searchList = item.children;
+      if(item?.uid === ROOT_ID) this.showSearchbar = false;
+      else this.showSearchbar = true;
       return;
     }
     this.loading = true;
@@ -425,6 +429,7 @@ export class BrowseComponent implements OnInit {
                 return item;
               }
             });
+            this.selectedFolder2 = this.callHandClick;
             this.sectorOpen = true;
             this.callDomain
           }
@@ -521,6 +526,7 @@ export class BrowseComponent implements OnInit {
   handleChangeClick(item, index, selected: any, childIndex?: any) {
     // this.selectedFile = [];
     this.selectedFolder = {...selected, uid: selected.id};
+    this.sharedService.toTop();
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
       .subscribe((docs: any) => {
         this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);

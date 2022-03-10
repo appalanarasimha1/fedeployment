@@ -305,7 +305,11 @@ export class UploadModalComponent implements OnInit {
     };
     // TODO: loader
     const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
-    this.workspaceList = this.formatWsList(res["entries"]);
+    this.workspaceList = this.formatWsList(res["entries"]).filter(sector => {
+      if(UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
+        return sector;
+      }
+    });
   }
 
   filterWorkspaces(title: string): boolean {
@@ -454,6 +458,15 @@ export class UploadModalComponent implements OnInit {
     );
   }
 
+  showCreateFolderButton(input: string): boolean {
+    if(!input.trim()) return false;
+
+    let dropdownFolderList: any[] = this.folderList.filter((folder) =>
+      folder.title.toLowerCase() === input.toLowerCase()
+    );
+    return !dropdownFolderList.length;
+  }
+
   selectFolder(folder) {
     this.selectedFolder = folder;
     this.folderToAdd = null;
@@ -478,7 +491,11 @@ export class UploadModalComponent implements OnInit {
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customConfidentialityMap[fileIndex] = confidentiality;
+      this.customAccessMap[fileIndex] = undefined;
+      this.customAllowMap[fileIndex] = undefined;
     } else {
+      this.allow = undefined;
+      this.access = undefined;
       this.confidentiality = confidentiality;
     }
     this.checkShowUserDropdown(fileIndex);
@@ -488,6 +505,9 @@ export class UploadModalComponent implements OnInit {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAccessMap[fileIndex] = access;
     } else {
+      for(let i = 0; i < this.getAssetNumber(); i++) {
+        this.customAccessMap[i] = access;
+      }
       this.access = access;
     }
     this.checkShowUserDropdown(fileIndex);
@@ -497,6 +517,9 @@ export class UploadModalComponent implements OnInit {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAllowMap[fileIndex] = allow;
     } else {
+      for(let i = 0; i < this.getAssetNumber(); i++) {
+        this.customAllowMap[i] = allow;
+      }
       this.allow = allow;
     }
   }
@@ -714,7 +737,7 @@ export class UploadModalComponent implements OnInit {
         "dc:parentName": "Workspaces",
         "dc:sector": this.selectedWorkspace.title,
         "dc:primaryType": "event",
-        "dc:folderType": "singleDayEvent",
+        "dc:folderType": this.associatedDate ? "singleDayEvent" : "generic",
       },
       facets: ["Folderish", "NXTag", "SuperSpace"],
       schemas: [
