@@ -1,7 +1,7 @@
 ::ng-deep .cdk-global-overlay-wrapper{
   right: 0px;
 }
-::ng-deep .cdk-overlay-pane{
+::ng-deep .mat-dialog-container{
   width: 900px !important;
       max-width: 100% !important;
       min-height: 200px !important;
@@ -901,4 +901,39 @@ input.copyright-input {
 }
 .tollTipCustom:hover .tolltipContent {
   display: block;
+}
+
+::ng-deep .mat-snack-bar-container.snackBarMiddle {
+  /* transform: translate(-50%, -50%) !important;
+  top: 50% !important;
+  position: absolute !important;
+  left: 50% !important; */
+  background: #2D2926 !important;
+  /* margin: 67% 24px !important; */
+  font-size: 12px;
+  font-weight: normal;
+  color: #fff;
+  border-radius: 50px;
+  box-shadow: none !important;
+  height: 30px !important;
+  text-align: center;
+}
+::ng-deep .mat-simple-snackbar {
+  font-size: 13px !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  display: inline-block !important;
+  font-family: myBrown !important;
+}
+::ng-deep .mat-snack-bar-container.snackBarMiddle {
+  text-align: center !important;
+}
+
+::ng-deep #cdk-overlay-1, ::ng-deep .cdk-overlay-pane{
+  width: auto !important;
+  max-width: 100% !important;
+  min-height: auto !important;
+  max-height: 100%!important;
+  height: auto !important;
+  overflow: auto;
 }
