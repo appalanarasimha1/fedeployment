@@ -133,9 +133,7 @@
                      <i class="fa fa-caret-down"></i>
                      </span>
                      <ul *ngIf="showCustomDropdown" class="custom-select-options" id="custom-select-list">
-                        <div style="    min-height: 52px;
-                           max-height: 150px;
-                           overflow: auto;">
+                        <div style="min-height: 52px; max-height: 99px; overflow: auto;" id="customScrollBar">
                            <li *ngFor="let folder of dropdownFolderList" (click)="selectFolder(folder)" class="styled"><img src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px;">{{folder.title}}</li>
                            <li *ngIf="!dropdownFolderList || dropdownFolderList.length === 0"><span style="font-style: italic;">-No folder found-</span></li>
                         </div>

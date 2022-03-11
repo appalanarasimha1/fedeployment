@@ -192,6 +192,7 @@ section.lpBAck:before, .lpSecOne:before {
   position: absolute;
   background: #f8f8f5;
   left: 0;
+  /* left: -19.3vw; */
   height: 100%;
   width: 50%;
 }

@@ -411,7 +411,7 @@ export class UpdateModalComponent implements OnInit {
     this.dialogRef.close(this.updatedDocs);
     setTimeout(()=>{
       this._snackBar.open('The classifications have been updated.', '', {
-        duration: 3000,
+        duration: 4000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center',
         panelClass: ['snackBarMiddle'],
