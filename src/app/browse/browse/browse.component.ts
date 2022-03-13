@@ -100,6 +100,11 @@ export class BrowseComponent implements OnInit {
   showSearchbar = false;
   searchBarValue = '';
   breadCrumb= [];
+  selectedFolderList: any = {};
+  trashedList = null;
+  hasDeletedChildren = [];
+  user = null;
+  isTrashView = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -122,6 +127,7 @@ export class BrowseComponent implements OnInit {
   breadcrrumb = `/${WORKSPACE_ROOT}`;
 
   ngOnInit(): void {
+    this.fetchUserData();
     this.route.queryParams
       .subscribe(params => {
         console.log(params); // { orderby: "price" }
@@ -349,6 +355,9 @@ export class BrowseComponent implements OnInit {
   }
 
   handleClick(item, index, childIndex?: any) {
+    if (item.isTrashed) return;
+    this.selectedFolderList = {};
+    this.isTrashView = false;
     this.currentLevel = index;
     this.showLinkCopy = false;
     this.copiedString = '';
@@ -363,16 +372,17 @@ export class BrowseComponent implements OnInit {
     } else {
       this.handleSelectMenu(1, 'LIST');
     }
-    // if(this.breadcrrumb.includes(item.title)) {
-    //   this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
-    // }
-    // this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
-    // this.selectedFile = [];
-    if(item?.children?.length) {
+    if(item?.children?.length && !this.hasDeletedChildren.includes(item?.uid)) {
       this.searchList = item.children;
       if(item?.uid === ROOT_ID) this.showSearchbar = false;
       else this.showSearchbar = true;
       return;
+    }
+    if (this.hasDeletedChildren.includes(item?.uid)) {
+      const deleteIndex = this.hasDeletedChildren.indexOf(item.uid);
+      if (deleteIndex > -1) {
+        this.hasDeletedChildren.splice(deleteIndex, 1);
+      }
     }
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
@@ -704,22 +714,92 @@ export class BrowseComponent implements OnInit {
     return this.selectedFolder.uid === ROOT_ID;
   }
 
-  deleteModal() {
+  deleteModal(listDocs) {
     this._snackBar.open('The deleted items will be retained for 180 days in Deleted items.', '', {
       duration: 3000,
       // verticalPosition: 'top',
       horizontalPosition: 'center',
       panelClass: ['snackBarMiddle'],
     });
+    this.searchList = this.searchList.filter(item => !listDocs.includes(item['uid']));
+    this.hasDeletedChildren.push(this.selectedFolder.uid);
+    this.selectedFolderList = {};
   }
 
-  recoverModal() {
+  recoverModal(listDocs) {
     this._snackBar.open('Successfully recovered.', '', {
       duration: 3000,
       // verticalPosition: 'top',
       horizontalPosition: 'center',
       panelClass: ['snackBarMiddleRecover'],
     });
+    this.trashedList = this.trashedList.filter(item => !listDocs.includes(item['uid']));
+    this.searchList = this.trashedList;
+    // this.hasDeletedChildren.push(this.selectedFolder.uid);
+    this.selectedFolderList = {};
+  }
+
+  selectFolder($event, item, i) {
+    if (!$event.target.checked && this.selectedFolderList[i]) {
+      delete this.selectedFolderList[i];
+    } else if ($event.target.checked) {
+      this.selectedFolderList[i] = item;
+    }
+  }
+
+  async deleteFolders() {
+    if (Object.keys(this.selectedFolderList).length == 0) return;
+    this.loading = true;
+
+    const listDocs = Object.entries(this.selectedFolderList).map(function([key, item], index) {
+      return item['uid'];
+    });
+    await this.apiService.post(apiRoutes.TRASH_DOC, {input: `docs:${listDocs.join()}`}).subscribe((docs: any) => {
+      this.loading = false;
+    });
+    this.deleteModal(listDocs);
+  }
+
+  async unTrashFolders() {
+    if (Object.keys(this.selectedFolderList).length == 0) return;
+    this.loading = true;
+
+    const listDocs = Object.entries(this.selectedFolderList).map(function([key, item], index) {
+      return item['uid'];
+    });
+    await this.apiService.post(apiRoutes.UN_TRASH_DOC, {input: `docs:${listDocs.join()}`}).subscribe((docs: any) => {
+      this.loading = false;
+    });
+    this.recoverModal(listDocs);
+  }
+
+  getTrashedWS() {
+    this.apiService.get(`/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace'`)
+      .subscribe((docs: any) => {
+        this.trashedList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
+        this.searchList = this.trashedList;
+        this.isTrashView = true;
+      });
+  }
+
+  checkCanDelete(item) {
+    return this.user === item.properties['dc:creator'];
+  }
+
+  async fetchUserData() {
+    if (localStorage.getItem('user')) {
+      this.user = JSON.parse(localStorage.getItem('user'))['username'];
+      if (this.user) return;
+    }
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.connect();
+      this.user = res.user.id;
+      localStorage.setItem('user', JSON.stringify(res.user.properties));
+    }
+  }
+
+  checkShowNoTrashItem() {
+    return this.isTrashView && this.searchList && this.searchList.length === 0;
   }
 }
 

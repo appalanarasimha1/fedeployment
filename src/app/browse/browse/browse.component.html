@@ -25,7 +25,7 @@
            <div class="tree" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder2=item;selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
+                  <div class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid && !isTrashView ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder2=item;selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
                     <!-- (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)" -->
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -35,7 +35,7 @@
                   </div>
                   <ul *ngIf="item.children && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
+                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid && !isTrashView  ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <div style="z-index: 9;">
 
                           <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
@@ -48,7 +48,7 @@
                     </li>
                   </ul>
                 </li>
-                <li style="cursor: pointer" class="d-flex set"><span>Deleted items</span></li>
+                <li style="cursor: pointer" [ngClass]="isTrashView ? 'active-tab' : ''" class="d-flex set" (click)="getTrashedWS()"><span>Deleted items</span></li>
               </ul>
             </div>
           <!-- </div> -->
@@ -56,15 +56,9 @@
         <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative">
           <app-loader [show]="loading"></app-loader>
 
-          <!-- // Todo: Show div after no items //-->
-          <!-- <div class="no-items">
-            <img src="../../../assets/images/no-items.svg" alt="No items here" />
-            No items here
-          </div> -->
-
-          <div class="row" *ngIf="showSearchbar">
+          <div class="row" *ngIf="showSearchbar || isTrashView">
             <div class="col-xl-7">
-              <div *ngIf="showSearchbar" class="pb-5">
+              <div *ngIf="showSearchbar && !isTrashView" class="pb-5">
                 <div style="position: relative;">
                   <form autocomplete="off" style="width: 100%; position: relative;">
                     <button class="primary search-btn"><img
@@ -78,18 +72,14 @@
 
             <div class="col-xl-5" >
               <div style="float: right;">
-                <span class="deleteFolder" (click)="deleteModal()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
-                <!-- <span class="recoverFolder" (click)="recoverModal()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span> --> <!--// Todo: activate after recover stage //-->
-                
-                <!-- <div style="position: relative; display: inline-block;">
-                  <a href="javascript:void(0)" class="createNew"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
-                </div> -->
+                <span class="deleteFolder" *ngIf="!isTrashView" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
+                <span class="recoverFolder" *ngIf="isTrashView" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
               </div>
             </div>
           </div>
 
-          <div *ngIf="selectedFolder">
-            <div class="header-content">
+          <div *ngIf="selectedFolder || isTrashView">
+            <div class="header-content" *ngIf="!isTrashView">
               <div>
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
@@ -152,6 +142,27 @@
                 </div>
               </div>
             </div>
+            <div class="header-content" *ngIf="isTrashView">
+              <div>
+                <span style="overflow: auto;">
+                  <span class="main-title tollTipCustom"
+                  >Deleted Items
+                </span>
+                </span>
+              </div>
+              <div class="views">
+                <div>
+                  <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
+                  (click)="handleSelectMenu(0, 'GRID')">
+                    <img src="../../../assets/images/list-view.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                    (click)="handleSelectMenu(1, 'LIST')">
+                </div>
+              </div>
+            </div>
+            <div class="no-items" *ngIf="checkShowNoTrashItem()">
+              <img src="../../../assets/images/no-items.svg" alt="No items here" />
+              No items here
+            </div>
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
@@ -160,11 +171,11 @@
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
 
-                      <div class="groupFolder"> <!--/ Todo: Add class "checkDelete" when selected the checkbox -->
-                        <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type)">
+                      <div class="groupFolder" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''">
+                        <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
                           <div class="control-group">
                             <label class="control control--checkbox">
-                              <input type="checkbox" />
+                              <input id="checkbox-{{i}}" type="checkbox" (change)="selectFolder($event, item, i)"/>
                               <div class="control__indicator"></div>
                             </label>
                           </div>
@@ -249,11 +260,11 @@
                       <!-- <th width="20%">Last Updated by</th> -->
                       <th width="20%">Created on</th>
                     </tr>
-                    <tr *ngFor="let item of searchList | search: searchBarValue; let i = $index"  class="groupFolder"> <!--/ Todo: Add class "checkDelete" when selected the checkbox -->
-                      <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type)">
+                    <tr *ngFor="let item of searchList | search: searchBarValue; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
+                      <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
                         <div class="control-group">
                           <label class="control control--checkbox">
-                            <input type="checkbox" />
+                            <input id="checkbox-{{i}}" type="checkbox" (change)="selectFolder($event, item, i)"/>
                             <div class="control__indicator"></div>
                           </label>
                         </div>
