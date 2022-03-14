@@ -26,7 +26,7 @@
            <div class="tree" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder2=item;selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
+                  <div class="d-flex set active-tab"  (click)="handleClick(item, i);selectedFolder2=item;selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
                     <!-- (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)" -->
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -35,15 +35,16 @@
                     <span style="padding-left: 10px;z-index: 9;" >{{item.title}}</span>
                   </div>
                   <ul *ngIf="item.children && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
-                    <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
-                        <div style="z-index: 9;">
+                    <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer" class="hoverPin">
+                      <div class="d-flex set paddingLeft " (click)="handleClick(firstChild, i, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
+                        <!-- <div style="z-index: 9;"> -->
                           
                           <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
                           <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/> -->
                           
-                        </div>
-                        <span style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span>
+                        <!-- </div> -->
+                        <div class="hoverTooltip">Pin this sector</div>
+                        <span class="pinIcon" style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span>
                       </div>
                       
                     </li>
@@ -198,8 +199,15 @@
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
+                  <div class="mb-5 text-center">
+
+                    <img src="../../../assets/images/sectorss.svg">
+                    <p class="sectorssText">Choose a workspace on the left to begin</p>
+                  </div>
                 <ul class="all-sectors" >
+
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
+                    
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"

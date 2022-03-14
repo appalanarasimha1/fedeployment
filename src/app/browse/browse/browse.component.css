@@ -144,7 +144,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   top: 0px;
 }
 .set{
-  padding: 10px 17px;
+  padding: 12px 17px;
   /* width: max-content; */
 /* max-width: 100%; */
 }
@@ -909,4 +909,49 @@ font-weight: 600;
 }
 ::ng-deep .mat-expansion-panel-header-description{
   color: #937206;
+}
+.sectorssText{
+  font-size: 24px;
+line-height: 36px;
+font-weight: 600;
+color: #BAB8B2;
+}
+.pinIcon{
+  position: relative;
+}
+.pinIcon:before{
+  content: '';
+  background-image: url(../../../assets/images/gray-pin.svg);
+  background-size: contain;
+  height: 18px;
+  width: 18px;
+  left: -18px;
+  top: 4px;
+  position: absolute;
+  background-repeat: no-repeat;
+  display: none;
+
+}
+.hoverPin{
+  transition: .4s;
+  position: relative;
+}
+.hoverPin:hover .pinIcon::before, .hoverPin:hover .hoverTooltip{
+  display: block;
+}
+.hoverTooltip{
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: #2D2926;
+  box-shadow: 1px 1px 3px rgb(0 0 0 / 25%);
+  border-radius: 100px;
+  width: 117px;
+  height: 30px;
+  top: 36px;
+  position: absolute;
+  text-align: center;
+  padding: 4px;
+  display: none;
 }
