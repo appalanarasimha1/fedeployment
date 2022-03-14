@@ -328,6 +328,13 @@
                             doc?.properties["imd:image_description"]
                         }}</span>
                       </li>
+
+                      <li>
+                        Folder name <br /><span style="opacity: 0.7">{{
+                          doc?.properties["dc:parentName"]
+                        }}</span>
+                      </li>
+
                       <li>
                         EXIF
                         <br />
@@ -560,7 +567,7 @@
         <div class="search-tags pb-5">
           <ul class="flexible">
             <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
-              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])" >{{ tags[i] }}</a>
+              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])" >{{ sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
             </li>
             <li *ngIf="tags.length > currentTagLength">
               <button class="btn default" (click)="showMoreTags()">show more</button>

@@ -8,6 +8,7 @@ import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
 import { DataService } from "../services/data.service";
+import { SharedService } from "../services/shared.service";
 
 @Component({
   selector: "preview-popup",
@@ -38,7 +39,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     private apiService: ApiService,
     private modalService: NgbModal,
     public nuxeo: NuxeoService,
-    public dataService: DataService
+    public dataService: DataService,
+    public sharedService: SharedService
   ) {}
 
   ngOnInit(): void {

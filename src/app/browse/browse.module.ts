@@ -16,6 +16,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { UploadModalModule } from '../upload-modal/upload-modal.module';
 @NgModule({
   declarations: [
     BrowseComponent,
@@ -36,7 +37,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatTooltipModule,
     MatPaginatorModule,
     MatExpansionModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    UploadModalModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

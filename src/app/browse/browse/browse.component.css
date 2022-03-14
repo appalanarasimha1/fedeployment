@@ -250,7 +250,7 @@ section.lpBAck:before, .lpSecOne:before {
 } */
  .folderCircle:hover {
   color: #C49900;
-} 
+}
 .folder-structure{
   height: 130px;
   background: url(~/../../../assets/images/yellow-background.svg);
@@ -290,7 +290,7 @@ section.lpBAck:before, .lpSecOne:before {
   color: #737373;
 }
 /* .folder-structure {
-   width: 300px; 
+   width: 300px;
   max-width: 184.7px;
 }
 .folder-structure img{
@@ -333,8 +333,8 @@ section.lpBAck:before, .lpSecOne:before {
   padding-top: 25px !important;
 }
 .folder-content p{
-  /* white-space: nowrap; 
-  width: 100%; 
+  /* white-space: nowrap;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;  */
 }
@@ -954,4 +954,22 @@ color: #BAB8B2;
   text-align: center;
   padding: 4px;
   display: none;
+}
+.breadcrumb-active {
+  cursor: pointer;
+  text-decoration: none;
+  color: rgba(35, 33, 30, 0.6);
+}
+.breadcrumb-active:hover {
+  text-decoration: underline;
+  color: rgba(35, 33, 30, 0.6);
+}
+
+.breadcrumb-not-active {
+  cursor: default;
+  text-decoration: none;
+  color: rgba(35, 33, 30, 0.6);
+}
+.header-content h6.tollTipCustom span{
+  color: rgba(35, 33, 30, 0.6);
 }
