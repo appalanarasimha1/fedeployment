@@ -99,14 +99,19 @@
                   </select> -->
 
 
-                  <ng-select name="access"
-                  (change)="onSelectAccess(i)" [searchable]="false" [clearable]="false"
-                  id="access"
-                  [(ngModel)]="customAccessMap[i]"
-                  [ngClass]="{'goldenText': customAccessMap[i] }">
-                    <!-- <ng-option  hidden disabled selected value></ng-option> -->
-                    <ng-option [disabled]="checkAccessOptionDisabled(c.value, i)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
-                    </ng-option>
+                  <ng-select 
+                    placeholder="Specify visibility"
+                    name="access"
+                    (change)="onSelectAccess(i)" [searchable]="false" [clearable]="false"
+                    id="access"
+                    [(ngModel)]="customAccessMap[i]"
+                    [ngClass]="{'goldenText': customAccessMap[i] }">
+                      <ng-option 
+                        [disabled]="checkAccessOptionDisabled(c.value, i)" 
+                        *ngFor="let c of ACCESS | keyvalue" 
+                        value="{{c.value}}">
+                          {{ ACCESS_LABEL[c.value] }}
+                      </ng-option>
                  </ng-select>
                 </div>
 
@@ -141,7 +146,7 @@
                    <label for="allow">Allow use</label>
                 </div>
                 <div class="col-xl-8">
-                  <ng-select name="allow" [searchable]="false" [clearable]="false"(change)="onSelectAllow($event.target.value, i)" id="allow" [ngClass]="{'goldenText': customAllowMap[i] }" [(ngModel)]="customAllowMap[i]">
+                  <ng-select placeholder="Specify permissible usage" name="allow" [searchable]="false" [clearable]="false"(change)="onSelectAllow($event.target.value, i)" id="allow" [ngClass]="{'goldenText': customAllowMap[i] }" [(ngModel)]="customAllowMap[i]">
                     <!-- <ng-option  hidden disabled selected value></ng-option> -->
                     <ng-option *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value, i)">{{ ALLOW_LABEL[c.value] }}
                     </ng-option>

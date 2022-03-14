@@ -43,12 +43,12 @@
     position: absolute;
 }
 
-.overlay__content {
+/* .overlay__content {
     left: 50%;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
-}
+} */
 
 .spinner {
   width: 60px;
@@ -82,7 +82,7 @@
 .overlay__content {
   left: 50%;
   position: absolute;
-  top: 10%;
+  top: 20%;
   transform: translate(0%, -50%);
 }
 .loadingText {

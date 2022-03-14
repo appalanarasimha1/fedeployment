@@ -6,7 +6,8 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
-import { TRIGGERED_FROM_SUB_HEADER } from '../constant';
+import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER } from '../constant';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
     public matDialog: MatDialog,
     public dataService: DataService,
     protected readonly keycloak: KeycloakService,
+    private sharedService: SharedService
   ) {
     router.events.forEach((event: any) => {
       if (event.url) {
@@ -47,11 +49,9 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        console.log('header 1 = ', this.searchHeader, ' = ', this.showBrowseHeader);
+        
       }
-      console.log('header 2 = ', this.searchHeader, ' = ', this.showBrowseHeader);
     });
-    console.log('header 3 = ', this.searchHeader, ' = ', this.showBrowseHeader);
 
     // if( window.location.pathname === '/workspace' || window.location.pathname === '/common/terms' || window.location.pathname === '/report') {
     //   this.showBrowseHeader = true;
@@ -138,7 +138,7 @@ export class HeaderComponent implements OnInit {
   }
 
   checkForUserGroup() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user?.groups.indexOf('reportAdmin') != -1;
+    const expectedRole = REPORT_ROLE;
+    return this.sharedService.chekForReportRoles(expectedRole);
   }
 }
