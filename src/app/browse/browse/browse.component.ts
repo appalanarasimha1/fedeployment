@@ -103,6 +103,8 @@ export class BrowseComponent implements OnInit {
   searchBarValue = '';
   panelOpenState = false;
   breadCrumb= [];
+  needReloadWs = [];
+  hasUpdatedChildren = [];
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -371,11 +373,17 @@ export class BrowseComponent implements OnInit {
     // }
     // this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
     // this.selectedFile = [];
-    if(item?.children?.length) {
+    if(item?.children?.length && !this.hasUpdatedChildren.includes(item?.uid)) {
       this.searchList = item.children;
       if(item?.uid === ROOT_ID) this.showSearchbar = false;
       else this.showSearchbar = true;
       return;
+    }
+    if (this.hasUpdatedChildren.includes(item?.uid)) {
+      const deleteIndex = this.hasUpdatedChildren.indexOf(item.uid);
+      if (deleteIndex > -1) {
+        this.hasUpdatedChildren.splice(deleteIndex, 1);
+      }
     }
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
@@ -718,12 +726,24 @@ export class BrowseComponent implements OnInit {
     const url = `/path${this.selectedFolder2.path}/workspaces`;
     const payload = await this.sharedService.getCreateFolderPayload(folderName, this.selectedFolder2.title, null, description, date);
     const res = await this.apiService.post(url, payload).toPromise();
+    if (!res && !res['uid']) return;
+
+    this.searchList.push(res);
+    this.showFolder = false;
+    if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
+      this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    }
+
     return {
       id: res["uid"],
       title: res["title"],
       type: res["type"],
       path: res["path"],
     };
+  }
+
+  checkShowCreateFolder() {
+    return this.selectedFolder?.type === "Domain";
   }
 
 }

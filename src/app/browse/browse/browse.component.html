@@ -38,10 +38,10 @@
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer" class="hoverPin">
                       <div class="d-flex set paddingLeft " (click)="handleClick(firstChild, i, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <!-- <div style="z-index: 9;"> -->
-                          
+
                           <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
                           <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/> -->
-                          
+
                         <!-- </div> -->
                         <div class="hoverTooltip">Pin this sector</div>
                         <span class="pinIcon" style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span>
@@ -72,7 +72,7 @@
               </div>
               <div class="col-xl-5" >
                 <div style="float: right;">
-                  <div (click)="openNewFolderDiv()" style="position: relative;">
+                  <div *ngIf="checkShowCreateFolder()" (click)="openNewFolderDiv()" style="position: relative;">
                     <a href="javascript:void(0)" class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
                   <div *ngIf="showFolder" class="createFolder">
@@ -126,7 +126,7 @@
                        <div class="col-xl-12">
                         <button class="createBtn btn" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)">Create folder</button>
                        </div>
-                        
+
                       </div>
                     </form>
                   </div>
@@ -134,8 +134,8 @@
               </div>
             </div>
           </div>
-       
-          
+
+
           <div *ngIf="selectedFolder">
             <div class="header-content">
               <div>
@@ -191,7 +191,7 @@
                 <ul class="all-sectors" >
 
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
-                    
+
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
