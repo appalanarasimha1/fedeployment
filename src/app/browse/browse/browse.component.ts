@@ -399,7 +399,9 @@ export class BrowseComponent implements OnInit {
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         this.searchList = result;
-        this.showSearchbar = true;
+        if(this.selectedFolder2.uid !== ROOT_ID) {
+          this.showSearchbar = true;
+        }
         if(childIndex !== null && childIndex !== undefined) {
           this.showSearchbar = true;
           this.loading = false;
