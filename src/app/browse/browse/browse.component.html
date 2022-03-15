@@ -34,7 +34,7 @@
                     </div>
                     <span style="padding-left: 10px;z-index: 9;" >{{item.title}}</span>
                   </div>
-                  <ul *ngIf="item.children && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
+                  <ul *ngIf="item.children?.length && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer" class="hoverPin">
                       <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleGotoBreadcrumb(firstChild, i);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <!-- <div style="z-index: 9;"> -->

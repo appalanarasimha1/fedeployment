@@ -444,6 +444,7 @@ export class BrowseComponent implements OnInit {
                 return item;
               }
             });
+            if(this.callHandClick)
             this.selectedFolder2 = this.callHandClick;
             this.sectorOpen = true;
             this.callDomain
