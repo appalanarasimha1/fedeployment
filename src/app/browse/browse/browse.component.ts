@@ -502,12 +502,13 @@ export class BrowseComponent implements OnInit {
     if (index === 0) {
       this.breadCrumb = [];
       this.selectedFolder = item;
-      this.handleClick(item, index);
+      // this.handleClick(item, index);
       return;
     }
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.extractBreadcrumb();
-    this.handleClick(this.selectedFolder, index);
+    // this.handleClick(this.selectedFolder, index);
+    
   }
 
   async fetchFolder(id) {
