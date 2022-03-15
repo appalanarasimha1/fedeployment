@@ -707,6 +707,7 @@ export class BrowseComponent implements OnInit {
     dialogConfig.maxHeight = "900px"
     dialogConfig.width = "650px";
     dialogConfig.disableClose = true;
+    dialogConfig.data = this.selectedFolder;
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, Inject } from "@angular/core";
 import { HttpEventType, HttpResponse } from "@angular/common/http";
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // import { MatStepper } from "@angular/material/stepper";
 import Nuxeo from "nuxeo";
 import { concat, Observable, of, Subject } from "rxjs";
@@ -152,7 +152,8 @@ export class UploadModalComponent implements OnInit {
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
     private router: Router,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
