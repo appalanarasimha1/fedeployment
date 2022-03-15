@@ -36,15 +36,15 @@
                   </div>
                   <ul *ngIf="item.children?.length && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer" class="hoverPin">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleGotoBreadcrumb(firstChild, i);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
+                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleGotoBreadcrumb(firstChild, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <!-- <div style="z-index: 9;"> -->
 
                           <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
                           <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/> -->
 
                         <!-- </div> -->
-                        <div class="hoverTooltip">Pin this sector</div>
-                        <span class="pinIcon" style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span>
+                        <!-- <div class="hoverTooltip">Pin this sector</div> -->
+                        <span style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span> <!--  class="pinIcon" -->
                       </div>
 
                     </li>
@@ -54,6 +54,10 @@
             </div>
           <!-- </div> -->
         </div>
+        <!-- sidebar ends -->
+        
+
+        <!-- detail page starts -->
         <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative">
           <app-loader [show]="loading"></app-loader>
           <div>
@@ -72,7 +76,7 @@
               </div>
               <div class="col-xl-5" >
                 <div style="float: right;">
-                  <div *ngIf="checkShowCreateFolder()" (click)="openNewFolderDiv()" style="position: relative;">
+                  <div *ngIf="showSearchbar" (click)="openNewFolderDiv()" style="position: relative;">
                     <a href="javascript:void(0)" class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
                   <div *ngIf="showFolder" class="createFolder">
@@ -160,9 +164,9 @@
 
                 </span>
               <h6 class="tollTipCustom">
-                <span>/<a [ngClass]="breadCrumb.length !== 0 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(folderStructure[0], 0)">All Workspace</a></span>
+                <span>/<a [ngClass]="breadCrumb.length !== 0 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(folderStructure[0], null, 0)">All Workspace</a></span>
                 <span *ngFor="let c of breadCrumb; let i = index">
-                  /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, i + 1)">{{c.title}}</a>
+                  /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
                 </span>
                 <div class="tolltipContent" style="top: auto; bottom: -30px;">
                   {{removeWrokspaceFromBreadcrumb()}}
@@ -187,10 +191,13 @@
                 </div>
                 <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId">
 
-                  <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
+                  <li *ngFor="let item of searchList | search: searchBarValue; let i = index" [ngClass]="{'inner-sectors': item.type=== 'Domain' }">
 
-                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
-                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
+                    <span 
+                      class="folderCircle" 
+                      (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
+                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}
+                    </span>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
                       (click)="handleTest(item);selectedFolder=item;">
                       <div class="folder-content">

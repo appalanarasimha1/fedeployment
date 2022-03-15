@@ -399,6 +399,7 @@ export class BrowseComponent implements OnInit {
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         this.searchList = result;
+        this.showSearchbar = true;
         if(childIndex !== null && childIndex !== undefined) {
           this.showSearchbar = true;
           this.loading = false;
@@ -498,17 +499,36 @@ export class BrowseComponent implements OnInit {
     }
   }
 
-  async handleGotoBreadcrumb(item, index) {
-    if (index === this.breadCrumb.length) return;
-    if (index === 0) {
-      this.breadCrumb = [];
-      this.selectedFolder = item;
+  async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+      this.showSearchbar = true;
+    }
+    if (breadCrumbIndex === this.breadCrumb.length) return;
+    if (breadCrumbIndex === 0) {
+      this.showSearchbar = false;
+      this.selectedFolder2 = this.folderStructure[0];
+      this.selectedFolder = this.selectedFolder2;
+      this.selectedMenu = 0;
+      // this.breadCrumb = [];
+      // // this.selectedFolder = item;
+      // // this.selectedFolder2 = item;
       // this.handleClick(item, index);
+      // setTimeout(() => {
+      //   if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+      //     this.showSearchbar = true;
+      //   }
+      // }, 0);
       return;
     }
-    this.selectedFolder = await this.fetchFolder(item.uid);
     this.extractBreadcrumb();
-    // this.handleClick(this.selectedFolder, index);
+    this.handleClick(item, index);
+    setTimeout(() => {
+      if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+        this.showSearchbar = true;
+      }
+    }, 0);
+    this.selectedFolder = await this.fetchFolder(item.uid);
+    this.selectedFolder2 = this.selectedFolder;
     
   }
 
