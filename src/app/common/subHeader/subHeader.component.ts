@@ -47,7 +47,7 @@ export class SubHeaderComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    // private sharedService: SharedService,
+    public sharedService: SharedService,
     private modalService: NgbModal,
     private apiService: ApiService
     ) {
@@ -199,7 +199,27 @@ export class SubHeaderComponent implements OnInit {
     "infinite": false,
     "speed": 300,
     "centerMode": false,
-    "variableWidth": true
+    "variableWidth": true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          arrows: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          arrows: false
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false
+        }
+      }
+    ]
   };
 
   openSm(content) {

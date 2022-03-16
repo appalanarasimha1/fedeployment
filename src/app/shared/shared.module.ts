@@ -21,6 +21,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { ReversePipe } from '../common/pipe/reverse.pipe';
 import { ChartsModule } from 'ng2-charts';
 import { SearchPipe } from '../common/pipe/search.pipe';
+import { UploadModalComponent } from '../upload-modal/upload-modal.component';
 
 @NgModule({
   providers: [
@@ -28,11 +29,12 @@ import { SearchPipe } from '../common/pipe/search.pipe';
   declarations: [
     LoaderComponent,
     LoaderSmallComponent,
+    // UploadModalComponent,
     DocumentCardComponent,
     PreviewPopupComponent,
     SecurePipe,
     ReversePipe,
-    SearchPipe
+    SearchPipe,
   ],
   imports: [
     CommonModule,
@@ -48,18 +50,19 @@ import { SearchPipe } from '../common/pipe/search.pipe';
   ],
   exports: [
     CommonModule,
+    FormsModule,
     PdfViewerModule,
     ReactiveFormsModule,
-    FormsModule,
     NgbModule,
     LoaderComponent,
     LoaderSmallComponent,
     DocumentCardComponent,
     PreviewPopupComponent,
+    // UploadModalComponent,
     MatStepperModule,
     ReversePipe,
     ChartsModule,
-    SearchPipe
+    SearchPipe,
     // NgxMasonryModule
     // OwlModule
   ]

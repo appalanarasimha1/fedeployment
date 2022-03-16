@@ -17,8 +17,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
   declarations: [UploadModalComponent],
   imports: [
     SharedModule,
-    CommonModule,
-    FormsModule,
+    // CommonModule,
+    // FormsModule,
     NgxDropzoneModule,
     MatIconModule,
     MatTooltipModule,
@@ -30,5 +30,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     MatExpansionModule,
     SlickCarouselModule
   ],
+  exports: [UploadModalComponent]
 })
 export class UploadModalModule {}

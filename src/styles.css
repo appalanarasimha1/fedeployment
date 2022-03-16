@@ -3601,8 +3601,6 @@ li.breadcrumb-item {
   margin-top: 111px !important;
 }
 
-element.style {
-}
 .tooltip-inner {
     max-width: 210px !important;
     width: 210px ;
@@ -4101,3 +4099,55 @@ document-card img {
 .customTab [type=submit]:not(:disabled),  .customTab button:not(:disabled) {
   display: none;
 } */
+
+@media (max-width:768px) {
+  .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    padding-right: var(--bs-gutter-x,1.75rem) !important;
+    padding-left: var(--bs-gutter-x,1.75rem) !important;
+  }
+  .col-xs-3 {
+    width: 40% !important;
+  }
+  .col-xs-9 {
+    width: 60% !important;
+  }
+  header img.header-logo {
+    width: 100% !important;
+  }
+  .sub-header {
+    padding-bottom: 85px !important;
+  }
+  .video-icon {
+    left: 1.75rem !important;
+  }
+  .customTagSlider {
+    padding-top: 16px !important;
+  }
+  .video-icon {
+    bottom: 18px !important;
+  }
+  .container.mobileContainer {
+    padding-right: var(--bs-gutter-x,0rem) !important;
+  }
+  .searchDiv {
+    padding-right: var(--bs-gutter-x,1.75rem) !important;
+  }
+  .customTagSlider .slick-slide {
+    margin-right: 10px !important;
+  }
+  .customTab {
+    padding: 30px 0px 30px !important;
+  }
+  .customTab .pb-50 {
+    padding-bottom: 30px !important;
+  }
+  .customTab .tab-content {
+    padding: 20px 0px 0px !important;
+  }
+  .modal-dialog {
+    margin: 0px;
+  }
+  .modal-content {
+    width: 96%;
+  }
+}

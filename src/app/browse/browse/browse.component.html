@@ -1,7 +1,7 @@
 <section class="sub-header" style="background-color: #E8E6DF;background-image: unset;">
 
 </section>
-<app-loader [show]="loading"></app-loader>
+<!-- <app-loader [show]="loading"></app-loader> -->
 <!-- <section  style="background-color: #E8E6DF;padding: 30px 0px;">
   <div class="container">
     <div class="row">
@@ -26,7 +26,7 @@
            <div class="tree" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder2=item;selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
+                  <div class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid ? 'active-tab' : ''" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
                     <!-- (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)" -->
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -34,18 +34,19 @@
                     </div>
                     <span style="padding-left: 10px;z-index: 9;" >{{item.title}}</span>
                   </div>
-                  <ul *ngIf="item.children && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
-                    <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleClick(firstChild, i, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
-                        <div style="z-index: 9;">
-                          
+                  <ul *ngIf="item.children?.length && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
+                    <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer" class="hoverPin">
+                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleGotoBreadcrumb(firstChild, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
+                        <!-- <div style="z-index: 9;"> -->
+
                           <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
                           <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/> -->
-                          
-                        </div>
-                        <span style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span>
+
+                        <!-- </div> -->
+                        <!-- <div class="hoverTooltip">Pin this sector</div> -->
+                        <span style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span> <!--  class="pinIcon" -->
                       </div>
-                      
+
                     </li>
                   </ul>
                 </li>
@@ -53,68 +54,123 @@
             </div>
           <!-- </div> -->
         </div>
-        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white">
-          
-          <div *ngIf="showSearchbar" class="  pb-5">
-            <div style="position: relative;">
-              <form autocomplete="off" style="width: 458px; position: relative;">
-                <button class="primary search-btn"><img
-                  src="../../../assets/images/search.png" /></button>
-                <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
-                <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
-              </form>
+        <!-- sidebar ends -->
+        
+
+        <!-- detail page starts -->
+        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative">
+          <app-loader [show]="loading"></app-loader>
+          <div>
+            <div class="row">
+              <div class="col-xl-7">
+                <div *ngIf="showSearchbar" class="  pb-5">
+                  <div style="position: relative;">
+                    <form autocomplete="off" style="width: 458px; position: relative;">
+                      <button class="primary search-btn"><img
+                        src="../../../assets/images/search.png" /></button>
+                      <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
+                      <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-5" >
+                <div style="float: right;">
+                  <div *ngIf="showSearchbar" (click)="openNewFolderDiv()" style="position: relative;">
+                    <a href="javascript:void(0)" class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
+                  </div>
+                  <div *ngIf="showFolder" class="createFolder">
+                    <form>
+                      <div class="row">
+                        <div class="col-xl-12">
+                            <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
+                        </div>
+                        <div class="col-xl-12">
+                          <input #folderNameRef type="text" placeholder="Enter a folder name">
+                        </div>
+                      </div>
+                      <div class="row mt-4">
+                        <div class="col-xl-12">
+                          <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true"
+                                                 (closed)="panelOpenState = false">
+                              <mat-expansion-panel-header>
+                                <mat-panel-description>
+                                  Show optional information
+                                </mat-panel-description>
+                              </mat-expansion-panel-header>
+                              <div class="row mt-4">
+                                <div class="col-xl-12">
+                                    <label>Description </label><span class="placeholderText">Project or event description</span>
+                                </div>
+                                <div class="col-xl-12">
+                                  <input #folderDescriptionRef type="text">
+                                </div>
+                              </div>
+                              <div class="row custom-date-picker mt-4">
+                                <div class="col-xl-12 col-md-12">
+                                   <label for="date">Associated Date</label>
+                                </div>
+                                <div class="col-xl-12 col-md-12 " >
+                                   <mat-form-field appearance="fill">
+                                     <div class="flexible">
+                                      <input #folderDateRef matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 1.5px solid #000;"
+                                      placeholder="Choose a date"  (click)="picker.open()" >
+                                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    </div>
+                                      <mat-datepicker #picker></mat-datepicker>
+                                   </mat-form-field>
+                                </div>
+                             </div>
+                            </mat-expansion-panel>
+                          </mat-accordion>
+                        </div>
+                      </div>
+                      <div class="row mt-4" style="">
+                       <div class="col-xl-12">
+                        <button class="createBtn btn" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)">Create folder</button>
+                       </div>
+
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          
+
+
           <div *ngIf="selectedFolder">
             <div class="header-content">
-              <div>
+              <div *ngIf="selectedFolder2.uid !== parentId">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
                   aria-label="Button that displays a tooltip when focused or hovered over">
                   {{sharedService.stringShortener(selectedFolder?.title, 30)}}
                 </button> -->
                 <span style="overflow: auto;">
-                  <span class="main-title tollTipCustom"
-                  >{{sharedService.stringShortener(selectedFolder?.title, 28)}}
-                  <div class="tolltipContent">
-                    {{selectedFolder?.title}}
-                  </div>
-                </span>
-              
-                  <span *ngIf="showLinkCopy" class="copy-section" >
-                  <a class="flexible">
-                    <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
-                    <span class="copy-link pointer" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
-                  </a>
-                  <!-- <div class="copy-box">
-                    <div>
-                      <p class="link-title mb-2">
-                        <img *ngIf="copiedString" src="../../../assets/images/green-tickbox.png" style="width: 30px;margin-right: 8px;">
-                        Link to {{copiedString}} created
-                      </p>
-                      <p class="please-copy mb-3">Please copy the link below.</p>
-                      <div class="flexible">
-                        <input type="text" [defaultValue]="removeWrokspaceFromBreadcrumb()" name="copy-url" class="copy-url">
-                        <button class="copy-btn" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">Copy</button>
-                      </div>
+                  <span class="main-title tollTipCustom">{{sharedService.stringShortener(selectedFolder?.title, 28)}}
+                    <div class="tolltipContent">
+                      {{selectedFolder?.title}}
                     </div>
-                  </div> -->
-                    <!-- <ng-template #popTitle>Fancy <b>content!!</b></ng-template>
-                    <ng-template #popContent>Hello, <b>{{name}}</b>!</ng-template>
+                  </span>
 
-                  <button type="button" class="btn btn-outline-secondary" [popoverTitle]="pop title"
-                  [autoClose]="'outside'" [ngbPopover]="Click outside or press Escape to close">
-                    Copy Link</button> -->
+                  <span *ngIf="showLinkCopy" class="copy-section" >
+                    <a class="flexible">
+                      <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
+                      <span class="copy-link pointer" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
+                    </a>
+                  </span>
 
-                    </span>
-                
                 </span>
               <h6 class="tollTipCustom">
-              {{sharedService.stringShortener(removeWrokspaceFromBreadcrumb(), 70)}}
-              <div class="tolltipContent" style="top: auto; bottom: -30px;">
-                {{removeWrokspaceFromBreadcrumb()}}
-              </div>
+                <span>/<a [ngClass]="breadCrumb.length !== 0 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(folderStructure[0], null, 0)">All Workspace</a></span>
+                <span *ngFor="let c of breadCrumb; let i = index">
+                  /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
+                </span>
+                <div class="tolltipContent" style="top: auto; bottom: -30px;">
+                  {{removeWrokspaceFromBreadcrumb()}}
+                </div>
               </h6>
               </div>
               <div class="views">
@@ -129,41 +185,35 @@
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
-                <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                <ul class="all-sectors" >
-                  <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
-                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
-                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
+                <div class="mb-5 text-center" *ngIf="selectedFolder2.uid === parentId">
+                  <img src="../../../assets/images/sectorss.svg">
+                  <p class="sectorssText">Choose a workspace on the left to begin</p>
+                </div>
+                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId">
+
+                  <li *ngFor="let item of searchList | search: searchBarValue; let i = index" [ngClass]="{'inner-sectors': item.type=== 'Domain' }">
+
+                    <span 
+                      class="folderCircle" 
+                      (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
+                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}
+                    </span>
                     <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
                       (click)="handleTest(item);selectedFolder=item;">
-                      <!-- <img src="../../../assets/images/yellow-folder.png"> -->
                       <div class="folder-content">
                         <p class="tollTipCustom" style="    white-space: normal;
                         width: 100%;
                         overflow: inherit;
                         text-overflow: inherit;">
-                         {{sharedService.stringShortener(item.title, 16)}} 
+                        {{sharedService.stringShortener(item.title, 16)}}
                           <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
                             {{item.title}}
                           </span>
                         </p>
                         <span>{{ getFolderInfo(item) }}</span>
                       </div>
-
                     </div>
-                      <!-- <div class="folder-content" style="background-color: #F9F7F2;">
-                        <p class="tollTipCustom" style="    white-space: normal;
-                        width: 100%;
-                        overflow: inherit;
-                        text-overflow: inherit;">
-                          {{sharedService.stringShortener(item.title, 16)}} 
-                          <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
-                            {{item.title}}
-                          </span>
-                        </p>
-                        <span>{{ getFolderInfo(item) }}</span>
-                      </div> -->
-                    
+
                     <document-card *ngIf="checkAssetType(item.type)"
                       [doc]="item"
                       [viewType]="viewType"
@@ -177,36 +227,14 @@
                 <div style="text-align: center;">
                   <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
                 </div>
-                <!-- </ngx-masonry> -->
               </div>
-
-              <!-- <div class="block-container" *ngFor="let item of searchList | search: searchBarValue;">
-
-                <div class="hover-content">
-                  <div class="left-content">
-                    <fa-icon [icon]="['fas', 'check-circle']" class="menu-icon active"></fa-icon>
-                  </div>
-                  <div class="right-content">
-                    <div>
-                      <div>
-                        <fa-icon [icon]="['fas', 'star']" class="hover-menu-icon"></fa-icon>
-                      </div>
-                      <div>
-                        <fa-icon [icon]="['fas', 'plus-circle']" class="hover-menu-icon"></fa-icon>
-                      </div>
-                    </div>
-                    <div class="right-bottom-content">
-                      <fa-icon [icon]="['fas', 'download']" class="hover-menu-icon"></fa-icon>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
             </div>
+            
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
               <div  class="col-xl-12 col-md-12">
                 <table class="folderListview pb-5">
                     <tr>
-                      <th width="30%">Folder name</th>
+                      <th width="30%">{{ !checkAssetType(selectedFolder2.type) ? 'Folder name' : 'Asset name'}}</th>
                       <th width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
                       <th width="20%">Created on</th>
@@ -263,7 +291,7 @@
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
         </div>
-        <!-- <mat-paginator 
+        <!-- <mat-paginator
           [length]="100"
           [pageSize]="10"
           [pageSizeOptions]="[5, 10, 25, 100]"

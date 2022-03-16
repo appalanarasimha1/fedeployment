@@ -1,5 +1,5 @@
 <section class="sub-header" [ngClass]="{'afterSearch': searched}" >
-  <div class="container">
+  <div class="container mobileContainer">
     <div class="row">
       <div class="col-xl-8 offset-xl-2 text-center">
         <!-- <h2 class="pb-4 discover"><a href="/" style="color: #fff;" >Discover NEOM.</a></h2> -->
@@ -64,7 +64,7 @@
               [config]="slideConfig" >
               <div ngxSlickItem *ngFor="let bucket of tagsMetadata?.buckets; let i = index" class="slide">
                 <div class="item" [id]="bucket.id">
-                  <a class="card" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{bucket.key}}</a>
+                  <a class="card" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a>
                 </div>
               </div>
             </ngx-slick-carousel>
