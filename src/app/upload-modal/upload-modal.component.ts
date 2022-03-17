@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, Inject } from "@angular/core";
 import { HttpEventType, HttpResponse } from "@angular/common/http";
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // import { MatStepper } from "@angular/material/stepper";
 import Nuxeo from "nuxeo";
 import { concat, Observable, of, Subject } from "rxjs";
@@ -31,7 +31,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
+import { MatHorizontalStepper, MatStep, MatVerticalStepper } from '@angular/material/stepper';
+import { WORKSPACE_ROOT } from "../common/constant";
 interface FileByIndex {
   [index: string]: File;
 }
@@ -55,6 +56,7 @@ const BUTTON_LABEL = {
 })
 export class UploadModalComponent implements OnInit {
   @ViewChild(MatHorizontalStepper) stepper: MatHorizontalStepper;
+  // @ViewChild('searchFolderInput') searchFolderInputRef: any;
 
   isLinear = true;
   panelOpenState = false;
@@ -66,7 +68,7 @@ export class UploadModalComponent implements OnInit {
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
   readonly SPECIFIC_USER_LABEL = SPECIFIC_USER_LABEL;
   readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
-
+  readonly WORKSPACE_ROOT = WORKSPACE_ROOT;
   filesMap: FileByIndex = {};
   batchId: string = null;
   currentIndex: number = 0;
@@ -107,6 +109,7 @@ export class UploadModalComponent implements OnInit {
   descriptionFilled = false;
   showFolderNameField = false;
   agreeTerms = false;
+  folderNameParam: string;
 
 
   years = [
@@ -152,14 +155,23 @@ export class UploadModalComponent implements OnInit {
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
     private router: Router,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
+    console.log('incoming data = ', this.data);
+    if(this.data) {
+      const title = this.data.path.split('/workspaces')[0].substring(1);
+      this.selectWorkspace(title, true);
+      this.showWsList = false;
+      this.folderNameParam = this.data.title;
+    } else {
+      this.showWorkspaceList();
+    }
     this.stepLabel = STEPS[1];
     this.buttonLabel = BUTTON_LABEL[1];
     this.loadUsers();
-    this.showWorkspaceList();
   }
 
   openFileSelect(event) {
@@ -233,7 +245,7 @@ export class UploadModalComponent implements OnInit {
 
   checkUploadFormStep() {
     if (
-      (!this.selectedFolder && !this.folderToAdd) ||
+      (!this.selectedFolder && !this.folderToAdd && !this.folderNameParam) ||
       !this.access ||
       !this.confidentiality || !this.allow ||
       (this.checkShowUserDropdown() &&
@@ -281,7 +293,11 @@ export class UploadModalComponent implements OnInit {
     this.showWsList = true;
   }
 
-  async selectWorkspace(ws) {
+  async selectWorkspace(ws, incomingParam?: boolean) {
+    if(incomingParam) {
+      this.selectedWorkspace.title = ws;
+      return;
+    }
     this.selectedWorkspace = ws;
     this.showWsList = false;
     this.folderList = await this.getFolderList(ws.id);
@@ -290,7 +306,7 @@ export class UploadModalComponent implements OnInit {
 
   openBrowseRoute() {
     this.dialogRef.close(this.selectedFolder);
-    this.router.navigate(['/workspace'], {queryParams: {sector: this.selectedWorkspace.id, folder: this.selectedFolder?.title || this.folderToAdd}});
+    this.router.navigate(['/workspace'], {queryParams: {sector: this.data ? this.data.sectorId : this.selectedWorkspace.id, folder: this.data?.title || this.selectedFolder?.title || this.folderToAdd}});
   }
 
   async getWsList() {
@@ -440,6 +456,7 @@ export class UploadModalComponent implements OnInit {
 
   //// Custom input dropdown
   focusDropdown() {
+    if(this.data) return;
     this.showCustomDropdown = true;
   }
 
@@ -567,7 +584,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async publishAssets() {
-    let folder = Object.assign({}, this.selectedFolder);
+    let folder = this.data ? Object.assign({}, this.data) : Object.assign({}, this.selectedFolder);
     if (this.folderToAdd) {
       folder = await this.createFolder(this.folderToAdd);
     }
@@ -591,10 +608,10 @@ export class UploadModalComponent implements OnInit {
     const payload = {
       "entity-type": "document",
       repository: "default",
-      path: `${folder.path}/null`,
+      path: `${folder.path}/null`, //
       type: fileType,
       state: null,
-      parentRef: folder.id,
+      parentRef: this.data ? this.data.uid : folder.id,
       isCheckedOut: true,
       isRecord: false,
       retainUntil: null,
@@ -612,8 +629,8 @@ export class UploadModalComponent implements OnInit {
         },
         "dc:creator": this.ownerName,
         "dc:description": this.description,
-        "dc:path": folder.path,
-        "dc:parentId": folder.id,
+        "dc:path": folder.path, //
+        "dc:parentId": this.data ? this.data.uid : folder.id,
         "dc:title": file.name,
         "dc:parentName": folder.title,
         "dc:sector": this.selectedWorkspace.title,

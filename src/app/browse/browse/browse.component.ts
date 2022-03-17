@@ -349,10 +349,6 @@ export class BrowseComponent implements OnInit {
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
 
-  removeWrokspaceFromBreadcrumb(): string {
-    return this.breadcrrumb.replace(/\/workspaces/gi, '');
-  }
-
   handleClick(item, index, childIndex?: any) {
     this.currentLevel = index;
     this.showLinkCopy = false;
@@ -740,6 +736,21 @@ export class BrowseComponent implements OnInit {
 
   showGridListButton() {
     return this.selectedFolder.uid === ROOT_ID;
+  }
+  
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "700px";
+    dialogConfig.maxHeight = "900px"
+    dialogConfig.width = "650px";
+    dialogConfig.disableClose = true;
+    this.selectedFolder['sectorId'] = this.selectedFolder2.uid
+    dialogConfig.data = this.selectedFolder;
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }
    showFolder = false;
   openNewFolderDiv(){

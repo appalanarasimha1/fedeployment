@@ -158,7 +158,7 @@
                   <span *ngIf="showLinkCopy" class="copy-section" >
                     <a class="flexible">
                       <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
-                      <span class="copy-link pointer" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
+                      <span class="copy-link pointer" (click)="copyToClipboard(sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb))">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
                     </a>
                   </span>
 
@@ -169,12 +169,22 @@
                   /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
                 </span>
                 <div class="tolltipContent" style="top: auto; bottom: -30px;">
-                  {{removeWrokspaceFromBreadcrumb()}}
+                  {{sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb)}}
                 </div>
               </h6>
               </div>
               <div class="views">
-                <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
+                <ul class="uploadAssetsClassifications pb-3" *ngIf="checkShowUpdateBtn()">
+                  <li><img src="../../../assets/images/info-icon-yellow.svg" /></li>
+                  <li>
+                    <img src="../../../assets/images/upload-assets.svg" />
+                    <ul class="subDropdownMenu">
+                      <li (click)="openModal()">Upload assets</li>
+                      <li (click)="openUpdateClassModal()">Update classifications</li>
+                    </ul>
+                  </li>
+                </ul>
+                <!-- <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a> -->
                 <div *ngIf="!showGridListButton()">
                   <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">

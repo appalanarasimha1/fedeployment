@@ -8,9 +8,19 @@
             <ngx-dropzone-label  class="noborder">
                <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
                   <div class="upload-label">
-                     <img src="../../assets/images/cloud-upload.png" style="width: 40px;margin: auto;">
-                     <span><b>Drag and drop assets to upload</b><br>
-                     or click to select files to upload</span>
+                     <span style="margin-top: 20px;"><img src="../../assets/images/cloud-upload.png" style="width: 36px; margin-right: 10px;"> <b>Drag and drop assets to upload</b></span>
+                     <div *ngIf="data" class="uploadAssetsBlock">
+                        <div class="folder-img">
+                           <img src="../../assets/images/folder-icon.svg" style="width: 60px;margin: 0 14px 0 0;">
+                        </div>
+                        <div class="folder-content">
+                           <div class="folderHeading">
+                              {{data.title}}
+                              <span>/{{WORKSPACE_ROOT}}{{sharedService.removeWrokspaceFromBreadcrumb(data.path)}}</span>
+                           </div>
+                        </div>
+                     </div>
+                     <span>or click to select files to upload</span>
                   </div>
                   <div class="errortext">
                      <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
@@ -95,7 +105,7 @@
                         <div class="col-xl-8 col-md-8">
                            <div class="flexible">
                               <div class="workshaptitle">{{ selectedWorkspace.title || "Select workspace" }}</div>
-                              <div class="select-workspace-menu-btn pointer" (click)="showWorkspaceList()">Change workspace</div>
+                              <div class="select-workspace-menu-btn pointer" (click)="showWorkspaceList()" [ngClass]="{'disableDiv': data}">Change workspace</div>
                            </div>
                         </div>
                      </div>
@@ -127,8 +137,8 @@
                   <div id='custom-select-status' class='hidden-visually' aria-live="polite"></div>
                </div>
                <div class="col-xl-8 col-md-8 flexible">
-                  <div class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd}">
-                     <input type="text" id="title" #searchFolderInput value="{{folderToAdd || selectedFolder?.title}}" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
+                  <div class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}">
+                     <input type="text" id="title" #searchFolderInput [disabled]="data" value="{{folderToAdd || selectedFolder?.title}}" [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
                      <span class="custom-select-icons">
                      <i class="fa fa-caret-down"></i>
                      </span>
@@ -169,7 +179,7 @@
             </div>
             <div class="update-form-input row mb-20">
                <div class="col-xl-4 col-md-4"></div>
-               <div class="col-xl-8 col-md-8">
+               <div [ngClass]="{'disableDiv': data}" class="col-xl-8 col-md-8">
                   <mat-accordion>
                      <mat-expansion-panel (opened)="panelOpenState = true"
                      (closed)="panelOpenState = false" >
