@@ -349,10 +349,6 @@ export class BrowseComponent implements OnInit {
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
 
-  removeWrokspaceFromBreadcrumb(): string {
-    return this.breadcrrumb.replace(/\/workspaces/gi, '');
-  }
-
   handleClick(item, index, childIndex?: any) {
     this.currentLevel = index;
     this.showLinkCopy = false;
@@ -751,6 +747,7 @@ export class BrowseComponent implements OnInit {
     dialogConfig.maxHeight = "900px"
     dialogConfig.width = "650px";
     dialogConfig.disableClose = true;
+    this.selectedFolder['sectorId'] = this.selectedFolder2.uid
     dialogConfig.data = this.selectedFolder;
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);

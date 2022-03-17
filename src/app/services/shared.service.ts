@@ -322,5 +322,9 @@ export class SharedService {
       name: name,
     };
   }
+  
+  removeWrokspaceFromBreadcrumb(data: string): string {
+    return data.replace(/\/workspaces/gi, '');
+  }
 
 }

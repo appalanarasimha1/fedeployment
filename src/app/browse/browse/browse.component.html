@@ -158,7 +158,7 @@
                   <span *ngIf="showLinkCopy" class="copy-section" >
                     <a class="flexible">
                       <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
-                      <span class="copy-link pointer" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
+                      <span class="copy-link pointer" (click)="copyToClipboard(sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb))">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
                     </a>
                   </span>
 
@@ -169,7 +169,7 @@
                   /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
                 </span>
                 <div class="tolltipContent" style="top: auto; bottom: -30px;">
-                  {{removeWrokspaceFromBreadcrumb()}}
+                  {{sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb)}}
                 </div>
               </h6>
               </div>
