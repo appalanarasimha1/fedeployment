@@ -994,7 +994,7 @@ color: #737373;
   position: unset !important;
 } */
 ::ng-deep .ng-select{
-  height: 30px !important;
+  min-height: 30px !important;
 }
 ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
   overflow: visible !important;
@@ -1268,4 +1268,7 @@ input.copyright-input::placeholder{
 }
 .tollTipCustom:hover .tolltipContent {
   display: block;
+}
+.upload-form-input ::ng-deep .ng-select .ng-arrow-wrapper {
+  text-align: right !important;
 }

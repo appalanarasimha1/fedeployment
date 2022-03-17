@@ -2,7 +2,7 @@
   right: 0px;
 }
 ::ng-deep .cdk-overlay-pane{
-  width: 900px !important;
+  width: 1000px !important;
       max-width: 100% !important;
       min-height: 200px !important;
       max-height: 100%!important;
@@ -238,7 +238,7 @@ color: #FFFFFF;
   /* font-weight: 600; */
 }
 .upload-form-input select option {
-  height: 30px !important;
+  min-height: 30px !important;
 }
 .upload-form-input textarea {
   resize: none;
@@ -445,6 +445,7 @@ border-radius: 8px;
 .publish-file-preview-access {
   /* width: 57%; */
   margin-left: 27px;
+  width: 100%;
 }
 .preview-img {
   width: 160px;
@@ -869,6 +870,7 @@ input.copyright-input {
 ::ng-deep .goldenText .ng-value.ng-star-inserted span {
   color:  #C49900 !important;
   white-space: nowrap !important;
+  line-height: 28px !important;
 }
 
 ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
@@ -901,4 +903,15 @@ input.copyright-input {
 }
 .tollTipCustom:hover .tolltipContent {
   display: block;
+}
+.upload-form-input ::ng-deep .ng-select .ng-select-container .ng-value-container {
+  padding-left: 0px;
+}
+.upload-form-input ::ng-deep .ng-select .ng-arrow-wrapper {
+  width: 25px;
+  padding-right: 0px;
+  text-align: right !important;
+}
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
+  padding: 0px 5px !important;
 }
