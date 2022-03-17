@@ -43,7 +43,7 @@ import { AuthGuardService } from './services/authGaurd';
     LoaderYellowComponent
   ],
   imports: [
-    CommonModule,
+    // CommonModule,
     CoreModuleModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -64,7 +64,7 @@ import { AuthGuardService } from './services/authGaurd';
     // NuxeoService,
     // { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
     NuxeoService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
     KeycloakService,
     {
       provide: APP_INITIALIZER,

@@ -306,7 +306,11 @@ export class UploadModalComponent implements OnInit {
     };
     // TODO: loader
     const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
-    this.workspaceList = this.formatWsList(res["entries"]);
+    this.workspaceList = this.formatWsList(res["entries"]).filter(sector => {
+      if(UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
+        return sector;
+      }
+    });
   }
 
   filterWorkspaces(title: string): boolean {
@@ -455,6 +459,15 @@ export class UploadModalComponent implements OnInit {
     );
   }
 
+  showCreateFolderButton(input: string): boolean {
+    if(!input.trim()) return false;
+
+    let dropdownFolderList: any[] = this.folderList.filter((folder) =>
+      folder.title.toLowerCase() === input.toLowerCase()
+    );
+    return !dropdownFolderList.length;
+  }
+
   selectFolder(folder) {
     this.selectedFolder = folder;
     this.folderToAdd = null;
@@ -479,7 +492,11 @@ export class UploadModalComponent implements OnInit {
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customConfidentialityMap[fileIndex] = confidentiality;
+      this.customAccessMap[fileIndex] = undefined;
+      this.customAllowMap[fileIndex] = undefined;
     } else {
+      this.allow = undefined;
+      this.access = undefined;
       this.confidentiality = confidentiality;
     }
     this.checkShowUserDropdown(fileIndex);
@@ -489,6 +506,9 @@ export class UploadModalComponent implements OnInit {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAccessMap[fileIndex] = access;
     } else {
+      for(let i = 0; i < this.getAssetNumber(); i++) {
+        this.customAccessMap[i] = access;
+      }
       this.access = access;
     }
     this.checkShowUserDropdown(fileIndex);
@@ -498,6 +518,9 @@ export class UploadModalComponent implements OnInit {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAllowMap[fileIndex] = allow;
     } else {
+      for(let i = 0; i < this.getAssetNumber(); i++) {
+        this.customAllowMap[i] = allow;
+      }
       this.allow = allow;
     }
   }
@@ -685,71 +708,72 @@ export class UploadModalComponent implements OnInit {
     this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
   }
 
-  async createFolder(name) {
+  async createFolder(name, parentFolder?: any, data?: any) {
     const url = `/path${this.parentFolder.path}`;
-    const payload = {
-      "entity-type": "document",
-      repository: "default",
-      path: `${this.parentFolder.path}/null`,
-      type: "Workspace",
-      parentRef: this.parentFolder.id,
-      isCheckedOut: true,
-      isRecord: false,
-      retainUntil: null,
-      hasLegalHold: false,
-      isUnderRetentionOrLegalHold: false,
-      isVersion: false,
-      isProxy: false,
-      changeToken: null,
-      isTrashed: false,
-      title: "null",
-      properties: {
-        "webc:themePage": "workspace",
-        "webc:theme": "sites",
-        "webc:moderationType": "aposteriori",
-        "dc:path": this.parentFolder.path,
-        "dc:parentId": this.parentFolder.id,
-        "dc:description": this.description,
-        "dc:title": name,
-        "dc:start": this.associatedDate ? new Date(this.associatedDate).toISOString() : null,
-        "dc:parentName": "Workspaces",
-        "dc:sector": this.selectedWorkspace.title,
-        "dc:primaryType": "event",
-        "dc:folderType": "singleDayEvent",
-      },
-      facets: ["Folderish", "NXTag", "SuperSpace"],
-      schemas: [
-        {
-          name: "webcontainer",
-          prefix: "webc",
-        },
-        {
-          name: "file",
-          prefix: "file",
-        },
-        {
-          name: "common",
-          prefix: "common",
-        },
-        {
-          name: "files",
-          prefix: "files",
-        },
-        {
-          name: "dublincore",
-          prefix: "dc",
-        },
-        {
-          name: "publishing",
-          prefix: "publish",
-        },
-        {
-          name: "facetedTag",
-          prefix: "nxtag",
-        },
-      ],
-      name: name,
-    };
+    // const payload = {
+    //   "entity-type": "document",
+    //   repository: "default",
+    //   path: `${this.parentFolder.path}/null`,
+    //   type: "Workspace",
+    //   parentRef: this.parentFolder.id,
+    //   isCheckedOut: true,
+    //   isRecord: false,
+    //   retainUntil: null,
+    //   hasLegalHold: false,
+    //   isUnderRetentionOrLegalHold: false,
+    //   isVersion: false,
+    //   isProxy: false,
+    //   changeToken: null,
+    //   isTrashed: false,
+    //   title: "null",
+    //   properties: {
+    //     "webc:themePage": "workspace",
+    //     "webc:theme": "sites",
+    //     "webc:moderationType": "aposteriori",
+    //     "dc:path": this.parentFolder.path,
+    //     "dc:parentId": this.parentFolder.id,
+    //     "dc:description": this.description,
+    //     "dc:title": name,
+    //     "dc:start": this.associatedDate ? new Date(this.associatedDate).toISOString() : null,
+    //     "dc:parentName": "Workspaces",
+    //     "dc:sector": this.selectedWorkspace.title,
+    //     "dc:primaryType": "event",
+    //     "dc:folderType": this.associatedDate ? "singleDayEvent" : "generic",
+    //   },
+    //   facets: ["Folderish", "NXTag", "SuperSpace"],
+    //   schemas: [
+    //     {
+    //       name: "webcontainer",
+    //       prefix: "webc",
+    //     },
+    //     {
+    //       name: "file",
+    //       prefix: "file",
+    //     },
+    //     {
+    //       name: "common",
+    //       prefix: "common",
+    //     },
+    //     {
+    //       name: "files",
+    //       prefix: "files",
+    //     },
+    //     {
+    //       name: "dublincore",
+    //       prefix: "dc",
+    //     },
+    //     {
+    //       name: "publishing",
+    //       prefix: "publish",
+    //     },
+    //     {
+    //       name: "facetedTag",
+    //       prefix: "nxtag",
+    //     },
+    //   ],
+    //   name: name,
+    // };
+    const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder, this.description, this.associatedDate);
     const res = await this.apiService.post(url, payload).toPromise();
     return {
       id: res["uid"],

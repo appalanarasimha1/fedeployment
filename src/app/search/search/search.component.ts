@@ -203,6 +203,8 @@ export class SearchComponent implements OnInit {
         params.queryParams = this.favoriteCollectionId;
         break;
       case "sectorPage":
+        params['sortBy'] = 'dc:created';
+        params['sortOrder'] = 'desc';
         if (this.documentsView.sectorSelected) {
           params['sectors'] = `["${this.documentsView.sectorSelected}"]`;
         }
