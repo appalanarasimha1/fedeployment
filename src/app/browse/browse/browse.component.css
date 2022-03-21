@@ -1045,6 +1045,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li {
   padding-left: 0px;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:last-child {
   margin-bottom: 0px;
@@ -1060,6 +1061,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
 .goldenText{
   color: #C49900  !important;
   border-color: #C49900 !important;
+  font-weight: 600;
 }
 .workspaceInfo {
   background: #23211E;

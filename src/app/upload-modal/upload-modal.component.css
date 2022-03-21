@@ -663,6 +663,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .goldenText{
   color: #C49900;
   border-color: #C49900 !important;
+  font-weight: 600;
 }
 select option{
   color: #000;
@@ -1060,6 +1061,7 @@ input.copyright-input::placeholder{
 .goldenText input {
   color: #C49900 !important;
   border-color: #C49900 !important;
+  font-weight: 600;
 }
 /* ::ng-deep .ng-select .ng-clear-wrapper{
   display: none

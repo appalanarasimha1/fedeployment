@@ -677,6 +677,7 @@ color: #23211E;
 .goldenText{
   color: #C49900  !important;
   border-color: #C49900 !important;
+  font-weight: 600;
 }
 .goldenText .copyright-input-block{
   color: #C49900 !important;
@@ -828,6 +829,7 @@ input.copyright-input {
 .goldenText input {
   color: #C49900 !important;
   border-color: #C49900 !important;
+  font-weight: 600;
 }
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
   max-height: 120px !important;
@@ -871,6 +873,7 @@ input.copyright-input {
   color:  #C49900 !important;
   white-space: nowrap !important;
   line-height: 28px !important;
+  font-weight: 600;
 }
 
 ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{

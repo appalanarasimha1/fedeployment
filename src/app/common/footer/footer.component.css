@@ -4,6 +4,8 @@ footer{
     /* position: absolute;
     bottom: 0px;
     width: 100%; */
+    position: relative;
+    z-index: 2;
 }
 .footerList{
     list-style: none;
