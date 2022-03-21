@@ -174,13 +174,13 @@
               </h6>
               </div>
               <div class="views">
-                <ul class="uploadAssetsClassifications pb-3" *ngIf="checkShowUpdateBtn()">
+                <ul class="uploadAssetsClassifications pb-3" *ngIf="showLinkCopy">
                   <li><img src="../../../assets/images/info-icon-yellow.svg" /></li>
                   <li>
                     <img src="../../../assets/images/upload-assets.svg" />
                     <ul class="subDropdownMenu">
-                      <li (click)="openModal()">Upload assets</li>
-                      <li (click)="openUpdateClassModal()">Update classifications</li>
+                      <li *ngIf="showLinkCopy" (click)="openModal()">Upload assets</li>
+                      <li *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</li>
                     </ul>
                   </li>
                 </ul>
