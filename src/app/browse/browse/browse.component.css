@@ -985,7 +985,7 @@ ul.uploadAssetsClassifications li {
   padding-left: 20px;
   vertical-align: middle;
   position: relative;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 ul.uploadAssetsClassifications li img {
   display: inline-block;

@@ -173,7 +173,7 @@
               </h6>
               </div>
               <div class="views">
-                <ul class="uploadAssetsClassifications pb-3" *ngIf="checkShowUpdateBtn()">
+                <ul class="uploadAssetsClassifications pb-3" *ngIf="showLinkCopy">
                   <li><img src="../../../assets/images/info-icon-yellow.svg" /></li>
                   <li>
                     <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right; min-height: auto;">
@@ -193,9 +193,9 @@
                     </nav>
                     <!-- <img src="../../../assets/images/upload-assets.svg" />
                     <ul class="subDropdownMenu">
-                      <li (click)="openModal()">Upload assets</li>
-                      <li (click)="openUpdateClassModal()">Update classifications</li>
-                    </ul> -->
+                      <li *ngIf="showLinkCopy" (click)="openModal()">Upload assets</li>
+                      <li *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</li>
+                    </ul>-->
                   </li>
                 </ul>
                 <!-- <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a> -->
