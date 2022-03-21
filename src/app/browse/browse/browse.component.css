@@ -825,12 +825,14 @@ color: #413E3C;
 .createFolder{
   position: absolute;
   background: #FFFFFF;
-box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-border-radius: 8px;
-padding: 20px;
-width: 380px;
-right: 0px;
-z-index: 9;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 20px;
+  width: 380px;
+  right: -2px;
+  top: 30px;
+  left: auto;
+  z-index: 9;
 }
 .createNew{
   font-size: 16px;
@@ -1027,4 +1029,31 @@ ul.uploadAssetsClassifications li:after {
   position: absolute;
   bottom: -14px;
   right: 0;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
+  /* position: absolute; */
+  width: 250px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+  top: 35px;
+  right: 0px;
+  left: auto;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li {
+  padding-left: 0px;
+  margin-bottom: 20px;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:last-child {
+  margin-bottom: 0px;
+}
+.createNewFolderDropdown {
+  padding: 0px !important; padding: 0px; font-size: 16px; line-height: 24px; color: #937206 !important; font-weight: 600;
+}
+.customNewFolder  .navbar-expand-lg .navbar-nav .dropdown-menu {
+  position: absolute;
+  border: 0px;
+  border-radius: 8px;
 }
