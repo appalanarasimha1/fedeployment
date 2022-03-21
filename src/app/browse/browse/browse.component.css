@@ -1027,3 +1027,8 @@ ul.uploadAssetsClassifications li:after {
   bottom: -14px;
   right: 0;
 }
+
+.goldenText{
+  color: #C49900  !important;
+  border-color: #C49900 !important;
+}
