@@ -1042,6 +1042,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
   top: 35px;
   right: 0px;
   left: auto;
+  border: 0px;
 }
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li {
   padding-left: 0px;
@@ -1088,4 +1089,10 @@ ul.uploadAssetsClassifications li.workspaceInfoHover .workspaceInfo {
 }
 ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   display: block;
+}
+.dropdownCreate {
+  display:none;
+}
+.buttonCreate {
+  padding-top: 10px;
 }

@@ -75,7 +75,66 @@
               </div>
               <div class="col-xl-5" >
                 <div style="float: right;">
-                  <div *ngIf="showSearchbar" (click)="openNewFolderDiv()" style="position: relative;">
+                  <div class='buttonCreate'>
+                    <a href="javascript:void(0)" *ngIf="showSearchbar"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
+                  </div>
+                  <div class='dropdownCreate createFolder'>
+                    <form>
+                      <div class="row">
+                        <div class="col-xl-12">
+                            <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
+                        </div>
+                        <div class="col-xl-12">
+                          <input #folderNameRef type="text" placeholder="Enter a folder name">
+                        </div>
+                      </div>
+                      <div class="row mt-4">
+                        <div class="col-xl-12">
+                          <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true"
+                                                 (closed)="panelOpenState = false">
+                              <mat-expansion-panel-header>
+                                <mat-panel-description>
+                                  Show optional information
+                                </mat-panel-description>
+                              </mat-expansion-panel-header>
+                              <div class="row mt-4">
+                                <div class="col-xl-12">
+                                    <label>Description </label><span class="placeholderText">Project or event description</span>
+                                </div>
+                                <div class="col-xl-12">
+                                  <input #folderDescriptionRef type="text">
+                                </div>
+                              </div>
+                              <div class="row custom-date-picker mt-4">
+                                <div class="col-xl-12 col-md-12">
+                                   <label for="date">Associated Date</label>
+                                </div>
+                                <div class="col-xl-12 col-md-12 " >
+                                   <mat-form-field appearance="fill">
+                                     <div class="flexible">
+                                      <input #folderDateRef matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 1.5px solid #000;"
+                                      placeholder="Choose a date"  (click)="picker.open()" >
+                                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    </div>
+                                      <mat-datepicker #picker></mat-datepicker>
+                                   </mat-form-field>
+                                </div>
+                             </div>
+                            </mat-expansion-panel>
+                          </mat-accordion>
+                        </div>
+                      </div>
+                      <div class="row mt-4" style="">
+                       <div class="col-xl-12">
+                        <button class="createBtn btn" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)">Create folder</button>
+                       </div>
+
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- <div *ngIf="showSearchbar" (click)="openNewFolderDiv()" style="position: relative;">
                     <a href="javascript:void(0)" class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
                   <div *ngIf="showFolder" class="createFolder">
@@ -132,7 +191,7 @@
 
                       </div>
                     </form>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

@@ -158,6 +158,19 @@ export class BrowseComponent implements OnInit {
         parent.addClass('is-open');
       }
     });
+
+    $(".buttonCreate").click(function(e){
+      $(".dropdownCreate").toggle();
+       e.stopPropagation();
+    });
+    
+    $(".dropdownCreate").click(function(e){
+        e.stopPropagation();
+    });
+    
+    $(document).click(function(){
+        $(".dropdownCreate").hide();
+    });
   }
 
   checkAssetType(assetType: string): boolean {
@@ -779,6 +792,12 @@ export class BrowseComponent implements OnInit {
 
   checkShowCreateFolder() {
     return this.selectedFolder?.type === "Domain";
+  }
+
+  showHideCreateFolder() {
+    // $(document).ready(function(){
+      
+    // })
   }
 
 }
