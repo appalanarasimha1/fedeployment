@@ -520,11 +520,11 @@ export class BrowseComponent implements OnInit {
     }
     this.extractBreadcrumb();
     this.handleClick(item, index);
-    setTimeout(() => {
-      if(breadCrumbIndex === 1 || !breadCrumbIndex) {
-        this.showSearchbar = true;
-      }
-    }, 0);
+    // setTimeout(() => {
+    //   if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+    //     this.showSearchbar = true;
+    //   }
+    // }, 0);
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.selectedFolder2 = this.selectedFolder;
     

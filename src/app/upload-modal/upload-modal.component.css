@@ -1284,7 +1284,7 @@ input.copyright-input::placeholder{
   text-align: left;
 }
 .folderHeading {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 32px;
   color: #040404;
 }
@@ -1294,7 +1294,8 @@ input.copyright-input::placeholder{
 }
 .uploadAssetsBlock .folder-content .folderHeading span {
   display: block;
-  font-size: 14px;
+  font-size: 12px;
+  text-align: left;
   line-height: 20px;
   color: rgba(35, 33, 30, 0.6);
 }
@@ -1305,4 +1306,11 @@ input.copyright-input::placeholder{
 .disableDiv {
   pointer-events:none;
   opacity: 0.4;
+}
+.uploadAssetsBlock  .folder-img {
+  width: 74px;
+}
+.uploadAssetsBlock .folder-content {
+  width: calc(100% - 74px);
+  text-align: left;
 }

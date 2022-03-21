@@ -66,8 +66,7 @@
                 <div *ngIf="showSearchbar" class="  pb-5">
                   <div style="position: relative;">
                     <form autocomplete="off" style="width: 458px; position: relative;">
-                      <button class="primary search-btn"><img
-                        src="../../../assets/images/search.png" /></button>
+                      <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
                       <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
                       <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
                     </form>
@@ -86,7 +85,7 @@
                             <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
                         </div>
                         <div class="col-xl-12">
-                          <input #folderNameRef type="text" placeholder="Enter a folder name" [ngClass]="{'goldenText': folderNameRef.value}">
+                          <input #folderNameRef type="text" placeholder="Enter a folder name">
                         </div>
                       </div>
                       <div class="row mt-4">
@@ -104,7 +103,7 @@
                                     <label>Description </label><span class="placeholderText">Project or event description</span>
                                 </div>
                                 <div class="col-xl-12">
-                                  <input #folderDescriptionRef type="text" [ngClass]="{'goldenText': folderDescriptionRef.value}">
+                                  <input #folderDescriptionRef type="text">
                                 </div>
                               </div>
                               <div class="row custom-date-picker mt-4">
@@ -115,7 +114,7 @@
                                    <mat-form-field appearance="fill">
                                      <div class="flexible">
                                       <input #folderDateRef matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 1.5px solid #000;"
-                                      placeholder="Choose a date"  (click)="picker.open()" [ngClass]="{'goldenText': folderDateRef.value}">
+                                      placeholder="Choose a date"  (click)="picker.open()" >
                                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     </div>
                                       <mat-datepicker #picker></mat-datepicker>
@@ -177,11 +176,26 @@
                 <ul class="uploadAssetsClassifications pb-3" *ngIf="showLinkCopy">
                   <li><img src="../../../assets/images/info-icon-yellow.svg" /></li>
                   <li>
-                    <img src="../../../assets/images/upload-assets.svg" />
+                    <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right; min-height: auto;">
+                      <div class="" id="navbarSupportedContent">
+                          <ul class="navbar-nav me-auto  mb-lg-0 rightDrop flexible">
+                            <li class="nav-item dropdown" style="padding-left: 0px;">
+                              <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0px;">
+                                  <img src="../../../assets/images/upload-assets.svg" />
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li (click)="openModal()">Upload assets</li>
+                                <li (click)="openUpdateClassModal()">Update classifications</li>
+                              </ul>
+                            </li>
+                          </ul>
+                      </div>
+                    </nav>
+                    <!-- <img src="../../../assets/images/upload-assets.svg" />
                     <ul class="subDropdownMenu">
                       <li *ngIf="showLinkCopy" (click)="openModal()">Upload assets</li>
                       <li *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</li>
-                    </ul>
+                    </ul>-->
                   </li>
                 </ul>
                 <!-- <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a> -->
