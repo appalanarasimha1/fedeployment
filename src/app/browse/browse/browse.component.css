@@ -829,9 +829,9 @@ color: #413E3C;
   border-radius: 8px;
   padding: 20px;
   width: 380px;
-  right: -2px;
-  top: 30px;
-  left: auto;
+  right: 0px;
+  /* top: 30px;
+  left: auto; */
   z-index: 9;
 }
 .createNew{
@@ -1056,4 +1056,8 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   position: absolute;
   border: 0px;
   border-radius: 8px;
+}
+.goldenText{
+  color: #C49900  !important;
+  border-color: #C49900 !important;
 }
