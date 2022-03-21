@@ -192,7 +192,7 @@
 
                 <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'Most relevant'}}</button>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
-                  <button (click)="dropdownMenu($event); sortValue = 'Date uploaded'" ngbDropdownItem
+                  <button (click)="dropdownMenu($event); sortValue = 'Most recent'" ngbDropdownItem
                     value='dc:created'>Most recent</button>
                   <button (click)="dropdownMenu($event); sortValue = 'Most relevant'" ngbDropdownItem
                     value=''>Most relevant</button>
