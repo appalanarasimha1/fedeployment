@@ -4151,3 +4151,6 @@ document-card img {
     width: 96%;
   }
 }
+ngx-masonry document-card .lock-icon img {
+  margin-top: 0px !important;
+}
