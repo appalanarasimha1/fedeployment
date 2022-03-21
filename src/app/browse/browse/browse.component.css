@@ -1061,3 +1061,28 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   color: #C49900  !important;
   border-color: #C49900 !important;
 }
+.workspaceInfo {
+  background: #23211E;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  width: 328px;
+  position: absolute;
+  right: 0;
+  z-index: 99;
+  padding: 20px;
+  top: 35px;
+}
+.workspaceInfo .workspaceHeading, .workspaceInfo p {
+  color: #fff;
+}
+.workspaceInfo .workspaceHeading {
+  font-weight: 600;
+  font-size: 16px;
+  padding-bottom: 10px;
+}
+ul.uploadAssetsClassifications li.workspaceInfoHover .workspaceInfo {
+  display: none;
+}
+ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
+  display: block;
+}
