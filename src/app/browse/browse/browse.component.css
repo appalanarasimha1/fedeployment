@@ -30,7 +30,8 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 
 .main-content {
   padding-top: 30px;
- min-height: 600px;
+  min-height: 600px;
+  height: calc(100vh - 200px);
 }
 .block-container {
   width: 200px;
