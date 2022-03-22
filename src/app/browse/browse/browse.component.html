@@ -54,11 +54,7 @@
             </div>
           <!-- </div> -->
         </div>
-        <!-- sidebar ends -->
-        
-
-        <!-- detail page starts -->
-        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative">
+        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative" style="min-height: 100vh;">
           <app-loader [show]="loading"></app-loader>
           <div>
             <div class="row">
@@ -74,7 +70,7 @@
                 </div>
               </div>
               <div class="col-xl-5" >
-                <div style="float: right;">
+                <div style="float: right; position: relative;">
                   <div class='buttonCreate'>
                     <a href="javascript:void(0)" *ngIf="showSearchbar"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
@@ -267,7 +263,7 @@
                 <div *ngIf="!showGridListButton()">
                   <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
-                    <img src="../../../assets/images/list-view.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                    <img src="../../../assets/images/list-view-icon.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
                     (click)="handleSelectMenu(1, 'LIST')">
                 </div>
               </div>
