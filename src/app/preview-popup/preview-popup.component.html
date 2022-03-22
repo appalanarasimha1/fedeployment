@@ -85,6 +85,12 @@
                               <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                             </a>
                           </li>
+                          <li>
+                            <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
+                              Original File
+                              <span>{{getDownloadFileEstimation(doc?.properties["file:content"]?.length)}}</span>
+                            </a>
+                          </li>
                         </ul>
                       </div>
                     </div>
