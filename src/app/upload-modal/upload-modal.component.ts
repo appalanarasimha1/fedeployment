@@ -25,7 +25,8 @@ import { ACCESS,
   UNWANTED_WORKSPACES,
   ALLOW_VALUE_MAP,
   SPECIFIC_USER_LABEL,
-  OWNER_APPROVAL_LABEL} from "./constant";
+  OWNER_APPROVAL_LABEL,
+  YEARS} from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -69,6 +70,8 @@ export class UploadModalComponent implements OnInit {
   readonly SPECIFIC_USER_LABEL = SPECIFIC_USER_LABEL;
   readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
   readonly WORKSPACE_ROOT = WORKSPACE_ROOT;
+  readonly years = YEARS;
+
   filesMap: FileByIndex = {};
   batchId: string = null;
   currentIndex: number = 0;
@@ -110,34 +113,6 @@ export class UploadModalComponent implements OnInit {
   showFolderNameField = false;
   agreeTerms = false;
   folderNameParam: string;
-
-
-  years = [
-    {id: 1, name: '2000'},
-    {id: 2, name: '2001'},
-    {id: 3, name: '2002'},
-    {id: 4, name: '2003'},
-    {id: 5, name: '2004'},
-    {id: 6, name: '2005'},
-    {id: 7, name: '2006'},
-    {id: 8, name: '2007'},
-    {id: 9, name: '2008'},
-    {id: 10, name: '2009'},
-    {id: 11, name: '2010'},
-    {id: 12, name: '2011'},
-    {id: 13, name: '2012'},
-    {id: 14, name: '2013'},
-    {id: 15, name: '2014'},
-    {id: 16, name: '2015'},
-    {id: 17, name: '2016'},
-    {id: 18, name: '2017'},
-    {id: 19, name: '2018'},
-    {id: 20, name: '2019'},
-    {id: 21, name: '2020'},
-    {id: 22, name: '2021'},
-    {id: 23, name: '2022'},
-    {id: 24, name: '2023'}
-  ];
 
   slideConfig = {
     rows: 2,
@@ -183,6 +158,7 @@ export class UploadModalComponent implements OnInit {
   // }
 
   shortTheString(str: string, length: number): string {
+    if(!str) return;
     return this.sharedService.stringShortener(str, length);
   }
 

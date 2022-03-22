@@ -15,8 +15,8 @@
                         </div>
                         <div class="folder-content">
                            <div class="folderHeading">
-                              {{data.title}}
-                              <span>/{{WORKSPACE_ROOT}}{{sharedService.removeWrokspaceFromBreadcrumb(data.path)}}</span>
+                              {{shortTheString(data.title, 35)}}
+                              <span>/{{WORKSPACE_ROOT}}{{shortTheString(sharedService.removeWrokspaceFromBreadcrumb(data.path), 70)}}</span>
                            </div>
                         </div>
                      </div>
