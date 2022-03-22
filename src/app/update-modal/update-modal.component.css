@@ -3,11 +3,11 @@
 }
 ::ng-deep .cdk-overlay-pane{
   width: 1000px !important;
-      max-width: 100% !important;
-      min-height: 200px !important;
-      max-height: 100%!important;
-      height: auto !important;
-      overflow: auto;
+  max-width: 100% !important;
+  min-height: 60px !important;
+  max-height: 100%!important;
+  height: auto !important;
+  overflow: auto;
 }
 .close{
   position: absolute;
@@ -44,9 +44,10 @@ border: unset;
 }
 .upload-label span{
   font-size: 18px;
-line-height: 22px;
-text-align: center;
-color: #8E6B0B;
+  line-height: 22px;
+  text-align: center;
+  color: #8E6B0B;
+  font-weight: 600;
 }
 .upload-label span b{
 font-size: 20px;
@@ -918,3 +919,38 @@ input.copyright-input {
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
   padding: 0px 5px !important;
 }
+::ng-deep .mat-snack-bar-container.snackBarMiddle {
+  /* transform: translate(-50%, -50%) !important;
+  top: 50% !important;
+  position: absolute !important;
+  left: 50% !important; */
+  background: #2D2926 !important;
+  /* margin: 67% 24px !important; */
+  font-size: 12px;
+  font-weight: normal;
+  color: #fff;
+  border-radius: 50px;
+  box-shadow: none !important;
+  height: 30px !important;
+  text-align: center;
+}
+::ng-deep .mat-simple-snackbar {
+  font-size: 13px !important;
+  font-weight: normal !important;
+  text-align: center !important;
+  display: inline-block !important;
+  font-family: myBrown !important;
+}
+::ng-deep .mat-snack-bar-container.snackBarMiddle {
+  text-align: center !important;
+  margin: 0px auto;
+}
+
+/* ::ng-deep #cdk-overlay-1, ::ng-deep .cdk-overlay-pane{
+  width: auto !important;
+  max-width: 1000px !important;
+  min-height: auto !important;
+  max-height: 100%!important;
+  height: auto !important;
+  overflow: auto;
+} */

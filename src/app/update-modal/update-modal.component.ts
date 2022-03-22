@@ -16,6 +16,7 @@ import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONF
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const STEPS = {
   1: "Update Classification",
@@ -34,7 +35,8 @@ export class UpdateModalComponent implements OnInit {
     public dialogRef: MatDialogRef<UpdateModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {docs: any, folder: any},
     private router: Router,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private _snackBar: MatSnackBar
   ) {
 
   }
@@ -144,6 +146,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   toNextStep() {
+    // this.deleteModal();
     this.step++;
     this.stepLabel = STEPS[this.step];
     // if (this.step === 3) {
@@ -402,5 +405,17 @@ export class UpdateModalComponent implements OnInit {
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
+  }
+
+  classificationsUpdate() {
+    this.dialogRef.close(this.updatedDocs);
+    setTimeout(()=>{
+      this._snackBar.open('The classifications have been updated.', '', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['snackBarMiddle'],
+      });
+    }, 500);
   }
 }
