@@ -110,7 +110,7 @@
                                    <mat-form-field appearance="fill">
                                      <div class="flexible">
                                       <input #folderDateRef matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 1.5px solid #000;"
-                                      placeholder="Choose a date"  (click)="picker.open()" >
+                                      placeholder="Choose a date"  (click)="picker.open(); datePickerDefaultAction()" >
                                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     </div>
                                       <mat-datepicker #picker></mat-datepicker>

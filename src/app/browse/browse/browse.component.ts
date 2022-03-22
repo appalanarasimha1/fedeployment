@@ -164,12 +164,22 @@ export class BrowseComponent implements OnInit {
        e.stopPropagation();
     });
     
-    $(".dropdownCreate").click(function(e){
+    $(".dropdownCreate, .mat-datepicker-content").click(function(e){
         e.stopPropagation();
     });
     
     $(document).click(function(){
-        $(".dropdownCreate").hide();
+        $(".dropdownCreate, .mat-datepicker-content").hide();
+    });
+  }
+  
+  datePickerDefaultAction() {
+    $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+      e.stopPropagation();
+    });
+    
+    $(document).click(function(){
+        $(".dropdownCreate, .mat-datepicker-content").hide();
     });
   }
 
