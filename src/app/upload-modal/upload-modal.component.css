@@ -1145,19 +1145,19 @@ input.copyright-input::placeholder{
 ::ng-deep .mat-expansion-panel-header-description,::ng-deep .mat-expansion-indicator::after{
   color: #C49900 !important;
 }
-/* ::ng-deep .mat-expansion-indicator::after {
+.upload-form ::ng-deep .mat-expansion-indicator::after {
   border-width: 0 1.5px 1.5px 0px !important;
   padding: 2.5px !important;
   transform: rotate(-45deg) !important;
   position: absolute !important;
   top: -7px !important;
 }
-::ng-deep .mat-expanded .mat-expansion-indicator::after{
+.upload-form ::ng-deep .mat-expanded .mat-expansion-indicator::after{
     top: 6px !important;
     transform: rotate(
 225deg
 ) !important;
-} */
+}
 ::ng-deep .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]),::ng-deep .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]),::ng-deep .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){
   background-color: unset !important;
 }
