@@ -787,6 +787,7 @@ export class BrowseComponent implements OnInit {
     if (!res && !res['uid']) return;
 
     this.searchList.push(res);
+    $(".dropdownCreate").hide();
     this.showFolder = false;
     if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
       this.hasUpdatedChildren.push(this.selectedFolder.uid);
