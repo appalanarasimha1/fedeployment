@@ -1,9 +1,13 @@
 footer{
     background-color: #23211E;
     padding: 33px 0px;
+    position: relative;
+    z-index: 1;
     /* position: absolute;
     bottom: 0px;
     width: 100%; */
+    position: relative;
+    z-index: 2;
 }
 .footerList{
     list-style: none;

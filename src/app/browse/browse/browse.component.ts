@@ -23,6 +23,7 @@ import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UploadModalComponent } from 'src/app/upload-modal/upload-modal.component';
 
 @Component({
   selector: 'app-browse',
@@ -33,6 +34,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class BrowseComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('previewModal') previewModal: PreviewPopupComponent;
+  // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
 
   constructor(
     private modalService: NgbModal,
@@ -99,12 +101,14 @@ export class BrowseComponent implements OnInit {
   showLinkCopy = false;
   showSearchbar = false;
   searchBarValue = '';
+  panelOpenState = false;
   breadCrumb= [];
   selectedFolderList: any = {};
   trashedList = null;
-  hasDeletedChildren = [];
   user = null;
   isTrashView = false;
+  needReloadWs = [];
+  hasUpdatedChildren = [];
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -158,6 +162,29 @@ export class BrowseComponent implements OnInit {
         list.slideDown('fast');
         parent.addClass('is-open');
       }
+    });
+
+    $(".buttonCreate").click(function(e){
+      $(".dropdownCreate").toggle();
+       e.stopPropagation();
+    });
+
+    $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+        e.stopPropagation();
+    });
+
+    $(document).click(function(){
+        $(".dropdownCreate, .mat-datepicker-content").hide();
+    });
+  }
+
+  datePickerDefaultAction() {
+    $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+      e.stopPropagation();
+    });
+
+    $(document).click(function(){
+        $(".dropdownCreate, .mat-datepicker-content").hide();
     });
   }
 
@@ -350,10 +377,6 @@ export class BrowseComponent implements OnInit {
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
 
-  removeWrokspaceFromBreadcrumb(): string {
-    return this.breadcrrumb.replace(/\/workspaces/gi, '');
-  }
-
   handleClick(item, index, childIndex?: any) {
     if (item.isTrashed) return;
     this.selectedFolderList = {};
@@ -372,16 +395,16 @@ export class BrowseComponent implements OnInit {
     } else {
       this.handleSelectMenu(1, 'LIST');
     }
-    if(item?.children?.length && !this.hasDeletedChildren.includes(item?.uid)) {
+    if(item?.children?.length && !this.hasUpdatedChildren.includes(item?.uid)) {
       this.searchList = item.children;
       if(item?.uid === ROOT_ID) this.showSearchbar = false;
       else this.showSearchbar = true;
       return;
     }
-    if (this.hasDeletedChildren.includes(item?.uid)) {
-      const deleteIndex = this.hasDeletedChildren.indexOf(item.uid);
+    if (this.hasUpdatedChildren.includes(item?.uid)) {
+      const deleteIndex = this.hasUpdatedChildren.indexOf(item.uid);
       if (deleteIndex > -1) {
-        this.hasDeletedChildren.splice(deleteIndex, 1);
+        this.hasUpdatedChildren.splice(deleteIndex, 1);
       }
     }
     this.loading = true;
@@ -392,10 +415,15 @@ export class BrowseComponent implements OnInit {
       let workSpaceIndex = result.findIndex(res => res.title === "Workspaces");
       if(workSpaceIndex >= 0) {
         this.loading = false;
+        localStorage.setItem("workspaceId", result[workSpaceIndex].uid);
+        localStorage.setItem("workspacePath", result[workSpaceIndex].path);
         return this.handleClick(result[workSpaceIndex],index, childIndex);
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         this.searchList = result;
+        if(this.selectedFolder2.uid !== ROOT_ID) {
+          this.showSearchbar = true;
+        }
         if(childIndex !== null && childIndex !== undefined) {
           this.showSearchbar = true;
           this.loading = false;
@@ -441,6 +469,8 @@ export class BrowseComponent implements OnInit {
                 return item;
               }
             });
+            if(this.callHandClick)
+            this.selectedFolder2 = this.callHandClick;
             this.sectorOpen = true;
             this.callDomain
           }
@@ -493,17 +523,37 @@ export class BrowseComponent implements OnInit {
     }
   }
 
-  async handleGotoBreadcrumb(item, index) {
-    if (index === this.breadCrumb.length) return;
-    if (index === 0) {
-      this.breadCrumb = [];
-      this.selectedFolder = item;
-      this.handleClick(item, index);
+  async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+      this.showSearchbar = true;
+    }
+    if (breadCrumbIndex === this.breadCrumb.length) return;
+    if (breadCrumbIndex === 0) {
+      this.showSearchbar = false;
+      this.selectedFolder2 = this.folderStructure[0];
+      this.selectedFolder = this.selectedFolder2;
+      this.selectedMenu = 0;
+      // this.breadCrumb = [];
+      // // this.selectedFolder = item;
+      // // this.selectedFolder2 = item;
+      // this.handleClick(item, index);
+      // setTimeout(() => {
+      //   if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+      //     this.showSearchbar = true;
+      //   }
+      // }, 0);
       return;
     }
-    this.selectedFolder = await this.fetchFolder(item.uid);
     this.extractBreadcrumb();
-    this.handleClick(this.selectedFolder, index);
+    this.handleClick(item, index);
+    // setTimeout(() => {
+    //   if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+    //     this.showSearchbar = true;
+    //   }
+    // }, 0);
+    this.selectedFolder = await this.fetchFolder(item.uid);
+    this.selectedFolder2 = this.selectedFolder;
+
   }
 
   async fetchFolder(id) {
@@ -722,7 +772,7 @@ export class BrowseComponent implements OnInit {
       panelClass: ['snackBarMiddle'],
     });
     this.searchList = this.searchList.filter(item => !listDocs.includes(item['uid']));
-    this.hasDeletedChildren.push(this.selectedFolder.uid);
+    this.hasUpdatedChildren.push(this.selectedFolder.uid);
     this.selectedFolderList = {};
   }
 
@@ -735,7 +785,7 @@ export class BrowseComponent implements OnInit {
     });
     this.trashedList = this.trashedList.filter(item => !listDocs.includes(item['uid']));
     this.searchList = this.trashedList;
-    // this.hasDeletedChildren.push(this.selectedFolder.uid);
+    // this.hasUpdatedChildren.push(this.selectedFolder.uid);
     this.selectedFolderList = {};
   }
 
@@ -801,5 +851,56 @@ export class BrowseComponent implements OnInit {
   checkShowNoTrashItem() {
     return this.isTrashView && this.searchList && this.searchList.length === 0;
   }
+
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "700px";
+    dialogConfig.maxHeight = "900px"
+    dialogConfig.width = "650px";
+    dialogConfig.disableClose = true;
+    this.selectedFolder['sectorId'] = this.selectedFolder2.uid
+    dialogConfig.data = this.selectedFolder;
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
+  }
+   showFolder = false;
+  openNewFolderDiv(){
+    this.showFolder = ! this.showFolder
+  }
+
+  async createFolder(folderName: string, date?: string, description?: string) {
+    const url = `/path${this.selectedFolder2.path}/workspaces`;
+    const payload = await this.sharedService.getCreateFolderPayload(folderName, this.selectedFolder2.title, null, description, date);
+    const res = await this.apiService.post(url, payload).toPromise();
+    if (!res && !res['uid']) return;
+
+    this.searchList.push(res);
+    $(".dropdownCreate").hide();
+    this.showFolder = false;
+    if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
+      this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    }
+
+    return {
+      id: res["uid"],
+      title: res["title"],
+      type: res["type"],
+      path: res["path"],
+    };
+  }
+
+  checkShowCreateFolder() {
+    return this.selectedFolder?.type === "Domain";
+  }
+
+  showHideCreateFolder() {
+    // $(document).ready(function(){
+
+    // })
+  }
+
 }
 

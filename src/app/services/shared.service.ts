@@ -257,4 +257,74 @@ export class SharedService {
     return tag;
   }
 
+  async getCreateFolderPayload(name: string, sector: string, parentFolder?: any, description?: String, associatedDate?: string) {
+    return {
+      "entity-type": "document",
+      repository: "default",
+      path: `${parentFolder ? parentFolder.path : localStorage.getItem("workspacePath")}/null`,
+      type: "Workspace",
+      parentRef: parentFolder ? parentFolder.id : localStorage.getItem("workspaceId"),
+      isCheckedOut: true,
+      isRecord: false,
+      retainUntil: null,
+      hasLegalHold: false,
+      isUnderRetentionOrLegalHold: false,
+      isVersion: false,
+      isProxy: false,
+      changeToken: null,
+      isTrashed: false,
+      title: "null",
+      properties: {
+        "webc:themePage": "workspace",
+        "webc:theme": "sites",
+        "webc:moderationType": "aposteriori",
+        "dc:path": parentFolder ? parentFolder.path : localStorage.getItem("workspacePath"),
+        "dc:parentId": parentFolder ? parentFolder.id : localStorage.getItem("workspaceId"),
+        "dc:description": description,
+        "dc:title": name,
+        "dc:start": associatedDate ? new Date(associatedDate).toISOString() : null,
+        "dc:parentName": "Workspaces",
+        "dc:sector": sector,
+        "dc:primaryType": "event",
+        "dc:folderType": associatedDate ? "singleDayEvent" : "generic",
+      },
+      facets: ["Folderish", "NXTag", "SuperSpace"],
+      schemas: [
+        {
+          name: "webcontainer",
+          prefix: "webc",
+        },
+        {
+          name: "file",
+          prefix: "file",
+        },
+        {
+          name: "common",
+          prefix: "common",
+        },
+        {
+          name: "files",
+          prefix: "files",
+        },
+        {
+          name: "dublincore",
+          prefix: "dc",
+        },
+        {
+          name: "publishing",
+          prefix: "publish",
+        },
+        {
+          name: "facetedTag",
+          prefix: "nxtag",
+        },
+      ],
+      name: name,
+    };
+  }
+  
+  removeWrokspaceFromBreadcrumb(data: string): string {
+    return data.replace(/\/workspaces/gi, '');
+  }
+
 }

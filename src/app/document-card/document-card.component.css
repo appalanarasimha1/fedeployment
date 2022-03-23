@@ -1617,3 +1617,6 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
 document-card img {
   display: block !important;
 }
+document-card .lock-icon img {
+  margin-top: 0px !important;
+}

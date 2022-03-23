@@ -82,7 +82,7 @@
 .overlay__content {
   left: 50%;
   position: absolute;
-  top: 20%;
+  top: 200px;
   transform: translate(0%, -50%);
 }
 .loadingText {

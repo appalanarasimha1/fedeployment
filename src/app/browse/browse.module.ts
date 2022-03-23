@@ -15,6 +15,9 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { UploadModalModule } from '../upload-modal/upload-modal.module';
 @NgModule({
   declarations: [
     BrowseComponent,
@@ -34,7 +37,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatPaginatorModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatDatepickerModule,
+    UploadModalModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
