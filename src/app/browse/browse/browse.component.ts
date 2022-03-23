@@ -215,12 +215,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
-    // this.selectedFolder = item;
-    // this.selectedFile = [];
-    // this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
-    // .subscribe((docs: any) => {
-    //   this.searchList = docs.entries;
-    // });
+    if (item.isTrashed) return;
     this.searchBarValue = '';
     this.showLinkCopy = true;
     this.showSearchbar = false;
@@ -245,6 +240,7 @@ export class BrowseComponent implements OnInit {
       $('.leftPanel.insideScroll').css("height", storeHeight - 110);
       // console.log('block height', storeHeight);
     }, 300);
+    this.selectedFolder = item;
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
@@ -706,6 +702,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getFolderInfo(item) {
+    if (item.isTrashed) return item.properties["dc:creator"];
     const count = item.contextParameters?.folderAssetsCount || 0;
     return `${count} assets curated by ${item.properties["dc:creator"]}`;
   }
@@ -823,12 +820,20 @@ export class BrowseComponent implements OnInit {
     this.recoverModal(listDocs);
   }
 
+  checkEnableDeleteBtn() {
+    return Object.keys(this.selectedFolderList).length > 0;
+  }
+
   getTrashedWS() {
+    this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace'`)
       .subscribe((docs: any) => {
         this.trashedList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
         this.searchList = this.trashedList;
         this.isTrashView = true;
+        this.handleSelectMenu(1, this.viewType || 'LIST');
+        this.showMoreButton = false;
+        this.loading = false;
       });
   }
 
