@@ -533,7 +533,7 @@
    <div class="finish-screen">
       <!-- <mat-icon>upload</mat-icon> -->
       <span>Your assets have been successfully published on Ground X.</span>
-      <div class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
+      <div *ngIf="showRedirectUrl()" class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
          <div class="destination-img-block">
             <img src="../../../assets/images/yellow-folder.png" style="max-width: 100%;">
          </div>

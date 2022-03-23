@@ -828,4 +828,11 @@ export class UploadModalComponent implements OnInit {
   checkOwnerDropdown() {
     return ALLOW_VALUE_MAP[this.allow] === 'Permission Required';
   }
+
+  showRedirectUrl(): boolean {
+    if(this.data.title === this.selectedFolder.title) {
+      return false;
+    }
+    return true;
+  }
 }

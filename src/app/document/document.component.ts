@@ -214,7 +214,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   resetResult() {
     this.documents = '';
-    this.selectTab('recentUpload');
+    // this.selectTab('recentUpload');
     this.docSliceInput = 39;
     this.hideShowMoreBtn = false;
     this.showListView = false;
@@ -225,7 +225,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailView = null;
     this.detailDocuments = null;
     this.searchTerm = {ecm_fulltext : ''};
-    this.resetView();
+    this.clearFilter();
+    // this.resetView();
     this.selectTab('recentlyViewed');
   }
 
