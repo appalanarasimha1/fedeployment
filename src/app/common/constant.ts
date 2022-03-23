@@ -76,7 +76,8 @@ export const TAG_ATTRIBUTES = {
     OCR_TAGS: 'nxtag:ocrTag',
     SCENE_DETECTION: 'nxtag:sceneDetectionTag',
     NX_TAGS: 'nxtag:tags',
-    WEATHER_CLASSIFICATION: 'nxtag:weatherClassificationTag'
+    WEATHER_CLASSIFICATION: 'nxtag:weatherClassificationTag',
+    PUBLIC_FIGURE_DETECTION: 'nxtag:publicFigureRecognitionTag'
 };
 
 export const AGGREGATE_TAGS = {
@@ -87,6 +88,7 @@ export const AGGREGATE_TAGS = {
     OCR_TAGS: 'nxtag_ocrTag_agg',
     SCENE_DETECTION: 'nxtag_sceneDetectionTag_agg',
     WEATHER_CLASSIFICATION: 'nxtag_weatherClassificationTag_agg',
+    PUBLIC_FIGURE_DETECTION: 'nxtag:publicFigureRecognitionTag'
 };
 
 export const unwantedTags = [
