@@ -73,7 +73,7 @@
               <div class="col-xl-5" >
                 <div style="float: right; position: relative;">
                   <div class='buttonCreate'>
-                    <a href="javascript:void(0)" *ngIf="showSearchbar"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
+                    <a href="javascript:void(0)" *ngIf="showSearchbar" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
                   <div class='dropdownCreate createFolder'>
                     <form>
@@ -245,7 +245,7 @@
                   <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
-                <ul class="all-sectors" >
+                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId">
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
