@@ -1103,7 +1103,7 @@ font-weight: 600;
   margin-right: 8px; margin-top: -4px;
 }
 .createNew {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 .groupFolder.checkDelete .delete-folder-action {
   opacity: 1;
@@ -1157,6 +1157,7 @@ font-weight: 600;
 }
 .recoverFolder {
   padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 ul.uploadAssetsClassifications {
   display: block;
@@ -1279,4 +1280,10 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 }
 .buttonCreate {
   padding-top: 10px;
+  display: inline-block;
+}
+
+.deleteFolder{
+  display: inline-block;
+  vertical-align: 2px;
 }
