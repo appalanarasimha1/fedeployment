@@ -73,7 +73,7 @@
               <div class="col-xl-5" >
                 <div style="float: right; position: relative;">
                   <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
-                  <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="isTrashView" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
+                  <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
                   
                   <div class='buttonCreate'>
                     <a href="javascript:void(0)" *ngIf="showSearchbar && !isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>

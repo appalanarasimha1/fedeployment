@@ -1288,10 +1288,24 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   display: inline-block;
   vertical-align: 2px;
 }
-.btn-disabled {
+.btn-disabled, .recover-btn-disabled {
   cursor: default;
-  color: #c1c1c1;
+  color: #E1BB33;
 }
-.btn-disabled img {
-  filter: invert(0.5);
+.btn-disabled {
+  background-image: url(../../../assets/images/delete-disable-icon.svg);
+  background-position: 0px 4px;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+.btn-disabled img, .recover-btn-disabled img {
+  /* filter: invert(0.5); */
+  opacity: 0;
+}
+
+.recover-btn-disabled {
+  background-image: url(../../../assets/images/recover-disable-icon.svg);
+  background-position: 0px 5px;
+  background-repeat: no-repeat;
+  background-size: 18px;
 }
