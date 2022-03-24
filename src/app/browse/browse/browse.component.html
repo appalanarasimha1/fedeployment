@@ -133,8 +133,8 @@
 
                 </div>
               </div>
-              <div class="col-xl-5" >
-                <div style="float: right;">
+              <div>
+                <div [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'" style="float: right; margin-bottom: 5px;">
                   <span class="deleteFolder" *ngIf="!isTrashView" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
                   <span class="recoverFolder" *ngIf="isTrashView" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
                 </div>
@@ -143,9 +143,9 @@
           </div>
 
 
-          <div *ngIf="selectedFolder || isTrashView">
-            <div class="header-content">
-              <div *ngIf="selectedFolder2.uid !== parentId && !isTrashView">
+          <div *ngIf="selectedFolder">
+            <div class="header-content" *ngIf="!isTrashView">
+              <div *ngIf="selectedFolder2.uid !== parentId">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
                   aria-label="Button that displays a tooltip when focused or hovered over">
@@ -241,11 +241,11 @@
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                <div class="mb-5 text-center" *ngIf="selectedFolder2.uid === parentId">
+                <div class="mb-5 text-center" *ngIf="selectedFolder2.uid === parentId && !isTrashView">
                   <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
-                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId">
+                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId || isTrashView">
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of searchList | search: searchBarValue; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
@@ -260,7 +260,7 @@
                           </div>
                         </div>
                         <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
-                          (click)="handleTest(item);selectedFolder=item;">
+                          (click)="handleTest(item);">
                           <!-- <img src="../../../assets/images/yellow-folder.png"> -->
                           <div class="folder-content">
                             <p class="tollTipCustom" style="    white-space: normal;
@@ -310,9 +310,9 @@
 
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
               <div  class="col-xl-12 col-md-12">
-                <table class="folderListview pb-5">
+                <table class="folderListview pb-5" *ngIf="searchList.length > 0">
                     <tr>
-                      <th width="30%">{{ !checkAssetType(selectedFolder2.type) ? 'Folder name' : 'Asset name'}}</th>
+                      <th width="30%">{{ selectedFolder2.type && !checkAssetType(selectedFolder2.type) ? 'Folder name' : 'Asset name'}}</th>
                       <th width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
                       <th width="20%">Created on</th>
@@ -326,7 +326,7 @@
                           </label>
                         </div>
                       </div>
-                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
+                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);" class="" style="display: flex;cursor: pointer;">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>

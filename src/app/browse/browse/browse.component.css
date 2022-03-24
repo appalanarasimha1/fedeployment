@@ -1280,3 +1280,11 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 .buttonCreate {
   padding-top: 10px;
 }
+
+.btn-disabled span {
+  cursor: default;
+  color: #413E3C;
+}
+.btn-disabled img {
+  filter: invert(0.5);
+}
