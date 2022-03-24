@@ -60,9 +60,9 @@
           <div>
             <div class="row" *ngIf="showSearchbar || isTrashView">
               <div class="col-xl-7">
-                <div *ngIf="showSearchbar && !isTrashView" class="pb-5">
+                <div *ngIf="showSearchbar || !isTrashView" class="pb-5">
                   <div style="position: relative;">
-                    <form autocomplete="off" style="width: 458px; position: relative;">
+                    <form autocomplete="off" style="position: relative;">
                       <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
                       <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
                       <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
@@ -72,8 +72,11 @@
               </div>
               <div class="col-xl-5" >
                 <div style="float: right; position: relative;">
+                  <span class="deleteFolder" *ngIf="!isTrashView" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
+                  <span class="recoverFolder" *ngIf="isTrashView" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
+                  
                   <div class='buttonCreate'>
-                    <a href="javascript:void(0)" *ngIf="showSearchbar" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
+                    <a href="javascript:void(0)" *ngIf="showSearchbar && !isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
                   <div class='dropdownCreate createFolder'>
                     <form>
@@ -122,7 +125,7 @@
                           </mat-accordion>
                         </div>
                       </div>
-                      <div class="row mt-4" style="">
+                      <div class="row mt-4">
                        <div class="col-xl-12">
                         <button class="createBtn btn" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)">Create folder</button>
                        </div>
@@ -130,13 +133,6 @@
                       </div>
                     </form>
                   </div>
-
-                </div>
-              </div>
-              <div class="col-xl-5" >
-                <div style="float: right;">
-                  <span class="deleteFolder" *ngIf="!isTrashView" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
-                  <span class="recoverFolder" *ngIf="isTrashView" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
                 </div>
               </div>
             </div>
@@ -209,7 +205,7 @@
                   </li>
                 </ul>
                 <!-- <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a> -->
-                <div *ngIf="!showGridListButton()">
+                <div *ngIf="!showGridListButton() && !isTrashView">
                   <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
                     <img src="../../../assets/images/list-view-icon.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
@@ -229,7 +225,7 @@
                 <div>
                   <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
-                    <img src="../../../assets/images/list-view.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                    <img src="../../../assets/images/list-view-icon.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
                     (click)="handleSelectMenu(1, 'LIST')">
                 </div>
               </div>
