@@ -139,9 +139,9 @@
           </div>
 
 
-          <div *ngIf="selectedFolder || isTrashView">
-            <div class="header-content">
-              <div *ngIf="selectedFolder2.uid !== parentId && !isTrashView">
+          <div *ngIf="selectedFolder">
+            <div class="header-content" *ngIf="!isTrashView">
+              <div *ngIf="selectedFolder2.uid !== parentId">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
                   aria-label="Button that displays a tooltip when focused or hovered over">
@@ -237,11 +237,11 @@
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                <div class="mb-5 text-center" *ngIf="selectedFolder2.uid === parentId">
+                <div class="mb-5 text-center" *ngIf="selectedFolder2.uid === parentId && !isTrashView">
                   <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
-                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId">
+                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId|| isTrashView">
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of sortedData | search: searchBarValue; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
@@ -254,21 +254,22 @@
                             <div class="control__indicator"></div>
                           </label>
                         </div>
-                      </div>
-                      <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
-                        (click)="handleTest(item);selectedFolder=item;">
-                        <!-- <img src="../../../assets/images/yellow-folder.png"> -->
-                        <div class="folder-content">
-                          <p class="tollTipCustom" style="    white-space: normal;
-                          width: 100%;
-                          overflow: inherit;
-                          text-overflow: inherit;">
-                          {{sharedService.stringShortener(item.title, 16)}}
-                            <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
-                              {{item.title}}
-                            </span>
-                          </p>
-                          <span>{{ getFolderInfo(item) }}</span>
+                        <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
+                          (click)="handleTest(item);">
+                          <!-- <img src="../../../assets/images/yellow-folder.png"> -->
+                          <div class="folder-content">
+                            <p class="tollTipCustom" style="    white-space: normal;
+                            width: 100%;
+                            overflow: inherit;
+                            text-overflow: inherit;">
+                            {{sharedService.stringShortener(item.title, 16)}}
+                              <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
+                                {{item.title}}
+                              </span>
+                            </p>
+                            <span>{{ getFolderInfo(item) }}</span>
+                          </div>
+
                         </div>
 
                       </div>
@@ -306,7 +307,7 @@
 
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
               <div  class="col-xl-12 col-md-12">
-                <table matSort (matSortChange)="sortData($event)" class="folderListview pb-5">
+                <table matSort (matSortChange)="sortData($event)" class="folderListview pb-5" *ngIf="searchList.length">
                     <tr>
                       <th style="width:6%">&nbsp;&nbsp;</th>
                       <th mat-sort-header="title" width="30%" style="padding-left: 35px;">{{ !showLinkCopy ? 'Folder name' : 'Asset name'}}</th>
@@ -323,7 +324,7 @@
                             <div class="control__indicator"></div>
                           </label>
                         </div>
-                      </div></td>
+                      </div>
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
