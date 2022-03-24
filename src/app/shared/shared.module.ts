@@ -22,6 +22,7 @@ import { ReversePipe } from '../common/pipe/reverse.pipe';
 import { ChartsModule } from 'ng2-charts';
 import { SearchPipe } from '../common/pipe/search.pipe';
 import { UploadModalComponent } from '../upload-modal/upload-modal.component';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   providers: [
@@ -65,6 +66,7 @@ import { UploadModalComponent } from '../upload-modal/upload-modal.component';
     SearchPipe,
     // NgxMasonryModule
     // OwlModule
+    MatSortModule
   ]
 })
 export class SharedModule { }

@@ -24,6 +24,7 @@ import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadModalComponent } from 'src/app/upload-modal/upload-modal.component';
+import {Sort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-browse',
@@ -109,6 +110,7 @@ export class BrowseComponent implements OnInit {
   isTrashView = false;
   needReloadWs = [];
   hasUpdatedChildren = [];
+  sortedData;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -237,6 +239,7 @@ export class BrowseComponent implements OnInit {
     this.loading = true;
     const docs = await this.fetchAssets(item.uid);
     this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
+    this.sortedData = this.searchList.slice(); //shallow copy
     this.handleSelectMenu(0, 'GRID');
     this.loading = false;
     this.sharedService.toTop();
@@ -397,6 +400,7 @@ export class BrowseComponent implements OnInit {
     }
     if(item?.children?.length && !this.hasUpdatedChildren.includes(item?.uid)) {
       this.searchList = item.children;
+      this.sortedData = item.children;
       if(item?.uid === ROOT_ID) this.showSearchbar = false;
       else this.showSearchbar = true;
       return;
@@ -421,6 +425,7 @@ export class BrowseComponent implements OnInit {
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         this.searchList = result;
+        this.sortedData = result;
         if(this.selectedFolder2.uid !== ROOT_ID) {
           this.showSearchbar = true;
         }
@@ -579,6 +584,7 @@ export class BrowseComponent implements OnInit {
       this.currentPageCount++;
       const result: any = await this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`).toPromise();
       this.searchList = this.searchList.concat(result.entries);
+      this.sortedData = this.searchList.slice();
       return;
     }
     this.showMoreButton = false;
@@ -595,6 +601,7 @@ export class BrowseComponent implements OnInit {
         if (workSpaceIndex >= 0) {
           this.handleChangeClick(this.searchList[workSpaceIndex], index, selected, childIndex)
         } else {
+          this.sortedData = this.searchList.slice();
           if (childIndex !== null && childIndex !== undefined) {
             this.folderStructure[index].children[childIndex].children = docs.entries;
             this.folderStructure[index].children[childIndex].isExpand = true;
@@ -644,7 +651,9 @@ export class BrowseComponent implements OnInit {
       if (!result) return;
       Object.keys(result).forEach(key => {
         this.searchList[key].contextParameters.acls = result[key].contextParameters.acls;
-        this.searchList[key].properties = {...this.searchList[key].properties, ...result[key].properties}
+        this.sortedData[key].contextParameters.acls = result[key].contextParameters.acls;
+        this.searchList[key].properties = {...this.searchList[key].properties, ...result[key].properties};
+        this.sortedData[key].properties = {...this.sortedData[key].properties, ...result[key].properties};
       });
     });
   }
@@ -772,6 +781,7 @@ export class BrowseComponent implements OnInit {
       panelClass: ['snackBarMiddle'],
     });
     this.searchList = this.searchList.filter(item => !listDocs.includes(item['uid']));
+    this.sortedData = this.searchList.slice();
     this.hasUpdatedChildren.push(this.selectedFolder.uid);
     this.selectedFolderList = {};
   }
@@ -785,6 +795,7 @@ export class BrowseComponent implements OnInit {
     });
     this.trashedList = this.trashedList.filter(item => !listDocs.includes(item['uid']));
     this.searchList = this.trashedList;
+    this.sortedData = this.searchList.slice();
     // this.hasUpdatedChildren.push(this.selectedFolder.uid);
     this.selectedFolderList = {};
   }
@@ -828,6 +839,7 @@ export class BrowseComponent implements OnInit {
       .subscribe((docs: any) => {
         this.trashedList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
         this.searchList = this.trashedList;
+        this.sortedData = this.searchList.slice();
         this.isTrashView = true;
       });
   }
@@ -878,6 +890,7 @@ export class BrowseComponent implements OnInit {
     if (!res && !res['uid']) return;
 
     this.searchList.push(res);
+    this.sortedData = this.searchList.slice();
     $(".dropdownCreate").hide();
     this.showFolder = false;
     if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
@@ -900,6 +913,29 @@ export class BrowseComponent implements OnInit {
     // $(document).ready(function(){
 
     // })
+  }
+
+  sortData(sort: Sort) {
+    const data = this.searchList.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'title': return this.compare(a.title, b.title, isAsc);
+        case 'dc:creator': return this.compare(a.properties['dc:creator'], b.properties['dc:creator'], isAsc);
+        case 'dc:created': return this.compare(a.properties['dc:created'], b.properties['dc:created'], isAsc);
+        case 'dc:start': return this.compare(a.properties['dc:start'], b.properties['dc:start'], isAsc);
+        default: return 0;
+      }
+    });
+  }
+  
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
 }
