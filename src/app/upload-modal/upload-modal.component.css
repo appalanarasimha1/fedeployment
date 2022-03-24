@@ -1287,9 +1287,10 @@ input.copyright-input::placeholder{
   text-align: left;
 }
 .folderHeading {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 32px;
   color: #040404;
+  font-weight: bold;
 }
 .uploadAssetsBlock .folder-img, .uploadAssetsBlock .folder-content {
   display: inline-block;

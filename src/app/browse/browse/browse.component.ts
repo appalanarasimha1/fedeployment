@@ -166,6 +166,21 @@ export class BrowseComponent implements OnInit {
       }
     });
 
+    // $(".buttonCreate").click(function(e){
+    //   $(".dropdownCreate").toggle();
+    //    e.stopPropagation();
+    // });
+
+    // $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+    //     e.stopPropagation();
+    // });
+
+    // $(document).click(function(){
+    //     $(".dropdownCreate, .mat-datepicker-content").hide();
+    // });
+  }
+
+  datePickerDefaultAction() {
     $(".buttonCreate").click(function(e){
       $(".dropdownCreate").toggle();
        e.stopPropagation();
@@ -173,16 +188,6 @@ export class BrowseComponent implements OnInit {
 
     $(".dropdownCreate, .mat-datepicker-content").click(function(e){
         e.stopPropagation();
-    });
-
-    $(document).click(function(){
-        $(".dropdownCreate, .mat-datepicker-content").hide();
-    });
-  }
-
-  datePickerDefaultAction() {
-    $(".dropdownCreate, .mat-datepicker-content").click(function(e){
-      e.stopPropagation();
     });
 
     $(document).click(function(){
@@ -832,6 +837,10 @@ export class BrowseComponent implements OnInit {
       this.loading = false;
     });
     this.recoverModal(listDocs);
+  }
+
+  checkEnableDeleteBtn() {
+    return Object.keys(this.selectedFolderList).length > 0;
   }
 
   getTrashedWS() {

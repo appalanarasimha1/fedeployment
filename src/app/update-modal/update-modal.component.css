@@ -7,7 +7,7 @@
   min-height: 60px !important;
   max-height: 100%!important;
   height: auto !important;
-  overflow: auto;
+  /* overflow: auto;  */
 }
 .close{
   position: absolute;
@@ -943,7 +943,7 @@ input.copyright-input {
 }
 ::ng-deep .mat-snack-bar-container.snackBarMiddle {
   text-align: center !important;
-  margin: 0px auto;
+  margin: 0px auto !important;
 }
 
 /* ::ng-deep #cdk-overlay-1, ::ng-deep .cdk-overlay-pane{

@@ -8,7 +8,7 @@
             <ngx-dropzone-label  class="noborder">
                <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
                   <div class="upload-label">
-                     <span style="margin-top: 20px;"><img src="../../assets/images/cloud-upload.png" style="width: 36px; margin-right: 10px;"> <b>Drag and drop assets to upload</b></span>
+                     <span style="margin-top: 20px;"><img src="../../assets/images/cloud-upload.png" style="width: 36px; margin-right: 10px;"> <b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
                      <div *ngIf="data" class="uploadAssetsBlock">
                         <div class="folder-img">
                            <img src="../../assets/images/folder-icon.svg" style="width: 60px;margin: 0 14px 0 0;">
@@ -20,7 +20,7 @@
                            </div>
                         </div>
                      </div>
-                     <span>or click to select files to upload</span>
+                     <span>{{ !data ? 'or click to select files to upload' : 'or click to select assets to upload'}}</span>
                   </div>
                   <div class="errortext">
                      <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
@@ -58,7 +58,7 @@
                </div>
             </div>
             <div class="col-xl-9 flexible">
-               <label class="control control--checkbox" *ngIf="getAssetNumber()">
+               <label class="control control--checkbox" *ngIf="getAssetNumber()" style="margin-bottom: 0px;">
                   Where any of the assets being uploaded contains a photo of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo and make accessible to other users across NEOM
                   <input type="checkbox" checked="checked"
                   [(ngModel)]="agreeTerms"
@@ -69,7 +69,7 @@
          </div>
          </div>
 
-         <div class="button-groups">
+         <div class="button-groups" style="padding-top: 15px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperNext class="upload-btn" [disabled]="checkUploadStep()">Next</button>
@@ -105,7 +105,7 @@
                         <div class="col-xl-8 col-md-8">
                            <div class="flexible">
                               <div class="workshaptitle">{{ selectedWorkspace.title || "Select workspace" }}</div>
-                              <div class="select-workspace-menu-btn pointer" (click)="showWorkspaceList()" [ngClass]="{'disableDiv': data}">Change workspace</div>
+                              <div class="select-workspace-menu-btn pointer" (click)="showWorkspaceList()" [ngClass]="{'disableDiv': data}" *ngIf="!data" >Change workspace</div>
                            </div>
                         </div>
                      </div>
@@ -133,11 +133,12 @@
             <div class="row upload-form-input mb-10">
                <div class="col-xl-4 col-md-4">
                   <label for="title">Folder name<br>
-                  <span style="font-size: 14px">e.g. Title of project or event</span></label>
+                  <span style="font-size: 14px" *ngIf="!data">e.g. Title of project or event</span></label>
                   <div id='custom-select-status' class='hidden-visually' aria-live="polite"></div>
                </div>
                <div class="col-xl-8 col-md-8 flexible">
-                  <div class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}">
+                  <div class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div>
+                  <div *ngIf="!data" class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}">
                      <input type="text" id="title" #searchFolderInput [disabled]="data" value="{{folderToAdd || selectedFolder?.title}}" [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
                      <span class="custom-select-icons">
                      <i class="fa fa-caret-down"></i>
@@ -168,7 +169,7 @@
                         </li>
                      </ul>
                   </div>
-                  <div class="tooltip1">
+                  <div class="tooltip1" *ngIf="!data">
                      <img src="../../assets/images/Info-icon.svg">
                      <span class="tooltiptext">Either select an exsiting folder by searching the keyword or name a new folder.</span>
                   </div>
@@ -181,7 +182,7 @@
                   <mat-accordion>
                      <mat-expansion-panel (opened)="panelOpenState = true"
                      (closed)="panelOpenState = false" >
-                     <mat-expansion-panel-header class="set-width" >
+                     <mat-expansion-panel-header class="set-width" *ngIf="!data">
                         <mat-panel-description class="goldenText mb-10" style="font-size: 14px !important; color: #937206 !important; font-weight: 600 !important;">
                            {{panelOpenState ? 'Hide' : 'Show'}} additional information
                         </mat-panel-description>
@@ -347,7 +348,7 @@
             </div>
          </div>
 
-         <div class="button-groups">
+         <div class="button-groups" style="padding-top: 15px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
@@ -511,7 +512,7 @@
             </div>
          </div>
 
-         <div class="button-groups">
+         <div class="button-groups" style="padding-top: 15px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>

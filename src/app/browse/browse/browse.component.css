@@ -160,6 +160,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   flex-direction: column;
   align-items: flex-end;
   width: 25%;
+  padding-top: 2px;
 }
 .update-classifications-btn {
   color: #E1BB33;
@@ -1080,6 +1081,7 @@ font-weight: 600;
 .delete-folder-action {
   position: absolute;
   left: 10px;
+  top: 4px;
   opacity: 0;
   transition: transform 0.3s;
 }
@@ -1286,4 +1288,11 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 .deleteFolder{
   display: inline-block;
   vertical-align: 2px;
+}
+.btn-disabled {
+  cursor: default;
+  color: #c1c1c1;
+}
+.btn-disabled img {
+  filter: invert(0.5);
 }
