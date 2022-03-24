@@ -312,10 +312,11 @@
               <div  class="col-xl-12 col-md-12">
                 <table class="folderListview pb-5">
                     <tr>
-                      <th width="30%">{{ !checkAssetType(selectedFolder2.type) ? 'Folder name' : 'Asset name'}}</th>
+                      <th width="30%">{{ !showLinkCopy ? 'Folder name' : 'Asset name'}}</th>
                       <th width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
                       <th width="20%">Created on</th>
+                      <th *ngIf="!showLinkCopy" width="20%">Associated date</th>
                     </tr>
                     <tr *ngFor="let item of searchList | search: searchBarValue; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
                       <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
@@ -337,6 +338,7 @@
                       <td><p>{{item.properties['dc:creator']}}</p></td>
                       <!-- <td><p>Luis C</p></td> -->
                       <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
+                      <td *ngIf="!showLinkCopy"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td>
                     </tr>
                 </table>
               </div>
