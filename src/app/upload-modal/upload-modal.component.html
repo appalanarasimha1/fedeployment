@@ -58,7 +58,7 @@
                </div>
             </div>
             <div class="col-xl-9 flexible">
-               <label class="control control--checkbox">
+               <label class="control control--checkbox" *ngIf="getAssetNumber()">
                   Where any of the assets being uploaded contains a photo of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo and make accessible to other users across NEOM
                   <input type="checkbox" checked="checked"
                   [(ngModel)]="agreeTerms"
