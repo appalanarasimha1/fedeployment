@@ -246,33 +246,33 @@
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
 
-                      <div class="groupFolder" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''">
-                        <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
-                          <div class="control-group">
-                            <label class="control control--checkbox">
-                              <input id="checkbox-{{i}}" type="checkbox" (change)="selectFolder($event, item, i)"/>
-                              <div class="control__indicator"></div>
-                            </label>
-                          </div>
-                        </div>
-                        <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
-                          (click)="handleTest(item);selectedFolder=item;">
-                          <!-- <img src="../../../assets/images/yellow-folder.png"> -->
-                          <div class="folder-content">
-                            <p class="tollTipCustom" style="    white-space: normal;
-                            width: 100%;
-                            overflow: inherit;
-                            text-overflow: inherit;">
-                            {{sharedService.stringShortener(item.title, 16)}}
-                              <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
-                                {{item.title}}
-                              </span>
-                            </p>
-                            <span>{{ getFolderInfo(item) }}</span>
-                          </div>
-
+                    <div class="groupFolder" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''">
+                      <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
+                        <div class="control-group">
+                          <label class="control control--checkbox">
+                            <input id="checkbox-{{i}}" type="checkbox" (change)="selectFolder($event, item, i)"/>
+                            <div class="control__indicator"></div>
+                          </label>
                         </div>
                       </div>
+                      <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
+                        (click)="handleTest(item);selectedFolder=item;">
+                        <!-- <img src="../../../assets/images/yellow-folder.png"> -->
+                        <div class="folder-content">
+                          <p class="tollTipCustom" style="    white-space: normal;
+                          width: 100%;
+                          overflow: inherit;
+                          text-overflow: inherit;">
+                          {{sharedService.stringShortener(item.title, 16)}}
+                            <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
+                              {{item.title}}
+                            </span>
+                          </p>
+                          <span>{{ getFolderInfo(item) }}</span>
+                        </div>
+
+                      </div>
+                    </div>
 
 
                       <!-- <div class="folder-content" style="background-color: #F9F7F2;">
@@ -328,7 +328,7 @@
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
                       <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" class="" style="display: flex;cursor: pointer;">
-                        <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
+                        <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
                       <td><p>{{item.properties['dc:creator']}}</p></td>
