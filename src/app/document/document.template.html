@@ -300,12 +300,8 @@
                 </div>
               </ngx-masonry> -->
 
-
-              <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
-                <div ngxMasonryItem class="masonry-item"
-                  *ngFor="let doc of documents.entries?.slice(0, docSliceInput); let i = index">
-                  <!-- <img *ngIf="doc.type === 'Picture" id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt=""
-                (click)="open(file, 'image')" /> -->
+              <div class="masonry">
+                <div class="brick" *ngFor="let doc of documents.entries?.slice(0, docSliceInput); let i = index">
                   <document-card
                     [doc]="doc"
                     [viewType]="viewType"
@@ -315,7 +311,24 @@
                     >
                   </document-card>
                 </div>
-              </ngx-masonry>
+              </div>
+
+
+              <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
+                <div ngxMasonryItem class="masonry-item"
+                  *ngFor="let doc of documents.entries?.slice(0, docSliceInput); let i = index">
+                  <!-- <img *ngIf="doc.type === 'Picture" id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt=""
+                (click)="open(file, 'image')" /> -/->
+                  <document-card
+                    [doc]="doc"
+                    [viewType]="viewType"
+                    (onOpenPreview)="open(doc, doc.type)"
+                    (onSelect)="selectImage($event, doc, i)"
+                    (onMarkFavourite)="markFavourite(doc, false)"
+                    >
+                  </document-card>
+                </div>
+              </ngx-masonry> -->
             </div>
           </div>
         </div>
