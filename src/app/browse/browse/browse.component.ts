@@ -184,34 +184,28 @@ export class BrowseComponent implements OnInit {
     $(".buttonCreate").on('click', function (e){
       // $(".dropdownCreate").toggle();
       $(".dropdownCreate").show();
-      $('.buttonCreate').addClass('test');
+      $('.buttonCreate').addClass('createNewFolderClick');
        e.stopPropagation();
     });
-    $('.buttonCreate.test').on('click', function (e) {
+    $('.buttonCreate.createNewFolderClick').on('click', function (e) {
        $(".dropdownCreate").hide();
-       $('.buttonCreate').removeClass('test');
+       $('.buttonCreate').removeClass('createNewFolderClick');
        e.stopPropagation();
     });
-    // $(".buttonCreate.test").click(function(e){
-    //   // $(".dropdownCreate").toggle();
-    //   $(".dropdownCreate").show();
-    //   $('.buttonCreate').removeClass('test');
-    //    e.stopPropagation();
-    // });
 
     $(".dropdownCreate, .mat-datepicker-content").click(function(e){
         e.stopPropagation();
-        $('.buttonCreate').removeClass('test');
+        $('.buttonCreate').removeClass('createNewFolderClick');
     });
 
     $(document).click(function(){
         $(".dropdownCreate").hide();
-        $('.buttonCreate').removeClass('test');
+        $('.buttonCreate').removeClass('createNewFolderClick');
     });
 
     $('.mat-icon-button').click(function(){
       $(".dropdownCreate, .mat-datepicker-content").click(function(e){
-        $('.buttonCreate').removeClass('test');
+        $('.buttonCreate').removeClass('createNewFolderClick');
         e.stopPropagation();
       });
     })
