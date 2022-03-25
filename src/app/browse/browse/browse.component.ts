@@ -131,6 +131,7 @@ export class BrowseComponent implements OnInit {
     folder: ''
   };
   breadcrrumb = `/${WORKSPACE_ROOT}`;
+  showFolder = false;
 
   ngOnInit(): void {
     this.fetchUserData();
@@ -887,8 +888,12 @@ export class BrowseComponent implements OnInit {
     dialogConfig.data = this.selectedFolder;
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
+    modalDialog.afterClosed().subscribe(result => {
+      this.searchList.unshift(result);
+      this.sortedData = this.searchList.slice();
+    })
   }
-   showFolder = false;
+
   openNewFolderDiv(){
     this.showFolder = ! this.showFolder
   }

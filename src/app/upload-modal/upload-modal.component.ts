@@ -125,6 +125,7 @@ export class UploadModalComponent implements OnInit {
     variableWidth: true,
     centerMode: false
   };
+  uploadedAsset;
 
   constructor(
     private apiService: ApiService,
@@ -163,6 +164,10 @@ export class UploadModalComponent implements OnInit {
   }
 
   closeModal() {
+    if(this.data?.sectorId) {
+      this.dialogRef.close(this.uploadedAsset);
+      return;
+    }
     this.dialogRef.close(this.selectedFolder);
   }
 
@@ -661,6 +666,7 @@ export class UploadModalComponent implements OnInit {
       payload["dc:start"] = new Date(this.associatedDate).toISOString();
     }
     const res = await this.apiService.post(url, payload).toPromise();
+    this.uploadedAsset = res;
     return {
       id: res["uid"],
       title: res["title"],
@@ -702,69 +708,7 @@ export class UploadModalComponent implements OnInit {
 
   async createFolder(name, parentFolder?: any, data?: any) {
     const url = `/path${this.parentFolder.path}`;
-    // const payload = {
-    //   "entity-type": "document",
-    //   repository: "default",
-    //   path: `${this.parentFolder.path}/null`,
-    //   type: "Workspace",
-    //   parentRef: this.parentFolder.id,
-    //   isCheckedOut: true,
-    //   isRecord: false,
-    //   retainUntil: null,
-    //   hasLegalHold: false,
-    //   isUnderRetentionOrLegalHold: false,
-    //   isVersion: false,
-    //   isProxy: false,
-    //   changeToken: null,
-    //   isTrashed: false,
-    //   title: "null",
-    //   properties: {
-    //     "webc:themePage": "workspace",
-    //     "webc:theme": "sites",
-    //     "webc:moderationType": "aposteriori",
-    //     "dc:path": this.parentFolder.path,
-    //     "dc:parentId": this.parentFolder.id,
-    //     "dc:description": this.description,
-    //     "dc:title": name,
-    //     "dc:start": this.associatedDate ? new Date(this.associatedDate).toISOString() : null,
-    //     "dc:parentName": "Workspaces",
-    //     "dc:sector": this.selectedWorkspace.title,
-    //     "dc:primaryType": "event",
-    //     "dc:folderType": this.associatedDate ? "singleDayEvent" : "generic",
-    //   },
-    //   facets: ["Folderish", "NXTag", "SuperSpace"],
-    //   schemas: [
-    //     {
-    //       name: "webcontainer",
-    //       prefix: "webc",
-    //     },
-    //     {
-    //       name: "file",
-    //       prefix: "file",
-    //     },
-    //     {
-    //       name: "common",
-    //       prefix: "common",
-    //     },
-    //     {
-    //       name: "files",
-    //       prefix: "files",
-    //     },
-    //     {
-    //       name: "dublincore",
-    //       prefix: "dc",
-    //     },
-    //     {
-    //       name: "publishing",
-    //       prefix: "publish",
-    //     },
-    //     {
-    //       name: "facetedTag",
-    //       prefix: "nxtag",
-    //     },
-    //   ],
-    //   name: name,
-    // };
+    
     const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder, this.description, this.associatedDate);
     const res = await this.apiService.post(url, payload).toPromise();
     return {
