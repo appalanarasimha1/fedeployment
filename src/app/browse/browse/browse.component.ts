@@ -165,19 +165,6 @@ export class BrowseComponent implements OnInit {
         parent.addClass('is-open');
       }
     });
-
-    // $(".buttonCreate").click(function(e){
-    //   $(".dropdownCreate").toggle();
-    //    e.stopPropagation();
-    // });
-
-    // $(".dropdownCreate, .mat-datepicker-content").click(function(e){
-    //     e.stopPropagation();
-    // });
-
-    // $(document).click(function(){
-    //     $(".dropdownCreate, .mat-datepicker-content").hide();
-    // });
   }
 
   datePickerDefaultAction() {
@@ -936,6 +923,7 @@ export class BrowseComponent implements OnInit {
     this.searchList.push(res);
     this.sortedData = this.searchList.slice();
     $(".dropdownCreate").hide();
+    $('.buttonCreate').removeClass('createNewFolderClick');
     this.sharedService.showSnackbar(`${folderName} folder is created successfully`, 3000, 'bottom', 'center', 'snackBarMiddleRecover');
     this.showFolder = false;
     if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
