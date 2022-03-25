@@ -180,21 +180,37 @@ export class BrowseComponent implements OnInit {
   }
 
   datePickerDefaultAction() {
-    $(".buttonCreate").click(function(e){
+    $(".buttonCreate").on('click', function (e){
+      // $(".dropdownCreate").toggle();
       $(".dropdownCreate").show();
+      $('.buttonCreate').addClass('test');
        e.stopPropagation();
     });
+    $('.buttonCreate.test').on('click', function (e) {
+       $(".dropdownCreate").hide();
+       $('.buttonCreate').removeClass('test');
+       e.stopPropagation();
+    });
+    // $(".buttonCreate.test").click(function(e){
+    //   // $(".dropdownCreate").toggle();
+    //   $(".dropdownCreate").show();
+    //   $('.buttonCreate').removeClass('test');
+    //    e.stopPropagation();
+    // });
 
     $(".dropdownCreate, .mat-datepicker-content").click(function(e){
         e.stopPropagation();
+        $('.buttonCreate').removeClass('test');
     });
 
     $(document).click(function(){
         $(".dropdownCreate").hide();
+        $('.buttonCreate').removeClass('test');
     });
 
     $('.mat-icon-button').click(function(){
       $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+        $('.buttonCreate').removeClass('test');
         e.stopPropagation();
       });
     })
