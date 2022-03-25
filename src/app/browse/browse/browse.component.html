@@ -57,7 +57,11 @@
         </div>
         <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative" style="min-height: 100vh;">
           <app-loader [show]="loading"></app-loader>
-          <div>
+          <div class="no-items" *ngIf="folderNotFound">
+            <img src="../../../assets/images/no-items.svg" alt="No items here" />
+            Folder not found or has been deleted
+          </div>
+          <div *ngIf="!folderNotFound">
             <div class="row" *ngIf="showSearchbar || isTrashView">
               <div class="col-xl-7">
                 <div *ngIf="showSearchbar || !isTrashView" class="pb-5">
@@ -74,7 +78,7 @@
                 <div style="float: right; position: relative;">
                   <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
                   <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
-                  
+
                   <div class='buttonCreate'>
                     <a href="javascript:void(0)" *ngIf="showSearchbar && !isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>

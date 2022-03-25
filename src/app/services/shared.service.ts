@@ -32,6 +32,7 @@ export class SharedService {
   // /* <!-- sprint12-fixes end --> */
 
   public stringShortener(str: string, strLength: number): string {
+    if (!str) return '';
     if (str.length > strLength) {
       return str.substring(0, strLength) + '...';
     }
@@ -251,7 +252,7 @@ export class SharedService {
   toTop(): void {
     window.scroll(0,0);
   }
-  
+
   capitaliseSelectiveTags(tag: string): string {
     if(tag.toLowerCase() === 'neom') {
       return tag.toUpperCase();
@@ -324,19 +325,22 @@ export class SharedService {
       name: name,
     };
   }
-  
+
   removeWrokspaceFromBreadcrumb(data: string): string {
     return data.replace(/\/workspaces/gi, '');
   }
 
-  showSnackbar(data: string, duration: number, verticalPosition: MatSnackBarVerticalPosition, horizontalPosition: MatSnackBarHorizontalPosition, panelClass: string): void {
+  showSnackbar(data: string, duration: number, verticalPosition: MatSnackBarVerticalPosition, horizontalPosition: MatSnackBarHorizontalPosition, panelClass: string, actionName?: string, action?: any): void {
     setTimeout(()=>{
-      this._snackBar.open(data, '', {
+      const snackBarRef = this._snackBar.open(data, actionName || '', {
         duration: duration,
         verticalPosition: verticalPosition,
         horizontalPosition: horizontalPosition,
         panelClass: [panelClass],
       });
+      if (actionName) {
+        snackBarRef.onAction().subscribe(() => action());
+      }
     }, 500);
   }
 
