@@ -140,6 +140,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   private favouriteCall;
   private preFavouriteCall;
   private assetBySectorCall;
+  masoneryItemIndex;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -818,6 +819,14 @@ export class DocumentComponent implements OnInit, OnChanges {
       // this.assetsBySectorSelected = null;
       this.sectorSelected = null;
     }
+  }
+
+  over(index){
+    this.masoneryItemIndex = index;
+  }
+
+  out(){
+    this.masoneryItemIndex = null;
   }
 
 
