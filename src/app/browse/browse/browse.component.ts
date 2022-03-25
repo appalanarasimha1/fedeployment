@@ -109,6 +109,7 @@ export class BrowseComponent implements OnInit {
   needReloadWs = [];
   hasUpdatedChildren = [];
   sortedData;
+  folderNotFound = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -390,6 +391,7 @@ export class BrowseComponent implements OnInit {
     this.showSearchbar = false;
     this.searchBarValue = '';
     this.sharedService.toTop();
+    this.folderNotFound = false;
 
     this.createBreadCrumb(item.title, item.type, item.path);
     this.extractBreadcrumb();
@@ -452,6 +454,9 @@ export class BrowseComponent implements OnInit {
               }
             });
             this.selectedFolder = lastChild;
+            if (!this.selectedFolder) {
+              this.folderNotFound = true;
+            }
             if(lastChild) {
               this.handleTest(lastChild);
             }
@@ -508,6 +513,9 @@ export class BrowseComponent implements OnInit {
               }
             });
             this.selectedFolder = lastChild;
+            if (!this.selectedFolder) {
+              this.folderNotFound = true;
+            }
             if(lastChild) {
               this.handleTest(lastChild);
             }
@@ -775,7 +783,7 @@ export class BrowseComponent implements OnInit {
   }
 
   deleteModal(listDocs) {
-    this.sharedService.showSnackbar('The deleted items will be retained for 180 days in Deleted items.', 3000, 'top', 'center', 'snackBarMiddle');
+    this.sharedService.showSnackbar('The deleted items will be retained for 180 days in', 6000, 'top', 'center', 'snackBarMiddle', 'Deleted items', this.getTrashedWS.bind(this));
     // this._snackBar.open('The deleted items will be retained for 180 days in Deleted items.', '', {
     //   duration: 3000,
     //   // verticalPosition: 'top',
@@ -842,6 +850,10 @@ export class BrowseComponent implements OnInit {
   }
 
   getTrashedWS() {
+    if (this.folderNotFound) {
+      this.folderNotFound = false;
+      this.selectedFolder = {};
+    }
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace'`)
       .subscribe((docs: any) => {
@@ -949,7 +961,7 @@ export class BrowseComponent implements OnInit {
       }
     });
   }
-  
+
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
