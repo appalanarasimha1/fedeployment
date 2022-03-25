@@ -182,7 +182,7 @@ export class BrowseComponent implements OnInit {
 
   datePickerDefaultAction() {
     $(".buttonCreate").click(function(e){
-      $(".dropdownCreate").toggle();
+      $(".dropdownCreate").show();
        e.stopPropagation();
     });
 
@@ -191,8 +191,14 @@ export class BrowseComponent implements OnInit {
     });
 
     $(document).click(function(){
-        $(".dropdownCreate, .mat-datepicker-content").hide();
+        $(".dropdownCreate").hide();
     });
+
+    $('.mat-icon-button').click(function(){
+      $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+        e.stopPropagation();
+      });
+    })
   }
 
   checkAssetType(assetType: string): boolean {
