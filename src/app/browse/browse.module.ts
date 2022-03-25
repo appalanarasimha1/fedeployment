@@ -14,7 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { UploadModalModule } from '../upload-modal/upload-modal.module';
@@ -37,7 +36,6 @@ import { UploadModalModule } from '../upload-modal/upload-modal.module';
     MatPaginatorModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatSnackBarModule,
     MatExpansionModule,
     MatDatepickerModule,
     UploadModalModule

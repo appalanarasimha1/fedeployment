@@ -573,6 +573,11 @@ export class UploadModalComponent implements OnInit {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
       await this.setAssetPermission(asset, key);
     });
+    if(!this.showRedirectUrl()) {
+      // this.dialogRef.close(this.uploadedAsset);
+      this.sharedService.showSnackbar('Asset added successfully.', 3000, 'bottom', 'center', 'snackBarMiddle');
+      return;
+    }
     this.step = 4;
   }
 
@@ -774,7 +779,8 @@ export class UploadModalComponent implements OnInit {
   }
 
   showRedirectUrl(): boolean {
-    if(this.data.title === this.selectedFolder.title) {
+    if(this.data?.sectorId) {
+      this.step = 4;
       return false;
     }
     return true;

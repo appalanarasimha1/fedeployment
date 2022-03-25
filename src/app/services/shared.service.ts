@@ -5,6 +5,7 @@ import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { localStorageVars } from '../common/constant';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 
 @Injectable({
@@ -18,8 +19,9 @@ export class SharedService {
   // /* <!-- sprint12-fixes start --> */
   public sidebarToggleResize = new BehaviorSubject(false);
 
-  constructor(private router: Router) {
-  }
+  constructor(
+    private router: Router,
+    private _snackBar: MatSnackBar) {}
 
   setSidebarToggle(slideToggle) {
     this.sidebarToggleResize.next(slideToggle);
@@ -325,6 +327,17 @@ export class SharedService {
   
   removeWrokspaceFromBreadcrumb(data: string): string {
     return data.replace(/\/workspaces/gi, '');
+  }
+
+  showSnackbar(data: string, duration: number, verticalPosition: MatSnackBarVerticalPosition, horizontalPosition: MatSnackBarHorizontalPosition, panelClass: string): void {
+    setTimeout(()=>{
+      this._snackBar.open(data, '', {
+        duration: duration,
+        verticalPosition: verticalPosition,
+        horizontalPosition: horizontalPosition,
+        panelClass: [panelClass],
+      });
+    }, 500);
   }
 
 }

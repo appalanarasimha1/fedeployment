@@ -22,7 +22,6 @@ import {
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadModalComponent } from 'src/app/upload-modal/upload-modal.component';
 import {Sort} from '@angular/material/sort';
 
@@ -45,8 +44,7 @@ export class BrowseComponent implements OnInit {
     private router: Router,
     public sharedService: SharedService,
     private route: ActivatedRoute,
-    public nuxeo: NuxeoService,
-    private _snackBar: MatSnackBar) { }
+    public nuxeo: NuxeoService,) { }
 
   faCoffee = faCoffee;
   parentId = ROOT_ID;
@@ -777,12 +775,13 @@ export class BrowseComponent implements OnInit {
   }
 
   deleteModal(listDocs) {
-    this._snackBar.open('The deleted items will be retained for 180 days in Deleted items.', '', {
-      duration: 3000,
-      // verticalPosition: 'top',
-      horizontalPosition: 'center',
-      panelClass: ['snackBarMiddle'],
-    });
+    this.sharedService.showSnackbar('The deleted items will be retained for 180 days in Deleted items.', 3000, 'top', 'center', 'snackBarMiddle');
+    // this._snackBar.open('The deleted items will be retained for 180 days in Deleted items.', '', {
+    //   duration: 3000,
+    //   // verticalPosition: 'top',
+    //   horizontalPosition: 'center',
+    //   panelClass: ['snackBarMiddle'],
+    // });
     this.searchList = this.searchList.filter(item => !listDocs.includes(item['uid']));
     this.sortedData = this.searchList.slice();
     this.hasUpdatedChildren.push(this.selectedFolder.uid);
@@ -790,12 +789,13 @@ export class BrowseComponent implements OnInit {
   }
 
   recoverModal(listDocs) {
-    this._snackBar.open('Successfully recovered.', '', {
-      duration: 3000,
-      // verticalPosition: 'top',
-      horizontalPosition: 'center',
-      panelClass: ['snackBarMiddleRecover'],
-    });
+    // this._snackBar.open('Successfully recovered.', '', {
+    //   duration: 3000,
+    //   // verticalPosition: 'top',
+    //   horizontalPosition: 'center',
+    //   panelClass: ['snackBarMiddleRecover'],
+    // });
+    this.sharedService.showSnackbar('Successfully recovered.', 3000, 'top', 'center', 'snackBarMiddleRecover');
     this.trashedList = this.trashedList.filter(item => !listDocs.includes(item['uid']));
     this.searchList = this.trashedList;
     this.sortedData = this.searchList.slice();
@@ -907,6 +907,7 @@ export class BrowseComponent implements OnInit {
     this.searchList.push(res);
     this.sortedData = this.searchList.slice();
     $(".dropdownCreate").hide();
+    this.sharedService.showSnackbar(`${folderName} folder is created successfully`, 3000, 'bottom', 'center', 'snackBarMiddleRecover');
     this.showFolder = false;
     if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
       this.hasUpdatedChildren.push(this.selectedFolder.uid);
