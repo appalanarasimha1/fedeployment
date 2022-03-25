@@ -142,6 +142,7 @@ export class UploadModalComponent implements OnInit {
       this.selectWorkspace(title, true);
       this.showWsList = false;
       this.folderNameParam = this.data.title;
+      this.associatedDate = this.data.properties["dc:start"];
     } else {
       this.showWorkspaceList();
     }

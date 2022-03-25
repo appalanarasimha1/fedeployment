@@ -889,6 +889,7 @@ export class BrowseComponent implements OnInit {
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe(result => {
+      if(!result) return;
       this.searchList.unshift(result);
       this.sortedData = this.searchList.slice();
     })

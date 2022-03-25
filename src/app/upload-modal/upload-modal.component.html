@@ -367,11 +367,11 @@
                   <div class="flexible">
                      <img src="../../assets/images/upload.png">
                      <!-- <mat-icon>folder</mat-icon> -->
-                     <span style="margin-left: 10px; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
+                     <span style="margin-left: 10px; display: block;">{{ folderToAdd || selectedFolder?.title || data?.title }}</span>
                   </div>
                </div>
                <div class="publish-summary-location flexible">
-                  <div *ngIf="showLocaleDate(associatedDate) !== 'Invalid Date'" style="margin-left: 20px;">
+                  <div *ngIf="associatedDate" style="margin-left: 20px;">
                      <!-- <mat-icon>calendar_today</mat-icon> -->
                      <img src="../../assets/images/calendar.png" style="vertical-align: top;">
                      <span style="margin-left: 6px; display: inline-block;">{{ showLocaleDate(associatedDate) }}</span>
