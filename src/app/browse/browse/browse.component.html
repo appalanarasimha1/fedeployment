@@ -58,8 +58,8 @@
         <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative" style="min-height: 100vh;">
           <app-loader [show]="loading"></app-loader>
           <div class="no-items" *ngIf="folderNotFound">
-            <img src="../../../assets/images/no-items.svg" alt="No items here" />
-            Folder not found or has been deleted
+            <img src="../../../assets/images/folder-delete-icon.svg" alt="This folder has been deleted" />
+            This folder has been deleted
           </div>
           <div *ngIf="!folderNotFound">
             <div class="row" *ngIf="showSearchbar || isTrashView">
@@ -245,7 +245,7 @@
                   <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
-                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId|| isTrashView">
+                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId">
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of sortedData | search: searchBarValue; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>

@@ -940,10 +940,10 @@ input.copyright-input {
   font-size: 13px !important;
   font-weight: normal !important;
   text-align: center !important;
-  display: inline-block !important;
   font-family: myBrown !important;
 }
-::ng-deep .mat-snack-bar-container.snackBarMiddle {
+::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
   text-align: center !important;
   margin: 0px auto !important;
 }

@@ -924,7 +924,7 @@ export class BrowseComponent implements OnInit {
     this.sortedData = this.searchList.slice();
     $(".dropdownCreate").hide();
     $('.buttonCreate').removeClass('createNewFolderClick');
-    this.sharedService.showSnackbar(`${folderName} folder is created successfully`, 3000, 'bottom', 'center', 'snackBarMiddleRecover');
+    this.sharedService.showSnackbar(`${folderName} folder successfully created.`, 3000, 'top', 'center', 'snackBarMiddle');
     this.showFolder = false;
     if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
       this.hasUpdatedChildren.push(this.selectedFolder.uid);

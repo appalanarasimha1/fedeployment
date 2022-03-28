@@ -4156,3 +4156,24 @@ document-card img {
 ngx-masonry document-card .lock-icon img {
   margin-top: 0px !important;
 }
+::ng-deep .mat-snack-bar-container.snackBarMiddle,
+::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+  max-width: 50vw !important;
+  margin-top: 200px !important;
+  border-radius: 50px !important;
+  min-width: auto !important;
+}
+::ng-deep .mat-simple-snackbar {
+  color: #fff !important;
+  font-family: inherit !important;
+}
+::ng-deep .mat-simple-snackbar-action {
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+::ng-deep .mat-simple-snackbar-action button {
+  font-weight: bold !important;
+}
+::ng-deep .mat-simple-snackbar {
+  text-align: center !important;
+}
