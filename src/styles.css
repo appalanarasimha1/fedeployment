@@ -4177,3 +4177,26 @@ ngx-masonry document-card .lock-icon img {
 ::ng-deep .mat-simple-snackbar {
   text-align: center !important;
 }
+
+.mat-step-icon-content span, 
+.mat-step-icon .mat-step-icon-content .mat-icon {
+  text-indent: -9999em;
+  display: block;
+  position: relative;
+}
+.mat-step-icon-content span:after,
+.mat-step-icon .mat-step-icon-content .mat-icon:after {
+  content: "";
+  background: url(./assets/images/edit-icon.svg) center center no-repeat;
+  background-size: contain;
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: -8px;
+  width: 15px;
+  height: 15px;
+}
+.mat-step-icon .mat-step-icon-content .mat-icon:after {
+  top: 8px;
+  left: 0px;
+}
