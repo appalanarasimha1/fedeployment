@@ -76,8 +76,8 @@
               </div>
               <div class="col-xl-5" >
                 <div style="float: right; position: relative;">
-                  <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
-                  <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
+                  <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView && checkEnableDeleteBtn()" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
+                  <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView && checkEnableDeleteBtn()" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
 
                   <div class='buttonCreate'>
                     <a href="javascript:void(0)" *ngIf="showSearchbar && !isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
@@ -245,7 +245,7 @@
                   <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
-                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId">
+                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId || isTrashView">
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of sortedData | search: searchBarValue; let i = index">
                     <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
@@ -258,22 +258,21 @@
                             <div class="control__indicator"></div>
                           </label>
                         </div>
-                        <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
-                          (click)="handleTest(item);">
-                          <!-- <img src="../../../assets/images/yellow-folder.png"> -->
-                          <div class="folder-content">
-                            <p class="tollTipCustom" style="    white-space: normal;
-                            width: 100%;
-                            overflow: inherit;
-                            text-overflow: inherit;">
-                            {{sharedService.stringShortener(item.title, 16)}}
-                              <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
-                                {{item.title}}
-                              </span>
-                            </p>
-                            <span>{{ getFolderInfo(item) }}</span>
-                          </div>
-
+                      </div>
+                      <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
+                        (click)="handleTest(item);">
+                        <!-- <img src="../../../assets/images/yellow-folder.png"> -->
+                        <div class="folder-content">
+                          <p class="tollTipCustom" style="    white-space: normal;
+                          width: 100%;
+                          overflow: inherit;
+                          text-overflow: inherit;">
+                          {{sharedService.stringShortener(item.title, 16)}}
+                            <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
+                              {{item.title}}
+                            </span>
+                          </p>
+                          <span>{{ getFolderInfo(item) }}</span>
                         </div>
 
                       </div>
