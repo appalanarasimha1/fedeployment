@@ -4202,3 +4202,7 @@ ngx-masonry document-card .lock-icon img {
 .mat-step-header:nth-child(5) .mat-step-icon .mat-step-icon-content:after {
   content: '3';
 }
+.select-an-area .ng-select-focused, .ssector .ng-select-focused {
+  display: block !important;
+}
+.row:before, .row:after {display: none !important;}
