@@ -4206,3 +4206,11 @@ ngx-masonry document-card .lock-icon img {
   display: block !important;
 }
 .row:before, .row:after {display: none !important;}
+body {
+  padding-top: 76px;
+}
+@media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1320px;
+  }
+}
