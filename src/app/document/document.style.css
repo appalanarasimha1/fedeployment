@@ -1632,3 +1632,8 @@ color: #ACACAC;
     padding: 20px 0px 0px !important;
   }
 }
+
+/* custom masonry end */
+.masonrZindex {
+  z-index: 9 !important;
+}

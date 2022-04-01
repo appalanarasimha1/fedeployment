@@ -3,7 +3,7 @@
 <div *ngIf="viewType === 'GRID'" style="position: relative;">
   <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" /> -->
-    <div style="min-width: 113px; background-color: #f3f3f3;">
+    <div style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
       <img *ngIf="doc.type === 'Picture'" 
         id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
@@ -92,7 +92,7 @@
         </div>
       </div>
       <div *ngIf="showLockIcon() && showLock" class="lock-icon">
-        <img src="../../assets/images/lock-icon.svg" alt="" />
+        <img src="../../assets/images/lock-icon.svg" alt="" style="min-height: auto !important;" />
       </div>
     </div>
   </div>
@@ -139,7 +139,7 @@
         (click)="markFavourite()"></div>
     </div>
     <div *ngIf="showLockIcon() && showLock" class="lock-icon">
-      <img src="../../assets/images/lock-icon.svg" alt="" />
+      <img src="../../assets/images/lock-icon.svg" alt="" style="min-height: auto !important; margin-top: 0px;" />
     </div>
     <div class="mouse-hover-bg" (click)="openPreview()"></div>
 

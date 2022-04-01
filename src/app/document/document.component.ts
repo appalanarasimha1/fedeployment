@@ -140,6 +140,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   private favouriteCall;
   private preFavouriteCall;
   private assetBySectorCall;
+  masoneryItemIndex;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -214,7 +215,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   resetResult() {
     this.documents = '';
-    this.selectTab('recentUpload');
+    // this.selectTab('recentUpload');
     this.docSliceInput = 39;
     this.hideShowMoreBtn = false;
     this.showListView = false;
@@ -225,7 +226,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailView = null;
     this.detailDocuments = null;
     this.searchTerm = {ecm_fulltext : ''};
-    this.resetView();
+    this.clearFilter();
+    // this.resetView();
     this.selectTab('recentlyViewed');
   }
 
@@ -256,7 +258,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getAssetBySectors(sector = '', dontResetSectors: boolean = true) {
-    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16 };
+    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, sortBy: 'dc:created', sortOrder: 'desc' };
     const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
     if (sector) {
       queryParams['sectors'] = `["${sector}"]`;
@@ -267,11 +269,13 @@ export class DocumentComponent implements OnInit, OnChanges {
         if(response) {
           this.assetsBySector = response.entries ? response?.entries : [];
           if(dontResetSectors) {
-            this.sectorsHomepage = response.aggregations['sectors']?.buckets.map(sector => {
+            this.sectorsHomepage = [];
+            for(let i = 0; i < response.aggregations['sectors']?.buckets.length; i++) {
+              const sector = response.aggregations['sectors'].buckets[i];
               if(UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1) {
-                return sector.key;
+                this.sectorsHomepage.push(sector.key);
               }
-            }) || [];
+            }
           }
         }
           this.loading.pop();
@@ -705,7 +709,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   openAdvancedFilter() {
     this.openFilterModal.emit(this.selectedType);
   }
-  
+
   checkShowRecent() {
     if (this.documents && this.documents["entity-type"]) return false;
     return true;
@@ -815,6 +819,14 @@ export class DocumentComponent implements OnInit, OnChanges {
       // this.assetsBySectorSelected = null;
       this.sectorSelected = null;
     }
+  }
+
+  over(index){
+    this.masoneryItemIndex = index;
+  }
+
+  out(){
+    this.masoneryItemIndex = null;
   }
 
 

@@ -8,6 +8,7 @@ import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
 import { DataService } from "../services/data.service";
+import { SharedService } from "../services/shared.service";
 
 @Component({
   selector: "preview-popup",
@@ -38,7 +39,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     private apiService: ApiService,
     private modalService: NgbModal,
     public nuxeo: NuxeoService,
-    public dataService: DataService
+    public dataService: DataService,
+    public sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
@@ -84,6 +86,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
     this.doc.properties[TAG_ATTRIBUTES.WEATHER_CLASSIFICATION]?.map((item) => this.checkDuplicateAndAddTags(item));
+    this.doc.properties[TAG_ATTRIBUTES.PUBLIC_FIGURE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
   }
 
   checkDuplicateAndAddTags(tag: string): void {

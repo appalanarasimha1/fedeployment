@@ -21,6 +21,9 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { ReversePipe } from '../common/pipe/reverse.pipe';
 import { ChartsModule } from 'ng2-charts';
 import { SearchPipe } from '../common/pipe/search.pipe';
+import {MatSortModule} from '@angular/material/sort';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../common/snackbar/snackbar.component';
 
 @NgModule({
   providers: [
@@ -32,7 +35,8 @@ import { SearchPipe } from '../common/pipe/search.pipe';
     PreviewPopupComponent,
     SecurePipe,
     ReversePipe,
-    SearchPipe
+    SearchPipe,
+    SnackbarComponent
   ],
   imports: [
     CommonModule,
@@ -42,15 +46,16 @@ import { SearchPipe } from '../common/pipe/search.pipe';
     NgbModule,
     PdfViewerModule,
     MatStepperModule,
-    ChartsModule
+    ChartsModule,
+    MatSnackBarModule
     // UploadModalModule,
     // NgxMasonryModule
   ],
   exports: [
     CommonModule,
+    FormsModule,
     PdfViewerModule,
     ReactiveFormsModule,
-    FormsModule,
     NgbModule,
     LoaderComponent,
     LoaderSmallComponent,
@@ -59,9 +64,12 @@ import { SearchPipe } from '../common/pipe/search.pipe';
     MatStepperModule,
     ReversePipe,
     ChartsModule,
-    SearchPipe
+    SearchPipe,
     // NgxMasonryModule
     // OwlModule
+    MatSortModule,
+    MatSnackBarModule,
+    SnackbarComponent
   ]
 })
 export class SharedModule { }

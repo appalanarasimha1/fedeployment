@@ -5,6 +5,7 @@ import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { localStorageVars } from '../common/constant';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 
 @Injectable({
@@ -18,8 +19,9 @@ export class SharedService {
   // /* <!-- sprint12-fixes start --> */
   public sidebarToggleResize = new BehaviorSubject(false);
 
-  constructor(private router: Router) {
-  }
+  constructor(
+    private router: Router,
+    private _snackBar: MatSnackBar) {}
 
   setSidebarToggle(slideToggle) {
     this.sidebarToggleResize.next(slideToggle);
@@ -30,6 +32,7 @@ export class SharedService {
   // /* <!-- sprint12-fixes end --> */
 
   public stringShortener(str: string, strLength: number): string {
+    if (!str) return '';
     if (str.length > strLength) {
       return str.substring(0, strLength) + '...';
     }
@@ -244,6 +247,101 @@ export class SharedService {
   chekForReportRoles(role: string): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return ["ceo's office", "ground x"].includes(user?.sector?.toLowerCase()) || user?.groups.indexOf(role) != -1;
+  }
+
+  toTop(): void {
+    window.scroll(0,0);
+  }
+
+  capitaliseSelectiveTags(tag: string): string {
+    if(tag.toLowerCase() === 'neom') {
+      return tag.toUpperCase();
+    }
+    return tag;
+  }
+
+  async getCreateFolderPayload(name: string, sector: string, parentFolder?: any, description?: String, associatedDate?: string) {
+    return {
+      "entity-type": "document",
+      repository: "default",
+      path: `${parentFolder ? parentFolder.path : localStorage.getItem("workspacePath")}/null`,
+      type: "Workspace",
+      parentRef: parentFolder ? parentFolder.id : localStorage.getItem("workspaceId"),
+      isCheckedOut: true,
+      isRecord: false,
+      retainUntil: null,
+      hasLegalHold: false,
+      isUnderRetentionOrLegalHold: false,
+      isVersion: false,
+      isProxy: false,
+      changeToken: null,
+      isTrashed: false,
+      title: "null",
+      properties: {
+        "webc:themePage": "workspace",
+        "webc:theme": "sites",
+        "webc:moderationType": "aposteriori",
+        "dc:path": parentFolder ? parentFolder.path : localStorage.getItem("workspacePath"),
+        "dc:parentId": parentFolder ? parentFolder.id : localStorage.getItem("workspaceId"),
+        "dc:description": description,
+        "dc:title": name,
+        "dc:start": associatedDate ? new Date(associatedDate).toISOString() : null,
+        "dc:parentName": "Workspaces",
+        "dc:sector": sector,
+        "dc:primaryType": "event",
+        "dc:folderType": associatedDate ? "singleDayEvent" : "generic",
+      },
+      facets: ["Folderish", "NXTag", "SuperSpace"],
+      schemas: [
+        {
+          name: "webcontainer",
+          prefix: "webc",
+        },
+        {
+          name: "file",
+          prefix: "file",
+        },
+        {
+          name: "common",
+          prefix: "common",
+        },
+        {
+          name: "files",
+          prefix: "files",
+        },
+        {
+          name: "dublincore",
+          prefix: "dc",
+        },
+        {
+          name: "publishing",
+          prefix: "publish",
+        },
+        {
+          name: "facetedTag",
+          prefix: "nxtag",
+        },
+      ],
+      name: name,
+    };
+  }
+
+  removeWrokspaceFromBreadcrumb(data: string): string {
+    return data.replace(/\/workspaces/gi, '');
+  }
+
+  showSnackbar(data: string, duration: number, verticalPosition: MatSnackBarVerticalPosition, horizontalPosition: MatSnackBarHorizontalPosition, panelClass: string, actionName?: string, action?: any): void {
+    setTimeout(()=>{
+      const snackBarRef = this._snackBar.open(data, actionName || '', {
+        duration: duration,
+        verticalPosition: verticalPosition,
+        horizontalPosition: horizontalPosition,
+        panelClass: [panelClass],
+      });
+      if (actionName) {
+        snackBarRef.onAction().subscribe(() => action());
+      }
+    }, 500);
   }
 
 }

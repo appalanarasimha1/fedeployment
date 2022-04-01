@@ -192,7 +192,7 @@
 
                 <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'Most relevant'}}</button>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
-                  <button (click)="dropdownMenu($event); sortValue = 'Date uploaded'" ngbDropdownItem
+                  <button (click)="dropdownMenu($event); sortValue = 'Most recent'" ngbDropdownItem
                     value='dc:created'>Most recent</button>
                   <button (click)="dropdownMenu($event); sortValue = 'Most relevant'" ngbDropdownItem
                     value=''>Most relevant</button>
@@ -300,10 +300,9 @@
                 </div>
               </ngx-masonry> -->
 
-
               <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
-                <div ngxMasonryItem class="masonry-item"
-                  *ngFor="let doc of documents.entries?.slice(0, docSliceInput); let i = index">
+                <div ngxMasonryItem class="masonry-item" [ngClass]="{'masonrZindex': masoneryItemIndex === i}"
+                  *ngFor="let doc of documents.entries?.slice(0, docSliceInput); let i = index" (mouseover)='over(i)' (mouseout)='out()'>
                   <!-- <img *ngIf="doc.type === 'Picture" id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt=""
                 (click)="open(file, 'image')" /> -->
                   <document-card

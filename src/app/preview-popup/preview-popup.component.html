@@ -85,6 +85,12 @@
                               <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                             </a>
                           </li>
+                          <li>
+                            <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
+                              Original File
+                              <span>{{getDownloadFileEstimation(doc?.properties["file:content"]?.length)}}</span>
+                            </a>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -567,7 +573,7 @@
         <div class="search-tags pb-5">
           <ul class="flexible">
             <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
-              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])" >{{ tags[i] }}</a>
+              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])" >{{ sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
             </li>
             <li *ngIf="tags.length > currentTagLength">
               <button class="btn default" (click)="showMoreTags()">show more</button>

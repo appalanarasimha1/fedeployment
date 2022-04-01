@@ -1,0 +1,46 @@
+
+::ng-deep .mat-snack-bar-container.snackBarMiddle, ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+    /* transform: translate(-50%, -50%) !important;
+    top: 50% !important;
+    position: absolute !important;
+    left: 50% !important; */
+    background: #2D2926 !important;
+    margin: 67% 24px !important;
+    font-size: 12px;
+    font-weight: normal;
+    color: #fff;
+    border-radius: 50px;
+    box-shadow: none !important;
+  }
+  ::ng-deep .mat-simple-snackbar {
+    font-size: 13px !important;
+    font-weight: normal !important;
+    text-align: center !important;
+    display: inline-block !important;
+    font-family: inherit !important;
+  }
+  ::ng-deep .mat-snack-bar-container.snackBarMiddle {
+    text-align: center !important;
+  }
+  ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover{
+    margin: 40% 24px !important;
+    margin: 138% 24px !important;
+    min-width: auto;
+  }
+  ::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+  ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+    max-width: 50vw !important;
+    margin-top: 200px !important;
+    min-width: auto !important;
+  }
+  ::ng-deep .mat-simple-snackbar {
+    color: #fff;
+    font-family: inherit;
+  }
+  ::ng-deep .mat-simple-snackbar-action {
+    color: #fff;
+    font-weight: 600;
+  }
+  ::ng-deep .mat-simple-snackbar-action button {
+    font-weight: bold !important;
+  }

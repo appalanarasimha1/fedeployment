@@ -22,6 +22,8 @@ import {
 import { apiRoutes } from 'src/app/common/config';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
+import { UploadModalComponent } from 'src/app/upload-modal/upload-modal.component';
+import {Sort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-browse',
@@ -32,6 +34,7 @@ import { UNWANTED_WORKSPACES } from '../../upload-modal/constant';
 export class BrowseComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild('previewModal') previewModal: PreviewPopupComponent;
+  // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
 
   constructor(
     private modalService: NgbModal,
@@ -41,7 +44,7 @@ export class BrowseComponent implements OnInit {
     private router: Router,
     public sharedService: SharedService,
     private route: ActivatedRoute,
-    public nuxeo: NuxeoService) { }
+    public nuxeo: NuxeoService,) { }
 
   faCoffee = faCoffee;
   parentId = ROOT_ID;
@@ -97,7 +100,16 @@ export class BrowseComponent implements OnInit {
   showLinkCopy = false;
   showSearchbar = false;
   searchBarValue = '';
+  panelOpenState = false;
   breadCrumb= [];
+  selectedFolderList: any = {};
+  trashedList = null;
+  user = null;
+  isTrashView = false;
+  needReloadWs = [];
+  hasUpdatedChildren = [];
+  sortedData;
+  folderNotFound = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -118,8 +130,10 @@ export class BrowseComponent implements OnInit {
     folder: ''
   };
   breadcrrumb = `/${WORKSPACE_ROOT}`;
+  showFolder = false;
 
   ngOnInit(): void {
+    this.fetchUserData();
     this.route.queryParams
       .subscribe(params => {
         console.log(params); // { orderby: "price" }
@@ -153,6 +167,37 @@ export class BrowseComponent implements OnInit {
     });
   }
 
+  datePickerDefaultAction() {
+    $(".buttonCreate").on('click', function (e){
+      // $(".dropdownCreate").toggle();
+      $(".dropdownCreate").show();
+      $('.buttonCreate').addClass('createNewFolderClick');
+       e.stopPropagation();
+    });
+    $('.buttonCreate.createNewFolderClick').on('click', function (e) {
+       $(".dropdownCreate").hide();
+       $('.buttonCreate').removeClass('createNewFolderClick');
+       e.stopPropagation();
+    });
+
+    $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+        e.stopPropagation();
+        $('.buttonCreate').removeClass('createNewFolderClick');
+    });
+
+    $(document).click(function(){
+        $(".dropdownCreate").hide();
+        $('.buttonCreate').removeClass('createNewFolderClick');
+    });
+
+    $('.mat-icon-button').click(function(){
+      $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+        $('.buttonCreate').removeClass('createNewFolderClick');
+        e.stopPropagation();
+      });
+    })
+  }
+
   checkAssetType(assetType: string): boolean {
     const assetTypes = [constants.FILE_SMALL_CASE, constants.PICTURE_SMALL_CASE, constants.VIDEO_SMALL_CASE, constants.AUDIO_SMALL_CASE ];
     if(assetTypes.indexOf(assetType.toLowerCase()) !== -1) return true;
@@ -180,12 +225,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
-    // this.selectedFolder = item;
-    // this.selectedFile = [];
-    // this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
-    // .subscribe((docs: any) => {
-    //   this.searchList = docs.entries;
-    // });
+    if (item.isTrashed) return;
     this.searchBarValue = '';
     this.showLinkCopy = true;
     this.showSearchbar = false;
@@ -202,13 +242,16 @@ export class BrowseComponent implements OnInit {
     this.loading = true;
     const docs = await this.fetchAssets(item.uid);
     this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
+    this.sortedData = this.searchList.slice(); //shallow copy
     this.handleSelectMenu(0, 'GRID');
     this.loading = false;
+    this.sharedService.toTop();
     setTimeout(() => {
       var storeHeight = $('.main-content').outerHeight();
       $('.leftPanel.insideScroll').css("height", storeHeight - 110);
       // console.log('block height', storeHeight);
     }, 300);
+    this.selectedFolder = item;
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
@@ -341,16 +384,17 @@ export class BrowseComponent implements OnInit {
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
 
-  removeWrokspaceFromBreadcrumb(): string {
-    return this.breadcrrumb.replace(/\/workspaces/gi, '');
-  }
-
   handleClick(item, index, childIndex?: any) {
+    if (item.isTrashed) return;
+    this.selectedFolderList = {};
+    this.isTrashView = false;
     this.currentLevel = index;
     this.showLinkCopy = false;
     this.copiedString = '';
     this.showSearchbar = false;
     this.searchBarValue = '';
+    this.sharedService.toTop();
+    this.folderNotFound = false;
 
     this.createBreadCrumb(item.title, item.type, item.path);
     this.extractBreadcrumb();
@@ -359,14 +403,18 @@ export class BrowseComponent implements OnInit {
     } else {
       this.handleSelectMenu(1, 'LIST');
     }
-    // if(this.breadcrrumb.includes(item.title)) {
-    //   this.breadcrrumb = this.breadcrrumb.split(`/${item.title}`)[0]
-    // }
-    // this.breadcrrumb = `${this.breadcrrumb}/${item.title}`
-    // this.selectedFile = [];
-    if(item?.children?.length) {
+    if(item?.children?.length && !this.hasUpdatedChildren.includes(item?.uid)) {
       this.searchList = item.children;
+      this.sortedData = item.children;
+      if(item?.uid === ROOT_ID) this.showSearchbar = false;
+      else this.showSearchbar = true;
       return;
+    }
+    if (this.hasUpdatedChildren.includes(item?.uid)) {
+      const deleteIndex = this.hasUpdatedChildren.indexOf(item.uid);
+      if (deleteIndex > -1) {
+        this.hasUpdatedChildren.splice(deleteIndex, 1);
+      }
     }
     this.loading = true;
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
@@ -376,10 +424,16 @@ export class BrowseComponent implements OnInit {
       let workSpaceIndex = result.findIndex(res => res.title === "Workspaces");
       if(workSpaceIndex >= 0) {
         this.loading = false;
+        localStorage.setItem("workspaceId", result[workSpaceIndex].uid);
+        localStorage.setItem("workspacePath", result[workSpaceIndex].path);
         return this.handleClick(result[workSpaceIndex],index, childIndex);
         // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
       } else {
         this.searchList = result;
+        this.sortedData = result;
+        if(this.selectedFolder2.uid !== ROOT_ID) {
+          this.showSearchbar = true;
+        }
         if(childIndex !== null && childIndex !== undefined) {
           this.showSearchbar = true;
           this.loading = false;
@@ -403,6 +457,9 @@ export class BrowseComponent implements OnInit {
               }
             });
             this.selectedFolder = lastChild;
+            if (!this.selectedFolder) {
+              this.folderNotFound = true;
+            }
             if(lastChild) {
               this.handleTest(lastChild);
             }
@@ -425,6 +482,8 @@ export class BrowseComponent implements OnInit {
                 return item;
               }
             });
+            if(this.callHandClick)
+            this.selectedFolder2 = this.callHandClick;
             this.sectorOpen = true;
             this.callDomain
           }
@@ -457,6 +516,9 @@ export class BrowseComponent implements OnInit {
               }
             });
             this.selectedFolder = lastChild;
+            if (!this.selectedFolder) {
+              this.folderNotFound = true;
+            }
             if(lastChild) {
               this.handleTest(lastChild);
             }
@@ -477,17 +539,37 @@ export class BrowseComponent implements OnInit {
     }
   }
 
-  async handleGotoBreadcrumb(item, index) {
-    if (index === this.breadCrumb.length) return;
-    if (index === 0) {
-      this.breadCrumb = [];
-      this.selectedFolder = item;
-      this.handleClick(item, index);
+  async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+      this.showSearchbar = true;
+    }
+    if (breadCrumbIndex === this.breadCrumb.length) return;
+    if (breadCrumbIndex === 0) {
+      this.showSearchbar = false;
+      this.selectedFolder2 = this.folderStructure[0];
+      this.selectedFolder = this.selectedFolder2;
+      this.selectedMenu = 0;
+      // this.breadCrumb = [];
+      // // this.selectedFolder = item;
+      // // this.selectedFolder2 = item;
+      // this.handleClick(item, index);
+      // setTimeout(() => {
+      //   if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+      //     this.showSearchbar = true;
+      //   }
+      // }, 0);
       return;
     }
-    this.selectedFolder = await this.fetchFolder(item.uid);
     this.extractBreadcrumb();
-    this.handleClick(this.selectedFolder, index);
+    this.handleClick(item, index);
+    // setTimeout(() => {
+    //   if(breadCrumbIndex === 1 || !breadCrumbIndex) {
+    //     this.showSearchbar = true;
+    //   }
+    // }, 0);
+    this.selectedFolder = await this.fetchFolder(item.uid);
+    this.selectedFolder2 = this.selectedFolder;
+
   }
 
   async fetchFolder(id) {
@@ -513,6 +595,7 @@ export class BrowseComponent implements OnInit {
       this.currentPageCount++;
       const result: any = await this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`).toPromise();
       this.searchList = this.searchList.concat(result.entries);
+      this.sortedData = this.searchList.slice();
       return;
     }
     this.showMoreButton = false;
@@ -521,6 +604,7 @@ export class BrowseComponent implements OnInit {
   handleChangeClick(item, index, selected: any, childIndex?: any) {
     // this.selectedFile = [];
     this.selectedFolder = {...selected, uid: selected.id};
+    this.sharedService.toTop();
     this.apiService.get(`/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`)
       .subscribe((docs: any) => {
         this.searchList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
@@ -528,6 +612,7 @@ export class BrowseComponent implements OnInit {
         if (workSpaceIndex >= 0) {
           this.handleChangeClick(this.searchList[workSpaceIndex], index, selected, childIndex)
         } else {
+          this.sortedData = this.searchList.slice();
           if (childIndex !== null && childIndex !== undefined) {
             this.folderStructure[index].children[childIndex].children = docs.entries;
             this.folderStructure[index].children[childIndex].isExpand = true;
@@ -577,7 +662,9 @@ export class BrowseComponent implements OnInit {
       if (!result) return;
       Object.keys(result).forEach(key => {
         this.searchList[key].contextParameters.acls = result[key].contextParameters.acls;
-        this.searchList[key].properties = {...this.searchList[key].properties, ...result[key].properties}
+        this.sortedData[key].contextParameters.acls = result[key].contextParameters.acls;
+        this.searchList[key].properties = {...this.searchList[key].properties, ...result[key].properties};
+        this.sortedData[key].properties = {...this.sortedData[key].properties, ...result[key].properties};
       });
     });
   }
@@ -639,6 +726,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getFolderInfo(item) {
+    if (item.isTrashed) return item.properties["dc:creator"];
     const count = item.contextParameters?.folderAssetsCount || 0;
     return `${count} assets curated by ${item.properties["dc:creator"]}`;
   }
@@ -696,5 +784,192 @@ export class BrowseComponent implements OnInit {
   showGridListButton() {
     return this.selectedFolder.uid === ROOT_ID;
   }
+
+  deleteModal(listDocs) {
+    this.sharedService.showSnackbar('The deleted items will be retained for 180 days in', 6000, 'top', 'center', 'snackBarMiddle', 'Deleted items', this.getTrashedWS.bind(this));
+    // this._snackBar.open('The deleted items will be retained for 180 days in Deleted items.', '', {
+    //   duration: 3000,
+    //   // verticalPosition: 'top',
+    //   horizontalPosition: 'center',
+    //   panelClass: ['snackBarMiddle'],
+    // });
+    this.searchList = this.searchList.filter(item => !listDocs.includes(item['uid']));
+    this.sortedData = this.searchList.slice();
+    this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    this.selectedFolderList = {};
+  }
+
+  recoverModal(listDocs) {
+    // this._snackBar.open('Successfully recovered.', '', {
+    //   duration: 3000,
+    //   // verticalPosition: 'top',
+    //   horizontalPosition: 'center',
+    //   panelClass: ['snackBarMiddleRecover'],
+    // });
+    this.sharedService.showSnackbar('Successfully recovered.', 3000, 'top', 'center', 'snackBarMiddleRecover');
+    this.trashedList = this.trashedList.filter(item => !listDocs.includes(item['uid']));
+    this.searchList = this.trashedList;
+    this.sortedData = this.searchList.slice();
+    // this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    this.selectedFolderList = {};
+  }
+
+  selectFolder($event, item, i) {
+    if (!$event.target.checked && this.selectedFolderList[i]) {
+      delete this.selectedFolderList[i];
+    } else if ($event.target.checked) {
+      this.selectedFolderList[i] = item;
+    }
+  }
+
+  async deleteFolders() {
+    if (Object.keys(this.selectedFolderList).length == 0) return;
+    this.loading = true;
+
+    const listDocs = Object.entries(this.selectedFolderList).map(function([key, item], index) {
+      return item['uid'];
+    });
+    await this.apiService.post(apiRoutes.TRASH_DOC, {input: `docs:${listDocs.join()}`}).subscribe((docs: any) => {
+      this.loading = false;
+    });
+    this.deleteModal(listDocs);
+  }
+
+  async unTrashFolders() {
+    if (Object.keys(this.selectedFolderList).length == 0) return;
+    this.loading = true;
+
+    const listDocs = Object.entries(this.selectedFolderList).map(function([key, item], index) {
+      return item['uid'];
+    });
+    await this.apiService.post(apiRoutes.UN_TRASH_DOC, {input: `docs:${listDocs.join()}`}).subscribe((docs: any) => {
+      this.loading = false;
+    });
+    this.recoverModal(listDocs);
+  }
+
+  checkEnableDeleteBtn() {
+    return Object.keys(this.selectedFolderList).length > 0;
+  }
+
+  getTrashedWS() {
+    if (this.folderNotFound) {
+      this.folderNotFound = false;
+      this.selectedFolder = {};
+    }
+    this.loading = true;
+    this.apiService.get(`/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace'`)
+      .subscribe((docs: any) => {
+        this.trashedList = docs.entries.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
+        this.searchList = this.trashedList;
+        this.sortedData = this.searchList.slice();
+        this.isTrashView = true;
+        this.handleSelectMenu(1, this.viewType || 'LIST');
+        this.showMoreButton = false;
+        this.loading = false;
+      });
+  }
+
+  checkCanDelete(item) {
+    return this.user === item.properties['dc:creator'];
+  }
+
+  async fetchUserData() {
+    if (localStorage.getItem('user')) {
+      this.user = JSON.parse(localStorage.getItem('user'))['username'];
+      if (this.user) return;
+    }
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.connect();
+      this.user = res.user.id;
+      localStorage.setItem('user', JSON.stringify(res.user.properties));
+    }
+  }
+
+  checkShowNoTrashItem() {
+    return this.isTrashView && this.searchList && this.searchList.length === 0;
+  }
+
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "700px";
+    dialogConfig.maxHeight = "900px"
+    dialogConfig.width = "650px";
+    dialogConfig.disableClose = true;
+    this.selectedFolder['sectorId'] = this.selectedFolder2.uid
+    dialogConfig.data = this.selectedFolder;
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
+    modalDialog.afterClosed().subscribe(result => {
+      if(!result) return;
+      this.searchList.unshift(result);
+      this.sortedData = this.searchList.slice();
+    })
+  }
+
+  openNewFolderDiv(){
+    this.showFolder = ! this.showFolder
+  }
+
+  async createFolder(folderName: string, date?: string, description?: string) {
+    const url = `/path${this.selectedFolder2.path}/workspaces`;
+    const payload = await this.sharedService.getCreateFolderPayload(folderName, this.selectedFolder2.title, null, description, date);
+    const res = await this.apiService.post(url, payload).toPromise();
+    if (!res && !res['uid']) return;
+
+    this.searchList.push(res);
+    this.sortedData = this.searchList.slice();
+    $(".dropdownCreate").hide();
+    $('.buttonCreate').removeClass('createNewFolderClick');
+    this.sharedService.showSnackbar(`${folderName} folder successfully created.`, 3000, 'top', 'center', 'snackBarMiddle');
+    this.showFolder = false;
+    if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
+      this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    }
+
+    return {
+      id: res["uid"],
+      title: res["title"],
+      type: res["type"],
+      path: res["path"],
+    };
+  }
+
+  checkShowCreateFolder() {
+    return this.selectedFolder?.type === "Domain";
+  }
+
+  showHideCreateFolder() {
+    // $(document).ready(function(){
+
+    // })
+  }
+
+  sortData(sort: Sort) {
+    const data = this.searchList.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'title': return this.compare(a.title, b.title, isAsc);
+        case 'dc:creator': return this.compare(a.properties['dc:creator'], b.properties['dc:creator'], isAsc);
+        case 'dc:created': return this.compare(a.properties['dc:created'], b.properties['dc:created'], isAsc);
+        case 'dc:start': return this.compare(a.properties['dc:start'], b.properties['dc:start'], isAsc);
+        default: return 0;
+      }
+    });
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
 }
 

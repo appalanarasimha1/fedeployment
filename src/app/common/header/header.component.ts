@@ -32,7 +32,6 @@ export class HeaderComponent implements OnInit {
   ) {
     router.events.forEach((event: any) => {
       if (event.url) {
-        console.log('header = ', event);
         // TODO: will break if we have another url that contains /user.
         if(event.url.includes('/workspace') || event.url.includes('/common/terms') || event.url.includes('/report')) {
           this.showBrowseHeader = true;

@@ -21,5 +21,7 @@ export const apiRoutes = {
     FETCH_PERSONALIZED_VIDEO: '/fetchPersonalizedVideo',
     FETCH_RECENT_UPLOAD: '/search/pp/recent_upload/execute',
     FETCH_FAVORITE: '/search/pp/favoritepp/execute',
-    REPORT_FETCH: '/report/fetch-report'
+    REPORT_FETCH: '/report/fetch-report',
+    TRASH_DOC: '/automation/Document.Trash',
+    UN_TRASH_DOC: '/automation/Document.Untrash',
 };
