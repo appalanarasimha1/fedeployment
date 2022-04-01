@@ -865,7 +865,7 @@ background-color:#EBC03F !important;
   top: 10px;
   right: 10px;
   padding: 0px;
-  width: max-content;
+  /* width: max-content; */
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
