@@ -149,13 +149,17 @@
           >
         </ng-select>
        </div>
-         <video
+          <video style="width: 100%" preload="false" autoplay  controls tabindex="0">
+            <source [src]=defaultVideoSrc type="video/mp4" />
+          </video>
+      
+         <!-- <video
             style="width: 100%"
             autoplay
             controls
             [src]=defaultVideoSrc
             (ended)="videoPayEnded($event)"
-          ></video>
+          ></video> -->
           
       </div>
 

@@ -165,34 +165,37 @@ export class BrowseComponent implements OnInit {
         parent.addClass('is-open');
       }
     });
-
-    // $(".buttonCreate").click(function(e){
-    //   $(".dropdownCreate").toggle();
-    //    e.stopPropagation();
-    // });
-
-    // $(".dropdownCreate, .mat-datepicker-content").click(function(e){
-    //     e.stopPropagation();
-    // });
-
-    // $(document).click(function(){
-    //     $(".dropdownCreate, .mat-datepicker-content").hide();
-    // });
   }
 
   datePickerDefaultAction() {
-    $(".buttonCreate").click(function(e){
-      $(".dropdownCreate").toggle();
+    $(".buttonCreate").on('click', function (e){
+      // $(".dropdownCreate").toggle();
+      $(".dropdownCreate").show();
+      $('.buttonCreate').addClass('createNewFolderClick');
+       e.stopPropagation();
+    });
+    $('.buttonCreate.createNewFolderClick').on('click', function (e) {
+       $(".dropdownCreate").hide();
+       $('.buttonCreate').removeClass('createNewFolderClick');
        e.stopPropagation();
     });
 
     $(".dropdownCreate, .mat-datepicker-content").click(function(e){
         e.stopPropagation();
+        $('.buttonCreate').removeClass('createNewFolderClick');
     });
 
     $(document).click(function(){
-        $(".dropdownCreate, .mat-datepicker-content").hide();
+        $(".dropdownCreate").hide();
+        $('.buttonCreate').removeClass('createNewFolderClick');
     });
+
+    $('.mat-icon-button').click(function(){
+      $(".dropdownCreate, .mat-datepicker-content").click(function(e){
+        $('.buttonCreate').removeClass('createNewFolderClick');
+        e.stopPropagation();
+      });
+    })
   }
 
   checkAssetType(assetType: string): boolean {
@@ -901,6 +904,7 @@ export class BrowseComponent implements OnInit {
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe(result => {
+      if(!result) return;
       this.searchList.unshift(result);
       this.sortedData = this.searchList.slice();
     })
@@ -919,7 +923,8 @@ export class BrowseComponent implements OnInit {
     this.searchList.push(res);
     this.sortedData = this.searchList.slice();
     $(".dropdownCreate").hide();
-    this.sharedService.showSnackbar(`${folderName} folder is created successfully`, 3000, 'bottom', 'center', 'snackBarMiddleRecover');
+    $('.buttonCreate').removeClass('createNewFolderClick');
+    this.sharedService.showSnackbar(`${folderName} folder successfully created.`, 3000, 'top', 'center', 'snackBarMiddle');
     this.showFolder = false;
     if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
       this.hasUpdatedChildren.push(this.selectedFolder.uid);

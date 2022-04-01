@@ -17,6 +17,7 @@
     font-weight: normal !important;
     text-align: center !important;
     display: inline-block !important;
+    font-family: inherit !important;
   }
   ::ng-deep .mat-snack-bar-container.snackBarMiddle {
     text-align: center !important;
@@ -25,4 +26,21 @@
     margin: 40% 24px !important;
     margin: 138% 24px !important;
     min-width: auto;
+  }
+  ::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+  ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+    max-width: 50vw !important;
+    margin-top: 200px !important;
+    min-width: auto !important;
+  }
+  ::ng-deep .mat-simple-snackbar {
+    color: #fff;
+    font-family: inherit;
+  }
+  ::ng-deep .mat-simple-snackbar-action {
+    color: #fff;
+    font-weight: 600;
+  }
+  ::ng-deep .mat-simple-snackbar-action button {
+    font-weight: bold !important;
   }
