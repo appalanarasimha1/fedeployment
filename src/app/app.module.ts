@@ -8,7 +8,6 @@ import { HeaderComponent } from './common/header/header.component';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { MatPaginatorModule } from "@angular/material/paginator";
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
@@ -57,7 +56,6 @@ import { AuthGuardService } from './services/authGaurd';
     UpdateModalModule,
     NgSelectModule,
     KeycloakAngularModule,
-    MatPaginatorModule,
   ],
   providers: [
     // CookieService,
