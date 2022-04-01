@@ -9,7 +9,6 @@ import { NgxMasonryComponent } from "ngx-masonry";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UpdateModalComponent } from "../../update-modal/update-modal.component";
 import { SharedService } from "src/app/services/shared.service";
-import { MatPaginator } from "@angular/material/paginator";
 import {
   ASSET_TYPE,
   constants,
@@ -35,7 +34,6 @@ import { Sort } from "@angular/material/sort";
 export class BrowseComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
 
   constructor(
@@ -113,14 +111,6 @@ export class BrowseComponent implements OnInit {
   hasUpdatedChildren = [];
   sortedData;
   folderNotFound = false;
-  //Pagination
-  totalLength: number;
-  currentPage: number = 0;
-  offSet: number = 0;
-  pageSize: number = 100;
-
-  clickedItem: any;
-  itemIndex: number;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -417,31 +407,7 @@ export class BrowseComponent implements OnInit {
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
 
-  onPageAndPageSizeChange(e) {
-    this.currentPage = e.pageIndex;
-    this.pageSize = e.pageSize;
-    this.offSet = e.pageIndex * e.pageSize;
-    this.handleClick(this.clickedItem, this.currentLevel);
-  }
-
-  resetPagData() {
-    this.currentPage = 0;
-    this.pageSize = 100;
-    this.offSet = 0;
-  }
-
   handleClick(item, index, childIndex?: any) {
-    let { offSet, pageSize, currentPage, clickedItem, itemIndex } = this;
-    let newFolder: boolean = false;
-    if (index !== this.currentLevel) {
-      newFolder = true;
-      this.offSet = 0;
-      this.pageSize = 100;
-      this.currentPage = 0;
-    }
-
-    itemIndex = index;
-    clickedItem = item;
     if (item.isTrashed) return;
     this.selectedFolderList = {};
     this.isTrashView = false;
@@ -477,24 +443,12 @@ export class BrowseComponent implements OnInit {
       }
     }
     this.loading = true;
-
     this.apiService
       .get(
-        `/search/pp/nxql_search/execute?currentPage${
-          newFolder ? 0 : currentPage
-        }Index=${newFolder ? 0 : currentPage}&offset=${
-          newFolder ? 0 : offSet
-        }&pageSize=${
-          newFolder ? 100 : pageSize
-        }&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${
-          item.uid
-        }' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`
+        `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`
       )
       .subscribe((docs: any) => {
-        this.totalLength = docs?.totalSize;
-
         // this.handleSelectMenu(0, 'GRID');
-
         let result = docs.entries.filter(
           (sector) =>
             UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
@@ -506,8 +460,6 @@ export class BrowseComponent implements OnInit {
           this.loading = false;
           localStorage.setItem("workspaceId", result[workSpaceIndex].uid);
           localStorage.setItem("workspacePath", result[workSpaceIndex].path);
-          this.clickedItem = result[workSpaceIndex];
-
           return this.handleClick(result[workSpaceIndex], index, childIndex);
           // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
         } else {
@@ -547,6 +499,7 @@ export class BrowseComponent implements OnInit {
                 ) {
                   this.ind = i;
                   // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
+                  console.log(this.callHandClick);
                   this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`;
                   return item;
                 }
