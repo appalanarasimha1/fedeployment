@@ -144,6 +144,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   toNextStep() {
+    // this.deleteModal();
     this.step++;
     this.stepLabel = STEPS[this.step];
     // if (this.step === 3) {
@@ -402,5 +403,18 @@ export class UpdateModalComponent implements OnInit {
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
+  }
+
+  classificationsUpdate() {
+    this.dialogRef.close(this.updatedDocs);
+    // setTimeout(()=>{
+    //   this._snackBar.open('The classifications have been updated.', '', {
+    //     duration: 4000,
+    //     verticalPosition: 'bottom',
+    //     horizontalPosition: 'center',
+    //     panelClass: ['snackBarMiddle'],
+    //   });
+    // }, 500);
+    this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle')
   }
 }

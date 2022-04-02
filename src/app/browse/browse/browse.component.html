@@ -26,7 +26,7 @@
            <div class="tree" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid ? 'active-tab' : ''" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
+                  <div class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid && !isTrashView ? 'active-tab' : ''" (click)="handleClick(item, i);selectedFolder2=item;selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)">
                     <!-- (click)="handleClick(item, i);selectedFolder=item;item.isExpand=!item.isExpand; createBreadCrumb(item.title, item.type, item.path)" -->
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -36,7 +36,7 @@
                   </div>
                   <ul *ngIf="item.children?.length && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer" class="hoverPin">
-                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid ? 'active-tab' : ''" (click)="handleGotoBreadcrumb(firstChild, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
+                      <div class="d-flex set paddingLeft" [ngClass]="selectedFolder2.uid === firstChild.uid && !isTrashView ? 'active-tab' : ''" (click)="handleGotoBreadcrumb(firstChild, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <!-- <div style="z-index: 9;"> -->
 
                           <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
@@ -50,24 +50,24 @@
                     </li>
                   </ul>
                 </li>
+                <li style="cursor: pointer" [ngClass]="isTrashView ? 'active-tab' : ''" class="d-flex set" (click)="getTrashedWS()"><span>Deleted items</span></li>
               </ul>
             </div>
           <!-- </div> -->
         </div>
-        <!-- sidebar ends -->
-        
-
-        <!-- detail page starts -->
-        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative">
+        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative" style="min-height: 100vh;">
           <app-loader [show]="loading"></app-loader>
-          <div>
-            <div class="row">
+          <div class="no-items" *ngIf="folderNotFound">
+            <img src="../../../assets/images/folder-delete-icon.svg" alt="This folder has been deleted" />
+            This folder has been deleted
+          </div>
+          <div *ngIf="!folderNotFound">
+            <div class="row" *ngIf="showSearchbar || isTrashView">
               <div class="col-xl-7">
-                <div *ngIf="showSearchbar" class="  pb-5">
+                <div *ngIf="showSearchbar && !isTrashView" class="pb-5">
                   <div style="position: relative;">
-                    <form autocomplete="off" style="width: 458px; position: relative;">
-                      <button class="primary search-btn"><img
-                        src="../../../assets/images/search.png" /></button>
+                    <form autocomplete="off" style="position: relative;">
+                      <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
                       <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
                       <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
                     </form>
@@ -75,18 +75,21 @@
                 </div>
               </div>
               <div class="col-xl-5" >
-                <div style="float: right;">
-                  <div *ngIf="showSearchbar" (click)="openNewFolderDiv()" style="position: relative;">
-                    <a href="javascript:void(0)" class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
+                <div style="float: right; position: relative;">
+                  <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView && checkEnableDeleteBtn()" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
+                  <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView && checkEnableDeleteBtn()" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
+
+                  <div class='buttonCreate'>
+                    <a href="javascript:void(0)" *ngIf="showSearchbar && !isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
-                  <div *ngIf="showFolder" class="createFolder">
+                  <div class='dropdownCreate createFolder'>
                     <form>
                       <div class="row">
                         <div class="col-xl-12">
                             <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
                         </div>
                         <div class="col-xl-12">
-                          <input #folderNameRef type="text" placeholder="Enter a folder name">
+                          <input [ngClass]="{'goldenText': folderNameRef.value}" #folderNameRef type="text" placeholder="Enter a folder name">
                         </div>
                       </div>
                       <div class="row mt-4">
@@ -104,7 +107,7 @@
                                     <label>Description </label><span class="placeholderText">Project or event description</span>
                                 </div>
                                 <div class="col-xl-12">
-                                  <input #folderDescriptionRef type="text">
+                                  <input [ngClass]="{'goldenText': folderDescriptionRef.value}" #folderDescriptionRef type="text">
                                 </div>
                               </div>
                               <div class="row custom-date-picker mt-4">
@@ -114,8 +117,8 @@
                                 <div class="col-xl-12 col-md-12 " >
                                    <mat-form-field appearance="fill">
                                      <div class="flexible">
-                                      <input #folderDateRef matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 1.5px solid #000;"
-                                      placeholder="Choose a date"  (click)="picker.open()" >
+                                      <input [ngClass]="{'goldenText': folderDateRef.value}" #folderDateRef matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 1.5px solid #000;"
+                                      placeholder="Choose a date"  (click)="picker.open(); datePickerDefaultAction()" >
                                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     </div>
                                       <mat-datepicker #picker></mat-datepicker>
@@ -126,7 +129,7 @@
                           </mat-accordion>
                         </div>
                       </div>
-                      <div class="row mt-4" style="">
+                      <div class="row mt-4">
                        <div class="col-xl-12">
                         <button class="createBtn btn" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)">Create folder</button>
                        </div>
@@ -141,7 +144,7 @@
 
 
           <div *ngIf="selectedFolder">
-            <div class="header-content">
+            <div class="header-content" *ngIf="!isTrashView">
               <div *ngIf="selectedFolder2.uid !== parentId">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
@@ -158,61 +161,136 @@
                   <span *ngIf="showLinkCopy" class="copy-section" >
                     <a class="flexible">
                       <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
-                      <span class="copy-link pointer" (click)="copyToClipboard(removeWrokspaceFromBreadcrumb())">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
+                      <span class="copy-link pointer" (click)="copyToClipboard(sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb))">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
                     </a>
                   </span>
 
                 </span>
-              <h6 class="tollTipCustom">
-                <span>/<a [ngClass]="breadCrumb.length !== 0 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(folderStructure[0], null, 0)">All Workspace</a></span>
-                <span *ngFor="let c of breadCrumb; let i = index">
-                  /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
-                </span>
-                <div class="tolltipContent" style="top: auto; bottom: -30px;">
-                  {{removeWrokspaceFromBreadcrumb()}}
-                </div>
-              </h6>
+                <h6 class="tollTipCustom">
+                  <span>/<a [ngClass]="breadCrumb.length !== 0 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(folderStructure[0], null, 0)">All Workspace</a></span>
+                  <span *ngFor="let c of breadCrumb; let i = index">
+                    /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
+                  </span>
+                  <div class="tolltipContent" style="top: auto; bottom: -30px;">
+                    {{sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb)}}
+                  </div>
+                </h6>
               </div>
-              <div class="views">
-                <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a>
-                <div *ngIf="!showGridListButton()">
+              <div class="views" *ngIf="selectedFolder2.uid !== parentId">
+                <ul class="uploadAssetsClassifications pb-3" *ngIf="showLinkCopy">
+                  <li *ngIf="selectedFolder.properties['dc:description']" class="workspaceInfoHover">
+                    <img src="../../../assets/images/info-icon-yellow.svg" />
+                    <div class="workspaceInfo">
+                      <div class="workspaceHeading">{{selectedFolder.title}}</div>
+                      <p>{{selectedFolder?.properties['dc:description']}}</p>
+                    </div>
+                  </li>
+                  <li>
+                    <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right; min-height: auto;">
+                      <div class="" id="navbarSupportedContent">
+                          <ul class="navbar-nav me-auto  mb-lg-0 rightDrop flexible">
+                            <li class="nav-item dropdown" style="padding-left: 0px;">
+                              <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0px;">
+                                  <img src="../../../assets/images/upload-assets.svg" />
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li (click)="openModal()">Upload assets</li>
+                                <li (click)="openUpdateClassModal()">Update classifications</li>
+                              </ul>
+                            </li>
+                          </ul>
+                      </div>
+                    </nav>
+                    <!-- <img src="../../../assets/images/upload-assets.svg" />
+                    <ul class="subDropdownMenu">
+                      <li *ngIf="showLinkCopy" (click)="openModal()">Upload assets</li>
+                      <li *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</li>
+                    </ul>-->
+                  </li>
+                </ul>
+                <!-- <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a> -->
+                <div *ngIf="!showGridListButton() && !isTrashView">
                   <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
-                    <img src="../../../assets/images/list-view.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                    <img src="../../../assets/images/list-view-icon.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
                     (click)="handleSelectMenu(1, 'LIST')">
                 </div>
               </div>
             </div>
+            <div class="header-content" *ngIf="isTrashView">
+              <div>
+                <span style="overflow: auto;">
+                  <span class="main-title tollTipCustom"
+                  >Deleted Items
+                </span>
+                </span>
+              </div>
+              <div class="views">
+                <div>
+                  <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
+                  (click)="handleSelectMenu(0, 'GRID')">
+                    <img src="../../../assets/images/list-view-icon.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
+                    (click)="handleSelectMenu(1, 'LIST')">
+                </div>
+              </div>
+            </div>
+            <div class="no-items" *ngIf="checkShowNoTrashItem()">
+              <img src="../../../assets/images/no-items.svg" alt="No items here" />
+              No items here
+            </div>
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
-                <div class="mb-5 text-center" *ngIf="selectedFolder2.uid === parentId">
-                  <img src="../../../assets/images/sectorss.svg">
+                <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
+                <div class="mb-5 text-center" *ngIf="selectedFolder2.uid === parentId && !isTrashView">
+                  <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
-                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId">
+                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId || isTrashView">
+                  <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of sortedData | search: searchBarValue; let i = index">
+                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
+                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
 
-                  <li *ngFor="let item of searchList | search: searchBarValue; let i = index" [ngClass]="{'inner-sectors': item.type=== 'Domain' }">
+                    <div class="groupFolder" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''">
+                      <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
+                        <div class="control-group">
+                          <label class="control control--checkbox">
+                            <input id="checkbox-{{i}}" type="checkbox" (change)="selectFolder($event, item, i)"/>
+                            <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                      </div>
+                      <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
+                        (click)="handleTest(item);">
+                        <!-- <img src="../../../assets/images/yellow-folder.png"> -->
+                        <div class="folder-content">
+                          <p class="tollTipCustom" style="    white-space: normal;
+                          width: 100%;
+                          overflow: inherit;
+                          text-overflow: inherit;">
+                          {{sharedService.stringShortener(item.title, 16)}}
+                            <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
+                              {{item.title}}
+                            </span>
+                          </p>
+                          <span>{{ getFolderInfo(item) }}</span>
+                        </div>
 
-                    <span 
-                      class="folderCircle" 
-                      (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
-                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}
-                    </span>
-                    <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
-                      (click)="handleTest(item);selectedFolder=item;">
-                      <div class="folder-content">
+                      </div>
+                    </div>
+
+
+                      <!-- <div class="folder-content" style="background-color: #F9F7F2;">
                         <p class="tollTipCustom" style="    white-space: normal;
                         width: 100%;
                         overflow: inherit;
                         text-overflow: inherit;">
-                        {{sharedService.stringShortener(item.title, 16)}}
+                          {{sharedService.stringShortener(item.title, 16)}}
                           <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
                             {{item.title}}
                           </span>
                         </p>
                         <span>{{ getFolderInfo(item) }}</span>
-                      </div>
-                    </div>
+                      </div> -->
 
                     <document-card *ngIf="checkAssetType(item.type)"
                       [doc]="item"
@@ -229,28 +307,39 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
               <div  class="col-xl-12 col-md-12">
-                <table class="folderListview pb-5">
+                <table matSort (matSortChange)="sortData($event)" class="folderListview pb-5" *ngIf="searchList.length">
                     <tr>
-                      <th width="30%">{{ !checkAssetType(selectedFolder2.type) ? 'Folder name' : 'Asset name'}}</th>
-                      <th width="20%">Created by</th>
+                      <th style="width:6%">&nbsp;&nbsp;</th>
+                      <th mat-sort-header="title" width="30%" style="padding-left: 35px;">{{ !showLinkCopy ? 'Folder name' : 'Asset name'}}</th>
+                      <th mat-sort-header="dc:creator" width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
-                      <th width="20%">Created on</th>
+                      <th mat-sort-header="dc:created" width="20%">Created on</th>
+                      <th mat-sort-header="dc:start" *ngIf="!showLinkCopy" width="20%">Associated date</th>
                     </tr>
-                    <tr *ngFor="let item of searchList | search: searchBarValue; let i = $index">
+                    <tr *ngFor="let item of sortedData | search: searchBarValue; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
+                      <td><div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
+                        <div class="control-group">
+                          <label class="control control--checkbox">
+                            <input id="checkbox-{{i}}" type="checkbox" (change)="selectFolder($event, item, i)"/>
+                            <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                      </div>
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
                       <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" class="" style="display: flex;cursor: pointer;">
-                        <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
+                        <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
                       <td><p>{{item.properties['dc:creator']}}</p></td>
                       <!-- <td><p>Luis C</p></td> -->
                       <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
+                      <td *ngIf="!showLinkCopy"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td>
                     </tr>
                 </table>
               </div>

@@ -140,6 +140,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   private favouriteCall;
   private preFavouriteCall;
   private assetBySectorCall;
+  masoneryItemIndex;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -214,7 +215,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   resetResult() {
     this.documents = '';
-    this.selectTab('recentUpload');
+    // this.selectTab('recentUpload');
     this.docSliceInput = 39;
     this.hideShowMoreBtn = false;
     this.showListView = false;
@@ -225,7 +226,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailView = null;
     this.detailDocuments = null;
     this.searchTerm = {ecm_fulltext : ''};
-    this.resetView();
+    // this.clearFilter();
+    // this.resetView();
     this.selectTab('recentlyViewed');
   }
 
@@ -817,6 +819,14 @@ export class DocumentComponent implements OnInit, OnChanges {
       // this.assetsBySectorSelected = null;
       this.sectorSelected = null;
     }
+  }
+
+  over(index){
+    this.masoneryItemIndex = index;
+  }
+
+  out(){
+    this.masoneryItemIndex = null;
   }
 
 

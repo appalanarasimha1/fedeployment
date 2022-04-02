@@ -8,12 +8,12 @@ export const environment = {
   // redirectBaseUrl: 'https://10.101.21.31:8090/', // for redirecting to old nuxeo ui for video playback
   // apiServiceBaseUrl: 'https://10.101.21.31:8090', //
   apiVersion: '/nuxeo/api/v1',
-  // apiServiceBaseUrl: 'https://uatgroundx.neom.com',
-  // nuxeoServerUrl: 'https://uatgroundx.neom.com',
-  nuxeoServerUrl: 'http://localhost:8090',
-  apiServiceBaseUrl: "http://localhost:8090",
+  apiServiceBaseUrl: 'https://uatgroundx.neom.com',
+  nuxeoServerUrl: 'https://uatgroundx.neom.com',
+  // nuxeoServerUrl: 'http://localhost:8090',
+  // apiServiceBaseUrl: "http://localhost:8090",
   keycloakConfig: {
-    url: 'https://keycloakgxprod.iotsense-prod-tnd.oci.neomos.online/auth', //'https://keycloak.iotsense-prod-tnd.oci.neomos.online/auth',
+    url: 'https://groundx.the-it-cloud.net/auth/', 
     realm: 'GroundX',
     clientId: 'nuxeo-client-public',
   }
