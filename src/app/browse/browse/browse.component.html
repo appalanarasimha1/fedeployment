@@ -64,7 +64,7 @@
           <div *ngIf="!folderNotFound">
             <div class="row" *ngIf="showSearchbar || isTrashView">
               <div class="col-xl-7">
-                <div *ngIf="showSearchbar || !isTrashView" class="pb-5">
+                <div *ngIf="showSearchbar && !isTrashView" class="pb-5">
                   <div style="position: relative;">
                     <form autocomplete="off" style="position: relative;">
                       <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
