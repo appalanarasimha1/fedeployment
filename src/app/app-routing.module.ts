@@ -1,11 +1,3 @@
-// import { NgModule } from "@angular/core";
-// import { Routes, RouterModule } from "@angular/router";
-// import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.component';
-// import { LandingPageComponent } from './landing-page/landing-page.component';
-// import { LoginComponent } from './login/login.component';
-// import { NoContent } from './no-content';
-// import { AuthGuard } from './auth/auth.guard';
-
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { TermsOfUseComponent } from "./common/terms-of-use/terms-of-use.component";
@@ -13,7 +5,6 @@ import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LoginComponent } from "./login/login.component";
 import { RoleGuardService } from "./services/roleGaurd";
 import { NoContent } from "./no-content";
-// import { AuthGuard } from './auth/auth.guard';
 import { AuthGuardService } from "./services/authGaurd";
 import { AuthGuard } from './auth/auth.guard';
 import { REPORT_ROLE } from "./common/constant";
