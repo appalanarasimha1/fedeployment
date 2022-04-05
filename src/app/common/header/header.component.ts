@@ -238,6 +238,6 @@ export class HeaderComponent implements OnInit {
   }
   
   blurOnSearch() {
-    this.searchPopup = true;
+    this.searchPopup = false;
   }
 }
