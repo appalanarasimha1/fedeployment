@@ -309,3 +309,358 @@ header.updateHeader .navbar-nav > li.nav-item.dropdown > a {
 header.updateHeader .navbar .navbar-collapse {
     margin-top: 5px;
 }
+.sub-header{
+    position: relative;
+}
+.video-icon {
+    height: 70px;
+    width: 70px;
+    position: absolute;
+    left: 3.75rem;
+    bottom: 1.75rem;
+    border-radius: 100px;
+    background: transparent;
+    overflow: hidden;
+    z-index: 1;
+    cursor: pointer;
+}
+.video-icon img {
+    max-width: 100%;
+    position: relative;
+}
+.playIcon {
+    display: block;
+    position: absolute;
+    margin: 25px auto;
+    background-image: url(../../../assets/images/button-play.svg);
+    background-size: contain;
+    height: 30px;
+    width: 30px;
+    z-index: 9;
+    left: 25px;
+}
+.modal-body-content .playIcon {
+    margin: 0px auto;
+    height: 100%;
+    width: 100%;
+
+    left: auto;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50px;
+    cursor: pointer;
+  }
+  .fixx{
+    height: 290px;
+    width: 476px;
+  }
+  .modal-body-content img{
+      height: 290px;
+  }
+  video{
+      height: 290px;
+      object-fit: cover;
+  }
+  .select-an-area{
+    height: 290px;
+    text-align: center;
+    padding: 16px 60px
+  }
+  .select-an-area .logo {
+    max-width: 40px;
+    display: block;
+    clear: both;
+    margin: 0px auto;
+  }
+  .select-an-area h3 {
+    color: #fff;
+    font-size: 16px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+  .next-arrow {
+    padding-top: 60px;
+  }
+  .select-an-area .next-arrow .logo {
+    width: 30px;
+  }
+  .next-arrow i {
+    margin: 0px;
+    padding: 0px;
+    font-size: 30px;
+    color: #7d7d7d;
+  }
+  .modal-body-content {
+    min-height: 290px;
+    background-image: linear-gradient(#2b8aa6, #79cad8);
+    border-radius: 10px;
+  }
+  video{
+    border-radius: 8px;
+}
+.ssector {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    position: absolute;
+    right: 10px;
+    top: 2px;
+    z-index: 9;
+    width: 148px;
+    cursor: pointer !important;
+}
+::ng-deep .ssector .ng-select{
+    width: 148px;
+    border-color: #DEB31A !important;
+}
+/* .ssector .ng-select:focus{
+ outline: none;
+ border: unset;
+} */
+.ssector span{
+    font-size: 10px;
+    line-height: 47px;
+    color: #FFFFFF;
+    display: block;
+    padding-right: 15px;
+}
+::ng-deep .ng-select .ng-select-container {
+    color: #DEB31A !important;
+    background-color: transparent;
+    border-radius: 0px;
+    border: unset;
+    border-bottom: 1px solid #DEB31A;
+    min-height: 36px;
+    align-items: center;
+}
+::ng-deep .ng-select{
+    background-color: transparent;
+}
+::ng-deep .ng-select .ng-clear-wrapper{
+    display: none;
+}
+::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow, ::ng-deep .ng-select.ng-select-opened>.ng-select-container .ng-arrow{
+    border-color: #DEB31A transparent transparent;
+}
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked, ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected, .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked{
+    background-color: #DEB31A !important;
+}
+::ng-deep .ng-select-container.ng-has-value .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../../assets/images/down-arrow-yellow.svg);
+}
+
+::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../../assets/images/down-arrow-white.svg);
+    background-position: 0px 3px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 12px !important;
+    height: 10px !important;
+    border-width: 0px;
+}
+::ng-deep .ng-select.ng-select-opened>.ng-select-container .ng-arrow{
+    top: unset;
+    border-color: unset;
+    border-width: unset;
+}
+::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow{
+    border-style: unset;
+}
+::ng-deep .ng-select.ng-select-opened>.ng-select-container{
+    background-color: transparent;
+    border: unset;
+}
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option{
+    font-size: 14px;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container, .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
+    font-size: 14px;
+}
+::ng-deep .sectorsss .ng-dropdown-panel .ng-dropdown-panel-items .ng-option{
+    color: #fff;
+    padding: 8px 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+::ng-deep .ng-dropdown-panel{
+    border: unset;
+    box-shadow: unset;
+    background-color: unset;
+    font-size: 10px;
+}
+.searchPopup {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    background: #23211E;
+    border-radius: 0 0 8px 8px;
+    border-top: 1px solid #2D2926;
+    max-height: calc(100vh - 80px);
+    overflow: auto;
+}
+.removeBorderRadious {
+    border-radius: 8px 8px 0 0;
+}
+.recent-searches, .search-list {
+    padding: 20px 30px;
+    padding-bottom: 0px;
+}
+.recent-searches::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.recent-searches:last-child {
+    padding-bottom: 10px;
+}
+.recent-searches .heading {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 20px;
+    color: #D1CFC9;
+    padding-bottom: 20px;
+}
+.recent-searches ul.recent-searches-tags {
+    margin: 0px;
+    padding: 0px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+.recent-searches ul.recent-searches-tags li {
+    background: #040404;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    border-radius: 100px;
+    text-align: center;
+    color: #FFFFFF;
+}
+.recent-searches ul.recent-searches-tags li a {
+    padding: 6px 12px;
+    color: #fff;
+    display: block
+}
+.recent-searches ul.recent-searches-tags li.show-something {
+    background: #937206;
+}
+.recent-searches ul.recent-searches-tags li.show-something a {
+    color: #fff;
+}
+.tollTipCustom{
+    position: relative;
+}
+
+.tollTipCustom .tolltipContent {
+    position: absolute;
+    top: 46px;
+    left: 40px;
+    background: #413e3c;
+    padding: 3px 10px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: normal;
+    width: max-content;
+    border-radius: 4px;
+    white-space: nowrap;
+    max-width: max-content;
+    width: max-content;
+    display: none;
+    text-align: center;
+    z-index: 999;
+    line-height: 20px;
+}
+.tollTipCustom:hover .tolltipContent {
+    display: block;
+}
+#customScrollBar::-webkit-scrollbar-track,
+.workspaceFoldersScrollBar::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+#customScrollBar::-webkit-scrollbar,
+.workspaceFoldersScrollBar::-webkit-scrollbar {
+	width: 6px;
+	background-color:transparent;
+}
+
+#customScrollBar::-webkit-scrollbar-thumb,
+.workspaceFoldersScrollBar::-webkit-scrollbar-thumb {
+	background-color: #413E3C;
+    border-radius: 10px;
+}
+.search-list {
+    border-bottom: 1px solid #2D2926;
+    padding-bottom: 5px;
+}
+.search-list a {
+    display: block;
+    clear: left;
+    float: left;
+    color: #fff;
+    line-height: 24px;
+    font-size: 15px;
+    padding-bottom: 15px;
+}
+.search-list a:hover {
+    opacity: 0.8;
+}
+.search-list::after {
+    clear: both;
+    display: block;
+    content: '';
+}
+
+.recent-searches ul.recent-searches-folder {
+    margin: 0px -7px;
+    padding: 0px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    margin-right: -27px;
+    padding-right: 10px;
+}
+.recent-searches ul.recent-searches-folder li {
+    float: left; 
+    margin-bottom: 5px;
+    text-align: center;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 10px 8px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    line-height: 17px;
+}
+.recent-searches ul.recent-searches-folder li:hover {
+    background: #413E3C;
+    color: #fff;
+}
+.folder-icon {
+    padding-right: 10px;
+    vertical-align: 1px;
+    display: inline-block;
+}
+.folder-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 60%;
+    display: inline-block;
+}
+.workspace-folders {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 35%;
+    display: inline-block;
+    text-align: right;
+    padding-left: 15px;
+}
+.workspaceFoldersScrollBar {
+    overflow: auto;
+    height: 245px;
+}

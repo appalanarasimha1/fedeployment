@@ -6,18 +6,111 @@
             <div class="logo-block">
               <a [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
             </div>
-            <img class="play-button" src="../../../assets/images/button-play.svg" alt="" />
+            <span class="main-title tollTipCustom">
+              <img class="play-button" src="../../../assets/images/button-play.svg" alt="" (click)="openSm(content)" />
+              <div class="tolltipContent">
+                Watch personalized video
+              </div>
+            </span>
           </nav>
       </div>
       <div class="col-xl-9 col-xs-9">
         <div class="customSearchBar">
           <div style="position: relative;z-index: 99;" class="searchDiv">
             <form autocomplete="off">
-              <button class="primary search-btn"><img
-                src="../../../assets/images/search-icon.svg" /></button>
-              <input 
-                type="text" placeholder="Search" class="search-bar">
-                <img style="cursor: pointer" src="../assets/images/circle-close.png" class="placeholder-search">
+              <button class="primary search-btn"><img src="../../../assets/images/search-icon.svg" /></button>
+              <input type="text" placeholder="Search" class="search-bar" [ngClass]="{'removeBorderRadious': searchPopup}" (focus)='focusOnSearch()' (blur)="blurOnSearch()">
+              <img style="cursor: pointer" src="../assets/images/circle-close.png" class="placeholder-search">
+
+              <div class="searchPopup" *ngIf="searchPopup" id="customScrollBar">
+
+                <div class="search-list">
+                  <a href="#">Traveller</a>
+                  <a href="#">Travelling</a>
+                  <a href="#">Tourism</a>
+                  <a href="#">Tourist</a>
+                  <a href="#">Trip</a>
+                </div>
+
+                <div class="recent-searches">
+                  <div class="heading">Workspace Folders</div>
+                  <ul class="recent-searches-folder workspaceFoldersScrollBar">
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Marketing</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Marketing</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Education, Research and Innovation</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Marketing</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Marketing</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Education, Research & I</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Education, Research & I</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="recent-searches">
+                  <div class="heading">Your Recent Searches</div>
+                  <ul class="recent-searches-tags">
+                    <li><a href="#">Fox</a></li>
+                    <li><a href="#">Animals</a></li>
+                    <li><a href="#">Mountain</a></li>
+                    <li><a href="#">Wildlife</a></li>
+                    <li><a href="#">Nature</a></li>
+                    <li><a href="#">Horizon</a></li>
+                  </ul>
+                </div>
+
+                <div class="recent-searches">
+                  <div class="heading">Your Recent Searches</div>
+                  <ul class="recent-searches-tags">
+                    <li><a href="#">Sunset</a></li>
+                    <li><a href="#">Mountain</a></li>
+                    <li><a href="#">Building</a></li>
+                    <li><a href="#">Ocean</a></li>
+                    <li><a href="#">Construction</a></li>
+                    <li><a href="#">City</a></li>
+                    <li><a href="#">Nature</a></li>
+                    <li><a href="#">Sky</a></li>
+                    <li><a href="#">Sun</a></li>
+                    <li><a href="#">NEOM</a></li>
+                    <li><a href="#">Clouds</a></li>
+                    <li><a href="#">Environment</a></li>
+                  </ul>
+                </div>
+
+                <div class="recent-searches">
+                  <div class="heading">Random Search</div>
+                  <ul class="recent-searches-tags">
+                    <li class="show-something"><a href="#">Show me something cool</a></li>
+                  </ul>
+                </div>
+                
+              </div>
             </form>
           </div>
         </div>
@@ -57,4 +150,70 @@
       </div>
     </div>
   </div>
+
+  <ng-template #content let-modal>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); closeModal()">
+      <img src="../../../assets/images/modalclose.svg" />
+    </button>
+    <div class="modal-body fixx">
+      <app-loader-small [show]="modalLoading"></app-loader-small>
+      <div class="modal-body-content" *ngIf="hideVideo && !videoResponse && !videoCompleted && showItemOnlyOnce" (click)="clickVideoIcon()">
+        <div class="playIcon"></div>
+        <img src="../../../assets/images/video-background-pic.png" />
+      </div>
+      <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
+        <img src="../../../assets/images/logo-neom.png" class="logo" />
+        <h3>Please select an area of interest.</h3>
+        <ng-select 
+          class="pointer"
+          [items]="allSectors" 
+          ngDefaultControl
+          placeholder="Select a sector" 
+          [(ngModel)]="sectorSelected"
+          bindLabel="label"
+          bindValue="value"
+          [closeOnSelect]
+          [searchable]="false" [clearable]="false">
+        </ng-select>
+        <div *ngIf="sectorSelected" class="next-arrow">
+          <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->
+          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />  
+        </div>
+        
+      </div>
+      
+      <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
+       <div class="ssector">
+        <!-- <span>Change sector</span> -->
+        <ng-select [items]="allSectors" class="sectorsss"
+          ngDefaultControl
+          placeholder="Select a sector" 
+          [(ngModel)]="sectorSelected"
+          bindLabel="label"
+          bindValue="value"
+          (change)="playPersonalizedVideo()"
+          [closeOnSelect]
+          [searchable]="false" [clearable]="false"
+          >
+        </ng-select>
+       </div>
+          <video style="width: 100%" preload="false" autoplay  controls tabindex="0">
+            <source [src]=defaultVideoSrc type="video/mp4" />
+          </video>
+      </div>
+
+
+      <!-- video thankyou section -->
+      <div *ngIf="videoCompleted" class="thankyou-popup text-center">
+        <div class="">
+          <img src="../../../assets/images/logo-neom.png" style="width: 50px;">
+          <h2>Thanks for watching.</h2>
+          <p>Start discovering NEOM’s digital assets by using the search. You can search with a specific keyword, select a sector and get keyword suggestions from the Ground X AI.</p>
+          <img (click)="modal.dismiss('Cross click'); closeModal()" src="../../../assets/images/Btn Next.png" style="width: 30px; cursor: pointer;">
+        </div>
+      </div>
+    </div>
+
+  </ng-template>
+  <!-- sprint16 end -->
 </header>

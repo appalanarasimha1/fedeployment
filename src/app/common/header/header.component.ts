@@ -8,6 +8,9 @@ import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
 import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER } from '../constant';
 import { SharedService } from 'src/app/services/shared.service';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService } from 'src/app/services/api.service';
+import { apiRoutes } from '../config';
 
 @Component({
   selector: 'app-header',
@@ -22,13 +25,35 @@ export class HeaderComponent implements OnInit {
   showBrowseHeader = false;
   missingHeader= false;
 
+  modalOpen: boolean = true;
+  hideVideo: boolean = true;
+  selectArea: boolean = false;
+
+  modalOption: NgbModalOptions = {}; // not null!
+  // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
+  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'}, {label: 'Food', value: 'food'}]; // , {label: 'Water', value: 'water'}
+  sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
+  videoResponse;
+  videoId;
+  videoLocation;
+  callInProgress;
+  abortVideoDownload;
+  signal;
+  modalLoading = false;
+  defaultVideoSrc;
+  videoCompleted = false;
+  searched = false;
+  showItemOnlyOnce = true;
+
   constructor(
     private nuxeo: NuxeoService,
     private router: Router,
     public matDialog: MatDialog,
     public dataService: DataService,
     protected readonly keycloak: KeycloakService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private modalService: NgbModal,
+    private apiService: ApiService,
   ) {
     router.events.forEach((event: any) => {
       if (event.url) {
@@ -82,6 +107,10 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+
+    this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
+    if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
+    return;
   }
 
   showHeaderElements() {
@@ -139,5 +168,76 @@ export class HeaderComponent implements OnInit {
   checkForUserGroup() {
     const expectedRole = REPORT_ROLE;
     return this.sharedService.chekForReportRoles(expectedRole);
+  }
+
+  openSm(content) {
+    this.modalOpen = true;
+    this.hideVideo = true;
+    this.selectArea = false;
+    // localStorage.removeItem('openVideo');
+    this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeModal();
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });;
+  }
+
+  closeModal() {
+    this.modalOpen = true;
+    this.hideVideo = true;
+    this.modalLoading = false;
+    this.videoCompleted = false;
+  }
+
+  clickVideoIcon() {
+    this.hideVideo = false;
+    this.selectArea = true
+  }
+
+  videoPayEnded(event: any) {
+    this.videoCompleted = true;
+  }
+
+  playPersonalizedVideo() {
+    const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
+    localStorage.setItem('videoSector', this.sectorSelected);
+    this.videoResponse = false;
+    this.modalLoading = true;
+    try {
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)
+        .subscribe((response: any) => {
+          this.videoResponse = true;
+          this.modalLoading = false;
+          if(!response?.error && response.videoId) {
+            this.videoId = response.videoId;
+            this.videoLocation = response.location || null;
+            this.showVideo();
+          }
+          return;
+        });
+      } catch(error) {
+        console.log('error = ', error);
+        this.modalLoading = false;
+          return;
+        }
+  }
+  
+  showVideo() {
+    const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
+    this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`;
+    if(!localStorage.getItem('videoPlayed')) {
+      localStorage.setItem('videoPlayed', 'true');
+    }
+    this.showItemOnlyOnce = false;
+  }
+
+  searchPopup: boolean = false;
+  focusOnSearch() {
+    this.searchPopup = true;
+  }
+  
+  blurOnSearch() {
+    this.searchPopup = true;
   }
 }
