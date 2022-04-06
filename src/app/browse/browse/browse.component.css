@@ -255,8 +255,9 @@ section.lpBAck:before, .lpSecOne:before {
   color: #C49900;
 }
 .folder-structure{
-  height: 130px;
-  background: url(~/../../../assets/images/yellow-background.svg);
+  height: 154px;
+  /* background: url(~/../../../assets/images/yellow-background.svg); */
+  background: url(~/../../../assets/images/folder-workspace.svg) no-repeat center center / cover;
   display: flex;
   align-items: flex-end;
   padding: 10px;
@@ -276,6 +277,7 @@ section.lpBAck:before, .lpSecOne:before {
   color: #737373;
 }
 .folder-content{
+  width: 100%;
   /* padding: 15px;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px; */
@@ -291,6 +293,11 @@ section.lpBAck:before, .lpSecOne:before {
   font-size: 13px;
   line-height: 13px;
   color: #737373;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  display: inline-block;
 }
 /* .folder-structure {
    width: 300px;
