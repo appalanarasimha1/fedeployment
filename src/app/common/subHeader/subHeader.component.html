@@ -36,9 +36,9 @@
                   <!-- <img src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search"> -->
                   <!-- <button ngIf="search" class="btn" style="position: absolute; right: 39px; top: 3px;">x</button> -->
                
-                  <div class="searchPopup" *ngIf="searchPopup" id="customScrollBar">
+                  <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar">
 
-                    <div class="search-list">
+                    <!-- <div class="search-list">
                       <a href="#">Traveller</a>
                       <a href="#">Travelling</a>
                       <a href="#">Tourism</a>
@@ -85,9 +85,9 @@
                           <span class="workspace-folders">/Education, Research & I</span>
                         </li>
                       </ul>
-                    </div>
+                    </div> -->
     
-                    <div class="recent-searches">
+                    <div class="recent-searches" *ngIf="!showRelatedSearch">
                       <div class="heading">Your Recent Searches</div>
                       <ul class="recent-searches-tags">
                         <li><a href="#">Fox</a></li>
@@ -100,10 +100,11 @@
                     </div>
     
                     <div class="recent-searches">
-                      <div class="heading">Your Recent Searches</div>
+                      <div class="heading" *ngIf="!showRelatedSearch">Trending Searches</div>
+                      <div class="heading" *ngIf="showRelatedSearch">Related Searches</div>
                       <ul class="recent-searches-tags">
-                        <li><a href="#">Sunset</a></li>
-                        <li><a href="#">Mountain</a></li>
+                        <li *ngFor="let bucket of tagsMetadata?.buckets; let i = index" ><a (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
+                        <!-- <li><a href="#">Mountain</a></li>
                         <li><a href="#">Building</a></li>
                         <li><a href="#">Ocean</a></li>
                         <li><a href="#">Construction</a></li>
@@ -113,7 +114,7 @@
                         <li><a href="#">Sun</a></li>
                         <li><a href="#">NEOM</a></li>
                         <li><a href="#">Clouds</a></li>
-                        <li><a href="#">Environment</a></li>
+                        <li><a href="#">Environment</a></li> -->
                       </ul>
                     </div>
     

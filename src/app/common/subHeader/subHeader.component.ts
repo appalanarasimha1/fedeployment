@@ -45,6 +45,8 @@ export class SubHeaderComponent implements OnInit {
   searched = false;
   showItemOnlyOnce = true;
   searchPopup: boolean = false;
+  tagClicked:boolean=false
+  showRelatedSearch:boolean=false
 
   constructor(
     private dataService: DataService,
@@ -107,6 +109,8 @@ export class SubHeaderComponent implements OnInit {
 
   searchOutputFn(searchText: string): void {
     if(searchText) {
+       this.tagClicked = true;
+       this.showRelatedSearch = true;
       this.searchCriteria['ecm_fulltext'] = searchText;
       this.searchCriteria['highlight'] = 'dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name';
     } else {
@@ -114,6 +118,7 @@ export class SubHeaderComponent implements OnInit {
       delete this.searchCriteria['highlight'];
     }
     // this.dataService.termSearchInit(searchText);
+   
     this.emitData(this.searchCriteria);
   }
 
@@ -338,14 +343,27 @@ export class SubHeaderComponent implements OnInit {
 
   resetSearch() {
     this.searched = false;
+    this.showRelatedSearch = false;
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+    
   }
 
   focusOnSearch() {
     this.searchPopup = true;
+    this.tagClicked=false
   }
   
   blurOnSearch() {
-    this.searchPopup = false;
+    console.log("wwwwwwwwwwwwwwwwwww",this.tagClicked);
+    
+    if (this.tagClicked) {
+
+    } else {
+      setTimeout(() => {
+        this.searchPopup = false;
+      }, 500);
+      
+    }
+    
   }
 }
