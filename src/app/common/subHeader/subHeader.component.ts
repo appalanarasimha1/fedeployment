@@ -44,6 +44,7 @@ export class SubHeaderComponent implements OnInit {
   videoCompleted = false;
   searched = false;
   showItemOnlyOnce = true;
+  searchPopup: boolean = false;
 
   constructor(
     private dataService: DataService,
@@ -338,5 +339,13 @@ export class SubHeaderComponent implements OnInit {
   resetSearch() {
     this.searched = false;
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+  }
+
+  focusOnSearch() {
+    this.searchPopup = true;
+  }
+  
+  blurOnSearch() {
+    this.searchPopup = false;
   }
 }

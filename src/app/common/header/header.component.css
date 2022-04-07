@@ -241,7 +241,7 @@ header.updateHeader {
     left: 0px;
     top: 0px;
     background-color: #040404;
-    z-index: 9999;
+    z-index: 999;
     color: #fff;
     transition: all 300ms ease;
 }

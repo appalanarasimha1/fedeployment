@@ -1,10 +1,11 @@
 .sub-header{
-    background-image: url(~/../../../../assets/images/HeaderBackgroundImage.jpg);
+    /* background-image: url(~/../../../../assets/images/HeaderBackgroundImage.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 21px !important;
-    padding-bottom: 40px;
-    min-height: 217px;
+    min-height: 217px; */
+    /* padding-top: 21px !important;
+    padding-bottom: 40px; */
+    padding: 10px 0px 10px !important;
 }
 .sub-header h2{
     color: #fff;
@@ -17,13 +18,13 @@
     position: relative;
     padding: 15px 60px 15px 62px;
     border-radius: 8px;
-    border: 1px solid #E5E5E5;
-    width: 500px;
-    background-color: #FDFDFD;
+    border: 1px solid #23211E;
+    background: #23211E;
+    width: 100%;
     font-weight: bold;
     font-size: 16px;
     line-height: 24px;
-    color: #040404;
+    color: #fff;
 }
 ::placeholder{
     font-weight: 100 !important
@@ -222,7 +223,12 @@ background-color: #fff;
 
 /* sprint16 start */
 .sub-header{
-    position: relative;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    z-index: 999;
+    pointer-events: none;
+    /* background-color: #040404; */
 }
 .video-icon {
     height: 70px;
@@ -469,6 +475,9 @@ video{
   .owl-item {
     display: inline-block !important;
   }
+  .searchDiv {
+      width: 95%;
+  }
 
   /* mobile responsive */
   @media(max-width: 991.5px){
@@ -479,12 +488,12 @@ video{
     .search-bar{
         height: 60px;
     }
-    .sub-header{
+    /* .sub-header{
         background-image: url(~/../../../../assets/images/mobileHeaderBackgroundImage.png);
         height: auto;
         padding-top: 76px !important;
         padding-bottom: 35px;
-    }
+    } */
     .video-icon{
         left: 3%;
         bottom: 17px;
@@ -575,4 +584,185 @@ video{
 }
 ::ng-deep .customTagSlider .slick-prev.slick-disabled:before, ::ng-deep .customTagSlider .slick-next.slick-disabled:before {
     opacity: 0.5 !important;
+}
+.text-left {
+    text-align: left !important;
+}
+
+.searchPopup {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    background: #23211E;
+    border-radius: 0 0 8px 8px;
+    border-top: 1px solid #2D2926;
+    max-height: calc(100vh - 80px);
+    overflow: auto;
+}
+.removeBorderRadious {
+    border-radius: 8px 8px 0 0;
+}
+.recent-searches, .search-list {
+    padding: 20px 30px;
+    padding-bottom: 0px;
+}
+.recent-searches::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.recent-searches:last-child {
+    padding-bottom: 10px;
+}
+.recent-searches .heading {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 20px;
+    color: #D1CFC9;
+    padding-bottom: 20px;
+}
+.recent-searches ul.recent-searches-tags {
+    margin: 0px;
+    padding: 0px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+.recent-searches ul.recent-searches-tags li {
+    background: #040404;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    border-radius: 100px;
+    text-align: center;
+    color: #FFFFFF;
+}
+.recent-searches ul.recent-searches-tags li a {
+    padding: 6px 12px;
+    color: #fff;
+    display: block
+}
+.recent-searches ul.recent-searches-tags li.show-something {
+    background: #937206;
+}
+.recent-searches ul.recent-searches-tags li.show-something a {
+    color: #fff;
+}
+.tollTipCustom{
+    position: relative;
+}
+
+.tollTipCustom .tolltipContent {
+    position: absolute;
+    top: 46px;
+    left: 40px;
+    background: #413e3c;
+    padding: 3px 10px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: normal;
+    width: max-content;
+    border-radius: 4px;
+    white-space: nowrap;
+    max-width: max-content;
+    width: max-content;
+    display: none;
+    text-align: center;
+    z-index: 999;
+    line-height: 20px;
+}
+.tollTipCustom:hover .tolltipContent {
+    display: block;
+}
+#customScrollBar::-webkit-scrollbar-track,
+.workspaceFoldersScrollBar::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+#customScrollBar::-webkit-scrollbar,
+.workspaceFoldersScrollBar::-webkit-scrollbar {
+	width: 6px;
+	background-color:transparent;
+}
+
+#customScrollBar::-webkit-scrollbar-thumb,
+.workspaceFoldersScrollBar::-webkit-scrollbar-thumb {
+	background-color: #413E3C;
+    border-radius: 10px;
+}
+.search-list {
+    border-bottom: 1px solid #2D2926;
+    padding-bottom: 5px;
+}
+.search-list a {
+    display: block;
+    clear: left;
+    float: left;
+    color: #fff;
+    line-height: 24px;
+    font-size: 15px;
+    padding-bottom: 15px;
+}
+.search-list a:hover {
+    opacity: 0.8;
+}
+.search-list::after {
+    clear: both;
+    display: block;
+    content: '';
+}
+
+.recent-searches ul.recent-searches-folder {
+    margin: 0px -7px;
+    padding: 0px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    margin-right: -27px;
+    padding-right: 10px;
+}
+.recent-searches ul.recent-searches-folder li {
+    float: left; 
+    margin-bottom: 5px;
+    text-align: center;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 10px 8px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    line-height: 17px;
+}
+.recent-searches ul.recent-searches-folder li:hover {
+    background: #413E3C;
+    color: #fff;
+}
+.folder-icon {
+    padding-right: 10px;
+    vertical-align: 1px;
+    display: inline-block;
+}
+.folder-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 60%;
+    display: inline-block;
+}
+.workspace-folders {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 35%;
+    display: inline-block;
+    text-align: right;
+    padding-left: 15px;
+}
+.workspaceFoldersScrollBar {
+    overflow: auto;
+    height: 245px;
 }
