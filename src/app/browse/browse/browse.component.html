@@ -263,7 +263,7 @@
                         (click)="handleTest(item);">
                         <!-- <img src="../../../assets/images/yellow-folder.png"> -->
                         <div class="folder-content">
-                          <p class="tollTipCustom" style="    white-space: normal;
+                          <p class="tollTipCustom" style="white-space: normal;
                           width: 100%;
                           overflow: inherit;
                           text-overflow: inherit;">
@@ -317,7 +317,9 @@
                       <th mat-sort-header="dc:creator" width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
                       <th mat-sort-header="dc:created" width="20%">Created on</th>
-                      <th mat-sort-header="dc:start" *ngIf="!showLinkCopy" width="20%">Associated date</th>
+                      <th mat-sort-header="dc:start" *ngIf="!showLinkCopy && !isTrashView" width="20%">Associated date</th>
+                      <th mat-sort-header="dc:start" *ngIf="isTrashView" width="20%">Deleted on</th>
+                      <th mat-sort-header="dc:sector" *ngIf="isTrashView" width="20%">Workspace</th>
                     </tr>
                     <tr *ngFor="let item of sortedData | search: searchBarValue; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
                       <td><div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
@@ -340,6 +342,8 @@
                       <!-- <td><p>Luis C</p></td> -->
                       <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
                       <td *ngIf="!showLinkCopy"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td>
+                      <td *ngIf="isTrashView"><p>{{item.lastModified ? getDateInFormat(item.lastModified) : ''}}</p></td>
+                      <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     </tr>
                 </table>
               </div>
