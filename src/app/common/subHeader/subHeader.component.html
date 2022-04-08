@@ -90,7 +90,7 @@
                     <div class="recent-searches" *ngIf="!showRelatedSearch">
                       <div class="heading">Your Recent Searches</div>
                       <ul class="recent-searches-tags">
-                        <li *ngFor="let search of recentSearch"><a style="cursor: pointer;" (click)="searchText=search._source.query; searchOutputFn(searchText)">{{sharedService.capitaliseSelectiveTags(search._source.query)}}</a></li>
+                        <li *ngFor="let search of recentSearch;let i = index"><a style="cursor: pointer;" (click)="searchText=search._source.query; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(search._source.query)}}</a></li>
                       </ul>
                     </div>
     
@@ -98,17 +98,17 @@
                       <div class="heading" *ngIf="!showRelatedSearch">Trending Searches</div>
                       <div class="heading" *ngIf="showRelatedSearch">Related Tags</div>
                       <ul class="recent-searches-tags">
-                        <li *ngFor="let bucket of tagsMetadata?.buckets; let i = index" ><a  style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
+                        <li *ngFor="let bucket of tagsMetadata?.buckets; let i = index" ><a  *ngIf="i<13" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
                        
                       </ul>
                     </div>
     
-                    <div class="recent-searches">
+                    <!-- <div class="recent-searches">
                       <div class="heading">Random Search</div>
                       <ul class="recent-searches-tags">
                         <li class="show-something"><a href="#">Show me something cool</a></li>
                       </ul>
-                    </div>
+                    </div> -->
                     
                   </div>
               </form>

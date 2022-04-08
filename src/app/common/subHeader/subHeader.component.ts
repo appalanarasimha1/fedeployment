@@ -399,6 +399,10 @@ export class SubHeaderComponent implements OnInit {
   inputClicked(){
     this.searchPopup = !this.searchPopup;
     this.tagClicked = false;
+    this.dataService.showRecent$.subscribe((show: boolean) => {
+     this.showRelatedSearch=show
+    });
+
     
   }
 }

@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { IHeaderSearchCriteria } from '../common/subHeader/interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class DataService {
   private sectorChangedSource = new Subject<string>();
@@ -11,7 +11,8 @@ export class DataService {
   private showHideLoader = new Subject<boolean>();
   private resetFilter = new Subject<string>();
   private termSearch = new Subject<string>();
-  constructor() { }
+  private showRecent = new Subject<boolean>();
+  constructor() {}
 
   // Observable string streams
   sectorChanged$ = this.sectorChangedSource.asObservable();
@@ -19,6 +20,7 @@ export class DataService {
   showHideLoader$ = this.showHideLoader.asObservable();
   resetFilter$ = this.resetFilter.asObservable();
   termSearch$ = this.termSearch.asObservable();
+  showRecent$ = this.showRecent.asObservable();
 
   sectorDataPush(sector) {
     this.sectorChangedSource.next(sector);
@@ -31,13 +33,16 @@ export class DataService {
   loaderValueChange(loaderValue: boolean) {
     this.showHideLoader.next(loaderValue);
   }
-  
+
   resetFilterInit(triggeredFrom: string) {
     this.resetFilter.next(triggeredFrom);
   }
-  
+
   termSearchInit(term: string) {
     this.termSearch.next(term);
   }
 
+  showRecentInit(show: boolean) {
+    this.showRecent.next(show);
+  }
 }
