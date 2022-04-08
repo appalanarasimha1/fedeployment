@@ -1120,23 +1120,13 @@ export class BrowseComponent implements OnInit {
         case "title":
           return this.compare(a.title, b.title, isAsc);
         case "dc:creator":
-          return this.compare(
-            a.properties["dc:creator"],
-            b.properties["dc:creator"],
-            isAsc
-          );
+          return this.compare(a.properties["dc:creator"], b.properties["dc:creator"], isAsc);
         case "dc:created":
-          return this.compare(
-            a.properties["dc:created"],
-            b.properties["dc:created"],
-            isAsc
-          );
+          return this.compare(a.properties["dc:created"], b.properties["dc:created"], isAsc);
         case "dc:start":
-          return this.compare(
-            a.properties["dc:start"],
-            b.properties["dc:start"],
-            isAsc
-          );
+          return this.compare(a.properties["dc:start"], b.properties["dc:start"], isAsc);
+        case "dc:sector":
+          return this.compare(a.properties["dc:sector"], b.properties["dc:sector"], isAsc);
         default:
           return 0;
       }
