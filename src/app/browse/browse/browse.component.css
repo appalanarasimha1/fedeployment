@@ -255,13 +255,14 @@ section.lpBAck:before, .lpSecOne:before {
   color: #C49900;
 }
 .folder-structure{
-  height: 154px;
+  height: 129px;
   /* background: url(~/../../../assets/images/yellow-background.svg); */
-  background: url(~/../../../assets/images/folder-workspace.svg) no-repeat center center / cover;
+  background: url(~/../../../assets/images/folder-workspace.svg) no-repeat left top / cover;
   display: flex;
   align-items: flex-end;
   padding: 10px;
   transition: 0.4s;
+  border-radius: 10px;
 }
 .folderTitle{
   font-size: 16px;
@@ -283,7 +284,7 @@ section.lpBAck:before, .lpSecOne:before {
   border-bottom-right-radius: 8px; */
 }
 .folder-content p{
-  font-size: 15px;
+  font-size: 14px;
   line-height: 14px;
   color: #000000;
   font-weight: 600;
