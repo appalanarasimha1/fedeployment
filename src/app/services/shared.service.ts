@@ -254,7 +254,7 @@ export class SharedService {
   }
 
   capitaliseSelectiveTags(tag: string): string {
-    if(tag.toLowerCase() === 'neom') {
+    if(tag.toLowerCase().trim() === 'neom') {
       return tag.toUpperCase();
     }
     return tag;

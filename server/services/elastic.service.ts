@@ -3,7 +3,7 @@ const { Client } = require('@elastic/elasticsearch');
 
 export class ElasticSearchService {
   private client = new Client({ node: AppConfig.Config.elasticDbUrl });
-  private indexValue = 'searchindex';
+  private indexValue = "searchindex";
 
   public async insertData(searchTerm: any, username: any) {
     const response = await this.client.index({
@@ -11,8 +11,8 @@ export class ElasticSearchService {
       body: {
         query: searchTerm,
         timestamp: new Date(),
-        userId: username
-      }
+        userId: username,
+      },
     });
     return;
   }
@@ -21,16 +21,16 @@ export class ElasticSearchService {
     const { body } = await this.client.search({
       index: this.indexValue,
       body: {
-        "aggs": {
-          "properties": {
-            "terms": {
-              "field": "query", 
-              "order": { "_count": "desc" },
-              "size": 11
-            }
-          }
-        }
-      }
+        aggs: {
+          properties: {
+            terms: {
+              field: "query",
+              order: { _count: "desc" },
+              size: 11,
+            },
+          },
+        },
+      },
     });
     return body;
   }
@@ -39,25 +39,46 @@ export class ElasticSearchService {
     const { body } = await this.client.search({
       index: this.indexValue,
       body: {
-        "aggs": {
-          "properties": {
-            "terms": {
-              "field": "userId", 
-              "order": { "_count": "desc" },
-              "size": 10
-            }
-          }
-        }
-      }
+        aggs: {
+          properties: {
+            terms: {
+              field: "userId",
+              order: { _count: "desc" },
+              size: 10,
+            },
+          },
+        },
+      },
     });
     return body;
   }
 
   public async getTotalSearchCount() {
     const { body } = await this.client.count({
-      index: this.indexValue
+      index: this.indexValue,
     });
     return body;
+  }
+
+  public async getUserRecentTags(username: any) {
+    const { body } = await this.client.search({
+      index: this.indexValue,
+      body: {
+        query: {
+          match: {
+            userId: username,
+          },
+        },
+        sort: [
+          {
+            timestamp: "desc",
+          },
+        ],
+        size: 7,
+      },
+    });
+    console.log(body.hits.hits);
+    return body?.hits?.hits;
   }
 
   // public async run() {
