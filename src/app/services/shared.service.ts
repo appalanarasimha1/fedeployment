@@ -39,7 +39,7 @@ export class SharedService {
     else return str;
   }
 
-  toUsCommaSystem(number): string {
+  toUsCommaSystem(number: string|number): string {
     return number.toLocaleString('en-US');
   }
 
