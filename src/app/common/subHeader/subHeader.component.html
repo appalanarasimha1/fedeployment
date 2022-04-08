@@ -90,7 +90,7 @@
                     <div class="recent-searches" *ngIf="!showRelatedSearch">
                       <div class="heading">Your Recent Searches</div>
                       <ul class="recent-searches-tags">
-                        <li *ngFor="let search of recentSearch;let i = index"><a style="cursor: pointer;" (click)="searchText=search._source.query; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(search._source.query)}}</a></li>
+                        <li *ngFor="let search of recentSearch;let i = index"><a style="cursor: pointer;" *ngIf="search._source.query.trim() !==''" (click)="searchText=search._source.query; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(search._source.query)}}</a></li>
                       </ul>
                     </div>
     

@@ -1,15 +1,26 @@
-import { Component, Output, EventEmitter, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { DataService } from 'src/app/services/data.service';
-import { SharedService } from 'src/app/services/shared.service';
-import { IHeaderSearchCriteria } from './interface';
- import { CarouselModule } from 'ngx-owl-carousel-o';
-import { OwlOptions } from 'ngx-owl-carousel-o';
-import { unescapeIdentifier } from '@angular/compiler';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  OnInit,
+  ElementRef,
+  ViewChild,
+} from "@angular/core";
+import { DataService } from "src/app/services/data.service";
+import { SharedService } from "src/app/services/shared.service";
+import { IHeaderSearchCriteria } from "./interface";
+import { CarouselModule } from "ngx-owl-carousel-o";
+import { OwlOptions } from "ngx-owl-carousel-o";
+import { unescapeIdentifier } from "@angular/compiler";
 
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { ApiService } from 'src/app/services/api.service';
-import { apiRoutes } from '../config';
-import { TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../constant';
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ApiService } from "src/app/services/api.service";
+import { apiRoutes } from "../config";
+import {
+  TRIGGERED_FROM_DOCUMENT,
+  TRIGGERED_FROM_SUB_HEADER,
+} from "../constant";
 @Component({
   selector: "app-sub-header",
   // directives: [Search],
@@ -81,14 +92,7 @@ export class SubHeaderComponent implements OnInit {
     this.showItemOnlyOnce = !localStorage.getItem("videoPlayed");
     if (!this.showItemOnlyOnce) this.playPersonalizedVideo();
 
-    //  getRecentSearch(){
-    const user = JSON.parse(localStorage.getItem("user"));
-    this.apiService
-      .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
-      .subscribe((response) => {
-        this.recentSearch = response["data"];
-        console.log("11111111111111", response["data"]);
-      });
+     this.getRecentSearch()
     return;
   }
 
@@ -109,6 +113,15 @@ export class SubHeaderComponent implements OnInit {
   //   this.dataService.sectorChange(value);
   // }
 
+  getRecentSearch() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    this.apiService
+      .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
+      .subscribe((response) => {
+        this.recentSearch = response["data"];
+        console.log("11111111111111", response["data"]);
+      });
+  }
   dropdownMenu(event: any): void {
     let sortBy = event.target.value;
     if (sortBy) {
@@ -378,6 +391,7 @@ export class SubHeaderComponent implements OnInit {
   resetSearch() {
     this.searched = false;
     this.showRelatedSearch = false;
+    this.getRecentSearch();
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
   }
 
@@ -387,7 +401,6 @@ export class SubHeaderComponent implements OnInit {
   }
 
   blurOnSearch() {
-
     if (this.tagClicked) {
     } else {
       setTimeout(() => {
@@ -396,13 +409,12 @@ export class SubHeaderComponent implements OnInit {
     }
   }
 
-  inputClicked(){
+  inputClicked() {
     this.searchPopup = !this.searchPopup;
     this.tagClicked = false;
     this.dataService.showRecent$.subscribe((show: boolean) => {
-     this.showRelatedSearch=show
+      this.showRelatedSearch = show;
+      this.getRecentSearch()
     });
-
-    
   }
 }

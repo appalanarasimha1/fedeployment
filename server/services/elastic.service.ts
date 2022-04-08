@@ -6,6 +6,9 @@ export class ElasticSearchService {
   private indexValue = "searchindex";
 
   public async insertData(searchTerm: any, username: any) {
+    console.log({searchTerm});
+    
+    if(searchTerm.trim() =="") return
     const response = await this.client.index({
       index: this.indexValue,
       body: {
