@@ -341,7 +341,7 @@
                       <td><p>{{item.properties['dc:creator']}}</p></td>
                       <!-- <td><p>Luis C</p></td> -->
                       <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
-                      <td *ngIf="!showLinkCopy"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td>
+                      <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td>
                       <td *ngIf="isTrashView"><p>{{item.lastModified ? getDateInFormat(item.lastModified) : ''}}</p></td>
                       <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     </tr>
