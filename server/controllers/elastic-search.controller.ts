@@ -48,7 +48,6 @@ export class ElasticSearchController {
   }
 
   public async findUserRecentTags(req: Request, res: Response) {
-    console.log("comming 6");
     const service = new ElasticSearchService();
     // await service.insertData();
     const result: any = await service.getUserRecentTags(req.query.username);

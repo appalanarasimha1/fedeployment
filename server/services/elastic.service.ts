@@ -77,7 +77,6 @@ export class ElasticSearchService {
         size: 7,
       },
     });
-    console.log(body.hits.hits);
     return body?.hits?.hits;
   }
 

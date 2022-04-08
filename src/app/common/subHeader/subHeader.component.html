@@ -96,7 +96,7 @@
     
                     <div class="recent-searches">
                       <div class="heading" *ngIf="!showRelatedSearch">Trending Searches</div>
-                      <div class="heading" *ngIf="showRelatedSearch">Related Searches</div>
+                      <div class="heading" *ngIf="showRelatedSearch">Related Tags</div>
                       <ul class="recent-searches-tags">
                         <li *ngFor="let bucket of tagsMetadata?.buckets; let i = index" ><a  style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
                        

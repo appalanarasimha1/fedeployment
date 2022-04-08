@@ -387,7 +387,6 @@ export class SubHeaderComponent implements OnInit {
   }
 
   blurOnSearch() {
-    console.log("wwwwwwwwwwwwwwwwwww", this.tagClicked);
 
     if (this.tagClicked) {
     } else {
@@ -398,7 +397,6 @@ export class SubHeaderComponent implements OnInit {
   }
 
   inputClicked(){
-    console.log("input clicked");
     this.searchPopup = !this.searchPopup;
     this.tagClicked = false;
     
