@@ -1053,8 +1053,10 @@ export class BrowseComponent implements OnInit {
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
       if (!result) return;
+      this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
       this.searchList.unshift(result);
       this.sortedData = this.searchList.slice();
+      this.showMoreButton = false;
     });
   }
 
