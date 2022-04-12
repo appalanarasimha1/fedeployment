@@ -1,38 +1,55 @@
-import { Component, Output, EventEmitter, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { DataService } from 'src/app/services/data.service';
-import { SharedService } from 'src/app/services/shared.service';
-import { IHeaderSearchCriteria } from './interface';
- import { CarouselModule } from 'ngx-owl-carousel-o';
-import { OwlOptions } from 'ngx-owl-carousel-o';
-import { unescapeIdentifier } from '@angular/compiler';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  OnInit,
+  ElementRef,
+  ViewChild,
+} from "@angular/core";
+import { DataService } from "src/app/services/data.service";
+import { SharedService } from "src/app/services/shared.service";
+import { IHeaderSearchCriteria } from "./interface";
+import { CarouselModule } from "ngx-owl-carousel-o";
+import { OwlOptions } from "ngx-owl-carousel-o";
+import { unescapeIdentifier } from "@angular/compiler";
 
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { ApiService } from 'src/app/services/api.service';
-import { apiRoutes } from '../config';
-import { TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../constant';
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ApiService } from "src/app/services/api.service";
+import { apiRoutes } from "../config";
+import {
+  TRIGGERED_FROM_DOCUMENT,
+  TRIGGERED_FROM_SUB_HEADER,
+} from "../constant";
 @Component({
-  selector: 'app-sub-header',
+  selector: "app-sub-header",
   // directives: [Search],
-  templateUrl: './subHeader.component.html',
-  styleUrls: ['./subHeader.component.css']
+  templateUrl: "./subHeader.component.html",
+  styleUrls: ["./subHeader.component.css"],
 })
 export class SubHeaderComponent implements OnInit {
   @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
-  @ViewChild('content') videoModal: ElementRef;
+  @ViewChild("content") videoModal: ElementRef;
   // @Input() sectors: string[];
-  searchText: string = '';
+  searchText: string = "";
   searchCriteria: IHeaderSearchCriteria = {};
   sectors: string[] = [];
 
   modalOpen: boolean = true;
   hideVideo: boolean = true;
   selectArea: boolean = false;
-  modalReference = null; 
+  modalReference = null;
   modalOption: NgbModalOptions = {}; // not null!
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
-  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'}, {label: 'Food', value: 'food'}]; // , {label: 'Water', value: 'water'}
-  sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
+  allSectors = [
+    { label: "All NEOM sectors", value: "general" },
+    { label: "Sports", value: "sport" },
+    { label: "Water", value: "water" },
+    { label: "Food", value: "food" },
+  ]; // , {label: 'Water', value: 'water'}
+  sectorSelected =
+    localStorage.getItem("videoSector") || this.allSectors[0].value;
   videoResponse;
   videoId;
   videoLocation;
@@ -44,14 +61,16 @@ export class SubHeaderComponent implements OnInit {
   videoCompleted = false;
   searched = false;
   showItemOnlyOnce = true;
-
+  searchPopup: boolean = false;
+  tagClicked: boolean = false;
+  showRelatedSearch: boolean = false;
+  recentSearch: any;
   constructor(
     private dataService: DataService,
     public sharedService: SharedService,
     private modalService: NgbModal,
     private apiService: ApiService
-    ) {
-    }
+  ) {}
 
   ngOnInit() {
     this.dataService.sectorChanged$.subscribe((sectors: any) => {
@@ -59,60 +78,75 @@ export class SubHeaderComponent implements OnInit {
     });
 
     this.dataService.resetFilter$.subscribe((triggeredFrom: string) => {
-      if(TRIGGERED_FROM_DOCUMENT === triggeredFrom) {
-        this.searchText = '';
+      if (TRIGGERED_FROM_DOCUMENT === triggeredFrom) {
+        this.searchText = "";
         this.searched = false;
       }
     });
-    
+
     this.dataService.termSearch$.subscribe((searchTerm: string) => {
       this.searchText = searchTerm;
       this.searched = false;
     });
 
-    this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
-    if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
+    this.showItemOnlyOnce = !localStorage.getItem("videoPlayed");
+    if (!this.showItemOnlyOnce) this.playPersonalizedVideo();
+
+     this.getRecentSearch()
     return;
   }
 
   ngAfterViewInit() {
-    if(!localStorage.getItem('openVideo')) {
+    if (!localStorage.getItem("openVideo")) {
       this.openSm(this.videoModal);
-      localStorage.setItem('openVideo', '1');
+      localStorage.setItem("openVideo", "1");
     }
-    return;  
+    return;
   }
 
   videoPayEnded(event: any) {
     this.videoCompleted = true;
   }
-  
+
   // sectorSelect(value: string) {
   //   this.sectorSelected = value;
   //   this.dataService.sectorChange(value);
   // }
 
+  getRecentSearch() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    this.apiService
+      .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
+      .subscribe((response) => {
+        this.recentSearch = response["data"];
+        console.log("11111111111111", response["data"]);
+      });
+  }
   dropdownMenu(event: any): void {
     let sortBy = event.target.value;
-    if(sortBy) {
-      this.searchCriteria['sortBy'] = sortBy;
-      this.searchCriteria['sortOrder'] = 'asc';
+    if (sortBy) {
+      this.searchCriteria["sortBy"] = sortBy;
+      this.searchCriteria["sortOrder"] = "asc";
     } else {
-      delete this.searchCriteria['sortBy'];
-      delete this.searchCriteria['sortOrder']
+      delete this.searchCriteria["sortBy"];
+      delete this.searchCriteria["sortOrder"];
     }
     this.emitData(this.searchCriteria);
   }
 
   searchOutputFn(searchText: string): void {
-    if(searchText) {
-      this.searchCriteria['ecm_fulltext'] = searchText;
-      this.searchCriteria['highlight'] = 'dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name';
+    if (searchText) {
+      this.tagClicked = true;
+      this.showRelatedSearch = true;
+      this.searchCriteria["ecm_fulltext"] = searchText;
+      this.searchCriteria["highlight"] =
+        "dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name";
     } else {
-      delete this.searchCriteria['ecm_fulltext'];
-      delete this.searchCriteria['highlight'];
+      delete this.searchCriteria["ecm_fulltext"];
+      delete this.searchCriteria["highlight"];
     }
     // this.dataService.termSearchInit(searchText);
+
     this.emitData(this.searchCriteria);
   }
 
@@ -132,7 +166,6 @@ export class SubHeaderComponent implements OnInit {
     margin: 15,
     nav: true,
     responsive: {
-      
       991: {
         nav: false,
         mouseDrag: true,
@@ -143,9 +176,9 @@ export class SubHeaderComponent implements OnInit {
         mouseDrag: false,
         touchDrag: false,
         pullDrag: false,
-      }
-    }
-  }
+      },
+    },
+  };
 
   // slideConfig = {
   //   arrows: true,
@@ -193,33 +226,33 @@ export class SubHeaderComponent implements OnInit {
   //   ]
   // };
   slideConfig = {
-    "slidesToShow": 5, 
+    slidesToShow: 5,
     // "slidesToScroll": 1,
-    "dots": false,
-    "infinite": false,
-    "speed": 300,
-    "centerMode": false,
-    "variableWidth": true,
+    dots: false,
+    infinite: false,
+    speed: 300,
+    centerMode: false,
+    variableWidth: true,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          arrows: false
-        }
+          arrows: false,
+        },
       },
       {
         breakpoint: 600,
         settings: {
-          arrows: false
-        }
+          arrows: false,
+        },
       },
       {
         breakpoint: 480,
         settings: {
-          arrows: false
-        }
-      }
-    ]
+          arrows: false,
+        },
+      },
+    ],
   };
 
   openSm(content) {
@@ -227,12 +260,22 @@ export class SubHeaderComponent implements OnInit {
     this.hideVideo = true;
     this.selectArea = false;
     // localStorage.removeItem('openVideo');
-    this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeModal();
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });;
+    this.modalService
+      .open(content, {
+        windowClass: "custom-modal",
+        backdropClass: "remove-backdrop",
+        keyboard: false,
+        backdrop: "static",
+      })
+      .result.then(
+        (result) => {
+          // this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeModal();
+          // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
   }
 
   closeModal() {
@@ -245,20 +288,30 @@ export class SubHeaderComponent implements OnInit {
 
   clickVideoIcon() {
     this.hideVideo = false;
-    this.selectArea = true
+    this.selectArea = true;
   }
 
   playPersonalizedVideo() {
-    const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
-    localStorage.setItem('videoSector', this.sectorSelected);
+    const body = {
+      sector: this.sectorSelected,
+      username: localStorage.getItem("username"),
+    };
+    localStorage.setItem("videoSector", this.sectorSelected);
     this.videoResponse = false;
     this.modalLoading = true;
     try {
-      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)
+      this.apiService
+        .get(
+          apiRoutes.FETCH_PERSONALIZED_VIDEO +
+            "?sector=" +
+            this.sectorSelected +
+            "&username=" +
+            body.username
+        )
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
-          if(!response?.error && response.videoId) {
+          if (!response?.error && response.videoId) {
             this.videoId = response.videoId;
             this.videoLocation = response.location || null;
             this.showVideo();
@@ -269,66 +322,66 @@ export class SubHeaderComponent implements OnInit {
           //   // this.videoResponse = vidResponse;
           // });
           // if(response) this.getFavouriteCollection(response.uid);
-          
-          // setTimeout(() => {
-            // this.loading = false;
-          // }, 0);
 
-          
-        });
-      } catch(error) {
-        console.log('error = ', error);
-        this.modalLoading = false;
+          // setTimeout(() => {
           // this.loading = false;
-          // if (error && error.message) {
-          //   if (error.message.toLowerCase() === 'unauthorized') {
-          //     this.sharedService.redirectToLogin();
-          //   }
-          // }
-          return;
-        }
+          // }, 0);
+        });
+    } catch (error) {
+      console.log("error = ", error);
+      this.modalLoading = false;
+      // this.loading = false;
+      // if (error && error.message) {
+      //   if (error.message.toLowerCase() === 'unauthorized') {
+      //     this.sharedService.redirectToLogin();
+      //   }
+      // }
+      return;
+    }
   }
-  
+
   showVideo() {
     // this.abortVideoDownload = new AbortController();
     // this.signal = this.abortVideoDownload.signal;
     // this.modalLoading = true;
     // if(!this.count) return;
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
-    this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`;
-    if(!localStorage.getItem('videoPlayed')) {
-      localStorage.setItem('videoPlayed', 'true');
+    this.defaultVideoSrc =
+      updatedUrl +
+      `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`;
+    if (!localStorage.getItem("videoPlayed")) {
+      localStorage.setItem("videoPlayed", "true");
     }
     this.showItemOnlyOnce = false;
-  //  fetch(updatedUrl + `?sector=sport&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') }, signal: this.signal })
-  //     .then(r => {
-  //       if (r.status === 401) {
-  //         localStorage.removeItem('token');
-  //         // this.router.navigate(['login']);
+    //  fetch(updatedUrl + `?sector=sport&videoId=${this.videoId}&location=${this.videoLocation}`, { headers: { 'X-Authentication-Token': localStorage.getItem('token') }, signal: this.signal })
+    //     .then(r => {
+    //       if (r.status === 401) {
+    //         localStorage.removeItem('token');
+    //         // this.router.navigate(['login']);
 
-  //         this.modalLoading = false;
-  //         return;
-  //       }
-  //       return r.blob();
-  //     })
-  //     .then(d => {
-  //       event.target.src = window.URL.createObjectURL(d);
-  //       // this.count--;
+    //         this.modalLoading = false;
+    //         return;
+    //       }
+    //       return r.blob();
+    //     })
+    //     .then(d => {
+    //       event.target.src = window.URL.createObjectURL(d);
+    //       // this.count--;
 
-  //       this.modalLoading = false;
-  //       return
-  //       // event.target.src = new Blob(d);
-  //     }
-  //     ).catch(e => {
-  //       // TODO: add toastr with message 'Invalid token, please login again'
+    //       this.modalLoading = false;
+    //       return
+    //       // event.target.src = new Blob(d);
+    //     }
+    //     ).catch(e => {
+    //       // TODO: add toastr with message 'Invalid token, please login again'
 
-  //         this.modalLoading = false;
-  //         console.log(e);
-  //       // if(e.contains(`'fetch' on 'Window'`)) {
-  //       //   this.router.navigate(['login']);
-  //       // }
+    //         this.modalLoading = false;
+    //         console.log(e);
+    //       // if(e.contains(`'fetch' on 'Window'`)) {
+    //       //   this.router.navigate(['login']);
+    //       // }
 
-  //     });
+    //     });
   }
 
   // onSelectSector(sector: string) {
@@ -337,6 +390,31 @@ export class SubHeaderComponent implements OnInit {
 
   resetSearch() {
     this.searched = false;
+    this.showRelatedSearch = false;
+    this.getRecentSearch();
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+  }
+
+  focusOnSearch() {
+    this.searchPopup = true;
+    this.tagClicked = false;
+  }
+
+  blurOnSearch() {
+    if (this.tagClicked) {
+    } else {
+      setTimeout(() => {
+        this.searchPopup = false;
+      }, 500);
+    }
+  }
+
+  inputClicked() {
+    this.searchPopup = !this.searchPopup;
+    this.tagClicked = false;
+    this.dataService.showRecent$.subscribe((show: boolean) => {
+      this.showRelatedSearch = show;
+      this.getRecentSearch()
+    });
   }
 }

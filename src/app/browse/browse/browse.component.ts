@@ -64,6 +64,7 @@ export class BrowseComponent implements OnInit {
 
   files: File[] = [];
   selectedFolder = null;
+  newTitle;
   selectedFolder2 = null;
   selectedMenu = 0;
   uploadSuccess = null;
@@ -230,7 +231,9 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
+    console.log({ item });
     if (item.isTrashed) return;
+    this.newTitle = item.title;
     this.searchBarValue = "";
     this.showLinkCopy = true;
     this.showSearchbar = false;
@@ -395,14 +398,16 @@ export class BrowseComponent implements OnInit {
       this.breadcrrumb = `/${WORKSPACE_ROOT}`;
       return;
     }
+    const sectorId = this.sortedData.find(d => d.title === title);
     if (type.toLowerCase() === ASSET_TYPE.DOMAIN) {
       this.breadcrrumb = `/${WORKSPACE_ROOT}/${title}`;
+      const sectorId = this.sortedData.find(d => d.title === title);
+      // this.navigateByUrl('');
+      
     } else if (type.toLowerCase() === ASSET_TYPE.WORKSPACE) {
       const bread = this.breadcrrumb.split("/");
       const definedPath = path.split("/");
-      this.breadcrrumb = `/${bread[1]}/${
-        bread[2] === "undefined" || !bread[2] ? definedPath[1] : bread[2]
-      }/${this.sharedService.stringShortener(title, 50)}`;
+      this.breadcrrumb = `/${bread[1]}/${bread[2] === "undefined" || !bread[2] ? definedPath[1] : bread[2]}/${this.sharedService.stringShortener(title, 50)}`;
     }
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
@@ -714,7 +719,7 @@ export class BrowseComponent implements OnInit {
       });
   }
 
-  handleSelectMenu(index, type) {
+  handleSelectMenu(index, type) { 
     this.selectedMenu = index;
     this.viewType = type;
   }
@@ -846,11 +851,7 @@ export class BrowseComponent implements OnInit {
     selBox.style.top = "0";
     selBox.style.opacity = "0";
     const { uid, sectorName } = this.getSectorUidByName(val);
-    selBox.value = `${
-      window.location.origin
-    }/workspace?sector=${uid}&folder=${encodeURIComponent(
-      this.selectedFolder.title
-    )}`;
+    selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${encodeURIComponent(this.selectedFolder.title)}`;
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
@@ -1053,8 +1054,10 @@ export class BrowseComponent implements OnInit {
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
       if (!result) return;
+      this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
       this.searchList.unshift(result);
       this.sortedData = this.searchList.slice();
+      this.showMoreButton = false;
     });
   }
 
@@ -1118,7 +1121,7 @@ export class BrowseComponent implements OnInit {
       const isAsc = sort.direction === "asc";
       switch (sort.active) {
         case "title":
-          return this.compare(a.title, b.title, isAsc);
+          return this.compare(a.title, b.title, isAsc)
         case "dc:creator":
           return this.compare(
             a.properties["dc:creator"],
@@ -1137,6 +1140,12 @@ export class BrowseComponent implements OnInit {
             b.properties["dc:start"],
             isAsc
           );
+        case "dc:sector":
+          return this.compare(
+            a.properties["dc:sector"],
+            b.properties["dc:sector"],
+            isAsc
+          );
         default:
           return 0;
       }
@@ -1145,5 +1154,20 @@ export class BrowseComponent implements OnInit {
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  renameFolder() {
+    let { newTitle, selectedFolder } = this;
+    // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
+    this.apiService.put(`/id/${selectedFolder.uid}`, {
+      "entity-type": "document",
+      uid: selectedFolder.uid,
+      properties: {
+        "dc:title": newTitle,
+      },
+    }).subscribe((res:any) =>{
+      console.log({res});
+      this.handleTest(res)
+    })
   }
 }

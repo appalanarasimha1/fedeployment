@@ -1,235 +1,219 @@
- <header *ngIf="searchHeader" class="searchHeading" [ngClass]="{'fixedHeader': showBrowseHeader}" >
-  <div class="container">
-      <div class="row flexible">
-          <div class="col-xl-3 col-xs-3">
-              <nav class="navbar navbar-expand-lg navbar-light ">
-                <div class="logo-block">
-                  <!-- <img src="../../../assets/images/Logo_Ground_X.svg" alt="Ground-X" class="header-logo" style="cursor: pointer;" (click)="resetFilter(); selectTab('search')" /> -->
-                  <a [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/Logo_Ground_X.svg" alt="Ground-X" class="header-logo" /></a>
-                </div>
-                    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span> -->
-                    <!-- </button> -->
-                    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                          <a class="nav-link active " aria-current="page" (click)="selectTab('search')">Home</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link " (click)="selectTab('browse')">Browse</a>
-                        </li>
-
-                        <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Favourites</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload</a>
-                        </li>
-                      </ul>
-                    </div> -->
-
-              </nav>
-          </div>
-          <div class="col-xl-9 col-xs-9 ">
-              <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right;">
-                  <div class=" navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav me-auto  mb-lg-0 rightDrop flexible">
-                        <li>
-                          <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload</a>
-                        </li>
-                        <!-- <li class="nav-item">
-                          <a class="nav-link tooltipCustom" aria-current="page" >
-                            <img src="../../../assets/images/menu-right.svg">
-                          </a>
-                        </li> -->
-                        <!-- <li class="nav-item">
-                          <a class="nav-link tooltipCustom" placement="bottom" ngbTooltip="This function will be available soon" aria-current="page"  style="opacity: 0.6;cursor: not-allowed;">
-                            <img src="../../../assets/images/alarm-bell.svg">
-                          </a>
-                        </li> -->
-
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
-                          </a>
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" [routerLink]="['/workspace']" >Workspace</a></li>
-                            <!-- <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
-                            <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li> -->
-                            <li><a class="dropdown-item"  placement="bottom" (click)="selectTab('favourite'); toFavouriteSection()" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
-                            <li *ngIf="checkForUserGroup()"><a class="dropdown-item" [routerLink]="['/report']">Analytics</a></li>
-                            <li class="logout-line"><a class="dropdown-item" (click)="logout()">Logout</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                  </div>
-
-              </nav>
-          </div>
-      </div>
-  </div>
-</header>
-
-<header *ngIf="showBrowseHeader" class="pt-4 pb-4 searchHeading fixedHeader">
+<header class="updateHeader">
   <div class="container">
     <div class="row flexible">
-          <div class="col-xl-3 col-xs-3">
-              <nav class="navbar navbar-expand-lg navbar-light ">
-                <div class="logo-block">
-                  <!-- <img src="../../../assets/images/Logo_Ground_X.svg" alt="Ground-X" class="header-logo" style="cursor: pointer;" (click)="selectTab('search')" /> -->
-                  <a [routerLink]="['/']" (click)="selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/Logo_Ground_X.svg" alt="Ground-X" class="header-logo" /></a>
-                </div>
-                    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span> -->
-                    <!-- </button> -->
-                    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                          <a class="nav-link active " aria-current="page" (click)="selectTab('search')">Home</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link " (click)="selectTab('browse')">Browse</a>
-                        </li>
-
-                        <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Favourites</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload</a>
-                        </li>
-                      </ul>
-                    </div> -->
-
-              </nav>
-          </div>
-          <div *ngIf="showHeaderElements()" class="col-xl-9 col-xs-9">
-              <nav class="navbar navbar-expand-lg navbar-light rightNav " style="float: right;">
-                  <div class=" navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav me-auto mb-2 mb-lg-0 rightDrop flexible">
-                        <li>
-                          <a class="nav-link uploadBtn tooltipCustom"  (click)="openModal()">Upload</a>
-                        </li>
-                        <!-- <li class="nav-item">
-                          <a class="nav-link tooltipCustom" aria-current="page" >
-                            <img src="../../../assets/images/menu-right.svg">
-                          </a>
-                        </li> -->
-                        <!-- <li class="nav-item">
-                          <a class="nav-link tooltipCustom" placement="bottom" ngbTooltip="This function will be available soon" aria-current="page"  style="opacity: 0.6;cursor: not-allowed;">
-                            <img src="../../../assets/images/alarm-bell.svg">
-                          </a>
-                        </li> -->
-
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
-                          </a>
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" [routerLink]="['/workspace']" >Workspace</a></li>
-                            <!-- <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
-                            <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li> -->
-                            <li><a class="dropdown-item"  (click)="selectTab('favourite'); toFavouriteSection()" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
-                            <li *ngIf="checkForUserGroup()"><a class="dropdown-item" [routerLink]="['/report']">Analytics</a></li>
-                            <li class="logout-line"><a class="dropdown-item" (click)="logout()">Logout</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                  </div>
-
-              </nav>
-          </div>
-      </div>
-      <!-- <div class="row">
-          <div class="col-xl-2 col-md-2">
-              <div class="logo">
-                  <a  (click)="selectTab('search')">
-                      <img src="../../../assets/images/NEOM_logo.svg">
-                  </a>
+      <div class="col-xl-3 col-xs-3">
+          <nav class="navbar navbar-expand-lg navbar-light ">
+            <div class="logo-block">
+              <a [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+            </div>
+            <span class="main-title tollTipCustom">
+              <img class="play-button" src="../../../assets/images/PersonalizedVideo-new.svg" alt="" (click)="openSm(content)" />
+              <div class="tolltipContent">
+                Watch personalized video
               </div>
-          </div>
-          <div class="col-xl-8">
-              <nav class="navbar navbar-expand-lg navbar-light ">
+            </span>
+          </nav>
+      </div>
+      <div class="col-xl-9 col-xs-9">
+        <div class="customSearchBar" style="min-height: 51px;">
+          <!-- <div style="position: relative;z-index: 99;" class="searchDiv">
+            <form autocomplete="off">
+              <button class="primary search-btn"><img src="../../../assets/images/search-icon.svg" /></button>
+              <input type="text" placeholder="Search" class="search-bar" [ngClass]="{'removeBorderRadious': searchPopup}" (focus)='focusOnSearch()' (blur)="blurOnSearch()">
+              <img style="cursor: pointer" src="../assets/images/circle-close.png" class="placeholder-search">
 
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                          <a class="nav-link " aria-current="page" (click)="selectTab('search')">Home</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link active" (click)="selectTab('browse')">Browse</a>
-                        </li>
+              <div class="searchPopup" *ngIf="searchPopup" id="customScrollBar">
 
-                        <li class="nav-item">
-                          <a class="nav-link "  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link "  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link " style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Favourites</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link uploadBtn tooltipCustom" style="color: white" (click)="openModal()">Upload</a>
-                        </li>
+                <div class="search-list">
+                  <a href="#">Traveller</a>
+                  <a href="#">Travelling</a>
+                  <a href="#">Tourism</a>
+                  <a href="#">Tourist</a>
+                  <a href="#">Trip</a>
+                </div>
 
+                <div class="recent-searches">
+                  <div class="heading">Workspace Folders</div>
+                  <ul class="recent-searches-folder workspaceFoldersScrollBar">
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Marketing</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Marketing</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Education, Research and Innovation</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Marketing</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Marketing</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Education, Research & I</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
+                      <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
+                      <span class="workspace-folders">/Education, Research & I</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="recent-searches">
+                  <div class="heading">Your Recent Searches</div>
+                  <ul class="recent-searches-tags">
+                    <li><a href="#">Fox</a></li>
+                    <li><a href="#">Animals</a></li>
+                    <li><a href="#">Mountain</a></li>
+                    <li><a href="#">Wildlife</a></li>
+                    <li><a href="#">Nature</a></li>
+                    <li><a href="#">Horizon</a></li>
+                  </ul>
+                </div>
+
+                <div class="recent-searches">
+                  <div class="heading">Your Recent Searches</div>
+                  <ul class="recent-searches-tags">
+                    <li><a href="#">Sunset</a></li>
+                    <li><a href="#">Mountain</a></li>
+                    <li><a href="#">Building</a></li>
+                    <li><a href="#">Ocean</a></li>
+                    <li><a href="#">Construction</a></li>
+                    <li><a href="#">City</a></li>
+                    <li><a href="#">Nature</a></li>
+                    <li><a href="#">Sky</a></li>
+                    <li><a href="#">Sun</a></li>
+                    <li><a href="#">NEOM</a></li>
+                    <li><a href="#">Clouds</a></li>
+                    <li><a href="#">Environment</a></li>
+                  </ul>
+                </div>
+
+                <div class="recent-searches">
+                  <div class="heading">Random Search</div>
+                  <ul class="recent-searches-tags">
+                    <li class="show-something"><a href="#">Show me something cool</a></li>
+                  </ul>
+                </div>
+                
+              </div>
+            </form>
+          </div> -->
+        </div>
+          <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right;">
+              <div class=" navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto  mb-lg-0 rightDrop flexible">
+                    <li>
+                      <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                      <a class="nav-link tooltipCustom" aria-current="page" >
+                        <img src="../../../assets/images/menu-right.svg">
+                      </a>
+                    </li> -->
+                    <!-- <li class="nav-item">
+                      <a class="nav-link tooltipCustom" placement="bottom" ngbTooltip="This function will be available soon" aria-current="page"  style="opacity: 0.6;cursor: not-allowed;">
+                        <img src="../../../assets/images/alarm-bell.svg">
+                      </a>
+                    </li> -->
+
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" [routerLink]="['/workspace']" >Workspace</a></li>
+                        <!-- <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
+                        <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li> -->
+                        <li><a class="dropdown-item"  placement="bottom" (click)="selectTab('favourite'); toFavouriteSection()" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
+                        <li *ngIf="checkForUserGroup()"><a class="dropdown-item" [routerLink]="['/report']">Analytics</a></li>
+                        <li class="logout-line"><a class="dropdown-item" (click)="logout()">Logout</a></li>
                       </ul>
-                    </div>
-
-                </nav>
-          </div>
-          <div class="col-xl-2">
-              <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right;">
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav me-auto mb-2 mb-lg-0 rightDrop">
-                        <li class="nav-item">
-                          <a class="nav-link tooltipCustom" aria-current="page"  style="opacity: 0.6;cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">
-                            <img src="../../../assets/images/alarm-bell.png">
-                          </a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
-                          </a>
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                  </div>
-
-              </nav>
-          </div>
-      </div> -->
+                    </li>
+                  </ul>
+              </div>
+          </nav>
+      </div>
+    </div>
   </div>
-</header>
 
-<header *ngIf="missingHeader" class="searchHeading missHeader"  >
-  <div class="container">
-      <div class="row flexible">
-          <div class="col-xl-3 col-xs-3">
-              <nav class="navbar navbar-expand-lg navbar-light ">
-                <div class="logo-block">
-                  <!-- <img src="../../../assets/images/Logo_Ground_X.svg" alt="Ground-X" class="header-logo" style="cursor: pointer;" (click)="resetFilter(); selectTab('search')" /> -->
-                  <a [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/Logo_Ground_X.svg" alt="Ground-X" class="header-logo" /></a>
-                </div>
-                </nav>
-                </div>
-                </div>
-                </div>
-                </header>
+  <ng-template #content let-modal>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); closeModal()">
+      <img src="../../../assets/images/modalclose.svg" />
+    </button>
+    <div class="modal-body fixx">
+      <app-loader-small [show]="modalLoading"></app-loader-small>
+      <div class="modal-body-content" *ngIf="hideVideo && !videoResponse && !videoCompleted && showItemOnlyOnce" (click)="clickVideoIcon()">
+        <div class="playIcon"></div>
+        <img src="../../../assets/images/video-background-pic.png" />
+      </div>
+      <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
+        <img src="../../../assets/images/logo-neom.png" class="logo" />
+        <h3>Please select an area of interest.</h3>
+        <ng-select 
+          class="pointer"
+          [items]="allSectors" 
+          ngDefaultControl
+          placeholder="Select a sector" 
+          [(ngModel)]="sectorSelected"
+          bindLabel="label"
+          bindValue="value"
+          [closeOnSelect]
+          [searchable]="false" [clearable]="false">
+        </ng-select>
+        <div *ngIf="sectorSelected" class="next-arrow">
+          <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->
+          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />  
+        </div>
+        
+      </div>
+      
+      <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
+       <div class="ssector">
+        <!-- <span>Change sector</span> -->
+        <ng-select [items]="allSectors" class="sectorsss"
+          ngDefaultControl
+          placeholder="Select a sector" 
+          [(ngModel)]="sectorSelected"
+          bindLabel="label"
+          bindValue="value"
+          (change)="playPersonalizedVideo()"
+          [closeOnSelect]
+          [searchable]="false" [clearable]="false"
+          >
+        </ng-select>
+       </div>
+          <video style="width: 100%" preload="false" autoplay  controls tabindex="0">
+            <source [src]=defaultVideoSrc type="video/mp4" />
+          </video>
+      </div>
+
+
+      <!-- video thankyou section -->
+      <div *ngIf="videoCompleted" class="thankyou-popup text-center">
+        <div class="">
+          <img src="../../../assets/images/logo-neom.png" style="width: 50px;">
+          <h2>Thanks for watching.</h2>
+          <p>Start discovering NEOM’s digital assets by using the search. You can search with a specific keyword, select a sector and get keyword suggestions from the Ground X AI.</p>
+          <img (click)="modal.dismiss('Cross click'); closeModal()" src="../../../assets/images/Btn Next.png" style="width: 30px; cursor: pointer;">
+        </div>
+      </div>
+    </div>
+
+  </ng-template>
+  <!-- sprint16 end -->
+</header>

@@ -4066,7 +4066,7 @@ document-card img {
   padding-left: var(--bs-gutter-x,3.75rem);
 }
 .slick-initialized .slick-slide {
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 .slide.slick-slide.slick-active {
   opacity: 1;
@@ -4206,3 +4206,30 @@ ngx-masonry document-card .lock-icon img {
   display: block !important;
 }
 .row:before, .row:after {display: none !important;}
+body {
+  padding-top: 76px;
+}
+@media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1320px;
+  }
+}
+.slick-list.draggable {
+  position: relative;
+}
+.slick-list.draggable:after {
+  content: '';
+  display: block;
+  width: 50%;
+  background: hsl(0deg 0% 100% / 49%);
+  position: absolute;
+  height: 100%;
+  top: 0px;
+  left: -50%;
+  opacity: 1;
+  margin-right: 0px;
+}
+
+.pointerCursor {
+  cursor: pointer;
+}

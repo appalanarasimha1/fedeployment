@@ -7,16 +7,19 @@ export const environment = {
   // nuxeoServiceBaseUrl: 'https://10.101.21.31:8090', //
   // redirectBaseUrl: 'https://10.101.21.31:8090/', // for redirecting to old nuxeo ui for video playback
   // apiServiceBaseUrl: 'https://10.101.21.31:8090', //
-  apiVersion: '/nuxeo/api/v1',
-  apiServiceBaseUrl: 'https://uatgroundx.neom.com',
-  nuxeoServerUrl: 'https://uatgroundx.neom.com',
+  apiVersion: "/nuxeo/api/v1",
+  apiServiceBaseUrl:
+    //  "http://localhost:8080",
+    "https://uatgroundx.neom.com",
+  mainNuxeoUrl: "https://groundxuatbackend.neom.com",
+  nuxeoServerUrl: "https://uatgroundx.neom.com",
   // nuxeoServerUrl: 'http://localhost:8090',
   // apiServiceBaseUrl: "http://localhost:8090",
   keycloakConfig: {
-    url: 'https://groundx.the-it-cloud.net/auth/', 
-    realm: 'GroundX',
-    clientId: 'nuxeo-client-public',
-  }
+    url: "https://groundx.the-it-cloud.net/auth/",
+    realm: "GroundX",
+    clientId: "nuxeo-client-public",
+  },
 };
 
 /*

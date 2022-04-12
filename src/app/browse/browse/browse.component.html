@@ -1,6 +1,6 @@
-<section class="sub-header" style="background-color: #E8E6DF;background-image: unset;">
+<!-- <section class="sub-header" style="background-color: #E8E6DF;background-image: unset;">
 
-</section>
+</section> -->
 <!-- <app-loader [show]="loading"></app-loader> -->
 <!-- <section  style="background-color: #E8E6DF;padding: 30px 0px;">
   <div class="container">
@@ -157,6 +157,11 @@
                       {{selectedFolder?.title}}
                     </div>
                   </span>
+                  <div>
+                     <!-- <input type="text" [(ngModel)]="newTitle" name="newTitle"> 
+                     <button (click)="renameFolder()">update</button> -->
+                  </div>
+                 
 
                   <span *ngIf="showLinkCopy" class="copy-section" >
                     <a class="flexible">
@@ -259,11 +264,11 @@
                           </label>
                         </div>
                       </div>
-                      <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
+                      <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" [ngClass]="{'pointerCursor': !isTrashView}"
                         (click)="handleTest(item);">
                         <!-- <img src="../../../assets/images/yellow-folder.png"> -->
                         <div class="folder-content">
-                          <p class="tollTipCustom" style="    white-space: normal;
+                          <p class="tollTipCustom" style="white-space: normal;
                           width: 100%;
                           overflow: inherit;
                           text-overflow: inherit;">
@@ -317,7 +322,9 @@
                       <th mat-sort-header="dc:creator" width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
                       <th mat-sort-header="dc:created" width="20%">Created on</th>
-                      <th mat-sort-header="dc:start" *ngIf="!showLinkCopy" width="20%">Associated date</th>
+                      <th mat-sort-header="dc:start" *ngIf="!showLinkCopy && !isTrashView" width="20%">Associated date</th>
+                      <!-- <th mat-sort-header="dc:start" *ngIf="isTrashView" width="20%">Deleted on</th> -->
+                      <th mat-sort-header="dc:sector" *ngIf="isTrashView" width="20%">Workspace</th>
                     </tr>
                     <tr *ngFor="let item of sortedData | search: searchBarValue; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
                       <td><div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
@@ -328,18 +335,20 @@
                           </label>
                         </div>
                       </div>
-                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
+                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
-                      <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" class="" style="display: flex;cursor: pointer;">
+                      <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
                       <td><p>{{item.properties['dc:creator']}}</p></td>
                       <!-- <td><p>Luis C</p></td> -->
                       <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
-                      <td *ngIf="!showLinkCopy"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td>
+                      <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td>
+                      <!-- <td *ngIf="isTrashView"><p>{{item.lastModified ? getDateInFormat(item.lastModified) : ''}}</p></td> -->
+                      <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     </tr>
                 </table>
               </div>
