@@ -112,6 +112,8 @@ export class BrowseComponent implements OnInit {
   sortedData;
   folderNotFound = false;
 
+  renameFolderName: boolean = false;
+
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
     this.masonry?.layout();
@@ -1135,5 +1137,12 @@ export class BrowseComponent implements OnInit {
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  renameFolderAction() {
+    this.renameFolderName = true;
+  }
+  updateFolderAction() {
+    this.renameFolderName = false;
   }
 }

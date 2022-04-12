@@ -145,17 +145,27 @@
 
           <div *ngIf="selectedFolder">
             <div class="header-content" *ngIf="!isTrashView">
-              <div *ngIf="selectedFolder2.uid !== parentId">
+              <div *ngIf="selectedFolder2.uid !== parentId"  style="width: 100%;">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
                   aria-label="Button that displays a tooltip when focused or hovered over">
                   {{sharedService.stringShortener(selectedFolder?.title, 30)}}
                 </button> -->
                 <span style="overflow: auto;">
-                  <span class="main-title tollTipCustom">{{sharedService.stringShortener(selectedFolder?.title, 28)}}
+                  <span class="main-title tollTipCustom" *ngIf="!renameFolderName">{{sharedService.stringShortener(selectedFolder?.title, 28)}}
+                    <img src="../../../assets/images/pencil-write.svg" alt="" class="renameFolderImg" (click)="renameFolderAction()" />
                     <div class="tolltipContent">
                       {{selectedFolder?.title}}
                     </div>
+                  </span>
+
+                  <span *ngIf="renameFolderName" style="display: inline-block;">
+                    <label class="input-sizer">
+                      <input type="text" maxlength="60"
+                      value="{{sharedService.stringShortener(selectedFolder?.title, 28)}}"
+                      onInput="this.parentNode.dataset.value = this.value" placeholder="">
+                    </label>
+                    <img src="../../../assets/images/remove-circle.svg" alt="" class="renameFolderRemoveImg" (click)="updateFolderAction()" />
                   </span>
 
                   <span *ngIf="showLinkCopy" class="copy-section" >
@@ -217,7 +227,7 @@
                 </div>
               </div>
             </div>
-            <div class="header-content" *ngIf="isTrashView">
+            <div class="header-content" *ngIf="isTrashView" style="width: 100%;">
               <div>
                 <span style="overflow: auto;">
                   <span class="main-title tollTipCustom"
