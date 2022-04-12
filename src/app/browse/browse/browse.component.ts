@@ -64,6 +64,7 @@ export class BrowseComponent implements OnInit {
 
   files: File[] = [];
   selectedFolder = null;
+  newTitle;
   selectedFolder2 = null;
   selectedMenu = 0;
   uploadSuccess = null;
@@ -232,7 +233,9 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
+    console.log({ item });
     if (item.isTrashed) return;
+    this.newTitle = item.title;
     this.searchBarValue = "";
     this.showLinkCopy = true;
     this.showSearchbar = false;
@@ -716,7 +719,7 @@ export class BrowseComponent implements OnInit {
       });
   }
 
-  handleSelectMenu(index, type) {
+  handleSelectMenu(index, type) { 
     this.selectedMenu = index;
     this.viewType = type;
   }
@@ -1120,15 +1123,31 @@ export class BrowseComponent implements OnInit {
       const isAsc = sort.direction === "asc";
       switch (sort.active) {
         case "title":
-          return this.compare(a.title, b.title, isAsc);
+          return this.compare(a.title, b.title, isAsc)
         case "dc:creator":
-          return this.compare(a.properties["dc:creator"], b.properties["dc:creator"], isAsc);
+          return this.compare(
+            a.properties["dc:creator"],
+            b.properties["dc:creator"],
+            isAsc
+          );
         case "dc:created":
-          return this.compare(a.properties["dc:created"], b.properties["dc:created"], isAsc);
+          return this.compare(
+            a.properties["dc:created"],
+            b.properties["dc:created"],
+            isAsc
+          );
         case "dc:start":
-          return this.compare(a.properties["dc:start"], b.properties["dc:start"], isAsc);
+          return this.compare(
+            a.properties["dc:start"],
+            b.properties["dc:start"],
+            isAsc
+          );
         case "dc:sector":
-          return this.compare(a.properties["dc:sector"], b.properties["dc:sector"], isAsc);
+          return this.compare(
+            a.properties["dc:sector"],
+            b.properties["dc:sector"],
+            isAsc
+          );
         default:
           return 0;
       }
@@ -1144,5 +1163,19 @@ export class BrowseComponent implements OnInit {
   }
   updateFolderAction() {
     this.renameFolderName = false;
+  }
+  renameFolder() {
+    let { newTitle, selectedFolder } = this;
+    // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
+    this.apiService.put(`/id/${selectedFolder.uid}`, {
+      "entity-type": "document",
+      uid: selectedFolder.uid,
+      properties: {
+        "dc:title": newTitle,
+      },
+    }).subscribe((res:any) =>{
+      console.log({res});
+      this.handleTest(res)
+    })
   }
 }

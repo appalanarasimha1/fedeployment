@@ -158,6 +158,11 @@
                       {{selectedFolder?.title}}
                     </div>
                   </span>
+                  <div>
+                     <input type="text" [(ngModel)]="newTitle" name="newTitle"> 
+                     <button (click)="renameFolder()">update</button>
+                  </div>
+                 
 
                   <span *ngIf="renameFolderName" style="display: inline-block;">
                     <label class="input-sizer">
