@@ -717,7 +717,7 @@ export class BrowseComponent implements OnInit {
       });
   }
 
-  handleSelectMenu(index, type) {
+  handleSelectMenu(index, type) { 
     this.selectedMenu = index;
     this.viewType = type;
   }
@@ -1121,7 +1121,7 @@ export class BrowseComponent implements OnInit {
       const isAsc = sort.direction === "asc";
       switch (sort.active) {
         case "title":
-          return this.compare(a.title, b.title, isAsc);
+          return this.compare(a.title, b.title, isAsc)
         case "dc:creator":
           return this.compare(
             a.properties["dc:creator"],
@@ -1167,7 +1167,7 @@ export class BrowseComponent implements OnInit {
       },
     }).subscribe((res:any) =>{
       console.log({res});
-      
+      this.handleTest(res)
     })
   }
 }
