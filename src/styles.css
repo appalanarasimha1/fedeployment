@@ -104,7 +104,7 @@ a {
 }
 
 ::placeholder{
-  color: #80858a !important;
+  color: #fff !important;
 }
 
 input:focus::placeholder{
@@ -4228,4 +4228,15 @@ body {
   left: -50%;
   opacity: 1;
   margin-right: 0px;
+}
+
+@media (max-width: 768px) {
+  .container, .container-md, .container-sm {
+    max-width: 770px;
+  }
+}
+@media (max-width: 700px) {
+	body {
+		padding-top: 69px !important;
+	}
 }
