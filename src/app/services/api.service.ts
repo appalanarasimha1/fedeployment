@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 const SERVER_URL = environment.apiServiceBaseUrl;
 const apiVersion1 = environment.apiVersion;
-const SERVER_URL1 = environment.mainNuxeoUrl;
+// const SERVER_URL1 = environment.mainNuxeoUrl;
 
 @Injectable({
   providedIn: "root",
@@ -65,12 +65,12 @@ export class ApiService {
       .pipe(map((data) => data));
   }
 
-  putMain(urlAddress: string, payload: any, options?: any) {
-    options = options || { headers: this.getHeaders() };
-    return this.http
-      .put<any>(SERVER_URL1 + apiVersion1 + urlAddress, payload, options)
-      .pipe(map((data) => data));
-  }
+  // putMain(urlAddress: string, payload: any, options?: any) {
+  //   options = options || { headers: this.getHeaders() };
+  //   return this.http
+  //     .put<any>(SERVER_URL1 + apiVersion1 + urlAddress, payload, options)
+  //     .pipe(map((data) => data));
+  // }
 
   delete(urlAddress: string, options?: any) {
     options = options || { headers: this.getHeaders() };
