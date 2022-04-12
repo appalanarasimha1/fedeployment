@@ -395,14 +395,16 @@ export class BrowseComponent implements OnInit {
       this.breadcrrumb = `/${WORKSPACE_ROOT}`;
       return;
     }
+    const sectorId = this.sortedData.find(d => d.title === title);
     if (type.toLowerCase() === ASSET_TYPE.DOMAIN) {
       this.breadcrrumb = `/${WORKSPACE_ROOT}/${title}`;
+      const sectorId = this.sortedData.find(d => d.title === title);
+      // this.navigateByUrl('');
+      
     } else if (type.toLowerCase() === ASSET_TYPE.WORKSPACE) {
       const bread = this.breadcrrumb.split("/");
       const definedPath = path.split("/");
-      this.breadcrrumb = `/${bread[1]}/${
-        bread[2] === "undefined" || !bread[2] ? definedPath[1] : bread[2]
-      }/${this.sharedService.stringShortener(title, 50)}`;
+      this.breadcrrumb = `/${bread[1]}/${bread[2] === "undefined" || !bread[2] ? definedPath[1] : bread[2]}/${this.sharedService.stringShortener(title, 50)}`;
     }
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
@@ -846,11 +848,7 @@ export class BrowseComponent implements OnInit {
     selBox.style.top = "0";
     selBox.style.opacity = "0";
     const { uid, sectorName } = this.getSectorUidByName(val);
-    selBox.value = `${
-      window.location.origin
-    }/workspace?sector=${uid}&folder=${encodeURIComponent(
-      this.selectedFolder.title
-    )}`;
+    selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${encodeURIComponent(this.selectedFolder.title)}`;
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
