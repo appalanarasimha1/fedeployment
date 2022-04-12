@@ -157,6 +157,11 @@
                       {{selectedFolder?.title}}
                     </div>
                   </span>
+                  <div>
+                     <input type="text" [(ngModel)]="newTitle" name="newTitle"> 
+                     <button (click)="renameFolder()">update</button>
+                  </div>
+                 
 
                   <span *ngIf="showLinkCopy" class="copy-section" >
                     <a class="flexible">
