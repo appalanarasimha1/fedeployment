@@ -92,7 +92,7 @@ export class SubHeaderComponent implements OnInit {
     this.showItemOnlyOnce = !localStorage.getItem("videoPlayed");
     if (!this.showItemOnlyOnce) this.playPersonalizedVideo();
 
-     this.getRecentSearch()
+    this.getRecentSearch();
     return;
   }
 
@@ -118,8 +118,10 @@ export class SubHeaderComponent implements OnInit {
     this.apiService
       .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
       .subscribe((response) => {
-        this.recentSearch = response["data"];
-        console.log("11111111111111", response["data"]);
+        let filteredData = response["data"]
+          .map((d: any) => d._source.query)
+          .filter((item: any, i: number, ar: any) => ar.indexOf(item) === i);
+        this.recentSearch = filteredData;
       });
   }
   dropdownMenu(event: any): void {
@@ -414,7 +416,19 @@ export class SubHeaderComponent implements OnInit {
     this.tagClicked = false;
     this.dataService.showRecent$.subscribe((show: boolean) => {
       this.showRelatedSearch = show;
-      this.getRecentSearch()
+      this.getRecentSearch();
     });
+  }
+
+  deleteRecentTags(e){
+    e.stopPropagation()
+    e.preventDefault()
+      const user = JSON.parse(localStorage.getItem("user"));
+      this.apiService
+        .post("/searchTerm/deleteUserRecentTags?username=" + user.email, {})
+        .subscribe((response) => {
+          console.log({response});
+          this.recentSearch=[]
+        });
   }
 }

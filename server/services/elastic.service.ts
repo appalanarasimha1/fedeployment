@@ -1,14 +1,14 @@
 import { AppConfig } from "../config/appConfigSelection";
-const { Client } = require('@elastic/elasticsearch');
+const { Client } = require("@elastic/elasticsearch");
 
 export class ElasticSearchService {
   private client = new Client({ node: AppConfig.Config.elasticDbUrl });
   private indexValue = "searchindex";
 
   public async insertData(searchTerm: any, username: any) {
-    console.log({searchTerm});
-    
-    if(searchTerm.trim() =="") return
+    console.log({ searchTerm });
+
+    if (searchTerm.trim() == "") return;
     const response = await this.client.index({
       index: this.indexValue,
       body: {
@@ -21,7 +21,7 @@ export class ElasticSearchService {
   }
 
   public async findMostSearchedTerm() {
-    const { body } = await this.client.search({
+    const { body } = await this.client.index({
       index: this.indexValue,
       body: {
         aggs: {
@@ -83,6 +83,18 @@ export class ElasticSearchService {
     return body?.hits?.hits;
   }
 
+  public async deleteRecentTags(username: any) {
+    let res = await this.client.deleteByQuery({
+      index: this.indexValue,
+      body: {
+        query: {
+          match: { userId: username },
+        },
+      },
+    });
+    console.log({res});
+    
+  }
   // public async run() {
   //   // Let's start by indexing some data
   //   await this.client.index({

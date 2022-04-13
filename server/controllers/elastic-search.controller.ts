@@ -11,6 +11,7 @@ export class ElasticSearchController {
     this.router.get("/getSearchCountByUser", this.getSearchCountByUser);
     this.router.get("/findUserBySearchCount", this.findUserBySearchCount);
     this.router.get("/findUserRecentTags", this.findUserRecentTags);
+    this.router.post("/deleteUserRecentTags", this.deleteUserRecentTags);
   }
 
   public async getMostSearchedTerm(req: Request, res: Response) {
@@ -51,6 +52,13 @@ export class ElasticSearchController {
     const service = new ElasticSearchService();
     // await service.insertData();
     const result: any = await service.getUserRecentTags(req.query.username);
+    res.status(200).send({ data: result, message: "success" });
+  }
+
+  public async deleteUserRecentTags(req: Request, res: Response) {
+    const service = new ElasticSearchService();
+    // await service.insertData();
+    const result: any = await service.deleteRecentTags(req.query.username);
     res.status(200).send({ data: result, message: "success" });
   }
 
