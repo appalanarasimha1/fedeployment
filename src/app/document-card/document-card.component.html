@@ -77,9 +77,10 @@
             </div>
           </div>
         </a>
-        <div class="hover-icon star-icon"
+        <div class="hover-icon star-icon tollTipWorkspace"
           [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
           (click)="markFavourite()">
+          <div class="customToolTipWorkspace">Add to favorites</div>
         </div>
       </div>
       
@@ -92,7 +93,10 @@
         </div>
       </div>
       <div *ngIf="showLockIcon() && showLock" class="lock-icon">
-        <img src="../../assets/images/lock-icon.svg" alt="" style="min-height: auto !important;" />
+        <div class="tollTipWorkspace">
+          <img src="../../assets/images/lock-icon.svg" alt="" style="min-height: auto !important;" />
+          <div class="customToolTipWorkspace">This asset is confidential</div>
+        </div>
       </div>
     </div>
   </div>

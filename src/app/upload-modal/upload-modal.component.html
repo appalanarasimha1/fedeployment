@@ -393,29 +393,32 @@
                      </span>
                      <div class="copyright-information">
                         <div (click)="openCopyright(file.key)" *ngIf="!openCopyrightMap[file.key]">
-                        <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
-                     </div>
-                     <div *ngIf="openCopyrightMap[file.key]" class="copyright-form">
-                        <ul>
-                           <li>
-                              <img (click)="closeCopyright(file.key)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
-                           </li>
-                           <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
-                              <div class="copyright-input-block" >
-                                 Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
-                              </div>
-                           </li>
-                           <li>
-                              <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
-                                 bindLabel="name"
-                                 [(ngModel)]="copyrightYearMap[file.key]"
-                                 placeholder="Year" ngDefaultControl
-                                 [ngClass]="{'goldenText': copyrightYearMap[file.key] }"
-                              >
-                              </ng-select>
-                           </li>
-                           </ul>
+                           <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
                         </div>
+                        <div *ngIf="openCopyrightMap[file.key]" (click)="closeCopyright(file.key)" [ngClass]="{'collapseInformationLink': openCopyrightMap[file.key]}">
+                           <img src="../../assets/images/add-circle-brown.svg" alt="Collapse optional information" class="collapse-img" /> Collapse optional information
+                        </div>
+                        <!-- <div *ngIf="openCopyrightMap[file.key]" class="copyright-form">
+                           <ul>
+                              <li>
+                                 <img (click)="closeCopyright(file.key)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
+                              </li>
+                              <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
+                                 <div class="copyright-input-block" >
+                                    Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
+                                 </div>
+                              </li>
+                              <li>
+                                 <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
+                                    bindLabel="name"
+                                    [(ngModel)]="copyrightYearMap[file.key]"
+                                    placeholder="Year" ngDefaultControl
+                                    [ngClass]="{'goldenText': copyrightYearMap[file.key] }"
+                                 >
+                                 </ng-select>
+                              </li>
+                           </ul>
+                        </div> -->
                      </div>
                   </div>
                   <div class="publish-file-preview-access">
@@ -507,6 +510,62 @@
                            </ng-select>
                         </div>
                      </div>
+
+                     <div *ngIf="openCopyrightMap[file.key]" class="collapseInformation">
+                        <div class="upload-form-input row mb-20">
+                           <div class="col-xl-4 col-md-4">
+                              <label for="title">Description <br><span class="optionalText">(optional)</span></label>
+                           </div>
+                           <div class="col-xl-8 col-md-8">
+                              <textarea [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }" style="width: 100%;"></textarea>
+                           </div>
+                        </div>
+                        <div class="row upload-form-input custom-date-picker mb-20">
+                           <div class="col-xl-4 col-md-4" style="text-align: right;">
+                              <label for="date">Associated Date <br><span class="optionalText">(optional)</span></label>
+                           </div>
+                           <div class="col-xl-8 col-md-8 flexible">
+                              <mat-form-field appearance="fill">
+                                 <!-- #docregion toggle -->
+                                 <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                                 placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()"  [ngClass]="{'goldenText': associatedDate}">
+                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                 <mat-datepicker #picker></mat-datepicker>
+                                 <!-- #enddocregion toggle -->
+                              </mat-form-field>
+                           </div>
+                        </div>
+
+                        <div class="upload-form-input row mb-20" >
+                           <div class="col-xl-4">
+                              <label for="access" style="text-align: right;">
+                                 Copyright Information
+                                 <span class="optionalText">(optional)</span>
+                              </label>
+                           </div>
+                           <div class="col-xl-8">
+                              <ul class="optionalInformationDate">
+                                 <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }" style="position: relative;">
+                                    <div class="copyright-input-block" >
+                                       <svg width="15" height="14" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg" class="copyrightGolden" style="margin-top: 1px;">
+                                          <path d="M12.3477 4.97656L11.4102 6.19531C10.707 5.64062 9.98438 5.36328 9.24219 5.36328C8.41406 5.36328 7.72656 5.66016 7.17969 6.25391C6.64062 6.84766 6.37109 7.60547 6.37109 8.52734C6.37109 9.44141 6.64844 10.2031 7.20312 10.8125C7.76562 11.4141 8.49609 11.7148 9.39453 11.7148C9.86328 11.7148 10.2695 11.6406 10.6133 11.4922C10.957 11.3438 11.3086 11.1328 11.668 10.8594L12.6055 12.1016C11.6445 12.9375 10.5586 13.3555 9.34766 13.3555C7.96484 13.3555 6.82812 12.8945 5.9375 11.9727C5.05469 11.043 4.61328 9.89453 4.61328 8.52734C4.61328 7.16797 5.05469 6.02734 5.9375 5.10547C6.82031 4.18359 7.92188 3.72266 9.24219 3.72266C10.3828 3.72266 11.418 4.14062 12.3477 4.97656ZM1.34375 11.8555C0.898438 10.8164 0.675781 9.73047 0.675781 8.59766C0.675781 7.46484 0.898438 6.37891 1.34375 5.33984C1.78906 4.30078 2.38672 3.40625 3.13672 2.65625C3.88672 1.90625 4.78125 1.30859 5.82031 0.863281C6.85938 0.417969 7.94531 0.195312 9.07812 0.195312C10.2109 0.195312 11.2969 0.417969 12.3359 0.863281C13.375 1.30859 14.2695 1.90625 15.0195 2.65625C15.7695 3.40625 16.3672 4.30078 16.8125 5.33984C17.2578 6.37891 17.4805 7.46484 17.4805 8.59766C17.4805 9.73047 17.2578 10.8164 16.8125 11.8555C16.3672 12.8945 15.7695 13.7891 15.0195 14.5391C14.2695 15.2891 13.375 15.8867 12.3359 16.332C11.2969 16.7773 10.2109 17 9.07812 17C7.94531 17 6.85938 16.7773 5.82031 16.332C4.78125 15.8867 3.88672 15.2891 3.13672 14.5391C2.38672 13.7891 1.78906 12.8945 1.34375 11.8555ZM3.14844 5.17578C2.53906 6.22266 2.23438 7.36328 2.23438 8.59766C2.23438 9.83203 2.53906 10.9727 3.14844 12.0195C3.75781 13.0664 4.58594 13.8945 5.63281 14.5039C6.67969 15.1133 7.82031 15.418 9.05469 15.418C10.2891 15.418 11.4297 15.1172 12.4766 14.5156C13.5312 13.9062 14.3633 13.0781 14.9727 12.0312C15.5898 10.9766 15.8984 9.83203 15.8984 8.59766C15.8984 7.36328 15.5898 6.22266 14.9727 5.17578C14.3633 4.12109 13.5312 3.28906 12.4766 2.67969C11.4297 2.07031 10.2891 1.76562 9.05469 1.76562C7.82031 1.76562 6.67969 2.07031 5.63281 2.67969C4.58594 3.28906 3.75781 4.12109 3.14844 5.17578Z" fill="#040404"/>
+                                       </svg> <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input optional-information" >
+                                    </div>
+                                 </li>
+                                 <li>
+                                    <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
+                                       bindLabel="name"
+                                       [(ngModel)]="copyrightYearMap[file.key]"
+                                       placeholder="Year" ngDefaultControl
+                                       [ngClass]="{'goldenText': copyrightYearMap[file.key] }"
+                                    >
+                                    </ng-select>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+
                   </div>
                </div>
             </div>
