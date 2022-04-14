@@ -1637,3 +1637,76 @@ color: #ACACAC;
 .masonrZindex {
   z-index: 9 !important;
 }
+.customTagBar {
+  padding: 9px 0px 4px;
+  background: #23211E;
+  text-align: center;
+}
+
+.customTagSlider {
+  width: 100%;
+  max-width: 650px;
+  margin: 0px auto;
+  padding-top: 0px;
+  display: inline-block;
+}
+.customTagSlider .item .card {
+  display: inline-block;
+  width: auto;
+  min-width: 70px;
+  height: auto;
+  background-size: cover;
+  position: relative;
+  background-color: black;
+  color: white;
+  border-radius: 24px;
+  border: 0px;
+  padding: 5px 10px;
+  line-height: 22px;
+  text-align: center;
+  text-transform: capitalize;
+  outline: none;
+}
+::ng-deep .customTagSlider .slick-prev:before {
+  content: '';
+  background: url(../../assets/images/arrow-prev-white.svg) no-repeat center center !important;
+  display: block;
+  opacity: 1;
+  background-size: contain;
+  cursor: pointer;
+  width: 17px;
+  height: 17px;
+}
+::ng-deep .customTagSlider .slick-next:before {
+  content: '';
+  background: url(../../assets/images/arrow-next-white.svg) no-repeat center center !important;
+  display: block;
+  opacity: 1;
+  background-size: contain;
+  cursor: pointer;
+  width: 17px;
+  height: 17px;
+}
+::ng-deep .customTagSlider .slick-slide {
+  margin-right: 15px;
+}
+::ng-deep .customTagSlider .slick-slide:last-child {
+  margin-right: 0px;
+}
+::ng-deep .customTagSlider .slick-initialized .slick-slide {
+  opacity: 1 !important;
+}
+::ng-deep .customTagSlider .slick-prev.slick-disabled:before, ::ng-deep .customTagSlider .slick-next.slick-disabled:before {
+  opacity: 0.5 !important;
+}
+.text-left {
+  text-align: left !important;
+}
+.relatedTagHeading {
+  display: inline-block;
+  padding-right: 0px;
+  color: #D1CFC9;
+  line-height: 32px;
+}
+.customTagBar ul {display: inline-block;}
+.customTagBar ul li {display: inline-block; padding: 0px 30px;vertical-align: top;}

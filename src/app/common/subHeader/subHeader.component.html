@@ -88,7 +88,9 @@
                     </div> -->
     
                     <div class="recent-searches" *ngIf="!showRelatedSearch">
-                      <div class="heading">Your Recent Searches</div>
+                      <div class="heading">Your Recent Searches
+                        <div class="clearSearch" (click)="openSm(clearSearchResult)">Clear</div>
+                      </div>
                       <ul class="recent-searches-tags">
                         <li *ngFor="let search of recentSearch;let i = index"><a style="cursor: pointer;" *ngIf="search._source.query.trim() !==''" (click)="searchText=search._source.query; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(search._source.query)}}</a></li>
                       </ul>
@@ -214,5 +216,16 @@
   </ng-template> -->
   <!-- sprint16 end -->
 
+  <ng-template #clearSearchResult let-modal>
+    <div class="modal-body clearSearchModal">
+      <p>Are you sure you want to clear search history?</p>
+
+      <div class="modal-footer">
+        <div class="closeModal" (click)="modal.dismiss('Cross click'); closeModal()">No</div>
+        <div class="updateModal">Yes</div>
+      </div>
+    </div>
+
+  </ng-template>
 </section>
 <!-- <app-search></app-search> -->
