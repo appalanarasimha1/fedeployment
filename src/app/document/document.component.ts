@@ -27,7 +27,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() searchTerm: { ecm_fulltext: string };
   @Input() filters: any;
   @Input() userId: string;
-  // @Input() tagsMetadata: any;
+  @Input() tagsMetadata: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
   @Output() selectDocType: EventEmitter<any> = new EventEmitter();
@@ -108,6 +108,36 @@ export class DocumentComponent implements OnInit, OnChanges {
       }
     ]
   };
+
+  tagsConfig = {
+    slidesToShow: 5,
+    // "slidesToScroll": 1,
+    dots: false,
+    infinite: false,
+    speed: 300,
+    centerMode: false,
+    variableWidth: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false,
+        },
+      },
+    ],
+  };
   selectedView = 'recentlyViewed';
   selectedType = 'all';
 
@@ -141,6 +171,21 @@ export class DocumentComponent implements OnInit, OnChanges {
   private preFavouriteCall;
   private assetBySectorCall;
   masoneryItemIndex;
+
+  tagsMetadataDummy = [
+    'Tourism',
+    'Airplane',
+    'Person',
+    'City',
+    'Nature',
+    'Landmark',
+    'Airport',
+    'Boat',
+    'Fox',
+    'Animals',
+    'Mountain',
+    'Wildlife'
+  ]
 
   constructor(
     @Inject(DOCUMENT) private document: Document,

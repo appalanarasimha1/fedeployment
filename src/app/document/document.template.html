@@ -163,6 +163,29 @@
 
   <section class="search-subpage ">
 
+    <div class="customTagBar">
+      <ul>
+        <li>
+          <div class="relatedTagHeading">Related Tags</div>
+        </li>
+        <li>
+          <div class="search-tags">
+            <div class="customTagSlider">
+              <ngx-slick-carousel class="carousel" 
+                #slickModal="slick-carousel" 
+                [config]="tagsConfig" >
+                <div ngxSlickItem *ngFor="let bucket of tagsMetadataDummy; let i = index" class="slide">
+                  <div class="item">
+                    <a class="card" style="cursor: pointer;" >{{bucket}}</a>
+                  </div>
+                </div>
+              </ngx-slick-carousel>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
     <div *ngIf="!checkShowRecent() || checkShowDetailview()" class="container">
       <div class="row" style="justify-content: space-between">
         <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5">
