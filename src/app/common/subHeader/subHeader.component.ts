@@ -115,12 +115,15 @@ export class SubHeaderComponent implements OnInit {
 
   getRecentSearch() {
     const user = JSON.parse(localStorage.getItem("user"));
+    
     this.apiService
       .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
       .subscribe((response) => {
+    console.log({ response });
+
         let filteredData = response["data"]
-          .map((d: any) => d._source.query)
-          .filter((item: any, i: number, ar: any) => ar.indexOf(item) === i);
+          .map((d: any) => d._source.isDeleted ?undefined:d._source.query )
+          .filter((item: any, i: number, ar: any) => ar.indexOf(item) === i && item !== undefined);
         this.recentSearch = filteredData;
       });
   }
