@@ -717,7 +717,7 @@ export class BrowseComponent implements OnInit {
       });
   }
 
-  handleSelectMenu(index, type) { 
+  handleSelectMenu(index, type) {
     this.selectedMenu = index;
     this.viewType = type;
   }
@@ -1159,12 +1159,13 @@ export class BrowseComponent implements OnInit {
   renameFolder() {
     let { newTitle, selectedFolder } = this;
     // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
-    this.apiService.put(`/id/${selectedFolder.uid}`, {
-      "entity-type": "document",
-      uid: selectedFolder.uid,
-      properties: {
-        "dc:title": newTitle,
-      },
+    this.apiService.post(apiRoutes.DOCUMENT_UPDATE, {
+      input: selectedFolder.uid,
+      params: {
+        properties: {
+          "dc:title": newTitle,
+        }
+      }
     }).subscribe((res:any) =>{
       console.log({res});
       this.handleTest(res)
