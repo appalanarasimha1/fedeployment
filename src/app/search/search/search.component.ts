@@ -421,6 +421,7 @@ export class SearchComponent implements OnInit {
     this.metaData[AGGREGATE_TAGS.SCENE_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
     this.metaData[AGGREGATE_TAGS.WEATHER_CLASSIFICATION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
     this.metaData[AGGREGATE_TAGS.PUBLIC_FIGURE_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    this.dataService.tagsMetaRealInit(this.tagsMetadata.buckets);
   }
 
   checkDuplicateAndAddTags(tag: {key: string, count: number}): void {

@@ -174,9 +174,9 @@
               <ngx-slick-carousel class="carousel" 
                 #slickModal="slick-carousel" 
                 [config]="tagsConfig" >
-                <div ngxSlickItem *ngFor="let bucket of tagsMetadataDummy; let i = index" class="slide">
+                <div ngxSlickItem *ngFor="let bucket of tagsMetadata; let i = index" class="slide">
                   <div class="item">
-                    <a class="card" style="cursor: pointer;" >{{bucket}}</a>
+                    <a class="card" style="cursor: pointer;" >{{bucket.key}}</a>
                   </div>
                 </div>
               </ngx-slick-carousel>

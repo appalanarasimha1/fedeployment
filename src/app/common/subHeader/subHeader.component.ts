@@ -115,15 +115,17 @@ export class SubHeaderComponent implements OnInit {
 
   getRecentSearch() {
     const user = JSON.parse(localStorage.getItem("user"));
-    
+
     this.apiService
       .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
       .subscribe((response) => {
-    console.log({ response });
 
         let filteredData = response["data"]
-          .map((d: any) => d._source.isDeleted ?undefined:d._source.query )
-          .filter((item: any, i: number, ar: any) => ar.indexOf(item) === i && item !== undefined);
+          .map((d: any) => (d._source.isDeleted ? undefined : d._source.query))
+          .filter(
+            (item: any, i: number, ar: any) =>
+              ar.indexOf(item) === i && item !== undefined
+          );
         this.recentSearch = filteredData;
       });
   }
@@ -422,16 +424,15 @@ export class SubHeaderComponent implements OnInit {
       this.getRecentSearch();
     });
   }
-
-  deleteRecentTags(e){
-    e.stopPropagation()
-    e.preventDefault()
-      const user = JSON.parse(localStorage.getItem("user"));
-      this.apiService
-        .post("/searchTerm/deleteUserRecentTags?username=" + user.email, {})
-        .subscribe((response) => {
-          console.log({response});
-          this.recentSearch=[]
-        });
+ 
+  deleteRecentTags(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem("user"));
+    this.apiService
+      .post("/searchTerm/deleteUserRecentTags?username=" + user.email, {})
+      .subscribe(() => {
+        this.recentSearch = [];
+      });
   }
 }
