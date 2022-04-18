@@ -34,6 +34,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
 
+  copiedString;
+
   constructor(
     private router: Router,
     private apiService: ApiService,
@@ -409,6 +411,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   showLessTags() {
     this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
+  }
+
+  copyLink() {
+    this.copiedString = !this.copiedString;
   }
 
 }

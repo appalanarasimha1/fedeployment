@@ -434,6 +434,16 @@
               <li *ngIf="getUsageAllowed()">
                 <span class="yellowBtn">{{getUsageAllowed()}}</span>
               </li>
+              <li>
+                <span class="copy-section" >
+                  <a class="flexible">
+                    <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 0px;">
+                    <span class="copy-link pointer" (click)="copyLink()">
+                      {{!copiedString ? 'Copy link' : 'Link copid!'}}
+                    </span>
+                  </a>
+                </span>
+              </li>
             </ul>
           </div>
         </div>
