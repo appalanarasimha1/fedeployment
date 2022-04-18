@@ -183,7 +183,7 @@
               </div>
               <div class="views" *ngIf="selectedFolder2.uid !== parentId">
                 <ul class="uploadAssetsClassifications pb-3" *ngIf="showLinkCopy">
-                  <li *ngIf="selectedFolder.properties['dc:description']" class="workspaceInfoHover">
+                  <li *ngIf="checkForDescription()" class="workspaceInfoHover">
                     <img src="../../../assets/images/info-icon-yellow.svg" />
                     <div class="workspaceInfo">
                       <div class="workspaceHeading">{{selectedFolder.title}}</div>
@@ -308,7 +308,7 @@
                   </li>
                 </ul>
                 <div style="text-align: center;">
-                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
+                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder?.contextParameters?.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
                 </div>
               </div>
             </div>

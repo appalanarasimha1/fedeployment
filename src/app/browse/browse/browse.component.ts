@@ -231,7 +231,6 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
-    console.log({ item });
     if (item.isTrashed) return;
     this.newTitle = item.title;
     this.searchBarValue = "";
@@ -249,9 +248,7 @@ export class BrowseComponent implements OnInit {
     // });
     this.loading = true;
     const docs = await this.fetchAssets(item.uid);
-    this.searchList = docs.entries.filter(
-      (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-    );
+    this.searchList = docs.entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
     this.sortedData = this.searchList.slice(); //shallow copy
     this.handleSelectMenu(0, "GRID");
     this.loading = false;
@@ -448,10 +445,9 @@ export class BrowseComponent implements OnInit {
       }
     }
     this.loading = true;
+    const url = `/search/pp/nxql_search/execute?currentPage=0&Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     this.apiService
-      .get(
-        `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`
-      )
+      .get(url)
       .subscribe((docs: any) => {
         // this.handleSelectMenu(0, 'GRID');
         let result = docs.entries.filter(
@@ -600,12 +596,9 @@ export class BrowseComponent implements OnInit {
   }
   extractBreadcrumb() {
     if (this.selectedFolder?.contextParameters) {
-      this.breadCrumb =
-        this.selectedFolder?.contextParameters?.breadcrumb.entries.filter(
-          (entry) => {
-            return entry.type !== "WorkspaceRoot";
-          }
-        );
+      this.breadCrumb = this.selectedFolder?.contextParameters?.breadcrumb.entries.filter((entry) => {
+        return entry.type !== "WorkspaceRoot";
+      });
     }
   }
 
@@ -623,20 +616,18 @@ export class BrowseComponent implements OnInit {
       // // this.selectedFolder = item;
       // // this.selectedFolder2 = item;
       // this.handleClick(item, index);
-      // setTimeout(() => {
-      //   if(breadCrumbIndex === 1 || !breadCrumbIndex) {
-      //     this.showSearchbar = true;
-      //   }
-      // }, 0);
       return;
     }
+    this.selectedFolder = await this.fetchFolder(item.uid);
     this.extractBreadcrumb();
-    this.handleClick(item, index);
-    // setTimeout(() => {
-    //   if(breadCrumbIndex === 1 || !breadCrumbIndex) {
-    //     this.showSearchbar = true;
-    //   }
-    // }, 0);
+    // this.handleViewClick(item, breadCrumbIndex);
+    if(index) {
+      this.handleClick(item, index);
+    } else {
+      if(breadCrumbIndex === 1) {
+        this.handleClick(item, this.currentLevel, breadCrumbIndex);
+      } else this.handleTest(item);
+    }
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.selectedFolder2 = this.selectedFolder;
   }
@@ -652,10 +643,9 @@ export class BrowseComponent implements OnInit {
     if (this.folderAssetsResult[id]) {
       return this.folderAssetsResult[id];
     }
+    const url = `/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`;
     const result = await this.apiService
-      .get(
-        `/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`
-      )
+      .get(url)
       .toPromise();
     const res = JSON.stringify(result);
     this.folderAssetsResult[id] = JSON.parse(res);
@@ -669,10 +659,9 @@ export class BrowseComponent implements OnInit {
       this.selectedFolder.contextParameters.folderAssetsCount
     ) {
       this.currentPageCount++;
+      const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`;
       const result: any = await this.apiService
-        .get(
-          `/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`
-        )
+        .get(url)
         .toPromise();
       this.searchList = this.searchList.concat(result.entries);
       this.sortedData = this.searchList.slice();
@@ -685,10 +674,9 @@ export class BrowseComponent implements OnInit {
     // this.selectedFile = [];
     this.selectedFolder = { ...selected, uid: selected.id };
     this.sharedService.toTop();
+    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     this.apiService
-      .get(
-        `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`
-      )
+      .get(url)
       .subscribe((docs: any) => {
         this.searchList = docs.entries.filter(
           (sector) =>
@@ -1001,10 +989,9 @@ export class BrowseComponent implements OnInit {
       this.selectedFolder = {};
     }
     this.loading = true;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace'`;
     this.apiService
-      .get(
-        `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace'`
-      )
+      .get(url)
       .subscribe((docs: any) => {
         this.trashedList = docs.entries.filter(
           (sector) =>
@@ -1169,5 +1156,9 @@ export class BrowseComponent implements OnInit {
       console.log({res});
       this.handleTest(res)
     })
+  }
+
+  checkForDescription(): boolean {
+    return !!this.selectedFolder?.properties?.['dc:description'];
   }
 }
