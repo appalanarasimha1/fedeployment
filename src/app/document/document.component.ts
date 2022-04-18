@@ -77,6 +77,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   fileSelected = [];
   sortValue = "";
   activeTabs = { comments: false, info: false, timeline: false };
+  tagsMetaRealdata= []
 
   slideConfig = {
     arrows: true,
@@ -283,8 +284,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   public async getRelatedTags() {
-    this.dataService.tagsMetaReal$.subscribe((data): void => {
-      this.tagsMetadata = data;
+    this.dataService.tagsMetaReal$.subscribe((data:any): void => {
+      this.tagsMetaRealdata = data;
     });
   }
 

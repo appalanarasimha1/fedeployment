@@ -163,7 +163,7 @@
 
   <section class="search-subpage ">
 
-    <div class="customTagBar">
+    <div class="customTagBar"  *ngIf="tagsMetaRealdata.length>0">
       <ul>
         <li>
           <div class="relatedTagHeading">Related Tags</div>
@@ -174,7 +174,7 @@
               <ngx-slick-carousel class="carousel" 
                 #slickModal="slick-carousel" 
                 [config]="tagsConfig" >
-                <div ngxSlickItem *ngFor="let bucket of tagsMetadata; let i = index" class="slide">
+                <div ngxSlickItem *ngFor="let bucket of tagsMetaRealdata; let i = index" class="slide">
                   <div class="item">
                     <a class="card" style="cursor: pointer;" >{{bucket.key}}</a>
                   </div>
