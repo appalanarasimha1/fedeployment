@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
@@ -46,6 +46,7 @@ export class UpdateModalComponent implements OnInit {
   readonly ACCESS_LABEL = ACCESS_LABEL;
   readonly ALLOW_LABEL = ALLOW_LABEL;
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
+  readonly ACCESS_TITLE = ACCESS_TITLE;
 
   docs: any;
   step: number = 1;
@@ -205,6 +206,8 @@ export class UpdateModalComponent implements OnInit {
 
   onSelectAccess(fileIndex?: any) {
     // this.customAccessMap[fileIndex] = access;
+    const allow = this.customAccessMap[fileIndex] === ACCESS.all ? ALLOW.any : ALLOW.internal;
+    this.onSelectAllow(allow, fileIndex);
     this.checkShowUserDropdown(fileIndex);
   }
 
@@ -224,11 +227,8 @@ export class UpdateModalComponent implements OnInit {
 
   checkShowUserDropdown(fileIndex?: any) {
     const access = this.customAccessMap[fileIndex];
-    const confidentiality =
-      this.customConfidentialityMap[fileIndex];
-    if (
-      (access === ACCESS.restricted && confidentiality)
-    ) {
+    const confidentiality = this.customConfidentialityMap[fileIndex];
+    if (access === ACCESS.restricted && confidentiality) {
       return true;
     } else {
       return false;
