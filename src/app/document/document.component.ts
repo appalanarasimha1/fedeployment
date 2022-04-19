@@ -303,6 +303,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.detailDocuments = null;
     this.searchTerm = { ecm_fulltext: "" };
     this.dataService.showRecentInit(false);
+    this.dataService.tagsMetaRealInit([]);
+
 
     // this.clearFilter();
     // this.resetView();

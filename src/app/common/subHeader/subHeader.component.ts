@@ -400,6 +400,8 @@ export class SubHeaderComponent implements OnInit {
     this.showRelatedSearch = false;
     this.getRecentSearch();
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+    this.dataService.tagsMetaRealInit([]);
+
   }
 
   focusOnSearch() {
