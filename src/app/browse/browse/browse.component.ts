@@ -45,7 +45,7 @@ export class BrowseComponent implements OnInit {
     public sharedService: SharedService,
     private route: ActivatedRoute,
     public nuxeo: NuxeoService
-  ) {}
+  ) { }
 
   faCoffee = faCoffee;
   parentId = ROOT_ID;
@@ -267,9 +267,8 @@ export class BrowseComponent implements OnInit {
       return `${window.location.origin}/nuxeo/${url.split("/nuxeo/")[1]}`;
     }
 
-    const updatedUrl = `${window.location.origin}/nuxeo/${
-      url.split("/nuxeo/")[1]
-    }`;
+    const updatedUrl = `${window.location.origin}/nuxeo/${url.split("/nuxeo/")[1]
+      }`;
     this.loading = true;
     fetch(updatedUrl, {
       headers: { "X-Authentication-Token": localStorage.getItem("token") },
@@ -400,7 +399,7 @@ export class BrowseComponent implements OnInit {
       this.breadcrrumb = `/${WORKSPACE_ROOT}/${title}`;
       const sectorId = this.sortedData.find(d => d.title === title);
       // this.navigateByUrl('');
-      
+
     } else if (type.toLowerCase() === ASSET_TYPE.WORKSPACE) {
       const bread = this.breadcrrumb.split("/");
       const definedPath = path.split("/");
@@ -428,10 +427,7 @@ export class BrowseComponent implements OnInit {
     } else {
       this.handleSelectMenu(1, "LIST");
     }
-    if (
-      item?.children?.length &&
-      !this.hasUpdatedChildren.includes(item?.uid)
-    ) {
+    if (item?.children?.length && !this.hasUpdatedChildren.includes(item?.uid)) {
       this.searchList = item.children;
       this.sortedData = item.children;
       if (item?.uid === ROOT_ID) this.showSearchbar = false;
@@ -449,20 +445,15 @@ export class BrowseComponent implements OnInit {
     this.apiService
       .get(url)
       .subscribe((docs: any) => {
-        // this.handleSelectMenu(0, 'GRID');
         let result = docs.entries.filter(
-          (sector) =>
-            UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
+          (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
         );
-        let workSpaceIndex = result.findIndex(
-          (res) => res.title === "Workspaces"
-        );
+        let workSpaceIndex = result.findIndex((res) => res.title === "Workspaces");
         if (workSpaceIndex >= 0) {
           this.loading = false;
           localStorage.setItem("workspaceId", result[workSpaceIndex].uid);
           localStorage.setItem("workspacePath", result[workSpaceIndex].path);
           return this.handleClick(result[workSpaceIndex], index, childIndex);
-          // this.fetchAssets(this.searchList[workSpaceIndex],index, childIndex);
         } else {
           this.searchList = result;
           this.sortedData = result;
@@ -475,7 +466,6 @@ export class BrowseComponent implements OnInit {
             setTimeout(() => {
               var storeHeight = $(".main-content").outerHeight();
               $(".leftPanel.insideScroll").css("height", storeHeight - 80);
-              // console.log('block height', $('.main-content').height());
             }, 300);
             this.folderStructure[index].children[childIndex].children =
               docs.entries.filter(
@@ -485,22 +475,11 @@ export class BrowseComponent implements OnInit {
             this.folderStructure[index].children[childIndex].isExpand = true;
 
             if (!this.callFolder && this.routeParams.folder) {
-              this.folderStructure[index].children[this.ind].children =
-                docs.entries.filter(
-                  (sector) =>
-                    UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) ===
-                    -1
-                );
-              let lastChild = this.folderStructure[index].children[
-                this.ind
-              ].children.find((item, i) => {
-                if (
-                  item.title.toLowerCase() ===
-                  this.routeParams.folder.toLowerCase()
-                ) {
+              this.folderStructure[index].children[this.ind].children = docs.entries.filter((sector) =>
+                UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
+              let lastChild = this.folderStructure[index].children[this.ind].children.find((item, i) => {
+                if (item.title.toLowerCase() === this.routeParams.folder.toLowerCase()) {
                   this.ind = i;
-                  // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
-                  console.log(this.callHandClick);
                   this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`;
                   return item;
                 }
@@ -518,15 +497,13 @@ export class BrowseComponent implements OnInit {
             setTimeout(() => {
               var storeHeight = $(".main-content").outerHeight();
               $(".leftPanel.insideScroll").css("height", storeHeight - 80);
-              // console.log('block height', $('.main-content').height());
             }, 1000);
             if (!this.sectorOpen) {
               this.folderStructure[index].children = docs.entries.filter(
                 (sector) =>
                   UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
               ); // index = parent index in folder structure
-              this.folderStructure[index].isExpand =
-                !this.folderStructure[index].isExpand;
+              this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand;
               this.callHandClick = this.folderStructure[index].children.find(
                 (item, i) => {
                   if (item.uid === this.routeParams.sector) {
@@ -548,15 +525,13 @@ export class BrowseComponent implements OnInit {
                 (item, i) => {
                   if (item.uid === this.routeParams.sector) {
                     this.ind = i;
-                    this.folderStructure[index].children[this.ind].isExpand =
-                      true;
+                    this.folderStructure[index].children[this.ind].isExpand = true;
                     return item;
                   }
                 }
               );
               if (this.callHandClick) {
                 this.selectedFolder = this.callHandClick;
-
                 this.handleClick(this.callHandClick, index, this.ind);
                 return;
               }
@@ -573,7 +548,6 @@ export class BrowseComponent implements OnInit {
                   this.routeParams.folder.toLowerCase()
                 ) {
                   this.ind = i;
-                  // this.folderStructure[index].children[this.ind].children[i].isExpand = true;
                   this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`;
                   return item;
                 }
@@ -621,10 +595,10 @@ export class BrowseComponent implements OnInit {
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.extractBreadcrumb();
     // this.handleViewClick(item, breadCrumbIndex);
-    if(index) {
+    if (index) {
       this.handleClick(item, index);
     } else {
-      if(breadCrumbIndex === 1) {
+      if (breadCrumbIndex === 1) {
         this.handleClick(item, this.currentLevel, breadCrumbIndex);
       } else this.handleTest(item);
     }
@@ -707,7 +681,7 @@ export class BrowseComponent implements OnInit {
       });
   }
 
-  handleSelectMenu(index, type) { 
+  handleSelectMenu(index, type) {
     this.selectedMenu = index;
     this.viewType = type;
   }
@@ -1152,8 +1126,8 @@ export class BrowseComponent implements OnInit {
       properties: {
         "dc:title": newTitle,
       },
-    }).subscribe((res:any) =>{
-      console.log({res});
+    }).subscribe((res: any) => {
+      console.log({ res });
       this.handleTest(res)
     })
   }
