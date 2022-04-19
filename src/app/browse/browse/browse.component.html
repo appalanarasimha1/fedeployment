@@ -252,7 +252,7 @@
                 </div>
                 <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId || isTrashView">
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of sortedData | search: searchBarValue; let i = index">
-                    <span class="folderCircle" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
+                    <span class="folder-structure pointerCursor" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
 
                     <div class="groupFolder" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''">

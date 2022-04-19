@@ -855,6 +855,9 @@ export class BrowseComponent implements OnInit {
         return "../../../assets/images/list-viewVideo.svg";
       case "file":
         return "../../../assets/images/Doc.svg";
+      default:
+        return "../../../assets/images/folderBlack.png";
+
     }
   }
 
