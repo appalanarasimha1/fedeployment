@@ -1176,6 +1176,15 @@ export class BrowseComponent implements OnInit {
       }
     }).subscribe((res:any) =>{
       console.log({res});
+      this.sharedService.showSnackbar(
+        "Folder Name is updated",
+        6000,
+        "top",
+        "center",
+        "snackBarMiddle",
+        // "Updated folder",
+        // this.getTrashedWS.bind(this)
+      );
       this.handleTest(res)
     })
   }

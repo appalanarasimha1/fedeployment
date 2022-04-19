@@ -151,23 +151,25 @@
                   aria-label="Button that displays a tooltip when focused or hovered over">
                   {{sharedService.stringShortener(selectedFolder?.title, 30)}}
                 </button> -->
-                <span style="overflow: auto;">
+                <span style="overflow: auto;" >
                   <span class="main-title tollTipCustom" *ngIf="!renameFolderName">{{sharedService.stringShortener(selectedFolder?.title, 28)}}
-                    <img src="../../../assets/images/pencil-write.svg" alt="" class="renameFolderImg" (click)="renameFolderAction()" />
+                    <img src="../../../assets/images/pencil-write.svg" alt="" *ngIf="showLinkCopy" class="renameFolderImg" (click)="renameFolderAction()" />
                     <div class="tolltipContent">
                       {{selectedFolder?.title}}
                     </div>
                   </span>
-                  <div>
+                  <!-- <div>
                      <input type="text" [(ngModel)]="newTitle" name="newTitle"> 
                      <button (click)="renameFolder()">update</button>
-                  </div>
+                  </div> -->
                  
 
-                  <span *ngIf="renameFolderName" style="display: inline-block;">
+                  <span *ngIf="renameFolderName && showLinkCopy" style="display: inline-block;">
                     <label class="input-sizer">
                       <input type="text" maxlength="60"
                       value="{{sharedService.stringShortener(selectedFolder?.title, 28)}}"
+                      [(ngModel)]="newTitle"
+                      (keyup.enter)="renameFolder()"
                       onInput="this.parentNode.dataset.value = this.value" placeholder="">
                     </label>
                     <img src="../../../assets/images/remove-circle.svg" alt="" class="renameFolderRemoveImg" (click)="updateFolderAction()" />
