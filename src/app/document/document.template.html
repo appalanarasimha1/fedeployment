@@ -37,7 +37,7 @@
         <p class="searchcontent">Please select another sector.</p>
       </div>
       <div *ngIf="assetsBySector.length" class="tab-content">
-        <div class="tab-pane active" id="favourite">
+        <div class="tab-pane active animate__animated animate__fadeIn animate__delay-2s" id="favourite">
           <div (click)="showAll('sectorPage')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -68,7 +68,7 @@
 
       <div class="tab-content">
         
-        <div class="tab-pane active" id="recentlyViewed">
+        <div class="tab-pane active animate__animated animate__fadeIn animate__delay-2s" id="recentlyViewed">
           <div (click)="showAll('recentView')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -99,7 +99,7 @@
           </div>
         </div>
         
-        <div class="tab-pane" id="recentlyUploaded">
+        <div class="tab-pane animate__animated animate__fadeIn animate__delay-2s" id="recentlyUploaded">
           <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -138,7 +138,7 @@
         <p class="searchcontent">Your favourite assets will show up here.</p>
       </div>
       <div *ngIf="favourites.length" class="tab-content">
-        <div class="tab-pane active" id="favourite">
+        <div class="tab-pane active animate__animated animate__fadeIn animate__delay-2s" id="favourite">
           <div (click)="showAll('favourite')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -161,7 +161,7 @@
     </div>
   </div>
 
-  <section class="search-subpage ">
+  <section class="search-subpage"  [ngClass]="{'animate__animated animate__fadeIn animate__delay-2s' : !checkShowRecent() || checkShowDetailview()}">
 
     <div *ngIf="!checkShowRecent() || checkShowDetailview()" class="container">
       <div class="row" style="justify-content: space-between">
