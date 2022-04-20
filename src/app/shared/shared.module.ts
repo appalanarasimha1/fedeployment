@@ -24,6 +24,7 @@ import { SearchPipe } from '../common/pipe/search.pipe';
 import {MatSortModule} from '@angular/material/sort';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../common/snackbar/snackbar.component';
+import { AssetViewComponent } from '../asset-view/asset-view.component';
 
 @NgModule({
   providers: [
@@ -36,7 +37,9 @@ import { SnackbarComponent } from '../common/snackbar/snackbar.component';
     SecurePipe,
     ReversePipe,
     SearchPipe,
-    SnackbarComponent
+    SnackbarComponent,
+    
+    AssetViewComponent,
   ],
   imports: [
     CommonModule,
@@ -69,7 +72,9 @@ import { SnackbarComponent } from '../common/snackbar/snackbar.component';
     // OwlModule
     MatSortModule,
     MatSnackBarModule,
-    SnackbarComponent
+    SnackbarComponent,
+    
+    AssetViewComponent,
   ]
 })
 export class SharedModule { }

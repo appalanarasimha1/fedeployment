@@ -31,6 +31,7 @@ import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.componen
 import { initializer } from './AppInit';
 import { RoleGuardService } from './services/roleGaurd';
 import { AuthGuardService } from './services/authGaurd';
+// import { AssetViewComponent } from './asset-view/asset-view.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { AuthGuardService } from './services/authGaurd';
     LandingPageComponent,
     FooterComponent,
     LoaderYellowComponent,
+    // AssetViewComponent,
   ],
   imports: [
     // CommonModule,

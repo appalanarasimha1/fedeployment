@@ -18,6 +18,7 @@ import { SharedService } from "../services/shared.service";
 export class PreviewPopupComponent implements OnInit, OnChanges {
   @Input() doc: any;
   @Input() docUrl: string;
+  @Input() openInModal: boolean = true;
 
   @ViewChild('preview', {static: false}) modalTemp: TemplateRef<void>;
 
@@ -186,14 +187,16 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getNames(users: any) {
+    if(!users?.["dc:contributors"]) return '';
     let result = "";
-    users.map((user) => {
+    users["dc:contributors"].map((user) => {
       result += user + ", ";
     });
     return result;
   }
 
   toDateString(date: string): string {
+    if(!date?.['dc:created']) return '';
     return `${new Date(date).toDateString()}`;
   }
 

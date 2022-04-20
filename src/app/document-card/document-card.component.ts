@@ -19,6 +19,7 @@ export class DocumentCardComponent implements OnChanges {
   modalLoading = false;
   isAware = false;
   showLock = false;
+  copiedString = '';
 
   constructor(
     private router: Router
@@ -151,6 +152,26 @@ export class DocumentCardComponent implements OnChanges {
     if(!this?.doc?.properties['sa:confidentiality']) return false;
     if(this.doc.properties['sa:confidentiality'].toLowerCase() === CONFIDENTIALITY.confidential.toLowerCase()) return true;
     else return false;
+  }
+
+  copyLinkOfAsset() {
+    const pathArray = this.doc.path.split('/workspaces');
+    const sector = pathArray[0]
+    const assetName = pathArray[1].split('/').pop();
+    const folderStructure = pathArray[1].split(assetName)[0].replaceAll('/', '+');
+    
+    const selBox = document.createElement("textarea");
+    selBox.style.position = "fixed";
+    selBox.style.left = "0";
+    selBox.style.top = "0";
+    selBox.style.opacity = "0";
+    selBox.value = `${window.location.origin}/asset-view${sector}/${folderStructure}/${assetName}`;
+    this.copiedString = selBox.value;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand("copy");
+    document.body.removeChild(selBox);
   }
 
 }
