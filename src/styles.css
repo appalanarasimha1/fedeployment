@@ -4240,3 +4240,6 @@ body {
 		padding-top: 69px !important;
 	}
 }
+.pointerCursor {
+  cursor: pointer;
+}

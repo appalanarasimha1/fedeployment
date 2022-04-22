@@ -195,7 +195,7 @@
               </div>
               <div class="views" *ngIf="selectedFolder2.uid !== parentId">
                 <ul class="uploadAssetsClassifications pb-3" *ngIf="showLinkCopy">
-                  <li *ngIf="selectedFolder.properties['dc:description']" class="workspaceInfoHover">
+                  <li *ngIf="checkForDescription()" class="workspaceInfoHover">
                     <img src="../../../assets/images/info-icon-yellow.svg" />
                     <div class="workspaceInfo">
                       <div class="workspaceHeading">{{selectedFolder.title}}</div>
@@ -276,7 +276,7 @@
                           </label>
                         </div>
                       </div>
-                      <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" style="cursor: pointer;"
+                      <div *ngIf="!checkAssetType(item.type) && checkWSType(item.type)" class="folder-structure" [ngClass]="{'pointerCursor': !isTrashView}"
                         (click)="handleTest(item);">
                         <!-- <img src="../../../assets/images/yellow-folder.png"> -->
                         <div class="folder-content">
@@ -320,7 +320,7 @@
                   </li>
                 </ul>
                 <div style="text-align: center;">
-                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
+                  <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder?.contextParameters?.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
                 </div>
               </div>
             </div>
@@ -347,11 +347,11 @@
                           </label>
                         </div>
                       </div>
-                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" class="" style="display: flex;cursor: pointer;">
+                      <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
-                      <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" class="" style="display: flex;cursor: pointer;">
+                      <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>

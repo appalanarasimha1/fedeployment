@@ -258,7 +258,7 @@
             </div>
             <div class="upload-form-input row mb-30">
                <div class="col-xl-4 col-md-4">
-                  <label for="access">Show to</label>
+                  <label for="access">{{ACCESS_TITLE}}</label>
                </div>
                <div class="col-xl-8 col-md-8 flexible">
                   <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="access" id="access" [ngClass]="{'goldenText': access}">
@@ -302,7 +302,8 @@
                   </ng-select>
                </div>
             </div>
-            <div class="upload-form-input row mb-30">
+
+            <!-- <div class="upload-form-input row mb-30">
                <div class="col-xl-4 col-md-4">
                   <label for="allow">Allow use</label>
                </div>
@@ -318,13 +319,10 @@
                   </div>
                </div>
             </div>
+
             <div *ngIf="checkOwnerDropdown()" class="upload-form-input row mb-30">
                <div class="col-xl-4 col-md-4">
-                  <!-- <label for="user">Users</label> -->
                </div>
-               <!-- <div class="col-xl-3 col-md-3">
-                  <label for="date">Please specific <br><span style="font-size: 14px">the owner</span></label>
-               </div> -->
                <div class="col-xl-8 col-md-8">
                   <p class="userText pb-2">{{OWNER_APPROVAL_LABEL}}</p>
                   <ng-select style="height: unset !important;"
@@ -345,7 +343,22 @@
                   </ng-template>
                   </ng-select>
                </div>
+            </div> -->
+
+            <div class="col-xl-9 flexible">
+               <label class="control control--checkbox" style="margin-bottom: 0px;">
+                  Approval required before download/use
+                  <input 
+                     type="checkbox" 
+                     checked="checked"
+                     (change)="onCheckDownloadApproval()"
+                     [(ngModel)]="downloadApproval"
+                     [ngModelOptions]="{standalone: true}"
+                  />
+                  <div class="control__indicator"></div>
+               </label>
             </div>
+
          </div>
 
          <div class="button-groups" style="padding-top: 15px;">
@@ -435,7 +448,7 @@
                      </div>
                      <div class="upload-form-input row mb-20">
                         <div class="col-xl-4">
-                           <label for="access">Show to</label>
+                           <label for="access">{{ACCESS_TITLE}}</label>
                         </div>
                         <div class="col-xl-8">
                            <ng-select placeholder="Specify visibility" name="access" (change)="onSelectAccess($event, file.key)" [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
@@ -468,14 +481,12 @@
                            </ng-select>
                         </div>
                      </div>
-                     <div class="upload-form-input row mb-20">
+
+                     <!-- <div class="upload-form-input row mb-20">
                         <div class="col-xl-4">
                            <label for="allow">Allow use</label>
                         </div>
                         <div class="col-xl-8">
-                           <!-- <select name="allow" (change)="onSelectAllow($event.target.value, file.key)" id="allow" [ngClass]="{'goldenText': allow }" >
-                              <option [selected]="allow === c.value" *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-                              </select> -->
                            <ng-select placeholder="Specify permissible usage" name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [(ngModel)]="customAllowMap[file.key]" [ngClass]="{'goldenText': customAllowMap[file.key] }" >
                               <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value)">{{ ALLOW_LABEL[c.value] }}
                               </ng-option>
@@ -487,7 +498,6 @@
                            <label for="user">Owner</label>
                         </div>
                         <div class="col-xl-8">
-                           <!-- <p class="userText pb-2">Please specific the owner</p> -->
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"
@@ -506,7 +516,21 @@
                            </ng-template>
                            </ng-select>
                         </div>
+                     </div> -->
+
+                     <div class="col-xl-9 flexible">
+                        <label class="control control--checkbox" style="margin-bottom: 0px;">
+                           Approval required before download/use
+                           <input 
+                              type="checkbox" 
+                              checked="checked"
+                              [(ngModel)]="customDownloadApprovalMap[file.key]"
+                              [ngModelOptions]="{standalone: true}"
+                           />
+                           <div class="control__indicator"></div>
+                        </label>
                      </div>
+                     
                   </div>
                </div>
             </div>

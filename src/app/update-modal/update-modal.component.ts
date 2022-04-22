@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
@@ -46,6 +46,7 @@ export class UpdateModalComponent implements OnInit {
   readonly ACCESS_LABEL = ACCESS_LABEL;
   readonly ALLOW_LABEL = ALLOW_LABEL;
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
+  readonly ACCESS_TITLE = ACCESS_TITLE;
 
   docs: any;
   step: number = 1;
@@ -55,6 +56,7 @@ export class UpdateModalComponent implements OnInit {
   customConfidentialityMap: any = {};
   customUsersMap: any = {};
   customAllowMap: any = {};
+  customDownloadApprovalMap: {[key: string]: string} = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
   userLoading: boolean = false;
@@ -111,6 +113,7 @@ export class UpdateModalComponent implements OnInit {
 
   computeAclValue(doc, index) {
     this.customAllowMap[index] = doc.properties['sa:allow'];
+    this.customDownloadApprovalMap[index] = doc.properties['sa:downloadApproval'];
     this.copyrightUserMap[index] = doc.properties['sa:copyrightName'];
     this.copyrightYearMap[index] = doc.properties['sa:copyrightYear'];
     if (doc.properties['sa:confidentiality']) {
@@ -205,6 +208,8 @@ export class UpdateModalComponent implements OnInit {
 
   onSelectAccess(fileIndex?: any) {
     // this.customAccessMap[fileIndex] = access;
+    const allow = this.customAccessMap[fileIndex] === ACCESS.all ? ALLOW.any : ALLOW.internal;
+    this.onSelectAllow(allow, fileIndex);
     this.checkShowUserDropdown(fileIndex);
   }
 
@@ -224,11 +229,8 @@ export class UpdateModalComponent implements OnInit {
 
   checkShowUserDropdown(fileIndex?: any) {
     const access = this.customAccessMap[fileIndex];
-    const confidentiality =
-      this.customConfidentialityMap[fileIndex];
-    if (
-      (access === ACCESS.restricted && confidentiality)
-    ) {
+    const confidentiality = this.customConfidentialityMap[fileIndex];
+    if (access === ACCESS.restricted && confidentiality) {
       return true;
     } else {
       return false;
@@ -332,7 +334,8 @@ export class UpdateModalComponent implements OnInit {
         allow: this.customAllowMap[index],
         users: this.customUsersMap[index],
         copyrightName: this.copyrightUserMap[index],
-        copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index]
+        copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index],
+        downloadApproval: this.customDownloadApprovalMap[index]
       })
       .schemas(['scryAccess'])
       .enrichers({document: ["acls"]})
