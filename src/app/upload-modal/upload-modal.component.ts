@@ -98,6 +98,7 @@ export class UploadModalComponent implements OnInit {
   customConfidentialityMap: any = {};
   copyrightMap: any = {};
   customUsersMap: any = {};
+  customDownloadApprovalMap: any = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
   selectedUsers: string[] = [];
@@ -128,6 +129,7 @@ export class UploadModalComponent implements OnInit {
     centerMode: false
   };
   uploadedAsset;
+  downloadApproval: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -527,6 +529,12 @@ export class UploadModalComponent implements OnInit {
     }
   }
 
+  onCheckDownloadApproval() {
+    for(let i = 0; i < this.getAssetNumber(); i++) {
+      this.customDownloadApprovalMap[i] = this.downloadApproval;
+    }
+  }
+
   openCopyright(fileIndex) {
     this.openCopyrightMap[fileIndex] = true;
   }
@@ -631,6 +639,7 @@ export class UploadModalComponent implements OnInit {
         "sa:allow": this.customAllowMap[index] || this.allow,
         "sa:copyrightName": this.openCopyrightMap[index] ? this.copyrightUserMap[index] : null,
         "sa:copyrightYear": this.openCopyrightMap[index] ? this.copyrightYearMap[index]?.name : null,
+        "sa:downloadApproval": this.downloadApproval
       },
       facets: [
         "Versionable",
