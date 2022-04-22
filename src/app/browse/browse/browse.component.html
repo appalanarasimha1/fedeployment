@@ -175,12 +175,7 @@
                     <img src="../../../assets/images/remove-circle.svg" alt="" class="renameFolderRemoveImg" (click)="updateFolderAction()" />
                   </span>
 
-                  <span *ngIf="showLinkCopy" class="copy-section" >
-                    <a class="flexible">
-                      <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
-                      <span class="copy-link pointer" (click)="copyToClipboard(sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb))">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
-                    </a>
-                  </span>
+                  
 
                 </span>
                 <h6 class="tollTipCustom">
@@ -191,6 +186,12 @@
                   <div class="tolltipContent" style="top: auto; bottom: -30px;">
                     {{sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb)}}
                   </div>
+                  <span *ngIf="showLinkCopy" class="copy-section" >
+                    <a class="flexible">
+                      <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
+                      <span class="copy-link pointer" (click)="copyToClipboard(sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb))" style="color: #937206; font-size: 15px;">{{!copiedString ? 'Copy Link' : 'Copied!'}}</span>
+                    </a>
+                  </span>
                 </h6>
               </div>
               <div class="views" *ngIf="selectedFolder2.uid !== parentId">

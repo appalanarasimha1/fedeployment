@@ -668,14 +668,13 @@ font-weight: 600;
   border-radius: 8px;
   border: 1px solid #F6F5F2;
   width: 100%;
-background-color: #F6F5F2;
-font-weight: bold;
-font-size: 16px;
-line-height: 25px;
-color: #fff;
+  background-color: #F6F5F2;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 25px;
+  color: #000;
 }
 .search-bar::placeholder{
-  color: #fff !important;
   font-weight: 100;
 }
 .search-btn{
@@ -1464,4 +1463,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
 }
 ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorkspace {
   right: 0;
+}
+.positionRelative input.search-bar::placeholder{
+  color: #413E3C !important;
 }
