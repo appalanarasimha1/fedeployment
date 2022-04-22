@@ -9,9 +9,9 @@ export const environment = {
   // apiServiceBaseUrl: 'https://10.101.21.31:8090', //
   apiVersion: "/nuxeo/api/v1",
   apiServiceBaseUrl:
-   "http://localhost:8090",
+  //  "http://localhost:8080",
   // "https://dev2groundx.neom.com",
-  // "https://uatgroundx.neom.com",
+  "https://uatgroundx.neom.com",
   // mainNuxeoUrl: "http://localhost:8090",
   // "https://groundxuatbackend.neom.com",
   // nuxeoServerUrl: "https://uatgroundx.neom.com",

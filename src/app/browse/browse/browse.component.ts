@@ -1176,6 +1176,7 @@ export class BrowseComponent implements OnInit {
       }
     }).subscribe((res:any) =>{
       console.log({res});
+      this.updateFolderAction()
       this.sharedService.showSnackbar(
         "Folder Name is updated",
         6000,
