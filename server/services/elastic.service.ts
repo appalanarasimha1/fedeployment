@@ -22,7 +22,7 @@ export class ElasticSearchService {
   }
 
   public async findMostSearchedTerm() {
-    const { body } = await this.client.index({
+    const { body } = await this.client.search({
       index: this.indexValue,
       body: {
         aggs: {
