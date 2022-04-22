@@ -129,7 +129,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     slidesToShow: 5,
     // "slidesToScroll": 1,
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 300,
     centerMode: false,
     variableWidth: true,

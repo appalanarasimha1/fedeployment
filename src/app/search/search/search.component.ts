@@ -100,11 +100,12 @@ export class SearchComponent implements OnInit {
 
   fetchMostSearchedTags() {
     this.apiService.get('/searchTerm/fetch').subscribe((response: any) => {
-      const buckets = response?.data?.properties.buckets.filter(item => {
+      const buckets = response?.data?.properties?.buckets.filter(item => {
         if(item.key.trim())
          return item;
       });
-      response.data.properties.buckets = buckets;
+      if(response?.data?.properties?.buckets)
+        response.data.properties.buckets = buckets;
       this.tagsMetadata = response?.data?.properties || [];
     });
   }
