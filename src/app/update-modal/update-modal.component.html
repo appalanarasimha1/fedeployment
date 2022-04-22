@@ -152,6 +152,21 @@
                  </ng-select>
                 </div>
               </div>
+
+              <div class="col-xl-9 flexible">
+                <label class="control control--checkbox" style="margin-bottom: 0px;">
+                   Approval required before download/use
+                   <input 
+                      type="checkbox" 
+                      checked="checked"
+                      [(ngModel)]="customDownloadApprovalMap[i]"
+                      [ngModelOptions]="{standalone: true}"
+                   />
+                   <div class="control__indicator"></div>
+                </label>
+             </div>
+
+
             </div>
           </div>
         </div>

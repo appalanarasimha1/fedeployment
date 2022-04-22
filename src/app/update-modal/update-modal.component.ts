@@ -56,6 +56,7 @@ export class UpdateModalComponent implements OnInit {
   customConfidentialityMap: any = {};
   customUsersMap: any = {};
   customAllowMap: any = {};
+  customDownloadApprovalMap: {[key: string]: string} = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
   userLoading: boolean = false;
@@ -112,6 +113,7 @@ export class UpdateModalComponent implements OnInit {
 
   computeAclValue(doc, index) {
     this.customAllowMap[index] = doc.properties['sa:allow'];
+    this.customDownloadApprovalMap[index] = doc.properties['sa:downloadApproval'];
     this.copyrightUserMap[index] = doc.properties['sa:copyrightName'];
     this.copyrightYearMap[index] = doc.properties['sa:copyrightYear'];
     if (doc.properties['sa:confidentiality']) {
@@ -332,7 +334,8 @@ export class UpdateModalComponent implements OnInit {
         allow: this.customAllowMap[index],
         users: this.customUsersMap[index],
         copyrightName: this.copyrightUserMap[index],
-        copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index]
+        copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index],
+        downloadApproval: this.customDownloadApprovalMap[index]
       })
       .schemas(['scryAccess'])
       .enrichers({document: ["acls"]})

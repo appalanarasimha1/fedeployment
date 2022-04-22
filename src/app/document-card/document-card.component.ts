@@ -128,15 +128,16 @@ export class DocumentCardComponent implements OnChanges {
   }
 
   hasNoRestriction() {
-    return !this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any;
+    return !this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any && !this.doc.properties["sa:downloadApproval"];
   }
 
   hasInternalRestriction() {
-    return this.doc.properties["sa:allow"] === ALLOW.internal;
+    return this.doc.properties["sa:allow"] === ALLOW.internal || this.doc.properties["sa:allow"] === ALLOW.request && !this.doc.properties["sa:downloadApproval"];
   }
 
   hasRequestRestriction() {
-    return this.doc.properties["sa:allow"] === ALLOW.request;
+    // return this.doc.properties["sa:allow"] === ALLOW.request;
+    return !!this.doc.properties["sa:downloadApproval"];
   }
 
   showDownloadDropdown() {
