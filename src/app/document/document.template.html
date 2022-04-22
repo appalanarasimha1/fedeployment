@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-</div> -->
+  </div> -->
 
 
 
@@ -36,8 +36,8 @@
         <h2 class="noresult pb-3 pt-4">No assets by sector found</h2>
         <p class="searchcontent">Please select another sector.</p>
       </div>
-      <div *ngIf="assetsBySector.length" class="tab-content">
-        <div class="tab-pane active animate__animated animate__fadeIn animate__delay-2s" id="favourite">
+      <div *ngIf="assetsBySector.length" class="tab-content" [ngClass]="{'animate__animated animate__fadeIn animate__delay-1s' : assetsBySector.length}">
+        <div class="tab-pane active" id="favourite">
           <div (click)="showAll('sectorPage')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -68,7 +68,7 @@
 
       <div class="tab-content">
         
-        <div class="tab-pane active animate__animated animate__fadeIn animate__delay-2s" id="recentlyViewed">
+        <div class="tab-pane active animate__animated animate__fadeIn animate__delay-3s" id="recentlyViewed">
           <div (click)="showAll('recentView')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -99,7 +99,7 @@
           </div>
         </div>
         
-        <div class="tab-pane animate__animated animate__fadeIn animate__delay-2s" id="recentlyUploaded">
+        <div class="tab-pane" id="recentlyUploaded">
           <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -117,7 +117,7 @@
               </document-card>
             </div>
           </ngx-slick-carousel>
-          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
+          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12" [ngClass]="{'animate__animated animate__fadeIn' : !recentDataShow?.length}">
             <div class="text-center" style="height: 150px;">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
               <h2 class="noresult pb-3">You have not uploaded any assets</h2>
@@ -132,13 +132,13 @@
       <ul class="nav nav-tabs">
         <li><a class="commonHeading recentFont" style=""  href="#favourite" data-toggle="tab">Your Favourites</a></li>
       </ul>
-      <div *ngIf="!favourites.length"  style="height: 150px;">
+      <div *ngIf="!favourites.length"  style="height: 150px;" [ngClass]="{'animate__animated animate__fadeIn' : !favourites.length}">
         <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
         <h2 class="noresult pb-3 pt-4">You have not marked any asset as favourite</h2>
         <p class="searchcontent">Your favourite assets will show up here.</p>
       </div>
-      <div *ngIf="favourites.length" class="tab-content">
-        <div class="tab-pane active animate__animated animate__fadeIn animate__delay-2s" id="favourite">
+      <div *ngIf="favourites.length" class="tab-content" [ngClass]="{'animate__animated animate__fadeIn' : favourites.length}">
+        <div class="tab-pane active" id="favourite">
           <div (click)="showAll('favourite')" class="show-all">Show all</div>
           <ngx-slick-carousel
             class="carousel"
@@ -161,9 +161,9 @@
     </div>
   </div>
 
-  <section class="search-subpage"  [ngClass]="{'animate__animated animate__fadeIn animate__delay-2s' : !checkShowRecent() || checkShowDetailview()}">
+  <section class="search-subpage">
 
-    <div *ngIf="!checkShowRecent() || checkShowDetailview()" class="container">
+    <div *ngIf="!checkShowRecent() || checkShowDetailview()" class="container" [ngClass]="{'animate__animated animate__fadeIn' : !checkShowRecent() || checkShowDetailview()}">
       <div class="row" style="justify-content: space-between">
         <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5">
           <span (click)="resetResult();"><img src="../../assets/images/back-arrow.svg" /> Back</span>
@@ -339,7 +339,7 @@
         <div *ngIf="!hideShowMoreBtn && !loading.length && !innerLoading.length" (click)="showMore()" class="showMoreBtn">Show more</div>
       </div>
     </div>
-    <div *ngIf="!loading.length && !documents?.entries?.length && !checkShowRecent()" class="row">
+    <div *ngIf="!loading.length && !documents?.entries?.length && !checkShowRecent()" class="row" [ngClass]="{'animate__animated animate__fadeIn' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
       <div class="col-xl-12 col-md-12 ">
         <div class="text-center" style="height: 600px;">
           <img src="../../assets/images/search.svg" style="width: 50px;">
@@ -352,7 +352,7 @@
 
   <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
 
-  <div *ngIf="fileSelected.length" class="footer-listing">
+  <div *ngIf="fileSelected.length" class="footer-listing" [ngClass]="{'fileSelected.length' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
     <div class="row">
       <div class="col-md-6 footer-add-items">
         <span>{{fileSelected.length}} item(s) selected</span>
