@@ -672,10 +672,10 @@ background-color: #F6F5F2;
 font-weight: bold;
 font-size: 16px;
 line-height: 25px;
-color: #413E3C;
+color: #fff;
 }
 .search-bar::placeholder{
-  color: #413E3C !important;
+  color: #fff !important;
   font-weight: 100;
 }
 .search-btn{

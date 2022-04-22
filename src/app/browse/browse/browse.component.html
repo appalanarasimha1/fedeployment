@@ -16,7 +16,7 @@
     <div class="container ">
 
       <div class="row ">
-        <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5" style="background-color: #F8F8F5;">
+        <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
           <!-- Add custom toggle start -->
 
           <!-- Add custom toggle end -->
@@ -143,7 +143,7 @@
           </div>
 
 
-          <div *ngIf="selectedFolder">
+          <div *ngIf="selectedFolder" [ngClass]="{'animate__animated animate__fadeIn': showSearchbar}">
             <div class="header-content" *ngIf="!isTrashView">
               <div *ngIf="selectedFolder2.uid !== parentId"  style="width: 100%;">
                 <!-- <button mat-raised-button
@@ -258,11 +258,11 @@
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                <div class="mb-5 text-center" *ngIf="selectedFolder2.uid === parentId && !isTrashView">
+                <div class="mb-5 text-center animate__animated animate__fadeIn" *ngIf="selectedFolder2.uid === parentId && !isTrashView">
                   <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
-                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId || isTrashView">
+                <ul class="all-sectors" *ngIf="selectedFolder2.uid !== parentId || isTrashView" [ngClass]="{'animate__animated animate__fadeIn' : selectedFolder2.uid !== parentId || isTrashView}">
                   <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of sortedData | search: searchBarValue; let i = index">
                     <span class="folder-structure pointerCursor" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
                       *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
