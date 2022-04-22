@@ -18,6 +18,7 @@ import { SharedService } from "../services/shared.service";
 export class PreviewPopupComponent implements OnInit, OnChanges {
   @Input() doc: any;
   @Input() docUrl: string;
+  @Input() openInModal: boolean = true;
 
   @ViewChild('preview', {static: false}) modalTemp: TemplateRef<void>;
 
@@ -33,6 +34,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   isAware = false;
   currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
+  copiedString;
 
   constructor(
     private router: Router,
@@ -186,14 +188,16 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getNames(users: any) {
+    if(!users?.["dc:contributors"]) return '';
     let result = "";
-    users.map((user) => {
+    users["dc:contributors"].map((user) => {
       result += user + ", ";
     });
     return result;
   }
 
   toDateString(date: string): string {
+    if(!date?.['dc:created']) return '';
     return `${new Date(date).toDateString()}`;
   }
 
@@ -409,6 +413,29 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   showLessTags() {
     this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
+  }
+
+  copyLink() {
+    // copyLinkOfAsset() {
+      this.copiedString = !this.copiedString;
+      const pathArray = this.doc.path.split('/workspaces');
+      const sector = pathArray[0]
+      const assetName = pathArray[1].split('/').pop();
+      const folderStructure = pathArray[1].split(assetName)[0].replaceAll('/', '+');
+      
+      const selBox = document.createElement("textarea");
+      selBox.style.position = "fixed";
+      selBox.style.left = "0";
+      selBox.style.top = "0";
+      selBox.style.opacity = "0";
+      selBox.value = `${window.location.origin}/asset-view${sector}/${folderStructure}/${assetName}`;
+      this.copiedString = selBox.value;
+      document.body.appendChild(selBox);
+      selBox.focus();
+      selBox.select();
+      document.execCommand("copy");
+      document.body.removeChild(selBox);
+    // }
   }
 
 }

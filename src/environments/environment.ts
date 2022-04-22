@@ -4,19 +4,10 @@
 
 export const environment = {
   production: false,
-  // nuxeoServiceBaseUrl: 'https://10.101.21.31:8090', //
-  // redirectBaseUrl: 'https://10.101.21.31:8090/', // for redirecting to old nuxeo ui for video playback
-  // apiServiceBaseUrl: 'https://10.101.21.31:8090', //
   apiVersion: "/nuxeo/api/v1",
-  apiServiceBaseUrl:
-  //  "http://localhost:8080",
-  // "https://dev2groundx.neom.com",
-  "https://uatgroundx.neom.com",
-  // mainNuxeoUrl: "http://localhost:8090",
-  // "https://groundxuatbackend.neom.com",
-  // nuxeoServerUrl: "https://uatgroundx.neom.com",
-  nuxeoServerUrl: "http://localhost:8090",
-  // apiServiceBaseUrl: "http://localhost:8090",
+  apiServiceBaseUrl: "http://localhost:8090",
+    // "https://uatgroundx.neom.com",
+  nuxeoServerUrl: 'http://localhost:8090',
   keycloakConfig: {
     url: "https://groundx.the-it-cloud.net/auth/",
     realm: "GroundX",

@@ -31,7 +31,6 @@ export class AppComponent implements OnInit{
           console.log('app = ', event);
           // TODO: will break if we have another url that contains /user.
           if (event.url.includes('/login')) {
-            console.log(event);
             this.showHeader = false;
             this.showAddButton = false;
             setTimeout(()=>{

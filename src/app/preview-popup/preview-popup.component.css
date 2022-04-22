@@ -1802,6 +1802,10 @@ font-weight: 600;
 .close{
   opacity: 1;
 }
+.copy-link{
+  color: #937206;
+  font-weight: 600;
+}
 @media (max-width:768px) {
   .modalHead ul li, .iconsList li {
     margin-left: 10px;
