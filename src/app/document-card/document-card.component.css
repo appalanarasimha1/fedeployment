@@ -1620,3 +1620,41 @@ document-card img {
 document-card .lock-icon img {
   margin-top: 0px !important;
 }
+
+.tollTipWorkspace {
+  position: relative;
+}
+.customToolTipWorkspace {
+  display: none;
+  position: absolute;
+  top: 28px;
+  left: 0px;
+  z-index: 9;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: #413E3C;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  white-space: nowrap;
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  width: max-content;
+}
+.tollTipWorkspace:hover .customToolTipWorkspace {
+  display: block;
+}
+.lock-icon .customToolTipWorkspace {
+  top: -42px;
+  left: auto;
+  right: 0px;
+}
+.star-icon.tollTipWorkspace .customToolTipWorkspace {
+  top: 35px;
+  left: auto;
+  right: 0px;
+}
