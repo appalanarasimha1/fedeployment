@@ -406,29 +406,32 @@
                      </span>
                      <div class="copyright-information">
                         <div (click)="openCopyright(file.key)" *ngIf="!openCopyrightMap[file.key]">
-                        <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
-                     </div>
-                     <div *ngIf="openCopyrightMap[file.key]" class="copyright-form">
-                        <ul>
-                           <li>
-                              <img (click)="closeCopyright(file.key)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
-                           </li>
-                           <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
-                              <div class="copyright-input-block" >
-                                 Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
-                              </div>
-                           </li>
-                           <li>
-                              <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
-                                 bindLabel="name"
-                                 [(ngModel)]="copyrightYearMap[file.key]"
-                                 placeholder="Year" ngDefaultControl
-                                 [ngClass]="{'goldenText': copyrightYearMap[file.key] }"
-                              >
-                              </ng-select>
-                           </li>
-                           </ul>
+                           <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
                         </div>
+                        <div *ngIf="openCopyrightMap[file.key]" (click)="closeCopyright(file.key)" [ngClass]="{'collapseInformationLink': openCopyrightMap[file.key]}">
+                           <img src="../../assets/images/add-circle-brown.svg" alt="Collapse optional information" class="collapse-img" /> Collapse optional information
+                        </div>
+                        <!-- <div *ngIf="openCopyrightMap[file.key]" class="copyright-form">
+                           <ul>
+                              <li>
+                                 <img (click)="closeCopyright(file.key)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
+                              </li>
+                              <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
+                                 <div class="copyright-input-block" >
+                                    Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
+                                 </div>
+                              </li>
+                              <li>
+                                 <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
+                                    bindLabel="name"
+                                    [(ngModel)]="copyrightYearMap[file.key]"
+                                    placeholder="Year" ngDefaultControl
+                                    [ngClass]="{'goldenText': copyrightYearMap[file.key] }"
+                                 >
+                                 </ng-select>
+                              </li>
+                           </ul>
+                        </div> -->
                      </div>
                   </div>
                   <div class="publish-file-preview-access">

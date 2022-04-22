@@ -36,7 +36,7 @@ padding: unset;
 .upload-modal {
   height: 100%;
   /* width: 100%; */
-  width: 950px;
+  width: 1000px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -477,18 +477,18 @@ border-radius: 8px;
 .publish-file-preview-img {
   display: block;
   font-size: 12px;
-  width: 47%;
+  width: 38%;
   float: left;
 }
 .publish-file-preview-access {
-  width: 57%;
-  margin-left: 27px;
+  width: 62%;
+  margin-left: 0px;
 }
 .preview-img {
-  width: 160px;
-      border-radius: 8px;
-      margin-right: 12px;
-      height: 112px;
+  width: 140px;
+  border-radius: 0px;
+  margin-right: 12px;
+  height: 92px;
 }
 .publish-file-preview-access label {
   /* width: 100px !important; */
@@ -500,7 +500,7 @@ border-radius: 8px;
   /* width: 180px !important; */
 }
 .publish-file-preview-access label {
-  margin-right: 22px;
+  margin-right: 5px;
 }
 .publish-file-preview-access .upload-form-input select{
   width: 100% !important;
@@ -1320,4 +1320,37 @@ input.copyright-input::placeholder{
 .uploadAssetsBlock .folder-content {
   width: calc(100% - 74px);
   text-align: left;
+}
+.optionalText {
+  font-size: 12px;
+}
+.optional-information {
+  position: absolute;
+  left: 0px;
+  height: 30px;
+  padding-left: 30px !important;
+  width: 100%;
+}
+.goldenText .copyrightGolden path{
+  fill: #C49900;
+}
+.optionalInformationDate {
+  display: block;
+}
+.optionalInformationDate li {
+  width: 50%;
+  float: left;
+}
+.optionalInformationDate li:nth-child(2) {
+  width: 33%;
+  float: right;
+}
+.collapseInformation .mat-form-field {
+  margin-top: 0px;
+}
+.collapseInformationLink {
+  margin-top: 214px;
+}
+.optionalInformationDate ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+  display: none !important;
 }

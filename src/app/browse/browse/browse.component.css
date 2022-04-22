@@ -668,14 +668,13 @@ font-weight: 600;
   border-radius: 8px;
   border: 1px solid #F6F5F2;
   width: 100%;
-background-color: #F6F5F2;
-font-weight: bold;
-font-size: 16px;
-line-height: 25px;
-color: #fff;
+  background-color: #F6F5F2;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 25px;
+  color: #000;
 }
 .search-bar::placeholder{
-  color: #fff !important;
   font-weight: 100;
 }
 .search-btn{
@@ -1148,10 +1147,17 @@ ul.uploadAssetsClassifications {
 }
 ul.uploadAssetsClassifications li {
   float: left;
-  padding-left: 20px;
+  margin-right: 25px;
   vertical-align: middle;
   position: relative;
   /* cursor: pointer; */
+}
+ul.uploadAssetsClassifications li:last-child {
+  margin-right: 0px;
+}
+ul.uploadAssetsClassifications li:nth-child(2) .customToolTipWorkspace {
+  left: auto;
+  right: 0px;
 }
 ul.uploadAssetsClassifications li img {
   display: inline-block;
@@ -1193,7 +1199,7 @@ ul.uploadAssetsClassifications li:after {
   height: 20px;
   width: 100%;
   position: absolute;
-  bottom: -14px;
+  bottom: -19px;
   right: 0;
 }
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
@@ -1244,10 +1250,14 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   padding: 20px;
   top: 35px;
 }
-.workspaceInfo .workspaceHeading, .workspaceInfo p {
+.workspaceInfoBlock {
+  background: #23211E !important;
+  width: 328px !important;
+}
+.workspaceInfo .workspaceHeading, .workspaceInfo p, .workspaceHeading, .workspaceInfoBlock p {
   color: #fff;
 }
-.workspaceInfo .workspaceHeading {
+.workspaceInfo .workspaceHeading, .workspaceInfo .workspaceHeading {
   font-weight: 600;
   font-size: 16px;
   padding-bottom: 10px;
@@ -1406,4 +1416,54 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 .input-sizer ::placeholder:focus {
   color: #000;
   opacity: 1;
+}
+.classificationsIcon {
+  cursor: pointer;
+}
+.classificationsIcon:hover path {
+  stroke:#DAAA00;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li {
+  cursor: auto;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li:hover {
+  opacity: 1;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li .workspaceHeading {
+  font-weight: 600;
+  font-size: 16px;
+  padding-bottom: 10px;
+}
+.tollTipWorkspace {
+  position: relative;
+}
+.customToolTipWorkspace {
+  display: none;
+  position: absolute;
+  top: 28px;
+  left: 0px;
+  z-index: 9;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: #413E3C;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  white-space: nowrap;
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  width: max-content;
+}
+.tollTipWorkspace:hover .customToolTipWorkspace {
+  display: block;
+}
+ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorkspace {
+  right: 0;
+}
+.positionRelative input.search-bar::placeholder{
+  color: #413E3C !important;
 }
