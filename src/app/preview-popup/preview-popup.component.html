@@ -1,7 +1,7 @@
 <div *ngIf="openInModal">
   <ng-template #preview let-modal class="imgPopUpTab">
     <div class="modal-header">
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = ''">
         <!-- <span aria-hidden="true">&times;</span> -->
         <span aria-hidden="true"><img src="../../assets/images/modalclose.svg" /></span>
       </button>

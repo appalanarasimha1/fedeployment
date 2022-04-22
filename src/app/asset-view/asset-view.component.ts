@@ -20,17 +20,16 @@ export class AssetViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const routeParams = this.route.params.subscribe(params => {
+    const routeParams = this.route.queryParams.subscribe(params => {
       this.sector = params['sector'];
-      this.folderStructure = params['folderStructure'].replaceAll('+', '/');
+      this.folderStructure = params['folderStructure'].split('/').length > 1 ? params['folderStructure'].replaceAll('+', '/') : `/${params['folderStructure'].trim()}/`;
       this.assetName = params['assetName'];
       this.fetchAsset();
     });
   }
 
   fetchAsset() {
-    this.apiService.get(`/path/${encodeURIComponent(this.sector)}/workspaces${this.folderStructure}${encodeURIComponent(this.assetName)}`).subscribe((doc: any) => {
-     
+    this.apiService.get(`/path${this.sector.trim()}/workspaces${this.folderStructure.trim()}${encodeURIComponent(this.assetName)}`).subscribe((doc: any) => {
       this.file = doc;
       this.fileUrl = `${window.location.origin}/nuxeo/${doc.properties['file:content'].data.split('/nuxeo/')[1]}`;
     });

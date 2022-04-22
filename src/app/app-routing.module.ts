@@ -43,7 +43,7 @@ const routes: Routes = [
     },
   },
   {
-    path: "asset-view/:sector/:folderStructure/:assetName",
+    path: "asset-view",
     component: AssetViewComponent,
     canActivate: [AuthGuardService],
   },

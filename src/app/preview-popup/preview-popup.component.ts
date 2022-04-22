@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import * as moment from "moment";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
-import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW } from "../common/constant";
+import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions } from "../common/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
@@ -75,6 +75,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         (reason) => {
           this.showTagInput = false;
           this.modalLoading = false;
+          this.copiedString = '';
         }
       );
   }
@@ -417,18 +418,19 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   copyLink() {
     // copyLinkOfAsset() {
-      this.copiedString = !this.copiedString;
       const pathArray = this.doc.path.split('/workspaces');
       const sector = pathArray[0]
-      const assetName = pathArray[1].split('/').pop();
+      let assetName = pathArray[1].split('/').pop();
       const folderStructure = pathArray[1].split(assetName)[0].replaceAll('/', '+');
+      const extention: string[] = specialExtensions.filter((item: string) => assetName.includes(item));
+      assetName = assetName.replace(extention[0], '');
       
       const selBox = document.createElement("textarea");
       selBox.style.position = "fixed";
       selBox.style.left = "0";
       selBox.style.top = "0";
       selBox.style.opacity = "0";
-      selBox.value = `${window.location.origin}/asset-view${sector}/${folderStructure}/${assetName}`;
+      selBox.value = `${window.location.origin}/asset-view?sector=${sector}&folderStructure=${folderStructure}&extension=${extention[0]}&assetName=${assetName}`;
       this.copiedString = selBox.value;
       document.body.appendChild(selBox);
       selBox.focus();
