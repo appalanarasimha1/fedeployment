@@ -423,7 +423,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       let assetName = pathArray[1].split('/').pop();
       const folderStructure = pathArray[1].split(assetName)[0].replaceAll('/', '+');
       const extention: string[] = specialExtensions.filter((item: string) => assetName.includes(item));
-      assetName = assetName.replace(extention[0], '');
+      // assetName = assetName.replace(extention[0], '');
       
       const selBox = document.createElement("textarea");
       selBox.style.position = "fixed";
