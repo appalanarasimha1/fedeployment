@@ -129,16 +129,16 @@ export class DocumentCardComponent implements OnChanges {
   }
 
   hasNoRestriction() {
-    return !this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any && !this.doc.properties["sa:downloadApproval"];
+    return (!this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any && this.doc.properties["sa:downloadApproval"] !== 'true');
   }
 
   hasInternalRestriction() {
-    return this.doc.properties["sa:allow"] === ALLOW.internal || this.doc.properties["sa:allow"] === ALLOW.request && !this.doc.properties["sa:downloadApproval"];
+    return ((this.doc.properties["sa:allow"] === ALLOW.internal || this.doc.properties["sa:allow"] === ALLOW.request) && this.doc.properties["sa:downloadApproval"] !== 'true');
   }
 
   hasRequestRestriction() {
-    // return this.doc.properties["sa:allow"] === ALLOW.request;
-    return !!this.doc.properties["sa:downloadApproval"];
+    return this.doc.properties["sa:allow"] === ALLOW.request || this.doc.properties["sa:downloadApproval"] === 'true';
+    // return (this.doc.properties["sa:allow"] === ALLOW.request && this.doc.properties["sa:downloadApproval"] === 'true') && this.doc.properties["sa:allow"] !== ALLOW.internal && this.doc.properties["sa:allow"] !== ALLOW.any;
   }
 
   showDownloadDropdown() {

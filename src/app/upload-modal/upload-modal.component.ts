@@ -788,8 +788,13 @@ export class UploadModalComponent implements OnInit {
     return Object.keys(this.filesMap).length;
   }
 
-  checkOwnerDropdown() {
-    return ALLOW_VALUE_MAP[this.allow] === 'Permission Required';
+  checkOwnerDropdown(index?: string) {
+    if(index && this.customDownloadApprovalMap) {
+      return this.customDownloadApprovalMap[index];
+    }
+    return !!this.downloadApproval;
+    // return ALLOW_VALUE_MAP[this.allow] === 'Permission Required';
+
   }
 
   showRedirectUrl(): boolean {

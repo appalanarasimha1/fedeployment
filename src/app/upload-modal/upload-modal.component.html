@@ -318,7 +318,7 @@
                      <span class="tooltiptext">Ground X advises users of permissible usage as specified here. You may also choose to give your permission for each download request.</span>
                   </div>
                </div>
-            </div>
+            </div> -->
 
             <div *ngIf="checkOwnerDropdown()" class="upload-form-input row mb-30">
                <div class="col-xl-4 col-md-4">
@@ -343,7 +343,7 @@
                   </ng-template>
                   </ng-select>
                </div>
-            </div> -->
+            </div> 
 
             <div class="col-xl-9 flexible">
                <label class="control control--checkbox" style="margin-bottom: 0px;">
@@ -495,8 +495,8 @@
                               </ng-option>
                            </ng-select>
                         </div>
-                     </div>
-                     <div *ngIf="checkOwnerDropdown()" class="upload-form-input row mb-20">
+                     </div>-->
+                     <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20">
                         <div class="col-xl-4">
                            <label for="user">Owner</label>
                         </div>
@@ -519,7 +519,7 @@
                            </ng-template>
                            </ng-select>
                         </div>
-                     </div> -->
+                     </div> 
 
                      <div class="col-xl-9 flexible">
                         <label class="control control--checkbox" style="margin-bottom: 0px;">

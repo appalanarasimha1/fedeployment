@@ -102,7 +102,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   closeModal() {
-    this.dialogRef.close(this.updatedDocs);
+    this.dialogRef.close();
   }
 
   initACLValue() {
@@ -273,6 +273,7 @@ export class UpdateModalComponent implements OnInit {
     for (let i = 0; i < this.docs.length; i++) {
       this.updateAsset(this.docs[i], i);
     }
+    this.classificationsUpdate();
   }
 
   async updateAsset(doc, index) {
@@ -410,14 +411,6 @@ export class UpdateModalComponent implements OnInit {
 
   classificationsUpdate() {
     this.dialogRef.close(this.updatedDocs);
-    // setTimeout(()=>{
-    //   this._snackBar.open('The classifications have been updated.', '', {
-    //     duration: 4000,
-    //     verticalPosition: 'bottom',
-    //     horizontalPosition: 'center',
-    //     panelClass: ['snackBarMiddle'],
-    //   });
-    // }, 500);
-    this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle')
+    this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle');
   }
 }
