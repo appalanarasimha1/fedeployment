@@ -193,6 +193,15 @@
                     </a>
                   </span>
                 </h6>
+
+                <div class="dateFileSize" *ngIf="showLinkCopy">
+                  <ul>
+                    <li>
+                      <img src="../../../assets/images/calendar-icon.svg" alt="" /> Sun, Sep 19 - Thu, Sep 23
+                    </li>
+                    <li>56 assets, 1.21 GB</li>
+                  </ul>
+                </div>
               </div>
               <div class="views" *ngIf="selectedFolder2.uid !== parentId">
                 <ul class="uploadAssetsClassifications pb-3" *ngIf="showLinkCopy">
@@ -388,7 +397,7 @@
                       <th mat-sort-header="dc:creator" width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
                       <th mat-sort-header="dc:created" width="20%">Created on</th>
-                      <th mat-sort-header="dc:start" *ngIf="!showLinkCopy && !isTrashView" width="20%">Associated date</th>
+                      <!-- <th mat-sort-header="dc:start" *ngIf="!showLinkCopy && !isTrashView" width="20%">Associated date</th> -->
                       <!-- <th mat-sort-header="dc:start" *ngIf="isTrashView" width="20%">Deleted on</th> -->
                       <th mat-sort-header="dc:sector" *ngIf="isTrashView" width="20%">Workspace</th>
                     </tr>
@@ -412,7 +421,7 @@
                       <td><p>{{item.properties['dc:creator']}}</p></td>
                       <!-- <td><p>Luis C</p></td> -->
                       <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
-                      <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td>
+                      <!-- <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td> -->
                       <!-- <td *ngIf="isTrashView"><p>{{item.lastModified ? getDateInFormat(item.lastModified) : ''}}</p></td> -->
                       <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     </tr>

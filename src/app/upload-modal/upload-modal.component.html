@@ -365,7 +365,11 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button mat-button matStepperNext class="upload-btn" (click)="copyUserMap()" [disabled]="checkUploadFormStep()">Review</button>
+               <button mat-button matStepperNext class="upload-btn tollTipCustom" (click)="copyUserMap()" [disabled]="checkUploadFormStep()">Review
+                  <div *ngIf="checkUploadFormStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
+                     Please complete all mandatory fields to proceed
+                   </div>
+               </button>
             </div>
          </div>
       </mat-step>
@@ -498,7 +502,7 @@
                      </div>-->
                      <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20">
                         <div class="col-xl-4">
-                           <label for="user">Owner</label>
+                           <label for="user">Approver</label>
                         </div>
                         <div class="col-xl-8">
                            <ng-select style="height: unset !important;"

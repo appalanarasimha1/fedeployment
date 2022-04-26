@@ -1142,7 +1142,7 @@ export class BrowseComponent implements OnInit {
       console.log({res});
       this.updateFolderAction()
       this.sharedService.showSnackbar(
-        "Folder Name is updated",
+        "Folder name is updated",
         6000,
         "top",
         "center",

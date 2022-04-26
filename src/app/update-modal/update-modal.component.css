@@ -247,7 +247,7 @@ color: #FFFFFF;
   resize: none;
   vertical-align: top;
   width: calc(100% - 50px);
-  height: 40px;
+  min-height: 40px;
   border: unset;
   border-bottom: 1.5px solid #000;
   vertical-align: top;

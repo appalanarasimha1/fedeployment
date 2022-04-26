@@ -280,7 +280,7 @@ color: #FFFFFF;
   resize: none;
   vertical-align: top;
   width: calc(100% - 50px);
-  height: 36px;
+  min-height: 36px;
   border: unset;
   border-bottom: 1.5px solid #000;
   vertical-align: top;
