@@ -127,7 +127,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   tagsConfig = {
     slidesToShow: 5,
-    // "slidesToScroll": 1,
+    "slidesToScroll": 5,
     dots: false,
     infinite: false,
     speed: 300,
