@@ -89,7 +89,7 @@
     
                     <div class="recent-searches" *ngIf="!showRelatedSearch">
                       <div class="heading" *ngIf="recentSearch.length>0">Your Recent Searches
-                        <div class="clearSearch" (click)="openSm(clearSearchResult)">Clear</div>
+                        <div class="clearSearch" (click)="deleteRecentTags($event)" >Clear</div>
                       </div>
                       <ul class="recent-searches-tags">
                         <li *ngFor="let search of recentSearch;let i = index"><a style="cursor: pointer;" *ngIf="search.trim() !==''" (click)="searchText=search; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(search)}}</a></li>
@@ -97,10 +97,10 @@
                     </div>
     
                     <div class="recent-searches">
-                      <div class="heading" *ngIf="!showRelatedSearch">Trending Searches</div>
-                      <div class="heading" *ngIf="showRelatedSearch && tagsMetadata?.buckets.length>0">Related Tags</div>
-                      <ul class="recent-searches-tags">
-                        <li *ngFor="let bucket of tagsMetadata?.buckets; let i = index" ><a *ngIf="i<13" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
+                      <div class="heading">Trending Searches</div>
+                      <!-- <div class="heading" *ngIf="showRelatedSearch && tagsMetadataNew?.buckets.length>0">Related Tags</div> -->
+                      <ul class="recent-searches-tags"> 
+                        <li *ngFor="let bucket of tagsMetadataNew?.buckets; let i = index" ><a *ngIf="i<13" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
                        
                       </ul>
                     </div>
