@@ -844,7 +844,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getDateInFormat(date: string): string {
-    return new Date(date).toLocaleString();
+    return new Date(date).toDateString();
   }
 
   getIconByType(type: string): string {
@@ -1156,5 +1156,18 @@ export class BrowseComponent implements OnInit {
 
   checkForDescription(): boolean {
     return !!this.selectedFolder?.properties?.['dc:description'];
+  }
+
+  getSelectedAssetsSize() {
+    let size = 0;
+    this.sortedData.forEach(doc => {
+      size += +doc.properties["file:content"]?.length || 0;
+    });
+    return this.humanFileSize(size);
+  }
+
+  humanFileSize(size) {
+    const i = Math.floor( Math.log(size) / Math.log(1024) );
+    return ( size / Math.pow(1024, i) ).toFixed(2)  + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
   }
 }

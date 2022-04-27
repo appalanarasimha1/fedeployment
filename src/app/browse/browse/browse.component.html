@@ -196,10 +196,10 @@
 
                 <div class="dateFileSize" *ngIf="showLinkCopy">
                   <ul>
-                    <li>
-                      <img src="../../../assets/images/calendar-icon.svg" alt="" /> Sun, Sep 19 - Thu, Sep 23
+                    <li *ngIf="selectedFolder.start">
+                      <img src="../../../assets/images/calendar-icon.svg" alt="" /> {{getDateInFormat(selectedFolder.start)}}
                     </li>
-                    <li>56 assets, 1.21 GB</li>
+                    <li>{{sortedData.length}} assets, {{getSelectedAssetsSize()}}</li>
                   </ul>
                 </div>
               </div>
