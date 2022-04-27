@@ -345,20 +345,24 @@
                </div>
             </div> 
 
-            <div class="col-xl-9 flexible">
-               <label class="control control--checkbox" style="margin-bottom: 0px;">
-                  Approval required before download/use
-                  <input 
+            <div class="upload-form-input row">
+               <div class="col-xl-4">
+                  &nbsp;
+               </div>
+               <div class="col-xl-8">
+                 <label class="control control--checkbox" style="margin-bottom: 0px;">
+                   Approval required before download
+                   <input 
                      type="checkbox" 
                      checked="checked"
                      (change)="onCheckDownloadApproval()"
                      [(ngModel)]="downloadApproval"
                      [ngModelOptions]="{standalone: true}"
                   />
-                  <div class="control__indicator"></div>
-               </label>
+                  <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+                 </label>
+               </div>
             </div>
-
          </div>
 
          <div class="button-groups" style="padding-top: 15px;">
