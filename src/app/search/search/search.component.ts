@@ -48,7 +48,7 @@ export class SearchComponent implements OnInit {
   audio: any = { aggregations: {}, entries: [], resultsCount: 0 };
   files: any = { aggregations: {}, entries: [], resultsCount: 0 };
   tagsMetadata: any = { bucket: [], selection: [] };
-  tagsMetadataNew: any = { bucket: [], selection: [] };
+  tagsMetadataNew: any;
   apiToHit: any = { Picture: {}, Video: {}, Audio: {} };
   count = 0; // for multiple api calls
   sectors = [];
@@ -103,7 +103,10 @@ export class SearchComponent implements OnInit {
   }
 
   fetchMostSearchedTags() {
+
     this.apiService.get("/searchTerm/fetch").subscribe((response: any) => {
+      console.log({ response });
+      
       const buckets = response?.data?.properties?.buckets.filter((item) => {
         if (item.key.trim()) return item;
       });
@@ -111,6 +114,7 @@ export class SearchComponent implements OnInit {
         response.data.properties.buckets = buckets;
       this.tagsMetadata = response?.data?.properties || [];
       this.tagsMetadataNew = response?.data?.properties || [];
+      //  response?.data?.properties || [];
     });
   }
 

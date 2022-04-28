@@ -43,6 +43,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() filters: any;
   @Input() userId: string;
   @Input() tagsMetadata: any;
+  @Input() tagsMetadataNew: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
   @Output() selectDocType: EventEmitter<any> = new EventEmitter();
