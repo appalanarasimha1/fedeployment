@@ -1138,8 +1138,8 @@ export class BrowseComponent implements OnInit {
           "dc:title": newTitle,
         }
       }
-    }).subscribe((res:any) =>{
-      console.log({res});
+    }).subscribe((res: any) => {
+      console.log({ res });
       this.updateFolderAction()
       this.sharedService.showSnackbar(
         "Folder name is updated",
@@ -1167,7 +1167,7 @@ export class BrowseComponent implements OnInit {
   }
 
   humanFileSize(size) {
-    const i = Math.floor( Math.log(size) / Math.log(1024) );
-    return ( size / Math.pow(1024, i) ).toFixed(2)  + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+    const i = Math.floor(Math.log(size) / Math.log(1024));
+    return (size / Math.pow(1024, i)).toFixed(2) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
   }
 }

@@ -534,14 +534,14 @@
                         </div>
                         <div class="col-xl-8">
                            <label class="control control--checkbox" style="margin-bottom: 0px; float: left;">
-                              Approval required before download/use
+                              Approval required before download
                               <input 
                                  type="checkbox" 
                                  checked="checked"
                                  [(ngModel)]="customDownloadApprovalMap[file.key]"
                                  [ngModelOptions]="{standalone: true}"
                               />
-                              <div class="control__indicator"></div>
+                              <div class="control__indicator" style="top: 4px;left: 0px;"></div>
                            </label>
                         </div>
                      </div>
