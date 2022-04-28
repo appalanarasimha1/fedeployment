@@ -29,6 +29,7 @@ import {
 })
 export class SubHeaderComponent implements OnInit {
   @Input() tagsMetadata: any;
+  @Input() tagsMetadataNew: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @ViewChild("content") videoModal: ElementRef;
   // @Input() sectors: string[];
@@ -119,7 +120,6 @@ export class SubHeaderComponent implements OnInit {
     this.apiService
       .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
       .subscribe((response) => {
-
         let filteredData = response["data"]
           .map((d: any) => (d._source.isDeleted ? undefined : d._source.query))
           .filter(
@@ -401,7 +401,6 @@ export class SubHeaderComponent implements OnInit {
     this.getRecentSearch();
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
     this.dataService.tagsMetaRealInit([]);
-
   }
 
   focusOnSearch() {
@@ -426,7 +425,7 @@ export class SubHeaderComponent implements OnInit {
       this.getRecentSearch();
     });
   }
- 
+
   deleteRecentTags(e) {
     e.stopPropagation();
     e.preventDefault();
