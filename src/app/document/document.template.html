@@ -175,8 +175,8 @@
                 #slickModal="slick-carousel" 
                 [config]="tagsConfig" >
                 <div ngxSlickItem *ngFor="let bucket of tagsMetaRealdata; let i = index" class="slide">
-                  <div class="item">
-                    <a class="card" style="cursor: pointer;" >{{bucket.key}}</a>
+                  <div class="item" >
+                    <a class="card" style="cursor: pointer;"  (click)="searchRelatedClick(bucket.key)">{{bucket.key}}</a>
                   </div>
                 </div>
               </ngx-slick-carousel>

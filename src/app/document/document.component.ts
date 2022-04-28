@@ -43,6 +43,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Input() filters: any;
   @Input() userId: string;
   @Input() tagsMetadata: any;
+  @Input() tagsMetadataNew: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
   @Output() selectDocType: EventEmitter<any> = new EventEmitter();
@@ -77,7 +78,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   fileSelected = [];
   sortValue = "";
   activeTabs = { comments: false, info: false, timeline: false };
-  tagsMetaRealdata= []
+  tagsMetaRealdata = [];
 
   slideConfig = {
     arrows: true,
@@ -127,7 +128,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   tagsConfig = {
     slidesToShow: 5,
-    // "slidesToScroll": 1,
+    slidesToScroll: 5,
     dots: false,
     infinite: false,
     speed: 300,
@@ -284,7 +285,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   public async getRelatedTags() {
-    this.dataService.tagsMetaReal$.subscribe((data:any): void => {
+    this.dataService.tagsMetaReal$.subscribe((data: any): void => {
       this.tagsMetaRealdata = data;
     });
   }
@@ -304,7 +305,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.searchTerm = { ecm_fulltext: "" };
     this.dataService.showRecentInit(false);
     this.dataService.tagsMetaRealInit([]);
-
 
     // this.clearFilter();
     // this.resetView();
@@ -994,5 +994,8 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   out() {
     this.masoneryItemIndex = null;
+  }
+  searchRelatedClick(searchTerm) {
+    this.dataService.termSearchInit(searchTerm);
   }
 }
