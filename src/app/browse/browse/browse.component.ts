@@ -605,17 +605,18 @@ export class BrowseComponent implements OnInit {
     }
     // this.selectedFolder = await this.fetchFolder(item.uid);
     // this.handleViewClick(item, breadCrumbIndex);
-    // this.loading = true;
+    
     if (index || breadCrumbIndex === 1) {
       const listView = 1;
       await this.getWorkspaceFolders(item.uid, listView);
     } else {
       await this.handleClickNew(item.uid);
     }
+    this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.selectedFolder2 = this.selectedFolder;
     this.extractBreadcrumb();
-    // this.loading = false;
+    this.loading = false;
   }
 
   async fetchFolder(id) {
@@ -1199,12 +1200,13 @@ export class BrowseComponent implements OnInit {
   getSelectedAssetsSize() {
     let size = 0;
     this.sortedData.forEach(doc => {
-      size += +doc.properties["file:content"]?.length || 0;
+      size += +doc.properties?.["file:content"]?.length || 0;
     });
     return this.humanFileSize(size);
   }
 
   humanFileSize(size) {
+    if(!size) return '0 B';
     const i = Math.floor(Math.log(size) / Math.log(1024));
     return (size / Math.pow(1024, i)).toFixed(2) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
   }
