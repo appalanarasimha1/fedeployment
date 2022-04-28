@@ -418,7 +418,10 @@
                         <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
-                      <td><p>{{item.properties['dc:creator']}}</p></td>
+                      <td class="tollTipCustom">
+                        <p>{{item.properties['dc:creator']}}</p>
+                        <p class="tolltipContent">{{item.properties['dc:creator']}}</p>
+                      </td>
                       <!-- <td><p>Luis C</p></td> -->
                       <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
                       <!-- <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td> -->

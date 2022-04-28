@@ -770,7 +770,7 @@ font-weight: 600;
   background: rgba(0, 0, 0, 0.80);
   padding: 3px 10px;
   font-size: 13px;
-  color: #fff;
+  color: #fff !important;
   font-weight: normal;
   width: max-content;
   border-radius: 40px;
@@ -1473,3 +1473,12 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 .dateFileSize li:first-child {padding-left: 0px}
 .dateFileSize li:last-child:after {width: 0px}
 .dateFileSize li img {max-width: 16px;vertical-align: -2px;display: inline-block;margin-right: 5px;}
+
+.folderListview .tollTipCustom .tolltipContent {
+  top: 45px;
+  left: 0px;
+  background: #413E3C;
+  padding: 2px 20px;
+  color: #fff !important;
+  border-radius: 4px;
+}
