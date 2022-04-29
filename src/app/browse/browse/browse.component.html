@@ -132,7 +132,12 @@
                       </div>
                       <div class="row mt-4">
                        <div class="col-xl-12">
-                        <button class="createBtn btn" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)">Create folder</button>
+                        <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)" [disabled]="!folderNameRef.value" style="pointer-events: auto;">
+                          Create folder
+                          <div *ngIf="!folderNameRef.value" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
+                            Please complete all mandatory fields to proceed
+                          </div>
+                        </button>
                        </div>
 
                       </div>
