@@ -4,11 +4,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from './upload-modal/upload-modal.component';
 import { DataService } from './services/data.service';
 import { NuxeoService } from './services/nuxeo.service';
+import { fadeAnimation } from './animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [fadeAnimation]
 })
 export class AppComponent implements OnInit{
   title = 'groundx';
@@ -31,7 +33,6 @@ export class AppComponent implements OnInit{
           console.log('app = ', event);
           // TODO: will break if we have another url that contains /user.
           if (event.url.includes('/login')) {
-            console.log(event);
             this.showHeader = false;
             this.showAddButton = false;
             setTimeout(()=>{

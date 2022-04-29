@@ -98,7 +98,11 @@ export class RouteManager {
     // Default route.
     this.app.use(express.static(path.resolve(__dirname + '/../../' + '/dist')));
     this.app.get('*', (req: express.Request, res: express.Response) => {
-      if (allowedExt.filter(ext => req.url.includes(ext)).length > 0) {
+      if (allowedExt.filter(ext => {
+        const arr = req.url.split(ext);
+        if(arr.length === 2 && arr[1] === '' ) return true;
+        else return false;
+      }).length > 0) {
         res.sendFile(path.resolve(__dirname + '/../../' + '/dist/' + req.url));
       } else {
         res.sendFile(path.resolve(__dirname + '/../../' + '/dist/index.html'));

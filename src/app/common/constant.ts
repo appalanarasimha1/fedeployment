@@ -112,3 +112,15 @@ export const DEFAULT_NUMBER_OF_TAGS_PREVIEW = 10;
 
 export const ROOT_ID = '00000000-0000-0000-0000-000000000000';
 export const REPORT_ROLE = 'reportAdmin';
+export const specialExtensions = [ // NOTE: this is the extensions of special routes in backend, please connect with me before changing it
+    '.js',
+    '.ico',
+    '.css',
+    '.png',
+    '.jpg',
+    '.woff2',
+    '.woff',
+    '.ttf',
+    '.svg',
+    '.eot'
+  ];

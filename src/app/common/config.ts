@@ -24,4 +24,5 @@ export const apiRoutes = {
     REPORT_FETCH: '/report/fetch-report',
     TRASH_DOC: '/automation/Document.Trash',
     UN_TRASH_DOC: '/automation/Document.Untrash',
+    DOCUMENT_UPDATE: '/automation/Document.Update',
 };

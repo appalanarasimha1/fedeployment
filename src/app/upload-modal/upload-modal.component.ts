@@ -26,7 +26,8 @@ import { ACCESS,
   ALLOW_VALUE_MAP,
   SPECIFIC_USER_LABEL,
   OWNER_APPROVAL_LABEL,
-  YEARS} from "./constant";
+  YEARS,
+  ACCESS_TITLE} from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -71,6 +72,7 @@ export class UploadModalComponent implements OnInit {
   readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
   readonly WORKSPACE_ROOT = WORKSPACE_ROOT;
   readonly years = YEARS;
+  readonly ACCESS_TITLE = ACCESS_TITLE;
 
   filesMap: FileByIndex = {};
   batchId: string = null;
@@ -96,6 +98,8 @@ export class UploadModalComponent implements OnInit {
   customConfidentialityMap: any = {};
   copyrightMap: any = {};
   customUsersMap: any = {};
+  customDownloadApprovalUsersMap: any = {};
+  customDownloadApprovalMap: any = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
   selectedUsers: string[] = [];
@@ -126,6 +130,7 @@ export class UploadModalComponent implements OnInit {
     centerMode: false
   };
   uploadedAsset;
+  downloadApproval: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -142,7 +147,7 @@ export class UploadModalComponent implements OnInit {
       this.selectWorkspace(title, true);
       this.showWsList = false;
       this.folderNameParam = this.data.title;
-      this.associatedDate = this.data.properties["dc:start"];
+      this.associatedDate = this.data?.properties?.["dc:start"];
     } else {
       this.showWorkspaceList();
     }
@@ -216,6 +221,11 @@ export class UploadModalComponent implements OnInit {
     if (this.selectedUsers && this.selectedUsers.length > 0) {
       Object.keys(this.filesMap).forEach((key) => {
         this.customUsersMap[key] = [...this.selectedUsers];
+      });
+    }
+    if(this.downloadApproval && this.ownerName) {
+      Object.keys(this.filesMap).forEach((key) => {
+        this.customDownloadApprovalUsersMap[key] = this.ownerName;
       });
     }
   }
@@ -501,6 +511,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelectAccess(access, fileIndex?: any) {
+    const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAccessMap[fileIndex] = access;
     } else {
@@ -509,6 +520,7 @@ export class UploadModalComponent implements OnInit {
       }
       this.access = access;
     }
+    this.onSelectAllow(allow, fileIndex);
     this.checkShowUserDropdown(fileIndex);
   }
 
@@ -520,6 +532,13 @@ export class UploadModalComponent implements OnInit {
         this.customAllowMap[i] = allow;
       }
       this.allow = allow;
+    }
+  }
+
+  onCheckDownloadApproval() {
+    for(let i = 0; i < this.getAssetNumber(); i++) {
+      this.customDownloadApprovalMap[i] = this.downloadApproval;
+      
     }
   }
 
@@ -614,7 +633,7 @@ export class UploadModalComponent implements OnInit {
           "upload-batch": this.batchId,
           "upload-fileId": `${index}`,
         },
-        "dc:creator": this.ownerName,
+        "dc:creator": this.customDownloadApprovalMap[index] ? this.customDownloadApprovalUsersMap[index] : '',
         "dc:description": this.description,
         "dc:path": folder.path, //
         "dc:parentId": this.data ? this.data.uid : folder.id,
@@ -627,6 +646,7 @@ export class UploadModalComponent implements OnInit {
         "sa:allow": this.customAllowMap[index] || this.allow,
         "sa:copyrightName": this.openCopyrightMap[index] ? this.copyrightUserMap[index] : null,
         "sa:copyrightYear": this.openCopyrightMap[index] ? this.copyrightYearMap[index]?.name : null,
+        "sa:downloadApproval": this.customDownloadApprovalMap[index]
       },
       facets: [
         "Versionable",
@@ -775,8 +795,13 @@ export class UploadModalComponent implements OnInit {
     return Object.keys(this.filesMap).length;
   }
 
-  checkOwnerDropdown() {
-    return ALLOW_VALUE_MAP[this.allow] === 'Permission Required';
+  checkOwnerDropdown(index?: string) {
+    if(index && this.customDownloadApprovalMap) {
+      return this.customDownloadApprovalMap[index];
+    }
+    return !!this.downloadApproval;
+    // return ALLOW_VALUE_MAP[this.allow] === 'Permission Required';
+
   }
 
   showRedirectUrl(): boolean {

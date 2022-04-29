@@ -1,33 +1,49 @@
-import { Input, Component, Output, EventEmitter, OnInit, OnChanges, Inject, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { IHeaderSearchCriteria } from '../common/subHeader/interface';
-import { ASSET_SEARCH_PAGE_SIZE, localStorageVars, TRIGGERED_FROM_DOCUMENT, TRIGGERED_FROM_SUB_HEADER } from '../common/constant';
-import { DOCUMENT } from '@angular/common';
-import { environment } from '../../environments/environment';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { NuxeoService } from '../services/nuxeo.service';
-import { apiRoutes } from '../common/config';
-import { ApiService } from '../services/api.service';
-import { SharedService } from '../services/shared.service';
-import { Router } from '@angular/router';
-import { NgxMasonryComponent } from 'ngx-masonry';
-import { DataService } from '../services/data.service';
-import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
-import { UNWANTED_WORKSPACES } from '../upload-modal/constant';
+import {
+  Input,
+  Component,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnChanges,
+  Inject,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { IHeaderSearchCriteria } from "../common/subHeader/interface";
+import {
+  ASSET_SEARCH_PAGE_SIZE,
+  localStorageVars,
+  TRIGGERED_FROM_DOCUMENT,
+  TRIGGERED_FROM_SUB_HEADER,
+} from "../common/constant";
+import { DOCUMENT } from "@angular/common";
+import { environment } from "../../environments/environment";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { NuxeoService } from "../services/nuxeo.service";
+import { apiRoutes } from "../common/config";
+import { ApiService } from "../services/api.service";
+import { SharedService } from "../services/shared.service";
+import { Router } from "@angular/router";
+import { NgxMasonryComponent } from "ngx-masonry";
+import { DataService } from "../services/data.service";
+import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
+import { UNWANTED_WORKSPACES } from "../upload-modal/constant";
 
 @Component({
-  selector: 'app-content',
+  selector: "app-content",
   // Our list of styles in our component. We may add more to compose many styles together
-  styleUrls: ['./document.style.css'],
+  styleUrls: ["./document.style.css"],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
-  templateUrl: './document.template.html'
+  templateUrl: "./document.template.html",
 })
 export class DocumentComponent implements OnInit, OnChanges {
   @Input() documents: any;
   @Input() searchTerm: { ecm_fulltext: string };
   @Input() filters: any;
   @Input() userId: string;
-  // @Input() tagsMetadata: any;
+  @Input() tagsMetadata: any;
+  @Input() tagsMetadataNew: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @Output() pageCount: EventEmitter<any> = new EventEmitter();
   @Output() selectDocType: EventEmitter<any> = new EventEmitter();
@@ -36,8 +52,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   @Output() selectDetailViewType: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
-  @ViewChild('videoPlayer') videoplayer: ElementRef;
-  @ViewChild('previewModal') previewModal: PreviewPopupComponent;
+  @ViewChild("videoPlayer") videoplayer: ElementRef;
+  @ViewChild("previewModal") previewModal: PreviewPopupComponent;
 
   docs = [];
   private searchCriteria: IHeaderSearchCriteria = {};
@@ -45,8 +61,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   docSliceInput = 39;
   hideShowMoreBtn = true;
   showListView = false;
-  viewType = 'GRID';
-  closeResult = '';
+  viewType = "GRID";
+  closeResult = "";
   selectedFile: any; // TODO: add interface, search result entires
   selectedFileUrl: string;
   // favourite: boolean;
@@ -60,8 +76,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   recentUpdated = [];
   recentDataShow = [];
   fileSelected = [];
-  sortValue = '';
+  sortValue = "";
   activeTabs = { comments: false, info: false, timeline: false };
+  tagsMetaRealdata = [];
 
   slideConfig = {
     arrows: true,
@@ -87,34 +104,64 @@ export class DocumentComponent implements OnInit, OnChanges {
           slidesToScroll: 5,
           infinite: false,
           dots: false,
-          arrows: false
-        }
+          arrows: false,
+        },
       },
       {
         breakpoint: 600,
         settings: {
           arrows: false,
           slidesToShow: 3,
-          slidesToScroll: 1
-        }
+          slidesToScroll: 1,
+        },
       },
       {
         breakpoint: 480,
         settings: {
           arrows: false,
           slidesToShow: 2,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
-  selectedView = 'recentlyViewed';
-  selectedType = 'all';
+
+  tagsConfig = {
+    slidesToShow: 5,
+    "slidesToScroll": 5,
+    dots: false,
+    infinite: false,
+    speed: 300,
+    centerMode: false,
+    variableWidth: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false,
+        },
+      },
+    ],
+  };
+  selectedView = "recentlyViewed";
+  selectedType = "all";
 
   // /* <!-- sprint12-fixes start --> */
   public myOptions = {
     gutter: 10,
-    resize: true
+    resize: true,
   };
   public updateMasonryLayout = false;
   showRecentlyViewed = true;
@@ -142,6 +189,21 @@ export class DocumentComponent implements OnInit, OnChanges {
   private assetBySectorCall;
   masoneryItemIndex;
 
+  tagsMetadataDummy = [
+    "Tourism",
+    "Airplane",
+    "Person",
+    "City",
+    "Nature",
+    "Landmark",
+    "Airport",
+    "Boat",
+    "Fox",
+    "Animals",
+    "Mountain",
+    "Wildlife",
+  ];
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
@@ -151,10 +213,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     private router: Router,
     private dataService: DataService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.route.fragment.subscribe(f => {
+    this.route.fragment.subscribe((f) => {
       setTimeout(() => {
         const element = document.getElementById(f);
         if (element) element.scrollIntoView();
@@ -163,12 +225,13 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.getRecentlyViewed();
     this.getFavorites();
     this.getAssetBySectors();
-    this.selectTab('recentlyViewed');
+    this.selectTab("recentlyViewed");
     this.showRecentlyViewed = true;
+
     this.dataService.showHideLoader$.subscribe((value) => {
       // if(value) this.loading.push(value);
       // else this.loading.pop();
-      if(value) this.innerLoading.push(value);
+      if (value) this.innerLoading.push(value);
       else this.innerLoading.pop();
     });
     // /* <!-- sprint12-fixes start --> */
@@ -177,20 +240,27 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
 
     this.dataService.sectorChanged$.subscribe((sectors: any) => {
-      this.sectors = sectors.filter(sector => UNWANTED_WORKSPACES.indexOf(sector.toLowerCase()) === -1);
+      this.sectors = sectors.filter(
+        (sector) => UNWANTED_WORKSPACES.indexOf(sector.toLowerCase()) === -1
+      );
     });
+
     // /* <!-- sprint12-fixes end --> */
     this.dataService.resetFilter$.subscribe((triggeredFrom: string) => {
-      if(TRIGGERED_FROM_SUB_HEADER === triggeredFrom) {
+      if (TRIGGERED_FROM_SUB_HEADER === triggeredFrom) {
         this.resetResult();
       }
-    })
+    });
+
     this.filtersCount = this.getFilterCount();
   }
 
   ngOnChanges(changes: any) {
+    console.log({ changes });
+
     if (changes.searchTerm) {
       this.searchTerm = changes.searchTerm.currentValue;
+      this.getRelatedTags();
     }
 
     if (this.userId && this.recentUpdated && this.recentUpdated.length === 0) {
@@ -198,6 +268,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
 
     this.getRecentlyViewed();
+    this.getRelatedTags();
 
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
@@ -213,79 +284,106 @@ export class DocumentComponent implements OnInit, OnChanges {
     return;
   }
 
+  public async getRelatedTags() {
+    this.dataService.tagsMetaReal$.subscribe((data: any): void => {
+      this.tagsMetaRealdata = data;
+    });
+  }
+
   resetResult() {
-    this.documents = '';
+    this.documents = "";
     // this.selectTab('recentUpload');
     this.docSliceInput = 39;
     this.hideShowMoreBtn = false;
     this.showListView = false;
-    this.viewType = 'GRID';
+    this.viewType = "GRID";
     this.resetView();
     this.dataService.resetFilterInit(TRIGGERED_FROM_DOCUMENT);
     this.showDetailView = false;
     this.detailView = null;
     this.detailDocuments = null;
-    this.searchTerm = {ecm_fulltext : ''};
+    this.searchTerm = { ecm_fulltext: "" };
     this.dataService.showRecentInit(false);
+    this.dataService.tagsMetaRealInit([]);
 
     // this.clearFilter();
     // this.resetView();
-    this.selectTab('recentlyViewed');
+    this.selectTab("recentlyViewed");
   }
 
   getRecentlyViewed() {
-    this.recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED) || '[]');
+    this.recentlyViewed = JSON.parse(
+      localStorage.getItem(localStorageVars.RECENTLY_VIEWED) || "[]"
+    );
     this.recentlyViewed.reverse();
     return;
   }
 
-
   getFavorites() {
     try {
       this.loading.push(true);
-      this.preFavouriteCall = this.apiService.post(apiRoutes.FAVORITE_FETCH, { context: {}, params: {} })
-      .subscribe((response: any) => {
-        this.loading.pop();
-        if(response) this.getFavouriteCollection(response.uid);
-      });
-    } catch(error) {
-        this.loading.pop();
-        if (error && error.message) {
-          if (error.message.toLowerCase() === 'unauthorized') {
-            this.sharedService.redirectToLogin();
-          }
+      this.preFavouriteCall = this.apiService
+        .post(apiRoutes.FAVORITE_FETCH, { context: {}, params: {} })
+        .subscribe((response: any) => {
+          this.loading.pop();
+          if (response) this.getFavouriteCollection(response.uid);
+        });
+    } catch (error) {
+      this.loading.pop();
+      if (error && error.message) {
+        if (error.message.toLowerCase() === "unauthorized") {
+          this.sharedService.redirectToLogin();
         }
-        return;
       }
+      return;
+    }
   }
 
-  getAssetBySectors(sector = '', dontResetSectors: boolean = true) {
-    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, sortBy: 'dc:created', sortOrder: 'desc' };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
+  getAssetBySectors(sector = "", dontResetSectors: boolean = true) {
+    const queryParams = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 16,
+      sortBy: "dc:created",
+      sortOrder: "desc",
+    };
+    const headers = {
+      "enrichers-document": ["thumbnail", "renditions", "favorites", "tags"],
+      "fetch.document": "properties",
+      properties: "*",
+    };
     if (sector) {
-      queryParams['sectors'] = `["${sector}"]`;
+      queryParams["sectors"] = `["${sector}"]`;
     }
     this.loading.push(true);
-    this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers}).get()
+    this.nuxeo.nuxeoClient
+      .request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
+      .get()
       .then((response) => {
-        if(response) {
+        if (response) {
           this.assetsBySector = response.entries ? response?.entries : [];
-          if(dontResetSectors) {
+          if (dontResetSectors) {
             this.sectorsHomepage = [];
-            for(let i = 0; i < response.aggregations['sectors']?.buckets.length; i++) {
-              const sector = response.aggregations['sectors'].buckets[i];
-              if(UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1) {
+            for (
+              let i = 0;
+              i < response.aggregations["sectors"]?.buckets.length;
+              i++
+            ) {
+              const sector = response.aggregations["sectors"].buckets[i];
+              if (
+                UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1
+              ) {
                 this.sectorsHomepage.push(sector.key);
               }
             }
           }
         }
-          this.loading.pop();
+        this.loading.pop();
       })
       .catch((error) => {
         this.loading.pop();
         if (error && error.message) {
-          if (error.message.toLowerCase() === 'unauthorized') {
+          if (error.message.toLowerCase() === "unauthorized") {
             this.sharedService.redirectToLogin();
           }
         }
@@ -294,20 +392,33 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   async getFavouriteCollection(favouriteUid: string) {
-    const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
+    const queryParams = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 16,
+      queryParams: favouriteUid,
+    };
+    const headers = {
+      "enrichers-document": ["thumbnail", "renditions", "favorites", "tags"],
+      "fetch.document": "properties",
+      properties: "*",
+    };
     this.loading.push(true);
-    this.favouriteCall = this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get();
-    this.favouriteCall.then((response) => {
-        if(response) this.favourites = response?.entries ? response?.entries : [];
+    this.favouriteCall = this.nuxeo.nuxeoClient
+      .request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers })
+      .get();
+    this.favouriteCall
+      .then((response) => {
+        if (response)
+          this.favourites = response?.entries ? response?.entries : [];
         // setTimeout(() => {
-          this.loading.pop();
+        this.loading.pop();
         // }, 0);
       })
       .catch((error) => {
         this.loading.pop();
         if (error && error.message) {
-          if (error.message.toLowerCase() === 'unauthorized') {
+          if (error.message.toLowerCase() === "unauthorized") {
             this.sharedService.redirectToLogin();
           }
         }
@@ -327,7 +438,12 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   calculateNoResultScreen() {
     // if (!this.checkShowDetailview()) return false;
-    return !this.loading.length && this.recentDataShow && !this.recentDataShow.length && !this.documents?.entries.length;
+    return (
+      !this.loading.length &&
+      this.recentDataShow &&
+      !this.recentDataShow.length &&
+      !this.documents?.entries.length
+    );
   }
 
   getDataLength(data: any, primaryType: string) {
@@ -363,11 +479,13 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   clearSelected() {
-    const dataToIterate = !this.documents.length ? this.recentlyViewed : this.documents;
+    const dataToIterate = !this.documents.length
+      ? this.recentlyViewed
+      : this.documents;
     for (let i = 0; i < this.fileSelected.length; i++) {
       for (let j = 0; j < dataToIterate.length; j++) {
         if (dataToIterate[j].uid === this.fileSelected[i].uid) {
-          dataToIterate[j]['isSelected'] = false;
+          dataToIterate[j]["isSelected"] = false;
         }
       }
     }
@@ -378,22 +496,27 @@ export class DocumentComponent implements OnInit, OnChanges {
   dropdownMenu(event: any): void {
     const sortBy = event.target.value;
     if (sortBy) {
-      this.searchCriteria['sortBy'] = sortBy;
-      this.searchCriteria['sortOrder'] = 'desc';
+      this.searchCriteria["sortBy"] = sortBy;
+      this.searchCriteria["sortOrder"] = "desc";
     } else {
-      delete this.searchCriteria['sortBy'];
-      delete this.searchCriteria['sortOrder']
+      delete this.searchCriteria["sortBy"];
+      delete this.searchCriteria["sortOrder"];
     }
     this.emitData(this.searchCriteria);
   }
 
   showMore() {
     this.docSliceInput += 39;
-    if (this.docSliceInput > ASSET_SEARCH_PAGE_SIZE && this.docSliceInput < this.documents.resultsCount) {
-      this.pageCount.emit({ pageNumber: ++this.documents.currentPageIndex, primaryType: this.selectedType });
+    if (
+      this.docSliceInput > ASSET_SEARCH_PAGE_SIZE &&
+      this.docSliceInput < this.documents.resultsCount
+    ) {
+      this.pageCount.emit({
+        pageNumber: ++this.documents.currentPageIndex,
+        primaryType: this.selectedType,
+      });
       this.hideShowMoreBtn = false;
-    }
-    else if (this.docSliceInput >= this.documents.resultsCount) {
+    } else if (this.docSliceInput >= this.documents.resultsCount) {
       this.hideShowMoreBtn = true;
     }
     return;
@@ -409,39 +532,42 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
-    if(!url) return '';
+    if (!url) return "";
     if (!event) {
-      return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+      return `${window.location.origin}/nuxeo/${url.split("/nuxeo/")[1]}`;
     }
 
-    const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    const updatedUrl = `${window.location.origin}/nuxeo/${
+      url.split("/nuxeo/")[1]
+    }`;
     this.modalLoading = true;
-    fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
-      .then(r => {
+    fetch(updatedUrl, {
+      headers: { "X-Authentication-Token": localStorage.getItem("token") },
+    })
+      .then((r) => {
         if (r.status === 401) {
-          localStorage.removeItem('token');
-          this.router.navigate(['login']);
+          localStorage.removeItem("token");
+          this.router.navigate(["login"]);
 
           this.modalLoading = false;
           return;
         }
         return r.blob();
       })
-      .then(d => {
+      .then((d) => {
         event.target.src = window.URL.createObjectURL(d);
 
-    this.modalLoading = false;
+        this.modalLoading = false;
         // event.target.src = new Blob(d);
-      }
-      ).catch(e => {
+      })
+      .catch((e) => {
         // TODO: add toastr with message 'Invalid token, please login again'
 
-          this.modalLoading = false;
-          console.log(e);
+        this.modalLoading = false;
+        console.log(e);
         // if(e.contains(`'fetch' on 'Window'`)) {
         //   this.router.navigate(['login']);
         // }
-
       });
     // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
     // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
@@ -457,7 +583,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (!urls || !urls.length) {
       return;
     }
-    const matchedUrl = urls.find(url => url.name.toLowerCase().includes('original'));
+    const matchedUrl = urls.find((url) =>
+      url.name.toLowerCase().includes("original")
+    );
     return this.getAssetUrl(null, matchedUrl.content.name);
   }
 
@@ -465,20 +593,20 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (!urls || !urls.length) {
       return;
     }
-    const matchedUrl = urls.find(url => url.title.toLowerCase().includes('original'));
+    const matchedUrl = urls.find((url) =>
+      url.title.toLowerCase().includes("original")
+    );
     return this.getAssetUrl(null, matchedUrl.content.data);
   }
 
-
   viewChange(e: any): void {
-    if (e.target.value.toLowerCase() === 'list') {
+    if (e.target.value.toLowerCase() === "list") {
       this.showListView = true;
-      this.viewType = 'LIST';
+      this.viewType = "LIST";
       return;
     }
     this.showListView = false;
-    this.viewType = 'GRID';
-
+    this.viewType = "GRID";
   }
 
   // added for modal
@@ -490,33 +618,37 @@ export class DocumentComponent implements OnInit, OnChanges {
     let fileRenditionUrl;
     this.selectedFile = file;
     // if (!fileType) {
-      switch (fileType) {
-        case 'Picture':
-          fileType = 'image';
-          break;
-        case 'Video':
-          fileType = 'video';
-          break;
-        default:
-          fileType = 'file';
-          break;
-      }
+    switch (fileType) {
+      case "Picture":
+        fileType = "image";
+        break;
+      case "Video":
+        fileType = "video";
+        break;
+      default:
+        fileType = "file";
+        break;
+    }
     // }
-    if(fileType === 'image') {
+    if (fileType === "image") {
       this.markRecentlyViewed(file);
 
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
-    } else if(fileType === 'video') {
-      fileRenditionUrl = file.properties['vid:transcodedVideos'][0]?.content.data || "";
-    } else if (fileType === 'file') {
+    } else if (fileType === "video") {
+      fileRenditionUrl =
+        file.properties["vid:transcodedVideos"][0]?.content.data || "";
+    } else if (fileType === "file") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
       // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
-      fileRenditionUrl = file.properties['file:content'].data;
+      fileRenditionUrl = file.properties["file:content"].data;
       // fileRenditionUrl = url;
     }
-    this.selectedFileUrl = fileType === 'image' ? this.getAssetUrl(null, fileRenditionUrl) : fileRenditionUrl;
+    this.selectedFileUrl =
+      fileType === "image"
+        ? this.getAssetUrl(null, fileRenditionUrl)
+        : fileRenditionUrl;
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
@@ -525,20 +657,20 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   onFileProgress(event: any) {
-    if(!event.loaded) {
-    this.modalLoading = true;
+    if (!event.loaded) {
+      this.modalLoading = true;
     }
-    if(((event.loaded / event.total) * 100) > 1) {
+    if ((event.loaded / event.total) * 100 > 1) {
       this.modalLoading = false;
     }
   }
 
   getNuxeoPdfViewerURL = () => {
     return `${this.baseUrl}/nuxeo/ui//vendor/pdfjs/web/viewer.html?file=`;
-  }
+  };
 
   video(event: any) {
-    console.log('im Play!');
+    console.log("im Play!");
     event.toElement.play();
   }
 
@@ -560,7 +692,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     let found = false;
 
     // tslint:disable-next-line:prefer-const
-    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+    let recentlyViewed =
+      JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
     if (recentlyViewed.length) {
       recentlyViewed.map((item: any, index: number) => {
         if (item.uid === data.uid) {
@@ -570,21 +703,27 @@ export class DocumentComponent implements OnInit, OnChanges {
       });
     }
     if (found) {
-      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed, this.getCircularReplacer()));
+      localStorage.setItem(
+        localStorageVars.RECENTLY_VIEWED,
+        JSON.stringify(recentlyViewed, this.getCircularReplacer())
+      );
       return;
     }
 
-    data['isSelected'] = false;
+    data["isSelected"] = false;
     recentlyViewed.push(data);
-    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed, this.getCircularReplacer()));
+    localStorage.setItem(
+      localStorageVars.RECENTLY_VIEWED,
+      JSON.stringify(recentlyViewed, this.getCircularReplacer())
+    );
     return;
   }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -600,24 +739,27 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   markFavourite(data, favouriteValue) {
     // this.favourite = !this.favourite;
-    if(data.contextParameters.favorites.isFavorite) {
+    if (data.contextParameters.favorites.isFavorite) {
       this.unmarkFavourite(data, favouriteValue);
       return;
     }
     const body = {
       context: {},
       input: data.uid,
-      params: {}
+      params: {},
     };
     this.loading.push(true);
-    this.apiService.post(apiRoutes.MARK_FAVOURITE, body).subscribe((docs: any) => {
-      data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
-      if(favouriteValue === 'recent') {
-        this.markRecentlyViewed(data);
-      }
-      this.addToFavorite(data);
-      this.loading.pop();
-    });
+    this.apiService
+      .post(apiRoutes.MARK_FAVOURITE, body)
+      .subscribe((docs: any) => {
+        data.contextParameters.favorites.isFavorite =
+          !data.contextParameters.favorites.isFavorite;
+        if (favouriteValue === "recent") {
+          this.markRecentlyViewed(data);
+        }
+        this.addToFavorite(data);
+        this.loading.pop();
+      });
   }
 
   addToFavorite(data: any) {
@@ -633,22 +775,25 @@ export class DocumentComponent implements OnInit, OnChanges {
     const body = {
       context: {},
       input: data.uid,
-      params: {}
+      params: {},
     };
     this.loading.push(true);
-    this.apiService.post(apiRoutes.UNMARK_FAVOURITE, body).subscribe((docs: any) => {
-      // data.contextParameters.favorites.isFavorite = this.favourite;
-      data.contextParameters.favorites.isFavorite = !data.contextParameters.favorites.isFavorite;
-      this.removeFromFavorite(data.uid);
-      if(favouriteValue === 'recent') {
-        this.markRecentlyViewed(data);
-      }
-      this.loading.pop();
-    });
+    this.apiService
+      .post(apiRoutes.UNMARK_FAVOURITE, body)
+      .subscribe((docs: any) => {
+        // data.contextParameters.favorites.isFavorite = this.favourite;
+        data.contextParameters.favorites.isFavorite =
+          !data.contextParameters.favorites.isFavorite;
+        this.removeFromFavorite(data.uid);
+        if (favouriteValue === "recent") {
+          this.markRecentlyViewed(data);
+        }
+        this.loading.pop();
+      });
   }
 
   removeFromFavorite(uid: string) {
-    const indexOfItemToRemove = this.favourites.findIndex(f => f.uid === uid);
+    const indexOfItemToRemove = this.favourites.findIndex((f) => f.uid === uid);
     this.favourites.splice(indexOfItemToRemove, 1);
     return;
   }
@@ -658,9 +803,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getNames(users: any) {
-    let result = '';
-    users.map(user => {
-      result += user.id + ', ';
+    let result = "";
+    users.map((user) => {
+      result += user.id + ", ";
     });
     return result;
   }
@@ -720,38 +865,58 @@ export class DocumentComponent implements OnInit, OnChanges {
   count(type?: string) {
     if (!type) {
       let total = 0;
-      this.documents.aggregations?.system_primaryType_agg?.extendedBuckets.forEach(b => {
-        total += b.docCount;
-      });
+      this.documents.aggregations?.system_primaryType_agg?.extendedBuckets.forEach(
+        (b) => {
+          total += b.docCount;
+        }
+      );
       return total;
     }
-    const bucket = this.documents.aggregations?.system_primaryType_agg?.extendedBuckets.find(b => b.key === type);
+    const bucket =
+      this.documents.aggregations?.system_primaryType_agg?.extendedBuckets.find(
+        (b) => b.key === type
+      );
     return bucket?.docCount || 0;
   }
 
   checkShowDetailview() {
-    return this.showDetailView || (this.documents && this.documents.entries?.length > 0) || this.searchTerm.ecm_fulltext;
+    return (
+      this.showDetailView ||
+      (this.documents && this.documents.entries?.length > 0) ||
+      this.searchTerm.ecm_fulltext
+    );
   }
 
   async getRecentUpdated() {
-    const query = "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND "
-      + "ecm:isTrashed = 0 AND (ecm:primaryType IN ('File') OR ecm:mixinType IN ('Picture', 'Audio', 'Video')) AND "
-      + `dc:creator = '${this.userId}' ORDER BY dc:created DESC`;
+    const query =
+      "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND " +
+      "ecm:isTrashed = 0 AND (ecm:primaryType IN ('File') OR ecm:mixinType IN ('Picture', 'Audio', 'Video')) AND " +
+      `dc:creator = '${this.userId}' ORDER BY dc:created DESC`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
       pageSize: 20,
-      queryParams: query
+      queryParams: query,
     };
-    const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
-    this.recentUpdated = res["entries"].map(e => e);
+    const res = await this.apiService
+      .get(apiRoutes.NXQL_SEARCH, { params })
+      .toPromise();
+    this.recentUpdated = res["entries"].map((e) => e);
     // this.recentDataShow = [...this.recentUpdated];
   }
 
   getFilterCount() {
     let count = 0;
-    Object.keys(this.filters).forEach(key => {
-      if (["system_primaryType_agg", "sectors", "dublincore_sector_agg", "system_tag_agg"].includes(key)) return;
+    Object.keys(this.filters).forEach((key) => {
+      if (
+        [
+          "system_primaryType_agg",
+          "sectors",
+          "dublincore_sector_agg",
+          "system_tag_agg",
+        ].includes(key)
+      )
+        return;
       const filter = this.filters[key];
       if (Array.isArray(filter) && filter.length > 0) {
         count += filter.length;
@@ -781,38 +946,38 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   unSubscribeCurrentAPICalls() {
-    if(!this.preFavouriteCall?.closed) this.preFavouriteCall.dispose();
-    if(this.favouriteCall) this.favouriteCall.dispose();
-    if(this.assetBySectorCall) this.assetBySectorCall.dispose();
+    if (!this.preFavouriteCall?.closed) this.preFavouriteCall.dispose();
+    if (this.favouriteCall) this.favouriteCall.dispose();
+    if (this.assetBySectorCall) this.assetBySectorCall.dispose();
     return;
   }
 
   createStaticDocumentResults(docs) {
-    return  {
-      entries: docs
-    }
+    return {
+      entries: docs,
+    };
   }
 
   getDetailViewTitle() {
-    switch(this.detailView) {
+    switch (this.detailView) {
       case "recentUpload":
-        return 'Recently Uploaded';
+        return "Recently Uploaded";
       case "recentView":
-        return 'Recently Viewed'
+        return "Recently Viewed";
       case "favourite":
-        return 'Your Favorites';
+        return "Your Favorites";
       case "sectorPage":
-        return 'Asset by Sectors';
+        return "Asset by Sectors";
     }
 
-    return '';
+    return "";
   }
 
   resetView() {
     this.showDetailView = false;
     this.detailView = null;
     this.detailDocuments = null;
-    this.selectedType = 'all';
+    this.selectedType = "all";
     this.getAssetBySectors();
     this.assetsBySectorSelected = null;
 
@@ -823,13 +988,14 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
   }
 
-  over(index){
+  over(index) {
     this.masoneryItemIndex = index;
   }
 
-  out(){
+  out() {
     this.masoneryItemIndex = null;
   }
-
-
+  searchRelatedClick(searchTerm) {
+    this.dataService.termSearchInit(searchTerm);
+  }
 }

@@ -12,14 +12,14 @@ import { DocumentComponent } from 'src/app/document/document.component';
 import { data } from 'jquery';
 import { ApiService } from 'src/app/services/api.service';
 @Component({
-  selector: 'app-search',
-  styleUrls: ['./search.component.css'],
-  templateUrl: './search.component.html'
+  selector: "app-search",
+  styleUrls: ["./search.component.css"],
+  templateUrl: "./search.component.html",
 })
 export class SearchComponent implements OnInit {
-  @ViewChild('advancedFilter') advancedFilter: SideDrawerComponent;
-  @ViewChild('documentsView') documentsView: DocumentComponent;
-  searchValue: IHeaderSearchCriteria = { ecm_fulltext: '', highlight: '' };
+  @ViewChild("advancedFilter") advancedFilter: SideDrawerComponent;
+  @ViewChild("documentsView") documentsView: DocumentComponent;
+  searchValue: IHeaderSearchCriteria = { ecm_fulltext: "", highlight: "" };
   documents: any = { aggregations: {}, entries: [], resultsCount: 0 };
   loading = false;
   error = undefined;
@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit {
     nxtag_sceneDetectionTag_agg: { buckets: [], selection: [] },
     nxtag_weatherClassificationTag_agg: { buckets: [], selection: [] },
     dublincore_sector_agg: { buckets: [], selection: [] },
-    dublincore_created_agg: { buckets: [], selection: [] }
+    dublincore_created_agg: { buckets: [], selection: [] },
   };
   aggregationsMetaData;
   filtersParams = {};
@@ -48,6 +48,7 @@ export class SearchComponent implements OnInit {
   audio: any = { aggregations: {}, entries: [], resultsCount: 0 };
   files: any = { aggregations: {}, entries: [], resultsCount: 0 };
   tagsMetadata: any = { bucket: [], selection: [] };
+  tagsMetadataNew: any = { bucket: [], selection: [] };
   apiToHit: any = { Picture: {}, Video: {}, Audio: {} };
   count = 0; // for multiple api calls
   sectors = [];
@@ -65,47 +66,52 @@ export class SearchComponent implements OnInit {
     private sharedService: SharedService,
     private dataService: DataService,
     private apiService: ApiService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.fetchMostSearchedTags();
     this.fetchUserData();
     this.fetchFavoriteCollection();
 
-    if (!this.nuxeo.nuxeoClient || !localStorage.getItem('token')) {
+    if (!this.nuxeo.nuxeoClient || !localStorage.getItem("token")) {
       this.sharedService.redirectToLogin();
       return;
     }
 
-    this.dataService.sectorSelected$.subscribe((sectorSelected: IHeaderSearchCriteria) => {
-      this.filtersParams['sectors'] = `["${sectorSelected}"]`;
-      this.filters(this.filtersParams);
-    });
+    this.dataService.sectorSelected$.subscribe(
+      (sectorSelected: IHeaderSearchCriteria) => {
+        this.filtersParams["sectors"] = `["${sectorSelected}"]`;
+        this.filters(this.filtersParams);
+      }
+    );
 
     this.dataService.termSearch$.subscribe((searchTerm: string) => {
       let data: IHeaderSearchCriteria = {
         ecm_fulltext: searchTerm,
-        highlight: "dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name"
+        highlight:
+          "dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name",
       };
       this.searchTerm(data);
     });
 
     this.dataService.resetFilter$.subscribe(() => {
       this.fetchMostSearchedTags();
-      this.filtersParams['ecm_fulltext'] = '';
-      this.searchValue = { ecm_fulltext: '', highlight: '' };
+      this.filtersParams["ecm_fulltext"] = "";
+      this.searchValue = { ecm_fulltext: "", highlight: "" };
     });
     // this.connectToNuxeo();
   }
 
   fetchMostSearchedTags() {
-    this.apiService.get('/searchTerm/fetch').subscribe((response: any) => {
-      const buckets = response?.data?.properties.buckets.filter(item => {
-        if(item.key.trim())
-         return item;
+    this.apiService.get("/searchTerm/fetch").subscribe((response: any) => {
+      const buckets = response?.data?.properties?.buckets.filter((item) => {
+        if (item.key.trim()) return item;
       });
-      response.data.properties.buckets = buckets;
+      if (response?.data?.properties?.buckets)
+        response.data.properties.buckets = buckets;
       this.tagsMetadata = response?.data?.properties || [];
+      this.tagsMetadataNew = response?.data?.properties || [];
+      //  response?.data?.properties || [];
     });
   }
 
@@ -131,38 +137,40 @@ export class SearchComponent implements OnInit {
   }
 
   searchDocuments(dataParam: IHeaderSearchCriteria, pageNumber?: any) {
-
     this.error = undefined;
-    this.filtersParams['ecm_fulltext'] = this.searchValue?.ecm_fulltext?.toLowerCase() || '';
-    this.filtersParams['highlight'] = this.searchValue.highlight || '';
-    this.filtersParams['sortBy'] = dataParam['sortBy'] || '';
-    this.filtersParams['sortOrder'] = dataParam['sortOrder'] || '';
+    this.filtersParams["ecm_fulltext"] =
+      this.searchValue?.ecm_fulltext?.toLowerCase() || "";
+    this.filtersParams["highlight"] = this.searchValue.highlight || "";
+    this.filtersParams["sortBy"] = dataParam["sortBy"] || "";
+    this.filtersParams["sortOrder"] = dataParam["sortOrder"] || "";
 
-    if(this.documentsView.sectorSelected) {
-      this.filtersParams['sectors'] = `["${this.documentsView.sectorSelected}"]`;
+    if (this.documentsView.sectorSelected) {
+      this.filtersParams[
+        "sectors"
+      ] = `["${this.documentsView.sectorSelected}"]`;
     } else {
-      delete this.filtersParams['sectors'];
+      delete this.filtersParams["sectors"];
     }
     const data = this.filtersParams;
 
-
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40 };
     for (const key in data) {
-      if (typeof data[key] !== 'string' && typeof data[key] !== 'number') {
+      if (typeof data[key] !== "string" && typeof data[key] !== "number") {
         data[key].map((item: string) => {
           if (queryParams[key]) {
-            queryParams[key] = queryParams[key].split(']')[0] + `,"${item.toString()}"]`;
+            queryParams[key] =
+              queryParams[key].split("]")[0] + `,"${item.toString()}"]`;
+          } else {
+            queryParams[key] = `["${item.toString()}"]`;
           }
-          else { queryParams[key] = `["${item.toString()}"]`; }
         });
       } else {
         queryParams[key] = data[key];
       }
     }
-    if (queryParams['dublincore_sector_agg'] !== undefined) {
-      if (queryParams['dublincore_sector_agg'] === '[""]') {
-        delete queryParams['dublincore_sector_agg']
-
+    if (queryParams["dublincore_sector_agg"] !== undefined) {
+      if (queryParams["dublincore_sector_agg"] === '[""]') {
+        delete queryParams["dublincore_sector_agg"];
       }
     }
     this.hitSearchApi(queryParams, pageNumber);
@@ -176,10 +184,12 @@ export class SearchComponent implements OnInit {
   }
 
   insertSearchTerm(term: string) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.apiService.post('/searchTerm/insert?term='+term+'&username='+user.email, {}).subscribe(response => {
-      console.log(response);
-    });
+    const user = JSON.parse(localStorage.getItem("user"));
+    this.apiService
+      .post("/searchTerm/insert?term=" + term + "&username=" + user.email, {})
+      .subscribe((response) => {
+        console.log(response);
+      });
   }
 
   populateQueryParams(queryParams) {
@@ -187,10 +197,22 @@ export class SearchComponent implements OnInit {
   }
 
   fetchApiResult(params, isShowMore: boolean = false) {
-    const headers = { 'enrichers-document': ['thumbnail', 'tags', 'favorites', 'audit', 'renditions', 'preview'], 'fetch.document': 'properties', properties: '*', 'enrichers.user': 'userprofile' };
+    const headers = {
+      "enrichers-document": [
+        "thumbnail",
+        "tags",
+        "favorites",
+        "audit",
+        "renditions",
+        "preview",
+      ],
+      "fetch.document": "properties",
+      properties: "*",
+      "enrichers.user": "userprofile",
+    };
     let url = apiRoutes.SEARCH_PP_ASSETS;
 
-    switch(this.detailViewType) {
+    switch (this.detailViewType) {
       case "recentUpload":
         url = apiRoutes.FETCH_RECENT_UPLOAD;
         params.queryParams = this.user;
@@ -203,25 +225,27 @@ export class SearchComponent implements OnInit {
         params.queryParams = this.favoriteCollectionId;
         break;
       case "sectorPage":
-        params['sortBy'] = 'dc:created';
-        params['sortOrder'] = 'desc';
+        params["sortBy"] = "dc:created";
+        params["sortOrder"] = "desc";
         if (this.documentsView.sectorSelected) {
-          params['sectors'] = `["${this.documentsView.sectorSelected}"]`;
+          params["sectors"] = `["${this.documentsView.sectorSelected}"]`;
         }
         break;
       // default:
-
     }
     if (!url) return;
 
     this.dataService.loaderValueChange(true);
-    this.nuxeo.nuxeoClient.request(url, { queryParams: params, headers })
-      .get().then((docs) => {
+    this.nuxeo.nuxeoClient
+      .request(url, { queryParams: params, headers })
+      .get()
+      .then((docs) => {
         this.setData(docs, isShowMore);
         this.getAggregationValues();
         this.dataService.loaderValueChange(false);
-      }).catch((error) => {
-        console.log('search document error = ', error);
+      })
+      .catch((error) => {
+        console.log("search document error = ", error);
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         if (--this.count === 0) {
           this.getAggregationValues();
@@ -231,13 +255,25 @@ export class SearchComponent implements OnInit {
       });
   }
 
-  fetchNextPageResults(count, data: { primaryType: string, pageNumber: number }) {
+  fetchNextPageResults(
+    count,
+    data: { primaryType: string; pageNumber: number }
+  ) {
     this.count = count;
     let queryParams;
-    if(data.primaryType.toLowerCase() !== 'all') {
-      queryParams = { currentPageIndex: data.pageNumber, offset: 0, pageSize: 40, system_primaryType_agg: `["${data.primaryType}"]` };
+    if (data.primaryType.toLowerCase() !== "all") {
+      queryParams = {
+        currentPageIndex: data.pageNumber,
+        offset: 0,
+        pageSize: 40,
+        system_primaryType_agg: `["${data.primaryType}"]`,
+      };
     } else {
-      queryParams = { currentPageIndex: data.pageNumber, offset: 0, pageSize: 40 };
+      queryParams = {
+        currentPageIndex: data.pageNumber,
+        offset: 0,
+        pageSize: 40,
+      };
     }
     this.fetchApiResult(queryParams, true);
     return;
@@ -253,10 +289,22 @@ export class SearchComponent implements OnInit {
   }
 
   cloneQueryParamsForPrimaryTypes(queryParams: any) {
-    this.apiToHit.Picture = Object.assign({ 'system_primaryType_agg': 'Picture' }, queryParams);
-    this.apiToHit.Video = Object.assign({ 'system_primaryType_agg': 'Video' }, queryParams);
-    this.apiToHit.Audio = Object.assign({ 'system_primaryType_agg': 'Audio' }, queryParams);
-    this.apiToHit.File = Object.assign({ 'system_primaryType_agg': 'File' }, queryParams);
+    this.apiToHit.Picture = Object.assign(
+      { system_primaryType_agg: "Picture" },
+      queryParams
+    );
+    this.apiToHit.Video = Object.assign(
+      { system_primaryType_agg: "Video" },
+      queryParams
+    );
+    this.apiToHit.Audio = Object.assign(
+      { system_primaryType_agg: "Audio" },
+      queryParams
+    );
+    this.apiToHit.File = Object.assign(
+      { system_primaryType_agg: "File" },
+      queryParams
+    );
     return;
   }
 
@@ -275,7 +323,10 @@ export class SearchComponent implements OnInit {
       this.resetResults();
     }
     this.resetTagsMetadata();
-    if (isShowMore) this.documents.entries = new Object(this.documents.entries.concat(data.entries));
+    if (isShowMore)
+      this.documents.entries = new Object(
+        this.documents.entries.concat(data.entries)
+      );
     else this.documents = data;
   }
 
@@ -285,96 +336,118 @@ export class SearchComponent implements OnInit {
     let pictureIndex;
     let audioIndex;
 
-    if (queryParams['system_mimetype_agg']) {
-      const dataToIterate = JSON.parse(queryParams['system_mimetype_agg']);
-      const mimeTypeValue = queryParams['system_mimetype_agg'];
+    if (queryParams["system_mimetype_agg"]) {
+      const dataToIterate = JSON.parse(queryParams["system_mimetype_agg"]);
+      const mimeTypeValue = queryParams["system_mimetype_agg"];
       if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
         if (mimeTypeValue.toLowerCase().includes(constants.VIDEO_SMALL_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          let newMime = '';
-          dataToIterate.map(mimeType => {
+          queryParams["system_primaryType_agg"] = `['${primaryType}']`;
+          let newMime = "";
+          dataToIterate.map((mimeType) => {
             if (mimeType.includes(constants.VIDEO_SMALL_CASE)) {
               newMime += `"${mimeType}",`;
             }
           });
-          queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
+          queryParams["system_mimetype_agg"] = `[${newMime.substr(
+            0,
+            newMime.length - 1
+          )}]`;
         } else {
-          queryParams['system_primaryType_agg'] = [];
+          queryParams["system_primaryType_agg"] = [];
         }
       }
 
       if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
         if (mimeTypeValue.toLowerCase().includes(constants.IMAGE_SMALL_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          let newMime = '';
-          dataToIterate.map(mimeType => {
+          queryParams["system_primaryType_agg"] = `['${primaryType}']`;
+          let newMime = "";
+          dataToIterate.map((mimeType) => {
             if (mimeType.includes(constants.IMAGE_SMALL_CASE)) {
               newMime += `"${mimeType}",`;
             }
           });
-          queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
+          queryParams["system_mimetype_agg"] = `[${newMime.substr(
+            0,
+            newMime.length - 1
+          )}]`;
         } else {
-          queryParams['system_primaryType_agg'] = [];
+          queryParams["system_primaryType_agg"] = [];
         }
       }
 
       if (primaryType.toLowerCase() === constants.AUDIO_SMALL_CASE) {
         if (mimeTypeValue.toLowerCase().includes(constants.AUDIO_SMALL_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          let newMime = '';
-          dataToIterate.map(mimeType => {
+          queryParams["system_primaryType_agg"] = `['${primaryType}']`;
+          let newMime = "";
+          dataToIterate.map((mimeType) => {
             if (mimeType.includes(constants.AUDIO_SMALL_CASE)) {
               newMime += `"${mimeType}",`;
             }
           });
-          queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
+          queryParams["system_mimetype_agg"] = `[${newMime.substr(
+            0,
+            newMime.length - 1
+          )}]`;
         } else {
-          queryParams['system_primaryType_agg'] = [];
+          queryParams["system_primaryType_agg"] = [];
         }
       }
 
       if (primaryType.toLowerCase() === constants.FILE_SMALL_CASE) {
         if (mimeTypeValue.toLowerCase().includes(constants.FILE_SMALL_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          let newMime = '';
-          dataToIterate.map(mimeType => {
+          queryParams["system_primaryType_agg"] = `['${primaryType}']`;
+          let newMime = "";
+          dataToIterate.map((mimeType) => {
             if (mimeType.includes(constants.FILE_SMALL_CASE)) {
               newMime += `"${mimeType}",`;
             }
           });
-          queryParams['system_mimetype_agg'] = `[${newMime.substr(0, newMime.length - 1)}]`;
+          queryParams["system_mimetype_agg"] = `[${newMime.substr(
+            0,
+            newMime.length - 1
+          )}]`;
         } else {
-          queryParams['system_primaryType_agg'] = [];
+          queryParams["system_primaryType_agg"] = [];
         }
       }
     }
 
-
-    if (queryParams['asset_width_agg'] || queryParams['asset_height_agg']) {
-
+    if (queryParams["asset_width_agg"] || queryParams["asset_height_agg"]) {
       if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
-        if (queryParams['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-        } else queryParams['system_primaryType_agg'] = [];
+        if (
+          queryParams["system_primaryType_agg"].includes(
+            constants.VIDEO_TITLE_CASE
+          )
+        ) {
+          queryParams["system_primaryType_agg"] = `['${primaryType}']`;
+        } else queryParams["system_primaryType_agg"] = [];
       }
       if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
-        if (queryParams['system_primaryType_agg'].includes(constants.PICTURE_TITLE_CASE)) {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-        } else queryParams['system_primaryType_agg'] = [];
+        if (
+          queryParams["system_primaryType_agg"].includes(
+            constants.PICTURE_TITLE_CASE
+          )
+        ) {
+          queryParams["system_primaryType_agg"] = `['${primaryType}']`;
+        } else queryParams["system_primaryType_agg"] = [];
       }
       if (primaryType.toLowerCase() === constants.AUDIO_SMALL_CASE) {
-        queryParams['system_primaryType_agg'] = [];
+        queryParams["system_primaryType_agg"] = [];
       }
     }
 
-    if (queryParams['video_duration_agg']) {
+    if (queryParams["video_duration_agg"]) {
       if (primaryType.toLowerCase() === constants.VIDEO_SMALL_CASE) {
-        if (queryParams['system_primaryType_agg']) {
-          if (queryParams['system_primaryType_agg'].includes(constants.VIDEO_TITLE_CASE)) {
-            queryParams['system_primaryType_agg'] = `['${primaryType}']`;
-          } else queryParams['system_primaryType_agg'] = [];
+        if (queryParams["system_primaryType_agg"]) {
+          if (
+            queryParams["system_primaryType_agg"].includes(
+              constants.VIDEO_TITLE_CASE
+            )
+          ) {
+            queryParams["system_primaryType_agg"] = `['${primaryType}']`;
+          } else queryParams["system_primaryType_agg"] = [];
         } else {
-          queryParams['system_primaryType_agg'] = `['${primaryType}']`;
+          queryParams["system_primaryType_agg"] = `['${primaryType}']`;
         }
       }
       if (primaryType.toLowerCase() === constants.PICTURE_SMALL_CASE) {
@@ -382,7 +455,7 @@ export class SearchComponent implements OnInit {
         //   queryParams['system_primaryType_agg'] = `['${primaryType}']`;
         //   queryParams['video_duration_agg'] = `[]`;
         // } else {
-        queryParams['system_primaryType_agg'] = [];
+        queryParams["system_primaryType_agg"] = [];
         // }
       }
       if (primaryType.toLowerCase() === constants.AUDIO_SMALL_CASE) {
@@ -390,7 +463,7 @@ export class SearchComponent implements OnInit {
         //   queryParams['system_primaryType_agg'] = `['${primaryType}']`;
         //   queryParams['video_duration_agg'] = `[]`;
         // } else {
-        queryParams['system_primaryType_agg'] = [];
+        queryParams["system_primaryType_agg"] = [];
         // }
       }
     }
@@ -413,39 +486,58 @@ export class SearchComponent implements OnInit {
 
   setTagsMetadata() {
     this.tagsMetadata = this.metaData.system_tag_agg || [];
-    this.metaData[AGGREGATE_TAGS.ACTIVITY_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
-    this.metaData[AGGREGATE_TAGS.EMOTION_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    this.metaData[AGGREGATE_TAGS.ACTIVITY_DETECTION]?.buckets.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.metaData[AGGREGATE_TAGS.EMOTION_DETECTION]?.buckets.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
     // this.metaData[AGGREGATE_TAGS.NX_TAGS]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
-    this.metaData[AGGREGATE_TAGS.OBJECT_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
-    this.metaData[AGGREGATE_TAGS.OCR_TAGS]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
-    this.metaData[AGGREGATE_TAGS.SCENE_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
-    this.metaData[AGGREGATE_TAGS.WEATHER_CLASSIFICATION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
-    this.metaData[AGGREGATE_TAGS.PUBLIC_FIGURE_DETECTION]?.buckets.map((item) => this.checkDuplicateAndAddTags(item));
+    this.metaData[AGGREGATE_TAGS.OBJECT_DETECTION]?.buckets.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.metaData[AGGREGATE_TAGS.OCR_TAGS]?.buckets.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.metaData[AGGREGATE_TAGS.SCENE_DETECTION]?.buckets.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.metaData[AGGREGATE_TAGS.WEATHER_CLASSIFICATION]?.buckets.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.metaData[AGGREGATE_TAGS.PUBLIC_FIGURE_DETECTION]?.buckets.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.dataService.tagsMetaRealInit(this.tagsMetadata.buckets);
   }
 
-  checkDuplicateAndAddTags(tag: {key: string, count: number}): void {
-    if(this.tagsMetadata.buckets.find(item => item.id === tag.key)) {
+  checkDuplicateAndAddTags(tag: { key: string; count: number }): void {
+    if (this.tagsMetadata.buckets.find((item) => item.id === tag.key)) {
       return;
-    } else if(unwantedTags.indexOf(tag.key.toLowerCase()) === -1) {
+    } else if (unwantedTags.indexOf(tag.key.toLowerCase()) === -1) {
       this.tagsMetadata.buckets.push(tag);
     }
     return;
   }
 
   resetTagsMetadata() {
-    this.metaData.system_tag_agg = { buckets: [], selection: [] }
+    this.metaData.system_tag_agg = { buckets: [], selection: [] };
   }
 
   resetAggregationsMetaData() {
     this.aggregationsMetaData = {
-      system_primaryType_agg: { buckets: [], selection: [], extendedBuckets: [] },
+      system_primaryType_agg: {
+        buckets: [],
+        selection: [],
+        extendedBuckets: [],
+      },
       system_mimetype_agg: { buckets: [], selection: [] },
       asset_width_agg: { buckets: [], selection: [] },
       asset_height_agg: { buckets: [], selection: [] },
       video_duration_agg: { buckets: [], selection: [] },
       system_tag_agg: { buckets: [], selection: [] },
       dublincore_sector_agg: { buckets: [], selection: [] },
-      dublincore_created_agg: { buckets: [], selection: [] }
+      dublincore_created_agg: { buckets: [], selection: [] },
     };
   }
 
@@ -453,8 +545,8 @@ export class SearchComponent implements OnInit {
     const tmpFilters = Object.assign({}, this.filtersParams);
     const params = {};
     // this.fetchMostSearchedTags();
-    params['ecm_fulltext'] = tmpFilters['ecm_fulltext'] || '';
-    params['highlight'] = tmpFilters['highlight'] || '';
+    params["ecm_fulltext"] = tmpFilters["ecm_fulltext"] || "";
+    params["highlight"] = tmpFilters["highlight"] || "";
     this.resetAggregationsMetaData();
     if (reload) {
       this.filters(params);
@@ -478,15 +570,16 @@ export class SearchComponent implements OnInit {
     if (this.nuxeo.nuxeoClient) {
       const res = await this.nuxeo.nuxeoClient.connect();
       this.user = res.user.id;
-      localStorage.setItem('user', JSON.stringify(res.user.properties));
+      localStorage.setItem("user", JSON.stringify(res.user.properties));
     }
   }
 
   async fetchFavoriteCollection() {
     if (this.nuxeo.nuxeoClient) {
-      const res = await this.nuxeo.nuxeoClient.operation("Favorite.Fetch").execute();
+      const res = await this.nuxeo.nuxeoClient
+        .operation("Favorite.Fetch")
+        .execute();
       this.favoriteCollectionId = res.uid;
     }
   }
-
 }

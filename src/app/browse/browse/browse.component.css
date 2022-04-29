@@ -228,8 +228,7 @@ section.lpBAck:before, .lpSecOne:before {
   font-size: 15px;
   line-height: 24px;
   color: #23211E;
-  padding-top: 15px;
-
+  padding-top: 5px;
   font-weight: normal;
 }
 .folderCircle{
@@ -668,14 +667,13 @@ font-weight: 600;
   border-radius: 8px;
   border: 1px solid #F6F5F2;
   width: 100%;
-background-color: #F6F5F2;
-font-weight: bold;
-font-size: 16px;
-line-height: 25px;
-color: #413E3C;
+  background-color: #F6F5F2;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 25px;
+  color: #000;
 }
 .search-bar::placeholder{
-  color: #413E3C !important;
   font-weight: 100;
 }
 .search-btn{
@@ -772,7 +770,7 @@ color: #413E3C;
   background: rgba(0, 0, 0, 0.80);
   padding: 3px 10px;
   font-size: 13px;
-  color: #fff;
+  color: #fff !important;
   font-weight: normal;
   width: max-content;
   border-radius: 40px;
@@ -1144,14 +1142,21 @@ font-weight: 600;
 }
 ul.uploadAssetsClassifications {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 30px;
 }
 ul.uploadAssetsClassifications li {
   float: left;
-  padding-left: 20px;
+  margin-right: 25px;
   vertical-align: middle;
   position: relative;
   /* cursor: pointer; */
+}
+ul.uploadAssetsClassifications li:last-child {
+  margin-right: 0px;
+}
+ul.uploadAssetsClassifications li:nth-child(2) .customToolTipWorkspace {
+  left: auto;
+  right: 0px;
 }
 ul.uploadAssetsClassifications li img {
   display: inline-block;
@@ -1193,7 +1198,7 @@ ul.uploadAssetsClassifications li:after {
   height: 20px;
   width: 100%;
   position: absolute;
-  bottom: -14px;
+  bottom: -19px;
   right: 0;
 }
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
@@ -1244,10 +1249,14 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   padding: 20px;
   top: 35px;
 }
-.workspaceInfo .workspaceHeading, .workspaceInfo p {
+.workspaceInfoBlock {
+  background: #23211E !important;
+  width: 328px !important;
+}
+.workspaceInfo .workspaceHeading, .workspaceInfo p, .workspaceHeading, .workspaceInfoBlock p {
   color: #fff;
 }
-.workspaceInfo .workspaceHeading {
+.workspaceInfo .workspaceHeading, .workspaceInfo .workspaceHeading {
   font-weight: 600;
   font-size: 16px;
   padding-bottom: 10px;
@@ -1315,4 +1324,161 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 }
 ::ng-deep .mat-simple-snackbar {
   text-align: center !important;
+}
+
+.renameFolderImg, .renameFolderRemoveImg {
+  display: inline-block;
+  max-width: 18px;
+  cursor: pointer;
+  vertical-align: -1px;
+}
+.renameFolderRemoveImg {
+  max-width: 30px;
+  vertical-align: -8px;
+  margin-left: 10px;
+}
+
+.input-sizer {
+  display: inline-grid;
+  vertical-align: middle;
+  align-items: center;
+  position: relative;
+  border: solid 0px;
+  padding: 0em 0.1em;
+  margin: 0;
+}
+.input-sizer.stacked {
+  padding: 0.5em;
+  align-items: stretch;
+}
+.input-sizer.stacked::after,
+.input-sizer.stacked input,
+.input-sizer.stacked textarea {
+  grid-area: 2/1;
+}
+.input-sizer::after,
+.input-sizer input,
+.input-sizer textarea {
+  width: auto;
+  min-width: 10px;
+  grid-area: 1/2;
+  font: inherit;
+  padding: 0px 3px 6px;
+  margin: 0;
+  resize: none;
+  background: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  font-size: 24px;
+  color: #000;
+  line-height: 32px;
+  background: #F0DD99;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+}
+.input-sizer span {
+  padding: 0.25em;
+}
+.input-sizer::after {
+  content: attr(data-value) " ";
+  visibility: hidden;
+  white-space: pre-wrap;
+}
+/* .input-sizer:focus-within {
+  outline: solid 1px blue;
+  box-shadow: 4px 4px 0px blue;
+} */
+.input-sizer:focus-within > span {
+  color: #000;
+}
+.input-sizer:focus-within textarea:focus,
+.input-sizer:focus-within input:focus {
+  outline: none;
+  color: #000;
+  opacity: 1;
+}
+.input-sizer ::-webkit-input-placeholder,
+.input-sizer ::-webkit-input-placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.input-sizer :-ms-input-placeholder,
+.input-sizer :-ms-input-placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.input-sizer ::placeholder,
+.input-sizer ::placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.classificationsIcon {
+  cursor: pointer;
+}
+.classificationsIcon:hover path {
+  stroke:#DAAA00;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li {
+  cursor: auto;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li:hover {
+  opacity: 1;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li .workspaceHeading {
+  font-weight: 600;
+  font-size: 16px;
+  padding-bottom: 10px;
+}
+.tollTipWorkspace {
+  position: relative;
+}
+.customToolTipWorkspace {
+  display: none;
+  position: absolute;
+  top: 28px;
+  left: 0px;
+  z-index: 9;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: #413E3C;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  white-space: nowrap;
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  width: max-content;
+}
+.tollTipWorkspace:hover .customToolTipWorkspace {
+  display: block;
+}
+ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorkspace {
+  right: 0;
+}
+.positionRelative input.search-bar::placeholder{
+  color: #413E3C !important;
+}
+
+.dateFileSize {padding-top: 10px; overflow: hidden;}
+.dateFileSize li {float: left;padding-right: 10px;padding-left: 6px; line-height: 20px; position: relative; color: #24221f}
+.dateFileSize li:after{content:'';width: 1px; height: 13px; background: #BAB8B2; position: absolute; right: 0px; top: 4px}
+.dateFileSize li:first-child {padding-left: 0px}
+.dateFileSize li:last-child:after {width: 0px}
+.dateFileSize li img {max-width: 16px;vertical-align: -2px;display: inline-block;margin-right: 5px;}
+
+.folderListview .tollTipCustom .tolltipContent {
+  top: 45px;
+  left: 0px;
+  background: #413E3C;
+  padding: 2px 20px;
+  color: #fff !important;
+  border-radius: 4px;
 }

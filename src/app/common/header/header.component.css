@@ -556,7 +556,7 @@ header.updateHeader .navbar .navbar-collapse {
 .tollTipCustom .tolltipContent {
     position: absolute;
     top: 46px;
-    left: 40px;
+    left: 20px;
     background: #413e3c;
     padding: 3px 10px;
     font-size: 13px;
@@ -663,4 +663,20 @@ header.updateHeader .navbar .navbar-collapse {
 .workspaceFoldersScrollBar {
     overflow: auto;
     height: 245px;
+}
+@media (max-width: 768px) {
+    .customSearchBar {
+        display: none;
+    }
+}
+@media (max-width: 700px) {
+    header.updateHeader .navbar .navbar-collapse {
+        margin-top: 0px;
+    }
+    .navbar-collapse {
+        box-shadow: none !important;
+    }
+    .mobileVideoIcon {
+        display: none;
+    }
 }

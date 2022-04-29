@@ -1,6 +1,8 @@
 <app-header *ngIf="showHeader" (selectedTab)="checkSelectedTab($event)"></app-header>
 
-<router-outlet></router-outlet>
+<main [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
+  <router-outlet #o="outlet"></router-outlet>
+</main>
 <!-- <div class="tooltip1">
   <button *ngIf="showAddButton" mat-fab class="float" color="primary" aria-label="Add" (click)="openModal()">
     <mat-icon>add</mat-icon>

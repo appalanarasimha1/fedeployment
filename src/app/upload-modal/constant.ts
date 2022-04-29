@@ -5,8 +5,8 @@ export const ACCESS = {
 };
 
 export const ACCESS_LABEL = {
-  "All access": "Public",
-  "Internal access only": "Users with a NEOM email account only",
+  "All access": "Public - external collaborators",
+  "Internal access only": "Internal - employees and contractors with NEOM emails",
   "Restricted access only": "Specific users",
 };
 
@@ -46,9 +46,9 @@ export const GROUPS = {
 
 export const UNWANTED_WORKSPACES = ['domain'];
 
-export const SPECIFIC_USER_LABEL = "Please specify the users";
+export const SPECIFIC_USER_LABEL = "Please specify who can access";
 
-export const OWNER_APPROVAL_LABEL = "Please specify the approver";
+export const OWNER_APPROVAL_LABEL = "Please specify who can approve";
 
 export const YEARS = [
   {id: 1, name: '2000'},
@@ -76,3 +76,5 @@ export const YEARS = [
   {id: 23, name: '2022'},
   {id: 24, name: '2023'}
 ];
+
+export const ACCESS_TITLE = "Access right";

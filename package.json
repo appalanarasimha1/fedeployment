@@ -34,6 +34,8 @@
     "@ng-select/ng-select": "^7.3.0",
     "@types/jquery": "^3.5.6",
     "angular-tree-component": "^8.5.6",
+    "animate.css": "^4.1.1",
+    "animations": "^0.0.0",
     "bootstrap": "^5.1.1",
     "chart.js": "^2.9.4",
     "dotenv": "^10.0.0",

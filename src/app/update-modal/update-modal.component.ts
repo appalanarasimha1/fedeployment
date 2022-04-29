@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
@@ -46,6 +46,9 @@ export class UpdateModalComponent implements OnInit {
   readonly ACCESS_LABEL = ACCESS_LABEL;
   readonly ALLOW_LABEL = ALLOW_LABEL;
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
+  readonly ACCESS_TITLE = ACCESS_TITLE;
+  readonly years = YEARS;
+  readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
 
   docs: any;
   step: number = 1;
@@ -54,7 +57,9 @@ export class UpdateModalComponent implements OnInit {
   customAccessMap: any = {};
   customConfidentialityMap: any = {};
   customUsersMap: any = {};
+  customDownloadApprovalUsersMap: {[key: string]: string} = {};
   customAllowMap: any = {};
+  customDownloadApprovalMap: {[key: string]: string} = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
   userLoading: boolean = false;
@@ -64,33 +69,7 @@ export class UpdateModalComponent implements OnInit {
   copyrightUserMap: any = {};
   copyrightYearMap: any = {};
   updatedDocs: any = {};
-
-  years = [
-    {id: 1, name: '2000'},
-    {id: 2, name: '2001'},
-    {id: 3, name: '2002'},
-    {id: 4, name: '2003'},
-    {id: 5, name: '2004'},
-    {id: 6, name: '2005'},
-    {id: 7, name: '2006'},
-    {id: 8, name: '2007'},
-    {id: 9, name: '2008'},
-    {id: 10, name: '2009'},
-    {id: 11, name: '2010'},
-    {id: 12, name: '2011'},
-    {id: 13, name: '2012'},
-    {id: 14, name: '2013'},
-    {id: 15, name: '2014'},
-    {id: 16, name: '2015'},
-    {id: 17, name: '2016'},
-    {id: 18, name: '2017'},
-    {id: 19, name: '2018'},
-    {id: 20, name: '2019'},
-    {id: 21, name: '2020'},
-    {id: 22, name: '2021'},
-    {id: 23, name: '2022'},
-    {id: 24, name: '2023'}
-  ];
+  downloadApproval: boolean = false;
 
   ngOnInit(): void {
     this.loadUsers();
@@ -100,7 +79,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   closeModal() {
-    this.dialogRef.close(this.updatedDocs);
+    this.dialogRef.close();
   }
 
   initACLValue() {
@@ -111,12 +90,14 @@ export class UpdateModalComponent implements OnInit {
 
   computeAclValue(doc, index) {
     this.customAllowMap[index] = doc.properties['sa:allow'];
+    this.customDownloadApprovalMap[index] = doc.properties['sa:downloadApproval'];
     this.copyrightUserMap[index] = doc.properties['sa:copyrightName'];
     this.copyrightYearMap[index] = doc.properties['sa:copyrightYear'];
     if (doc.properties['sa:confidentiality']) {
       this.customConfidentialityMap[index] = doc.properties['sa:confidentiality'];
       this.customAccessMap[index] = doc.properties['sa:access'];
       this.customUsersMap[index] = doc.properties['sa:users'];
+      this.customDownloadApprovalUsersMap[index] = doc.properties['dc:creator'];
       return;
     }
     const aces = doc.contextParameters.acls.find(a => a.name === "local");
@@ -124,6 +105,7 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = "";
       this.customAccessMap[index] = "";
       this.customUsersMap[index] = [];
+      this.customDownloadApprovalUsersMap[index] = "";
       return;
     }
     const localAces = aces.aces;
@@ -132,10 +114,12 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.not;
       this.customAccessMap[index] = ACCESS.all;
       this.customUsersMap[index] = [];
+      this.customDownloadApprovalUsersMap[index] = "";
     } else if (users.includes(GROUPS.company)) {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
       this.customAccessMap[index] = ACCESS.internal;
       this.customUsersMap[index] = [];
+      this.customDownloadApprovalUsersMap[index] = "";
     } else if (users.length > 0) {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
       this.customAccessMap[index] = ACCESS.restricted;
@@ -192,8 +176,8 @@ export class UpdateModalComponent implements OnInit {
   }
 
   showLocaleDate() {
-    const dateString = this.selectedFolder.properties["dc:start"] || this.selectedFolder.properties["dc:created"];
-    return new Date(dateString).toLocaleDateString();
+    const dateString = this.selectedFolder?.properties?.["dc:start"] || this.selectedFolder?.properties?.["dc:created"];
+    return dateString && new Date(dateString).toLocaleDateString();
   }
 
   onSelectConfidentiality(fileIndex?: any) {
@@ -205,6 +189,8 @@ export class UpdateModalComponent implements OnInit {
 
   onSelectAccess(fileIndex?: any) {
     // this.customAccessMap[fileIndex] = access;
+    const allow = this.customAccessMap[fileIndex] === ACCESS.all ? ALLOW.any : ALLOW.internal;
+    this.onSelectAllow(allow, fileIndex);
     this.checkShowUserDropdown(fileIndex);
   }
 
@@ -224,11 +210,8 @@ export class UpdateModalComponent implements OnInit {
 
   checkShowUserDropdown(fileIndex?: any) {
     const access = this.customAccessMap[fileIndex];
-    const confidentiality =
-      this.customConfidentialityMap[fileIndex];
-    if (
-      (access === ACCESS.restricted && confidentiality)
-    ) {
+    const confidentiality = this.customConfidentialityMap[fileIndex];
+    if (access === ACCESS.restricted && confidentiality) {
       return true;
     } else {
       return false;
@@ -271,6 +254,7 @@ export class UpdateModalComponent implements OnInit {
     for (let i = 0; i < this.docs.length; i++) {
       this.updateAsset(this.docs[i], i);
     }
+    this.classificationsUpdate();
   }
 
   async updateAsset(doc, index) {
@@ -331,8 +315,10 @@ export class UpdateModalComponent implements OnInit {
         access: this.customAccessMap[index],
         allow: this.customAllowMap[index],
         users: this.customUsersMap[index],
+        creator: this.customDownloadApprovalUsersMap[index],
         copyrightName: this.copyrightUserMap[index],
-        copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index]
+        copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index],
+        downloadApproval: this.customDownloadApprovalMap[index]
       })
       .schemas(['scryAccess'])
       .enrichers({document: ["acls"]})
@@ -407,14 +393,11 @@ export class UpdateModalComponent implements OnInit {
 
   classificationsUpdate() {
     this.dialogRef.close(this.updatedDocs);
-    // setTimeout(()=>{
-    //   this._snackBar.open('The classifications have been updated.', '', {
-    //     duration: 4000,
-    //     verticalPosition: 'bottom',
-    //     horizontalPosition: 'center',
-    //     panelClass: ['snackBarMiddle'],
-    //   });
-    // }, 500);
-    this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle')
+    this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle');
+  }
+  
+  checkOwnerDropdown(index?: string) {
+    return !!(this.customDownloadApprovalMap[index] === 'true' || this.customDownloadApprovalMap[index]);
+
   }
 }

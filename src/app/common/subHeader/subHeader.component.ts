@@ -29,6 +29,7 @@ import {
 })
 export class SubHeaderComponent implements OnInit {
   @Input() tagsMetadata: any;
+  @Input() tagsMetadataNew: any;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @ViewChild("content") videoModal: ElementRef;
   // @Input() sectors: string[];
@@ -92,7 +93,7 @@ export class SubHeaderComponent implements OnInit {
     this.showItemOnlyOnce = !localStorage.getItem("videoPlayed");
     if (!this.showItemOnlyOnce) this.playPersonalizedVideo();
 
-     this.getRecentSearch()
+    this.getRecentSearch();
     return;
   }
 
@@ -115,11 +116,17 @@ export class SubHeaderComponent implements OnInit {
 
   getRecentSearch() {
     const user = JSON.parse(localStorage.getItem("user"));
+
     this.apiService
       .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
       .subscribe((response) => {
-        this.recentSearch = response["data"];
-        console.log("11111111111111", response["data"]);
+        let filteredData = response["data"]
+          .map((d: any) => (d._source.isDeleted ? undefined : d._source.query))
+          .filter(
+            (item: any, i: number, ar: any) =>
+              ar.indexOf(item) === i && item !== undefined
+          );
+        this.recentSearch = filteredData;
       });
   }
   dropdownMenu(event: any): void {
@@ -393,6 +400,7 @@ export class SubHeaderComponent implements OnInit {
     this.showRelatedSearch = false;
     this.getRecentSearch();
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+    this.dataService.tagsMetaRealInit([]);
   }
 
   focusOnSearch() {
@@ -414,7 +422,18 @@ export class SubHeaderComponent implements OnInit {
     this.tagClicked = false;
     this.dataService.showRecent$.subscribe((show: boolean) => {
       this.showRelatedSearch = show;
-      this.getRecentSearch()
+      this.getRecentSearch();
     });
+  }
+
+  deleteRecentTags(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem("user"));
+    this.apiService
+      .post("/searchTerm/deleteUserRecentTags?username=" + user.email, {})
+      .subscribe(() => {
+        this.recentSearch = [];
+      });
   }
 }

@@ -31,7 +31,7 @@
                 <button class="primary search-btn"><img
                   src="../../../assets/images/search-icon.svg" /></button>
                 <input [ngModel]="searchText" (ngModelChange)="searchText=$event" [ngModelOptions]="{standalone: true}"
-                  type="text" placeholder="Search assets..." style="color: #fff;" class="search-bar" [ngClass]="{'removeBorderRadious': searchPopup}"  (blur)="blurOnSearch()" (click)="inputClicked()">
+                  type="text" placeholder="Search assets..." class="search-bar" [ngClass]="{'removeBorderRadious': searchPopup}"  (blur)="blurOnSearch()" (click)="inputClicked()">
                   <img *ngIf="searchText" style="cursor: pointer" (click)="resetSearch()" src="../assets/images/circle-close-gray.png" class="placeholder-search">
                   <!-- <img src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search"> -->
                   <!-- <button ngIf="search" class="btn" style="position: absolute; right: 39px; top: 3px;">x</button> -->
@@ -87,18 +87,20 @@
                       </ul>
                     </div> -->
     
-                    <div class="recent-searches" *ngIf="!showRelatedSearch">
-                      <div class="heading">Your Recent Searches</div>
+                    <div class="recent-searches">
+                      <div class="heading" *ngIf="recentSearch.length>0">Your Recent Searches
+                        <div class="clearSearch" (click)="deleteRecentTags($event)" >Clear</div>
+                      </div>
                       <ul class="recent-searches-tags">
-                        <li *ngFor="let search of recentSearch;let i = index"><a style="cursor: pointer;" *ngIf="search._source.query.trim() !==''" (click)="searchText=search._source.query; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(search._source.query)}}</a></li>
+                        <li *ngFor="let search of recentSearch;let i = index"><a style="cursor: pointer;" *ngIf="search.trim() !==''" (click)="searchText=search; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(search)}}</a></li>
                       </ul>
                     </div>
     
                     <div class="recent-searches">
-                      <div class="heading" *ngIf="!showRelatedSearch">Trending Searches</div>
-                      <div class="heading" *ngIf="showRelatedSearch">Related Tags</div>
-                      <ul class="recent-searches-tags">
-                        <li *ngFor="let bucket of tagsMetadata?.buckets; let i = index" ><a  *ngIf="i<13" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
+                      <div class="heading">Trending Searches</div>
+                      <!-- <div class="heading" *ngIf="showRelatedSearch && tagsMetadataNew?.buckets.length>0">Related Tags</div> -->
+                      <ul class="recent-searches-tags"> 
+                        <li *ngFor="let bucket of tagsMetadataNew?.buckets; let i = index" ><a *ngIf="i<13" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
                        
                       </ul>
                     </div>
@@ -214,5 +216,16 @@
   </ng-template> -->
   <!-- sprint16 end -->
 
+  <ng-template #clearSearchResult let-modal>
+    <div class="modal-body clearSearchModal">
+      <p>Are you sure you want to clear search history?</p>
+
+      <div class="modal-footer">
+        <div class="closeModal" (click)="modal.dismiss('Cross click'); closeModal()">No</div>
+        <div class="updateModal" (click)="deleteRecentTags($event); modal.dismiss('Cross click');">Yes</div>
+      </div>
+    </div>
+
+  </ng-template>
 </section>
 <!-- <app-search></app-search> -->

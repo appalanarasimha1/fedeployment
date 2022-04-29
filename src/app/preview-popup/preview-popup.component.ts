@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import * as moment from "moment";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
-import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW } from "../common/constant";
+import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions } from "../common/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
@@ -18,6 +18,7 @@ import { SharedService } from "../services/shared.service";
 export class PreviewPopupComponent implements OnInit, OnChanges {
   @Input() doc: any;
   @Input() docUrl: string;
+  @Input() openInModal: boolean = true;
 
   @ViewChild('preview', {static: false}) modalTemp: TemplateRef<void>;
 
@@ -33,6 +34,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   isAware = false;
   currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
+  copiedString;
 
   constructor(
     private router: Router,
@@ -73,6 +75,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         (reason) => {
           this.showTagInput = false;
           this.modalLoading = false;
+          this.copiedString = '';
         }
       );
   }
@@ -186,14 +189,16 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getNames(users: any) {
+    if(!users?.["dc:contributors"]) return '';
     let result = "";
-    users.map((user) => {
+    users["dc:contributors"].map((user) => {
       result += user + ", ";
     });
     return result;
   }
 
   toDateString(date: string): string {
+    if(!date?.['dc:created']) return '';
     return `${new Date(date).toDateString()}`;
   }
 
@@ -409,6 +414,30 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   showLessTags() {
     this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
+  }
+
+  copyLink() {
+    // copyLinkOfAsset() {
+      const pathArray = this.doc.path.split('/workspaces');
+      const sector = pathArray[0]
+      let assetName = pathArray[1].split('/').pop();
+      const folderStructure = pathArray[1].split(assetName)[0];
+      const extention: string[] = specialExtensions.filter((item: string) => assetName.includes(item));
+      // assetName = assetName.replace(extention[0], '');
+      
+      const selBox = document.createElement("textarea");
+      selBox.style.position = "fixed";
+      selBox.style.left = "0";
+      selBox.style.top = "0";
+      selBox.style.opacity = "0";
+      selBox.value = `${window.location.origin}/asset-view?sector=${sector}&folderStructure=${folderStructure}&extension=${extention[0] || 'allowed'}&assetName=${assetName}`;
+      this.copiedString = selBox.value;
+      document.body.appendChild(selBox);
+      selBox.focus();
+      selBox.select();
+      document.execCommand("copy");
+      document.body.removeChild(selBox);
+    // }
   }
 
 }

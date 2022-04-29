@@ -480,10 +480,11 @@ video{
   }
 
   /* mobile responsive */
-  @media(max-width: 991.5px){
+  @media(max-width: 900px){
     .search-bar, .searchDiv{
         width: 100%;
         z-index: unset !important;
+        padding-right: 0px !important;
     }
     .search-bar{
         height: 60px;
@@ -527,6 +528,13 @@ video{
     }
     .modal-body-content img{
         height: 190px;
+    }
+    .sub-header .offset-xl-3 {
+        margin-left: 0%;
+    }
+    .sub-header .col-xl-7 {
+        flex: 0 0 auto;
+        width: 100%;
     }
 }
 
@@ -658,7 +666,7 @@ video{
 .tollTipCustom .tolltipContent {
     position: absolute;
     top: 46px;
-    left: 40px;
+    left: 20px;
     background: #413e3c;
     padding: 3px 10px;
     font-size: 13px;
@@ -765,4 +773,62 @@ video{
 .workspaceFoldersScrollBar {
     overflow: auto;
     height: 245px;
+}
+.search-bar::placeholder {
+    color: red;
+}
+.clearSearch {
+    float: right;
+    cursor: pointer;
+}
+.clearSearchModal .modal-footer {
+    border: 0px;
+}
+.modal-body.clearSearchModal {
+    background: #23211E;
+}
+.updateModal, .closeModal {
+    background: #040404;
+    border-radius: 80px;
+    width: 120px;
+    padding: 9px 12px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 24px;
+    color: #fff;
+    cursor: pointer;
+}
+.closeModal {
+    background: transparent;
+    margin-right: 10px;
+}
+.clearSearchModal p {
+    font-size: 18px;
+    line-height: 32px;
+    color: #fff;
+    padding: 10px 20px;
+}
+@media (max-width: 900px) {
+    .sub-header {
+        top: auto;
+        position: static;
+    }
+    .customSearchBar {
+        display: none;
+    }
+    .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        padding-right: var(--bs-gutter-x,1.75rem) !important;
+        padding-left: var(--bs-gutter-x,1.75rem) !important;
+    }
+}
+@media (max-width: 700px) {
+    .sub-header {
+        position: static;
+        z-index: 99;
+        pointer-events: all;
+    }
+    .searchPopup {
+        width: calc(100% - 21px);
+        z-index: 9;
+    }
 }

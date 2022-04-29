@@ -8,6 +8,7 @@ import { NoContent } from "./no-content";
 import { AuthGuardService } from "./services/authGaurd";
 import { AuthGuard } from './auth/auth.guard';
 import { REPORT_ROLE } from "./common/constant";
+import { AssetViewComponent } from "./asset-view/asset-view.component";
 
 
 
@@ -36,10 +37,15 @@ const routes: Routes = [
     path: "report",
     loadChildren: () =>
       import("./report/report.module").then((m) => m.ReportModule),
-    canActivate: [RoleGuardService],
+    canActivate: [RoleGuardService, AuthGuardService],
     data: {
       expectedRole: REPORT_ROLE,
     },
+  },
+  {
+    path: "asset-view",
+    component: AssetViewComponent,
+    canActivate: [AuthGuardService],
   },
   { path: "**", component: NoContent },
 ];
