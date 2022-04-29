@@ -605,7 +605,7 @@ export class BrowseComponent implements OnInit {
     }
     // this.selectedFolder = await this.fetchFolder(item.uid);
     // this.handleViewClick(item, breadCrumbIndex);
-    
+    this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
       const listView = 1;
       await this.getWorkspaceFolders(item.uid, listView);
@@ -1213,6 +1213,7 @@ export class BrowseComponent implements OnInit {
   
   async handleClickNew(folderUid: string) {
     this.loading = true;
+    this.isTrashView = false;
     await this.fetchCurrentFolderAssets(folderUid, PAGE_SIZE_200);
     this.loading = false;
   }
