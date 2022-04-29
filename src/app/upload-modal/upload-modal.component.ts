@@ -223,6 +223,11 @@ export class UploadModalComponent implements OnInit {
         this.customUsersMap[key] = [...this.selectedUsers];
       });
     }
+    if(this.downloadApproval && this.ownerName) {
+      Object.keys(this.filesMap).forEach((key) => {
+        this.customDownloadApprovalUsersMap[key] = this.ownerName;
+      });
+    }
   }
 
   checkUploadStep() {
@@ -628,7 +633,7 @@ export class UploadModalComponent implements OnInit {
           "upload-batch": this.batchId,
           "upload-fileId": `${index}`,
         },
-        "dc:creator": this.customDownloadApprovalUsersMap[index],
+        "dc:creator": this.customDownloadApprovalMap[index] ? this.customDownloadApprovalUsersMap[index] : '',
         "dc:description": this.description,
         "dc:path": folder.path, //
         "dc:parentId": this.data ? this.data.uid : folder.id,
