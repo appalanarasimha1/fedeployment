@@ -72,7 +72,11 @@
          <div class="button-groups" style="padding-top: 15px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
-               <button mat-button matStepperNext class="upload-btn" [disabled]="checkUploadStep()">Next</button>
+               <button mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">Next
+                  <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
+                     Please complete all mandatory fields to proceed
+                   </div>
+               </button>
             </div>
          </div>
       </mat-step>
@@ -283,7 +287,7 @@
                   <!-- <label for="user">Users</label> -->
                </div>
                <div class="col-xl-8 col-md-8">
-                  <p class="userText pb-2">{{SPECIFIC_USER_LABEL}}</p>
+                  <p class="userText pb-4">{{SPECIFIC_USER_LABEL}}</p>
                   <ng-select style="height: unset !important;"
                   [items]="userList$ | async"
                   bindLabel="id"
@@ -344,7 +348,7 @@
                <div class="col-xl-4 col-md-4">
                </div>
                <div class="col-xl-8 col-md-8">
-                  <p class="userText pb-2">{{OWNER_APPROVAL_LABEL}}</p>
+                  <p class="userText pb-4">{{OWNER_APPROVAL_LABEL}}</p>
                   <ng-select style="height: unset !important;"
                   [items]="userList$ | async"
                   bindLabel="id"
@@ -461,24 +465,6 @@
 
                      <div class="upload-form-input row mb-20">
                         <div class="col-xl-4">
-                           <label>Usage permission</label>
-                        </div>
-                        <div class="col-xl-8">
-                           <label class="control control--checkbox" style="margin-bottom: 0px; float: left;">
-                              Approval required before download
-                              <input 
-                                 type="checkbox" 
-                                 checked="checked"
-                                 [(ngModel)]="customDownloadApprovalMap[file.key]"
-                                 [ngModelOptions]="{standalone: true}"
-                              />
-                              <div class="control__indicator" style="top: 4px;left: 0px;"></div>
-                           </label>
-                        </div>
-                     </div>
-
-                     <div class="upload-form-input row mb-20">
-                        <div class="col-xl-4">
                            <label for="access">{{ACCESS_TITLE}}</label>
                         </div>
                         <div class="col-xl-8">
@@ -488,11 +474,13 @@
                            </ng-select>
                         </div>
                      </div>
+
                      <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;">
                         <div class="col-xl-4">
-                           <label for="user">Users</label>
+                          &nbsp; <!-- <label for="user" style="text-align: right;">Please specify who can access</label> -->
                         </div>
                         <div class="col-xl-8">
+                           <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"
@@ -513,6 +501,24 @@
                         </div>
                      </div>
 
+                     <div class="upload-form-input row mb-20">
+                        <div class="col-xl-4">
+                           <label>Usage permission</label>
+                        </div>
+                        <div class="col-xl-8">
+                           <label class="control control--checkbox" style="margin-bottom: 0px; float: left;">
+                              Approval required before download
+                              <input 
+                                 type="checkbox" 
+                                 checked="checked"
+                                 [(ngModel)]="customDownloadApprovalMap[file.key]"
+                                 [ngModelOptions]="{standalone: true}"
+                              />
+                              <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+                           </label>
+                        </div>
+                     </div>
+
                      <!-- <div class="upload-form-input row mb-20">
                         <div class="col-xl-4">
                            <label for="allow">Allow use</label>
@@ -526,9 +532,10 @@
                      </div>-->
                      <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20">
                         <div class="col-xl-4">
-                           <label for="user">Approver</label>
+                           &nbsp;
                         </div>
                         <div class="col-xl-8">
+                           <p class="userText pb-3">{{OWNER_APPROVAL_LABEL}}</p>
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"
