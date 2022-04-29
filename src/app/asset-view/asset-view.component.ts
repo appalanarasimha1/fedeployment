@@ -22,7 +22,7 @@ export class AssetViewComponent implements OnInit {
   ngOnInit(): void {
     const routeParams = this.route.queryParams.subscribe(params => {
       this.sector = params['sector'];
-      this.folderStructure = params['folderStructure'].split('/').length > 1 ? params['folderStructure'].replaceAll('+', '/') : `/${params['folderStructure'].trim()}/`;
+      this.folderStructure = params['folderStructure'];
       this.assetName = params['assetName'];
       this.fetchAsset();
     });

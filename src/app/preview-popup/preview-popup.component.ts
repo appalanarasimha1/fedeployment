@@ -421,7 +421,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       const pathArray = this.doc.path.split('/workspaces');
       const sector = pathArray[0]
       let assetName = pathArray[1].split('/').pop();
-      const folderStructure = pathArray[1].split(assetName)[0].replaceAll('/', '+');
+      const folderStructure = pathArray[1].split(assetName)[0];
       const extention: string[] = specialExtensions.filter((item: string) => assetName.includes(item));
       // assetName = assetName.replace(extention[0], '');
       
@@ -430,7 +430,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       selBox.style.left = "0";
       selBox.style.top = "0";
       selBox.style.opacity = "0";
-      selBox.value = `${window.location.origin}/asset-view?sector=${sector}&folderStructure=${folderStructure}&extension=${extention[0]}&assetName=${assetName}`;
+      selBox.value = `${window.location.origin}/asset-view?sector=${sector}&folderStructure=${folderStructure}&extension=${extention[0] || 'allowed'}&assetName=${assetName}`;
       this.copiedString = selBox.value;
       document.body.appendChild(selBox);
       selBox.focus();
