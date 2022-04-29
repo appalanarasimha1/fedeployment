@@ -547,7 +547,7 @@
                            [loading]="userLoading"
                            typeToSearchText="Search users"
                            [typeahead]="userInput$"
-                           [(ngModel)]="ownerName"
+                           [(ngModel)]="customDownloadApprovalUsersMap[file.key]"
                            [ngClass]="{'goldenText': ownerName }" >
                            <ng-template ng-option-tmp let-item="item">
                               {{item.id}} ({{item.fullname}})

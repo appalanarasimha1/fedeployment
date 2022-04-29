@@ -98,6 +98,7 @@ export class UploadModalComponent implements OnInit {
   customConfidentialityMap: any = {};
   copyrightMap: any = {};
   customUsersMap: any = {};
+  customDownloadApprovalUsersMap: any = {};
   customDownloadApprovalMap: any = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
@@ -146,7 +147,7 @@ export class UploadModalComponent implements OnInit {
       this.selectWorkspace(title, true);
       this.showWsList = false;
       this.folderNameParam = this.data.title;
-      this.associatedDate = this.data.properties["dc:start"];
+      this.associatedDate = this.data?.properties?.["dc:start"];
     } else {
       this.showWorkspaceList();
     }
@@ -532,6 +533,7 @@ export class UploadModalComponent implements OnInit {
   onCheckDownloadApproval() {
     for(let i = 0; i < this.getAssetNumber(); i++) {
       this.customDownloadApprovalMap[i] = this.downloadApproval;
+      
     }
   }
 
@@ -626,7 +628,7 @@ export class UploadModalComponent implements OnInit {
           "upload-batch": this.batchId,
           "upload-fileId": `${index}`,
         },
-        "dc:creator": this.ownerName,
+        "dc:creator": this.customDownloadApprovalUsersMap[index],
         "dc:description": this.description,
         "dc:path": folder.path, //
         "dc:parentId": this.data ? this.data.uid : folder.id,
@@ -639,7 +641,7 @@ export class UploadModalComponent implements OnInit {
         "sa:allow": this.customAllowMap[index] || this.allow,
         "sa:copyrightName": this.openCopyrightMap[index] ? this.copyrightUserMap[index] : null,
         "sa:copyrightYear": this.openCopyrightMap[index] ? this.copyrightYearMap[index]?.name : null,
-        "sa:downloadApproval": this.downloadApproval
+        "sa:downloadApproval": this.customDownloadApprovalMap[index]
       },
       facets: [
         "Versionable",
