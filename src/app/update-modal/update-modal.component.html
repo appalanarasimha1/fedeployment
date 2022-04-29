@@ -171,7 +171,7 @@
                    typeToSearchText="Search users"
                    [typeahead]="userInput$"
                    [(ngModel)]="customDownloadApprovalUsersMap[i]"
-                   [ngClass]="{'goldenText': ownerName }" >
+                   [ngClass]="{'goldenText': customDownloadApprovalUsersMap[i] }" >
                    <ng-template ng-option-tmp let-item="item">
                       {{item.id}} ({{item.fullname}})
                    </ng-template>
