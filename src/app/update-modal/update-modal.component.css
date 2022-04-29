@@ -754,14 +754,15 @@ input.copyright-input {
   padding: 0px 0px 0px 10px;
 }
 .copyright-form img {
-  width: 29px !important;
-  margin-left: -4px;
+  /* width: 29px !important; 
+  margin-left: -4px;*/
+  width: 20px !important;
 }
 .copyright-form li:last-child {
   width: 80px;
   margin-left: 16px;
 }
-::ng-deep ::placeholder{
+.publish-file-preview-access ::ng-deep ::placeholder{
   color: #000 !important;
 }
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked, ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked{
