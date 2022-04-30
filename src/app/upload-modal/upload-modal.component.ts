@@ -538,7 +538,7 @@ export class UploadModalComponent implements OnInit {
   onCheckDownloadApproval() {
     for(let i = 0; i < this.getAssetNumber(); i++) {
       this.customDownloadApprovalMap[i] = this.downloadApproval;
-      
+
     }
   }
 
@@ -633,7 +633,6 @@ export class UploadModalComponent implements OnInit {
           "upload-batch": this.batchId,
           "upload-fileId": `${index}`,
         },
-        "dc:creator": this.customDownloadApprovalMap[index] ? this.customDownloadApprovalUsersMap[index] : '',
         "dc:description": this.description,
         "dc:path": folder.path, //
         "dc:parentId": this.data ? this.data.uid : folder.id,
@@ -642,7 +641,7 @@ export class UploadModalComponent implements OnInit {
         "dc:sector": this.selectedWorkspace.title,
         "sa:confidentiality": this.customConfidentialityMap[index] || this.confidentiality,
         "sa:access": this.customAccessMap[index] || this.access,
-        "sa:users": this.customUsersMap[index],
+        "sa:users": this.customDownloadApprovalMap[index] ? [this.customDownloadApprovalUsersMap[index]] : this.customUsersMap[index],
         "sa:allow": this.customAllowMap[index] || this.allow,
         "sa:copyrightName": this.openCopyrightMap[index] ? this.copyrightUserMap[index] : null,
         "sa:copyrightYear": this.openCopyrightMap[index] ? this.copyrightYearMap[index]?.name : null,
@@ -734,7 +733,7 @@ export class UploadModalComponent implements OnInit {
 
   async createFolder(name, parentFolder?: any, data?: any) {
     const url = `/path${this.parentFolder.path}`;
-    
+
     const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder, this.description, this.associatedDate);
     const res = await this.apiService.post(url, payload).toPromise();
     return {

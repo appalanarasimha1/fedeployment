@@ -314,8 +314,7 @@ export class UpdateModalComponent implements OnInit {
         confidentiality: this.customConfidentialityMap[index],
         access: this.customAccessMap[index],
         allow: this.customAllowMap[index],
-        users: this.customUsersMap[index],
-        creator: this.customDownloadApprovalUsersMap[index],
+        users: this.customDownloadApprovalMap[index] ? [this.customDownloadApprovalUsersMap[index]] : this.customUsersMap[index],
         copyrightName: this.copyrightUserMap[index],
         copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index],
         downloadApproval: this.customDownloadApprovalMap[index]
@@ -395,7 +394,7 @@ export class UpdateModalComponent implements OnInit {
     this.dialogRef.close(this.updatedDocs);
     this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle');
   }
-  
+
   checkOwnerDropdown(index?: string) {
     return !!(this.customDownloadApprovalMap[index] === 'true' || this.customDownloadApprovalMap[index]);
 
