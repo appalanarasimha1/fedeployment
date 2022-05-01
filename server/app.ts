@@ -6,6 +6,8 @@ import { RouteManager } from './routeManager';
 import { Server } from 'socket.io';
 import fs from 'fs';
 import https from 'https';
+import compression from 'compression';
+
 
 export class App {
   private readonly app: any;
@@ -18,6 +20,8 @@ export class App {
     // this.app.use(bodyParser.json());
     this.app.use(morgan('dev'));
     this.app.use(cors());
+    this.app.use(compression());
+    
     const httpsOptions = {
       key: fs.readFileSync(__dirname + '/../../../certs/new-ui.key'),
       cert: fs.readFileSync(__dirname + '/../../../certs/new-ui.crt')
