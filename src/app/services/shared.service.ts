@@ -158,7 +158,6 @@ export class SharedService {
 
     const daysDifference = moment(today).diff(moment(fromDate), 'days');
     if (daysDifference === 0) {
-      // tslint:disable-next-line:max-line-length
       let output = `${this.getDoubleDigit(new Date(fromDate).getUTCHours() + 3)}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
       if (!showHours) {
         output = `${moment(today).diff(moment(fromDate), 'hours')} hours`;

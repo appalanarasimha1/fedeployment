@@ -7,7 +7,6 @@ import { constants, localStorageVars } from '../common/constant';
 import { ApiService } from '../services/api.service';
 import { NuxeoService } from '../services/nuxeo.service';
 import { SharedService } from '../services/shared.service';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-landing-page',
@@ -374,23 +373,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
-    if (!fromDate) { //NOTE: when in development phase, for the notifications which did not have createdOn field
-      return showHours ? `yesterday` : `1 day`;
-    }
-    const today = toDate ? toDate : moment();
-
-    const daysDifference = moment(today).diff(moment(fromDate), 'days');
-    if (daysDifference === 0) {
-      let output = `${this.getDoubleDigit(new Date(fromDate).getUTCHours() + 3)}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
-      if (!showHours) {
-        output = `${moment(today).diff(moment(fromDate), 'hours')} hours`;
-      }
-      return output;
-    } else if (daysDifference === 1) {
-      return showHours ? 'yesterday' : `1 day`;
-    } else {
-      return showHours ? `${daysDifference} days ago` : `${daysDifference} days`;
-    }
+    return this.sharedService.returnDaysAgoFromTodayDate(fromDate, showHours, toDate);
   }
 
   getDoubleDigit(value: number) {
