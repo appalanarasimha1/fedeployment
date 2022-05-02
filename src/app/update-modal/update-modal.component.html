@@ -118,9 +118,11 @@
               </div>
               <div *ngIf="checkShowUserDropdown(i)" class="upload-form-input row" style="display: flex;">
                 <div class="col-xl-4">
-                  <label for="user">Users</label>
+                  <!-- <label for="user">Users</label> -->
+                  &nbsp;
                 </div>
                 <div class="col-xl-8">
+                  <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
                   <ng-select
                   [items]="userList$ | async"
                   bindLabel="id"
@@ -153,6 +155,24 @@
                 </div>
               </div> -->
 
+              <div class="upload-form-input row" style="overflow: hidden;">
+                <div class="col-xl-4">
+                  <label style="margin-bottom: 0px;">Usage permission</label>
+                </div>
+                <div class="col-xl-8">
+                  <label class="control control--checkbox" style="margin-bottom: 0px;float: left;">
+                    Approval required before download
+                    <input 
+                       type="checkbox" 
+                       checked="checked"
+                       [(ngModel)]="customDownloadApprovalMap[i]"
+                       [ngModelOptions]="{standalone: true}"
+                    />
+                    <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+                  </label>
+                </div>
+              </div>
+
               <div *ngIf="checkOwnerDropdown(i)" class="upload-form-input row mb-20">
                 <div class="col-xl-4">
                    &nbsp;
@@ -176,24 +196,6 @@
                       {{item.id}} ({{item.fullname}})
                    </ng-template>
                    </ng-select>
-                </div>
-             </div>
-
-              <div class="upload-form-input row" style="overflow: hidden;">
-                <div class="col-xl-4">
-                  <label style="margin-bottom: 0px;">Usage permission</label>
-                </div>
-                <div class="col-xl-8">
-                  <label class="control control--checkbox" style="margin-bottom: 0px;">
-                    Approval required before download
-                    <input 
-                       type="checkbox" 
-                       checked="checked"
-                       [(ngModel)]="customDownloadApprovalMap[i]"
-                       [ngModelOptions]="{standalone: true}"
-                    />
-                    <div class="control__indicator" style="top: 4px;left: 0px;"></div>
-                  </label>
                 </div>
               </div>
 
