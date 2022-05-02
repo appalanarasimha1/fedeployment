@@ -402,7 +402,7 @@
                       <th mat-sort-header="title" width="30%" style="padding-left: 35px;">{{ !showLinkCopy ? 'Folder name' : 'Asset name'}}</th>
                       <th mat-sort-header="dc:creator" width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
-                      <th mat-sort-header="dc:created" width="20%">Created on</th>
+                      <th *ngIf="!isTrashView" mat-sort-header="dc:created" width="20%">Created on</th>
                       <th *ngIf="isTrashView" mat-sort-header="dc:modified" width="20%">Deleted on</th>
                       <!-- <th mat-sort-header="dc:start" *ngIf="!showLinkCopy && !isTrashView" width="20%">Associated date</th> -->
                       <!-- <th mat-sort-header="dc:start" *ngIf="isTrashView" width="20%">Deleted on</th> -->
@@ -430,7 +430,7 @@
                         <p class="tolltipContent">{{item.properties['dc:creator']}}</p>
                       </td>
                       <!-- <td><p>Luis C</p></td> -->
-                      <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
+                      <td *ngIf="!isTrashView"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
                       <td *ngIf="isTrashView"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
                       <!-- <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td> -->
                       <!-- <td *ngIf="isTrashView"><p>{{item.lastModified ? getDateInFormat(item.lastModified) : ''}}</p></td> -->

@@ -905,6 +905,7 @@ export class BrowseComponent implements OnInit {
   }
 
   deleteModal(listDocs) {
+    let deletedFolders =  this.searchList.filter(item => listDocs.includes(item["uid"]));
     this.sharedService.showSnackbar(
       "The deleted items will be retained for 180 days in",
       6000,
@@ -914,27 +915,23 @@ export class BrowseComponent implements OnInit {
       "Deleted items",
       this.getTrashedWS.bind(this)
     );
-    // this._snackBar.open('The deleted items will be retained for 180 days in Deleted items.', '', {
-    //   duration: 3000,
-    //   // verticalPosition: 'top',
-    //   horizontalPosition: 'center',
-    //   panelClass: ['snackBarMiddle'],
-    // });
     this.searchList = this.searchList.filter(
       (item) => !listDocs.includes(item["uid"])
     );
     this.sortedData = this.searchList.slice();
     this.hasUpdatedChildren.push(this.selectedFolder.uid);
     this.selectedFolderList = {};
+    deletedFolders.forEach(item => {
+      if(this.folderAssetsResult[item.parentRef]) {
+        const index = this.folderAssetsResult[item.parentRef].entries.findIndex(entry => entry.uid === item.uid)
+        this.folderAssetsResult[item.parentRef].entries.splice(index, 1);
+      }
+    }
+    );
   }
 
   recoverModal(listDocs) {
-    // this._snackBar.open('Successfully recovered.', '', {
-    //   duration: 3000,
-    //   // verticalPosition: 'top',
-    //   horizontalPosition: 'center',
-    //   panelClass: ['snackBarMiddleRecover'],
-    // });
+    let recoveredFolders =  this.trashedList.filter(item => listDocs.includes(item["uid"]));
     this.sharedService.showSnackbar(
       "Successfully recovered.",
       3000,
@@ -949,6 +946,9 @@ export class BrowseComponent implements OnInit {
     this.sortedData = this.searchList.slice();
     // this.hasUpdatedChildren.push(this.selectedFolder.uid);
     this.selectedFolderList = {};
+    recoveredFolders.forEach(item => 
+      this.folderAssetsResult[item.parentRef] && this.folderAssetsResult[item.parentRef].entries.push(item)
+    );
   }
 
   selectFolder($event, item, i) {
@@ -981,18 +981,15 @@ export class BrowseComponent implements OnInit {
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
 
-    const listDocs = Object.entries(this.selectedFolderList).map(function (
-      [key, item],
-      index
-    ) {
+    const listDocs = Object.entries(this.selectedFolderList).map(([key, item], index ) => {
       return item["uid"];
     });
     await this.apiService
       .post(apiRoutes.UN_TRASH_DOC, { input: `docs:${listDocs.join()}` })
       .subscribe((docs: any) => {
         this.loading = false;
+        this.recoverModal(listDocs);
       });
-    this.recoverModal(listDocs);
   }
 
   checkEnableDeleteBtn() {
@@ -1149,6 +1146,12 @@ export class BrowseComponent implements OnInit {
             b.properties["dc:sector"],
             isAsc
           );
+        case "dc:modified":
+          return this.compare(
+            a.properties["dc:modified"],
+            b.properties["dc:modified"],
+            isAsc
+            )
         default:
           return 0;
       }

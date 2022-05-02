@@ -59,7 +59,7 @@ export class UpdateModalComponent implements OnInit {
   customUsersMap: any = {};
   customDownloadApprovalUsersMap: {[key: string]: string} = {};
   customAllowMap: any = {};
-  customDownloadApprovalMap: {[key: string]: string} = {};
+  customDownloadApprovalMap: {[key: string]: string|boolean} = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
   userLoading: boolean = false;
@@ -90,7 +90,7 @@ export class UpdateModalComponent implements OnInit {
 
   computeAclValue(doc, index) {
     this.customAllowMap[index] = doc.properties['sa:allow'];
-    this.customDownloadApprovalMap[index] = doc.properties['sa:downloadApproval'];
+    this.customDownloadApprovalMap[index] = this.checkOwnerDropdownByValue(doc.properties['sa:downloadApproval']);
     this.copyrightUserMap[index] = doc.properties['sa:copyrightName'];
     this.copyrightYearMap[index] = doc.properties['sa:copyrightYear'];
     if (doc.properties['sa:confidentiality']) {
@@ -250,9 +250,9 @@ export class UpdateModalComponent implements OnInit {
     );
   }
 
-  updateAssets() {
+  async updateAssets() {
     for (let i = 0; i < this.docs.length; i++) {
-      this.updateAsset(this.docs[i], i);
+      await this.updateAsset(this.docs[i], i);
     }
     this.classificationsUpdate();
   }
@@ -307,7 +307,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   async updateAssetClassification(doc, index) {
-    const updated = await this.nuxeo.nuxeoClient
+    const result = await this.nuxeo.nuxeoClient
       .operation("Scry.UpdateConfidentiality")
       .input([doc])
       .params({
@@ -321,8 +321,15 @@ export class UpdateModalComponent implements OnInit {
       })
       .schemas(['scryAccess'])
       .enrichers({document: ["acls"]})
-      .execute();
-    if (updated.entries[0]) this.updatedDocs[index] = updated.entries[0];
+      .execute()
+      // .then((result) => {
+      if (result.entries[0]) this.updatedDocs[index] = result.entries[0];
+    //     resolve(null);
+    //   });
+    // });
+      // .then(() => {
+       
+      // })
   }
 
   trackByFn(item: any) {
@@ -397,6 +404,9 @@ export class UpdateModalComponent implements OnInit {
 
   checkOwnerDropdown(index?: string) {
     return !!(this.customDownloadApprovalMap[index] === 'true' || this.customDownloadApprovalMap[index]);
-
+  }
+  
+  checkOwnerDropdownByValue(value?: string) {
+    return !!(value === 'true') || !(value === 'false');
   }
 }
