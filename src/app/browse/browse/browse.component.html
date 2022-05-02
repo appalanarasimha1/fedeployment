@@ -26,7 +26,7 @@
            <div class="tree" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div  class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid && !isTrashView ? 'active-tab' : ''" 
+                  <div  class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid && !isTrashView ? 'active-tab' : ''"
                         (click)="fetchAllSectors(item.isExpand);selectedFolder2=item; selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)">
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -36,7 +36,7 @@
                   </div>
                   <ul *ngIf="item.children?.length && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer" class="hoverPin">
-                      <div  class="d-flex set paddingLeft" [ngClass]="sectorSelected?.uid === firstChild.uid && !isTrashView ? 'active-tab' : ''" 
+                      <div  class="d-flex set paddingLeft" [ngClass]="sectorSelected?.uid === firstChild.uid && !isTrashView ? 'active-tab' : ''"
                             (click)="handleGotoBreadcrumb(firstChild, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; sectorSelected = firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
                         <!-- <div style="z-index: 9;"> -->
 
@@ -165,10 +165,10 @@
                     </div>
                   </span>
                   <!-- <div>
-                     <input type="text" [(ngModel)]="newTitle" name="newTitle"> 
+                     <input type="text" [(ngModel)]="newTitle" name="newTitle">
                      <button (click)="renameFolder()">update</button>
                   </div> -->
-                 
+
 
                   <span *ngIf="renameFolderName && showLinkCopy" style="display: inline-block;">
                     <label class="input-sizer">
@@ -181,7 +181,7 @@
                     <img src="../../../assets/images/remove-circle.svg" alt="" class="renameFolderRemoveImg" (click)="updateFolderAction()" />
                   </span>
 
-                  
+
 
                 </span>
                 <h6 class="tollTipCustom">
@@ -189,9 +189,9 @@
                   <span *ngFor="let c of breadCrumb; let i = index">
                     /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
                   </span>
-                  <div class="tolltipContent" style="top: auto; bottom: -30px;">
+                  <!-- <div class="tolltipContent" style="top: auto; bottom: -30px;">
                     {{sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb)}}
-                  </div>
+                  </div> -->
                   <span *ngIf="showLinkCopy" class="copy-section" >
                     <a class="flexible">
                       <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
@@ -402,7 +402,8 @@
                       <th mat-sort-header="title" width="30%" style="padding-left: 35px;">{{ !showLinkCopy ? 'Folder name' : 'Asset name'}}</th>
                       <th mat-sort-header="dc:creator" width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
-                      <th mat-sort-header="dc:created" width="20%">Created on</th>
+                      <th *ngIf="!isTrashView" mat-sort-header="dc:created" width="20%">Created on</th>
+                      <th *ngIf="isTrashView" mat-sort-header="dc:modified" width="20%">Deleted on</th>
                       <!-- <th mat-sort-header="dc:start" *ngIf="!showLinkCopy && !isTrashView" width="20%">Associated date</th> -->
                       <!-- <th mat-sort-header="dc:start" *ngIf="isTrashView" width="20%">Deleted on</th> -->
                       <th mat-sort-header="dc:sector" *ngIf="isTrashView" width="20%">Workspace</th>
@@ -429,7 +430,8 @@
                         <p class="tolltipContent">{{item.properties['dc:creator']}}</p>
                       </td>
                       <!-- <td><p>Luis C</p></td> -->
-                      <td><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
+                      <td *ngIf="!isTrashView"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
+                      <td *ngIf="isTrashView"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
                       <!-- <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td> -->
                       <!-- <td *ngIf="isTrashView"><p>{{item.lastModified ? getDateInFormat(item.lastModified) : ''}}</p></td> -->
                       <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>

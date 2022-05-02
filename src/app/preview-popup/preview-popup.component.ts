@@ -1,6 +1,5 @@
 import { Component, OnInit, OnChanges, Input, ViewChild, TemplateRef } from "@angular/core";
 import { Router } from "@angular/router";
-import * as moment from "moment";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
 import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions } from "../common/constant";
@@ -226,28 +225,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
-    if (!fromDate) {
-      //NOTE: when in development phase, for the notifications which did not have createdOn field
-      return showHours ? `yesterday` : `1 day`;
-    }
-    const today = toDate ? toDate : moment();
-
-    const daysDifference = moment(today).diff(moment(fromDate), "days");
-    if (daysDifference === 0) {
-      let output = `${this.getDoubleDigit(
-        new Date(fromDate).getUTCHours() + 3
-      )}:${this.getDoubleDigit(new Date(fromDate).getUTCMinutes())}`;
-      if (!showHours) {
-        output = `${moment(today).diff(moment(fromDate), "hours")} hours`;
-      }
-      return output;
-    } else if (daysDifference === 1) {
-      return showHours ? "yesterday" : `1 day`;
-    } else {
-      return showHours
-        ? `${daysDifference} days ago`
-        : `${daysDifference} days`;
-    }
+    return this.sharedService.returnDaysAgoFromTodayDate(fromDate, showHours, toDate);
   }
 
   getDoubleDigit(value: number) {
@@ -354,15 +332,15 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   hasNoRestriction() {
-    return !this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any;
+    return (!this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any && this.doc.properties["sa:downloadApproval"] !== 'true');
   }
 
   hasInternalRestriction() {
-    return this.doc.properties["sa:allow"] === ALLOW.internal;
+    return ((this.doc.properties["sa:allow"] === ALLOW.internal || this.doc.properties["sa:allow"] === ALLOW.request) && this.doc.properties["sa:downloadApproval"] !== 'true');
   }
 
   hasRequestRestriction() {
-    return this.doc.properties["sa:allow"] === ALLOW.request;
+    return this.doc.properties["sa:allow"] === ALLOW.request || this.doc.properties["sa:downloadApproval"] === 'true';
   }
 
   showDownloadDropdown() {

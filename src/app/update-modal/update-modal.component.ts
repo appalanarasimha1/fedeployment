@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL, SPECIFIC_USER_LABEL } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
@@ -49,6 +49,7 @@ export class UpdateModalComponent implements OnInit {
   readonly ACCESS_TITLE = ACCESS_TITLE;
   readonly years = YEARS;
   readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
+  readonly SPECIFIC_USER_LABEL = SPECIFIC_USER_LABEL;
 
   docs: any;
   step: number = 1;
@@ -59,7 +60,7 @@ export class UpdateModalComponent implements OnInit {
   customUsersMap: any = {};
   customDownloadApprovalUsersMap: {[key: string]: string} = {};
   customAllowMap: any = {};
-  customDownloadApprovalMap: {[key: string]: string} = {};
+  customDownloadApprovalMap: {[key: string]: string|boolean} = {};
   userList$: Observable<any>;
   userInput$ = new Subject<string>();
   userLoading: boolean = false;
@@ -90,7 +91,7 @@ export class UpdateModalComponent implements OnInit {
 
   computeAclValue(doc, index) {
     this.customAllowMap[index] = doc.properties['sa:allow'];
-    this.customDownloadApprovalMap[index] = doc.properties['sa:downloadApproval'];
+    this.customDownloadApprovalMap[index] = this.checkOwnerDropdownByValue(doc.properties['sa:downloadApproval']);
     this.copyrightUserMap[index] = doc.properties['sa:copyrightName'];
     this.copyrightYearMap[index] = doc.properties['sa:copyrightYear'];
     if (doc.properties['sa:confidentiality']) {
@@ -250,9 +251,9 @@ export class UpdateModalComponent implements OnInit {
     );
   }
 
-  updateAssets() {
+  async updateAssets() {
     for (let i = 0; i < this.docs.length; i++) {
-      this.updateAsset(this.docs[i], i);
+      await this.updateAsset(this.docs[i], i);
     }
     this.classificationsUpdate();
   }
@@ -307,23 +308,29 @@ export class UpdateModalComponent implements OnInit {
   }
 
   async updateAssetClassification(doc, index) {
-    const updated = await this.nuxeo.nuxeoClient
+    const result = await this.nuxeo.nuxeoClient
       .operation("Scry.UpdateConfidentiality")
       .input([doc])
       .params({
         confidentiality: this.customConfidentialityMap[index],
         access: this.customAccessMap[index],
         allow: this.customAllowMap[index],
-        users: this.customUsersMap[index],
-        creator: this.customDownloadApprovalUsersMap[index],
+        users: this.customDownloadApprovalMap[index] ? [this.customDownloadApprovalUsersMap[index]] : this.customUsersMap[index],
         copyrightName: this.copyrightUserMap[index],
         copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index],
         downloadApproval: this.customDownloadApprovalMap[index]
       })
       .schemas(['scryAccess'])
       .enrichers({document: ["acls"]})
-      .execute();
-    if (updated.entries[0]) this.updatedDocs[index] = updated.entries[0];
+      .execute()
+      // .then((result) => {
+      if (result.entries[0]) this.updatedDocs[index] = result.entries[0];
+    //     resolve(null);
+    //   });
+    // });
+      // .then(() => {
+       
+      // })
   }
 
   trackByFn(item: any) {
@@ -395,9 +402,12 @@ export class UpdateModalComponent implements OnInit {
     this.dialogRef.close(this.updatedDocs);
     this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle');
   }
-  
+
   checkOwnerDropdown(index?: string) {
     return !!(this.customDownloadApprovalMap[index] === 'true' || this.customDownloadApprovalMap[index]);
-
+  }
+  
+  checkOwnerDropdownByValue(value?: string) {
+    return !!(value === 'true') || !(value === 'false');
   }
 }

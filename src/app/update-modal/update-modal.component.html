@@ -1,6 +1,6 @@
 <div class="upload-modal">
   <div class="upload-modal-step">{{step !== 2 ? stepLabel : '' }}</div>
-  <div *ngIf="step === 1">
+  <div>
     <div class="publish-summary">
       <div class="assets-details">
         <div class="flexible">
@@ -118,9 +118,11 @@
               </div>
               <div *ngIf="checkShowUserDropdown(i)" class="upload-form-input row" style="display: flex;">
                 <div class="col-xl-4">
-                  <label for="user">Users</label>
+                  <!-- <label for="user">Users</label> -->
+                  &nbsp;
                 </div>
                 <div class="col-xl-8">
+                  <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
                   <ng-select
                   [items]="userList$ | async"
                   bindLabel="id"
@@ -153,6 +155,24 @@
                 </div>
               </div> -->
 
+              <div class="upload-form-input row" style="overflow: hidden;">
+                <div class="col-xl-4">
+                  <label style="margin-bottom: 0px;">Usage permission</label>
+                </div>
+                <div class="col-xl-8">
+                  <label class="control control--checkbox" style="margin-bottom: 0px;float: left;">
+                    Approval required before download
+                    <input 
+                       type="checkbox" 
+                       checked="checked"
+                       [(ngModel)]="customDownloadApprovalMap[i]"
+                       [ngModelOptions]="{standalone: true}"
+                    />
+                    <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+                  </label>
+                </div>
+              </div>
+
               <div *ngIf="checkOwnerDropdown(i)" class="upload-form-input row mb-20">
                 <div class="col-xl-4">
                    &nbsp;
@@ -177,24 +197,6 @@
                    </ng-template>
                    </ng-select>
                 </div>
-             </div>
-
-              <div class="upload-form-input row" style="overflow: hidden;">
-                <div class="col-xl-4">
-                  <label style="margin-bottom: 0px;">Usage permission</label>
-                </div>
-                <div class="col-xl-8">
-                  <label class="control control--checkbox" style="margin-bottom: 0px;">
-                    Approval required before download
-                    <input 
-                       type="checkbox" 
-                       checked="checked"
-                       [(ngModel)]="customDownloadApprovalMap[i]"
-                       [ngModelOptions]="{standalone: true}"
-                    />
-                    <div class="control__indicator" style="top: 4px;left: 0px;"></div>
-                  </label>
-                </div>
               </div>
 
             </div>
@@ -206,24 +208,28 @@
     </div>
 
   </div>
-  <div *ngIf="step === 2">
+  <!-- <div *ngIf="step === 2">
     <div class="finish-screen">
-      <!-- <mat-icon>upload</mat-icon> -->
-      <span>Your assets have been successfully updated.</span>
+      <span>Updating...</span> -->
+      <!-- <span>Your assets have been successfully updated.</span>
       <div class="destination-folder">
-        <!-- <img src="./assets/images/folder-img.png" alt="folder" /> -->
         <span class="assetName">{{ selectedFolder.title }}</span>
-      </div>
+      </div> 
       <div (click)="closeModal()" class="close-modal">
-        <!-- <mat-icon>close</mat-icon> -->
         Close
-      </div>
-    </div>
-  </div>
-  <div class="button-groups" *ngIf="step !== 2">
+      </div> -->
+    <!-- </div>
+  </div>  -->
+  <div class="button-groups" >
     <button (click)="closeModal()" class="cancel-btn">Cancel</button>
     <div class="progress-btns">
-      <button class="upload-btn" (click)="toNextStep()">Update</button>
+      <button *ngIf="step === 2" class="upload-btn" >
+        Updating
+      </button>
+      <button *ngIf="step !== 2" (click)="toNextStep()" class="upload-btn" >
+        Update
+      </button>
+      
     </div>
   </div>
 </div>
