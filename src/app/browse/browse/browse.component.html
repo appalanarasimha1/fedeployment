@@ -189,9 +189,9 @@
                   <span *ngFor="let c of breadCrumb; let i = index">
                     /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
                   </span>
-                  <div class="tolltipContent" style="top: auto; bottom: -30px;">
+                  <!-- <div class="tolltipContent" style="top: auto; bottom: -30px;">
                     {{sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb)}}
-                  </div>
+                  </div> -->
                   <span *ngIf="showLinkCopy" class="copy-section" >
                     <a class="flexible">
                       <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 10px;">
