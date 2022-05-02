@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL, SPECIFIC_USER_LABEL } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
@@ -49,6 +49,7 @@ export class UpdateModalComponent implements OnInit {
   readonly ACCESS_TITLE = ACCESS_TITLE;
   readonly years = YEARS;
   readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
+  readonly SPECIFIC_USER_LABEL = SPECIFIC_USER_LABEL;
 
   docs: any;
   step: number = 1;
