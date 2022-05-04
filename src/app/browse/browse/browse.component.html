@@ -63,9 +63,9 @@
             This folder has been deleted
           </div>
           <div *ngIf="!folderNotFound">
-            <div class="row" *ngIf="showSearchbar || isTrashView">
+            <div class="row" >
               <div class="col-xl-7">
-                <div *ngIf="showSearchbar && !isTrashView" class="pb-5">
+                <div *ngIf="showSearchbar && !folderNotFound" class="pb-5">
                   <div style="position: relative;">
                     <form autocomplete="off" style="position: relative;">
                       <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
@@ -77,6 +77,14 @@
               </div>
               <div class="col-xl-5" >
                 <div style="float: right; position: relative;">
+                  <div class="deleted-by-me" *ngIf="isTrashView">
+                    <label class="control control--checkbox" style="margin-bottom: 0px;float: left;">
+                      Only show items deleted by me
+                      <input type="checkbox" checked="checked" />
+                      <div class="control__indicator" style="top: 0px;left: 0px;"></div>
+                    </label>
+                  </div>
+                  
                   <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView && checkEnableDeleteBtn()" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
                   <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView && checkEnableDeleteBtn()" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
 
