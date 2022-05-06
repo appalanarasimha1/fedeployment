@@ -241,7 +241,7 @@ export class BrowseComponent implements OnInit {
   }
 
   checkWSType(assetType: string) {
-    return assetType === "Workspace";
+    return assetType === "Workspace" || assetType === "OrderedFolder";
   }
 
   openVerticallyCentered(content) {
