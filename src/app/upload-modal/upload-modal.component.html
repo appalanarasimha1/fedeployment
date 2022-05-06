@@ -145,19 +145,24 @@
                   <div *ngIf="!data" class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}">
                      <input type="text" id="title" #searchFolderInput [disabled]="data" value="{{folderToAdd || selectedFolder?.title}}" [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
                      <span class="custom-select-icons">
-                     <i class="fa fa-caret-down"></i>
+                     <i class="fa fa-angle-down"></i>
                      </span>
                      <ul *ngIf="showCustomDropdown" class="custom-select-options" id="custom-select-list">
+                        <div class="breadcrumb-folder">
+                           <div *ngFor="let folder of breadCrumb; let i = index">
+                              /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title)">{{folder.title}}</a>
+                           </div>
+                           <div class="back-icon"><i class="fa fa-angle-left" aria-hidden="true"></i> Back</div>
+                        </div>
                         <div style="min-height: 52px; max-height: 99px; overflow: auto;" id="customScrollBar">
-                           <li>
-                              <span *ngFor="let folder of breadCrumb; let i = index">
-                                 /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title)">{{folder.title}}</a>
-                              </span>
-                           </li>
                            <li *ngFor="let folder of dropdownFolderList" class="styled">
-                              <img (click)="selectFolder(folder)" src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px;">
-                              {{folder.title}}
-                              <span (click)="getFolderByParentId(folder.id, folder.path); extractBreadcrumb(folder.contextParameters)">></span>
+                              <span (click)="selectFolder(folder)" class="folderTitle">
+                                 <img src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px; vertical-align: -2px;">
+                                 {{folder.title}}
+                              </span>
+                              <span (click)="getFolderByParentId(folder.id, folder.path); extractBreadcrumb(folder.contextParameters)" class="folderTitleArrow">
+                                 <img src="../../assets/images/back-arrow.svg" />
+                              </span>
                            </li>
                            <li *ngIf="!dropdownFolderList || dropdownFolderList.length === 0">
                               <span style="font-style: italic;">-No folder found-</span>
