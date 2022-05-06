@@ -728,6 +728,9 @@ export class BrowseComponent implements OnInit {
   }
 
   getSearchPlaceholder(): string {
+    if(this.isTrashView) {
+      return `Search for folder in deleted items`;
+    }
     return `Search for folder in ${this.sharedService.stringShortener(
       this.selectedFolder?.title,
       19
@@ -865,7 +868,7 @@ export class BrowseComponent implements OnInit {
       this.selectedFolder = {};
     }
     this.loading = true;
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace'`;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
     this.apiService.get(url).subscribe((docs: any) => {
       this.trashedList = docs.entries.filter(
         (sector) =>

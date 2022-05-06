@@ -358,6 +358,7 @@ export class UploadModalComponent implements OnInit {
   async getFolderByParentId(id: string, path: string, index?: number|null) {
     this.parentFolder = {id, path, type: this.ORDERED_FOLDER};
     const result = await this.getFolderList(id);
+    this.folderNameParam = "";
     if(index === null) {
       this.dropdownFolderList = result.filter(res => res.type === this.ORDERED_FOLDER || res.type === 'Workspace');
       this.folderList = [...this.dropdownFolderList];
@@ -531,11 +532,15 @@ export class UploadModalComponent implements OnInit {
     this.description = this.selectedFolder.properties["dc:description"];
   }
 
-  createFolderOrder() {
+  createFolderOrder(type?: string) {
     this.folderNameParam = "";
     this.breadCrumb.forEach(element => {
       this.folderNameParam = `${this.folderNameParam}/${element.title}`;
     });
+    if(type === 'new') {
+      this.folderNameParam = `${this.folderNameParam}/${this.folderToAdd}`.slice(1);
+      return;
+    }
     this.folderNameParam = `${this.folderNameParam}/${this.selectedFolder.title}`.slice(1);
   }
 
@@ -544,6 +549,7 @@ export class UploadModalComponent implements OnInit {
     this.description = '';
     this.folderToAddName = folderName.value;
     this.folderToAdd = folderName.value.split('/').pop();
+    this.createFolderOrder('new');
     this.selectedFolder = null;
     this.showCustomDropdown = false;
     this.disableDateInput = false;

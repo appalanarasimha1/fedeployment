@@ -150,7 +150,7 @@
                      <ul *ngIf="showCustomDropdown" class="custom-select-options" id="custom-select-list">
                         <div class="breadcrumb-folder">
                            <div *ngFor="let folder of breadCrumb; let i = index">
-                              /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title)">{{folder.title}}</a>
+                              <span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title)">{{folder.title}}</a>
                            </div>
                            <div *ngIf="breadCrumb.length >= 2" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder.title)"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</div>
                         </div>
