@@ -987,7 +987,8 @@ font-weight: 600;
 .breadcrumb-not-active {
   cursor: default;
   text-decoration: none;
-  color: rgba(35, 33, 30, 0.6);
+  /* color: rgba(35, 33, 30, 0.6); */
+  color: #24221f;
 }
 .header-content h6.tollTipCustom span{
   color: rgba(35, 33, 30, 0.6);
