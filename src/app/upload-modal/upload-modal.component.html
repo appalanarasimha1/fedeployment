@@ -143,7 +143,7 @@
                <div class="col-xl-8 col-md-8 flexible">
                   <div *ngIf="data" class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div>
                   <div *ngIf="!data" class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}">
-                     <input type="text" id="title" #searchFolderInput [disabled]="data" value="{{folderToAdd || selectedFolder?.title}}" [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
+                     <input type="text" id="title" #searchFolderInput [disabled]="data" value="{{folderToAdd || folderOrder}}" [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
                      <span class="custom-select-icons">
                      <i class="fa fa-caret-down"></i>
                      </span>

@@ -135,6 +135,7 @@ export class UploadModalComponent implements OnInit {
   downloadApproval: boolean = false;
   breadCrumb = [];
   assetCache: {[id: string]: any} = {};
+  folderOrder: string = "";
 
   constructor(
     private apiService: ApiService,
@@ -512,12 +513,20 @@ export class UploadModalComponent implements OnInit {
 
   selectFolder(folder) {
     this.selectedFolder = folder;
+    this.createFolderOrder();
     this.folderToAdd = null;
     this.showCustomDropdown = false;
     this.disableDateInput = true;
     this.associatedDate = this.selectedFolder.properties["dc:start"];
     this.descriptionFilled = true;
     this.description = this.selectedFolder.properties["dc:description"];
+  }
+
+  createFolderOrder() {
+    this.breadCrumb.forEach(element => {
+      this.folderNameParam = `/${element.title}`;
+    });
+    this.folderNameParam = `/${this.selectedFolder.title}`.slice(1);
   }
 
   addNewFolder(folderName) {
