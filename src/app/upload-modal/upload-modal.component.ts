@@ -34,7 +34,7 @@ import {SharedService} from "../services/shared.service";
 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatHorizontalStepper, MatStep, MatVerticalStepper } from '@angular/material/stepper';
-import { PAGE_SIZE_200, ROOT_ID, WORKSPACE_ROOT } from "../common/constant";
+import { ORDERED_FOLDER, PAGE_SIZE_200, ROOT_ID, WORKSPACE_ROOT } from "../common/constant";
 interface FileByIndex {
   [index: string]: File;
 }
@@ -74,7 +74,7 @@ export class UploadModalComponent implements OnInit {
   readonly years = YEARS;
   readonly ACCESS_TITLE = ACCESS_TITLE;
   readonly ROOT_ID = ROOT_ID;
-  readonly ORDERED_FOLDER = 'OrderedFolder';
+  readonly ORDERED_FOLDER = ORDERED_FOLDER;
 
   filesMap: FileByIndex = {};
   batchId: string = null;
@@ -136,6 +136,7 @@ export class UploadModalComponent implements OnInit {
   breadCrumb = [];
   assetCache: {[id: string]: any} = {};
   folderOrder: string = "";
+  folderToAddName: string = "";
 
   constructor(
     private apiService: ApiService,
@@ -354,9 +355,15 @@ export class UploadModalComponent implements OnInit {
     return this.fetchByParent(rootWs.id);
   }
 
-  async getFolderByParentId(id: string, path: string, index?: number) {
+  async getFolderByParentId(id: string, path: string, index?: number|null) {
     this.parentFolder = {id, path, type: this.ORDERED_FOLDER};
     const result = await this.getFolderList(id);
+    if(index === null) {
+      this.dropdownFolderList = result.filter(res => res.type === this.ORDERED_FOLDER || res.type === 'Workspace');
+      this.folderList = [...this.dropdownFolderList];
+      this.breadCrumb.pop();
+      return;
+    }
     this.dropdownFolderList = index === 0 ? result : result.filter(res => res.type === this.ORDERED_FOLDER);
     this.folderList = [...this.dropdownFolderList];
   }
@@ -505,8 +512,10 @@ export class UploadModalComponent implements OnInit {
   showCreateFolderButton(input: string): boolean {
     if(!input.trim()) return false;
 
-    let dropdownFolderList: any[] = this.folderList.filter((folder) =>
-      folder.title.toLowerCase() === input.toLowerCase()
+    let dropdownFolderList: any[] = this.folderList.filter((folder) => {
+        const folderSplit = input.split('/').pop();
+        return folder.title.toLowerCase() === folderSplit.toLowerCase();
+      }
     );
     return !dropdownFolderList.length;
   }
@@ -523,16 +532,18 @@ export class UploadModalComponent implements OnInit {
   }
 
   createFolderOrder() {
+    this.folderNameParam = "";
     this.breadCrumb.forEach(element => {
-      this.folderNameParam = `/${element.title}`;
+      this.folderNameParam = `${this.folderNameParam}/${element.title}`;
     });
-    this.folderNameParam = `/${this.selectedFolder.title}`.slice(1);
+    this.folderNameParam = `${this.folderNameParam}/${this.selectedFolder.title}`.slice(1);
   }
 
   addNewFolder(folderName) {
     this.descriptionFilled = false;
     this.description = '';
-    this.folderToAdd = folderName.value;
+    this.folderToAddName = folderName.value;
+    this.folderToAdd = folderName.value.split('/').pop();
     this.selectedFolder = null;
     this.showCustomDropdown = false;
     this.disableDateInput = false;
@@ -777,7 +788,7 @@ export class UploadModalComponent implements OnInit {
   async createFolder(name, parentFolder?: any, data?: any) {
     const url = `/path${this.parentFolder.path}`;
 
-    const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder, this.description, this.associatedDate);
+    const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder.id, this.parentFolder.path, this.parentFolder.type, this.description, this.associatedDate);
     const res = await this.apiService.post(url, payload).toPromise();
     return {
       id: res["uid"],

@@ -18,6 +18,7 @@ import {
   PAGE_SIZE_40,
   WORKSPACE_ROOT,
   ROOT_ID,
+  ORDERED_FOLDER,
 } from "src/app/common/constant";
 import { apiRoutes } from "src/app/common/config";
 import { NuxeoService } from "src/app/services/nuxeo.service";
@@ -956,11 +957,13 @@ export class BrowseComponent implements OnInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
-    const url = `/path${this.selectedFolder2.path}/workspaces`;
+    const url = `/path${this.selectedFolder.path}`;
     const payload = await this.sharedService.getCreateFolderPayload(
       folderName,
       this.selectedFolder2.title,
-      null,
+      this.selectedFolder.uid,
+      this.selectedFolder.path,
+      ORDERED_FOLDER,
       description,
       date
     );
