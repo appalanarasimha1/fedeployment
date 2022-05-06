@@ -88,8 +88,8 @@
                   <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView && checkEnableDeleteBtn()" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
                   <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView && checkEnableDeleteBtn()" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
 
-                  <div class='buttonCreate'>
-                    <a href="javascript:void(0)" *ngIf="showSearchbar && !isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
+                  <!-- <div class='buttonCreate'>
+                    <a href="javascript:void(0)" *ngIf="!isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
                   <div class='dropdownCreate createFolder'>
                     <form>
@@ -150,7 +150,7 @@
 
                       </div>
                     </form>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -158,7 +158,7 @@
 
 
           <div *ngIf="selectedFolder" [ngClass]="{'animate__animated animate__fadeIn': showSearchbar}">
-            <div class="header-content" *ngIf="!isTrashView">
+            <div class="header-content" *ngIf="!isTrashView" style="width: 100%;">
               <div *ngIf="selectedFolder2.uid !== parentId"  style="width: 100%;">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
@@ -195,7 +195,7 @@
                 <h6 class="tollTipCustom">
                   <span>/<a [ngClass]="breadCrumb.length !== 0 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(folderStructure[0], null, 0)">All Workspace</a></span>
                   <span *ngFor="let c of breadCrumb; let i = index">
-                    /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{c.title}}</a>
+                    /<a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" style="color: #24221f;" (click)="handleGotoBreadcrumb(c, null, i + 1)">{{sharedService.stringShortener(c.title,40)}}</a>
                   </span>
                   <!-- <div class="tolltipContent" style="top: auto; bottom: -30px;">
                     {{sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb)}}
@@ -218,13 +218,92 @@
                 </div>
               </div>
               <div class="views" *ngIf="selectedFolder.uid !== parentId">
-                <ul class="uploadAssetsClassifications pb-3" *ngIf="showLinkCopy">
+
+
+
+
+                <div style="position: relative; display: inline-block; vertical-align: top;">
+                  <div class='buttonCreate'>
+                    <a href="javascript:void(0)" *ngIf="!isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
+                  </div>
+                  <div class='dropdownCreate createFolder'>
+                    <form>
+                      <div class="row">
+                        <div class="col-xl-12">
+                            <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
+                        </div>
+                        <div class="col-xl-12">
+                          <input [ngClass]="{'goldenText': folderNameRef.value}" #folderNameRef type="text" placeholder="Enter a folder name">
+                        </div>
+                      </div>
+                      <div class="row mt-4">
+                        <div class="col-xl-12">
+                          <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true"
+                                                (closed)="panelOpenState = false">
+                              <mat-expansion-panel-header>
+                                <mat-panel-description>
+                                  Show optional information
+                                </mat-panel-description>
+                              </mat-expansion-panel-header>
+                              <div class="row mt-4">
+                                <div class="col-xl-12">
+                                    <label>Description </label><span class="placeholderText">Project or event description</span>
+                                </div>
+                                <div class="col-xl-12">
+                                  <input [ngClass]="{'goldenText': folderDescriptionRef.value}" #folderDescriptionRef type="text">
+                                </div>
+                              </div>
+                              <div class="row custom-date-picker mt-4">
+                                <div class="col-xl-12 col-md-12">
+                                  <label for="date">Associated Date</label>
+                                </div>
+                                <div class="col-xl-12 col-md-12 " >
+                                  <mat-form-field appearance="fill">
+                                    <div class="flexible">
+                                      <input [ngClass]="{'goldenText': folderDateRef.value}" #folderDateRef matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 1.5px solid #000;"
+                                      placeholder="Choose a date"  (click)="picker.open(); datePickerDefaultAction()" >
+                                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    </div>
+                                      <mat-datepicker #picker></mat-datepicker>
+                                  </mat-form-field>
+                                </div>
+                            </div>
+                            </mat-expansion-panel>
+                          </mat-accordion>
+                        </div>
+                      </div>
+                      <div class="row mt-4">
+                      <div class="col-xl-12">
+                        <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)" [disabled]="!folderNameRef.value" style="pointer-events: auto;">
+                          Create folder
+                          <div *ngIf="!folderNameRef.value" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
+                            Please complete all mandatory fields to proceed
+                          </div>
+                        </button>
+                      </div>
+
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+
+
+
+
+
+                
+                <ul class="uploadAssetsClassifications" *ngIf="showLinkCopy">
                   <li (click)="openModal()" class="tollTipWorkspace workspaceInfoHover">
-                    <svg width="24" height="24" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
+                    <!-- <svg width="24" height="24" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                       <path d="M15 29.0625V17.8125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       <path d="M10.3125 22.5L15 17.8125L19.6875 22.5" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       <path d="M21.5625 19.6874H22.9687C25.5924 19.6918 27.9244 18.0164 28.7575 15.5284C29.5905 13.0405 28.7376 10.2986 26.6402 8.7223C24.5428 7.14597 21.6719 7.08909 19.5137 8.58112C18.6437 3.94906 14.4701 0.682968 9.7647 0.952001C5.05932 1.22103 1.28514 4.94155 0.948751 9.64258C0.612362 14.3436 3.81835 18.5636 8.43748 19.4999" stroke="#937206" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                    </svg> -->
+                    <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
+                      <path d="M0 17H18V19H0V17ZM10 3.828V15H8V3.828L1.929 9.9L0.515 8.486L9 0L17.485 8.485L16.071 9.899L10 3.83V3.828Z" fill="#937206"/>
+                    </svg>                      
                     <div class="customToolTipWorkspace">Upload here</div>
                   </li>
                   <li (click)="openUpdateClassModal()" class="tollTipWorkspace" [ngClass]="{'addClass' : !checkForDescription()}" *ngIf="breadCrumb[0]?.title?.toLowerCase()===userSector?.toLowerCase()">
@@ -303,7 +382,7 @@
                   </li> -->
                 </ul>
                 <!-- <a class="update-classifications-btn pb-3" *ngIf="checkShowUpdateBtn()" (click)="openUpdateClassModal()">Update classifications</a> -->
-                <div *ngIf="!showGridListButton() && !isTrashView">
+                <div *ngIf="!showGridListButton() && !isTrashView" class="gallery-view-block">
                   <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
                     <img src="../../../assets/images/list-view-icon.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
@@ -402,7 +481,7 @@
               </div>
             </div>
 
-            <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1">
+            <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1" style="width: 100%; --bs-gutter-x: 0px;">
               <div  class="col-xl-12 col-md-12">
                 <table matSort (matSortChange)="sortData($event)" class="folderListview pb-5" *ngIf="searchList.length">
                     <tr>
@@ -427,7 +506,7 @@
                       </div>
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
-                        <p style="text-align: left">{{item.title}}</p>
+                        <p style="text-align: left; word-break: break-all;">{{item.title}}</p>
                       </td>
                       <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">

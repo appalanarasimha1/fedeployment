@@ -266,7 +266,7 @@ export class SharedService {
       "entity-type": "document",
       repository: "default",
       path: `${parentFolder ? parentFolder.path : localStorage.getItem("workspacePath")}/null`,
-      type: "Workspace",
+      type: parentFolder.type ?? "Workspace",
       parentRef: parentFolder ? parentFolder.id : localStorage.getItem("workspaceId"),
       isCheckedOut: true,
       isRecord: false,

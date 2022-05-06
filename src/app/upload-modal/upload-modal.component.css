@@ -327,12 +327,13 @@ color: #FFFFFF;
 }
 .custom-select-icons {
   position: absolute;
-  top: 0.5em;
-  right: 0.5em;
+  top: 0px;
+  right: 2px;
   z-index: 20;
   border: 1px solid white;
   background: transparent;
   height: 22px;
+  font-size: 20px;
 }
 .custom-select-options {
   box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
@@ -350,8 +351,9 @@ color: #FFFFFF;
   background-color: #ffffff;
 }
 .custom-select-options li {
-  padding: 1em;
+  padding: 0.6em 1em;
   color: #000;
+  word-break: break-all;
 }
 .custom-select-options li.styled:hover {
   background:#E1BB33;
@@ -1088,7 +1090,7 @@ input.copyright-input::placeholder{
  .goldenText ::ng-deep .ng-arrow-wrapper .ng-arrow {
   background-image: url(../../assets/images/golden-arrow.png) !important ;
   height: 10px !important;
-  width: 10px !important;
+  /* width: 10px !important; */
 }
 .publish-assets .fa-caret-down:before {
   content: "";
@@ -1354,3 +1356,23 @@ input.copyright-input::placeholder{
 .optionalInformationDate ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
   display: none !important;
 }
+
+ul.custom-select-options li span.folderTitle {
+  width: calc(100% - 30px);
+  display: inline-block;
+  vertical-align: middle;
+}
+ul.custom-select-options li span.folderTitleArrow {
+  width: 30px;
+  display: inline-block;
+  vertical-align: middle;
+}
+ul.custom-select-options li span.folderTitleArrow img {
+  transform: rotate(180deg);
+  float: right;
+}
+.breadcrumb-folder {padding: 5px 15px;}
+.back-icon {display: inline-block;color: #8f8f8f;font-size: 14px;padding: 10px 2px 0px;}
+.back-icon i {font-size: 20px;vertical-align: -2px;}
+.breadcrumb-folder {color: #8f8f8f;}
+.breadcrumb-folder a {color: #040404;}
