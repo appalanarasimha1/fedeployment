@@ -1376,3 +1376,22 @@ ul.custom-select-options li span.folderTitleArrow img {
 .back-icon i {font-size: 20px;vertical-align: -2px;}
 .breadcrumb-folder {color: #8f8f8f;}
 .breadcrumb-folder a {color: #040404;}
+
+.custom-select input#title::-webkit-input-placeholder {
+  color: #BAB8B2 !important;
+}
+
+.custom-select input#title:-ms-input-placeholder {
+  color: #BAB8B2 !important;
+}
+
+.custom-select input#title::placeholder {
+  color: #BAB8B2 !important;
+}
+a.breadcrumb-active {
+  color: #BAB8B2 !important;
+}
+a.breadcrumb-not-active {
+  color: #413E3C !important;
+  cursor: auto;
+}

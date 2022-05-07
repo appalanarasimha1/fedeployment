@@ -84,9 +84,6 @@
                       <div class="control__indicator" style="top: 0px;left: 0px;"></div>
                     </label>
                   </div>
-                  
-                  <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView && checkEnableDeleteBtn()" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
-                  <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView && checkEnableDeleteBtn()" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
 
                   <!-- <div class='buttonCreate'>
                     <a href="javascript:void(0)" *ngIf="!isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
@@ -223,6 +220,9 @@
 
 
                 <div style="position: relative; display: inline-block; vertical-align: top;">
+                  <div class="deleteRecover">
+                    <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView && checkEnableDeleteBtn()" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
+                  </div>
                   <div class='buttonCreate'>
                     <a href="javascript:void(0)" *ngIf="!isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
                   </div>
@@ -399,7 +399,10 @@
                 </span>
               </div>
               <div class="views">
-                <div>
+                <div class="deleteRecover">
+                  <span class="recoverFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"  *ngIf="isTrashView && checkEnableDeleteBtn()" (click)="unTrashFolders()"><img src="../../../assets/images/recover-icon.svg">Recover selected items</span>
+                </div>
+                <div style="display: inline-block;">
                   <img src="../../../assets/images/gallery-view.svg" class="menu-icon" [ngClass]="selectedMenu === 0 ? 'active' : '' "
                   (click)="handleSelectMenu(0, 'GRID')">
                     <img src="../../../assets/images/list-view-icon.svg" class="menu-icon" [ngClass]="selectedMenu === 1 ? 'active' : '' "
