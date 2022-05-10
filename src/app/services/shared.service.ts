@@ -261,13 +261,13 @@ export class SharedService {
     return tag;
   }
 
-  async getCreateFolderPayload(name: string, sector: string, parentFolderId?: string, parentFolderPath?: string, parentFolderType?: string, description?: String, associatedDate?: string) {
+  async getCreateFolderPayload(name: string, sector: string, parentFolder: any, description?: String, associatedDate?: string) {
     return {
       "entity-type": "document",
       repository: "default",
-      path: `${parentFolderPath ? parentFolderPath : localStorage.getItem("workspacePath")}/null`,
-      type: parentFolderType ?? "Workspace",
-      parentRef: parentFolderId ? parentFolderId : localStorage.getItem("workspaceId"),
+      path: parentFolder.path,
+      type: parentFolder.type ?? "Workspace",
+      parentRef: parentFolder.id,
       isCheckedOut: true,
       isRecord: false,
       retainUntil: null,
@@ -282,12 +282,12 @@ export class SharedService {
         "webc:themePage": "workspace",
         "webc:theme": "sites",
         "webc:moderationType": "aposteriori",
-        "dc:path": parentFolderPath ? parentFolderPath : localStorage.getItem("workspacePath"),
-        "dc:parentId": parentFolderId ? parentFolderId : localStorage.getItem("workspaceId"),
+        "dc:path": parentFolder.path.replace('/null', ''),
+        "dc:parentId": parentFolder.id,
         "dc:description": description,
         "dc:title": name,
         "dc:start": associatedDate ? new Date(associatedDate).toISOString() : null,
-        "dc:parentName": "Workspaces",
+        "dc:parentName": parentFolder.title,
         "dc:sector": sector,
         "dc:primaryType": "event",
         "dc:folderType": associatedDate ? "singleDayEvent" : "generic",

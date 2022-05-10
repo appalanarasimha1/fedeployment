@@ -136,34 +136,23 @@ export class BrowseComponent implements OnInit {
     },
   ];
 
-  routeParams = {
-    sector: "",
-    folder: "",
-  };
+  // routeParams = {
+  //   sector: "",
+  //   folder: "",
+  // };
   breadcrrumb = `/${WORKSPACE_ROOT}`;
   showFolder = false;
 
   ngOnInit(): void {
     this.fetchUserData();
     this.route.queryParams.subscribe(async (params) => {
-      // console.log(params); // { orderby: "price" }
-      // this.routeParams.sector = params.sector;
-      this.routeParams.folder = params.folder; // price
-      // if(params.sector && params.folder) {
-      //   // this.selectedFolder = {uid: params.sector};
-      //   // this.handleClick(this.selectedFile, 0, null);
-      //   return;
-
-      // }
+      // this.routeParams.folder = params.folder; 
       this.selectedFolder2 = this.folderStructure[0];
       this.sectorSelected = this.folderStructure[0];
       this.selectedFolder = this.folderStructure[0];
 
       if (params.folder) {
-        // const folderUid = await this.fetchAssetsByName('L1');
-        // this.fetchAssets('c8dd8956-ff81-4c27-b9e4-932fb751b5b5');
         this.fetchAllSectors();
-        // this.fetchWorkSpaceOfSector(this.folderStructure[0]);
         await this.fetchBreadCrumbByAssetsUId(params.folder);
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
@@ -277,7 +266,7 @@ export class BrowseComponent implements OnInit {
     this.loading = false;
     this.sharedService.toTop();
     this.createDynamicSidebarScroll();
-    this.selectedFolder = item;
+    // this.selectedFolder = item;
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
@@ -415,10 +404,10 @@ export class BrowseComponent implements OnInit {
       this.breadcrrumb = `/${WORKSPACE_ROOT}`;
       return;
     }
-    const sectorId = this.sortedData.find((d) => d.title === title);
+    const sectorId = this.sortedData?.find((d) => d.title === title);
     if (type.toLowerCase() === ASSET_TYPE.DOMAIN) {
       this.breadcrrumb = `/${WORKSPACE_ROOT}/${title}`;
-      const sectorId = this.sortedData.find((d) => d.title === title);
+      const sectorId = this.sortedData?.find((d) => d.title === title);
       // this.navigateByUrl('');
     } else if (type.toLowerCase() === ASSET_TYPE.WORKSPACE) {
       const bread = this.breadcrrumb.split("/");
@@ -445,7 +434,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
-    if (breadCrumbIndex === 1 || !breadCrumbIndex) {
+    if (breadCrumbIndex ?? breadCrumbIndex === 1) {
       this.showSearchbar = true;
     }
     if (breadCrumbIndex === this.breadCrumb.length) return;
@@ -455,20 +444,14 @@ export class BrowseComponent implements OnInit {
       this.selectedFolder = this.selectedFolder2;
       this.sectorSelected = null;
       this.selectedMenu = 0;
-      // this.breadCrumb = [];
-      // // this.selectedFolder = item;
-      // // this.selectedFolder2 = item;
-      // this.handleClick(item, index);
       return;
     }
-    // this.selectedFolder = await this.fetchFolder(item.uid);
-    // this.handleViewClick(item, breadCrumbIndex);
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
       const listView = 1;
       await this.getWorkspaceFolders(item.uid, listView);
     } else {
-      await this.handleClickNew(item.uid);
+      await this.handleClickNew(item.uid); // todo: issue with 1st item of sidebar navigation.
     }
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
@@ -489,7 +472,8 @@ export class BrowseComponent implements OnInit {
       return this.folderAssetsResult[id];
     }
     const url = `/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
-    const result = await this.apiService.get(url).toPromise();
+    const result: any = await this.apiService.get(url).toPromise();
+    result.entries = result.entries.sort((a, b) => this.compare(a.title, b.title, true));
     const res = JSON.stringify(result);
     this.folderAssetsResult[id] = JSON.parse(res);
     delete this.fetchFolderStatus[id];
@@ -523,10 +507,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async showMore(id: string) {
-    if (
-      this.searchList.length <
-      this.selectedFolder.contextParameters.folderAssetsCount
-    ) {
+    if (this.searchList.length < this.selectedFolder.contextParameters.folderAssetsCount) {
       this.currentPageCount++;
       const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`;
       const result: any = await this.apiService.get(url).toPromise();
@@ -543,10 +524,7 @@ export class BrowseComponent implements OnInit {
     this.sharedService.toTop();
     const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     this.apiService.get(url).subscribe((docs: any) => {
-      this.searchList = docs.entries.filter(
-        (sector) =>
-          UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-      );
+      this.searchList = docs.entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
       let workSpaceIndex = this.searchList.findIndex(
         (res) => res.title === "Workspaces"
       );
@@ -560,8 +538,7 @@ export class BrowseComponent implements OnInit {
       } else {
         this.sortedData = this.searchList.slice();
         if (childIndex !== null && childIndex !== undefined) {
-          this.folderStructure[index].children[childIndex].children =
-            docs.entries;
+          this.folderStructure[index].children[childIndex].children = docs.entries;
           this.folderStructure[index].children[childIndex].isExpand = true;
           this.handleTest(selected);
         } else {
@@ -584,38 +561,25 @@ export class BrowseComponent implements OnInit {
   }
 
   openUpdateClassModal() {
-    console.log("123456787654321`12345678765432",this.breadCrumb[0].title, this.userSector);
-    
-    // openModal() {
     const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.minHeight = "350px";
     dialogConfig.height = "700px";
     dialogConfig.maxHeight = "900px";
     dialogConfig.width = "650px";
-    dialogConfig.disableClose = true;
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     dialogConfig.data = {
       docs: this.searchList,
       folder: this.selectedFolder,
     };
-    // https://material.angular.io/components/dialog/overview
+    
     const modalDialog = this.matDialog.open(UpdateModalComponent, dialogConfig);
-    // https://material.angular.io/components/dialog/overview
-    // const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
-    // modalDialog.afterClosed().subscribe(result => {
-    //   let data = {...result, uid: result.id};
-    //   let findIndex = this.folderStructure?.[0]?.children.findIndex(res => res.path === `/default-domain`);
-    //   let param1 = this.folderStructure[0].children[findIndex]
-    //   this.handleChangeClick(param1, 0, data, findIndex)
-    // });
+    
     modalDialog.afterClosed().subscribe((result) => {
       if (!result) return;
       Object.keys(result).forEach((key) => {
-        this.searchList[key].contextParameters.acls =
-          result[key].contextParameters.acls;
-        this.sortedData[key].contextParameters.acls =
-          result[key].contextParameters.acls;
+        this.searchList[key].contextParameters.acls = result[key].contextParameters.acls;
+        this.sortedData[key].contextParameters.acls = result[key].contextParameters.acls;
         this.searchList[key].properties = {
           ...this.searchList[key].properties,
           ...result[key].properties,
@@ -625,6 +589,7 @@ export class BrowseComponent implements OnInit {
           ...result[key].properties,
         };
       });
+      this.showMoreButton = false;
     });
   }
 
@@ -695,6 +660,7 @@ export class BrowseComponent implements OnInit {
     const count = item.contextParameters?.folderAssetsCount || 0;
     return `${count} assets curated by ${item.properties["dc:creator"]}`;
   }
+
   onActivate(event) {
     window.scroll(0, 0);
   }
@@ -731,10 +697,7 @@ export class BrowseComponent implements OnInit {
     if(this.isTrashView) {
       return `Search for folder in deleted items`;
     }
-    return `Search for folder in ${this.sharedService.stringShortener(
-      this.selectedFolder?.title,
-      19
-    )} workspace`;
+    return `Search for folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
   }
 
   getDateInFormat(date: string): string {
@@ -808,9 +771,7 @@ export class BrowseComponent implements OnInit {
     // this.hasUpdatedChildren.push(this.selectedFolder.uid);
     this.selectedFolderList = {};
     recoveredFolders.forEach(
-      (item) =>
-        this.folderAssetsResult[item.parentRef] &&
-        this.folderAssetsResult[item.parentRef].entries.push(item)
+      (item) => this.folderAssetsResult[item.parentRef] &&this.folderAssetsResult[item.parentRef].entries.push(item)
     );
   }
 
@@ -871,8 +832,7 @@ export class BrowseComponent implements OnInit {
     const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
     this.apiService.get(url).subscribe((docs: any) => {
       this.trashedList = docs.entries.filter(
-        (sector) =>
-          UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
+        (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
       );
       if (!this.myDeletedCheck) {
         this.searchList = this.trashedList;
@@ -946,9 +906,7 @@ export class BrowseComponent implements OnInit {
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
       if (!result) return;
-      this.folderAssetsResult[
-        this.breadCrumb[this.breadCrumb.length - 1].uid
-      ].entries.unshift(result);
+      this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
       this.searchList.unshift(result);
       this.sortedData = this.searchList.slice();
       this.showMoreButton = false;
@@ -960,13 +918,19 @@ export class BrowseComponent implements OnInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
-    const url = `/path${this.selectedFolder.path}`;
+    let url = `/path${this.selectedFolder.path}`;
+    if (this.selectedFolder.type.toLowerCase() === 'domain') {
+      url = `/path${this.selectedFolder.path}/workspaces`;
+      this.selectedFolder.path = `${this.selectedFolder.path}/workspaces/null`;
+      this.selectedFolder.type = 'Workspace';
+    } else {
+      this.selectedFolder.type = ORDERED_FOLDER;
+    }
+
     const payload = await this.sharedService.getCreateFolderPayload(
       folderName,
       this.selectedFolder2.title,
-      this.selectedFolder.uid,
-      this.selectedFolder.path,
-      ORDERED_FOLDER,
+      this.selectedFolder,
       description,
       date
     );
@@ -975,6 +939,8 @@ export class BrowseComponent implements OnInit {
 
     this.searchList.push(res);
     this.sortedData = this.searchList.slice();
+    this.folderAssetsResult[this.selectedFolder.uid].entries.push(res);
+    this.showMoreButton = false;
     $(".dropdownCreate").hide();
     $(".buttonCreate").removeClass("createNewFolderClick");
     this.sharedService.showSnackbar(

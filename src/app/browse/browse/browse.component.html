@@ -37,7 +37,7 @@
                   <ul *ngIf="item.children?.length && item.isExpand" class="leftPanel insideScroll " id="customScrollBar">
                     <li  *ngFor="let firstChild of item.children;let fIndex = index"  style="cursor: pointer" class="hoverPin">
                       <div  class="d-flex set paddingLeft" [ngClass]="sectorSelected?.uid === firstChild.uid && !isTrashView ? 'active-tab' : ''"
-                            (click)="handleGotoBreadcrumb(firstChild, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; sectorSelected = firstChild; routeParams.folder = null; closeOtherSectore(firstChild, item.children)">
+                            (click)="handleGotoBreadcrumb(firstChild, fIndex);selectedFolder2=firstChild;selectedFolder=firstChild; sectorSelected = firstChild; closeOtherSectore(firstChild, item.children)">
                         <!-- <div style="z-index: 9;"> -->
 
                           <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />

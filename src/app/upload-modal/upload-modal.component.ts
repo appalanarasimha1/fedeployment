@@ -794,7 +794,7 @@ export class UploadModalComponent implements OnInit {
   async createFolder(name, parentFolder?: any, data?: any) {
     const url = `/path${this.parentFolder.path}`;
 
-    const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder.id, this.parentFolder.path, this.parentFolder.type, this.description, this.associatedDate);
+    const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder, this.description, this.associatedDate);
     const res = await this.apiService.post(url, payload).toPromise();
     return {
       id: res["uid"],
