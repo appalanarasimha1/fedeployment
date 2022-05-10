@@ -560,8 +560,13 @@ export class BrowseComponent implements OnInit {
     );
   }
 
-  openUpdateClassModal() {
+  openUpdateClassModal(breadCrumb:any) {
+    
+    if (!this.upadtePermission(breadCrumb) || this.sortedData.length<1) {
+      return;
+    }
     const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.minHeight = "350px";
     dialogConfig.height = "700px";
@@ -823,7 +828,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getTrashedWS() {
-    this.showSearchbar=true
+    this.showSearchbar = true;
     if (this.folderNotFound) {
       this.folderNotFound = false;
       this.selectedFolder = {};
@@ -888,7 +893,7 @@ export class BrowseComponent implements OnInit {
   }
 
   checkShowNoTrashItem() {
-    return this.isTrashView && this.searchList && this.searchList.length === 0;
+    return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
 
   openModal() {
@@ -1135,5 +1140,11 @@ export class BrowseComponent implements OnInit {
       var storeHeight = $(".main-content").outerHeight();
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
     }, 0);
+  }
+
+  upadtePermission(breadcrumb: any) {
+    let user = this.userSector?.split("-")[0].trim().toLowerCase();
+    if (breadcrumb?.title?.toLowerCase() === user) return true;
+    return false;
   }
 }

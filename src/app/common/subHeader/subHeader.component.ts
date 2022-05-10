@@ -66,6 +66,7 @@ export class SubHeaderComponent implements OnInit {
   tagClicked: boolean = false;
   showRelatedSearch: boolean = false;
   recentSearch: any;
+  clearRecent: boolean = false;
   constructor(
     private dataService: DataService,
     public sharedService: SharedService,
@@ -429,11 +430,15 @@ export class SubHeaderComponent implements OnInit {
   deleteRecentTags(e) {
     e.stopPropagation();
     e.preventDefault();
+    this.clearRecent = true;
     const user = JSON.parse(localStorage.getItem("user"));
     this.apiService
       .post("/searchTerm/deleteUserRecentTags?username=" + user.email, {})
       .subscribe(() => {
         this.recentSearch = [];
       });
+  }
+  outClick() {
+    console.log("qwertgyhuiop");
   }
 }
