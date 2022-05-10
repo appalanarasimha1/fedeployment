@@ -253,8 +253,6 @@ export class SharedService {
   }
 
   capitaliseSelectiveTags(tag: string): string {
-    console.log({tag});
-    
     if(tag.toLowerCase().trim() === 'neom') {
       return tag.toUpperCase();
     }

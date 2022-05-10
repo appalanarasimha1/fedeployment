@@ -31,7 +31,7 @@
                 <button class="primary search-btn"><img
                   src="../../../assets/images/search-icon.svg" /></button>
                 <input [ngModel]="searchText" (ngModelChange)="searchText=$event" [ngModelOptions]="{standalone: true}"
-                  type="text" placeholder="Search assets..." class="search-bar" [ngClass]="{'removeBorderRadious': searchPopup}"  (blur)="blurOnSearch()" (click)="inputClicked()">
+                  type="text" placeholder="Search assets..." class="search-bar" [ngClass]="{'removeBorderRadious': searchPopup}"  (blur)="blurOnSearch()" (click)="inputClicked()" (clickOutside)="outClick()">
                   <img *ngIf="searchText" style="cursor: pointer" (click)="resetSearch()" src="../assets/images/circle-close-gray.png" class="placeholder-search">
                   <!-- <img src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search"> -->
                   <!-- <button ngIf="search" class="btn" style="position: absolute; right: 39px; top: 3px;">x</button> -->

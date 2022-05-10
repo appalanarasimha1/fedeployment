@@ -734,8 +734,12 @@ export class BrowseComponent implements OnInit {
   }
 
   openUpdateClassModal() {
-    console.log("123456787654321`12345678765432",this.breadCrumb[0].title, this.userSector);
-    
+    console.log(
+      "123456787654321`12345678765432",
+      this.breadCrumb[0].title,
+      this.userSector
+    );
+
     // openModal() {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -1010,7 +1014,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getTrashedWS() {
-    this.showSearchbar=true
+    this.showSearchbar = true;
     if (this.folderNotFound) {
       this.folderNotFound = false;
       this.selectedFolder = {};
@@ -1315,5 +1319,11 @@ export class BrowseComponent implements OnInit {
       var storeHeight = $(".main-content").outerHeight();
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
     }, 0);
+  }
+
+  upadtePermission(breadcrumb: any) {
+    let user = this.userSector?.split("-")[0].trim().toLowerCase();
+    if (breadcrumb?.title?.toLowerCase() === user) return true;
+    return false;
   }
 }

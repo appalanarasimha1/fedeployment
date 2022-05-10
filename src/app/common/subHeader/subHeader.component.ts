@@ -66,6 +66,7 @@ export class SubHeaderComponent implements OnInit {
   tagClicked: boolean = false;
   showRelatedSearch: boolean = false;
   recentSearch: any;
+  clearRecent: boolean = false;
   constructor(
     private dataService: DataService,
     public sharedService: SharedService,
@@ -397,6 +398,7 @@ export class SubHeaderComponent implements OnInit {
 
   resetSearch() {
     this.searched = false;
+    this.clearRecent = false;
     this.showRelatedSearch = false;
     this.getRecentSearch();
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
@@ -406,19 +408,24 @@ export class SubHeaderComponent implements OnInit {
   focusOnSearch() {
     this.searchPopup = true;
     this.tagClicked = false;
+    this.clearRecent = false;
   }
 
   blurOnSearch() {
     if (this.tagClicked) {
     } else {
       setTimeout(() => {
-        this.searchPopup = false;
+        if (this.clearRecent && this.recentSearch.length > 0) {
+        } else {
+          this.searchPopup = false;
+        }
       }, 500);
     }
   }
 
   inputClicked() {
     this.searchPopup = !this.searchPopup;
+    this.clearRecent = false;
     this.tagClicked = false;
     this.dataService.showRecent$.subscribe((show: boolean) => {
       this.showRelatedSearch = show;
@@ -429,11 +436,16 @@ export class SubHeaderComponent implements OnInit {
   deleteRecentTags(e) {
     e.stopPropagation();
     e.preventDefault();
+    this.clearRecent = true;
     const user = JSON.parse(localStorage.getItem("user"));
     this.apiService
       .post("/searchTerm/deleteUserRecentTags?username=" + user.email, {})
       .subscribe(() => {
         this.recentSearch = [];
       });
+  }
+  outClick(){
+    console.log("qwertgyhuiop");
+    
   }
 }
