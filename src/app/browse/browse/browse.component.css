@@ -74,9 +74,10 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 
 .header-content {
   /* height: 50px; */
-  display: flex;
-  justify-content: space-between;
   /* align-items: center; */
+  /* display: flex;
+  justify-content: space-between; */
+  display: block;
 }
 .block-image {
   height: 123px;
@@ -156,11 +157,13 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   display: none;
 }
 .views {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  width: 25%;
+  align-items: flex-end; */
+  width: 100%;
   padding-top: 2px;
+  text-align: right;
+  position: relative;
 }
 .update-classifications-btn {
   color: #E1BB33;
@@ -170,7 +173,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 }
 .views img {
   margin-left: 15px;
-  opacity: 0.6;
+  opacity: 0.2;
   width: 24px;
   cursor: pointer;
 }
@@ -984,7 +987,8 @@ font-weight: 600;
 .breadcrumb-not-active {
   cursor: default;
   text-decoration: none;
-  color: rgba(35, 33, 30, 0.6);
+  /* color: rgba(35, 33, 30, 0.6); */
+  color: #24221f;
 }
 .header-content h6.tollTipCustom span{
   color: rgba(35, 33, 30, 0.6);
@@ -1111,7 +1115,7 @@ font-weight: 600;
   margin-right: 8px; margin-top: -4px;
 }
 .createNew {
-  margin-left: 30px;
+  margin-left: 10px;
 }
 .groupFolder.checkDelete .delete-folder-action {
   opacity: 1;
@@ -1137,12 +1141,13 @@ font-weight: 600;
   margin: 0px auto 14px;
 }
 .recoverFolder {
-  padding-bottom: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
+  margin-right: 10px;
 }
 ul.uploadAssetsClassifications {
-  display: block;
-  margin-bottom: 30px;
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 20px;
 }
 ul.uploadAssetsClassifications li {
   float: left;
@@ -1248,6 +1253,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   z-index: 99;
   padding: 20px;
   top: 35px;
+  text-align: left;
 }
 .workspaceInfoBlock {
   background: #23211E !important;
@@ -1269,10 +1275,13 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 }
 .dropdownCreate {
   display:none;
+  text-align: left;
 }
 .buttonCreate {
-  padding-top: 10px;
+  padding-top: 0px;
   display: inline-block;
+  margin-right: 17px;
+  vertical-align: top;
 }
 .deleteFolder{
   display: inline-block;
@@ -1572,3 +1581,10 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 .deleted-by-me {
   padding-top: 10px;
 }
+.gallery-view-block {
+  float: right;
+  border-left: 1px solid #EFEEE9;
+}
+.buttonCreate img {opacity: 1 !important;width: 14px !important;}
+.deleteRecover {display: inline-block;}
+.deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}

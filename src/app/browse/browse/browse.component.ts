@@ -18,6 +18,7 @@ import {
   PAGE_SIZE_40,
   WORKSPACE_ROOT,
   ROOT_ID,
+  ORDERED_FOLDER,
 } from "src/app/common/constant";
 import { apiRoutes } from "src/app/common/config";
 import { NuxeoService } from "src/app/services/nuxeo.service";
@@ -116,8 +117,8 @@ export class BrowseComponent implements OnInit {
   hasUpdatedChildren = [];
   sortedData;
   folderNotFound = false;
-
   renameFolderName: boolean = false;
+  isShowDivIf: boolean = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -243,7 +244,7 @@ export class BrowseComponent implements OnInit {
   }
 
   checkWSType(assetType: string) {
-    return assetType === "Workspace";
+    return assetType === "Workspace" || assetType === "OrderedFolder";
   }
 
   openVerticallyCentered(content) {
@@ -428,157 +429,6 @@ export class BrowseComponent implements OnInit {
     }
     // this.breadcrrumb =  `/${WORKSPACE_ROOT}${path}`;
   }
-
-  // handleClick(item, index, childIndex?: any) {
-  //   if (item.isTrashed) return;
-  //   this.selectedFolderList = {};
-  //   this.isTrashView = false;
-  //   this.currentLevel = index;
-  //   this.showLinkCopy = false;
-  //   this.copiedString = "";
-  //   this.showSearchbar = false;
-  //   this.searchBarValue = "";
-  //   this.sharedService.toTop();
-  //   this.folderNotFound = false;
-
-  //   this.createBreadCrumb(item.title, item.type, item.path);
-  //   this.extractBreadcrumb();
-  //   if (item?.uid === ROOT_ID) {
-  //     this.handleSelectMenu(0, "GRID");
-  //   } else {
-  //     this.handleSelectMenu(1, "LIST");
-  //   }
-  //   if (item?.children?.length && !this.hasUpdatedChildren.includes(item?.uid)) {
-  //     this.searchList = item.children;
-  //     this.sortedData = item.children;
-  //     if (item?.uid === ROOT_ID) this.showSearchbar = false;
-  //     else this.showSearchbar = true;
-  //     return;
-  //   }
-  //   if (this.hasUpdatedChildren.includes(item?.uid)) {
-  //     const deleteIndex = this.hasUpdatedChildren.indexOf(item.uid);
-  //     if (deleteIndex > -1) {
-  //       this.hasUpdatedChildren.splice(deleteIndex, 1);
-  //     }
-  //   }
-  //   this.loading = true;
-  //   const url = `/search/pp/nxql_search/execute?currentPage=0&Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-  //   this.apiService
-  //     .get(url)
-  //     .subscribe((docs: any) => {
-  //       let result = docs.entries.filter(
-  //         (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-  //       );
-  //       let workSpaceIndex = result.findIndex((res) => res.title === "Workspaces");
-  //       if (workSpaceIndex >= 0) {
-  //         this.loading = false;
-  //         localStorage.setItem("workspaceId", result[workSpaceIndex].uid);
-  //         localStorage.setItem("workspacePath", result[workSpaceIndex].path);
-  //         return this.handleClick(result[workSpaceIndex], index, childIndex);
-  //       } else {
-  //         this.searchList = result;
-  //         this.sortedData = result;
-  //         if (this.selectedFolder2.uid !== ROOT_ID) {
-  //           this.showSearchbar = true;
-  //         }
-  //         if (childIndex !== null && childIndex !== undefined) {
-  //           this.showSearchbar = true;
-  //           this.loading = false;
-  //           this.createDynamicSidebarScroll();
-  //           this.folderStructure[index].children[childIndex].children =
-  //             docs.entries.filter(
-  //               (sector) =>
-  //                 UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-  //             );
-  //           this.folderStructure[index].children[childIndex].isExpand = true;
-
-  //           if (!this.callFolder && this.routeParams.folder) {
-  //             this.folderStructure[index].children[this.ind].children = docs.entries.filter((sector) =>
-  //               UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
-  //             let lastChild = this.folderStructure[index].children[this.ind].children.find((item, i) => {
-  //               if (item.title.toLowerCase() === this.routeParams.folder.toLowerCase()) {
-  //                 this.ind = i;
-  //                 this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`;
-  //                 return item;
-  //               }
-  //             });
-  //             this.selectedFolder = lastChild;
-  //             if (!this.selectedFolder) {
-  //               this.folderNotFound = true;
-  //             }
-  //             if (lastChild) {
-  //               this.handleTest(lastChild);
-  //             }
-  //           }
-  //         } else {
-  //           this.loading = false;
-  //           this.createDynamicSidebarScroll();
-  //           if (!this.sectorOpen) {
-  //             this.folderStructure[index].children = docs.entries.filter(
-  //               (sector) =>
-  //                 UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-  //             ); // index = parent index in folder structure
-  //             this.folderStructure[index].isExpand = !this.folderStructure[index].isExpand;
-  //             this.callHandClick = this.folderStructure[index].children.find(
-  //               (item, i) => {
-  //                 if (item.uid === this.routeParams.sector) {
-  //                   this.ind = i;
-  //                   this.folderStructure[index].children[this.ind].isExpand =
-  //                     true;
-  //                   return item;
-  //                 }
-  //               }
-  //             );
-  //             if (this.callHandClick) this.selectedFolder2 = this.callHandClick;
-  //             this.sectorOpen = true;
-  //             this.callDomain;
-  //           }
-
-  //           if (!this.callDomain && this.routeParams.sector) {
-  //             this.callDomain = true;
-  //             this.callHandClick = this.folderStructure[index].children.find(
-  //               (item, i) => {
-  //                 if (item.uid === this.routeParams.sector) {
-  //                   this.ind = i;
-  //                   this.folderStructure[index].children[this.ind].isExpand = true;
-  //                   return item;
-  //                 }
-  //               }
-  //             );
-  //             if (this.callHandClick) {
-  //               this.selectedFolder = this.callHandClick;
-  //               this.handleClick(this.callHandClick, index, this.ind);
-  //               return;
-  //             }
-  //           }
-
-  //           if (!this.callFolder && this.routeParams.folder) {
-  //             this.folderStructure[index].children[this.ind].children =
-  //               docs.entries;
-  //             let lastChild = this.folderStructure[index].children[
-  //               this.ind
-  //             ].children.find((item, i) => {
-  //               if (
-  //                 item.title.toLowerCase() ===
-  //                 this.routeParams.folder.toLowerCase()
-  //               ) {
-  //                 this.ind = i;
-  //                 this.breadcrrumb = `/All workspaces/${this.callHandClick.title}/${item.title}`;
-  //                 return item;
-  //               }
-  //             });
-  //             this.selectedFolder = lastChild;
-  //             if (!this.selectedFolder) {
-  //               this.folderNotFound = true;
-  //             }
-  //             if (lastChild) {
-  //               this.handleTest(lastChild);
-  //             }
-  //           }
-  //         }
-  //       }
-  //     });
-  // }
 
   checkForChildren() {
     return true;
@@ -876,13 +726,15 @@ export class BrowseComponent implements OnInit {
     );
     return { uid: result.uid, sectorName: result.title };
   }
-  isShowDivIf = false;
 
   toggleDisplayDivIf() {
     this.isShowDivIf = !this.isShowDivIf;
   }
 
   getSearchPlaceholder(): string {
+    if(this.isTrashView) {
+      return `Search for folder in deleted items`;
+    }
     return `Search for folder in ${this.sharedService.stringShortener(
       this.selectedFolder?.title,
       19
@@ -1020,7 +872,7 @@ export class BrowseComponent implements OnInit {
       this.selectedFolder = {};
     }
     this.loading = true;
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace'`;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
     this.apiService.get(url).subscribe((docs: any) => {
       this.trashedList = docs.entries.filter(
         (sector) =>
@@ -1112,11 +964,13 @@ export class BrowseComponent implements OnInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
-    const url = `/path${this.selectedFolder2.path}/workspaces`;
+    const url = `/path${this.selectedFolder.path}`;
     const payload = await this.sharedService.getCreateFolderPayload(
       folderName,
       this.selectedFolder2.title,
-      null,
+      this.selectedFolder.uid,
+      this.selectedFolder.path,
+      ORDERED_FOLDER,
       description,
       date
     );
