@@ -1395,3 +1395,6 @@ a.breadcrumb-not-active {
   color: #413E3C !important;
   cursor: auto;
 }
+.upload-form-input input#title {
+  padding-right: 30px;
+}
