@@ -398,7 +398,6 @@ export class SubHeaderComponent implements OnInit {
 
   resetSearch() {
     this.searched = false;
-    this.clearRecent = false;
     this.showRelatedSearch = false;
     this.getRecentSearch();
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
@@ -408,24 +407,19 @@ export class SubHeaderComponent implements OnInit {
   focusOnSearch() {
     this.searchPopup = true;
     this.tagClicked = false;
-    this.clearRecent = false;
   }
 
   blurOnSearch() {
     if (this.tagClicked) {
     } else {
       setTimeout(() => {
-        if (this.clearRecent && this.recentSearch.length > 0) {
-        } else {
-          this.searchPopup = false;
-        }
+        this.searchPopup = false;
       }, 500);
     }
   }
 
   inputClicked() {
     this.searchPopup = !this.searchPopup;
-    this.clearRecent = false;
     this.tagClicked = false;
     this.dataService.showRecent$.subscribe((show: boolean) => {
       this.showRelatedSearch = show;
@@ -444,8 +438,7 @@ export class SubHeaderComponent implements OnInit {
         this.recentSearch = [];
       });
   }
-  outClick(){
+  outClick() {
     console.log("qwertgyhuiop");
-    
   }
 }

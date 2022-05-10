@@ -583,15 +583,18 @@ export class BrowseComponent implements OnInit {
     );
   }
 
-  openUpdateClassModal() {
+  openUpdateClassModal(breadCrumb:any) {
     console.log(
       "123456787654321`12345678765432",
-      this.breadCrumb[0].title,
-      this.userSector
+      this.breadCrumb,
+      this.userSector,
+      this.sortedData.length
     );
-
-    // openModal() {
-    const dialogConfig = new MatDialogConfig();
+    if (!this.upadtePermission(breadCrumb) || this.sortedData.length<1) {
+      return;
+    }
+      // openModal() {
+      const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.minHeight = "350px";
@@ -932,7 +935,7 @@ export class BrowseComponent implements OnInit {
   }
 
   checkShowNoTrashItem() {
-    return this.isTrashView && this.searchList && this.searchList.length === 0;
+    return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
 
   openModal() {

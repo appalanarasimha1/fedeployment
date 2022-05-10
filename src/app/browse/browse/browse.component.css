@@ -1588,3 +1588,6 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 .buttonCreate img {opacity: 1 !important;width: 14px !important;}
 .deleteRecover {display: inline-block;}
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
+.uploadClassificationDisable {
+  opacity: 0.5;
+}

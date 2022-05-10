@@ -306,7 +306,7 @@
                     </svg>                      
                     <div class="customToolTipWorkspace">Upload here</div>
                   </li>
-                  <li (click)="openUpdateClassModal()" class="tollTipWorkspace" [ngClass]="{'addClass' : !checkForDescription()}" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) :false">
+                  <li (click)="openUpdateClassModal(breadCrumb[0] ?breadCrumb[0] :null )" class="tollTipWorkspace" [ngClass]="{'uploadClassificationDisable':breadCrumb[0]? !upadtePermission(breadCrumb[0]) || !sortedData.length :true  }">
                     <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                       <path d="M28.1873 16.7728V1.58597C28.1873 1.26187 27.9357 1 27.625 1H1.56254C1.25178 1 1 1.26205 1 1.58597V28.539C1 28.8625 1.25176 29.125 1.56254 29.125H16.1391C16.4503 29.125 16.7017 28.8628 16.7017 28.539C16.7017 28.2153 16.4501 27.9531 16.1391 27.9531H2.12488V2.17203H27.0626V16.7726C27.0626 17.0961 27.3142 17.3586 27.6252 17.3586C27.9359 17.3588 28.1873 17.0965 28.1873 16.7728Z" fill="#937206" stroke="#937206" stroke-width="0.5"/>
                       <path d="M18.7656 8.5C19.3094 8.5 19.75 8.07979 19.75 7.5625C19.75 7.04492 19.3098 6.625 18.7656 6.625H7.6094C7.06559 6.625 6.625 7.04457 6.625 7.5625C6.625 8.08043 7.06556 8.5 7.6094 8.5H18.7656Z" fill="#937206"/>
@@ -314,7 +314,9 @@
                       <path d="M13.1406 19.75C13.6844 19.75 14.125 19.3298 14.125 18.8125C14.125 18.2949 13.6848 17.875 13.1406 17.875H7.6094C7.06559 17.875 6.625 18.2946 6.625 18.8125C6.625 19.3304 7.06556 19.75 7.6094 19.75H13.1406Z" fill="#937206"/>
                       <path d="M25.375 31C22.2684 31 19.75 28.4816 19.75 25.375C19.75 22.2684 22.2684 19.75 25.375 19.75C28.4816 19.75 31 22.2684 31 25.375C31 28.4816 28.4816 31 25.375 31ZM23.3296 26.0568C23.4028 25.978 23.526 25.9735 23.6048 26.0467L24.551 26.9254C24.6149 26.9847 24.716 26.9766 24.7695 26.9077L27.1471 23.8508C27.2131 23.7659 27.3355 23.7506 27.4204 23.8166C27.5053 23.8827 27.5206 24.0051 27.4546 24.09L24.8416 27.4494C24.7743 27.5359 24.6473 27.5462 24.5669 27.4716L23.3398 26.332C23.261 26.2588 23.2564 26.1356 23.3296 26.0568ZM25.375 30.6591C28.2933 30.6591 30.6591 28.2933 30.6591 25.375C30.6591 22.4567 28.2933 20.0909 25.375 20.0909C22.4567 20.0909 20.0909 22.4567 20.0909 25.375C20.0909 28.2933 22.4567 30.6591 25.375 30.6591Z" fill="#937206" stroke="#937206" stroke-width="1.2"/>
                     </svg>
-                    <div class="customToolTipWorkspace">Update classifications</div>
+                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !!sortedData.length :false">Update classifications</div>
+                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !sortedData.length :false">There are no assets in the folder to update</div>
+                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true">You do not have permissions to update classification</div>
                   </li>
                   <li *ngIf="checkForDescription()" class="workspaceInfoHover">
                     <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
