@@ -157,6 +157,10 @@ export class BrowseComponent implements OnInit {
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
+        if(this.selectedFolder.isTrashed) {
+          this.folderNotFound = true;
+          return;
+        }
         this.fetchCurrentFolderAssets(params.folder);
       } else {
         await this.fetchAllSectors();

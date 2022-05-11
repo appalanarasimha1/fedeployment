@@ -90,7 +90,7 @@
           </div>
 
 
-          <div *ngIf="selectedFolder" [ngClass]="{'animate__animated animate__fadeIn': showSearchbar}">
+          <div *ngIf="selectedFolder && !folderNotFound" [ngClass]="{'animate__animated animate__fadeIn': showSearchbar}">
             <div class="header-content" *ngIf="!isTrashView" style="width: 100%;">
               <div *ngIf="selectedFolder2.uid !== parentId"  style="width: 100%;">
                 <!-- <button mat-raised-button
