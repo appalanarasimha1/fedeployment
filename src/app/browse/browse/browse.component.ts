@@ -157,6 +157,10 @@ export class BrowseComponent implements OnInit {
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
+        if(this.selectedFolder.isTrashed) {
+          this.folderNotFound = true;
+          return;
+        }
         this.fetchCurrentFolderAssets(params.folder);
       } else {
         await this.fetchAllSectors();
@@ -448,11 +452,11 @@ export class BrowseComponent implements OnInit {
       return;
     }
     this.isTrashView = false;
-    if (index || breadCrumbIndex === 1) {
+    if (index || index === 0 || breadCrumbIndex === 1) {
       const listView = 1;
       await this.getWorkspaceFolders(item.uid, listView);
     } else {
-      await this.handleClickNew(item.uid); // todo: issue with 1st item of sidebar navigation.
+      await this.handleClickNew(item.uid);
     }
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
@@ -675,10 +679,6 @@ export class BrowseComponent implements OnInit {
     if (item.isTrashed) return item.properties["dc:creator"];
     const count = item.contextParameters?.folderAssetsCount || 0;
     return `${count} assets curated by ${item.properties["dc:creator"]}`;
-  }
-
-  onActivate(event) {
-    window.scroll(0, 0);
   }
 
   copyToClipboard(val: string) {
