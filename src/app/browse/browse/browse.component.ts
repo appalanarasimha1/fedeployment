@@ -451,7 +451,7 @@ export class BrowseComponent implements OnInit {
       return;
     }
     this.isTrashView = false;
-    if (index || breadCrumbIndex === 1) {
+    if (index || index === 0 || breadCrumbIndex === 1) {
       const listView = 1;
       await this.getWorkspaceFolders(item.uid, listView);
     } else {
