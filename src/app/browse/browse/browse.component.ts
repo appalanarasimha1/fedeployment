@@ -455,7 +455,7 @@ export class BrowseComponent implements OnInit {
       const listView = 1;
       await this.getWorkspaceFolders(item.uid, listView);
     } else {
-      await this.handleClickNew(item.uid); // todo: issue with 1st item of sidebar navigation.
+      await this.handleClickNew(item.uid);
     }
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
