@@ -176,7 +176,7 @@
                 [config]="tagsConfig" >
                 <div ngxSlickItem *ngFor="let bucket of tagsMetaRealdata; let i = index" class="slide">
                   <div class="item" >
-                    <a class="card" style="cursor: pointer;"  (click)="searchRelatedClick(bucket.key)">{{bucket.key}}</a>
+                    <a class="card" style="cursor: pointer;"  (click)="searchRelatedClick(bucket.key)">{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a>
                   </div>
                 </div>
               </ngx-slick-carousel>

@@ -434,6 +434,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    this.showSearchbar = true;
     if (breadCrumbIndex ?? breadCrumbIndex === 1) {
       this.showSearchbar = true;
     }
