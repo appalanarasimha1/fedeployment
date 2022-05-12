@@ -146,7 +146,7 @@ export class BrowseComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUserData();
     this.route.queryParams.subscribe(async (params) => {
-      // this.routeParams.folder = params.folder; 
+      // this.routeParams.folder = params.folder;
       this.selectedFolder2 = this.folderStructure[0];
       this.sectorSelected = this.folderStructure[0];
       this.selectedFolder = this.folderStructure[0];
@@ -157,6 +157,10 @@ export class BrowseComponent implements OnInit {
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
+        if(this.selectedFolder.isTrashed) {
+          this.folderNotFound = true;
+          return;
+        }
         this.fetchCurrentFolderAssets(params.folder);
       } else {
         await this.fetchAllSectors();
@@ -448,11 +452,11 @@ export class BrowseComponent implements OnInit {
       return;
     }
     this.isTrashView = false;
-    if (index || breadCrumbIndex === 1) {
+    if (index || index === 0 || breadCrumbIndex === 1) {
       const listView = 1;
       await this.getWorkspaceFolders(item.uid, listView);
     } else {
-      await this.handleClickNew(item.uid); // todo: issue with 1st item of sidebar navigation.
+      await this.handleClickNew(item.uid);
     }
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
@@ -474,7 +478,9 @@ export class BrowseComponent implements OnInit {
     }
     const url = `/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
     const result: any = await this.apiService.get(url).toPromise();
-    result.entries = result.entries.sort((a, b) => this.compare(a.title, b.title, true));
+    result.entries = result.entries.sort((a, b) =>
+      this.compare(a.title, b.title, true)
+    );
     const res = JSON.stringify(result);
     this.folderAssetsResult[id] = JSON.parse(res);
     delete this.fetchFolderStatus[id];
@@ -508,7 +514,10 @@ export class BrowseComponent implements OnInit {
   }
 
   async showMore(id: string) {
-    if (this.searchList.length < this.selectedFolder.contextParameters.folderAssetsCount) {
+    if (
+      this.searchList.length <
+      this.selectedFolder.contextParameters.folderAssetsCount
+    ) {
       this.currentPageCount++;
       const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`;
       const result: any = await this.apiService.get(url).toPromise();
@@ -525,7 +534,10 @@ export class BrowseComponent implements OnInit {
     this.sharedService.toTop();
     const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     this.apiService.get(url).subscribe((docs: any) => {
-      this.searchList = docs.entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
+      this.searchList = docs.entries.filter(
+        (sector) =>
+          UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
+      );
       let workSpaceIndex = this.searchList.findIndex(
         (res) => res.title === "Workspaces"
       );
@@ -539,7 +551,8 @@ export class BrowseComponent implements OnInit {
       } else {
         this.sortedData = this.searchList.slice();
         if (childIndex !== null && childIndex !== undefined) {
-          this.folderStructure[index].children[childIndex].children = docs.entries;
+          this.folderStructure[index].children[childIndex].children =
+            docs.entries;
           this.folderStructure[index].children[childIndex].isExpand = true;
           this.handleTest(selected);
         } else {
@@ -561,9 +574,8 @@ export class BrowseComponent implements OnInit {
     );
   }
 
-  openUpdateClassModal(breadCrumb:any) {
-    
-    if (!this.upadtePermission(breadCrumb) || this.sortedData.length<1) {
+  openUpdateClassModal(breadCrumb: any) {
+    if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
       return;
     }
     const dialogConfig = new MatDialogConfig();
@@ -578,14 +590,16 @@ export class BrowseComponent implements OnInit {
       docs: this.searchList,
       folder: this.selectedFolder,
     };
-    
+
     const modalDialog = this.matDialog.open(UpdateModalComponent, dialogConfig);
-    
+
     modalDialog.afterClosed().subscribe((result) => {
       if (!result) return;
       Object.keys(result).forEach((key) => {
-        this.searchList[key].contextParameters.acls = result[key].contextParameters.acls;
-        this.sortedData[key].contextParameters.acls = result[key].contextParameters.acls;
+        this.searchList[key].contextParameters.acls =
+          result[key].contextParameters.acls;
+        this.sortedData[key].contextParameters.acls =
+          result[key].contextParameters.acls;
         this.searchList[key].properties = {
           ...this.searchList[key].properties,
           ...result[key].properties,
@@ -667,10 +681,6 @@ export class BrowseComponent implements OnInit {
     return `${count} assets curated by ${item.properties["dc:creator"]}`;
   }
 
-  onActivate(event) {
-    window.scroll(0, 0);
-  }
-
   copyToClipboard(val: string) {
     const selBox = document.createElement("textarea");
     selBox.style.position = "fixed";
@@ -700,10 +710,13 @@ export class BrowseComponent implements OnInit {
   }
 
   getSearchPlaceholder(): string {
-    if(this.isTrashView) {
+    if (this.isTrashView) {
       return `Search for folder in deleted items`;
     }
-    return `Search for folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
+    return `Search for folder in ${this.sharedService.stringShortener(
+      this.selectedFolder?.title,
+      19
+    )} workspace`;
   }
 
   getDateInFormat(date: string): string {
@@ -777,7 +790,9 @@ export class BrowseComponent implements OnInit {
     // this.hasUpdatedChildren.push(this.selectedFolder.uid);
     this.selectedFolderList = {};
     recoveredFolders.forEach(
-      (item) => this.folderAssetsResult[item.parentRef] &&this.folderAssetsResult[item.parentRef].entries.push(item)
+      (item) =>
+        this.folderAssetsResult[item.parentRef] &&
+        this.folderAssetsResult[item.parentRef].entries.push(item)
     );
   }
 
@@ -838,7 +853,8 @@ export class BrowseComponent implements OnInit {
     const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
     this.apiService.get(url).subscribe((docs: any) => {
       this.trashedList = docs.entries.filter(
-        (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
+        (sector) =>
+          UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
       );
       if (!this.myDeletedCheck) {
         this.searchList = this.trashedList;
@@ -912,7 +928,9 @@ export class BrowseComponent implements OnInit {
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
       if (!result) return;
-      this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
+      this.folderAssetsResult[
+        this.breadCrumb[this.breadCrumb.length - 1].uid
+      ].entries.unshift(result);
       this.searchList.unshift(result);
       this.sortedData = this.searchList.slice();
       this.showMoreButton = false;
@@ -925,10 +943,10 @@ export class BrowseComponent implements OnInit {
 
   async createFolder(folderName: string, date?: string, description?: string) {
     let url = `/path${this.selectedFolder.path}`;
-    if (this.selectedFolder.type.toLowerCase() === 'domain') {
+    if (this.selectedFolder.type.toLowerCase() === "domain") {
       url = `/path${this.selectedFolder.path}/workspaces`;
       this.selectedFolder.path = `${this.selectedFolder.path}/workspaces/null`;
-      this.selectedFolder.type = 'Workspace';
+      this.selectedFolder.type = "Workspace";
     } else {
       this.selectedFolder.type = ORDERED_FOLDER;
     }
