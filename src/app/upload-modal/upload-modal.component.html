@@ -179,7 +179,7 @@
                               </div>
                            </div>
                         </li> -->
-                        <li class="styled yellowfix" (click)="addNewFolder(searchFolderInput)"> <!-- *ngIf="showCreateFolderButton(searchFolderInput.value)" -->
+                        <li *ngIf="showCreateFolderButton(searchFolderInput.value)" class="styled yellowfix" (click)="addNewFolder(searchFolderInput)">
                            <div class="add-new-option">
                               <div class="flexible">
                                  <!-- <mat-icon>add</mat-icon> -->
