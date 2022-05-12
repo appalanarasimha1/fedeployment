@@ -253,21 +253,19 @@ export class SharedService {
   }
 
   capitaliseSelectiveTags(tag: string): string {
-    console.log({tag});
-    
     if(tag.toLowerCase().trim() === 'neom') {
       return tag.toUpperCase();
     }
     return tag;
   }
 
-  async getCreateFolderPayload(name: string, sector: string, parentFolder?: any, description?: String, associatedDate?: string) {
+  async getCreateFolderPayload(name: string, sector: string, parentFolder: any, description?: String, associatedDate?: string) {
     return {
       "entity-type": "document",
       repository: "default",
-      path: `${parentFolder ? parentFolder.path : localStorage.getItem("workspacePath")}/null`,
-      type: "Workspace",
-      parentRef: parentFolder ? parentFolder.id : localStorage.getItem("workspaceId"),
+      path: parentFolder.path,
+      type: parentFolder.type ?? "Workspace",
+      parentRef: parentFolder.id,
       isCheckedOut: true,
       isRecord: false,
       retainUntil: null,
@@ -282,12 +280,12 @@ export class SharedService {
         "webc:themePage": "workspace",
         "webc:theme": "sites",
         "webc:moderationType": "aposteriori",
-        "dc:path": parentFolder ? parentFolder.path : localStorage.getItem("workspacePath"),
-        "dc:parentId": parentFolder ? parentFolder.id : localStorage.getItem("workspaceId"),
+        "dc:path": parentFolder.path.replace('/null', ''),
+        "dc:parentId": parentFolder.id,
         "dc:description": description,
         "dc:title": name,
         "dc:start": associatedDate ? new Date(associatedDate).toISOString() : null,
-        "dc:parentName": "Workspaces",
+        "dc:parentName": parentFolder.title,
         "dc:sector": sector,
         "dc:primaryType": "event",
         "dc:folderType": associatedDate ? "singleDayEvent" : "generic",

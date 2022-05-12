@@ -79,7 +79,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   sortValue = "";
   activeTabs = { comments: false, info: false, timeline: false };
   tagsMetaRealdata = [];
-
+  searchTem;
   slideConfig = {
     arrows: true,
     dots: false,
@@ -128,7 +128,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   tagsConfig = {
     slidesToShow: 5,
-    "slidesToScroll": 5,
+    slidesToScroll: 5,
     dots: false,
     infinite: false,
     speed: 300,
@@ -209,7 +209,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     private modalService: NgbModal,
     public nuxeo: NuxeoService,
     private apiService: ApiService,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private router: Router,
     private dataService: DataService,
     private route: ActivatedRoute
@@ -285,10 +285,16 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   public async getRelatedTags() {
-    this.dataService.tagsMetaReal$.subscribe((data: any): void => {
-      this.tagsMetaRealdata = data;
+    this.dataService.termSearch$.subscribe((searchTerm: string) => {
+      this.searchTem = searchTerm;
     });
-  }
+    this.dataService.tagsMetaReal$.subscribe((data: any): void => {
+      this.tagsMetaRealdata = data?.filter(
+        (m) =>
+          m.key !== this.searchTem
+      );
+    });
+  } 
 
   resetResult() {
     this.documents = "";
