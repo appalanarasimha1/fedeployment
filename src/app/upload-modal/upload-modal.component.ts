@@ -34,7 +34,7 @@ import {SharedService} from "../services/shared.service";
 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatHorizontalStepper, MatStep, MatVerticalStepper } from '@angular/material/stepper';
-import { WORKSPACE_ROOT } from "../common/constant";
+import { ORDERED_FOLDER, PAGE_SIZE_200, ROOT_ID, WORKSPACE_ROOT } from "../common/constant";
 interface FileByIndex {
   [index: string]: File;
 }
@@ -73,6 +73,8 @@ export class UploadModalComponent implements OnInit {
   readonly WORKSPACE_ROOT = WORKSPACE_ROOT;
   readonly years = YEARS;
   readonly ACCESS_TITLE = ACCESS_TITLE;
+  readonly ROOT_ID = ROOT_ID;
+  readonly ORDERED_FOLDER = ORDERED_FOLDER;
 
   filesMap: FileByIndex = {};
   batchId: string = null;
@@ -131,6 +133,10 @@ export class UploadModalComponent implements OnInit {
   };
   uploadedAsset;
   downloadApproval: boolean = false;
+  breadCrumb = [];
+  assetCache: {[id: string]: any} = {};
+  folderOrder: string = "";
+  folderToAddName: string = "";
 
   constructor(
     private apiService: ApiService,
@@ -286,6 +292,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async selectWorkspace(ws, incomingParam?: boolean) {
+    this.extractBreadcrumb(ws.contextParameters)
     if(incomingParam) {
       this.selectedWorkspace.title = ws;
       return;
@@ -298,7 +305,7 @@ export class UploadModalComponent implements OnInit {
 
   openBrowseRoute() {
     this.dialogRef.close(this.selectedFolder);
-    this.router.navigate(['/workspace'], {queryParams: {sector: this.data ? this.data.sectorId : this.selectedWorkspace.id, folder: this.data?.title || this.selectedFolder?.title || this.folderToAdd}});
+    this.router.navigate(['/workspace'], {queryParams: {folder: this.data?.id || this.selectedFolder?.id }});
   }
 
   async getWsList() {
@@ -308,12 +315,12 @@ export class UploadModalComponent implements OnInit {
     const params = {
       currentPageIndex: 0,
       offset: 0,
-      pageSize: 1000,
+      pageSize: PAGE_SIZE_200,
       queryParams: "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'Domain'",
     };
     // TODO: loader
     const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
-    this.workspaceList = this.formatWsList(res["entries"]).filter(sector => {
+    this.workspaceList = this.formatWsList(res["entries"], res['uid'], res['contextParameters']).filter(sector => {
       if(UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
         return sector;
       }
@@ -343,34 +350,70 @@ export class UploadModalComponent implements OnInit {
   async getFolderList(workspaceId) {
     const res = await this.fetchByParent(workspaceId);
     const rootWs = res.find((entry) => entry.type === "WorkspaceRoot");
-    if (!rootWs) return [];
+    if (!rootWs) return res;
     this.parentFolder = rootWs;
     return this.fetchByParent(rootWs.id);
   }
 
+  async getFolderByParentId(id: string, path: string, index?: number|null) {
+    this.parentFolder = {id, path, type: this.ORDERED_FOLDER};
+    const result = await this.getFolderList(id);
+    this.folderNameParam = "";
+    if(index === null) {
+      this.dropdownFolderList = result.filter(res => res.type === this.ORDERED_FOLDER || res.type === 'Workspace');
+      this.folderList = [...this.dropdownFolderList];
+      this.breadCrumb.pop();
+      return;
+    }
+    this.dropdownFolderList = index === 0 ? result : result.filter(res => res.type === this.ORDERED_FOLDER);
+    this.folderList = [...this.dropdownFolderList];
+  }
+  
+  extractBreadcrumb(contextParameters = this.selectedFolder.contextParameters) {
+    if (contextParameters) {
+      this.breadCrumb = contextParameters?.breadcrumb.entries.filter((entry) => {
+        return entry.type !== "WorkspaceRoot";
+      });
+    }
+  }
+
+  removeBreadcrumb(title: string) {
+    const breadCrumbIndex = this.breadCrumb.findIndex(bread => bread.title === title);
+    this.breadCrumb.splice(breadCrumbIndex+1);
+  }
+
   async fetchByParent(parentId) {
+    if(this.assetCache[parentId]) {
+      // this.extractBreadcrumb(this.assetCache[parentId]["contextParameters"]);
+      return this.assetCache[parentId]['entries'];
+    }
     const params = {
       currentPageIndex: 0,
       offset: 0,
-      pageSize: 1000,
+      pageSize: PAGE_SIZE_200,
       ecm_parentId: parentId,
       ecm_trashed: false,
     };
-    const domainRes = await this.apiService
+    const domainRes: any = await this.apiService
       .get(apiRoutes.ADVANCE_DOC_PP, {params})
       .toPromise();
-    return this.formatWsList(domainRes["entries"]);
+      // this.extractBreadcrumb(domainRes["contextParameters"]);
+    return this.formatWsList(domainRes["entries"], parentId, domainRes["contextParameters"]);
   }
 
-  formatWsList(entries) {
+  formatWsList(entries: any[], uid: string, contextParameters: any) {
     if (!entries) return [];
-    return entries.map((entry) => ({
+    this.assetCache[uid] = {};
+    this.assetCache[uid]['entries'] = entries.map((entry) => ({
       id: entry.uid,
       title: entry.title,
       type: entry.type,
       path: entry.path,
       properties: entry.properties,
+      contextParameters: entry.contextParameters
     }));
+    this.assetCache[uid]['contextParameters'] = contextParameters;
+    return this.assetCache[uid]['entries'];
   }
 
   async uploadFile(files) {
@@ -470,14 +513,17 @@ export class UploadModalComponent implements OnInit {
   showCreateFolderButton(input: string): boolean {
     if(!input.trim()) return false;
 
-    let dropdownFolderList: any[] = this.folderList.filter((folder) =>
-      folder.title.toLowerCase() === input.toLowerCase()
+    let dropdownFolderList: any[] = this.folderList.filter((folder) => {
+        const folderSplit = input.split('/').pop();
+        return folder.title.toLowerCase() === folderSplit.toLowerCase();
+      }
     );
     return !dropdownFolderList.length;
   }
 
   selectFolder(folder) {
     this.selectedFolder = folder;
+    this.createFolderOrder();
     this.folderToAdd = null;
     this.showCustomDropdown = false;
     this.disableDateInput = true;
@@ -486,10 +532,24 @@ export class UploadModalComponent implements OnInit {
     this.description = this.selectedFolder.properties["dc:description"];
   }
 
+  createFolderOrder(type?: string) {
+    this.folderNameParam = "";
+    this.breadCrumb.forEach(element => {
+      this.folderNameParam = `${this.folderNameParam}/${element.title}`;
+    });
+    if(type === 'new') {
+      this.folderNameParam = `${this.folderNameParam}/${this.folderToAdd}`.slice(1);
+      return;
+    }
+    this.folderNameParam = `${this.folderNameParam}/${this.selectedFolder.title}`.slice(1);
+  }
+
   addNewFolder(folderName) {
     this.descriptionFilled = false;
     this.description = '';
-    this.folderToAdd = folderName.value;
+    this.folderToAddName = folderName.value;
+    this.folderToAdd = folderName.value.split('/').pop();
+    this.createFolderOrder('new');
     this.selectedFolder = null;
     this.showCustomDropdown = false;
     this.disableDateInput = false;

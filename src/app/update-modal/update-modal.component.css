@@ -292,12 +292,13 @@ color: #FFFFFF;
 }
 .custom-select-icons {
   position: absolute;
-  top: 0.5em;
-  right: 0.5em;
+  top: 0px;
+  right: 2px;
   z-index: 20;
   border: 1px solid white;
   background: transparent;
   height: 22px;
+  font-size: 20px;
 }
 .custom-select-options {
   border: 1px solid #000;
@@ -804,7 +805,7 @@ input.copyright-input {
  .goldenText ::ng-deep .ng-arrow-wrapper .ng-arrow {
   background-image: url(../../assets/images/golden-arrow.png) !important ;
   height: 10px !important;
-  width: 10px !important;
+  /* width: 10px !important; */
 }
 .publish-assets .fa-caret-down:before {
   content: "";
