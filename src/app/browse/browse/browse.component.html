@@ -45,7 +45,12 @@
 
                         <!-- </div> -->
                         <!-- <div class="hoverTooltip">Pin this sector</div> -->
-                        <span style="padding-left: 10px;z-index: 9;">{{firstChild.title}}</span> <!--  class="pinIcon" -->
+                        <span style="padding-left: 10px;z-index: 9;">
+                          <a [routerLink]="['/workspace']" [queryParams]="{folder: firstChild.uid}">
+                            {{firstChild.title}}
+                          </a>
+                          
+                        </span> <!--  class="pinIcon" -->
                       </div>
 
                     </li>
