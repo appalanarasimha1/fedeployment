@@ -16,6 +16,7 @@ import {
   PAGE_SIZE_200,
   PAGE_SIZE_1000,
   PAGE_SIZE_40,
+  PAGE_SIZE_20,
   WORKSPACE_ROOT,
   ROOT_ID,
   ORDERED_FOLDER,
@@ -25,6 +26,7 @@ import { NuxeoService } from "src/app/services/nuxeo.service";
 import { UNWANTED_WORKSPACES } from "../../upload-modal/constant";
 import { UploadModalComponent } from "src/app/upload-modal/upload-modal.component";
 import { Sort } from "@angular/material/sort";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 
 @Component({
   selector: "app-browse",
@@ -36,6 +38,7 @@ export class BrowseComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
   // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
+  @ViewChild("paginator") paginator: MatPaginator;
 
   constructor(
     private modalService: NgbModal,
@@ -85,6 +88,7 @@ export class BrowseComponent implements OnInit {
   callDomain;
   callFolder;
   viewType = "GRID";
+  tableViewType = 0;
   showShadow = false;
   activeTabs = { comments: false, info: false, timeline: false };
   selectedFile: any;
@@ -119,6 +123,11 @@ export class BrowseComponent implements OnInit {
   folderNotFound = false;
   renameFolderName: boolean = false;
   isShowDivIf: boolean = false;
+  numberOfPages: number;
+  sectorWorkspace;
+  resultCount: number;
+  defaultPageSize: number = 20;
+  pageSizeOptions = [20, 40, 60];
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -261,7 +270,7 @@ export class BrowseComponent implements OnInit {
     //   this.searchList = docs.entries;
     // });
     this.loading = true;
-    const docs = await this.fetchAssets(item.uid);
+    const docs = await this.fetchAssets(item.uid, true);
     this.searchList = docs.entries.filter(
       (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
     );
@@ -396,6 +405,7 @@ export class BrowseComponent implements OnInit {
 
   handleViewClick(item, index) {
     this.handleClickNew(item.uid);
+    this.paginator.firstPage();
     // if (this.currentLevel < 1) {
     //   this.handleClick(item, this.currentLevel, index);
     // } else {
@@ -438,6 +448,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    this.paginator.firstPage();
     this.showSearchbar = true;
     if (breadCrumbIndex ?? breadCrumbIndex === 1) {
       this.showSearchbar = true;
@@ -470,17 +481,22 @@ export class BrowseComponent implements OnInit {
     return result;
   }
 
-  async fetchAssets(id: string, pageSize = PAGE_SIZE_40) {
+  async fetchAssets(id: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.currentPageCount = 0;
     this.showMoreButton = true;
-    if (this.folderAssetsResult[id]) {
+    if (checkCache && this.folderAssetsResult[id]) {
       return this.folderAssetsResult[id];
     }
-    const url = `/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
+    const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
     const result: any = await this.apiService.get(url).toPromise();
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, true)
     );
+    result.entries = result.entries.sort((a, b) =>
+      this.compare(a.type, b.type, true)
+    );
+    this.numberOfPages = result.numberOfPages;
+    this.resultCount = result.resultsCount;
     const res = JSON.stringify(result);
     this.folderAssetsResult[id] = JSON.parse(res);
     delete this.fetchFolderStatus[id];
@@ -1109,7 +1125,7 @@ export class BrowseComponent implements OnInit {
   async handleClickNew(folderUid: string) {
     this.loading = true;
     this.isTrashView = false;
-    await this.fetchCurrentFolderAssets(folderUid, PAGE_SIZE_200);
+    await this.fetchCurrentFolderAssets(folderUid);
     this.loading = false;
   }
 
@@ -1117,8 +1133,15 @@ export class BrowseComponent implements OnInit {
     this.loading = true;
     let { entries } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
-    if (entries?.length) {
-      workSpaceIndex = entries.findIndex((res) => res.title === "Workspaces");
+    if (!entries?.length) {
+      this.sortedData = [];
+      this.searchList = [];
+      this.loading = false;
+      return;
+    }
+    workSpaceIndex = entries.findIndex((res) => res.title === "Workspaces");
+    if(workSpaceIndex !== -1) {
+      this.sectorWorkspace = entries[workSpaceIndex];
     }
     ({ entries } = await this.fetchAssets(entries[workSpaceIndex].uid));
     this.sortedData = entries;
@@ -1134,7 +1157,7 @@ export class BrowseComponent implements OnInit {
     this.isTrashView = false;
     this.sectorSelected = null;
     this.sharedService.toTop();
-    const { entries } = await this.fetchAssets(ROOT_ID, PAGE_SIZE_200);
+    const { entries } = await this.fetchAssets(ROOT_ID, true, PAGE_SIZE_200);
     this.folderStructure[0]["children"] = entries;
     this.folderStructure[0].isExpand = !isExpand;
     this.searchList = entries;
@@ -1144,9 +1167,9 @@ export class BrowseComponent implements OnInit {
     this.loading = false;
   }
 
-  async fetchCurrentFolderAssets(sectorUid: string, pageSize = PAGE_SIZE_200) {
+  async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.loading = true;
-    const { entries } = await this.fetchAssets(sectorUid, PAGE_SIZE_200);
+    const { entries } = await this.fetchAssets(sectorUid, checkCache, pageSize, pageIndex, offset);
     this.sortedData = entries;
     this.searchList = entries;
     this.extractBreadcrumb();
@@ -1165,5 +1188,12 @@ export class BrowseComponent implements OnInit {
     let user = this.userSector?.split("-")[0].trim().toLowerCase();
     if (breadcrumb?.title?.toLowerCase() === user) return true;
     return false;
+  }
+
+  paginatorEvent(event: PageEvent) {
+    // event = {previousPageIndex: 0, pageIndex: 1, pageSize: 10, length: 100};
+    // todo: call api 
+    const offset = event.pageIndex*event.pageSize;
+    this.fetchCurrentFolderAssets(this.sectorWorkspace.uid, false, event.pageSize, event.pageIndex, offset);
   }
 }
