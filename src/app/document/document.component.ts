@@ -203,6 +203,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     "Mountain",
     "Wildlife",
   ];
+  dummyPlaceholderTags: boolean = true;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -285,14 +286,18 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   public async getRelatedTags() {
+    console.log('this.tagsMetaRealdata1', this.tagsMetaRealdata)
     this.dataService.termSearch$.subscribe((searchTerm: string) => {
       this.searchTem = searchTerm;
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
+      this.dummyPlaceholderTags = true;
       this.tagsMetaRealdata = data?.filter(
         (m) =>
           m.key !== this.searchTem
       );
+      console.log('this.tagsMetaRealdata2', this.tagsMetaRealdata);
+      this.dummyPlaceholderTags = false;
     });
   } 
 

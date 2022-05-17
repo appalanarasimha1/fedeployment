@@ -161,7 +161,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   flex-direction: column;
   align-items: flex-end; */
   width: 100%;
-  padding-top: 2px;
+  padding-top: 20px;
   text-align: right;
   position: relative;
 }
@@ -1591,3 +1591,5 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 .uploadClassificationDisable {
   opacity: 0.5;
 }
+.back-btn {float: left;cursor: pointer;color: #BAB8B2;font-size: 15px;font-weight: normal;letter-spacing: 0.5px;}
+.back-btn svg {vertical-align: -2px;margin-right: 5px;}

@@ -51,7 +51,7 @@
                     </li>
                   </ul>
                 </li>
-                <li style="cursor: pointer" [ngClass]="isTrashView ? 'active-tab' : ''" class="d-flex set" (click)="getTrashedWS()"><span>Deleted items</span></li>
+                <li style="cursor: pointer" [ngClass]="isTrashView ? 'active-tab' : ''" class="d-flex set" (click)="getTrashedWS()"><span>Trash</span></li>
               </ul>
             </div>
           <!-- </div> -->
@@ -79,7 +79,7 @@
                 <div style="float: right; position: relative;">
                   <div class="deleted-by-me" *ngIf="isTrashView">
                     <label class="control control--checkbox" style="margin-bottom: 0px;float: left;">
-                      Only show items deleted by me
+                      Only show items removed by me
                       <input type="checkbox" checked="checked" (click)="myDeleted($event)" />
                       <div class="control__indicator" style="top: 0px;left: 0px;"></div>
                     </label>
@@ -154,6 +154,12 @@
 
 
 
+                <div class="back-btn">
+                  <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.82783 6.99974L7.77783 11.9497L6.36383 13.3637L-0.000168125 6.99974L6.36383 0.635742L7.77783 2.04974L2.82783 6.99974Z" fill="#BAB8B2"/>
+                  </svg> 
+                  Back
+                </div>
 
                 <div style="position: relative; display: inline-block; vertical-align: top;">
                   <div class="deleteRecover">
@@ -276,7 +282,7 @@
               <div>
                 <span style="overflow: auto;">
                   <span class="main-title tollTipCustom"
-                  >Deleted Items
+                  >Trash
                 </span>
                 </span>
               </div>
