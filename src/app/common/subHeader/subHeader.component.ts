@@ -476,7 +476,7 @@ export class SubHeaderComponent implements OnInit {
       .subscribe((res: any) => {
         let newData = res?.filter((m) =>
           m.type === "document" && m.label.includes(".")
-            ? ["jpg", "gif", "png", "mp4"].indexOf(
+            ? ["jpg", "gif", "png", "mp4","MOV","tif"].indexOf(
                 m.label.split(".")[m.label.split(".").length - 1]
               ) === -1
             : true
@@ -486,5 +486,13 @@ export class SubHeaderComponent implements OnInit {
 
         console.log({ newData });
       });
+  }
+
+  splitStr(str:any){
+    return str.split(" ")
+  }
+
+  highlightStr(str:any){
+   return str.toLowerCase().includes(this.searchText.toLowerCase());
   }
 }

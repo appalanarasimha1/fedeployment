@@ -832,3 +832,6 @@ video{
         z-index: 9;
     }
 }
+.highLightColor{
+    color: yellow;
+}

@@ -70,7 +70,6 @@
                   *ngIf="searchPopup && !tagClicked"
                   id="customScrollBar"
                 >
-                  
                   <!-- <div class="search-list">
                       <a href="#">Traveller</a> 
                       <a href="#">Travelling</a>
@@ -79,99 +78,39 @@
                       <a href="#">Trip</a>
                     </div> -->
 
-                  <div class="recent-searches" *ngIf="loadWorkSpace && !userLoading">
-                    <div class="heading" >Workspace Folders</div>
+                  <div
+                    class="recent-searches"
+                    *ngIf="loadWorkSpace && !userLoading"
+                  >
+                    <div class="heading">Workspace Folders</div>
                     <ul
                       class="recent-searches-folder workspaceFoldersScrollBar"
                     >
                       <li *ngFor="let typeAheadItem of searchedAdeadData">
                         <a
-                            [routerLink]="['/workspace']"
-                            [queryParams]="{folder:typeAheadItem.id}"
-                            style="text-decoration: none; color: #fff"
+                          [routerLink]="['/workspace']"
+                          [queryParams]="{ folder: typeAheadItem.id }"
+                          style="text-decoration: none; color: #fff"
+                        >
+                          <img
+                            src="../../../assets/images/icon_folder_gray.svg"
+                            alt=""
+                            class="folder-icon"
+                          />
+                          <span
+                            class="folder-text"
+                            *ngFor="let str of splitStr(typeAheadItem.label)"
+                          >
+                            <span
+                              [ngClass]="
+                                highlightStr(str) ? 'highLightColor' : ''
+                              "
                             >
-                        <img
-                          src="../../../assets/images/icon_folder_gray.svg"
-                          alt=""
-                          class="folder-icon"
-                        />
-                        <span class="folder-text"
-                          >{{ typeAheadItem.label }}</span
-                        >
-                        <span class="workspace-folders">/Marketing</span>
+                              {{ str }}</span
+                            ></span
+                          >
+                          <span class="workspace-folders">/Marketing</span>
                         </a>
-                      </li>
-                      <li>
-                        <img
-                          src="../../../assets/images/icon_folder_gray.svg"
-                          alt=""
-                          class="folder-icon"
-                        />
-                        <span class="folder-text"
-                          >2021_Traveller_Marketing_Material_02_03_2022</span
-                        >
-                        <span class="workspace-folders">/Marketing</span>
-                      </li>
-                      <li>
-                        <img
-                          src="../../../assets/images/icon_folder_gray.svg"
-                          alt=""
-                          class="folder-icon"
-                        />
-                        <span class="folder-text"
-                          >2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span
-                        >
-                        <span class="workspace-folders"
-                          >/Education, Research and Innovation</span
-                        >
-                      </li>
-                      <li>
-                        <img
-                          src="../../../assets/images/icon_folder_gray.svg"
-                          alt=""
-                          class="folder-icon"
-                        />
-                        <span class="folder-text"
-                          >2021_Traveller_Marketing_Material_02_03_2022</span
-                        >
-                        <span class="workspace-folders">/Marketing</span>
-                      </li>
-                      <li>
-                        <img
-                          src="../../../assets/images/icon_folder_gray.svg"
-                          alt=""
-                          class="folder-icon"
-                        />
-                        <span class="folder-text"
-                          >2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span
-                        >
-                        <span class="workspace-folders">/Marketing</span>
-                      </li>
-                      <li>
-                        <img
-                          src="../../../assets/images/icon_folder_gray.svg"
-                          alt=""
-                          class="folder-icon"
-                        />
-                        <span class="folder-text"
-                          >2021_Traveller_Marketing_Material_02_03_2022</span
-                        >
-                        <span class="workspace-folders"
-                          >/Education, Research & I</span
-                        >
-                      </li>
-                      <li>
-                        <img
-                          src="../../../assets/images/icon_folder_gray.svg"
-                          alt=""
-                          class="folder-icon"
-                        />
-                        <span class="folder-text"
-                          >2021_Traveller_Marketing_Material_02_03_2022</span
-                        >
-                        <span class="workspace-folders"
-                          >/Education, Research & I</span
-                        >
                       </li>
                     </ul>
                   </div>
