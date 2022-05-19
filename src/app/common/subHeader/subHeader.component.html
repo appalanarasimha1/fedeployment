@@ -86,12 +86,11 @@
                     <ul
                       class="recent-searches-folder workspaceFoldersScrollBar"
                     >
-                      <li *ngFor="let typeAheadItem of searchedAdeadData">
-                        <a
-                          [routerLink]="['/workspace']"
-                          [queryParams]="{ folder: typeAheadItem.id }"
-                          style="text-decoration: none; color: #fff"
-                        >
+                      <li
+                        *ngFor="let typeAheadItem of searchedAdeadData"
+                        [routerLink]="['/workspace']"
+                        [queryParams]="{ folder: typeAheadItem.id }"
+                      >
                           <img
                             src="../../../assets/images/icon_folder_gray.svg"
                             alt=""
@@ -100,17 +99,14 @@
                           <span
                             class="folder-text"
                             *ngFor="let str of splitStr(typeAheadItem.label)"
+                            [ngClass]="
+                              highlightStr(str) ? 'highLightColor' : ''
+                            "
                           >
-                            <span
-                              [ngClass]="
-                                highlightStr(str) ? 'highLightColor' : ''
-                              "
-                            >
-                              {{ str }}&nbsp;</span
-                            ></span
+                            {{ str }}&nbsp;</span
                           >
-                          <span class="workspace-folders">/Marketing</span>
-                        </a>
+
+                          <span class="workspace-folders">/Marketing</span> 
                       </li>
                     </ul>
                   </div>
@@ -142,7 +138,7 @@
                   </div>
 
                   <div class="recent-searches" *ngIf="!loadWorkSpace">
-                    <div class="heading">Trending Searches</div>
+                    <div class="heading" *ngIf="tagsMetadataNew?.buckets.length > 0">Trending Searches</div>
                     <!-- <div class="heading" *ngIf="showRelatedSearch && tagsMetadataNew?.buckets.length>0">Related Tags</div> -->
                     <ul class="recent-searches-tags">
                       <li
