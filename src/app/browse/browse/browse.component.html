@@ -447,14 +447,14 @@
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
           <mat-paginator
-          *ngIf="selectedFolder.uid !== parentId"
-          #paginator
-          [length]="resultCount"
-          [pageSize]="defaultPageSize"
-          [pageSizeOptions]="pageSizeOptions"
-          (page)="paginatorEvent($event)"
-          aria-label="Select page">
-        </mat-paginator>
+            *ngIf="selectedFolder.uid !== parentId"
+            #paginator
+            [length]="resultCount"
+            [pageSize]="defaultPageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="paginatorEvent($event)"
+            aria-label="Select page">
+          </mat-paginator>
         </div>
       </div>
     </div>
