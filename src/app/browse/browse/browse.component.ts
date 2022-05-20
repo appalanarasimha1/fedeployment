@@ -254,6 +254,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
+    this.paginator.firstPage();
     if (item.isTrashed) return;
     this.newTitle = item.title;
     this.searchBarValue = "";
@@ -263,12 +264,6 @@ export class BrowseComponent implements OnInit {
     this.selectedFolder = item;
     this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
-    // this.breadcrrumb = `${this.breadcrrumb.split(`/`)[0]}/${this.breadcrrumb.split(`/`)[1]}/${this.breadcrrumb.split(`/`)[2]}/${item.title}`
-    // this.selectedFile = [];
-    // this.apiService.get(`/search/pp/advanced_document_content/execute?currentPageIndex=0&offset=0&pageSize=40&ecm_parentId=${item.uid}&ecm_trashed=false`)
-    // .subscribe((docs: any) => {
-    //   this.searchList = docs.entries;
-    // });
     this.loading = true;
     const docs = await this.fetchAssets(item.uid, true);
     this.searchList = docs.entries.filter(
