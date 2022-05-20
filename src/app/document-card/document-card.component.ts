@@ -174,4 +174,15 @@ export class DocumentCardComponent implements OnChanges {
     document.body.removeChild(selBox);
   }
 
+  downloadErrorShow: boolean = false;
+  downloadClick() {
+    this.downloadErrorShow = true;
+    console.log('test download click')
+  }
+  onCheckboxChange(e: any) {
+    console.log('test download click', e.target.checked);
+    if(e.target.checked)
+      this.downloadErrorShow = false;
+  }
+
 }
