@@ -446,8 +446,7 @@
 
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
-        </div>
-        <mat-paginator
+          <mat-paginator
           *ngIf="selectedFolder.uid !== parentId"
           #paginator
           [length]="resultCount"
@@ -456,6 +455,7 @@
           (page)="paginatorEvent($event)"
           aria-label="Select page">
         </mat-paginator>
+        </div>
       </div>
     </div>
 
