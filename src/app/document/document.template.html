@@ -16,7 +16,7 @@
 
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
-    <div id="exTab1" class="container-fluid pb-50">
+    <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
       <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">Asset by Sectors</a>
       <ul class="nav nav-tabs" style="display: inline-block;">
         <li>
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div id="exTab2" class="container-fluid pb-50">
+    <div id="exTab2" class="container-fluid pb-50" style="position: relative; z-index: 2;">
       <h2 class="commonHeading recentFont" style="display: inline-block;">Your Activity</h2>
       <ul class="nav nav-tabs" style="display: inline-block;">
         <li class="active pointer"><a (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <div id="favorites" class="container-fluid pb-50">
+    <div id="favorites" class="container-fluid pb-50"  style="position: relative; z-index: 1;">
       <ul class="nav nav-tabs">
         <li><a class="commonHeading recentFont" style=""  href="#favourite" data-toggle="tab">Your Favourites</a></li>
       </ul>
@@ -163,7 +163,30 @@
 
   <section class="search-subpage">
 
-    <div class="customTagBar"  *ngIf="tagsMetaRealdata.length>0">
+    <div class="customTagBar" *ngIf="dummyPlaceholderTags">
+      <ul>
+        <li>
+          <div class="relatedTagHeading">Related Tags</div>
+        </li>
+        <li>
+          <div class="search-tags">
+            <div class="customTagSlider">
+              <ngx-slick-carousel class="carousel" 
+                #slickModal="slick-carousel" 
+                [config]="tagsConfig" >
+                <div ngxSlickItem *ngFor="let bucket of tagsMetadataDummy; let i = index" class="slide">
+                  <div class="item" >
+                    <a class="card" style="cursor: pointer;">&nbsp;</a>
+                  </div>
+                </div>
+              </ngx-slick-carousel>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="customTagBar" *ngIf="tagsMetaRealdata.length>0">
       <ul>
         <li>
           <div class="relatedTagHeading">Related Tags</div>
@@ -176,7 +199,7 @@
                 [config]="tagsConfig" >
                 <div ngxSlickItem *ngFor="let bucket of tagsMetaRealdata; let i = index" class="slide">
                   <div class="item" >
-                    <a class="card" style="cursor: pointer;"  (click)="searchRelatedClick(bucket.key)">{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a>
+                    <a class="card animate__animated animate__fadeIn" style="cursor: pointer;"  (click)="searchRelatedClick(bucket.key)">{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a>
                   </div>
                 </div>
               </ngx-slick-carousel>

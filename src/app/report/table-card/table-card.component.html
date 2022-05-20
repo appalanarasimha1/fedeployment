@@ -1,5 +1,17 @@
 <div class="graphHeading">{{title}}</div>
-<div class="graphPlaceholder">
+
+<div *ngIf="!data2" class="graphPlaceholder">
+  <table class="table mb-0">
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td>{{item.name}}</td>
+        <td>{{getUsCommaSystemString(item.count)}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="data2" class="graphPlaceholder">
   <table class="table mb-0">
     <tbody>
       <tr *ngFor="let item of data">
