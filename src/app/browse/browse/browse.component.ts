@@ -1199,4 +1199,29 @@ export class BrowseComponent implements OnInit {
     const offset = event.pageIndex*event.pageSize;
     this.fetchCurrentFolderAssets(this.sectorWorkspace.uid, false, event.pageSize, event.pageIndex, offset);
   }
+
+  async searchFolders(searchString: string) {
+    // this.loading = true;
+    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:mixinType = 'Folderish' AND ecm:path STARTSWITH '/${this.selectedFolder.title}/workspaces/' AND dc:title ILIKE '%${searchString}%'`;
+    const params = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 20,
+      queryParams: query,
+    };
+    const result: any = await this.apiService
+    .get(apiRoutes.NXQL_SEARCH, { params })
+    .toPromise();
+    result.entries = result.entries.sort((a, b) =>
+      this.compare(a.title, b.title, true)
+    );
+    result.entries = result.entries.sort((a, b) =>
+      this.compare(a.type, b.type, true)
+    );
+    this.numberOfPages = result.numberOfPages;
+    this.resultCount = result.resultsCount;
+    this.sortedData = result.entries;
+    this.searchList = result.entries;
+    // this.loading = false;
+  }
 }
