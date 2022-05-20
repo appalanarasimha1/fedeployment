@@ -21,26 +21,12 @@
 
         <div class="customTab pt-none">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#consumption" data-toggle="tab">Consumption</a></li>
-                <li><a  href="#contribution" data-toggle="tab">Contribution</a></li>
+                <li class="active"><a  href="#contribution" data-toggle="tab">Contribution</a></li>
+                <li><a href="#consumption" data-toggle="tab">Consumption</a></li>
             </ul>
         
             <div class="tab-content">
-                <div class="tab-pane active" id="consumption">
-                    <div class="consumption">
-                        <!-- <h2 class="commonHeading pb-30">Consumption</h2> -->
-                        <div class="tableGraph pb-10">
-                            <app-graph *ngIf="downloadsByFormatData.length" [chartType]="'doughnut'" [title]="'Downloads by Format'" [labels]="downloadsByFormatLabel" [data]="downloadsByFormatData" [legend]="true"></app-graph>
-                            <app-table-card [title]="'Top 10 users by count of search'" [data]="userSearchCount"></app-table-card>
-                        </div>
-                        <div class="pt-none tableGraph">
-                            <app-table-card [title]="'Top 10 users by count of download'" [data]="usersByCountDownloadData"></app-table-card>
-                            <app-table-card [title]="'Top 10 Popular Search Terms'" [data]="searchTermsAndCount"></app-table-card>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tab-pane" id="contribution">
+                <div class="tab-pane active" id="contribution">
                     <div class="consumption">
                         <div class="pt-none tableGraph">
                             <app-table-card [title]="'Top 10 contributing users'" [data]="usersByCountUploadData"></app-table-card>
@@ -48,6 +34,21 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="tab-pane" id="consumption">
+                    <div class="consumption">
+                        <!-- <h2 class="commonHeading pb-30">Consumption</h2> -->
+                        <div class="tableGraph pb-10">
+                            <app-graph *ngIf="downloadsByFormatData.length" [chartType]="'doughnut'" [title]="'Downloads by Format'" [labels]="downloadsByFormatLabel" [data]="downloadsByFormatData" [legend]="true"></app-graph>
+                            <app-table-card [title]="'Top 10 users by count of search'" [data]="userSearchCount" [data2]="usersByCountDownloadData"></app-table-card>
+                        </div>
+                        <div class="pt-none tableGraph">
+                            <app-table-card [title]="'Top 10 users by count of download'" [data]="usersByCountDownloadData"></app-table-card>
+                            <app-table-card [title]="'Top 10 Popular Search Terms'" [data]="searchTermsAndCount"></app-table-card>
+                        </div>
+                    </div>
+                </div>
+               
             </div>
         </div>
     </div>

@@ -69,8 +69,8 @@
                   <div style="position: relative;">
                     <form autocomplete="off" style="position: relative;">
                       <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
-                      <input [(ngModel)]="searchBarValue" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
-                      <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; " src="../assets/images/circle-close.png" class="placeholder-search">
+                      <input [(ngModel)]="searchBarValue" (ngModelChange)="searchFolders($event)" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
+                      <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; getWorkspaceFolders(selectedFolder.uid, 1)" src="../assets/images/circle-close.png" class="placeholder-search">
                     </form>
                   </div>
                 </div>
@@ -299,14 +299,14 @@
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                <div class="mb-5 text-center animate__animated animate__fadeIn" *ngIf="selectedFolder.uid === parentId && !isTrashView">
+                <div *ngIf="selectedFolder.uid === parentId && !isTrashView" class="mb-5 text-center animate__animated animate__fadeIn">
                   <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
                 <ul class="all-sectors" *ngIf="selectedFolder.uid !== parentId || isTrashView" [ngClass]="{'animate__animated animate__fadeIn' : selectedFolder.uid !== parentId || isTrashView}">
-                  <li  [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of sortedData | search: searchBarValue; let i = index">
-                    <span class="folder-structure pointerCursor" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
-                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)">{{item.title}}</span>
+                  <li [ngClass]="{'inner-sectors': item.type=== 'Domain' }" *ngFor="let item of sortedData ; let i = index">
+                    <span *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)" class="folder-structure pointerCursor" (click)="handleViewClick(item, i);selectedFolder2=item;selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)"
+                      >{{item.title}}</span>
 
                     <div class="groupFolder" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''">
                       <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
@@ -380,7 +380,7 @@
                       <!-- <th mat-sort-header="dc:start" *ngIf="isTrashView" width="20%">Deleted on</th> -->
                       <th mat-sort-header="dc:sector" *ngIf="isTrashView" width="20%">Workspace</th>
                     </tr>
-                    <tr *ngFor="let item of sortedData | search: searchBarValue; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
+                    <tr *ngFor="let item of sortedData ; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
                       <td><div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
                         <div class="control-group">
                           <label class="control control--checkbox">
@@ -438,7 +438,7 @@
               </div>
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
-              <div class="col-xl-12 col-md-12 list-container" *ngFor="let item of searchList | search: searchBarValue;">
+              <div class="col-xl-12 col-md-12 list-container" *ngFor="let item of searchList ;">
                   <h5 class="list-title">{{item.title}}</h5>
                   <h6 class="mt-2">By  <fa-icon [icon]="['fas', 'user-circle']" class="person-icons"></fa-icon> {{item.properties['dc:creator']}}</h6>
               </div>
@@ -446,13 +446,16 @@
 
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
+          <mat-paginator
+            *ngIf="selectedFolder.uid !== parentId"
+            #paginator
+            [length]="resultCount"
+            [pageSize]="defaultPageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="paginatorEvent($event)"
+            aria-label="Select page">
+          </mat-paginator>
         </div>
-        <!-- <mat-paginator
-          [length]="100"
-          [pageSize]="10"
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          aria-label="Select page">
-        </mat-paginator> -->
       </div>
     </div>
 
