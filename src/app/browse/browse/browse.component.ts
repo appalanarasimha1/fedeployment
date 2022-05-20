@@ -972,9 +972,9 @@ export class BrowseComponent implements OnInit {
     const res = await this.apiService.post(url, payload).toPromise();
     if (!res && !res["uid"]) return;
 
-    this.searchList.push(res);
+    this.searchList.unshift(res);
     this.sortedData = this.searchList.slice();
-    this.folderAssetsResult[this.selectedFolder.uid].entries.push(res);
+    this.folderAssetsResult[this.selectedFolder.uid].entries.unshift(res);
     this.showMoreButton = false;
     $(".dropdownCreate").hide();
     $(".buttonCreate").removeClass("createNewFolderClick");
@@ -1053,6 +1053,14 @@ export class BrowseComponent implements OnInit {
           return 0;
       }
     });
+   this.sortedData.sort(this.assetTypeCompare);
+  }
+
+  /**
+   * brings folder to top position and then assets
+   */
+  assetTypeCompare(a: {type: string}, b: {type: string}): number {
+    return a.type.toLowerCase() === 'orderedfolder' ? -1 : 1;
   }
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
