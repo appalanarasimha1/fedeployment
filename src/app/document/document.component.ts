@@ -204,6 +204,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     "Wildlife",
   ];
   dummyPlaceholderTags: boolean = true;
+  searchBarClicked: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -254,6 +255,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
 
     this.filtersCount = this.getFilterCount();
+
+    this.dataService.searchBarClick$.subscribe((show: boolean) => {
+      this.searchBarClicked = show;
+    });
   }
 
   ngOnChanges(changes: any) {

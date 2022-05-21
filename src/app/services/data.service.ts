@@ -13,6 +13,7 @@ export class DataService {
   private termSearch = new Subject<string>();
   private showRecent = new Subject<boolean>();
   private tagsMetaReal = new Subject<boolean>();
+  private searchBarClick = new Subject<boolean>();
   constructor() {}
 
   // Observable string streams
@@ -23,6 +24,7 @@ export class DataService {
   termSearch$ = this.termSearch.asObservable();
   showRecent$ = this.showRecent.asObservable();
   tagsMetaReal$ = this.tagsMetaReal.asObservable();
+  searchBarClick$ = this.searchBarClick.asObservable();
 
   sectorDataPush(sector) {
     this.sectorChangedSource.next(sector);
@@ -49,5 +51,9 @@ export class DataService {
   }
   tagsMetaRealInit(data: any) {
     this.tagsMetaReal.next(data)
+  }
+
+  searchBarClickInit(show: boolean) {
+    this.searchBarClick.next(show);
   }
 }

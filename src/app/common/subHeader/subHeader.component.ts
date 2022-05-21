@@ -431,6 +431,7 @@ export class SubHeaderComponent implements OnInit {
   }
 
   inputClicked() {
+    this.dataService.searchBarClickInit(true);
     console.log("2222", this.searchText.trim());
     if (this.searchText.trim() !== "") {
       this.loadWorkSpace = true;

@@ -163,7 +163,7 @@
 
   <section class="search-subpage">
 
-    <div class="customTagBar" *ngIf="dummyPlaceholderTags">
+    <div class="customTagBar test1" *ngIf="searchBarClicked && tagsMetaRealdata.length<1">
       <ul>
         <li>
           <div class="relatedTagHeading">Related Tags</div>
@@ -186,20 +186,20 @@
       </ul>
     </div>
 
-    <div class="customTagBar" *ngIf="tagsMetaRealdata.length>0">
+    <div class="customTagBar test2" *ngIf="tagsMetaRealdata.length>0">
       <ul>
         <li>
           <div class="relatedTagHeading">Related Tags</div>
         </li>
         <li>
           <div class="search-tags">
-            <div class="customTagSlider">
+            <div class="customTagSlider animate__animated animate__fadeIn">
               <ngx-slick-carousel class="carousel" 
                 #slickModal="slick-carousel" 
                 [config]="tagsConfig" >
                 <div ngxSlickItem *ngFor="let bucket of tagsMetaRealdata; let i = index" class="slide">
                   <div class="item" >
-                    <a class="card animate__animated animate__fadeIn" style="cursor: pointer;"  (click)="searchRelatedClick(bucket.key)">{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a>
+                    <a class="card" style="cursor: pointer;"  (click)="searchRelatedClick(bucket.key)">{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a>
                   </div>
                 </div>
               </ngx-slick-carousel>
