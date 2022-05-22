@@ -12,6 +12,8 @@ export class ElasticSearchController {
     this.router.get("/findUserBySearchCount", this.findUserBySearchCount);
     this.router.get("/findUserRecentTags", this.findUserRecentTags);
     this.router.post("/deleteUserRecentTags", this.deleteUserRecentTags);
+    this.router.get("/fetchSectorByCount", this.fetchSectorByCount);
+    
   }
 
   public async getMostSearchedTerm(req: Request, res: Response) {
@@ -45,6 +47,13 @@ export class ElasticSearchController {
   public async getSearchCountByUser(req: Request, res: Response) {
     const service = new ElasticSearchService();
     const result: any = await service.getTotalSearchCount();
+    res.status(200).send({ data: result?.count, message: "success" });
+  }
+
+  
+  public async fetchSectorByCount(req: Request, res: Response) {
+    const service = new ElasticSearchService();
+    const result: any = await service.fetchSectorByCount();
     res.status(200).send({ data: result?.count, message: "success" });
   }
 

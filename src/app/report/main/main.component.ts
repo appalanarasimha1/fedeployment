@@ -23,6 +23,7 @@ export class ReportMainComponent implements OnInit {
   public totalSearches: any = 'loading';
   public searchTermsAndCount = [];
   public userSearchCount = [];
+  public sectorCount = [];
   readonly TOTAL_ASSETS_LABEL = TOTAL_ASSETS_LABEL;
   loading = false;
   public usersByCountSearchLabels: Label[] = [
@@ -90,7 +91,8 @@ export class ReportMainComponent implements OnInit {
     this.fetchReportFromMongo();
     this.fetchMostSearchedTags();
     this.fetchSearchCount();
-    this.findUserBySearchCount()
+    this.findUserBySearchCount();
+    this.fetchSectorByCount();
   }
 
   fetchTotalAssets() {
@@ -163,6 +165,17 @@ export class ReportMainComponent implements OnInit {
         if(item.key.trim()) {
           data = {name: item.key, count: item.doc_count};
           this.userSearchCount.push(data);}
+      });
+    });
+  }
+
+  fetchSectorByCount() {
+    this.apiService.get('/searchTerm/fetchSectorByCount').subscribe((response: any) => {
+      let data;
+      response?.data?.properties.buckets.map(item => {
+        if(item.key.trim()) {
+          data = {name: item.key, count: item.doc_count};
+          this.sectorCount.push(data);}
       });
     });
   }

@@ -16,7 +16,6 @@ export class ElasticSearchService {
         isDeleted: false,
       },
     });
-    console.log("asdfg", response);
 
     return;
   }
@@ -47,6 +46,24 @@ export class ElasticSearchService {
           properties: {
             terms: {
               field: "userId",
+              order: { _count: "desc" },
+              size: 10,
+            },
+          },
+        },
+      },
+    });
+    return body;
+  }
+
+  public async fetchSectorByCount() {
+    const { body } = await this.client.search({
+      index: this.indexValue,
+      body: {
+        aggs: {
+          properties: {
+            terms: {
+              field: "sector",
               order: { _count: "desc" },
               size: 10,
             },
