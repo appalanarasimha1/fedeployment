@@ -3,7 +3,7 @@ import { DbConnection } from '../connectionManager/DbConnection';
 import { ObjectId } from 'mongodb';
 import * as _ from 'underscore';
 import { AppConfig } from '../config/appConfigSelection';
-import { createDownloadQuery, createUploadQuery } from '../dbquery';
+import { createDownloadQuery, createUploadQuery, createPreviewQuery } from '../dbquery';
 
 export class DBService {
     private connectionManager: DbConnection = ConnectionFactory.getConnectionManager();
@@ -53,7 +53,7 @@ export class DBService {
             throw e;
         }
     }
-    
+
     public async findUserCount() {
         try {
             let connection: any = await this.connectionManager.getConnection();
@@ -72,6 +72,17 @@ export class DBService {
             return await connection.collection(AppConfig.Config.mongodbTables.AUDIT_TABLE).aggregate(query).toArray();
         } catch (e) {
             console.error('find download asset count: Exception occurred while execution - ', e);
+            throw e;
+        }
+    }
+
+    public async findPreviewCount() {
+        try {
+            let connection: any = await this.connectionManager.getConnection();
+            const query = createPreviewQuery();
+            return await connection.collection(AppConfig.Config.mongodbTables.AUDIT_TABLE).aggregate(query).toArray();
+        } catch (e) {
+            console.error('find preview asset count: Exception occurred while execution - ', e);
             throw e;
         }
     }
