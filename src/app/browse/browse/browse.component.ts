@@ -254,10 +254,10 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
+    this.searchBarValue = "";
     this.paginator.firstPage();
     if (item.isTrashed) return;
     this.newTitle = item.title;
-    this.searchBarValue = "";
     this.showLinkCopy = true;
     this.showSearchbar = false;
     this.copiedString = "";
@@ -403,11 +403,7 @@ export class BrowseComponent implements OnInit {
   handleViewClick(item, index) {
     this.handleClickNew(item.uid);
     this.paginator.firstPage();
-    // if (this.currentLevel < 1) {
-    //   this.handleClick(item, this.currentLevel, index);
-    // } else {
-    //   this.handleTest(item);
-    // }
+    this.searchBarValue = "";
   }
 
   createBreadCrumb(title: string, type: string, path?: string): void {
@@ -447,6 +443,7 @@ export class BrowseComponent implements OnInit {
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     this.paginator?.firstPage();
     this.showSearchbar = true;
+    this.searchBarValue = "";
     if (breadCrumbIndex ?? breadCrumbIndex === 1) {
       this.showSearchbar = true;
     }
@@ -858,6 +855,8 @@ export class BrowseComponent implements OnInit {
 
   getTrashedWS() {
     this.showSearchbar = true;
+    this.searchBarValue = "";
+    this.paginator.firstPage();
     if (this.folderNotFound) {
       this.folderNotFound = false;
       this.selectedFolder = {};
@@ -878,6 +877,8 @@ export class BrowseComponent implements OnInit {
           this.sortedData = this.searchList.slice();
         });
       }
+      this.numberOfPages = docs.numberOfPages;
+      this.resultCount = docs.resultsCount;
       this.isTrashView = true;
       this.handleSelectMenu(1, this.viewType || "LIST");
       this.showMoreButton = false;
