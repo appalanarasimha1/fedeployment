@@ -180,13 +180,15 @@ export class DocumentCardComponent implements OnChanges {
     if(!this.downloadEnable) {
       this.downloadErrorShow = true;
     }
-    console.log('test download click')
   }
   onCheckboxChange(e: any) {
-    console.log('test download click', e.target.checked);
-    if(e.target.checked)
+    if(e.target.checked){
       this.downloadErrorShow = false;
       this.downloadEnable = true;
+    } else {
+      this.downloadEnable = false;
+    }
+    
   }
 
 }

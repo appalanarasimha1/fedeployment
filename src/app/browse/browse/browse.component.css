@@ -225,6 +225,8 @@ section.lpBAck:before, .lpSecOne:before {
     line-height: 22px;
     color: #000000;
     font-weight: 600;
+    margin-bottom: 9px !important;
+    display: block;
     /* display: contents; */
 }
 .header-content h6{
@@ -1607,4 +1609,8 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   width: 30px;
   text-align: center;
   cursor: pointer;
+  margin-top: -15px;
+}
+.customRenameBlock.input-sizer {
+  margin: -8px 0px 0px -11.8px;
 }

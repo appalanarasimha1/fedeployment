@@ -116,7 +116,7 @@
 
 
                   <span *ngIf="renameFolderName && showLinkCopy" style="display: flex; align-items: center;">
-                    <label class="input-sizer">
+                    <label class="input-sizer customRenameBlock">
                       <input type="text" maxlength="60"
                       value="{{sharedService.stringShortener(selectedFolder?.title, 28)}}"
                       [(ngModel)]="newTitle"
