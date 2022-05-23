@@ -307,6 +307,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   } 
 
   resetResult() {
+    this.dataService.searchBarClickInit(false);
     this.documents = "";
     // this.selectTab('recentUpload');
     this.docSliceInput = 39;
