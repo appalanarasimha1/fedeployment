@@ -723,7 +723,7 @@ export class BrowseComponent implements OnInit {
 
   getSearchPlaceholder(): string {
     if (this.isTrashView) {
-      return `Search for folder in deleted items`;
+      return `Search for folder in trash`;
     }
     return `Search for folder in ${this.sharedService.stringShortener(
       this.selectedFolder?.title,
