@@ -170,7 +170,8 @@ export class BrowseComponent implements OnInit {
           this.folderNotFound = true;
           return;
         }
-        this.fetchCurrentFolderAssets(params.folder);
+        // this.fetchCurrentFolderAssets(params.folder);
+        this.getWorkspaceFolders(params.folder, 1);
       } else {
         await this.fetchAllSectors();
       }
@@ -1150,7 +1151,13 @@ export class BrowseComponent implements OnInit {
     if(workSpaceIndex !== -1) {
       this.sectorWorkspace = entries[workSpaceIndex];
     }
-    ({ entries, numberOfPages, resultsCount } = await this.fetchAssets(entries[workSpaceIndex].uid));
+    if(workSpaceIndex === -1) {
+      this.sortedData = entries;
+      this.searchList = entries;
+      this.loading = false;
+      return;
+    }
+    ({ entries } = await this.fetchAssets(entries[workSpaceIndex].uid));
     this.sortedData = entries;
     this.searchList = entries;
     this.numberOfPages = numberOfPages;
