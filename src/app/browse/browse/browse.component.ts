@@ -266,11 +266,13 @@ export class BrowseComponent implements OnInit {
     this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
     this.loading = true;
-    const docs = await this.fetchAssets(item.uid, true);
-    this.searchList = docs.entries.filter(
+    const { entries, numberOfPages, resultsCount} = await this.fetchAssets(item.uid, true);
+    this.searchList = entries.filter(
       (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
     );
     this.sortedData = this.searchList.slice(); //shallow copy
+    this.numberOfPages = numberOfPages;
+    this.resultCount = resultsCount;
     this.handleSelectMenu(0, "GRID");
     this.loading = false;
     this.sharedService.toTop();
@@ -444,7 +446,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
-    this.paginator.firstPage();
+    this.paginator?.firstPage();
     this.showSearchbar = true;
     if (breadCrumbIndex ?? breadCrumbIndex === 1) {
       this.showSearchbar = true;
@@ -1135,11 +1137,13 @@ export class BrowseComponent implements OnInit {
 
   async getWorkspaceFolders(sectorUid: string, viewType = 0) {
     this.loading = true;
-    let { entries } = await this.fetchAssets(sectorUid);
+    let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
     if (!entries?.length) {
       this.sortedData = [];
       this.searchList = [];
+      this.numberOfPages = numberOfPages;
+      this.resultCount = resultsCount;
       this.loading = false;
       return;
     }
@@ -1156,6 +1160,8 @@ export class BrowseComponent implements OnInit {
     ({ entries } = await this.fetchAssets(entries[workSpaceIndex].uid));
     this.sortedData = entries;
     this.searchList = entries;
+    this.numberOfPages = numberOfPages;
+    this.resultCount = resultsCount;
     this.showLinkCopy = false;
     this.selectedMenu = viewType;
     this.extractBreadcrumb();
@@ -1179,9 +1185,11 @@ export class BrowseComponent implements OnInit {
 
   async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.loading = true;
-    const { entries } = await this.fetchAssets(sectorUid, checkCache, pageSize, pageIndex, offset);
+    const { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid, checkCache, pageSize, pageIndex, offset);
     this.sortedData = entries;
     this.searchList = entries;
+    this.numberOfPages = numberOfPages;
+    this.resultCount = resultsCount;
     this.extractBreadcrumb();
     this.showLinkCopy = true;
     this.loading = false;

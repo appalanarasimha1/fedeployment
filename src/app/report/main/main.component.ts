@@ -19,6 +19,7 @@ export class ReportMainComponent implements OnInit {
   totalUsers = 'loading';
   reportData;
   totalDownloads: any = 'loading';
+  totalPreviews: any = 'loading';
   public totalSearches: any = 'loading';
   public searchTermsAndCount = [];
   public userSearchCount = [];
@@ -37,7 +38,7 @@ export class ReportMainComponent implements OnInit {
     { data: [28, 0, 40, 19, 86, 27, 90], label: 'Video', stack: 'a' },
     { data: [28, 0, 40, 19, 86, 27, 90], label: 'File', stack: 'a' },
   ];
-  
+
   // public usersByCountDownloadLabels: Label[] = [];
   // public usersByCountDownloadLegend = false;
   // public usersByCountDownloadData: ChartDataSets[] = [
@@ -91,7 +92,7 @@ export class ReportMainComponent implements OnInit {
     this.fetchSearchCount();
     this.findUserBySearchCount()
   }
-  
+
   fetchTotalAssets() {
     const headers = { };
     let url = apiRoutes.SEARCH_PP_ASSETS;
@@ -125,6 +126,7 @@ export class ReportMainComponent implements OnInit {
       .get().then((result) => {
         this.reportData = result.resultsCount;
         this.calculateTotalDownload(result.data.downloadAssetCount);
+        this.calculateTotalPreviews(result.data.previewAssetCount);
         this.calculateTotalUpload(result.data.uploadAssetCount);
         this.totalUsers = result.data.userCount;
         this.loading = false;
@@ -193,6 +195,30 @@ export class ReportMainComponent implements OnInit {
       // ['picture', 'video', 'file'];
     });
     this.downloadsByFormatData = [[pictureCount, videoCount, fileCount ]];
+  }
+
+  calculateTotalPreviews(previewAssetCount: {_id: string, countType: any[]}[]) {
+    this.totalPreviews = 0;
+    let videoCount = 0;
+    let fileCount = 0;
+    let pictureCount = 0;
+
+    previewAssetCount.map(item => {
+      let downloadData = {name: item._id, count: 0};
+      item.countType.map(countItem => {
+        this.totalPreviews += countItem.count;
+        downloadData.count += countItem.count;
+        if(countItem.type.toLowerCase() === 'video') {
+          videoCount += countItem.count;
+        }
+        if(countItem.type.toLowerCase() === 'picture') {
+          pictureCount += countItem.count;
+        }
+        if(countItem.type.toLowerCase() === 'file') {
+          fileCount += countItem.count;
+        }
+      });
+    });
   }
 
   calculateTotalUpload(uploadAssetCount: {_id: string, countType: any[]}[]) {
