@@ -197,7 +197,7 @@ export class SearchComponent implements OnInit {
           term +
           "&username=" +
           user.email +
-          "&sector" +
+          "&sector=" +
           this.sector,
         {}
       )
