@@ -33,7 +33,8 @@ export class ElasticSearchController {
     // await service.insertData();
     const result: any = await service.insertData(
       req.query.term,
-      req.query.username
+      req.query.username,
+      req.query.sector
     );
     res.status(200).send({ data: result?.aggregations, message: "success" });
   }

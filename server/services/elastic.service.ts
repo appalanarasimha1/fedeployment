@@ -5,7 +5,7 @@ export class ElasticSearchService {
   private client = new Client({ node: AppConfig.Config.elasticDbUrl });
   private indexValue = "searchindex";
 
-  public async insertData(searchTerm: any, username: any) {
+  public async insertData(searchTerm: any, username: any,sector:any) {
     if (searchTerm.trim() == "") return;
     const response = await this.client.index({
       index: this.indexValue,
@@ -13,6 +13,7 @@ export class ElasticSearchService {
         query: searchTerm,
         timestamp: new Date(),
         userId: username,
+        sector,
         isDeleted: false,
       },
     });

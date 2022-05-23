@@ -30,6 +30,9 @@
         "type": "boolean",
         "default":false
       },
+      "sector":{
+        "type": "text"
+      },
       "timestamp": {
         "type": "date"
       }
