@@ -379,9 +379,9 @@
                     </document-card>
                   </li>
                 </ul>
-                <div style="text-align: center;">
+                <!-- <div style="text-align: center;">
                   <button *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder?.contextParameters?.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -452,9 +452,9 @@
                   </li>
                 </ul>
               </div> -->
-              <div style="text-align: center;">
+              <!-- <div style="text-align: center;">
                 <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
-              </div>
+              </div> -->
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
               <div class="col-xl-12 col-md-12 list-container" *ngFor="let item of searchList ;">

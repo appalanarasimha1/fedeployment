@@ -255,10 +255,10 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
+    this.searchBarValue = "";
     this.paginator.firstPage();
     if (item.isTrashed) return;
     this.newTitle = item.title;
-    this.searchBarValue = "";
     this.showLinkCopy = true;
     this.showSearchbar = false;
     this.copiedString = "";
@@ -404,11 +404,7 @@ export class BrowseComponent implements OnInit {
   handleViewClick(item, index) {
     this.handleClickNew(item.uid);
     this.paginator.firstPage();
-    // if (this.currentLevel < 1) {
-    //   this.handleClick(item, this.currentLevel, index);
-    // } else {
-    //   this.handleTest(item);
-    // }
+    this.searchBarValue = "";
   }
 
   createBreadCrumb(title: string, type: string, path?: string): void {
@@ -448,6 +444,7 @@ export class BrowseComponent implements OnInit {
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     this.paginator?.firstPage();
     this.showSearchbar = true;
+    this.searchBarValue = "";
     if (breadCrumbIndex ?? breadCrumbIndex === 1) {
       this.showSearchbar = true;
     }
@@ -857,18 +854,28 @@ export class BrowseComponent implements OnInit {
     return Object.keys(this.selectedFolderList).length > 0;
   }
 
-  getTrashedWS() {
+  getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.showSearchbar = true;
+    this.searchBarValue = "";
+    offset || this.paginator.firstPage();
     if (this.folderNotFound) {
       this.folderNotFound = false;
       this.selectedFolder = {};
     }
     this.loading = true;
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
     this.apiService.get(url).subscribe((docs: any) => {
+      this.numberOfPages = docs.numberOfPages;
+      this.resultCount = docs.resultsCount;
       this.trashedList = docs.entries.filter(
-        (sector) =>
-          UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
+        (sector) => {
+          if(UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
+            --this.resultCount;
+            return true;
+          } else {
+            return false;
+          }
+        }
       );
       if (!this.myDeletedCheck) {
         this.searchList = this.trashedList;
@@ -1183,7 +1190,7 @@ export class BrowseComponent implements OnInit {
     this.loading = false;
   }
 
-  async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+  async fetchCurrentFolderAssets(sectorUid: string, showLinkCopy = true, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.loading = true;
     const { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid, checkCache, pageSize, pageIndex, offset);
     this.sortedData = entries;
@@ -1191,7 +1198,7 @@ export class BrowseComponent implements OnInit {
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
     this.extractBreadcrumb();
-    this.showLinkCopy = true;
+    this.showLinkCopy = showLinkCopy;
     this.loading = false;
   }
 
@@ -1212,7 +1219,11 @@ export class BrowseComponent implements OnInit {
     // event = {previousPageIndex: 0, pageIndex: 1, pageSize: 10, length: 100};
     // todo: call api 
     const offset = event.pageIndex*event.pageSize;
-    this.fetchCurrentFolderAssets(this.sectorWorkspace.uid, false, event.pageSize, event.pageIndex, offset);
+    if(!this.isTrashView) {
+    this.fetchCurrentFolderAssets(this.sectorWorkspace.uid, false, false, event.pageSize, event.pageIndex, offset);
+    } else {
+      this.getTrashedWS(event.pageSize, event.pageIndex, offset);
+    }
   }
 
   async searchFolders(searchString: string) {
