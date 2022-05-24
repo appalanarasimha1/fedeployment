@@ -1164,7 +1164,7 @@ export class BrowseComponent implements OnInit {
       this.loading = false;
       return;
     }
-    ({ entries } = await this.fetchAssets(entries[workSpaceIndex].uid));
+    ({ entries, numberOfPages, resultsCount } = await this.fetchAssets(entries[workSpaceIndex].uid));
     this.sortedData = entries;
     this.searchList = entries;
     this.numberOfPages = numberOfPages;
