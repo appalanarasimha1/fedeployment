@@ -31,7 +31,8 @@
         "default":false
       },
       "sector":{
-        "type": "text"
+        "type": "text",
+        "fielddata": true
       },
       "timestamp": {
         "type": "date"

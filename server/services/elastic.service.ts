@@ -17,7 +17,8 @@ export class ElasticSearchService {
         isDeleted: false,
       },
     });
-
+    console.log("pppppppppppppppppppppppppppp", response);
+    
     return;
   }
 
@@ -58,6 +59,8 @@ export class ElasticSearchService {
   }
 
   public async fetchSectorByCount() {
+    console.log("=========================================== Coming");
+    
     const { body } = await this.client.search({
       index: this.indexValue,
       body: {
@@ -71,7 +74,8 @@ export class ElasticSearchService {
           },
         },
       },
-    });
+    }).catch((err:Error)=>console.log("123456qwertyu",err)
+    );
     return body;
   }
 
