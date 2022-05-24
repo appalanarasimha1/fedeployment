@@ -11,6 +11,7 @@ export class DataService {
   private showHideLoader = new Subject<boolean>();
   private resetFilter = new Subject<string>();
   private termSearch = new Subject<string>();
+  private termSearchForHide = new Subject<string>();
   private showRecent = new Subject<boolean>();
   private tagsMetaReal = new Subject<boolean>();
   private searchBarClick = new Subject<boolean>();
@@ -22,6 +23,7 @@ export class DataService {
   showHideLoader$ = this.showHideLoader.asObservable();
   resetFilter$ = this.resetFilter.asObservable();
   termSearch$ = this.termSearch.asObservable();
+  termSearchForHide$ = this.termSearchForHide.asObservable();
   showRecent$ = this.showRecent.asObservable();
   tagsMetaReal$ = this.tagsMetaReal.asObservable();
   searchBarClick$ = this.searchBarClick.asObservable();
@@ -46,11 +48,15 @@ export class DataService {
     this.termSearch.next(term);
   }
 
+  termSearchForHideInit(term: string) {
+    this.termSearchForHide.next(term);
+  }
+
   showRecentInit(show: boolean) {
     this.showRecent.next(show);
   }
   tagsMetaRealInit(data: any) {
-    this.tagsMetaReal.next(data)
+    this.tagsMetaReal.next(data);
   }
 
   searchBarClickInit(show: boolean) {

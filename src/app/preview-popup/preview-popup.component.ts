@@ -383,6 +383,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   search(searchTerm: string) {
     this.dataService.termSearchInit(searchTerm);
+    this.dataService.termSearchForHideInit(searchTerm);
+
     this.modalService.dismissAll();
   }
 

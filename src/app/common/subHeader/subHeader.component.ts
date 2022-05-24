@@ -163,7 +163,7 @@ export class SubHeaderComponent implements OnInit {
       delete this.searchCriteria["ecm_fulltext"];
       delete this.searchCriteria["highlight"];
     }
-    // this.dataService.termSearchInit(searchText);
+    this.dataService.termSearchForHideInit(searchText);
 
     this.emitData(this.searchCriteria);
   }
