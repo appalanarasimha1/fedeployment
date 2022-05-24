@@ -1198,6 +1198,7 @@ export class BrowseComponent implements OnInit {
     this.resultCount = resultsCount;
     this.extractBreadcrumb();
     this.showLinkCopy = showLinkCopy;
+    this.showSearchbar = !showLinkCopy;
     this.loading = false;
   }
 
@@ -1220,7 +1221,13 @@ export class BrowseComponent implements OnInit {
   paginatorEvent(event: PageEvent) {
     const offset = event.pageIndex * event.pageSize;
     if(!this.isTrashView) {
-    this.fetchCurrentFolderAssets(this.selectedFolder.uid, false, false, event.pageSize, event.pageIndex, offset);
+      let uid = this.selectedFolder.uid;
+      let showLinkCopy = true;
+      if(this.selectedFolder.type.toLowerCase() === 'domain') {
+        uid = this.sectorWorkspace.uid;
+        showLinkCopy = false;
+      }
+      this.fetchCurrentFolderAssets(uid, showLinkCopy, false, event.pageSize, event.pageIndex, offset);
     } else {
       this.getTrashedWS(event.pageSize, event.pageIndex, offset);
     }
