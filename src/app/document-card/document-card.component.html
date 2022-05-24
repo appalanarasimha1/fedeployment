@@ -74,13 +74,13 @@
             <div *ngIf="hasInternalRestriction()" class="internal-use">
               <p>Please always credit copyright owners (where applicable).</p>
 
-              <div class="control-group" [ngClass]="downloadErrorShow ? 'error-disabled' : '' ">
+              <div class="control-group" [ngClass]="downloadErrorShow && !isAware ? 'error-disabled' : '' ">
                 <label class="control control--checkbox">I'm aware this asset must NOT be used in public
                   <input type="checkbox" [(ngModel)]="isAware" checked="isAware" (change)="onCheckboxChange($event)"/>
                   <div class="control__indicator"></div>
                 </label>
               </div>
-              <div class="error" *ngIf="downloadErrorShow">Please check the box to proceed</div>
+              <div class="error" *ngIf="downloadErrorShow && !isAware">Please check the box to proceed</div>
               <div class="download-btn" (click)="downloadClick()">
                 <a href="{{getFileContent()}}" [ngClass]="showDownloadDropdown() ? 'downloadActive' : 'download-disabled'">
                   <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
