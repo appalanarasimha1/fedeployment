@@ -443,9 +443,8 @@ export class BrowseComponent implements OnInit {
 
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     this.paginator?.firstPage();
-    this.showSearchbar = true;
     this.searchBarValue = "";
-    if (breadCrumbIndex ?? breadCrumbIndex === 1) {
+    if (breadCrumbIndex === 1) {
       this.showSearchbar = true;
     }
     if (breadCrumbIndex === this.breadCrumb.length) return;
@@ -1215,12 +1214,13 @@ export class BrowseComponent implements OnInit {
     return false;
   }
 
+  /**
+   * @param event = {previousPageIndex: 0, pageIndex: 1, pageSize: 10, length: 100};
+   */
   paginatorEvent(event: PageEvent) {
-    // event = {previousPageIndex: 0, pageIndex: 1, pageSize: 10, length: 100};
-    // todo: call api 
-    const offset = event.pageIndex*event.pageSize;
+    const offset = event.pageIndex * event.pageSize;
     if(!this.isTrashView) {
-    this.fetchCurrentFolderAssets(this.sectorWorkspace.uid, false, false, event.pageSize, event.pageIndex, offset);
+    this.fetchCurrentFolderAssets(this.selectedFolder.uid, false, false, event.pageSize, event.pageIndex, offset);
     } else {
       this.getTrashedWS(event.pageSize, event.pageIndex, offset);
     }
