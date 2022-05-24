@@ -189,7 +189,7 @@ export class SearchComponent implements OnInit {
       .post("/searchTerm/insert?term=" + term + "&username=" + user.email, {})
       .subscribe((response) => {
         console.log(response);
-      });
+      })
   }
 
   populateQueryParams(queryParams) {
