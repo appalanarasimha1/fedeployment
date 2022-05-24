@@ -188,7 +188,7 @@ export class SearchComponent implements OnInit {
     this.fetchApiResult(params);
     this.insertSearchTerm(params.ecm_fulltext);
   }
-
+  // hitInsert:boolean=false
   insertSearchTerm(term: string) {
     const user = JSON.parse(localStorage.getItem("user"));
     this.apiService
