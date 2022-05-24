@@ -444,9 +444,9 @@ export class BrowseComponent implements OnInit {
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     this.paginator?.firstPage();
     this.searchBarValue = "";
-    if (breadCrumbIndex === 1) {
-      this.showSearchbar = true;
-    }
+    // if (!isNaN(index) || breadCrumbIndex === 1) {
+    //   this.showSearchbar = true;
+    // }
     if (breadCrumbIndex === this.breadCrumb.length) return;
     if (breadCrumbIndex === 0) {
       this.showSearchbar = false;
@@ -457,10 +457,11 @@ export class BrowseComponent implements OnInit {
       return;
     }
     this.isTrashView = false;
-    if (index || index === 0 || breadCrumbIndex === 1) {
+    if (index || breadCrumbIndex === 1) {
       const listView = 1;
       await this.getWorkspaceFolders(item.uid, listView);
     } else {
+      this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
     this.loading = true;
@@ -1145,11 +1146,13 @@ export class BrowseComponent implements OnInit {
     this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
+    this.numberOfPages = numberOfPages;
+    this.resultCount = resultsCount;
+    this.showSearchbar = false;
     if (!entries?.length) {
       this.sortedData = [];
       this.searchList = [];
-      this.numberOfPages = numberOfPages;
-      this.resultCount = resultsCount;
+      this.showLinkCopy = true;
       this.loading = false;
       return;
     }
@@ -1160,6 +1163,7 @@ export class BrowseComponent implements OnInit {
     if(workSpaceIndex === -1) {
       this.sortedData = entries;
       this.searchList = entries;
+      this.showLinkCopy = true;
       this.loading = false;
       return;
     }
@@ -1170,6 +1174,7 @@ export class BrowseComponent implements OnInit {
     this.resultCount = resultsCount;
     this.showLinkCopy = false;
     this.selectedMenu = viewType;
+    this.showSearchbar = true;
     this.extractBreadcrumb();
     this.loading = false;
   }
