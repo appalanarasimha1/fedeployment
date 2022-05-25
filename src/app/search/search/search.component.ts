@@ -245,7 +245,8 @@ export class SearchComponent implements OnInit {
           params["sectors"] = `["${this.documentsView.sectorSelected}"]`;
         }
         break;
-      // default:
+      default:
+        params["duplicate_show"] = "1";
     }
     if (!url) return;
 

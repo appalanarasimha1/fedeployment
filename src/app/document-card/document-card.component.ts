@@ -20,6 +20,8 @@ export class DocumentCardComponent implements OnChanges {
   isAware = false;
   showLock = false;
   copiedString = '';
+  downloadErrorShow: boolean = false;
+  downloadEnable: boolean = false;
 
   constructor(
     private router: Router
@@ -172,6 +174,21 @@ export class DocumentCardComponent implements OnChanges {
     selBox.select();
     document.execCommand("copy");
     document.body.removeChild(selBox);
+  }
+
+  downloadClick() {
+    if(!this.downloadEnable) {
+      this.downloadErrorShow = true;
+    }
+  }
+  onCheckboxChange(e: any) {
+    if(e.target.checked){
+      this.downloadErrorShow = false;
+      this.downloadEnable = true;
+    } else {
+      this.downloadEnable = false;
+    }
+    
   }
 
 }

@@ -5,9 +5,8 @@
 export const environment = {
   production: false,
   apiVersion: "/nuxeo/api/v1",
-  apiServiceBaseUrl: "http://localhost:8080",
-    // "https://uatgroundx.neom.com",
-  nuxeoServerUrl: 'http://localhost:8080',
+  apiServiceBaseUrl: "https://uatgroundx.neom.com",
+  nuxeoServerUrl: "https://uatgroundx.neom.com", // 'http://localhost:8080',
   keycloakConfig: {
     url: "https://groundx.the-it-cloud.net/auth/",
     realm: "GroundX",
