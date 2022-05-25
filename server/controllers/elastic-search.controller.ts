@@ -55,7 +55,7 @@ export class ElasticSearchController {
   public async fetchSectorByCount(req: Request, res: Response) {
     const service = new ElasticSearchService();
     const result: any = await service.fetchSectorByCount();
-    res.status(200).send({ data: result?.count, message: "success" });
+    res.status(200).send({ data: result?.aggregations, message: "success" });
   }
 
   public async findUserRecentTags(req: Request, res: Response) {

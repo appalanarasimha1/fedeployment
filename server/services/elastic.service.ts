@@ -3,7 +3,7 @@ const { Client } = require("@elastic/elasticsearch");
 
 export class ElasticSearchService {
   private client = new Client({ node: AppConfig.Config.elasticDbUrl });
-  private indexValue = "searchindex";
+  private indexValue = "searchindex_v2";
 
   public async insertData(searchTerm: any, username: any,sector:any) {
     if (searchTerm.trim() == "") return;
@@ -69,13 +69,14 @@ export class ElasticSearchService {
             terms: {
               field: "sector",
               order: { _count: "desc" },
-              size: 10,
+              size: 10
             },
           },
         },
       },
-    }).catch((err:Error)=>console.log("123456qwertyu",err)
-    );
+    }).catch((err: any)=> {
+      console.log("ERROR = ", err);
+    });
     return body;
   }
 
