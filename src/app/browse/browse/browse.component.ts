@@ -441,6 +441,13 @@ export class BrowseComponent implements OnInit {
     }
   }
 
+  /**
+   * This functions gets called from bread crumbs and sidebar
+   * @param item 
+   * @param index 
+   * @param breadCrumbIndex 
+   * @returns null
+   */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     this.paginator?.firstPage();
     this.searchBarValue = "";

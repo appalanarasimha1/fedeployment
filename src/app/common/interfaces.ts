@@ -9,971 +9,483 @@ export interface ISearchResponse {
     "currentPageIndex": number;
     "currentPageOffset": number;
     "numberOfPages":number;
-    "isPreviousPageAvailable":false,
+    "isPreviousPageAvailable": boolean;
     "isNextPageAvailable":boolean;
     "isLastPageAvailable":boolean;
     "isSortable":boolean;
-    "hasError":false,
-    "errorMessage":null,
+    "hasError": boolean;
+    "errorMessage": string,
     "totalSize":number;
     "pageIndex": number;
     "pageCount":number;
     "aggregations":{
-       "sectors":{
-          "entity-type": string;
-          "id": string;
-          "field":string,
-          "properties":{
-             
-          },
-          "ranges":[
-             
-          ],
-          "selection":[
-             
-          ],
-          "type":"terms",
-          "buckets":[
-             {
-                "key": string,
-                "docCount": number
-             },
-             {
-                "key":"Sport",
-                "docCount": number
-             }
-          ],
-          "extendedBuckets":[
-             {
-                "key": string,
-                "docCount": number
-             },
-             {
-                "key":"Sport",
-                "docCount": number
-             }
-          ]
-       },
-       "asset_width_agg":{
-          "entity-type":"aggregate",
-          "id":"asset_width_agg",
-          "field":"picture:info.width",
-          "properties":{
-             
-          },
-          "ranges":[
-             {
-                "key":"to_500_px",
-                "from":null,
-                "to":500.0
-             },
-             {
-                "key":"from_500_to_1500_px",
-                "from":500.0,
-                "to":1500.0
-             },
-             {
-                "key":"from_1500_to_2000_px",
-                "from":1500.0,
-                "to":2000.0
-             },
-             {
-                "key":"from_2000_px",
-                "from":2000.0,
-                "to":null
-             }
-          ],
-          "selection":[
-             
-          ],
-          "type":"range",
-          "buckets":[
-             {
-                "key":"to_500_px",
-                "docCount":0,
-                "from":"-Infinity",
-                "to":500.0
-             },
-             {
-                "key":"from_500_to_1500_px",
-                "docCount":31,
-                "from":500.0,
-                "to":1500.0
-             },
-             {
-                "key":"from_1500_to_2000_px",
-                "docCount":0,
-                "from":1500.0,
-                "to":2000.0
-             },
-             {
-                "key":"from_2000_px",
-                "docCount":180,
-                "from":2000.0,
-                "to":"Infinity"
-             }
-          ],
-          "extendedBuckets":[
-             {
-                "key":"to_500_px",
-                "docCount":0,
-                "from":"-Infinity",
-                "to":500.0
-             },
-             {
-                "key":"from_500_to_1500_px",
-                "docCount":31,
-                "from":500.0,
-                "to":1500.0
-             },
-             {
-                "key":"from_1500_to_2000_px",
-                "docCount":0,
-                "from":1500.0,
-                "to":2000.0
-             },
-             {
-                "key":"from_2000_px",
-                "docCount":180,
-                "from":2000.0,
-                "to":"Infinity"
-             }
-          ]
-       },
-       "color_profile_agg":{
-          "entity-type":"aggregate",
-          "id":"color_profile_agg",
-          "field":"picture:info.colorSpace",
-          "properties":{
-             
-          },
-          "ranges":[
-             
-          ],
-          "selection":[
-             
-          ],
-          "type":"terms",
-          "buckets":[
-             {
-                "key":"sRGB",
-                "docCount":211
-             }
-          ],
-          "extendedBuckets":[
-             {
-                "key":"sRGB",
-                "docCount":211
-             }
-          ]
-       },
-       "color_depth_agg":{
-          "entity-type":"aggregate",
-          "id":"color_depth_agg",
-          "field":"picture:info.depth",
-          "properties":{
-             
-          },
-          "ranges":[
-             
-          ],
-          "selection":[
-             
-          ],
-          "type":"terms",
-          "buckets":[
-             {
-                "key":"8",
-                "docCount":211
-             }
-          ],
-          "extendedBuckets":[
-             {
-                "key":"8",
-                "docCount":211
-             }
-          ]
-       },
-       "asset_height_agg":{
-          "entity-type":"aggregate",
-          "id":"asset_height_agg",
-          "field":"picture:info.height",
-          "properties":{
-             
-          },
-          "ranges":[
-             {
-                "key":"to_500_px",
-                "from":null,
-                "to":500.0
-             },
-             {
-                "key":"from_500_to_1500_px",
-                "from":500.0,
-                "to":1500.0
-             },
-             {
-                "key":"from_1500_to_2000_px",
-                "from":1500.0,
-                "to":2000.0
-             },
-             {
-                "key":"from_2000_px",
-                "from":2000.0,
-                "to":null
-             }
-          ],
-          "selection":[
-             
-          ],
-          "type":"range",
-          "buckets":[
-             {
-                "key":"to_500_px",
-                "docCount":31,
-                "from":"-Infinity",
-                "to":500.0
-             },
-             {
-                "key":"from_500_to_1500_px",
-                "docCount":1,
-                "from":500.0,
-                "to":1500.0
-             },
-             {
-                "key":"from_1500_to_2000_px",
-                "docCount":0,
-                "from":1500.0,
-                "to":2000.0
-             },
-             {
-                "key":"from_2000_px",
-                "docCount":179,
-                "from":2000.0,
-                "to":"Infinity"
-             }
-          ],
-          "extendedBuckets":[
-             {
-                "key":"to_500_px",
-                "docCount":31,
-                "from":"-Infinity",
-                "to":500.0
-             },
-             {
-                "key":"from_500_to_1500_px",
-                "docCount":1,
-                "from":500.0,
-                "to":1500.0
-             },
-             {
-                "key":"from_1500_to_2000_px",
-                "docCount":0,
-                "from":1500.0,
-                "to":2000.0
-             },
-             {
-                "key":"from_2000_px",
-                "docCount":179,
-                "from":2000.0,
-                "to":"Infinity"
-             }
-          ]
-       },
-       "video_duration_agg":{
-          "entity-type":"aggregate",
-          "id":"video_duration_agg",
-          "field":"vid:info.duration",
-          "properties":{
-             
-          },
-          "ranges":[
-             {
-                "key":"to_30_s",
-                "from":null,
-                "to":30.0
-             },
-             {
-                "key":"from_30_to_180_s",
-                "from":30.0,
-                "to":180.0
-             },
-             {
-                "key":"from_180_to_600_s",
-                "from":180.0,
-                "to":600.0
-             },
-             {
-                "key":"from_600_to_1800_s",
-                "from":600.0,
-                "to":1800.0
-             },
-             {
-                "key":"from_1800_s",
-                "from":1800.0,
-                "to":null
-             }
-          ],
-          "selection":[
-             
-          ],
-          "type":"range",
-          "buckets":[
-             {
-                "key":"to_30_s",
-                "docCount":13,
-                "from":"-Infinity",
-                "to":30.0
-             },
-             {
-                "key":"from_30_to_180_s",
-                "docCount":26,
-                "from":30.0,
-                "to":180.0
-             },
-             {
-                "key":"from_180_to_600_s",
-                "docCount":2,
-                "from":180.0,
-                "to":600.0
-             },
-             {
-                "key":"from_600_to_1800_s",
-                "docCount":0,
-                "from":600.0,
-                "to":1800.0
-             },
-             {
-                "key":"from_1800_s",
-                "docCount":0,
-                "from":1800.0,
-                "to":"Infinity"
-             }
-          ],
-          "extendedBuckets":[
-             {
-                "key":"to_30_s",
-                "docCount":13,
-                "from":"-Infinity",
-                "to":30.0
-             },
-             {
-                "key":"from_30_to_180_s",
-                "docCount":26,
-                "from":30.0,
-                "to":180.0
-             },
-             {
-                "key":"from_180_to_600_s",
-                "docCount":2,
-                "from":180.0,
-                "to":600.0
-             },
-             {
-                "key":"from_600_to_1800_s",
-                "docCount":0,
-                "from":600.0,
-                "to":1800.0
-             },
-             {
-                "key":"from_1800_s",
-                "docCount":0,
-                "from":1800.0,
-                "to":"Infinity"
-             }
-          ]
-       },
-       "system_primaryType_agg":{
-          "entity-type":"aggregate",
-          "id":"system_primaryType_agg",
-          "field":"ecm:primaryType",
-          "properties":{
-             
-          },
-          "ranges":[
-             
-          ],
-          "selection":[
-             
-          ],
-          "type":"terms",
-          "buckets":[
-             {
-                "key":"Picture",
-                "docCount":186
-             },
-             {
-                "key":"Video",
-                "docCount":42
-             },
-             {
-                "key":"Audio",
-                "docCount":1
-             }
-          ],
-          "extendedBuckets":[
-             {
-                "key":"Picture",
-                "docCount":186
-             },
-             {
-                "key":"Video",
-                "docCount":42
-             },
-             {
-                "key":"Audio",
-                "docCount":1
-             }
-          ]
-       },
-       "system_mimetype_agg":{
-          "entity-type":"aggregate",
-          "id":"system_mimetype_agg",
-          "field":"file:content.mime-type",
-          "properties":{
-             
-          },
-          "ranges":[
-             
-          ],
-          "selection":[
-             
-          ],
-          "type":"terms",
-          "buckets":[
-             {
-                "key":"image/jpeg",
-                "docCount":186
-             },
-             {
-                "key":"video/avi",
-                "docCount":40
-             },
-             {
-                "key":"audio/mpeg",
-                "docCount":1
-             },
-             {
-                "key":"video/x-msvideo",
-                "docCount":1
-             }
-          ],
-          "extendedBuckets":[
-             {
-                "key":"image/jpeg",
-                "docCount":186
-             },
-             {
-                "key":"video/avi",
-                "docCount":40
-             },
-             {
-                "key":"audio/mpeg",
-                "docCount":1
-             },
-             {
-                "key":"video/x-msvideo",
-                "docCount":1
-             }
-          ]
-       }
+       "sectors": IAggregateNonRangeType,
+       "asset_width_agg": IAggregateRangeType,
+       "color_profile_agg": IAggregateNonRangeType,
+       "color_depth_agg": IAggregateNonRangeType,
+       "asset_height_agg": IAggregateRangeType,
+       "video_duration_agg": IAggregateRangeType,
+       "system_primaryType_agg": IAggregateNonRangeType,
+       "system_mimetype_agg": IAggregateNonRangeType
     },
-    "entries":[
-       {
-          "entity-type":"document",
-          "repository":"default",
-          "uid":"507d1b60-f269-49b8-a6c1-cec175a7593b",
-          "path":"/default-domain/workspaces/Sports/Car Racing Event June 2021/videoplayback (7).avi",
-          "type":"Video",
-          "state":"project",
-          "parentRef":"594b9160-f3a3-4de9-8884-16ec984e8a7a",
-          "isCheckedOut":boolean;
-          "isRecord":false,
-          "retainUntil":null,
-          "hasLegalHold":false,
-          "isUnderRetentionOrLegalHold":false,
-          "isVersion":false,
-          "isProxy":false,
-          "changeToken":"9-0",
-          "isTrashed":false,
-          "title":"videoplayback (7).avi",
-          "lastModified":"2021-06-22T13:10:33.658Z",
-          "properties":{
-             "uid:uid":null,
-             "uid:major_version":0,
-             "uid:minor_version":0,
-             "thumb:thumbnail":null,
-             "file:content":{
-                "name":"videoplayback (7).avi",
-                "mime-type":"video/avi",
-                "encoding":null,
-                "digestAlgorithm":"MD5",
-                "digest":"96ebd4638028df3b19fe547b63682540",
-                "length":"5400442",
-                "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/file:content/videoplayback%20(7).avi?changeToken=9-0"
-             },
-             "common:icon-expanded":null,
-             "common:icon":"/icons/application.png",
-             "files:files":[
-                
-             ],
-             "dc:description":"Racing event",
-             "dc:language":null,
-             "dc:start":null,
-             "dc:coverage":null,
-             "dc:valid":null,
-             "dc:creator":"Administrator",
-             "dc:modified":"2021-06-22T13:10:33.658Z",
-             "dc:lastContributor":"Administrator",
-             "dc:workspace":null,
-             "dc:rights":null,
-             "dc:expired":null,
-             "dc:format":null,
-             "dc:end":null,
-             "dc:folderType":null,
-             "dc:created":"2021-06-22T13:08:49.336Z",
-             "dc:title":"videoplayback (7).avi",
-             "dc:issued":null,
-             "dc:recurrence":null,
-             "dc:nature":null,
-             "dc:subjects":[
-                
-             ],
-             "dc:contributors":[
-                "Administrator"
-             ],
-             "dc:source":null,
-             "dc:publisher":null,
-             "vid:storyboard":[
-                {
-                   "comment":"videoplayback (7).avi 0",
-                   "content":{
-                      "name":"0.00-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"09ceb8042a6cb7a64c73ae2971491b97",
-                      "length":"2174",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/0/content/0.00-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":0.0
-                },
-                {
-                   "comment":"videoplayback (7).avi 1",
-                   "content":{
-                      "name":"5.53-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"bd64cbe5343604315eee07a44f1aa869",
-                      "length":"2017",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/1/content/5.53-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":5.53
-                },
-                {
-                   "comment":"videoplayback (7).avi 2",
-                   "content":{
-                      "name":"11.06-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"c53f61868070fd958c1e52006193fbd4",
-                      "length":"2699",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/2/content/11.06-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":11.06
-                },
-                {
-                   "comment":"videoplayback (7).avi 3",
-                   "content":{
-                      "name":"16.59-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"bd5137a68c589f4f9e88ceaf9179ddd6",
-                      "length":"1355",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/3/content/16.59-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":16.59
-                },
-                {
-                   "comment":"videoplayback (7).avi 4",
-                   "content":{
-                      "name":"22.12-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"7e8231c33a73734499230dbb6cfcfd02",
-                      "length":"4225",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/4/content/22.12-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":22.12
-                },
-                {
-                   "comment":"videoplayback (7).avi 5",
-                   "content":{
-                      "name":"27.66-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"71e3fcdf839457a6924a10ce170b4829",
-                      "length":"2900",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/5/content/27.66-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":27.66
-                },
-                {
-                   "comment":"videoplayback (7).avi 6",
-                   "content":{
-                      "name":"33.19-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"3e4dd5509bbba5855b3656db83304456",
-                      "length":"3698",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/6/content/33.19-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":33.19
-                },
-                {
-                   "comment":"videoplayback (7).avi 7",
-                   "content":{
-                      "name":"38.72-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"01130add0ac19219e072ef11fe9894aa",
-                      "length":"2712",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/7/content/38.72-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":38.72
-                },
-                {
-                   "comment":"videoplayback (7).avi 8",
-                   "content":{
-                      "name":"44.25-seconds.jpeg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"5010e78a182de5abf61b10ce560c09cf",
-                      "length":"704",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/8/content/44.25-seconds.jpeg?changeToken=9-0"
-                   },
-                   "timecode":44.25
-                }
-             ],
-             "vid:transcodedVideos":[
-                {
-                   "name":"MP4 480p",
-                   "content":{
-                      "name":"videoplayback (7).mp4",
-                      "mime-type":"video/mp4",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"d118520ad4bee39261d90d4b1475ecbc",
-                      "length":"7837639",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:transcodedVideos/0/content/videoplayback%20(7).mp4?changeToken=9-0"
-                   },
-                   "info":{
-                      "duration":49.76,
-                      "frameRate":25.0,
-                      "streams":[
-                         {
-                            "codec":"h264 (High) (avc1 / 0x31637661)",
-                            "bitRate":1135.0,
-                            "streamInfo":"Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 854x480 [SAR 1280:1281 DAR 16:9], 1135 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)",
-                            "type":"Video"
-                         },
-                         {
-                            "codec":"aac (LC) (mp4a / 0x6134706D)",
-                            "bitRate":118.0,
-                            "streamInfo":"Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 118 kb/s (default)",
-                            "type":"Audio"
-                         }
-                      ],
-                      "width":854,
-                      "format":"mov,mp4,m4a,3gp,3g2,mj2",
-                      "height":480
-                   }
-                },
-                {
-                   "name":"WebM 480p",
-                   "content":{
-                      "name":"videoplayback (7).webm",
-                      "mime-type":"video/webm",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"a0e7bbd0249cb688c4a20f92ead2e3cf",
-                      "length":"1830436",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:transcodedVideos/1/content/videoplayback%20(7).webm?changeToken=9-0"
-                   },
-                   "info":{
-                      "duration":49.74,
-                      "frameRate":25.0,
-                      "streams":[
-                         {
-                            "codec":"vp9 (Profile 0)",
-                            "bitRate":0.0,
-                            "streamInfo":"Stream #0:0: Video: vp9 (Profile 0), yuv420p(tv), 854x480, SAR 1:1 DAR 427:240, 25 fps, 25 tbr, 1k tbn, 1k tbc (default)",
-                            "type":"Video"
-                         },
-                         {
-                            "codec":"vorbis",
-                            "bitRate":0.0,
-                            "streamInfo":"Stream #0:1: Audio: vorbis, 44100 Hz, stereo, fltp (default)",
-                            "type":"Audio"
-                         }
-                      ],
-                      "width":854,
-                      "format":"matroska,webm",
-                      "height":480
-                   }
-                }
-             ],
-             "vid:info":{
-                "duration":49.78,
-                "frameRate":25.0,
-                "streams":[
-                   {
-                      "codec":"h264 (High) (H264 / 0x34363248)",
-                      "bitRate":727.0,
-                      "streamInfo":"Stream #0:0: Video: h264 (High) (H264 / 0x34363248), yuv420p(progressive), 640x360 [SAR 1:1 DAR 16:9], 727 kb/s, 25 fps, 25 tbr, 25 tbn, 50 tbc",
-                      "type":"Video"
-                   },
-                   {
-                      "codec":"aac (LC) ([255][0][0][0] / 0x00FF)",
-                      "bitRate":126.0,
-                      "streamInfo":"Stream #0:1: Audio: aac (LC) ([255][0][0][0] / 0x00FF), 44100 Hz, stereo, fltp, 126 kb/s",
-                      "type":"Audio"
-                   }
-                ],
-                "width":640,
-                "format":"avi",
-                "height":360
-             },
-             "picture:dateline":null,
-             "picture:origin":null,
-             "picture:caption":null,
-             "picture:language":null,
-             "picture:source":null,
-             "picture:cropCoords":null,
-             "picture:slugline":null,
-             "picture:genre":null,
-             "picture:typage":null,
-             "picture:credit":null,
-             "picture:headline":null,
-             "picture:subheadline":null,
-             "picture:byline":null,
-             "picture:views":[
-                {
-                   "filename":"Small_videoplayback (7).jpg",
-                   "width":350,
-                   "description":null,
-                   "tag":null,
-                   "title":"Small",
-                   "content":{
-                      "name":"Small_videoplayback (7).jpg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"7849b3fd5e6195fae7b99d8b3b308b35",
-                      "length":"11477",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/picture:views/0/content/Small_videoplayback%20(7).jpg?changeToken=9-0"
-                   },
-                   "height":197,
-                   "info":{
-                      "colorSpace":"sRGB",
-                      "depth":8,
-                      "width":350,
-                      "format":"JPEG",
-                      "sector":null,
-                      "height":197
-                   }
-                },
-                {
-                   "filename":"StaticPlayerView_videoplayback (7).jpg",
-                   "width":640,
-                   "description":null,
-                   "tag":null,
-                   "title":"StaticPlayerView",
-                   "content":{
-                      "name":"StaticPlayerView_videoplayback (7).jpg",
-                      "mime-type":"image/jpeg",
-                      "encoding":null,
-                      "digestAlgorithm":"MD5",
-                      "digest":"e10be592a24c157505a309c7f06a72b5",
-                      "length":"19538",
-                      "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/picture:views/1/content/StaticPlayerView_videoplayback%20(7).jpg?changeToken=9-0"
-                   },
-                   "height":360,
-                   "info":{
-                      "colorSpace":"sRGB",
-                      "depth":8,
-                      "width":640,
-                      "format":"JPEG",
-                      "sector":null,
-                      "height":360
-                   }
-                }
-             ],
-             "picture:info":{
-                "colorSpace":"sRGB",
-                "depth":8,
-                "width":640,
-                "format":"JPEG",
-                "sector":null,
-                "height":360
-             },
-             "nxtag:tags":[
-                {
-                   "label":"bird",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"car",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"kite",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"surfboard",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"motorbike",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"tennisracket",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"umbrella",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"bicycle",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"horse",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"sportsball",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"frisbee",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"truck",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"person",
-                   "username":"Administrator"
-                },
-                {
-                   "label":"cake",
-                   "username":"Administrator"
-                }
-             ]
-          },
-          "facets":[
-             "Versionable",
-             "NXTag",
-             "Publishable",
-             "Video",
-             "HasStoryboard",
-             "Commentable",
-             "Thumbnail",
-             "HasVideoPreview"
-          ],
-          "schemas":[
-             {
-                "name":"uid",
-                "prefix":"uid"
-             },
-             {
-                "name":"thumbnail",
-                "prefix":"thumb"
-             },
-             {
-                "name":"file",
-                "prefix":"file"
-             },
-             {
-                "name":"common",
-                "prefix":"common"
-             },
-             {
-                "name":"files",
-                "prefix":"files"
-             },
-             {
-                "name":"dublincore",
-                "prefix":"dc"
-             },
-             {
-                "name":"video",
-                "prefix":"vid"
-             },
-             {
-                "name":"picture",
-                "prefix":"picture"
-             },
-             {
-                "name":"facetedTag",
-                "prefix":"nxtag"
-             }
-          ],
-          "contextParameters":{
-             "permissions":[
-                "Browse",
-                "ReadProperties",
-                "ReadChildren",
-                "ReadLifeCycle",
-                "ReviewParticipant",
-                "ReadSecurity",
-                "WriteProperties",
-                "ReadVersion",
-                "WriteVersion",
-                "Version",
-                "Read",
-                "AddChildren",
-                "RemoveChildren",
-                "Remove",
-                "ManageWorkflows",
-                "WriteLifeCycle",
-                "Unlock",
-                "ReadRemove",
-                "Write",
-                "ReadWrite",
-                "WriteSecurity",
-                "Everything",
-                "RestrictedRead",
-                "MakeRecord",
-                "SetRetention",
-                "ManageLegalHold",
-                "WriteColdStorage",
-                "ReadCanCollect",
-                "Comment",
-                "Moderate",
-                "CanAskForPublishing",
-                "DataVisualization"
-             ],
-             "preview":{
-                "url":"http://10.101.21.58:8089/nuxeo/site/api/v1/repo/default/id/507d1b60-f269-49b8-a6c1-cec175a7593b/@preview/?changeToken=9-0"
-             },
-             "thumbnail":{
-                "url":"http://10.101.21.58:8089/nuxeo/api/v1/repo/default/id/507d1b60-f269-49b8-a6c1-cec175a7593b/@rendition/thumbnail?changeToken=9-0"
-             }
-          }
-       }
-    ]
+    "entries": IEntry[]
  }
+
+ export interface IAggregateNonRangeType {
+   "entity-type": string;
+   "id": string;
+   "field":string,
+   "properties":{
+      
+   },
+   "ranges":[
+      
+   ],
+   "selection":[
+      
+   ],
+   "type": string,
+   "buckets": IKeyDocCount[],
+   "extendedBuckets": IKeyDocCount[],
+}
+
+export interface IAggregateRangeType {
+   "entity-type": string;
+   "id": string;
+   "field":string,
+   "properties":{
+      
+   },
+   "ranges": IRange[],
+   "selection":[
+      
+   ],
+   "type": string,
+   "buckets": IRangeDocCount[],
+   "extendedBuckets": IRangeDocCount[]
+}
+
+export interface IRange {
+   "key": string,
+   "from": string,
+   "to": number
+}
+
+export interface IRangeDocCount {
+   "key": string,
+   "from": string,
+   "to": number,
+   "docCount": number
+}
+ export interface IKeyDocCount {
+   "key": string,
+   "docCount": number
+}
+
+ export interface IEntry {
+   "entity-type": string,
+   "repository": string,
+   "uid": string,
+   "path": string,
+   "type": string,
+   "state": string,
+   "parentRef": string,
+   "isCheckedOut": boolean;
+   "isRecord": boolean;
+   "retainUntil": string,
+   "hasLegalHold": boolean;
+   "isUnderRetentionOrLegalHold": boolean;
+   "isVersion": boolean;
+   "isProxy": boolean;
+   "changeToken": string,
+   "isTrashed": boolean;
+   "title": string,
+   "lastModified": string,
+   "properties":{
+      "uid:uid": string,
+      "uid:major_version": number,
+      "uid:minor_version": number,
+      "thumb:thumbnail": string,
+      "file:content":{
+         "name": string,
+         "mime-type": string,
+         "encoding": string,
+         "digestAlgorithm": string,
+         "digest": string,
+         "length": string,
+         "data": string
+      },
+      "common:icon-expanded": string,
+      "common:icon": string,
+      "files:files":[
+         
+      ],
+      "dc:description": string,
+      "dc:language": string,
+      "dc:start": string,
+      "dc:coverage": string,
+      "dc:valid": string,
+      "dc:creator": string,
+      "dc:modified": Date,
+      "dc:lastContributor": string,
+      "dc:workspace": string,
+      "dc:rights": string,
+      "dc:expired": string,
+      "dc:format": string,
+      "dc:end": string,
+      "dc:folderType": string,
+      "dc:created": Date,
+      "dc:title": string,
+      "dc:issued": string,
+      "dc:recurrence": string,
+      "dc:nature": string,
+      "dc:subjects":[
+         
+      ],
+      "dc:contributors":[
+         "Administrator"
+      ],
+      "dc:source": string,
+      "dc:publisher": string,
+      "vid:storyboard":[
+         {
+            "comment":"videoplayback (7).avi 0",
+            "content":{
+               "name":"0.00-seconds.jpeg",
+               "mime-type":"image/jpeg",
+               "encoding": string,
+               "digestAlgorithm":"MD5",
+               "digest":"09ceb8042a6cb7a64c73ae2971491b97",
+               "length":"2174",
+               "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/0/content/0.00-seconds.jpeg?changeToken=9-0"
+            },
+            "timecode":0.0
+         }
+      ],
+      "vid:transcodedVideos":[
+         {
+            "name":"MP4 480p",
+            "content":{
+               "name":"videoplayback (7).mp4",
+               "mime-type":"video/mp4",
+               "encoding": string,
+               "digestAlgorithm":"MD5",
+               "digest":"d118520ad4bee39261d90d4b1475ecbc",
+               "length":"7837639",
+               "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:transcodedVideos/0/content/videoplayback%20(7).mp4?changeToken=9-0"
+            },
+            "info":{
+               "duration":49.76,
+               "frameRate":25.0,
+               "streams":[
+                  {
+                     "codec":"h264 (High) (avc1 / 0x31637661)",
+                     "bitRate":1135.0,
+                     "streamInfo":"Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 854x480 [SAR 1280:1281 DAR 16:9], 1135 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)",
+                     "type":"Video"
+                  }
+               ],
+               "width":854,
+               "format":"mov,mp4,m4a,3gp,3g2,mj2",
+               "height":480
+            }
+         }
+      ],
+      "vid:info":{
+         "duration":49.78,
+         "frameRate":25.0,
+         "streams":[
+            {
+               "codec":"h264 (High) (H264 / 0x34363248)",
+               "bitRate":727.0,
+               "streamInfo":"Stream #0:0: Video: h264 (High) (H264 / 0x34363248), yuv420p(progressive), 640x360 [SAR 1:1 DAR 16:9], 727 kb/s, 25 fps, 25 tbr, 25 tbn, 50 tbc",
+               "type":"Video"
+            }
+         ],
+         "width":640,
+         "format":"avi",
+         "height":360
+      },
+      "picture:dateline": string,
+      "picture:origin": string,
+      "picture:caption": string,
+      "picture:language": string,
+      "picture:source": string,
+      "picture:cropCoords": string,
+      "picture:slugline": string,
+      "picture:genre": string,
+      "picture:typage": string,
+      "picture:credit": string,
+      "picture:headline": string,
+      "picture:subheadline": string,
+      "picture:byline": string,
+      "picture:views":[
+         {
+            "filename":"Small_videoplayback (7).jpg",
+            "width":350,
+            "description": string,
+            "tag": string,
+            "title":"Small",
+            "content":{
+               "name":"Small_videoplayback (7).jpg",
+               "mime-type":"image/jpeg",
+               "encoding": string,
+               "digestAlgorithm":"MD5",
+               "digest":"7849b3fd5e6195fae7b99d8b3b308b35",
+               "length":"11477",
+               "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/picture:views/0/content/Small_videoplayback%20(7).jpg?changeToken=9-0"
+            },
+            "height":197,
+            "info":{
+               "colorSpace":"sRGB",
+               "depth":8,
+               "width":350,
+               "format":"JPEG",
+               "sector": string,
+               "height":197
+            }
+         },
+         {
+            "filename":"StaticPlayerView_videoplayback (7).jpg",
+            "width":640,
+            "description": string,
+            "tag": string,
+            "title":"StaticPlayerView",
+            "content":{
+               "name":"StaticPlayerView_videoplayback (7).jpg",
+               "mime-type":"image/jpeg",
+               "encoding": string,
+               "digestAlgorithm":"MD5",
+               "digest":"e10be592a24c157505a309c7f06a72b5",
+               "length":"19538",
+               "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/picture:views/1/content/StaticPlayerView_videoplayback%20(7).jpg?changeToken=9-0"
+            },
+            "height":360,
+            "info":{
+               "colorSpace":"sRGB",
+               "depth":8,
+               "width":640,
+               "format":"JPEG",
+               "sector": string,
+               "height":360
+            }
+         }
+      ],
+      "picture:info":{
+         "colorSpace":"sRGB",
+         "depth":8,
+         "width":640,
+         "format":"JPEG",
+         "sector": string,
+         "height":360
+      },
+      "nxtag:tags":[
+         {
+            "label":"bird",
+            "username":"Administrator"
+         }
+      ]
+   },
+   "facets": string[],
+   "schemas":[
+      {
+         "name":"uid",
+         "prefix":"uid"
+      }
+   ],
+   "contextParameters":{
+      "permissions":[],
+      "preview":{
+         "url": string
+      },
+      "thumbnail":{
+         "url": string
+      }
+   }
+  }
+
+  export interface IEntryProperties {
+   "uid:uid": string,
+   "uid:major_version": number,
+   "uid:minor_version": number,
+   "thumb:thumbnail": string,
+   "file:content":{
+      "name": string,
+      "mime-type": string,
+      "encoding": string,
+      "digestAlgorithm": string,
+      "digest": string,
+      "length": string,
+      "data": string
+   },
+   "common:icon-expanded": string,
+   "common:icon": string,
+   "files:files":[
+      
+   ],
+   "dc:description": string,
+   "dc:language": string,
+   "dc:start": string,
+   "dc:coverage": string,
+   "dc:valid": string,
+   "dc:creator": string,
+   "dc:modified": Date,
+   "dc:lastContributor": string,
+   "dc:workspace": string,
+   "dc:rights": string,
+   "dc:expired": string,
+   "dc:format": string,
+   "dc:end": string,
+   "dc:folderType": string,
+   "dc:created": Date,
+   "dc:title": string,
+   "dc:issued": string,
+   "dc:recurrence": string,
+   "dc:nature": string,
+   "dc:subjects":[
+      
+   ],
+   "dc:contributors":[
+      "Administrator"
+   ],
+   "dc:source": string,
+   "dc:publisher": string,
+   "vid:storyboard":[
+      {
+         "comment":"videoplayback (7).avi 0",
+         "content":{
+            "name":"0.00-seconds.jpeg",
+            "mime-type":"image/jpeg",
+            "encoding": string,
+            "digestAlgorithm":"MD5",
+            "digest":"09ceb8042a6cb7a64c73ae2971491b97",
+            "length":"2174",
+            "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:storyboard/0/content/0.00-seconds.jpeg?changeToken=9-0"
+         },
+         "timecode":0.0
+      }
+   ],
+   "vid:transcodedVideos":[
+      {
+         "name":"MP4 480p",
+         "content":{
+            "name":"videoplayback (7).mp4",
+            "mime-type":"video/mp4",
+            "encoding": string,
+            "digestAlgorithm":"MD5",
+            "digest":"d118520ad4bee39261d90d4b1475ecbc",
+            "length":"7837639",
+            "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/vid:transcodedVideos/0/content/videoplayback%20(7).mp4?changeToken=9-0"
+         },
+         "info":{
+            "duration":49.76,
+            "frameRate":25.0,
+            "streams":[
+               {
+                  "codec":"h264 (High) (avc1 / 0x31637661)",
+                  "bitRate":1135.0,
+                  "streamInfo":"Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 854x480 [SAR 1280:1281 DAR 16:9], 1135 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)",
+                  "type":"Video"
+               }
+            ],
+            "width":854,
+            "format":"mov,mp4,m4a,3gp,3g2,mj2",
+            "height":480
+         }
+      }
+   ],
+   "vid:info":{
+      "duration":49.78,
+      "frameRate":25.0,
+      "streams":[
+         {
+            "codec":"h264 (High) (H264 / 0x34363248)",
+            "bitRate":727.0,
+            "streamInfo":"Stream #0:0: Video: h264 (High) (H264 / 0x34363248), yuv420p(progressive), 640x360 [SAR 1:1 DAR 16:9], 727 kb/s, 25 fps, 25 tbr, 25 tbn, 50 tbc",
+            "type":"Video"
+         }
+      ],
+      "width":640,
+      "format":"avi",
+      "height":360
+   },
+   "picture:dateline": string,
+   "picture:origin": string,
+   "picture:caption": string,
+   "picture:language": string,
+   "picture:source": string,
+   "picture:cropCoords": string,
+   "picture:slugline": string,
+   "picture:genre": string,
+   "picture:typage": string,
+   "picture:credit": string,
+   "picture:headline": string,
+   "picture:subheadline": string,
+   "picture:byline": string,
+   "picture:views":[
+      {
+         "filename":"Small_videoplayback (7).jpg",
+         "width":350,
+         "description": string,
+         "tag": string,
+         "title":"Small",
+         "content":{
+            "name":"Small_videoplayback (7).jpg",
+            "mime-type":"image/jpeg",
+            "encoding": string,
+            "digestAlgorithm":"MD5",
+            "digest":"7849b3fd5e6195fae7b99d8b3b308b35",
+            "length":"11477",
+            "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/picture:views/0/content/Small_videoplayback%20(7).jpg?changeToken=9-0"
+         },
+         "height":197,
+         "info":{
+            "colorSpace":"sRGB",
+            "depth":8,
+            "width":350,
+            "format":"JPEG",
+            "sector": string,
+            "height":197
+         }
+      },
+      {
+         "filename":"StaticPlayerView_videoplayback (7).jpg",
+         "width":640,
+         "description": string,
+         "tag": string,
+         "title":"StaticPlayerView",
+         "content":{
+            "name":"StaticPlayerView_videoplayback (7).jpg",
+            "mime-type":"image/jpeg",
+            "encoding": string,
+            "digestAlgorithm":"MD5",
+            "digest":"e10be592a24c157505a309c7f06a72b5",
+            "length":"19538",
+            "data":"http://10.101.21.58:8089/nuxeo/nxfile/default/507d1b60-f269-49b8-a6c1-cec175a7593b/picture:views/1/content/StaticPlayerView_videoplayback%20(7).jpg?changeToken=9-0"
+         },
+         "height":360,
+         "info":{
+            "colorSpace":"sRGB",
+            "depth":8,
+            "width":640,
+            "format":"JPEG",
+            "sector": string,
+            "height":360
+         }
+      }
+   ],
+   "picture:info":{
+      "colorSpace":"sRGB",
+      "depth":8,
+      "width":640,
+      "format":"JPEG",
+      "sector": string,
+      "height":360
+   },
+   "nxtag:tags":[
+      {
+         "label":"bird",
+         "username":"Administrator"
+      }
+   ]
+}
