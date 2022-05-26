@@ -82,7 +82,7 @@
                     class="recent-searches"
                     *ngIf="loadWorkSpace && !userLoading"
                   >
-                    <div class="heading">Workspace Folders</div>
+                    <div class="heading" *ngIf="searchedAdeadData?.length>0">Workspace Folders</div>
                     <ul
                       class="recent-searches-folder workspaceFoldersScrollBar"
                     >

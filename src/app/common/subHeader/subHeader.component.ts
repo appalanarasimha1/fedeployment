@@ -439,7 +439,7 @@ export class SubHeaderComponent implements OnInit {
       this.loadWorkSpace = false;
     }
 
-    this.searchPopup = !this.searchPopup;
+    this.searchPopup = true;
     this.tagClicked = false;
     this.dataService.showRecent$.subscribe((show: boolean) => {
       this.showRelatedSearch = show;
