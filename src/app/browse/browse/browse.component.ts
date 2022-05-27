@@ -593,9 +593,10 @@ export class BrowseComponent implements OnInit {
   }
 
   openUpdateClassModal(breadCrumb: any) {
-    if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
-      return;
-    }
+    // NOTE: uncomment below code
+    // if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
+    //   return;
+    // }
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";

@@ -74,7 +74,7 @@ export class UpdateModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
-    this.docs = this.data.docs;
+    this.docs = this.data.docs.filter(doc => ['picture', 'video', 'file', 'audio'].indexOf(doc.type.toLowerCase()) != -1);
     this.selectedFolder = this.data.folder;
     this.initACLValue();
   }

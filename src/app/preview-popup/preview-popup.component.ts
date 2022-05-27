@@ -198,7 +198,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   toDateString(date: string): string {
     if(!date?.['dc:created']) return '';
-    return `${new Date(date).toDateString()}`;
+    return `${new Date(date['dc:created']).toDateString()}`;
   }
 
   saveComment(comment: string): void {
