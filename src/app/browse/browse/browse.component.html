@@ -188,7 +188,7 @@
                             <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
                         </div>
                         <div class="col-xl-12">
-                          <input [ngClass]="{'goldenText': folderNameRef.value}" #folderNameRef type="text" placeholder="Enter a folder name">
+                          <input [ngClass]="{'goldenText': folderNameRef}" [(ngModel)]="folderNameRef" name="folderNameRef" type="text" placeholder="Enter a folder name">
                         </div>
                       </div>
                       <div class="row mt-4">
@@ -230,9 +230,9 @@
                       </div>
                       <div class="row mt-4">
                       <div class="col-xl-12">
-                        <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef.value, folderDateRef.value, folderDescriptionRef.value)" [disabled]="!folderNameRef.value" style="pointer-events: auto;">
+                        <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef.value, folderDescriptionRef.value)" [disabled]="!folderNameRef" style="pointer-events: auto;">
                           Create folder
-                          <div *ngIf="!folderNameRef.value" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
+                          <div *ngIf="!folderNameRef" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
                             Please complete all mandatory fields to proceed
                           </div>
                         </button>

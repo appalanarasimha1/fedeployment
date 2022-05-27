@@ -128,6 +128,7 @@ export class BrowseComponent implements OnInit {
   resultCount: number;
   defaultPageSize: number = 20;
   pageSizeOptions = [20, 40, 60];
+  folderNameRef;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -999,6 +1000,8 @@ export class BrowseComponent implements OnInit {
     if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
       this.hasUpdatedChildren.push(this.selectedFolder.uid);
     }
+
+    this.folderNameRef = undefined;
 
     return {
       id: res["uid"],
