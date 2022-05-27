@@ -7,6 +7,8 @@ export class ReportController {
 
   constructor() {
     this.router.get('/fetch-report', this.fetchReport);
+    this.router.get("/fetch-sector-report", this.fetchSectorReportAll);
+
   }
 
   /**
@@ -28,7 +30,18 @@ export class ReportController {
       return;
     }
   }
-
+ public async fetchSectorReportAll(req: Request, res: Response) {
+   console.log("Above req-----");
+   
+    try {
+      const dbService: DBService = new DBService();
+        const sectorReport = await dbService.findSectorReport();
+        res.send({message: 'done', error: null, data: {sectorReport}});
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+      return;
+    }
+  }
   /**
    * Function to return /keywords router.
    * @constructor - Router.
