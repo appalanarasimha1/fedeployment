@@ -13,25 +13,28 @@
       }
     }
   },
-  "mappings": {
+  "mappings":   {
     "properties": {
       "id": {
         "type": "keyword"
       },
       "userId": {
-        "type": "text",
-        "fielddata": true
+        "type": "keyword",
+        "normalizer": "lowercase_normalizer"
       },
       "query": {
         "type": "keyword",
         "normalizer": "lowercase_normalizer"
       },
       "isDeleted": {
-        "type": "boolean",
-        "default":false
+        "type": "boolean"
       },
       "timestamp": {
         "type": "date"
+      },
+      "sector":{
+        "type": "keyword",
+        "normalizer": "lowercase_normalizer"
       }
     }
   }

@@ -1,16 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NuxeoService } from '../../services/nuxeo.service';
-import { IHeaderSearchCriteria } from '../../common/subHeader/interface';
-import { Router } from '@angular/router';
-import { apiRoutes } from 'src/app/common/config';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { NuxeoService } from "../../services/nuxeo.service";
+import { IHeaderSearchCriteria } from "../../common/subHeader/interface";
+import { Router } from "@angular/router";
+import { apiRoutes } from "src/app/common/config";
 // import { ApiService } from '../services/http.service';
-import { SharedService } from '../../services/shared.service';
-import { AGGREGATE_TAGS, constants, TAG_ATTRIBUTES, unwantedTags } from 'src/app/common/constant';
-import { DataService } from 'src/app/services/data.service';
-import { SideDrawerComponent } from 'src/app/common/sideDrawer/sideDrawer.component';
-import { DocumentComponent } from 'src/app/document/document.component';
-import { data } from 'jquery';
-import { ApiService } from 'src/app/services/api.service';
+import { SharedService } from "../../services/shared.service";
+import {
+  AGGREGATE_TAGS,
+  constants,
+  TAG_ATTRIBUTES,
+  unwantedTags,
+} from "src/app/common/constant";
+import { DataService } from "src/app/services/data.service";
+import { SideDrawerComponent } from "src/app/common/sideDrawer/sideDrawer.component";
+import { DocumentComponent } from "src/app/document/document.component";
+import { data } from "jquery";
+import { ApiService } from "src/app/services/api.service";
 @Component({
   selector: "app-search",
   styleUrls: ["./search.component.css"],
@@ -57,6 +62,7 @@ export class SearchComponent implements OnInit {
   detailViewType: string;
 
   user: any;
+  sector: any;
   favoriteCollectionId: string;
 
   // TypeScript public modifiers
@@ -182,11 +188,19 @@ export class SearchComponent implements OnInit {
     this.fetchApiResult(params);
     this.insertSearchTerm(params.ecm_fulltext);
   }
-
+  // hitInsert:boolean=false
   insertSearchTerm(term: string) {
     const user = JSON.parse(localStorage.getItem("user"));
     this.apiService
-      .post("/searchTerm/insert?term=" + term + "&username=" + user.email, {})
+      .post(
+        "/searchTerm/insert?term=" +
+          term +
+          "&username=" +
+          user.email +
+          "&sector=" +
+          this.sector,
+        {}
+      )
       .subscribe((response) => {
         console.log(response);
       });
@@ -571,6 +585,8 @@ export class SearchComponent implements OnInit {
     if (this.nuxeo.nuxeoClient) {
       const res = await this.nuxeo.nuxeoClient.connect();
       this.user = res.user.id;
+      this.sector ="Ground X"
+      //  res.user.properties.sector;
       localStorage.setItem("user", JSON.stringify(res.user.properties));
     }
   }

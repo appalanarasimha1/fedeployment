@@ -33,6 +33,10 @@
                             <app-table-card [title]="'Top 10 contributing users'" [data]="usersByCountUploadData"></app-table-card>
                             <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph>
                         </div>
+                        <div class="pt-none tableGraph">
+                            <app-table-card [title]="'Top 10 contributing sectors'" [data]="sectorCount"></app-table-card>
+                            <!-- <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph> -->
+                        </div>
                     </div>
                 </div>
                 
