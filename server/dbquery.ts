@@ -109,6 +109,9 @@ export function getSectorReport() {
       },
     },
     {
+      $limit: 10
+    },
+    {
       $addFields: { name: "$_id" },
     },
     {
