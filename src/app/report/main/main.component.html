@@ -34,7 +34,7 @@
                             <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph>
                         </div>
                         <div class="pt-none tableGraph">
-                            <app-table-card [title]="'Top 10 contributing sectors'" [data]="sectorCount"></app-table-card>
+                            <app-table-card [title]="'Top 10 contributing Sectors'" [data]="sectorReport"></app-table-card>
                             <!-- <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph> -->
                         </div>
                     </div>
@@ -50,6 +50,9 @@
                         <div class="pt-none tableGraph">
                             <app-table-card [title]="'Top 10 users by count of download'" [data]="usersByCountDownloadData"></app-table-card>
                             <app-table-card [title]="'Top 10 Popular Search Terms'" [data]="searchTermsAndCount"></app-table-card>
+                        </div>
+                        <div class="pt-none tableGraph">
+                            <app-table-card [title]="'Top 10 consuming sectors'" [data]="sectorCount"></app-table-card>
                         </div>
                     </div>
                 </div>
