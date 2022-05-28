@@ -17,6 +17,7 @@ import { OWNER_APPROVAL_LABEL } from "./../../upload-modal/constant";
 import { concat, Observable, of, Subject } from "rxjs";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ApiService } from "src/app/services/api.service";
+import { NuxeoService } from '../../services/nuxeo.service';
 import { apiRoutes } from "../config";
 import {
   TRIGGERED_FROM_DOCUMENT,
@@ -78,6 +79,7 @@ export class SubHeaderComponent implements OnInit {
   readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
 
   constructor(
+    public nuxeo: NuxeoService,
     private dataService: DataService,
     public sharedService: SharedService,
     private modalService: NgbModal,
@@ -467,25 +469,28 @@ export class SubHeaderComponent implements OnInit {
       this.loadWorkSpace = false;
     }
     this.searchText = e;
-    const params = {
-      searchTerm: e,
+    const queryParams = {
+      queryParams: e,
     };
     this.userLoading = true;
-    this.apiService
-      .post("/automation/Search.SuggestersLauncher", { params })
-      .subscribe((res: any) => {
-        let newData = res?.filter((m) =>
-          m.type === "document" && m.label.includes(".")
+
+    this.nuxeo.nuxeoClient
+      .request(apiRoutes.DEFAULT_DOCUMENT_SUGGESTION, { queryParams })
+      .get()
+      .then((res) => {
+        const docs = res.entries;
+        const newData = docs?.filter((m) =>
+          m.title.includes(".")
             ? ["jpg", "gif", "png", "mp4","MOV","tif","mov",].indexOf(
-                m.label.split(".")[m.label.split(".").length - 1]
+                m.title.split(".")[m.title.split(".").length - 1]
               ) === -1
             : true
         );
         this.searchedAdeadData = newData;
         this.userLoading = false;
 
-        console.log({ newData });
-      });
+      })
+      .catch((error) => {});
   }
 
   splitStr(str:any){
