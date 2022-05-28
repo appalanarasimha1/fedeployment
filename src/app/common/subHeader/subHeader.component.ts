@@ -163,7 +163,7 @@ export class SubHeaderComponent implements OnInit {
       delete this.searchCriteria["ecm_fulltext"];
       delete this.searchCriteria["highlight"];
     }
-    this.dataService.termSearchInit(searchText);
+    this.dataService.termSearchForHideInit(searchText);
 
     this.emitData(this.searchCriteria);
   }
@@ -440,7 +440,7 @@ export class SubHeaderComponent implements OnInit {
       this.loadWorkSpace = false;
     }
 
-    this.searchPopup = !this.searchPopup;
+    this.searchPopup = true;
     this.tagClicked = false;
     this.dataService.showRecent$.subscribe((show: boolean) => {
       this.showRelatedSearch = show;

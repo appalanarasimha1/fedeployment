@@ -127,7 +127,7 @@ export class BrowseComponent implements OnInit {
   sectorWorkspace;
   resultCount: number;
   defaultPageSize: number = 20;
-  pageSizeOptions = [20, 40, 60];
+  pageSizeOptions = [20, 50, 100];
   folderNameRef;
 
   completeLoadingMasonry(event: any) {
