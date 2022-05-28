@@ -30,11 +30,11 @@
                 <div class="tab-pane active" id="contribution">
                     <div class="consumption">
                         <div class="pt-none tableGraph">
-                            <app-table-card [title]="'Top 10 contributing users'" [data]="usersByCountUploadData"></app-table-card>
                             <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph>
+                            <app-table-card [title]="'Top 10 contributing Sectors'" [data]="sectorReport"></app-table-card>
                         </div>
                         <div class="pt-none tableGraph">
-                            <app-table-card [title]="'Top 10 contributing Sectors'" [data]="sectorReport"></app-table-card>
+                            <app-table-card [title]="'Top 10 contributing users'" [data]="usersByCountUploadData"></app-table-card>
                             <!-- <app-graph *ngIf="uploadByFormatData.length" [chartType]="'doughnut'" [title]="'Upload by Format'" [labels]="uploadByFormatLabel" [data]="uploadByFormatData" [legend]="true"></app-graph> -->
                         </div>
                     </div>
@@ -45,14 +45,14 @@
                         <!-- <h2 class="commonHeading pb-30">Consumption</h2> -->
                         <div class="tableGraph pb-10">
                             <app-graph *ngIf="downloadsByFormatData.length" [chartType]="'doughnut'" [title]="'Downloads by Format'" [labels]="downloadsByFormatLabel" [data]="downloadsByFormatData" [legend]="true"></app-graph>
+                            <app-table-card [title]="'Top 10 sectors by count of search'" [data]="sectorCount"></app-table-card>
+                        </div>
+                        <div class="pt-none tableGraph">
                             <app-table-card [title]="'Top 10 users by count of search'" [data]="userSearchCount" [data2]="usersByCountDownloadData"></app-table-card>
-                        </div>
-                        <div class="pt-none tableGraph">
                             <app-table-card [title]="'Top 10 users by count of download'" [data]="usersByCountDownloadData"></app-table-card>
-                            <app-table-card [title]="'Top 10 Popular Search Terms'" [data]="searchTermsAndCount"></app-table-card>
                         </div>
                         <div class="pt-none tableGraph">
-                            <app-table-card [title]="'Top 10 consuming sectors'" [data]="sectorCount"></app-table-card>
+                            <app-table-card [title]="'Top 10 Popular Search Terms'" [data]="searchTermsAndCount"></app-table-card>
                         </div>
                     </div>
                 </div>

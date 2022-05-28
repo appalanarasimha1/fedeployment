@@ -585,8 +585,7 @@ export class SearchComponent implements OnInit {
     if (this.nuxeo.nuxeoClient) {
       const res = await this.nuxeo.nuxeoClient.connect();
       this.user = res.user.id;
-      this.sector ="Ground X"
-      //  res.user.properties.sector;
+      this.sector = res.user.properties.sector;
       localStorage.setItem("user", JSON.stringify(res.user.properties));
     }
   }
