@@ -3,7 +3,7 @@ const { Client } = require("@elastic/elasticsearch");
 
 export class ElasticSearchService {
   private client = new Client({ node: AppConfig.Config.elasticDbUrl });
-  private indexValue = "searchindex_v3";
+  private indexValue = "searchindex_v4";
 
   public async insertData(searchTerm: any, username: any,sector:any) {
     if (searchTerm.trim() == "") return;
