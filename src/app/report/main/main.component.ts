@@ -204,7 +204,7 @@ export class ReportMainComponent implements OnInit {
     this.apiService.get('/searchTerm/fetchSectorByCount').subscribe((response: any) => {
       let data;
       response?.data?.properties.buckets.map(item => {
-        if(item.key.trim()) {
+        if(item.key.trim() && ['null', 'undefined'].indexOf(item.key.trim()) === -1) {
           data = {name: item.key, count: item.doc_count};
           this.sectorCount.push(data);}
       });
