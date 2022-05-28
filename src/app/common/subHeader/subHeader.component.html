@@ -86,7 +86,7 @@
                       <li
                         *ngFor="let typeAheadItem of searchedAdeadData"
                         [routerLink]="['/workspace']"
-                        [queryParams]="{ folder: typeAheadItem.id }"
+                        [queryParams]="{ folder: typeAheadItem.uid }"
                       >
                           <img
                             src="../../../assets/images/icon_folder_gray.svg"
