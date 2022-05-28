@@ -26,4 +26,5 @@ export const apiRoutes = {
   TRASH_DOC: "/automation/Document.Trash",
   UN_TRASH_DOC: "/automation/Document.Untrash",
   DOCUMENT_UPDATE: "/automation/Document.Update",
+  DEFAULT_DOCUMENT_SUGGESTION: '/search/pp/DEFAULT_DOCUMENT_SUGGESTION/execute'
 };
