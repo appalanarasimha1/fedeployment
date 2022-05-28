@@ -514,6 +514,7 @@ border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px 0px;
 }
 .finish-screen span{
   font-size: 24px;
@@ -526,9 +527,8 @@ font-weight: 600;
 .assetName{
   font-size: 16px !important;
   line-height: 22px !important;
-
-
   color: #2B2825 !important;
+  padding-bottom: 10px !important;
 }
 .destination-folder {
   display: flex;

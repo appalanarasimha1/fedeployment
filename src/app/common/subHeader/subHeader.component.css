@@ -758,7 +758,7 @@ video{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    width: 60%;
+    width: fit-content;
     display: inline-block;
 }
 .workspace-folders {
@@ -766,9 +766,10 @@ video{
     overflow: hidden;
     white-space: nowrap;
     width: 35%;
-    display: inline-block;
+    /* display: inline-block; */
     text-align: right;
     padding-left: 15px;
+    float: right;
 }
 .workspaceFoldersScrollBar {
     overflow: auto;
@@ -831,4 +832,8 @@ video{
         width: calc(100% - 21px);
         z-index: 9;
     }
+}
+.highLightColor{
+    color: #937206;
+    /* padding: 0px 5px; */
 }

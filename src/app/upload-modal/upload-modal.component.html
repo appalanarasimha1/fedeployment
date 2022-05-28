@@ -602,11 +602,13 @@
    <div class="finish-screen">
       <!-- <mat-icon>upload</mat-icon> -->
       <span>Your assets have been successfully published on Ground X.</span>
-      <div *ngIf="showRedirectUrl()" class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
+      <!-- remove this condition *ngIf="showRedirectUrl()" -->
+      <div class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
          <div class="destination-img-block">
             <img src="../../../assets/images/yellow-folder.png" style="max-width: 100%;">
          </div>
          <div class="destination-content-block">
+            <!-- <span class="assetName">National Day 2021</span> -->
             <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
             <p class="numberAssets">{{ getAssetNumber() }} assets</p>
          </div>

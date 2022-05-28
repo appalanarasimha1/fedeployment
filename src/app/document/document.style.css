@@ -74,7 +74,7 @@ label img {
 .dropdown, .dropup{
   /* border: 1px solid #404040; */
   /* border-radius: 8px; */
-  width: 170px;
+  min-width: 170px;
 }
 select.btn{
   border: 1.5px solid #000;
@@ -95,7 +95,7 @@ select option {
 
 .dropdown-toggle::after{
   position: absolute;
-  right: 0px;
+  right: -5px;
   top: 13px;
   color: transparent;
   background: url(../../assets/images/down-arrow-yellow.svg) no-repeat right center;
@@ -178,8 +178,8 @@ padding-right: 10px;
 .dropdown button, .dropup button{
   display: block;
   width: 100%;
-
   text-align: left;
+  padding-right: 30px;
 }
 #dropdownBasic4, #dropdownManual{
   color: #C49900;

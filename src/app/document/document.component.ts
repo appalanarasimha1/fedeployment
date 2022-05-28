@@ -203,6 +203,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     "Mountain",
     "Wildlife",
   ];
+  dummyPlaceholderTags: boolean = true;
+  searchBarClicked: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -253,6 +255,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
 
     this.filtersCount = this.getFilterCount();
+
+    this.dataService.searchBarClick$.subscribe((show: boolean) => {
+      this.searchBarClicked = show;
+    });
   }
 
   ngOnChanges(changes: any) {
@@ -285,18 +291,25 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   public async getRelatedTags() {
-    this.dataService.termSearch$.subscribe((searchTerm: string) => {
+    // console.log('this.tagsMetaRealdata1', this.tagsMetaRealdata)
+    this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
+      console.log("this.searchTerm ===================", this.searchTerm);
+
       this.searchTem = searchTerm;
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
+      this.dummyPlaceholderTags = true;
       this.tagsMetaRealdata = data?.filter(
         (m) =>
           m.key !== this.searchTem
       );
+      console.log('this.tagsMetaRealdata2', this.tagsMetaRealdata);
+      this.dummyPlaceholderTags = false;
     });
   } 
 
   resetResult() {
+    this.dataService.searchBarClickInit(false);
     this.documents = "";
     // this.selectTab('recentUpload');
     this.docSliceInput = 39;
@@ -1003,5 +1016,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
   searchRelatedClick(searchTerm) {
     this.dataService.termSearchInit(searchTerm);
+    this.dataService.termSearchForHideInit(searchTerm);
+
   }
 }

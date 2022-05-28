@@ -13,9 +13,11 @@ import { IHeaderSearchCriteria } from "./interface";
 import { CarouselModule } from "ngx-owl-carousel-o";
 import { OwlOptions } from "ngx-owl-carousel-o";
 import { unescapeIdentifier } from "@angular/compiler";
-
+import { OWNER_APPROVAL_LABEL } from "./../../upload-modal/constant";
+import { concat, Observable, of, Subject } from "rxjs";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ApiService } from "src/app/services/api.service";
+import { NuxeoService } from '../../services/nuxeo.service';
 import { apiRoutes } from "../config";
 import {
   TRIGGERED_FROM_DOCUMENT,
@@ -33,15 +35,22 @@ export class SubHeaderComponent implements OnInit {
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @ViewChild("content") videoModal: ElementRef;
   // @Input() sectors: string[];
-  searchText: string = "";
+  searchedAdeadData: any;
   searchCriteria: IHeaderSearchCriteria = {};
   sectors: string[] = [];
-
+  searchText: string = "";
+  userLoading: boolean = false;
+  loadWorkSpace: boolean = false;
   modalOpen: boolean = true;
   hideVideo: boolean = true;
   selectArea: boolean = false;
   modalReference = null;
   modalOption: NgbModalOptions = {}; // not null!
+  workspaceList$: Observable<any>;
+  userWorkspaceInput$ = new Subject<string>();
+  customDownloadApprovalMap: { [key: string]: string | boolean } = {};
+  customDownloadApprovalUsersMap: { [key: string]: string } = {};
+
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
   allSectors = [
     { label: "All NEOM sectors", value: "general" },
@@ -67,7 +76,10 @@ export class SubHeaderComponent implements OnInit {
   showRelatedSearch: boolean = false;
   recentSearch: any;
   clearRecent: boolean = false;
+  readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
+
   constructor(
+    public nuxeo: NuxeoService,
     private dataService: DataService,
     public sharedService: SharedService,
     private modalService: NgbModal,
@@ -100,7 +112,7 @@ export class SubHeaderComponent implements OnInit {
 
   ngAfterViewInit() {
     if (!localStorage.getItem("openVideo")) {
-      this.openSm(this.videoModal);
+      // this.openSm(this.videoModal);
       localStorage.setItem("openVideo", "1");
     }
     return;
@@ -153,7 +165,7 @@ export class SubHeaderComponent implements OnInit {
       delete this.searchCriteria["ecm_fulltext"];
       delete this.searchCriteria["highlight"];
     }
-    this.dataService.termSearchInit(searchText);
+    this.dataService.termSearchForHideInit(searchText);
 
     this.emitData(this.searchCriteria);
   }
@@ -399,6 +411,7 @@ export class SubHeaderComponent implements OnInit {
   resetSearch() {
     this.searched = false;
     this.showRelatedSearch = false;
+    this.dataService.searchBarClickInit(false);
     this.getRecentSearch();
     this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
     this.dataService.tagsMetaRealInit([]);
@@ -410,6 +423,8 @@ export class SubHeaderComponent implements OnInit {
   }
 
   blurOnSearch() {
+    console.log("this.searchText", this.searchText);
+
     if (this.tagClicked) {
     } else {
       setTimeout(() => {
@@ -419,7 +434,15 @@ export class SubHeaderComponent implements OnInit {
   }
 
   inputClicked() {
-    this.searchPopup = !this.searchPopup;
+    this.dataService.searchBarClickInit(true);
+    console.log("2222", this.searchText.trim());
+    if (this.searchText.trim() !== "") {
+      this.loadWorkSpace = true;
+    } else {
+      this.loadWorkSpace = false;
+    }
+
+    this.searchPopup = true;
     this.tagClicked = false;
     this.dataService.showRecent$.subscribe((show: boolean) => {
       this.showRelatedSearch = show;
@@ -440,5 +463,43 @@ export class SubHeaderComponent implements OnInit {
   }
   outClick() {
     console.log("qwertgyhuiop");
+  }
+  onSearchBarChange(e) {
+    if (e.trim() !== "") {
+      this.loadWorkSpace = true;
+    } else {
+      this.loadWorkSpace = false;
+    }
+    this.searchText = e;
+    const queryParams = {
+      queryParams: e,
+    };
+    this.userLoading = true;
+
+    this.nuxeo.nuxeoClient
+      .request(apiRoutes.DEFAULT_DOCUMENT_SUGGESTION, { queryParams })
+      .get()
+      .then((res) => {
+        const docs = res.entries;
+        const newData = docs?.filter((m) =>
+          m.title.includes(".")
+            ? ["jpg", "gif", "png", "mp4","MOV","tif","mov",].indexOf(
+                m.title.split(".")[m.title.split(".").length - 1]
+              ) === -1
+            : true
+        );
+        this.searchedAdeadData = newData;
+        this.userLoading = false;
+
+      })
+      .catch((error) => {});
+  }
+
+  splitStr(str:any){
+    return str.split(" ")
+  }
+
+  highlightStr(str:any){
+   return str.toLowerCase().includes(this.searchText.toLowerCase());
   }
 }

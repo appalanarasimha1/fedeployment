@@ -4291,3 +4291,12 @@ body {
 
 /* .animate-fading{animation:fading 10s infinite}
 @keyframes fading{0%{opacity:0}50%{opacity:1}100%{opacity:0}} */
+
+.searchDiv app-loader-small .text-center {
+  width: 20px !important;
+  height: 20px !important;
+  background: #23211e !important;
+  right: 25px !important;
+  top: 18px !important;
+  z-index: 9 !important;
+}

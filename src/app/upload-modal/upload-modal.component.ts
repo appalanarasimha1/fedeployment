@@ -304,8 +304,14 @@ export class UploadModalComponent implements OnInit {
   }
 
   openBrowseRoute() {
+    if(this.data) { 
+      // NOTE: as per the new requirements, we do not want to navigate to the folder in case of uploading asset in a folder.
+      this.closeModal();
+      return;
+    }
     this.dialogRef.close(this.selectedFolder);
-    this.router.navigate(['/workspace'], {queryParams: {folder: this.data?.id || this.selectedFolder?.id }});
+    const folderUid = this.data?.uid || this.selectedFolder?.id;
+    this.router.navigate(['/workspace'], {queryParams: {folder: folderUid }});
   }
 
   async getWsList() {
@@ -369,10 +375,10 @@ export class UploadModalComponent implements OnInit {
     this.folderList = [...this.dropdownFolderList];
   }
   
-  extractBreadcrumb(contextParameters = this.selectedFolder.contextParameters) {
+  extractBreadcrumb(contextParameters = this.selectedFolder?.contextParameters) {
     if (contextParameters) {
       this.breadCrumb = contextParameters?.breadcrumb.entries.filter((entry) => {
-        return entry.type !== "WorkspaceRoot";
+        return entry.type.toLowerCase() !== "workspaceroot";
       });
     }
   }

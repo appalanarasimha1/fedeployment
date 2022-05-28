@@ -1,6 +1,6 @@
 <app-header *ngIf="showHeader" (selectedTab)="checkSelectedTab($event)"></app-header>
 
-<main [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
+<main [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''" style="min-height: 80vh;">
   <router-outlet #o="outlet"></router-outlet>
 </main>
 <!-- <div class="tooltip1">

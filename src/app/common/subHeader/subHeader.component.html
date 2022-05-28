@@ -1,4 +1,4 @@
-<section class="sub-header" [ngClass]="{'afterSearch': searched}" >
+<section class="sub-header" [ngClass]="{ afterSearch: searched }">
   <div class="container mobileContainer">
     <div class="row">
       <div class="col-xl-7 offset-xl-3 text-left">
@@ -26,101 +26,153 @@
               </select>
             </div> -->
             <!-- <app-search></app-search> -->
-            <div style="position: relative;z-index: 99; pointer-events: all;" class="searchDiv">
+            <div
+              style="position: relative; z-index: 99; pointer-events: all"
+              class="searchDiv"
+            >
               <form (ngSubmit)="searchOutputFn(searchText)" autocomplete="off">
-                <button class="primary search-btn"><img
-                  src="../../../assets/images/search-icon.svg" /></button>
-                <input [ngModel]="searchText" (ngModelChange)="searchText=$event" [ngModelOptions]="{standalone: true}"
-                  type="text" placeholder="Search assets..." class="search-bar" [ngClass]="{'removeBorderRadious': searchPopup}"  (blur)="blurOnSearch()" (click)="inputClicked()" (clickOutside)="outClick()">
-                  <img *ngIf="searchText" style="cursor: pointer" (click)="resetSearch()" src="../assets/images/circle-close-gray.png" class="placeholder-search">
-                  <!-- <img src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search"> -->
-                  <!-- <button ngIf="search" class="btn" style="position: absolute; right: 39px; top: 3px;">x</button> -->
-               
-                  <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar">
+                <button class="primary search-btn">
+                  <img src="../../../assets/images/search-icon.svg" />
+                </button>
+                <input
+                  [ngModel]="searchText"
+                  (ngModelChange)="onSearchBarChange($event)"
+                  [ngModelOptions]="{ standalone: true }"
+                  type="text"
+                  placeholder="Search assets..."
+                  class="search-bar"
+                  [ngClass]="{ removeBorderRadious: searchPopup }"
+                  (blur)="blurOnSearch()"
+                  (click)="inputClicked()"
+                  (clickOutside)="outClick()"
+                  bindLabel="id"
+                  bindValue="id"
+                  [multiple]="false"
+                  [hideSelected]="true"
+                  [minTermLength]="2"
+                  [loading]="userLoading"
+                  typeToSearchText="Search users"
+                  [typeahead]="userWorkspaceInput$"
+                />
+                <app-loader-small [show]="userLoading"></app-loader-small>
+                <img
+                  *ngIf="searchText"
+                  style="cursor: pointer"
+                  (click)="resetSearch()"
+                  src="../assets/images/circle-close-gray.png"
+                  class="placeholder-search"
+                />
+                <!-- <img src="https://img.icons8.com/material-outlined/24/000000/search--v1.png" class="placeholder-search"> -->
+                <!-- <button ngIf="search" class="btn" style="position: absolute; right: 39px; top: 3px;">x</button> -->
 
-                    <!-- <div class="search-list">
+                <div
+                  class="searchPopup"
+                  *ngIf="searchPopup && !tagClicked"
+                  id="customScrollBar"
+                >
+                  <!-- <div class="search-list">
                       <a href="#">Traveller</a>
                       <a href="#">Travelling</a>
                       <a href="#">Tourism</a>
                       <a href="#">Tourist</a>
                       <a href="#">Trip</a>
-                    </div>
-    
-                    <div class="recent-searches">
-                      <div class="heading">Workspace Folders</div>
-                      <ul class="recent-searches-folder workspaceFoldersScrollBar">
-                        <li>
-                          <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
-                          <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
-                          <span class="workspace-folders">/Marketing</span>
-                        </li>
-                        <li>
-                          <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
-                          <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
-                          <span class="workspace-folders">/Marketing</span>
-                        </li>
-                        <li>
-                          <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
-                          <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
-                          <span class="workspace-folders">/Education, Research and Innovation</span>
-                        </li>
-                        <li>
-                          <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
-                          <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
-                          <span class="workspace-folders">/Marketing</span>
-                        </li>
-                        <li>
-                          <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
-                          <span class="folder-text">2021_Traveller_Marketing_Material_Marketing_Material_02_03_2022</span>
-                          <span class="workspace-folders">/Marketing</span>
-                        </li>
-                        <li>
-                          <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
-                          <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
-                          <span class="workspace-folders">/Education, Research & I</span>
-                        </li>
-                        <li>
-                          <img src="../../../assets/images/icon_folder_gray.svg" alt="" class="folder-icon" />
-                          <span class="folder-text">2021_Traveller_Marketing_Material_02_03_2022</span>
-                          <span class="workspace-folders">/Education, Research & I</span>
-                        </li>
-                      </ul>
                     </div> -->
-    
-                    <div class="recent-searches">
-                      <div class="heading" *ngIf="recentSearch.length>0">Your Recent Searches
-                        <div class="clearSearch" (click)="deleteRecentTags($event)" >Clear</div>
+
+                  <div class="recent-searches" *ngIf="loadWorkSpace && !userLoading">
+                    <div class="heading" *ngIf="searchedAdeadData?.length>0">Workspace Folders</div>
+                    <ul
+                      class="recent-searches-folder workspaceFoldersScrollBar"
+                    >
+                      <li
+                        *ngFor="let typeAheadItem of searchedAdeadData"
+                        [routerLink]="['/workspace']"
+                        [queryParams]="{ folder: typeAheadItem.uid }"
+                      >
+                          <img
+                            src="../../../assets/images/icon_folder_gray.svg"
+                            alt=""
+                            class="folder-icon"
+                          />
+                          <span
+                            class="folder-text"
+                            *ngFor="let str of splitStr(typeAheadItem.title)"
+                            [ngClass]="
+                              highlightStr(str) ? 'highLightColor' : ''
+                            "
+                          >
+                            {{ str }}&nbsp;</span
+                          >
+
+                          <span class="workspace-folders">/{{typeAheadItem.path.split('/')[1]}}</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="recent-searches" *ngIf="!loadWorkSpace">
+                    <div class="heading" *ngIf="recentSearch?.length > 0">
+                      Your Recent Searches
+                      <div
+                        class="clearSearch"
+                        (click)="deleteRecentTags($event)"
+                      >
+                        Clear
                       </div>
-                      <ul class="recent-searches-tags">
-                        <li *ngFor="let search of recentSearch;let i = index"><a style="cursor: pointer;" *ngIf="search.trim() !==''" (click)="searchText=search; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(search)}}</a></li>
-                      </ul>
                     </div>
-    
-                    <div class="recent-searches">
-                      <div class="heading">Trending Searches</div>
-                      <!-- <div class="heading" *ngIf="showRelatedSearch && tagsMetadataNew?.buckets.length>0">Related Tags</div> -->
-                      <ul class="recent-searches-tags"> 
-                        <li *ngFor="let bucket of tagsMetadataNew?.buckets; let i = index" ><a *ngIf="i<13" style="cursor: pointer;" (click)="searchText=bucket.key; searchOutputFn(searchText)" >{{sharedService.capitaliseSelectiveTags(bucket.key)}}</a></li>
-                       
-                      </ul>
-                    </div>
-    
-                    <!-- <div class="recent-searches">
+                    <ul class="recent-searches-tags">
+                      <li *ngFor="let search of recentSearch; let i = index">
+                        <a
+                          style="cursor: pointer"
+                          *ngIf="search.trim() !== ''"
+                          (click)="
+                            searchText = search; searchOutputFn(searchText)
+                          "
+                          >{{
+                            sharedService.capitaliseSelectiveTags(search)
+                          }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="recent-searches" *ngIf="!loadWorkSpace">
+                    <div class="heading" *ngIf="tagsMetadataNew?.buckets.length > 0">Trending Searches</div>
+                    <!-- <div class="heading" *ngIf="showRelatedSearch && tagsMetadataNew?.buckets.length>0">Related Tags</div> -->
+                    <ul class="recent-searches-tags">
+                      <li
+                        *ngFor="
+                          let bucket of tagsMetadataNew?.buckets;
+                          let i = index
+                        "
+                      >
+                        <a
+                          *ngIf="i < 13"
+                          style="cursor: pointer"
+                          (click)="
+                            searchText = bucket.key; searchOutputFn(searchText)
+                          "
+                          >{{
+                            sharedService.capitaliseSelectiveTags(bucket.key)
+                          }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- <div class="recent-searches">
                       <div class="heading">Random Search</div>
                       <ul class="recent-searches-tags">
                         <li class="show-something"><a href="#">Show me something cool</a></li>
                       </ul>
                     </div> -->
-                    
-                  </div>
+                </div>
               </form>
             </div>
           </div>
         </form>
         <!-- <div class="search-tags pt-2">
           <div class="customTagSlider">
-            <ngx-slick-carousel class="carousel" 
-              #slickModal="slick-carousel" 
+            <ngx-slick-carousel class="carousel"
+              #slickModal="slick-carousel"
               [config]="slideConfig" >
               <div ngxSlickItem *ngFor="let bucket of tagsMetadata?.buckets; let i = index" class="slide">
                 <div class="item" [id]="bucket.id">
@@ -131,13 +183,12 @@
           </div>
         </div> -->
       </div>
-
     </div>
   </div>
 
   <!-- sprint16 start -->
   <!-- <div class="video-icon" (click)="openSm(content)" *ngIf="modalOpen && !searched">
-    <!-- <div class="playIcon"></div> -/->
+   <div class="playIcon"></div> -/->
     <img src="../../../assets/images/personalizedVideo.svg" />
   </div> -->
 
@@ -154,11 +205,11 @@
       <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
         <img src="../../../assets/images/logo-neom.png" class="logo" />
         <h3>Please select an area of interest.</h3>
-        <ng-select 
+        <ng-select
           class="pointer"
-          [items]="allSectors" 
+          [items]="allSectors"
           ngDefaultControl
-          placeholder="Select a sector" 
+          placeholder="Select a sector"
           [(ngModel)]="sectorSelected"
           bindLabel="label"
           bindValue="value"
@@ -167,17 +218,17 @@
         </ng-select>
         <div *ngIf="sectorSelected" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -/->
-          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />  
+          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />
         </div>
-        
+
       </div>
-      
+
       <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
        <div class="ssector">
         <!-- <span>Change sector</span> -/->
         <ng-select [items]="allSectors" class="sectorsss"
           ngDefaultControl
-          placeholder="Select a sector" 
+          placeholder="Select a sector"
           [(ngModel)]="sectorSelected"
           bindLabel="label"
           bindValue="value"
@@ -190,7 +241,7 @@
           <video style="width: 100%" preload="false" autoplay  controls tabindex="0">
             <source [src]=defaultVideoSrc type="video/mp4" />
           </video>
-      
+
          <!-- <video
             style="width: 100%"
             autoplay
@@ -198,7 +249,7 @@
             [src]=defaultVideoSrc
             (ended)="videoPayEnded($event)"
           ></video> -/->
-          
+
       </div>
 
 
@@ -221,11 +272,20 @@
       <p>Are you sure you want to clear search history?</p>
 
       <div class="modal-footer">
-        <div class="closeModal" (click)="modal.dismiss('Cross click'); closeModal()">No</div>
-        <div class="updateModal" (click)="deleteRecentTags($event); modal.dismiss('Cross click');">Yes</div>
+        <div
+          class="closeModal"
+          (click)="modal.dismiss('Cross click'); closeModal()"
+        >
+          No
+        </div>
+        <div
+          class="updateModal"
+          (click)="deleteRecentTags($event); modal.dismiss('Cross click')"
+        >
+          Yes
+        </div>
       </div>
     </div>
-
   </ng-template>
 </section>
 <!-- <app-search></app-search> -->

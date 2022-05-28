@@ -161,7 +161,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   flex-direction: column;
   align-items: flex-end; */
   width: 100%;
-  padding-top: 2px;
+  padding-top: 20px;
   text-align: right;
   position: relative;
 }
@@ -225,6 +225,8 @@ section.lpBAck:before, .lpSecOne:before {
     line-height: 22px;
     color: #000000;
     font-weight: 600;
+    margin-bottom: 9px !important;
+    display: block;
     /* display: contents; */
 }
 .header-content h6{
@@ -863,7 +865,8 @@ font-weight: 600;
   border: unset;
   border-bottom: 2px solid #413E3C;
   width: 100%;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 600;
   line-height: 24px;
   color: #040404;
   padding-bottom: 5px;
@@ -1590,4 +1593,25 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
 .uploadClassificationDisable {
   opacity: 0.5;
+}
+.back-btn {float: left;cursor: pointer;color: #BAB8B2;font-size: 15px;font-weight: normal;letter-spacing: 0.5px;}
+.back-btn svg {vertical-align: -2px;margin-right: 5px;}
+
+.blackTetx {
+  color: #333;
+}
+.input-sizer input {
+  border-radius: 10px;
+  background: #FBF7E6;
+  padding: 2px 10px 4px 10px;
+  line-height: normal;
+}
+.actionIcon {
+  width: 30px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: -15px;
+}
+.customRenameBlock.input-sizer {
+  margin: -8px 0px 0px -11.8px;
 }

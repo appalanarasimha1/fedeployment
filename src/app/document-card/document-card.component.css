@@ -74,7 +74,7 @@ label img {
 .dropdown, .dropup{
   /* border: 1px solid #404040; */
   /* border-radius: 8px; */
-  width: 170px;
+  width: fit-content;
 }
 select.btn{
   border: 1.5px solid #000;
@@ -980,7 +980,7 @@ background-color:#EBC03F !important;
   background-size: 12px;
 }
 .hover-icon.download-icon{
-  background: url(~/../../../../assets/images/download-gray.svg) no-repeat center center #fff;
+  background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #006845;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -1027,7 +1027,7 @@ background-color:#EBC03F !important;
 } */
 
 .hover-icon.download-icon.download-disabled:hover {
-  background-color: #EFEEE9;
+  background-color: #006845;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -1657,4 +1657,23 @@ document-card .lock-icon img {
   top: 35px;
   left: auto;
   right: 0px;
+}
+
+.download-btn {float: right;padding-top: 20px;cursor: pointer;font-weight: 600;}
+.download-btn a {text-decoration: none;color: #DAAA00; outline: none;}
+.download-btn svg {margin-right: 6px;vertical-align: top;}
+
+.download-btn a.download-disabled {color: #BAB8B2 !important;}
+
+.download-btn a.download-disabled path {
+  stroke: #BAB8B2 !important;
+}
+.error {
+  color: #E03C31;
+  padding: 10px 0px 0px;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+.internal-use .error-disabled .control__indicator {
+  border: 1px solid #E03C31;
 }

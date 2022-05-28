@@ -76,7 +76,7 @@
   height: 100%;
   position: absolute !important;
   background: #fff;
-  z-index: 2;
+  z-index: 5;
   opacity: 1;
 }
 .overlay__content {
