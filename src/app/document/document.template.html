@@ -18,7 +18,7 @@
 
     <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
       <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">Asset by Sectors</a>
-      <ul class="nav nav-tabs" style="display: inline-block;">
+      <ul class="nav nav-tabs" style="display: inline-block; width: 50%;">
         <li>
           <div ngbDropdown class="d-inline-block sectorsDropdown">
             <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
@@ -163,7 +163,7 @@
 
   <section class="search-subpage">
 
-    <div class="customTagBar test1" *ngIf="searchBarClicked && tagsMetaRealdata.length<1">
+    <div class="customTagBar" *ngIf="searchBarClicked && tagsMetaRealdata.length<1">
       <ul>
         <li>
           <div class="relatedTagHeading">Related Tags</div>
@@ -186,7 +186,7 @@
       </ul>
     </div>
 
-    <div class="customTagBar test2" *ngIf="tagsMetaRealdata.length>0">
+    <div class="customTagBar" *ngIf="tagsMetaRealdata.length>0">
       <ul>
         <li>
           <div class="relatedTagHeading">Related Tags</div>

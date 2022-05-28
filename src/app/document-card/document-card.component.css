@@ -74,7 +74,7 @@ label img {
 .dropdown, .dropup{
   /* border: 1px solid #404040; */
   /* border-radius: 8px; */
-  width: 170px;
+  width: fit-content;
 }
 select.btn{
   border: 1.5px solid #000;
