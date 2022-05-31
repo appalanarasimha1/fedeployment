@@ -1405,7 +1405,7 @@ a.breadcrumb-not-active {
   float: left;
   line-height: 35px;
 }
-button.upload-btn.tollTipCustom.disableBtn {
+button.upload-btn.tollTipCustom.disableBtn, button.upload-btn.tollTipCustom.disableBtn1 {
   background: #E8E6DF;color: #BAB8B2; border-color: #E8E6DF;
 }
 .drag-drop.disableError {

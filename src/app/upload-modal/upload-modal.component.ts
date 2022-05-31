@@ -138,6 +138,8 @@ export class UploadModalComponent implements OnInit {
   folderOrder: string = "";
   folderToAddName: string = "";
 
+  showError: boolean = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -184,6 +186,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelect(event) {
+    console.log('event.addedFiles', event.addedFiles)
     this.uploadFile(event.addedFiles);
   }
 
@@ -237,8 +240,13 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkUploadStep() {
-    if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) return true;
-    else return false;
+    if(Object.keys(this.filesMap).length === 0 || !this.agreeTerms){
+      // this.showError = true;
+      return true;
+    } else {
+      this.showError = false;
+      return false;
+    }
   }
 
   checkUploadFormStep() {
@@ -874,5 +882,14 @@ export class UploadModalComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  checkValidation() {
+    debugger;
+    if(Object.keys(this.filesMap).length === 0 || !this.agreeTerms){
+      this.showError = true;
+    } else {
+      this.showError = false;
+    }
   }
 }
