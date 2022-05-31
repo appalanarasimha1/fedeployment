@@ -129,6 +129,7 @@ export class BrowseComponent implements OnInit {
   defaultPageSize: number = 20;
   pageSizeOptions = [20, 40, 60];
   folderNameRef;
+  showError: boolean = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -738,7 +739,7 @@ export class BrowseComponent implements OnInit {
   getIconByType(type: string): string {
     switch (type.toLowerCase()) {
       case "workspace":
-        return "../../../assets/images/folderBlack.png";
+        return "../../../assets/images/folder-table-list.svg";
       case "picture":
         return "../../../assets/images/list-viewImg.svg";
       case "video":
@@ -746,7 +747,7 @@ export class BrowseComponent implements OnInit {
       case "file":
         return "../../../assets/images/Doc.svg";
       default:
-        return "../../../assets/images/folderBlack.png";
+        return "../../../assets/images/folder-table-list.svg";
     }
   }
 
@@ -964,51 +965,55 @@ export class BrowseComponent implements OnInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
-    let url = `/path${this.selectedFolder.path}`;
-    if (this.selectedFolder.type.toLowerCase() === "domain") {
-      url = `/path${this.selectedFolder.path}/workspaces`;
-      this.selectedFolder.path = `${this.selectedFolder.path}/workspaces/null`;
-      this.selectedFolder.type = "Workspace";
+    if(!this.folderNameRef) {
+      this.showError = true;
     } else {
-      this.selectedFolder.type = ORDERED_FOLDER;
+      let url = `/path${this.selectedFolder.path}`;
+      if (this.selectedFolder.type.toLowerCase() === "domain") {
+        url = `/path${this.selectedFolder.path}/workspaces`;
+        this.selectedFolder.path = `${this.selectedFolder.path}/workspaces/null`;
+        this.selectedFolder.type = "Workspace";
+      } else {
+        this.selectedFolder.type = ORDERED_FOLDER;
+      }
+
+      const payload = await this.sharedService.getCreateFolderPayload(
+        folderName,
+        this.selectedFolder2.title,
+        this.selectedFolder,
+        description,
+        date
+      );
+      const res = await this.apiService.post(url, payload).toPromise();
+      if (!res && !res["uid"]) return;
+
+      this.searchList.unshift(res);
+      this.sortedData = this.searchList.slice();
+      this.folderAssetsResult[this.selectedFolder.uid].entries.unshift(res);
+      this.showMoreButton = false;
+      $(".dropdownCreate").hide();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+      this.sharedService.showSnackbar(
+        `${folderName} folder successfully created.`,
+        3000,
+        "top",
+        "center",
+        "snackBarMiddle"
+      );
+      this.showFolder = false;
+      if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
+        this.hasUpdatedChildren.push(this.selectedFolder.uid);
+      }
+
+      this.folderNameRef = undefined;
+
+      return {
+        id: res["uid"],
+        title: res["title"],
+        type: res["type"],
+        path: res["path"],
+      };
     }
-
-    const payload = await this.sharedService.getCreateFolderPayload(
-      folderName,
-      this.selectedFolder2.title,
-      this.selectedFolder,
-      description,
-      date
-    );
-    const res = await this.apiService.post(url, payload).toPromise();
-    if (!res && !res["uid"]) return;
-
-    this.searchList.unshift(res);
-    this.sortedData = this.searchList.slice();
-    this.folderAssetsResult[this.selectedFolder.uid].entries.unshift(res);
-    this.showMoreButton = false;
-    $(".dropdownCreate").hide();
-    $(".buttonCreate").removeClass("createNewFolderClick");
-    this.sharedService.showSnackbar(
-      `${folderName} folder successfully created.`,
-      3000,
-      "top",
-      "center",
-      "snackBarMiddle"
-    );
-    this.showFolder = false;
-    if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
-      this.hasUpdatedChildren.push(this.selectedFolder.uid);
-    }
-
-    this.folderNameRef = undefined;
-
-    return {
-      id: res["uid"],
-      title: res["title"],
-      type: res["type"],
-      path: res["path"],
-    };
   }
 
   checkShowCreateFolder() {
@@ -1264,5 +1269,13 @@ export class BrowseComponent implements OnInit {
     this.sortedData = result.entries;
     this.searchList = result.entries;
     // this.loading = false;
+  }
+
+  inputChange() {
+    if(!this.folderNameRef) {
+      this.showError = true;
+    } else {
+      this.showError = false;
+    }
   }
 }

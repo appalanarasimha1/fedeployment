@@ -1398,3 +1398,16 @@ a.breadcrumb-not-active {
 .upload-form-input input#title {
   padding-right: 30px;
 }
+
+.errorMessage {
+  color: #E03C31;
+  font-size: 14px;
+  float: left;
+  line-height: 35px;
+}
+button.upload-btn.tollTipCustom.disableBtn {
+  background: #E8E6DF;color: #BAB8B2; border-color: #E8E6DF;
+}
+.drag-drop.disableError {
+  border-color: #E03C31 !important;
+}

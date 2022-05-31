@@ -166,17 +166,22 @@
               <div class="views" *ngIf="selectedFolder.uid !== parentId">
 
 
-                <!-- Back btn hide function pendign -->
-                <!-- <div class="back-btn">
+                <div class="back-btn">
                   <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.82783 6.99974L7.77783 11.9497L6.36383 13.3637L-0.000168125 6.99974L6.36383 0.635742L7.77783 2.04974L2.82783 6.99974Z" fill="#BAB8B2"/>
                   </svg> 
                   Back
-                </div> -->
+                </div>
 
-                <div style="position: relative; display: inline-block; vertical-align: top;">
-                  <div class="deleteRecover">
-                    <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView && checkEnableDeleteBtn()" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
+                <div style="position: relative; display: inline-block; vertical-align: top;margin-top: -3px;">
+                  <div class="selectedItemBlock">
+                    2 selected
+                    <a href="#"><img src="../../../assets/images/remove-icon.svg" alt="" /></a>
+                  </div>
+                  <div class="downloadFileWorkspace"><img src="../../../assets/images/download-workspace.svg"></div>
+                  <div class="moveFolderBlock"><img src="../../../assets/images/arrow-left.svg"></div>
+                  <div class="deleteRecover" *ngIf="!isTrashView && checkEnableDeleteBtn()" >
+                    <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg"></span>
                   </div>
                   <div class='buttonCreate'>
                     <a href="javascript:void(0)" *ngIf="!isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
@@ -184,11 +189,12 @@
                   <div class='dropdownCreate createFolder'>
                     <form>
                       <div class="row">
-                        <div class="col-xl-12">
+                        <div class="col-xl-12 pb-5">
                             <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
                         </div>
                         <div class="col-xl-12">
-                          <input [ngClass]="{'goldenText': folderNameRef}" [(ngModel)]="folderNameRef" name="folderNameRef" type="text" placeholder="Enter a folder name">
+                          <input *ngIf="!showError" [ngClass]="{'goldenText': folderNameRef}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name">
+                          <input *ngIf="showError" [ngClass]="{'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name">
                         </div>
                       </div>
                       <div class="row mt-4">
@@ -211,7 +217,7 @@
                               </div>
                               <div class="row custom-date-picker mt-4">
                                 <div class="col-xl-12 col-md-12">
-                                  <label for="date">Associated Date</label>
+                                  <label for="date">Date</label> <span class="placeholderText">Date of project or event</span>
                                 </div>
                                 <div class="col-xl-12 col-md-12 " >
                                   <mat-form-field appearance="fill">
@@ -230,11 +236,14 @@
                       </div>
                       <div class="row mt-4">
                       <div class="col-xl-12">
-                        <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef.value, folderDescriptionRef.value)" [disabled]="!folderNameRef" style="pointer-events: auto;">
+                        <div *ngIf="showError" class="errorMessage">
+                          Please complete all mandatory fields
+                        </div>
+                        <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef.value, folderDescriptionRef.value)" style="pointer-events: auto;" [ngClass]="{'disableBtn': !folderNameRef}">
                           Create folder
-                          <div *ngIf="!folderNameRef" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
+                          <!-- <div *ngIf="!folderNameRef" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
                             Please complete all mandatory fields to proceed
-                          </div>
+                          </div> -->
                         </button>
                       </div>
 
@@ -386,10 +395,10 @@
             </div>
 
             <div class="row justify-content-between pt-25" *ngIf="selectedMenu === 1" style="width: 100%; --bs-gutter-x: 0px;">
-              <div  class="col-xl-12 col-md-12">
+              <div  class="col-xl-12 col-md-12 customTableStyle">
                 <table matSort (matSortChange)="sortData($event)" class="folderListview pb-5" *ngIf="searchList.length">
                     <tr>
-                      <th style="width:6%">&nbsp;&nbsp;</th>
+                      <th style="width:3%">&nbsp;&nbsp;</th>
                       <th mat-sort-header="title" width="30%" style="padding-left: 35px;">{{ !showLinkCopy ? 'Folder name' : 'Asset name'}}</th>
                       <th mat-sort-header="dc:creator" width="20%">Created by</th>
                       <!-- <th width="20%">Last Updated by</th> -->
@@ -400,16 +409,18 @@
                       <th mat-sort-header="dc:sector" *ngIf="isTrashView" width="20%">Workspace</th>
                     </tr>
                     <tr *ngFor="let item of sortedData ; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
-                      <td><div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
-                        <div class="control-group">
-                          <label class="control control--checkbox">
-                            <input id="checkbox-{{i}}" type="checkbox" (change)="selectFolder($event, item, i)"/>
-                            <div class="control__indicator"></div>
-                          </label>
+                      <td>
+                        <div class="delete-folder-action" *ngIf="!checkAssetType(item.type) && checkWSType(item.type) && checkCanDelete(item)">
+                          <div class="control-group">
+                            <label class="control control--checkbox">
+                              <input id="checkbox-{{i}}" type="checkbox" (change)="selectFolder($event, item, i)"/>
+                              <div class="control__indicator"></div>
+                            </label>
+                          </div>
                         </div>
-                      </div>
+                      </td>
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                        <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
+                        <img [src]="getIconByType(item.type)" style="width: 22px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left; word-break: break-all;">{{item.title}}</p>
                       </td>
                       <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
