@@ -16,6 +16,7 @@ import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONF
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 const STEPS = {
   1: "Update Classification",

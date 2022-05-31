@@ -5,9 +5,8 @@ const PROXY_CONFIG = [
             "/sockjs-node/",
         ],
         "target":
-        // "https://dev2groundx.neom.com",
          "http://localhost:8080",
-        // "https://uatgroundx.neom.com", //"https://34.219.179.33:5050",  'https://uatgroundx.neom.com',///
+        // "https://uatgroundx.neom.com", //"https://34.219.179.33:5050",  'https://uatgroundx.neom.com',//  
         "secure": false,
         "changeOrigin": true
     }];
