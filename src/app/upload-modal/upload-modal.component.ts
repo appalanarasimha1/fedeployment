@@ -312,11 +312,12 @@ export class UploadModalComponent implements OnInit {
   }
 
   openBrowseRoute() {
-    this.dialogRef.close(this.selectedFolder);
     if(this.data) { 
       // NOTE: as per the new requirements, we do not want to navigate to the folder in case of uploading asset in a folder.
+      this.closeModal();
       return;
     }
+    this.dialogRef.close(this.selectedFolder);
     const folderUid = this.data?.uid || this.selectedFolder?.id;
     this.router.navigate(['/workspace'], {queryParams: {folder: folderUid }});
   }

@@ -127,7 +127,7 @@ export class BrowseComponent implements OnInit {
   sectorWorkspace;
   resultCount: number;
   defaultPageSize: number = 20;
-  pageSizeOptions = [20, 40, 60];
+  pageSizeOptions = [20, 50, 100];
   folderNameRef;
   showError: boolean = false;
 
@@ -443,6 +443,13 @@ export class BrowseComponent implements OnInit {
     }
   }
 
+  /**
+   * This functions gets called from bread crumbs and sidebar
+   * @param item 
+   * @param index 
+   * @param breadCrumbIndex 
+   * @returns null
+   */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -588,9 +595,10 @@ export class BrowseComponent implements OnInit {
   }
 
   openUpdateClassModal(breadCrumb: any) {
-    if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
-      return;
-    }
+    // NOTE: uncomment below code
+    // if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
+    //   return;
+    // }
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";

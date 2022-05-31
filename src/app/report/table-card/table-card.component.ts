@@ -27,4 +27,8 @@ export class TableCardComponent implements OnInit, OnChanges {
   getUsCommaSystemString(number: number): string {
     return this.sharedService.toUsCommaSystem(number);
   }
+
+  toCamelCase(string: string): string {
+    return this.sharedService.toCamelCase(string);
+  }
 }

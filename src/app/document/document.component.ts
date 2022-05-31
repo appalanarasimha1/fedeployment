@@ -291,8 +291,10 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   public async getRelatedTags() {
-    console.log('this.tagsMetaRealdata1', this.tagsMetaRealdata)
-    this.dataService.termSearch$.subscribe((searchTerm: string) => {
+    // console.log('this.tagsMetaRealdata1', this.tagsMetaRealdata)
+    this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
+      console.log("this.searchTerm ===================", this.searchTerm);
+
       this.searchTem = searchTerm;
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
@@ -1014,5 +1016,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
   searchRelatedClick(searchTerm) {
     this.dataService.termSearchInit(searchTerm);
+    this.dataService.termSearchForHideInit(searchTerm);
+
   }
 }

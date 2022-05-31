@@ -117,7 +117,17 @@ export class NuxeoService {
       if (token) options.headers['Authorization'] = `Bearer ${token}`;
       this.nuxeoClient = new Nuxeo(options);
     }
+    this.initNxfileRequest(token);
     return this.nuxeoClient.requestAuthenticationToken('My App', '123', 'my-device', 'rw');
+  }
+
+  initNxfileRequest(token) {
+    if (!token) return;
+    fetch(`${this.baseUrl}/nuxeo/nxfile/default`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
   }
 
   getRedirectLocation() {

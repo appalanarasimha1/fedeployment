@@ -3,9 +3,9 @@ const { Client } = require("@elastic/elasticsearch");
 
 export class ElasticSearchService {
   private client = new Client({ node: AppConfig.Config.elasticDbUrl });
-  private indexValue = "searchindex";
+  private indexValue = "searchindex_v4";
 
-  public async insertData(searchTerm: any, username: any) {
+  public async insertData(searchTerm: any, username: any,sector:any) {
     if (searchTerm.trim() == "") return;
     const response = await this.client.index({
       index: this.indexValue,
@@ -13,11 +13,12 @@ export class ElasticSearchService {
         query: searchTerm,
         timestamp: new Date(),
         userId: username,
+        sector,
         isDeleted: false,
       },
     });
-    console.log("asdfg", response);
-
+    console.log("pppppppppppppppppppppppppppp", response);
+    
     return;
   }
 
@@ -53,6 +54,28 @@ export class ElasticSearchService {
           },
         },
       },
+    });
+    return body;
+  }
+
+  public async fetchSectorByCount() {
+    console.log("=========================================== Coming");
+    
+    const { body } = await this.client.search({
+      index: this.indexValue,
+      body: {
+        aggs: {
+          properties: {
+            terms: {
+              field: "sector",
+              order: { _count: "desc" },
+              size: 10
+            },
+          },
+        },
+      },
+    }).catch((err: any)=> {
+      console.log("ERROR = ", err);
     });
     return body;
   }

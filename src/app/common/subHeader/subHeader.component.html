@@ -71,25 +71,22 @@
                   id="customScrollBar"
                 >
                   <!-- <div class="search-list">
-                      <a href="#">Traveller</a> 
+                      <a href="#">Traveller</a>
                       <a href="#">Travelling</a>
                       <a href="#">Tourism</a>
                       <a href="#">Tourist</a>
                       <a href="#">Trip</a>
                     </div> -->
 
-                  <div
-                    class="recent-searches"
-                    *ngIf="loadWorkSpace && !userLoading"
-                  >
-                    <div class="heading">Workspace Folders</div>
+                  <div class="recent-searches" *ngIf="loadWorkSpace && !userLoading">
+                    <div class="heading" *ngIf="searchedAdeadData?.length>0">Workspace Folders</div>
                     <ul
                       class="recent-searches-folder workspaceFoldersScrollBar"
                     >
                       <li
                         *ngFor="let typeAheadItem of searchedAdeadData"
                         [routerLink]="['/workspace']"
-                        [queryParams]="{ folder: typeAheadItem.id }"
+                        [queryParams]="{ folder: typeAheadItem.uid }"
                       >
                           <img
                             src="../../../assets/images/icon_folder_gray.svg"
@@ -98,7 +95,7 @@
                           />
                           <span
                             class="folder-text"
-                            *ngFor="let str of splitStr(typeAheadItem.label)"
+                            *ngFor="let str of splitStr(typeAheadItem.title)"
                             [ngClass]="
                               highlightStr(str) ? 'highLightColor' : ''
                             "
@@ -106,13 +103,13 @@
                             {{ str }}&nbsp;</span
                           >
 
-                          <span class="workspace-folders">/Marketing</span> 
+                          <span class="workspace-folders">/{{typeAheadItem.path.split('/')[1]}}</span>
                       </li>
                     </ul>
                   </div>
 
                   <div class="recent-searches" *ngIf="!loadWorkSpace">
-                    <div class="heading" *ngIf="recentSearch.length > 0">
+                    <div class="heading" *ngIf="recentSearch?.length > 0">
                       Your Recent Searches
                       <div
                         class="clearSearch"
@@ -174,8 +171,8 @@
         </form>
         <!-- <div class="search-tags pt-2">
           <div class="customTagSlider">
-            <ngx-slick-carousel class="carousel" 
-              #slickModal="slick-carousel" 
+            <ngx-slick-carousel class="carousel"
+              #slickModal="slick-carousel"
               [config]="slideConfig" >
               <div ngxSlickItem *ngFor="let bucket of tagsMetadata?.buckets; let i = index" class="slide">
                 <div class="item" [id]="bucket.id">
@@ -191,7 +188,7 @@
 
   <!-- sprint16 start -->
   <!-- <div class="video-icon" (click)="openSm(content)" *ngIf="modalOpen && !searched">
-    <!-- <div class="playIcon"></div> -/->
+   <div class="playIcon"></div> -/->
     <img src="../../../assets/images/personalizedVideo.svg" />
   </div> -->
 
@@ -208,11 +205,11 @@
       <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
         <img src="../../../assets/images/logo-neom.png" class="logo" />
         <h3>Please select an area of interest.</h3>
-        <ng-select 
+        <ng-select
           class="pointer"
-          [items]="allSectors" 
+          [items]="allSectors"
           ngDefaultControl
-          placeholder="Select a sector" 
+          placeholder="Select a sector"
           [(ngModel)]="sectorSelected"
           bindLabel="label"
           bindValue="value"
@@ -221,17 +218,17 @@
         </ng-select>
         <div *ngIf="sectorSelected" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -/->
-          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />  
+          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />
         </div>
-        
+
       </div>
-      
+
       <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
        <div class="ssector">
         <!-- <span>Change sector</span> -/->
         <ng-select [items]="allSectors" class="sectorsss"
           ngDefaultControl
-          placeholder="Select a sector" 
+          placeholder="Select a sector"
           [(ngModel)]="sectorSelected"
           bindLabel="label"
           bindValue="value"
@@ -244,7 +241,7 @@
           <video style="width: 100%" preload="false" autoplay  controls tabindex="0">
             <source [src]=defaultVideoSrc type="video/mp4" />
           </video>
-      
+
          <!-- <video
             style="width: 100%"
             autoplay
@@ -252,7 +249,7 @@
             [src]=defaultVideoSrc
             (ended)="videoPayEnded($event)"
           ></video> -/->
-          
+
       </div>
 
 
