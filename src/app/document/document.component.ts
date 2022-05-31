@@ -218,6 +218,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
+    this.getZippedFile();
     this.route.fragment.subscribe((f) => {
       setTimeout(() => {
         const element = document.getElementById(f);
@@ -290,6 +291,34 @@ export class DocumentComponent implements OnInit, OnChanges {
     return;
   }
 
+    getZippedFile(){
+      let data = this.apiService
+        .downloaPost("/automation/Blob.BulkDownload/@async", {
+          params: {
+            filename: "selection-2753893969999.zip",
+          },
+          context: {},
+          input:
+            "docs:f112353d-c904-48c0-af6c-2745dbb782dd,31a6e390-4b9d-4df6-a6c1-f1ecd49b0b4f",
+        })
+        .subscribe((res: any) => {
+          let splittedLocation = res.headers.get("location").split("/")
+          let newUID = splittedLocation[splittedLocation.length - 2];
+          console.log("11111111111111110000000000000000000000", newUID);
+          this.apiService
+            .get("/automation/Blob.BulkDownload/@async/" + newUID + "/status")
+            .subscribe((res: any) => {
+              console.log(res);
+              // this.apiService
+              //   .get(
+              //     "/automation/Blob.BulkDownload/@async/cd9b089c-bcc3-4a60-90a5-4264742cb458"
+              //   )
+              //   .subscribe((res: any) => {
+              //     console.log(res);
+              //   });
+            });
+        });
+    }
   public async getRelatedTags() {
     // console.log('this.tagsMetaRealdata1', this.tagsMetaRealdata)
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
@@ -299,17 +328,13 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
       this.dummyPlaceholderTags = true;
-      this.tagsMetaRealdata = data?.filter(
-        (m) =>
-          m.key !== this.searchTem
-      );
-      console.log('this.tagsMetaRealdata2', this.tagsMetaRealdata);
+      this.tagsMetaRealdata = data?.filter((m) => m.key !== this.searchTem);
+      console.log("this.tagsMetaRealdata2", this.tagsMetaRealdata);
       this.dummyPlaceholderTags = false;
     });
-  } 
+  }
 
   resetResult() {
-    this.dataService.searchBarClickInit(false);
     this.documents = "";
     // this.selectTab('recentUpload');
     this.docSliceInput = 39;
@@ -1017,6 +1042,5 @@ export class DocumentComponent implements OnInit, OnChanges {
   searchRelatedClick(searchTerm) {
     this.dataService.termSearchInit(searchTerm);
     this.dataService.termSearchForHideInit(searchTerm);
-
   }
 }

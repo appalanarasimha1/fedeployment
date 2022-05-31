@@ -14,8 +14,10 @@ export class ApiService {
   private getHeaders() {
     return {
       "Access-Control-Allow-Origin": "*",
+      "Access-Control-Expose-Headers": "X-TOKEN",
       accept: "text/plain,application/json, application/json",
       "Access-Control-Allow-Methods": "PUT,DELETE,POST,GET,OPTIONS",
+      // "Access-Control-Expose-Headers": "mintargetapiversion",
       "enrichers-document":
         "thumbnail,permissions,preview,acls,favorites,audit,tags,folderAssetsCount,breadcrumb",
       "X-Authentication-Token": localStorage.getItem("token"),
@@ -89,5 +91,15 @@ export class ApiService {
           return data;
         })
       );
+  }
+
+  downloaPost(urlAddress: string, payload: any, options?: any) {
+    options = options || {
+      headers: this.getHeaders(),
+      observe: "response",
+    };
+    return this.http
+      .post<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
+      .pipe(map((data) => data));
   }
 }
