@@ -1085,7 +1085,9 @@ input.copyright-input {
 }
 .custom-date-picker ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
   top: 0.6em;
-  font-size: 'myBrown' !important;
+  font-family: 'myBrown' !important;
+  font-size: 14px !important;
+  color: #999 !important;
 }
 
 .custom-date-picker ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
@@ -1099,8 +1101,7 @@ input.copyright-input {
   overflow-y: scroll;
 } */
 ::ng-deep .mat-dialog-container {
-  margin-top: 60px !important;
-  margin-bottom: 60px !important;
+  margin-top: 30px !important;
 }
 ::ng-deep .cdk-global-overlay-wrapper{
   overflow: auto !important;
@@ -1108,4 +1109,16 @@ input.copyright-input {
 }
 ::ng-deep .cdk-global-scrollblock {
   overflow: auto;
+}
+
+.upload-modal.customHeight ::ng-deep ng-select {
+  width: 100% !important;
+}
+
+.upload-modal.customHeight ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder,
+.upload-modal.customHeight .upload-form-input ::ng-deep .ng-select .ng-arrow-wrapper {
+  padding-bottom: 5px !important;
+}
+.reviewClassifaction .workspaceName {
+  font-size: 14px;
 }
