@@ -506,17 +506,17 @@ export class BrowseComponent implements OnInit {
     return this.folderAssetsResult[id];
   }
 
-  async fetchAssetsByName(assetName: string) {
-    this.currentPageCount = 0;
-    this.showMoreButton = true;
-    // if (this.folderAssetsResult[id]) {
-    //   return this.folderAssetsResult[id];
-    // }
-    const url = `/path/Ground%20X/workspaces/L1/L2/L3/L4`;
-    const result: any = await this.apiService.get(url).toPromise();
-    console.log(JSON.stringify(result));
-    return result.uid;
-  }
+  // async fetchAssetsByName(assetName: string) {
+  //   this.currentPageCount = 0;
+  //   this.showMoreButton = true;
+  //   // if (this.folderAssetsResult[id]) {
+  //   //   return this.folderAssetsResult[id];
+  //   // }
+  //   const url = `/path/Ground%20X/workspaces/L1/L2/L3/L4`;
+  //   const result: any = await this.apiService.get(url).toPromise();
+  //   console.log(JSON.stringify(result));
+  //   return result.uid;
+  // }
 
   async fetchBreadCrumbByAssetsUId(assetUid: string) {
     this.currentPageCount = 0;
@@ -532,20 +532,20 @@ export class BrowseComponent implements OnInit {
     return;
   }
 
-  async showMore(id: string) {
-    if (
-      this.searchList.length <
-      this.selectedFolder.contextParameters.folderAssetsCount
-    ) {
-      this.currentPageCount++;
-      const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`;
-      const result: any = await this.apiService.get(url).toPromise();
-      this.searchList = this.searchList.concat(result.entries);
-      this.sortedData = this.searchList.slice();
-      return;
-    }
-    this.showMoreButton = false;
-  }
+  // async showMore(id: string) {
+  //   if (
+  //     this.searchList.length <
+  //     this.selectedFolder.contextParameters.folderAssetsCount
+  //   ) {
+  //     this.currentPageCount++;
+  //     const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${this.currentPageCount}&offset=0&pageSize=${PAGE_SIZE_40}&ecm_parentId=${id}&ecm_trashed=false`;
+  //     const result: any = await this.apiService.get(url).toPromise();
+  //     this.searchList = this.searchList.concat(result.entries);
+  //     this.sortedData = this.searchList.slice();
+  //     return;
+  //   }
+  //   this.showMoreButton = false;
+  // }
 
   handleChangeClick(item, index, selected: any, childIndex?: any) {
     // this.selectedFile = [];
