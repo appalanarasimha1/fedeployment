@@ -256,6 +256,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
+    this.navigateToWorkspaceFolder(item.uid);
     this.searchBarValue = "";
     this.paginator.firstPage();
     if (item.isTrashed) return;
@@ -450,6 +451,7 @@ export class BrowseComponent implements OnInit {
    * @returns null
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    this.navigateToWorkspaceFolder(item.uid);
     this.paginator?.firstPage();
     this.searchBarValue = "";
     // if (!isNaN(index) || breadCrumbIndex === 1) {
@@ -1272,5 +1274,9 @@ export class BrowseComponent implements OnInit {
     this.sortedData = result.entries;
     this.searchList = result.entries;
     // this.loading = false;
+  }
+
+  navigateToWorkspaceFolder(uid: string) {
+    this.router.navigate(['workspace'], {queryParams: {folder: uid}});
   }
 }
