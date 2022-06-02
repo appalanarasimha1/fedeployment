@@ -1411,3 +1411,6 @@ button.upload-btn.tollTipCustom.disableBtn, button.upload-btn.tollTipCustom.disa
 .drag-drop.disableError {
   border-color: #E03C31 !important;
 }
+.validationError .control__indicator {
+  border-color: #E03C31;
+}

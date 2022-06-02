@@ -139,6 +139,7 @@ export class UploadModalComponent implements OnInit {
   folderToAddName: string = "";
 
   showError: boolean = false;
+  showErrorCheckbox: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -187,7 +188,14 @@ export class UploadModalComponent implements OnInit {
 
   onSelect(event) {
     console.log('event.addedFiles', event.addedFiles)
-    this.uploadFile(event.addedFiles);
+    if(!event.addedFiles && !this.agreeTerms) {
+      this.showError = true;
+      this.showErrorCheckbox = false;
+    } else {
+      this.showError = false;
+      this.showErrorCheckbox = false;
+      this.uploadFile(event.addedFiles);
+    }
   }
 
   onRemove(event) {
@@ -218,7 +226,6 @@ export class UploadModalComponent implements OnInit {
   }
 
   toPreviousStep() {
-
     this.stepper.previous();
     if (this.step === 1) return;
     this.step--;
@@ -886,11 +893,23 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkValidation() {
-    debugger;
-    if(Object.keys(this.filesMap).length === 0 || !this.agreeTerms){
+    if(Object.keys(this.filesMap).length === 0 && !this.agreeTerms){
       this.showError = true;
+      this.showErrorCheckbox = false;
     } else {
       this.showError = false;
+      this.showErrorCheckbox = true;
     }
+  }
+
+  checkValidationCheckbox() {
+    if(!this.agreeTerms) {
+      this.showErrorCheckbox = true;
+    } else {
+      this.showErrorCheckbox = false;
+    }
+  }
+  backBtn() {
+    this.showErrorCheckbox = false;
   }
 }
