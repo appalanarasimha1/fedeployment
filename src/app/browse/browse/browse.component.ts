@@ -130,6 +130,11 @@ export class BrowseComponent implements OnInit {
   pageSizeOptions = [20, 50, 100];
   folderNameRef;
 
+  showError: boolean = false;	
+  isAware = false;	
+  downloadErrorShow: boolean = false;	
+  downloadEnable: boolean = false;
+
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
     this.masonry?.layout();
@@ -974,51 +979,55 @@ export class BrowseComponent implements OnInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
-    let url = `/path${this.selectedFolder.path}`;
-    if (this.selectedFolder.type.toLowerCase() === "domain") {
-      url = `/path${this.selectedFolder.path}/workspaces`;
-      this.selectedFolder.path = `${this.selectedFolder.path}/workspaces/null`;
-      this.selectedFolder.type = "Workspace";
+    if(!this.folderNameRef) {	
+      this.showError = true;	
     } else {
-      this.selectedFolder.type = ORDERED_FOLDER;
+      let url = `/path${this.selectedFolder.path}`;
+      if (this.selectedFolder.type.toLowerCase() === "domain") {
+        url = `/path${this.selectedFolder.path}/workspaces`;
+        this.selectedFolder.path = `${this.selectedFolder.path}/workspaces/null`;
+        this.selectedFolder.type = "Workspace";
+      } else {
+        this.selectedFolder.type = ORDERED_FOLDER;
+      }
+
+      const payload = await this.sharedService.getCreateFolderPayload(
+        folderName,
+        this.selectedFolder2.title,
+        this.selectedFolder,
+        description,
+        date
+      );
+      const res = await this.apiService.post(url, payload).toPromise();
+      if (!res && !res["uid"]) return;
+
+      this.searchList.unshift(res);
+      this.sortedData = this.searchList.slice();
+      this.folderAssetsResult[this.selectedFolder.uid].entries.unshift(res);
+      this.showMoreButton = false;
+      $(".dropdownCreate").hide();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+      this.sharedService.showSnackbar(
+        `${folderName} folder successfully created.`,
+        3000,
+        "top",
+        "center",
+        "snackBarMiddle"
+      );
+      this.showFolder = false;
+      if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
+        this.hasUpdatedChildren.push(this.selectedFolder.uid);
+      }
+
+      this.folderNameRef = undefined;
+
+      return {
+        id: res["uid"],
+        title: res["title"],
+        type: res["type"],
+        path: res["path"],
+      };
     }
-
-    const payload = await this.sharedService.getCreateFolderPayload(
-      folderName,
-      this.selectedFolder2.title,
-      this.selectedFolder,
-      description,
-      date
-    );
-    const res = await this.apiService.post(url, payload).toPromise();
-    if (!res && !res["uid"]) return;
-
-    this.searchList.unshift(res);
-    this.sortedData = this.searchList.slice();
-    this.folderAssetsResult[this.selectedFolder.uid].entries.unshift(res);
-    this.showMoreButton = false;
-    $(".dropdownCreate").hide();
-    $(".buttonCreate").removeClass("createNewFolderClick");
-    this.sharedService.showSnackbar(
-      `${folderName} folder successfully created.`,
-      3000,
-      "top",
-      "center",
-      "snackBarMiddle"
-    );
-    this.showFolder = false;
-    if (!this.hasUpdatedChildren.includes(this.selectedFolder.uid)) {
-      this.hasUpdatedChildren.push(this.selectedFolder.uid);
-    }
-
-    this.folderNameRef = undefined;
-
-    return {
-      id: res["uid"],
-      title: res["title"],
-      type: res["type"],
-      path: res["path"],
-    };
   }
 
   checkShowCreateFolder() {
@@ -1278,5 +1287,13 @@ export class BrowseComponent implements OnInit {
 
   navigateToWorkspaceFolder(uid: string) {
     this.router.navigate(['workspace'], {queryParams: {folder: uid}});
+  }
+
+  inputChange() {	
+    if(!this.folderNameRef) {	
+      this.showError = true;	
+    } else {	
+      this.showError = false;	
+    }	
   }
 }
