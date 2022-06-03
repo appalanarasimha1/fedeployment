@@ -45,11 +45,11 @@
   <div class="cardBlock newDesign pa-0">
     <div [ngClass]="{'activeHover': doc.isSelected}">
       <div class="mouse-hover-bg" (click)="openPreview()"></div>
-      <!-- <div class="form-group-custom">
+      <div class="form-group-custom">
         <input type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
           (change)="selectImage($event)">
         <label for="html-{{doc.uid}}"></label>
-      </div> -->
+      </div>
       <div class="hover-icon-group">
         
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"

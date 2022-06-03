@@ -398,32 +398,8 @@
 
   <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
 
-  <div *ngIf="fileSelected.length" class="footer-listing" [ngClass]="{'fileSelected.length' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
-    <div class="row">
-      <div class="col-md-6 footer-add-items">
-        <span>{{fileSelected.length}} item(s) selected</span>
-        <a (click)="clearSelected()">Clear</a>
-      </div>
-      <!-- <div class="col-md-4">
-        <img src="../../assets/images/synchronize-arrow-clock-footer.svg" alt="" class="footer-icons">
-        <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
-      </div> -->
-      <div class="col-md-6">
-        <!-- <img src="../../assets/images/download-all-as-zip.svg" placement="top"
-          ngbTooltip="This function will be available soon" alt="" class="footer-icons"
-          style="    cursor: not-allowed;opacity: 0.4;"> -->
-        <!-- <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top"
-          ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
-        <!-- <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to clipboard" style="cursor: not-allowed;opacity: 0.4;"> -->
-        <!-- <img src="../../assets/images/upload-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
-        <!-- <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" placement="top"
-          ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;width: 20px;"> -->
-      </div>
-    </div>
-  </div>
-
-  <div class="downloadAssets">
-    <div class="selectedItems">Selected 4 <img src="../../assets/images/remove-icon.svg" alt="" /></div>
+  <div *ngIf="fileSelected.length" class="downloadAssets"  [ngClass]="{'fileSelected.length' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
+    <div class="selectedItems">Selected {{fileSelected.length}} <img src="../../assets/images/remove-icon.svg" alt="" (click)="clearSelected()" /></div>
     <div class="downloadSelectedAssets downloadFileWorkspace">
       <span (click)="multiDownload()"><img src="../../assets/images/download-golden.svg" alt="" /> Download selected assets</span>
       <div class="multiDownloadBlock">
@@ -454,3 +430,27 @@
     </div>
   </div>
 </section>
+
+<!-- <div *ngIf="fileSelected.length" class="footer-listing" [ngClass]="{'fileSelected.length' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
+  <div class="row">
+    <div class="col-md-6 footer-add-items">
+      <span>{{fileSelected.length}} item(s) selected</span>
+      <a (click)="clearSelected()">Clear</a>
+    </div>
+    <!-- <div class="col-md-4">
+      <img src="../../assets/images/synchronize-arrow-clock-footer.svg" alt="" class="footer-icons">
+      <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
+    </div> -/->
+    <div class="col-md-6">
+      <!-- <img src="../../assets/images/download-all-as-zip.svg" placement="top"
+        ngbTooltip="This function will be available soon" alt="" class="footer-icons"
+        style="    cursor: not-allowed;opacity: 0.4;"> -->
+      <!-- <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top"
+        ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
+      <!-- <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to clipboard" style="cursor: not-allowed;opacity: 0.4;"> -->
+      <!-- <img src="../../assets/images/upload-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
+      <!-- <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" placement="top"
+        ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;width: 20px;"> -/->
+    </div>
+  </div>
+</div> -->
