@@ -29,7 +29,7 @@ import { NgxMasonryComponent } from "ngx-masonry";
 import { DataService } from "../services/data.service";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { UNWANTED_WORKSPACES } from "../upload-modal/constant";
-
+import { saveAs } from "file-saver-es";
 @Component({
   selector: "app-content",
   // Our list of styles in our component. We may add more to compose many styles together
@@ -311,10 +311,12 @@ export class DocumentComponent implements OnInit, OnChanges {
               console.log(res);
               // this.apiService
               //   .get(
-              //     "/automation/Blob.BulkDownload/@async/cd9b089c-bcc3-4a60-90a5-4264742cb458"
+              //     "/automation/Blob.BulkDownload/@async/"+newUID
               //   )
               //   .subscribe((res: any) => {
-              //     console.log(res);
+              //     console.log("Inside get",res.toString());
+              //     const blob = new Blob(res, { type: "jpg" });
+              //     saveAs(blob, "abc.zip");
               //   });
             });
         });
