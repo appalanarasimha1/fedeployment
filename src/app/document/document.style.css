@@ -1710,3 +1710,173 @@ color: #ACACAC;
 }
 .customTagBar ul {display: inline-block;}
 .customTagBar ul li {display: inline-block; padding: 0px 30px;vertical-align: top;}
+.downloadAssets {
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  background: #EDD580;
+  z-index: 3;
+  padding: 20px;
+  text-align: center;
+}
+.selectedItems {
+  display: inline-block;
+  background: transparent;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: #937206;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  line-height: 24px;
+  margin-top: 1px;
+  font-weight: 600;
+}
+.selectedItems img {
+  height: 11px;
+  margin-left: 5px;
+  width: 11px;
+  vertical-align: 0px;
+}
+.downloadSelectedAssets {
+  position: relative;
+  display: inline-block;
+  background: #FFFFFF;
+  border-radius: 100px;
+  /* padding: 10px 30px; */
+  color: #937206;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  margin-left: 40px;
+  cursor: pointer;
+}
+.downloadSelectedAssets img {
+  display: inline-block;
+  width: 25px;
+  vertical-align: top;
+}
+.multiDownloadBlock {
+  background: #23211E;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 20px;
+  position: absolute;
+  z-index: 1;
+  width: 300px;
+  right: 0px;
+  bottom: 58px;
+  display:none;
+  text-align: left;
+}
+.multiDownloadBlock p {
+  color: #fff;
+}
+.downloadSelectedAssets span {
+  display: inline-block;
+  padding: 10px 40px;
+}
+.multiDownloadBlock p {
+  color: #fff;
+  font-weight: normal;
+  padding-bottom: 10px;
+  font-size: 14px;
+}
+.download-btn {
+  float: right;
+  padding-top: 25px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.download-btn a {
+  text-decoration: none;
+  color: #EDD580;
+  outline: none;
+  font-weight: normal;
+}
+.download-btn svg {
+  margin-right: 6px;
+  vertical-align: top;
+}
+
+/* custom checkbox start */
+.internal-use .control-group {
+  display: block;
+}
+.internal-use .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 30px;
+  border: 0px;
+  margin: 10px 0px 0px;
+  color: #fff;
+}
+.internal-use .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.internal-use .control__indicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+.internal-use .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.internal-use .control:hover input ~ .control__indicator,
+.internal-use .control input:focus ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control input:checked ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control:hover input:not([disabled]):checked ~ .control__indicator,
+.internal-use .control input:checked:focus ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control input:disabled ~ .control__indicator {
+  background: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.internal-use .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.internal-use .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.internal-use .control--checkbox .control__indicator:after {
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid #23211E;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.internal-use .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.internal-use .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #23211E;
+}
+.internal-use .control--radio input:disabled ~ .control__indicator:after {
+  background: #fff;
+}
+/* custom checkbox end */

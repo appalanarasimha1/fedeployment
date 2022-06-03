@@ -206,6 +206,10 @@ export class DocumentComponent implements OnInit, OnChanges {
   dummyPlaceholderTags: boolean = true;
   searchBarClicked: boolean = false;
 
+  downloadErrorShow: boolean = false;
+  downloadEnable: boolean = false;
+  isAware;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
@@ -1018,5 +1022,42 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.dataService.termSearchInit(searchTerm);
     this.dataService.termSearchForHideInit(searchTerm);
 
+  }
+
+  multiDownload() {
+    $(".downloadFileWorkspace").on("click", function (e) {
+      // $(".dropdownCreate").toggle();
+      $(".multiDownloadBlock").show();
+      $(".downloadFileWorkspace").addClass("multiDownlodClick");
+      e.stopPropagation();
+    });
+    $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
+      $(".multiDownloadBlock").hide();
+      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      e.stopPropagation();
+    });
+
+    $(".multiDownloadBlock").click(function (e) {
+      e.stopPropagation();
+      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+    });
+
+    $(document).click(function () {
+      $(".multiDownloadBlock").hide();
+      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+    });
+  }
+  downloadClick() {
+    if(!this.downloadEnable) {
+      this.downloadErrorShow = true;
+    }
+  }
+  onCheckboxChange(e: any) {
+    if(e.target.checked){
+      this.downloadErrorShow = false;
+      this.downloadEnable = true;
+    } else {
+      this.downloadEnable = false;
+    }
   }
 }

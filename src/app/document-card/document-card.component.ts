@@ -188,7 +188,6 @@ export class DocumentCardComponent implements OnChanges {
     } else {
       this.downloadEnable = false;
     }
-    
   }
 
 }

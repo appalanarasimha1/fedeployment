@@ -131,6 +131,11 @@ export class BrowseComponent implements OnInit {
   folderNameRef;
   showError: boolean = false;
 
+
+  isAware = false;
+  downloadErrorShow: boolean = false;
+  downloadEnable: boolean = false;
+
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
     this.masonry?.layout();
@@ -1284,6 +1289,44 @@ export class BrowseComponent implements OnInit {
       this.showError = true;
     } else {
       this.showError = false;
+    }
+  }
+
+  multiDownload() {
+    $(".downloadFileWorkspace").on("click", function (e) {
+      // $(".dropdownCreate").toggle();
+      $(".multiDownloadBlock").show();
+      $(".downloadFileWorkspace").addClass("multiDownlodClick");
+      e.stopPropagation();
+    });
+    $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
+      $(".multiDownloadBlock").hide();
+      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      e.stopPropagation();
+    });
+
+    $(".multiDownloadBlock").click(function (e) {
+      e.stopPropagation();
+      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+    });
+
+    $(document).click(function () {
+      $(".multiDownloadBlock").hide();
+      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+    });
+  }
+
+  downloadClick() {
+    if(!this.downloadEnable) {
+      this.downloadErrorShow = true;
+    }
+  }
+  onCheckboxChange(e: any) {
+    if(e.target.checked){
+      this.downloadErrorShow = false;
+      this.downloadEnable = true;
+    } else {
+      this.downloadEnable = false;
     }
   }
 }

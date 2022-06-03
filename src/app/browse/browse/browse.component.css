@@ -1279,7 +1279,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover .workspaceInfo {
 ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   display: block;
 }
-.dropdownCreate {
+.dropdownCreate, .multiDownloadBlock {
   display:none;
   text-align: left;
 }
@@ -1702,3 +1702,164 @@ tr.groupFolder td:first-child {
   border-bottom: 2px solid #E03C31 !important;
 }
 button.createBtn.btn.tollTipCustom.disableBtn {background: #E8E6DF;color: #BAB8B2;}
+
+.downloadFileWorkspace {
+  position: relative;
+}
+.multiDownloadBlock {
+  background: #23211E;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 20px;
+  position: absolute;
+  z-index: 1;
+  width: 300px;
+  right: 0px;
+  top: 40px;
+}
+.multiDownloadBlock p {
+  color: #fff;
+}
+
+.download-btn {float: right;padding-top: 25px;cursor: pointer;font-weight: 600;}
+.download-btn a {text-decoration: none;color: #EDD580; outline: none;}
+.download-btn svg {margin-right: 6px;vertical-align: top;}
+
+.download-btn a.download-disabled {color: #BAB8B2 !important;}
+.download-btn a.download-disabled path {
+  stroke: #BAB8B2 !important;
+}
+.download-btn a.cancelDownload {
+  margin-right: 25px;
+}
+.error {
+  color: #E03C31;
+  padding: 10px 0px 0px;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+.internal-use .error-disabled .control__indicator {
+  border: 1px solid #E03C31;
+}
+.pt-15 {
+  padding-top: 15px;
+}
+
+ul.downloadImgLisst {
+  margin-top: 15px;
+}
+ul.downloadImgLisst li {
+  padding-bottom: 10px;
+}
+ul.downloadImgLisst li:last-child {
+  padding-bottom: 0px;
+}
+
+ul.downloadImgLisst li .imgListBlk, 
+ul.downloadImgLisst li .contentListBlk,
+ul.downloadImgLisst li .imgMailIcon {
+  display: inline-block;
+  vertical-align: middle;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk,
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon {
+  max-width: 20px;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk img,
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
+  margin-left: 0px;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
+  vertical-align: -3px;
+}
+ul.downloadImgLisst li .contentListBlk {
+  padding: 0px 10px;
+  color: #fff;
+  width: calc(100% - 40px);
+}
+
+/* custom checkbox start */
+.internal-use .control-group {
+  display: block;
+}
+.internal-use .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 30px;
+  border: 0px;
+  margin: 25px 0px 0px;
+  color: #fff;
+}
+.internal-use .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.internal-use .control__indicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+.internal-use .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.internal-use .control:hover input ~ .control__indicator,
+.internal-use .control input:focus ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control input:checked ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control:hover input:not([disabled]):checked ~ .control__indicator,
+.internal-use .control input:checked:focus ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control input:disabled ~ .control__indicator {
+  background: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.internal-use .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.internal-use .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.internal-use .control--checkbox .control__indicator:after {
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid #23211E;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.internal-use .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.internal-use .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #23211E;
+}
+.internal-use .control--radio input:disabled ~ .control__indicator:after {
+  background: #fff;
+}
+/* custom checkbox end */
