@@ -27,6 +27,7 @@ import { UNWANTED_WORKSPACES } from "../../upload-modal/constant";
 import { UploadModalComponent } from "src/app/upload-modal/upload-modal.component";
 import { Sort } from "@angular/material/sort";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import { DataService } from "src/app/services/data.service";
 
 @Component({
   selector: "app-browse",
@@ -43,12 +44,12 @@ export class BrowseComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     public matDialog: MatDialog,
-    private http: HttpClient,
     private apiService: ApiService,
     private router: Router,
     public sharedService: SharedService,
     private route: ActivatedRoute,
-    public nuxeo: NuxeoService
+    public nuxeo: NuxeoService,
+    public dataService: DataService
   ) {}
 
   faCoffee = faCoffee;
@@ -156,12 +157,13 @@ export class BrowseComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUserData();
     this.route.queryParams.subscribe(async (params) => {
+      this.loading = true;
       // this.routeParams.folder = params.folder;
       this.selectedFolder2 = this.folderStructure[0];
       this.sectorSelected = this.folderStructure[0];
       this.selectedFolder = this.folderStructure[0];
 
-      if (params.folder) {
+      if (params.folder && params.folder !== ROOT_ID) {
         this.fetchAllSectors();
         await this.fetchBreadCrumbByAssetsUId(params.folder);
         this.selectedFolder2 = this.breadCrumb[0];
@@ -169,13 +171,28 @@ export class BrowseComponent implements OnInit {
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
         if(this.selectedFolder.isTrashed) {
           this.folderNotFound = true;
+          this.loading = false;
           return;
         }
         // this.fetchCurrentFolderAssets(params.folder);
         this.getWorkspaceFolders(params.folder, 1);
+        const folder: any = await this.fetchFolder(params.folder);
+        this.saveState(folder);
+        this.loading = false;
       } else {
         await this.fetchAllSectors();
+        this.loading = false;
       }
+    });
+
+    this.dataService.uploadedAssetData$.subscribe((result) => {
+      if (!result) return;
+      this.folderAssetsResult[
+        this.breadCrumb[this.breadCrumb.length - 1].uid
+      ].entries.unshift(result);
+      this.searchList.unshift(result);
+      this.sortedData = this.searchList.slice();
+      this.showMoreButton = false;
     });
 
     $(".acnav__label").click(function () {
@@ -256,7 +273,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
-    this.navigateToWorkspaceFolder(item.uid);
+    this.saveState(item);
     this.searchBarValue = "";
     this.paginator.firstPage();
     if (item.isTrashed) return;
@@ -451,7 +468,7 @@ export class BrowseComponent implements OnInit {
    * @returns null
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
-    this.navigateToWorkspaceFolder(item.uid);
+    this.saveState(item);
     this.paginator?.firstPage();
     this.searchBarValue = "";
     // if (!isNaN(index) || breadCrumbIndex === 1) {
@@ -1025,10 +1042,10 @@ export class BrowseComponent implements OnInit {
     return this.selectedFolder?.type === "Domain";
   }
 
-  showHideCreateFolder() {
-    // $(document).ready(function(){
-    // })
-  }
+  // showHideCreateFolder() {
+  //   // $(document).ready(function(){
+  //   // })
+  // }
 
   sortData(sort: Sort) {
     const data = this.searchList.slice();
@@ -1156,7 +1173,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async getWorkspaceFolders(sectorUid: string, viewType = 0) {
-    this.loading = true;
+    // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
     this.numberOfPages = numberOfPages;
@@ -1166,7 +1183,7 @@ export class BrowseComponent implements OnInit {
       this.sortedData = [];
       this.searchList = [];
       this.showLinkCopy = true;
-      this.loading = false;
+      // this.loading = false;
       return;
     }
     workSpaceIndex = entries.findIndex((res) => res.title === "Workspaces");
@@ -1177,7 +1194,7 @@ export class BrowseComponent implements OnInit {
       this.sortedData = entries;
       this.searchList = entries;
       this.showLinkCopy = true;
-      this.loading = false;
+      // this.loading = false;
       return;
     }
     ({ entries, numberOfPages, resultsCount } = await this.fetchAssets(entries[workSpaceIndex].uid));
@@ -1189,11 +1206,11 @@ export class BrowseComponent implements OnInit {
     this.selectedMenu = viewType;
     this.showSearchbar = true;
     this.extractBreadcrumb();
-    this.loading = false;
+    // this.loading = false;
   }
 
   async fetchAllSectors(isExpand = false) {
-    this.loading = true;
+    // this.loading = true;
     this.isTrashView = false;
     this.sectorSelected = null;
     this.sharedService.toTop();
@@ -1204,7 +1221,7 @@ export class BrowseComponent implements OnInit {
     this.selectedMenu = 0;
     this.showSearchbar = false;
     this.createDynamicSidebarScroll();
-    this.loading = false;
+    // this.loading = false;
   }
 
   async fetchCurrentFolderAssets(sectorUid: string, showLinkCopy = true, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
@@ -1278,5 +1295,17 @@ export class BrowseComponent implements OnInit {
 
   navigateToWorkspaceFolder(uid: string) {
     this.router.navigate(['workspace'], {queryParams: {folder: uid}});
+  }
+
+  saveState({uid, title, path, properties, sectorId, type, contextParameters}) {
+    let breadcrumb;
+    if(contextParameters) {
+      ({breadcrumb} = contextParameters);
+      contextParameters = {breadcrumb};
+    }
+    const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
+    localStorage.setItem('workspaceState', workspaceState);
+    this.navigateToWorkspaceFolder(uid);
+    return;
   }
 }

@@ -35,6 +35,7 @@ import {SharedService} from "../services/shared.service";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatHorizontalStepper, MatStep, MatVerticalStepper } from '@angular/material/stepper';
 import { ORDERED_FOLDER, PAGE_SIZE_200, ROOT_ID, WORKSPACE_ROOT } from "../common/constant";
+import { DataService } from "../services/data.service";
 interface FileByIndex {
   [index: string]: File;
 }
@@ -137,26 +138,33 @@ export class UploadModalComponent implements OnInit {
   assetCache: {[id: string]: any} = {};
   folderOrder: string = "";
   folderToAddName: string = "";
+  publishing: boolean;
 
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
     private router: Router,
     public sharedService: SharedService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dataService: DataService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     console.log('incoming data = ', this.data);
+    await this.showWorkspaceList();
     if(this.data) {
       const title = this.data.path.split('/workspaces')[0].substring(1);
-      this.selectWorkspace(title, true);
+      const workspace = this.data.contextParameters.breadcrumb.entries.filter(workspace => workspace.type.toLowerCase() === 'domain');
+      this.selectWorkspace(workspace[0], true);
       this.showWsList = false;
-      this.folderNameParam = this.data.title;
+      if(this.data.type.toLowerCase() !== 'domain') {
+        this.folderNameParam = this.data.title;
+      }
       this.associatedDate = this.data?.properties?.["dc:start"];
-    } else {
-      this.showWorkspaceList();
-    }
+    } 
+    // else {
+    //   this.showWorkspaceList();
+    // }
     this.stepLabel = STEPS[1];
     this.buttonLabel = BUTTON_LABEL[1];
     this.loadUsers();
@@ -284,34 +292,40 @@ export class UploadModalComponent implements OnInit {
     return `${this.shortTheString(file.name, 20)} ${len > 1 ? `and other ${len - 1} files` : ""}`;
   }
 
-  showWorkspaceList() {
+  async showWorkspaceList() {
     if (!this.workspaceList || this.workspaceList.length === 0) {
-      this.getWsList();
+      await this.getWsList();
     }
     this.showWsList = true;
   }
 
   async selectWorkspace(ws, incomingParam?: boolean) {
-    this.extractBreadcrumb(ws.contextParameters)
-    if(incomingParam) {
-      this.selectedWorkspace.title = ws;
-      return;
-    }
-    this.selectedWorkspace = ws;
+    this.extractBreadcrumb(ws.contextParameters);
     this.showWsList = false;
-    this.folderList = await this.getFolderList(ws.id);
+    this.folderNameParam = "";
+    // if(incomingParam) {
+    //   this.selectedWorkspace.title = ws;
+    //   return;
+    // }
+    this.selectedWorkspace = ws;
+    // this.showWsList = false;
+    this.folderList = await this.getFolderList(ws.uid);
     this.dropdownFolderList = [...this.folderList];
   }
 
   openBrowseRoute() {
-    if(this.data) { 
-      // NOTE: as per the new requirements, we do not want to navigate to the folder in case of uploading asset in a folder.
-      this.closeModal();
+    // if(this.data) { 
+    //   // NOTE: as per the new requirements, we do not want to navigate to the folder in case of uploading asset in a folder.
+    //   this.closeModal();
+    //   return;
+    // }
+    this.dialogRef.close(this.selectedFolder);
+    if(this.data) {
+      this.dataService.uploadedAssetDataInit(this.uploadedAsset);
       return;
     }
-    this.dialogRef.close(this.selectedFolder);
-    const folderUid = this.data?.uid || this.selectedFolder?.id;
-    this.router.navigate(['/workspace'], {queryParams: {folder: folderUid }});
+    const folderUid = this.selectedFolder?.uid; //  this.data?.uid || this.selectedFolder?.uid;
+    this.router.navigate(['workspace'], {queryParams: {folder: folderUid }});
   }
 
   async getWsList() {
@@ -358,7 +372,7 @@ export class UploadModalComponent implements OnInit {
     const rootWs = res.find((entry) => entry.type === "WorkspaceRoot");
     if (!rootWs) return res;
     this.parentFolder = rootWs;
-    return this.fetchByParent(rootWs.id);
+    return this.fetchByParent(rootWs.uid);
   }
 
   async getFolderByParentId(id: string, path: string, index?: number|null) {
@@ -375,7 +389,7 @@ export class UploadModalComponent implements OnInit {
     this.folderList = [...this.dropdownFolderList];
   }
   
-  extractBreadcrumb(contextParameters = this.selectedFolder?.contextParameters) {
+  extractBreadcrumb(contextParameters) {
     if (contextParameters) {
       this.breadCrumb = contextParameters?.breadcrumb.entries.filter((entry) => {
         return entry.type.toLowerCase() !== "workspaceroot";
@@ -411,7 +425,7 @@ export class UploadModalComponent implements OnInit {
     if (!entries) return [];
     this.assetCache[uid] = {};
     this.assetCache[uid]['entries'] = entries.map((entry) => ({
-      id: entry.uid,
+      uid: entry.uid,
       title: entry.title,
       type: entry.type,
       path: entry.path,
@@ -497,7 +511,7 @@ export class UploadModalComponent implements OnInit {
 
   //// Custom input dropdown
   focusDropdown() {
-    if(this.data) return;
+    // if(this.data) return;
     this.showCustomDropdown = true;
   }
 
@@ -651,19 +665,23 @@ export class UploadModalComponent implements OnInit {
   }
 
   async publishAssets() {
+    this.publishing = true;
     let folder = this.data ? Object.assign({}, this.data) : Object.assign({}, this.selectedFolder);
     if (this.folderToAdd) {
       folder = await this.createFolder(this.folderToAdd);
     }
-    Object.keys(this.filesMap).forEach(async (key) => {
+   
+    for(let key in this.filesMap) {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
       await this.setAssetPermission(asset, key);
-    });
+    }
     if(!this.showRedirectUrl()) {
       // this.dialogRef.close(this.uploadedAsset);
+    this.publishing = false;
       this.sharedService.showSnackbar('Asset added successfully.', 3000, 'bottom', 'center', 'snackBarMiddle');
       return;
     }
+    this.publishing = false;
     this.step = 4;
   }
 
@@ -759,7 +777,7 @@ export class UploadModalComponent implements OnInit {
     const res = await this.apiService.post(url, payload).toPromise();
     this.uploadedAsset = res;
     return {
-      id: res["uid"],
+      uid: res["uid"],
       title: res["title"],
       type: res["type"],
       path: res["path"],
@@ -803,7 +821,7 @@ export class UploadModalComponent implements OnInit {
     const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder, this.description, this.associatedDate);
     const res = await this.apiService.post(url, payload).toPromise();
     return {
-      id: res["uid"],
+      uid: res["uid"],
       title: res["title"],
       type: res["type"],
       path: res["path"],

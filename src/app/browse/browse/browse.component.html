@@ -27,7 +27,7 @@
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
                   <div  class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid && !isTrashView ? 'active-tab' : ''"
-                        (click)="fetchAllSectors(item.isExpand);selectedFolder2=item; selectedFolder=item; createBreadCrumb(item.title, item.type, item.path)">
+                        (click)="fetchAllSectors(item.isExpand);selectedFolder2=item; selectedFolder=item; createBreadCrumb(item.title, item.type, item.path); saveState(item)">
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
                       <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!item.isExpand"/>
@@ -250,17 +250,12 @@
 
                 
                 <ul class="uploadAssetsClassifications" *ngIf="showLinkCopy">
-                  <li (click)="openModal()" class="tollTipWorkspace workspaceInfoHover">
-                    <!-- <svg width="24" height="24" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
-                      <path d="M15 29.0625V17.8125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M10.3125 22.5L15 17.8125L19.6875 22.5" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M21.5625 19.6874H22.9687C25.5924 19.6918 27.9244 18.0164 28.7575 15.5284C29.5905 13.0405 28.7376 10.2986 26.6402 8.7223C24.5428 7.14597 21.6719 7.08909 19.5137 8.58112C18.6437 3.94906 14.4701 0.682968 9.7647 0.952001C5.05932 1.22103 1.28514 4.94155 0.948751 9.64258C0.612362 14.3436 3.81835 18.5636 8.43748 19.4999" stroke="#937206" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg> -->
+                  <!-- <li (click)="openModal()" class="tollTipWorkspace workspaceInfoHover">
                     <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                       <path d="M0 17H18V19H0V17ZM10 3.828V15H8V3.828L1.929 9.9L0.515 8.486L9 0L17.485 8.485L16.071 9.899L10 3.83V3.828Z" fill="#937206"/>
                     </svg>                      
                     <div class="customToolTipWorkspace">Upload here</div>
-                  </li>
+                  </li> -->
                   <li (click)="openUpdateClassModal(breadCrumb[0] ?breadCrumb[0] :null )" class="tollTipWorkspace" [ngClass]="{'uploadClassificationDisable':breadCrumb[0]? false || !sortedData.length :true  }"> <!-- !upadtePermission(breadCrumb[0]) -->
                     <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                       <path d="M28.1873 16.7728V1.58597C28.1873 1.26187 27.9357 1 27.625 1H1.56254C1.25178 1 1 1.26205 1 1.58597V28.539C1 28.8625 1.25176 29.125 1.56254 29.125H16.1391C16.4503 29.125 16.7017 28.8628 16.7017 28.539C16.7017 28.2153 16.4501 27.9531 16.1391 27.9531H2.12488V2.17203H27.0626V16.7726C27.0626 17.0961 27.3142 17.3586 27.6252 17.3586C27.9359 17.3588 28.1873 17.0965 28.1873 16.7728Z" fill="#937206" stroke="#937206" stroke-width="0.5"/>
@@ -318,7 +313,7 @@
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                <div *ngIf="selectedFolder.uid === parentId && !isTrashView" class="mb-5 text-center animate__animated animate__fadeIn">
+                <div *ngIf="selectedFolder.uid === parentId && !isTrashView && !loading" class="mb-5 text-center animate__animated animate__fadeIn">
                   <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px;">
                   <p class="sectorssText">Choose a workspace on the left to begin</p>
                 </div>
