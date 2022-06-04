@@ -108,7 +108,7 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = doc.properties['sa:confidentiality'];
       this.customAccessMap[index] = doc.properties['sa:access'];
       this.customUsersMap[index] = doc.properties['sa:users'];
-      this.customDownloadApprovalUsersMap[index] = doc.properties['dc:creator'];
+      this.customDownloadApprovalUsersMap[index] = doc.properties['sa:users'][0];
       return;
     }
     const aces = doc.contextParameters.acls.find(a => a.name === "local");
@@ -430,7 +430,14 @@ export class UpdateModalComponent implements OnInit {
   }
 
   classificationsUpdate() {
-    this.dialogRef.close(this.updatedDocs);
+    const result = {
+      updatedDocs: this.updatedDocs || [],
+      selectedFolder: {
+        description: this.description,
+        associatedDate: this.associatedDate,
+      }
+    }
+    this.dialogRef.close(result);
     this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle');
   }
 
