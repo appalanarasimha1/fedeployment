@@ -306,7 +306,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       console.log('this.tagsMetaRealdata2', this.tagsMetaRealdata);
       this.dummyPlaceholderTags = false;
     });
-  } 
+  }
 
   resetResult() {
     this.dataService.searchBarClickInit(false);
@@ -374,6 +374,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (sector) {
       queryParams["sectors"] = `["${sector}"]`;
     }
+    queryParams["duplicate_show"] = "1";
     this.loading.push(true);
     this.nuxeo.nuxeoClient
       .request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
