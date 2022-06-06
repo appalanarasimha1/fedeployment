@@ -4300,3 +4300,8 @@ body {
   top: 18px !important;
   z-index: 9 !important;
 }
+
+body {
+  overflow: hidden !important;
+  overflow-y: scroll !important;
+}
