@@ -16,6 +16,7 @@ import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONF
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 const STEPS = {
   1: "Update Classification",
@@ -71,12 +72,21 @@ export class UpdateModalComponent implements OnInit {
   copyrightYearMap: any = {};
   updatedDocs: any = {};
   downloadApproval: boolean = false;
+  overallConfidentiality: string;
+  overallAccess: string;
+  overallDownloadApproval: boolean = false;
+  overallUsers: [];
+  overallDownloadApprovalUsers : string;
+  associatedDate: string;
+  description: string;
 
   ngOnInit(): void {
     this.loadUsers();
     this.docs = this.data.docs.filter(doc => ['picture', 'video', 'file', 'audio'].indexOf(doc.type.toLowerCase()) != -1);
     this.selectedFolder = this.data.folder;
     this.initACLValue();
+    this.associatedDate = this.selectedFolder.properties["dc:start"];
+    this.description = this.selectedFolder.properties["dc:description"];
   }
 
   closeModal() {
@@ -98,7 +108,7 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = doc.properties['sa:confidentiality'];
       this.customAccessMap[index] = doc.properties['sa:access'];
       this.customUsersMap[index] = doc.properties['sa:users'];
-      this.customDownloadApprovalUsersMap[index] = doc.properties['dc:creator'];
+      this.customDownloadApprovalUsersMap[index] = doc.properties['sa:users'][0];
       return;
     }
     const aces = doc.contextParameters.acls.find(a => a.name === "local");
@@ -182,6 +192,10 @@ export class UpdateModalComponent implements OnInit {
   }
 
   onSelectConfidentiality(fileIndex?: any) {
+    if (fileIndex == null) {
+      this.overallAccess = undefined;
+      return;
+    }
     // this.customConfidentialityMap[fileIndex] = confidentiality;
     this.customAccessMap[fileIndex] = undefined;
     this.customAllowMap[fileIndex] = undefined;
@@ -189,6 +203,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   onSelectAccess(fileIndex?: any) {
+    if (fileIndex == null) return;
     // this.customAccessMap[fileIndex] = access;
     const allow = this.customAccessMap[fileIndex] === ACCESS.all ? ALLOW.any : ALLOW.internal;
     this.onSelectAllow(allow, fileIndex);
@@ -210,8 +225,8 @@ export class UpdateModalComponent implements OnInit {
   }
 
   checkShowUserDropdown(fileIndex?: any) {
-    const access = this.customAccessMap[fileIndex];
-    const confidentiality = this.customConfidentialityMap[fileIndex];
+    const access = fileIndex == null ? this.overallAccess : this.customAccessMap[fileIndex];
+    const confidentiality = fileIndex == null ? this.overallConfidentiality : this.customConfidentialityMap[fileIndex];
     if (access === ACCESS.restricted && confidentiality) {
       return true;
     } else {
@@ -220,7 +235,7 @@ export class UpdateModalComponent implements OnInit {
   }
 
   checkAccessOptionDisabled(value: string, fileIndex?: any) {
-    const confidentiality = this.customConfidentialityMap[fileIndex];
+    const confidentiality = fileIndex == null ? this.overallConfidentiality : this.customConfidentialityMap[fileIndex];
     if (!confidentiality || confidentiality === CONFIDENTIALITY.not) return false;
     if (value === ACCESS.all) {
       return true;
@@ -252,10 +267,26 @@ export class UpdateModalComponent implements OnInit {
   }
 
   async updateAssets() {
+    await this.updateFolderInfo();
     for (let i = 0; i < this.docs.length; i++) {
       await this.updateAsset(this.docs[i], i);
     }
     this.classificationsUpdate();
+  }
+
+  updateFolderInfo() {
+    if (this.associatedDate === this.selectedFolder.properties["dc:start"]
+     && this.description === this.selectedFolder.properties["dc:description"]) return;
+    return this.apiService
+      .post(apiRoutes.DOCUMENT_UPDATE, {
+        input: this.selectedFolder.uid,
+        params: {
+          properties: {
+            "dc:start": this.associatedDate,
+            "dc:description": this.description,
+          },
+        },
+      }).pipe().toPromise();
   }
 
   async updateAsset(doc, index) {
@@ -329,7 +360,7 @@ export class UpdateModalComponent implements OnInit {
     //   });
     // });
       // .then(() => {
-       
+
       // })
   }
 
@@ -399,15 +430,35 @@ export class UpdateModalComponent implements OnInit {
   }
 
   classificationsUpdate() {
-    this.dialogRef.close(this.updatedDocs);
+    const result = {
+      updatedDocs: this.updatedDocs || [],
+      selectedFolder: {
+        description: this.description,
+        associatedDate: this.associatedDate,
+      }
+    }
+    this.dialogRef.close(result);
     this.sharedService.showSnackbar('The classifications have been updated.', 4000, 'bottom', 'center', 'snackBarMiddle');
   }
 
   checkOwnerDropdown(index?: string) {
     return !!(this.customDownloadApprovalMap[index] === 'true' || this.customDownloadApprovalMap[index]);
   }
-  
+
   checkOwnerDropdownByValue(value?: string) {
     return !!(value === 'true') || !(value === 'false');
+  }
+
+  applyToAll() {
+    const len = Object.keys(this.customConfidentialityMap).length;
+    for (let i = 0; i < len; i++) {
+      this.customConfidentialityMap[i] = this.overallConfidentiality;
+      this.customAccessMap[i] = this.overallAccess;
+      this.customDownloadApprovalMap[i] = this.overallDownloadApproval;
+      this.customUsersMap[i] = this.overallUsers;
+      this.customDownloadApprovalUsersMap[i] = this.overallDownloadApprovalUsers;
+      const allow = this.overallAccess === ACCESS.all ? ALLOW.any : ALLOW.internal;
+      this.customAllowMap[i] = allow;
+    }
   }
 }

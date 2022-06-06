@@ -467,9 +467,9 @@ export class BrowseComponent implements OnInit {
 
   /**
    * This functions gets called from bread crumbs and sidebar
-   * @param item 
-   * @param index 
-   * @param breadCrumbIndex 
+   * @param item
+   * @param index
+   * @param breadCrumbIndex
    * @returns null
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
@@ -619,9 +619,9 @@ export class BrowseComponent implements OnInit {
 
   openUpdateClassModal(breadCrumb: any) {
     // NOTE: uncomment below code
-    // if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
-    //   return;
-    // }
+    if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
+      return;
+    }
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -639,18 +639,22 @@ export class BrowseComponent implements OnInit {
 
     modalDialog.afterClosed().subscribe((result) => {
       if (!result) return;
-      Object.keys(result).forEach((key) => {
+      const updatedDocs = result.updatedDocs;
+      const updatedFolder = result.selectedFolder;
+      this.selectedFolder.properties["dc:description"] = updatedFolder.description;
+      this.selectedFolder.properties["dc:start"] = updatedFolder.associatedDate;
+      Object.keys(updatedDocs).forEach((key) => {
         this.searchList[key].contextParameters.acls =
-          result[key].contextParameters.acls;
+          updatedDocs[key].contextParameters.acls;
         this.sortedData[key].contextParameters.acls =
-          result[key].contextParameters.acls;
+          updatedDocs[key].contextParameters.acls;
         this.searchList[key].properties = {
           ...this.searchList[key].properties,
-          ...result[key].properties,
+          ...updatedDocs[key].properties,
         };
         this.sortedData[key].properties = {
           ...this.sortedData[key].properties,
-          ...result[key].properties,
+          ...updatedDocs[key].properties,
         };
       });
       this.showMoreButton = false;
