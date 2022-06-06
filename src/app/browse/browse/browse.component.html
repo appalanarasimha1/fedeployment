@@ -26,7 +26,7 @@
            <div class="tree" >
               <ul style="list-style: none;" class="leftPanel">
                 <li *ngFor="let item of folderStructure;let i = index" style="cursor: pointer">
-                  <div  class="d-flex set" [ngClass]="selectedFolder2.uid === item.uid && !isTrashView ? 'active-tab' : ''"
+                  <div  class="d-flex set" [ngClass]="selectedFolder2?.uid === item.uid && !isTrashView ? 'active-tab' : ''"
                         (click)="fetchAllSectors(item.isExpand);selectedFolder2=item; selectedFolder=item; createBreadCrumb(item.title, item.type, item.path); saveState(item)">
                     <div style="z-index: 9;">
                       <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="item.isExpand" />
@@ -466,7 +466,7 @@
             <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
           </div>
           <mat-paginator
-            *ngIf="selectedFolder.uid !== parentId"
+            *ngIf="selectedFolder?.uid !== parentId"
             #paginator
             [length]="resultCount"
             [pageSize]="defaultPageSize"

@@ -164,9 +164,6 @@ export class BrowseComponent implements OnInit {
     this.route.queryParams.subscribe(async (params) => {
       this.loading = true;
       // this.routeParams.folder = params.folder;
-      this.selectedFolder2 = this.folderStructure[0];
-      this.sectorSelected = this.folderStructure[0];
-      this.selectedFolder = this.folderStructure[0];
 
       if (params.folder && params.folder !== ROOT_ID) {
         this.fetchAllSectors();
@@ -185,6 +182,9 @@ export class BrowseComponent implements OnInit {
         this.saveState(folder);
         this.loading = false;
       } else {
+        this.selectedFolder2 = this.folderStructure[0];
+        this.sectorSelected = this.folderStructure[0];
+        this.selectedFolder = this.folderStructure[0];
         await this.fetchAllSectors();
         this.loading = false;
       }
