@@ -163,7 +163,7 @@
                                  <img src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px; vertical-align: -2px;">
                                  {{folder.title}}
                               </span>
-                              <span (click)="getFolderByParentId(folder.id, folder.path); extractBreadcrumb(folder.contextParameters)" class="folderTitleArrow">
+                              <span (click)="getFolderByParentId(folder.uid, folder.path); extractBreadcrumb(folder.contextParameters)" class="folderTitleArrow">
                                  <img src="../../assets/images/back-arrow.svg" />
                               </span>
                            </li>
