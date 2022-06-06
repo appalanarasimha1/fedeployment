@@ -131,9 +131,9 @@ export class BrowseComponent implements OnInit {
   pageSizeOptions = [20, 50, 100];
   folderNameRef;
 
-  showError: boolean = false;	
-  isAware = false;	
-  downloadErrorShow: boolean = false;	
+  showError: boolean = false;
+  isAware = false;
+  downloadErrorShow: boolean = false;
   downloadEnable: boolean = false;
 
   completeLoadingMasonry(event: any) {
@@ -467,9 +467,9 @@ export class BrowseComponent implements OnInit {
 
   /**
    * This functions gets called from bread crumbs and sidebar
-   * @param item 
-   * @param index 
-   * @param breadCrumbIndex 
+   * @param item
+   * @param index
+   * @param breadCrumbIndex
    * @returns null
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
@@ -504,7 +504,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async fetchFolder(id) {
-    const result = await this.apiService.get(`/id/${id}`).toPromise();
+    const result = await this.apiService.get(`/id/${id}`, {headers: { "fetch-document": "properties"}}).toPromise();
     return result;
   }
 
@@ -515,7 +515,7 @@ export class BrowseComponent implements OnInit {
       return this.folderAssetsResult[id];
     }
     const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
-    const result: any = await this.apiService.get(url).toPromise();
+    const result: any = await this.apiService.get(url, {headers: { "fetch-document": "properties"}}).toPromise();
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, true)
     );
@@ -576,7 +576,7 @@ export class BrowseComponent implements OnInit {
     this.selectedFolder = { ...selected, uid: selected.id };
     this.sharedService.toTop();
     const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    this.apiService.get(url).subscribe((docs: any) => {
+    this.apiService.get(url, {headers: { "fetch-document": "properties"}}).subscribe((docs: any) => {
       this.searchList = docs.entries.filter(
         (sector) =>
           UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
@@ -720,9 +720,9 @@ export class BrowseComponent implements OnInit {
   }
 
   getFolderInfo(item) {
-    if (item.isTrashed) return item.properties["dc:creator"];
+    if (item.isTrashed) return item.properties["dc:creator"].id;
     const count = item.contextParameters?.folderAssetsCount || 0;
-    return `${count} assets curated by ${item.properties["dc:creator"]}`;
+    return `${count} assets curated by ${item.properties["dc:creator"].id}`;
   }
 
   copyToClipboard(val: string) {
@@ -897,7 +897,7 @@ export class BrowseComponent implements OnInit {
     }
     this.loading = true;
     const url = `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
-    this.apiService.get(url).subscribe((docs: any) => {
+    this.apiService.get(url, {headers: { "fetch-document": "properties"}}).subscribe((docs: any) => {
       this.numberOfPages = docs.numberOfPages;
       this.resultCount = docs.resultsCount;
       this.trashedList = docs.entries.filter(
@@ -931,7 +931,7 @@ export class BrowseComponent implements OnInit {
     let userData = localStorage.getItem("user");
     // console.log("userData", JSON.parse(userData));
     this.deletedByMe = this.trashedList.filter(
-      (m) => m.properties["dc:creator"] === JSON.parse(userData).username
+      (m) => m.properties["dc:creator"].id === JSON.parse(userData).username
     );
   }
 
@@ -947,7 +947,7 @@ export class BrowseComponent implements OnInit {
   }
 
   checkCanDelete(item) {
-    return this.user === item.properties["dc:creator"];
+    return this.user === item.properties["dc:creator"].id;
   }
 
   async fetchUserData() {
@@ -996,8 +996,8 @@ export class BrowseComponent implements OnInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
-    if(!this.folderNameRef) {	
-      this.showError = true;	
+    if(!this.folderNameRef) {
+      this.showError = true;
     } else {
       let url = `/path${this.selectedFolder.path}`;
       if (this.selectedFolder.type.toLowerCase() === "domain") {
@@ -1070,8 +1070,8 @@ export class BrowseComponent implements OnInit {
           return this.compare(a.title, b.title, isAsc);
         case "dc:creator":
           return this.compare(
-            a.properties["dc:creator"],
-            b.properties["dc:creator"],
+            (a.properties["dc:creator"].properties?.firstName || a.properties["dc:creator"].id),
+            (b.properties["dc:creator"].properties?.firstName || b.properties["dc:creator"].id),
             isAsc
           );
         case "dc:created":
@@ -1287,7 +1287,7 @@ export class BrowseComponent implements OnInit {
       queryParams: query,
     };
     const result: any = await this.apiService
-    .get(apiRoutes.NXQL_SEARCH, { params })
+    .get(apiRoutes.NXQL_SEARCH, { params, headers: { "fetch-document": "properties"} })
     .toPromise();
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, true)
@@ -1317,12 +1317,12 @@ export class BrowseComponent implements OnInit {
     this.navigateToWorkspaceFolder(uid);
     return;
   }
-  
-  inputChange() {	
-    if(!this.folderNameRef) {	
-      this.showError = true;	
-    } else {	
-      this.showError = false;	
-    }	
+
+  inputChange() {
+    if(!this.folderNameRef) {
+      this.showError = true;
+    } else {
+      this.showError = false;
+    }
   }
 }

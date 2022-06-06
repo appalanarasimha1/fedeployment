@@ -241,6 +241,7 @@ export class SearchComponent implements OnInit {
       case "sectorPage":
         params["sortBy"] = "dc:created";
         params["sortOrder"] = "desc";
+        params["duplicate_show"] = "1";
         if (this.documentsView.sectorSelected) {
           params["sectors"] = `["${this.documentsView.sectorSelected}"]`;
         }
