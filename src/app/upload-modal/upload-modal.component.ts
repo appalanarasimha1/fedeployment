@@ -155,9 +155,10 @@ export class UploadModalComponent implements OnInit {
     if(this.data) {
       const title = this.data.path.split('/workspaces')[0].substring(1);
       const workspace = this.data.contextParameters.breadcrumb.entries.filter(workspace => workspace.type.toLowerCase() === 'domain');
-      this.selectWorkspace(workspace[0], true);
+      await this.selectWorkspace(workspace[0]);
       this.showWsList = false;
       if(this.data.type.toLowerCase() !== 'domain') {
+        await this.selectWorkspace(this.data, true);
         this.folderNameParam = this.data.title;
       }
       this.associatedDate = this.data?.properties?.["dc:start"];
@@ -307,10 +308,15 @@ export class UploadModalComponent implements OnInit {
     //   this.selectedWorkspace.title = ws;
     //   return;
     // }
-    this.selectedWorkspace = ws;
     // this.showWsList = false;
     this.folderList = await this.getFolderList(ws.uid);
-    this.dropdownFolderList = [...this.folderList];
+    if(!incomingParam) {
+      this.selectedWorkspace = ws;
+      this.dropdownFolderList = [...this.folderList];
+      return;
+    }
+    this.dropdownFolderList = [...this.folderList.filter(item => ["orderedfolder", "workspace"].indexOf(item.type.toLowerCase()) > -1)];
+    return;
   }
 
   openBrowseRoute() {
