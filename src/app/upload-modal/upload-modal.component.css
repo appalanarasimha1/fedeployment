@@ -351,12 +351,15 @@ color: #FFFFFF;
   background-color: #ffffff;
 }
 .custom-select-options li {
-  padding: 0.6em 1em;
+  padding: 0;
   color: #000;
   word-break: break-all;
+  border-radius: 8px;
+  margin: 0px 6px;
 }
 .custom-select-options li.styled:hover {
-  background:#E1BB33;
+  background:#f8eecc;
+  font-weight: bold;
   /* border: 1px solid #000;
   border-width: 0 0 0 1px; */
 }
@@ -1358,18 +1361,27 @@ input.copyright-input::placeholder{
 }
 
 ul.custom-select-options li span.folderTitle {
-  width: calc(100% - 30px);
+  width: calc(100% - 35px);
   display: inline-block;
   vertical-align: middle;
+  padding: 0.5em 0.7em;
 }
 ul.custom-select-options li span.folderTitleArrow {
-  width: 30px;
+  width: 28px;
   display: inline-block;
   vertical-align: middle;
+  border-radius: 100px;
+  background: transparent;
+  height: 28px;
+  line-height: 30px;
+  text-align: center;
+  margin-right: 5px;
 }
 ul.custom-select-options li span.folderTitleArrow img {
   transform: rotate(180deg);
-  float: right;
+  float: none;
+  margin: 0px auto;
+  margin-top: -4px;
 }
 .breadcrumb-folder {padding: 5px 15px;}
 .back-icon {display: inline-block;color: #8f8f8f;font-size: 14px;padding: 10px 2px 0px;}
@@ -1397,4 +1409,31 @@ a.breadcrumb-not-active {
 }
 .upload-form-input input#title {
   padding-right: 30px;
+}
+
+.errorMessage {
+  color: #E03C31;
+  font-size: 14px;
+  float: left;
+  line-height: 35px;
+}
+button.upload-btn.tollTipCustom.disableBtn, button.upload-btn.tollTipCustom.disableBtn1 {
+  background: #E8E6DF;color: #BAB8B2; border-color: #E8E6DF;
+}
+.drag-drop.disableError {
+  border-color: #E03C31 !important;
+}
+.validationError .control__indicator {
+  border-color: #E03C31;
+}
+.custom-select-options li.styled:hover span.folderTitleArrow {
+  background-color: #daaa00 !important;
+  background: url(../../assets/images/back-arrow-white.svg) no-repeat center center / 8px;
+  transform: rotate(180deg);
+}
+.custom-select-options li.styled:hover .folderTitleArrow img {
+  opacity: 0 !important;
+}
+.custom-select-options li.styled:hover .folderTitleArrow:hover {
+  background-color: #937206 !important;
 }
