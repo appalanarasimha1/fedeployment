@@ -7,8 +7,10 @@
         <div class="updateClassiNameblock">
           <div class="folderImg"><img src="../../assets/images/folder-icon.svg" alt="" /></div>
           <div class="nameBreadcrumbBlk">
-            <!-- <div class="workspaceName">{{ sharedService.stringShortener(selectedFolder.title, 40) }} <img src="../../assets/images/pencil-write.svg" alt="" class="renameFolderImg" /></div> -->
-            <div class="updateClassiBreadcrumb">/All sectors/Energy, Water & Food/Conference 2022</div>
+            <div class="workspaceName">{{ sharedService.stringShortener(selectedFolder.title, 40) }} 
+              <!-- <img src="../../assets/images/pencil-write.svg" alt="" class="renameFolderImg" /> -->
+            </div>
+            <!-- <div class="updateClassiBreadcrumb">/All sectors/Energy, Water & Food/Conference 2022</div> -->
           </div>
         </div>
         <div class="assetsBlock">
@@ -23,18 +25,18 @@
              <label for="title">Description</label>
           </div>
           <div class="col-xl-10 col-md-10">
-             <textarea [(ngModel)]="description" id="title" name="Title"></textarea>
+             <textarea [(ngModel)]="description" id="title" name="Title" class="goldenText"></textarea>
           </div>
        </div>
        <div class="row upload-form-input custom-date-picker mb-20">
           <div class="col-xl-2 col-md-2">
              <label for="date">Date</label>
           </div>
-          <div class="col-xl-10 col-md-10">
-             <mat-form-field>
-                <input matInput [matDatepicker]="picker" [(ngModel)]="associatedDate"
+          <div class="col-xl-10 col-md-10" >
+             <mat-form-field class="goldenText">
+                <input  matInput [matDatepicker]="picker" [(ngModel)]="associatedDate"
                 placeholder="Choose a date" (click)="picker.open()">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker-toggle  matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
              </mat-form-field>
           </div>
@@ -54,6 +56,7 @@
               <ng-select name="confidentiality" [searchable]="false" [clearable]="false"
                 (change)="onSelectConfidentiality()"
                 [(ngModel)]="overallConfidentiality"
+                 [ngClass]="{'goldenText': overallConfidentiality}"
                 id="confidentiality">
                   <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                   </ng-option>
@@ -72,6 +75,7 @@
               name="access"
               (change)="onSelectAccess()" [searchable]="false" [clearable]="false"
               [(ngModel)]="overallAccess"
+              [ngClass]="{'goldenText': overallAccess}"
               id="access">
                 <ng-option
                   [disabled]="checkAccessOptionDisabled(c.value)"

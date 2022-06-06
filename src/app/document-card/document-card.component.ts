@@ -147,7 +147,7 @@ export class DocumentCardComponent implements OnChanges {
   }
 
   getCreator() {
-    return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
+    return this.doc.properties['sa:users'][0] 
   }
 
   showLockIcon(): boolean {
