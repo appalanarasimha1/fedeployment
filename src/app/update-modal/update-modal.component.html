@@ -25,7 +25,7 @@
              <label for="title">Description</label>
           </div>
           <div class="col-xl-10 col-md-10">
-             <textarea [(ngModel)]="description" id="title" name="Title" class="goldenText"></textarea>
+             <textarea [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description}" class="goldenText"></textarea>
           </div>
        </div>
        <div class="row upload-form-input custom-date-picker mb-20">
@@ -33,9 +33,9 @@
              <label for="date">Date</label>
           </div>
           <div class="col-xl-10 col-md-10" >
-             <mat-form-field class="goldenText">
+             <mat-form-field>
                 <input  matInput [matDatepicker]="picker" [(ngModel)]="associatedDate"
-                 (click)="picker.open()">
+                 (click)="picker.open()" [ngClass]="{'goldenText': associatedDate}">
                 <mat-datepicker-toggle  matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
              </mat-form-field>
@@ -134,8 +134,8 @@
     </div>
 
     <div class="upload-form-input row mb-20">
-      <div *ngIf="overallDownloadApproval" class="col-xl-6 col-md-6">
-        <div class="row">
+      <div class="col-xl-6 col-md-6">
+        <div class="row" *ngIf="overallDownloadApproval">
           <div class="col-xl-4">
             <label style="margin-bottom: 0px;">Specify approver</label>
           </div>
