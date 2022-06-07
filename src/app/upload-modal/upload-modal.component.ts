@@ -160,6 +160,7 @@ export class UploadModalComponent implements OnInit {
       if(this.data.type.toLowerCase() !== 'domain') {
         await this.selectWorkspace(this.data, true);
         this.folderNameParam = this.data.title;
+        this.selectedFolder = this.data;
       }
       this.associatedDate = this.data?.properties?.["dc:start"];
     } 
@@ -325,8 +326,8 @@ export class UploadModalComponent implements OnInit {
     //   this.closeModal();
     //   return;
     // }
-    this.dialogRef.close(this.selectedFolder);
-    if(this.data) {
+    this.dialogRef.close();
+    if(this.data?.uid === this.selectedFolder?.uid) {
       this.dataService.uploadedAssetDataInit(this.uploadedAsset);
       return;
     }
@@ -672,9 +673,10 @@ export class UploadModalComponent implements OnInit {
 
   async publishAssets() {
     this.publishing = true;
-    let folder = this.data ? Object.assign({}, this.data) : Object.assign({}, this.selectedFolder);
+    let folder = Object.assign({}, this.selectedFolder); // this.data ? Object.assign({}, this.data) : Object.assign({}, this.selectedFolder);
     if (this.folderToAdd) {
       folder = await this.createFolder(this.folderToAdd);
+      this.selectedFolder = folder;
     }
    
     for(let key in this.filesMap) {
@@ -683,7 +685,7 @@ export class UploadModalComponent implements OnInit {
     }
     if(!this.showRedirectUrl()) {
       // this.dialogRef.close(this.uploadedAsset);
-    this.publishing = false;
+      this.publishing = false;
       this.sharedService.showSnackbar('Asset added successfully.', 3000, 'bottom', 'center', 'snackBarMiddle');
       return;
     }
