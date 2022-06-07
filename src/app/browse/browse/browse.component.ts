@@ -951,7 +951,7 @@ export class BrowseComponent implements OnInit {
   }
 
   checkCanDelete(item) {
-    return this.user === item.properties["dc:creator"].id;
+    return this.user === item.properties["dc:creator"]?.id;
   }
 
   async fetchUserData() {
@@ -1019,7 +1019,7 @@ export class BrowseComponent implements OnInit {
         description,
         date
       );
-      const res = await this.apiService.post(url, payload).toPromise();
+      const res = await this.apiService.post(url, payload, {headers: { "fetch-document": "properties"}}).toPromise();
       if (!res && !res["uid"]) return;
 
       this.searchList.unshift(res);
