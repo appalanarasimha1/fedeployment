@@ -519,6 +519,8 @@ export class UploadModalComponent implements OnInit {
   //// Custom input dropdown
   focusDropdown() {
     // if(this.data) return;
+    this.folderNameParam = '';
+    this.selectedFolder = null;
     this.showCustomDropdown = true;
   }
 
