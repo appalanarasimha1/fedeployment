@@ -1341,4 +1341,9 @@ export class BrowseComponent implements OnInit {
       this.showError = false;
     }
   }
+
+  getCreatorName(item) {
+    const creatorName = item.properties['dc:creator']?.properties?.firstName + " " + item.properties['dc:creator']?.properties?.lastName;
+    return item.properties['dc:creator']?.properties?.firstName ? creatorName : item.properties['dc:creator']?.id;
+  }
 }
