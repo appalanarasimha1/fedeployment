@@ -356,6 +356,7 @@ color: #FFFFFF;
   word-break: break-all;
   border-radius: 8px;
   margin: 0px 6px;
+  background: transparent;
 }
 .custom-select-options li.styled:hover {
   background:#f8eecc;
@@ -383,10 +384,10 @@ color: #FFFFFF;
   border: 0;
 }
 .add-new-option {
-  padding: 3px;
-      display: flex;
-      align-items: center;
-      /* justify-content: space-between; */
+  padding: 5px 7px;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
 }
 .add-new-option input {
   width: 200px;
@@ -396,6 +397,7 @@ color: #FFFFFF;
 }
 .yellowfix {
   background: #E1BB33;
+  margin-bottom: 7px !important;
 }
 .custom-select-options li.styled:hover input {
   background:#fff;

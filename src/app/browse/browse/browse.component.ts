@@ -130,6 +130,8 @@ export class BrowseComponent implements OnInit {
   defaultPageSize: number = 20;
   pageSizeOptions = [20, 50, 100];
   folderNameRef;
+  folderDescriptionRef;
+  folderDateRef;
 
   showError: boolean = false;
   isAware = false;
@@ -278,6 +280,10 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
+    this.folderNameRef = undefined;
+    this.folderDescriptionRef = undefined;
+    this.folderDateRef = undefined;
+    
     this.saveState(item);
     this.searchBarValue = "";
     this.paginator.firstPage();
@@ -473,6 +479,10 @@ export class BrowseComponent implements OnInit {
    * @returns null
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    this.folderNameRef = undefined;
+    this.folderDescriptionRef = undefined;
+    this.folderDateRef = undefined;
+    
     this.saveState(item);
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -1041,6 +1051,8 @@ export class BrowseComponent implements OnInit {
       }
 
       this.folderNameRef = undefined;
+      this.folderDescriptionRef = undefined;
+      this.folderDateRef = undefined;
 
       return {
         id: res["uid"],
@@ -1328,5 +1340,10 @@ export class BrowseComponent implements OnInit {
     } else {
       this.showError = false;
     }
+  }
+
+  getCreatorName(item) {
+    const creatorName = item.properties['dc:creator']?.properties?.firstName + " " + item.properties['dc:creator']?.properties?.lastName;
+    return item.properties['dc:creator']?.properties?.firstName ? creatorName : item.properties['dc:creator']?.id;
   }
 }
