@@ -278,7 +278,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async handleTest(item) {
-    this.saveState(item);
+    this.saveState(item); 
     this.searchBarValue = "";
     this.paginator.firstPage();
     if (item.isTrashed) return;
@@ -617,7 +617,7 @@ export class BrowseComponent implements OnInit {
     );
   }
 
-  openUpdateClassModal(breadCrumb: any) {
+  async openUpdateClassModal(breadCrumb: any) {
     // NOTE: uncomment below code
     if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
       return;
@@ -630,9 +630,10 @@ export class BrowseComponent implements OnInit {
     dialogConfig.maxHeight = "900px";
     dialogConfig.width = "650px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+   const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {
       docs: this.searchList,
-      folder: this.selectedFolder,
+      folder
     };
 
     const modalDialog = this.matDialog.open(UpdateModalComponent, dialogConfig);
@@ -1314,7 +1315,7 @@ export class BrowseComponent implements OnInit {
     let breadcrumb;
     if(contextParameters) {
       ({breadcrumb} = contextParameters);
-      contextParameters = {breadcrumb};
+      contextParameters = { breadcrumb };
     }
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
