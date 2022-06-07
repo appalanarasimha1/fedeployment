@@ -157,7 +157,7 @@
                            <div style="display: block; clear: both; height: 1;"></div>
                            <div *ngIf="breadCrumb.length >= 2" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder.title)"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</div>
                         </div>
-                        <div style="min-height: 52px; max-height: 138px; overflow: auto;" id="customScrollBar">
+                        <div style="min-height: 52px; max-height: 138px; overflow: auto; margin-bottom: 10px;" id="customScrollBar">
                            <li *ngFor="let folder of dropdownFolderList" class="styled">
                               <span (click)="selectFolder(folder)" class="folderTitle">
                                  <img src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px; vertical-align: -2px;">
