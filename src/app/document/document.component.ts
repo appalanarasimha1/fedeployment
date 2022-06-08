@@ -291,36 +291,42 @@ export class DocumentComponent implements OnInit, OnChanges {
     return;
   }
 
-    getZippedFile(){
-      let data = this.apiService
-        .downloaPost("/automation/Blob.BulkDownload/@async", {
-          params: {
-            filename: "selection-2753893969999.zip",
-          },
-          context: {},
-          input:
-            "docs:f112353d-c904-48c0-af6c-2745dbb782dd,31a6e390-4b9d-4df6-a6c1-f1ecd49b0b4f",
-        })
-        .subscribe((res: any) => {
-          let splittedLocation = res.headers.get("location").split("/")
-          let newUID = splittedLocation[splittedLocation.length - 2];
-          console.log("11111111111111110000000000000000000000", newUID);
-          this.apiService
-            .get("/automation/Blob.BulkDownload/@async/" + newUID + "/status")
-            .subscribe((res: any) => {
-              console.log(res);
-              // this.apiService
-              //   .get(
-              //     "/automation/Blob.BulkDownload/@async/"+newUID
-              //   )
-              //   .subscribe((res: any) => {
-              //     console.log("Inside get",res.toString());
-              //     const blob = new Blob(res, { type: "jpg" });
-              //     saveAs(blob, "abc.zip");
-              //   });
-            });
-        });
-    }
+  getZippedFile() {
+    let uid: any;
+    let data = this.apiService
+      .downloaPost("/automation/Blob.BulkDownload/@async", {
+        params: {
+          filename: "selection-2753893969999.zip",
+        },
+        context: {},
+        input:
+          "docs:f112353d-c904-48c0-af6c-2745dbb782dd,31a6e390-4b9d-4df6-a6c1-f1ecd49b0b4f",
+      })
+      .subscribe((res: any) => {
+        let splittedLocation = res.headers.get("location").split("/");
+        let newUID = splittedLocation[splittedLocation.length - 2];
+        uid = newUID;
+        console.log("11111111111111110000000000000000000000", newUID);
+        this.apiService
+          .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+          .subscribe((resp: any) => {
+            let locationForDownload = resp.headers.get("location");
+
+            console.log("1111111111111111000000000000000000000022222222222222222", resp);
+          });
+
+        setTimeout(() => {
+          console.log(
+            "================================================================="
+          );
+          // window.open(
+          //   environment.apiServiceBaseUrl +
+          //     "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+          //     uid
+          // );
+        }, 1000);
+      });
+  }
   public async getRelatedTags() {
     // console.log('this.tagsMetaRealdata1', this.tagsMetaRealdata)
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {

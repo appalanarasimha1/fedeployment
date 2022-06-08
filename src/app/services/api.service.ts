@@ -17,6 +17,7 @@ export class ApiService {
       "Access-Control-Expose-Headers": "X-TOKEN",
       accept: "text/plain,application/json, application/json",
       "Access-Control-Allow-Methods": "PUT,DELETE,POST,GET,OPTIONS",
+      "nuxeo-virtual-host": environment.apiServiceBaseUrl,
       // "Access-Control-Expose-Headers": "mintargetapiversion",
       "enrichers-document":
         "thumbnail,permissions,preview,acls,favorites,audit,tags,folderAssetsCount,breadcrumb",
@@ -100,6 +101,18 @@ export class ApiService {
     };
     return this.http
       .post<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
+      .pipe(map((data) => data));
+  }
+
+  downloadGet(urlAddress: string, options?: any) {
+    options = options
+      ? Object.assign(options, {
+          headers: this.getHeaders(),
+          observe: "response",
+        })
+      : { headers: this.getHeaders(), observe: "response" };
+    return this.http
+      .get<any>(SERVER_URL + "/nuxeo/site/api/v1" + urlAddress, options)
       .pipe(map((data) => data));
   }
 }
