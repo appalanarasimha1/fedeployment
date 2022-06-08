@@ -27,6 +27,7 @@ import { UNWANTED_WORKSPACES } from "../../upload-modal/constant";
 import { UploadModalComponent } from "src/app/upload-modal/upload-modal.component";
 import { Sort } from "@angular/material/sort";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import { Departments, Workspace } from "./../../config/sector.config";
 
 @Component({
   selector: "app-browse",
@@ -601,9 +602,9 @@ export class BrowseComponent implements OnInit {
 
   openUpdateClassModal(breadCrumb: any) {
     // NOTE: uncomment below code
-    // if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
-    //   return;
-    // }
+    if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
+      return;
+    }
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -1236,8 +1237,15 @@ export class BrowseComponent implements OnInit {
   }
 
   upadtePermission(breadcrumb: any) {
-    let user = this.userSector?.split("-")[0].trim().toLowerCase();
-    if (breadcrumb?.title?.toLowerCase() === user) return true;
+    let user:any;
+  let checkAvailabity = Departments.hasOwnProperty(this.userSector);
+  if (checkAvailabity) {
+    let ID = Departments[this.userSector];
+    console.log(Workspace[ID]);
+    user = Workspace[ID];
+  }
+
+    if (breadcrumb?.title?.toLowerCase() === user.toLowerCase()) return true;
     return false;
   }
 
