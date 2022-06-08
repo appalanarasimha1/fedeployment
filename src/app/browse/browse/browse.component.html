@@ -102,19 +102,13 @@
                   aria-label="Button that displays a tooltip when focused or hovered over">
                   {{sharedService.stringShortener(selectedFolder?.title, 30)}}
                 </button> -->
-                <span style="overflow: auto;" >
+                <span class="customWidth" style="overflow: auto;" >
                   <span class="main-title tollTipCustom" *ngIf="!renameFolderName">{{sharedService.stringShortener(selectedFolder?.title, 28)}}
                     <img src="../../../assets/images/pencil-write.svg" alt="" *ngIf="showLinkCopy" class="renameFolderImg" (click)="renameFolderAction()" />
                     <div class="tolltipContent">
                       {{selectedFolder?.title}}
                     </div>
                   </span>
-                  <!-- <div>
-                     <input type="text" [(ngModel)]="newTitle" name="newTitle">
-                     <button (click)="renameFolder()">update</button>
-                  </div> -->
-
-
                   <span *ngIf="renameFolderName && showLinkCopy" style="display: flex; align-items: center;">
                     <label class="input-sizer customRenameBlock">
                       <input type="text" maxlength="60"
@@ -134,10 +128,25 @@
                       </svg>
                     </div>
                   </span>
-
-
-
                 </span>
+                <div class="manageAccess">
+                  <ul>
+                    <li class="tollTipWorkspace">
+                      <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
+                        <path d="M28.1873 16.7728V1.58597C28.1873 1.26187 27.9357 1 27.625 1H1.56254C1.25178 1 1 1.26205 1 1.58597V28.539C1 28.8625 1.25176 29.125 1.56254 29.125H16.1391C16.4503 29.125 16.7017 28.8628 16.7017 28.539C16.7017 28.2153 16.4501 27.9531 16.1391 27.9531H2.12488V2.17203H27.0626V16.7726C27.0626 17.0961 27.3142 17.3586 27.6252 17.3586C27.9359 17.3588 28.1873 17.0965 28.1873 16.7728Z" fill="#937206" stroke="#937206" stroke-width="0.5"/>
+                        <path d="M18.7656 8.5C19.3094 8.5 19.75 8.07979 19.75 7.5625C19.75 7.04492 19.3098 6.625 18.7656 6.625H7.6094C7.06559 6.625 6.625 7.04457 6.625 7.5625C6.625 8.08043 7.06556 8.5 7.6094 8.5H18.7656Z" fill="#937206"/>
+                        <path d="M18.7656 14.125C19.3094 14.125 19.75 13.7048 19.75 13.1875C19.75 12.6699 19.3098 12.25 18.7656 12.25H7.6094C7.06559 12.25 6.625 12.6696 6.625 13.1875C6.625 13.7054 7.06556 14.125 7.6094 14.125H18.7656Z" fill="#937206"/>
+                        <path d="M13.1406 19.75C13.6844 19.75 14.125 19.3298 14.125 18.8125C14.125 18.2949 13.6848 17.875 13.1406 17.875H7.6094C7.06559 17.875 6.625 18.2946 6.625 18.8125C6.625 19.3304 7.06556 19.75 7.6094 19.75H13.1406Z" fill="#937206"/>
+                        <path d="M25.375 31C22.2684 31 19.75 28.4816 19.75 25.375C19.75 22.2684 22.2684 19.75 25.375 19.75C28.4816 19.75 31 22.2684 31 25.375C31 28.4816 28.4816 31 25.375 31ZM23.3296 26.0568C23.4028 25.978 23.526 25.9735 23.6048 26.0467L24.551 26.9254C24.6149 26.9847 24.716 26.9766 24.7695 26.9077L27.1471 23.8508C27.2131 23.7659 27.3355 23.7506 27.4204 23.8166C27.5053 23.8827 27.5206 24.0051 27.4546 24.09L24.8416 27.4494C24.7743 27.5359 24.6473 27.5462 24.5669 27.4716L23.3398 26.332C23.261 26.2588 23.2564 26.1356 23.3296 26.0568ZM25.375 30.6591C28.2933 30.6591 30.6591 28.2933 30.6591 25.375C30.6591 22.4567 28.2933 20.0909 25.375 20.0909C22.4567 20.0909 20.0909 22.4567 20.0909 25.375C20.0909 28.2933 22.4567 30.6591 25.375 30.6591Z" fill="#937206" stroke="#937206" stroke-width="1.2"/>
+                      </svg>
+                      <div class="customToolTipWorkspace">Manage Access</div>
+                    </li>
+                    <li class="tollTipWorkspace">
+                      <img src="../../../assets/images/user-icon.svg" alt="" />
+                      <div class="customToolTipWorkspace">Manage Access</div>
+                    </li>
+                  </ul>
+                </div>
                 <h6 class="tollTipCustom">
                   <span>/<a [ngClass]="breadCrumb.length !== 0 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="handleGotoBreadcrumb(folderStructure[0], null, 0)">All Workspace</a></span>
                   <span *ngFor="let c of breadCrumb; let i = index">
@@ -178,8 +187,11 @@
                   <div class="deleteRecover">
                     <span class="deleteFolder" [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"  *ngIf="!isTrashView && checkEnableDeleteBtn()" (click)="deleteFolders()"><img src="../../../assets/images/delete-icon.svg">Delete</span>
                   </div>
-                  <div class='buttonCreate'>
-                    <a href="javascript:void(0)" *ngIf="!isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible"><img src="../../../assets/images/add.svg" style="margin-right: 8px;">Create new folder</a>
+                  <div class='buttonCreate tollTipWorkspace'>
+                    <a href="javascript:void(0)" *ngIf="!isTrashView" (click)="datePickerDefaultAction()"  class="createNew flexible">
+                      <img src="../../../assets/images/add.svg" style="margin-right: 8px;">
+                    </a>
+                    <div class="customToolTipWorkspace" style="right: 5px; left: auto;">Create new folder</div>
                   </div>
                   <div class='dropdownCreate createFolder'>
                     <form>
@@ -217,7 +229,7 @@
                                 <div class="col-xl-12 col-md-12 " >
                                   <mat-form-field appearance="fill">
                                     <div class="flexible">
-                                      <input [ngClass]="{'goldenText': folderDateRef}" [(ngModel)]="folderDateRef" name="folderDateRef" matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 1.5px solid #000;"
+                                      <input [ngClass]="{'goldenText': folderDateRef}" [(ngModel)]="folderDateRef" name="folderDateRef" matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 2px solid #000;"
                                       placeholder="Choose a date"  (click)="picker.open(); datePickerDefaultAction()" >
                                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     </div>
@@ -231,14 +243,22 @@
                       </div>
                       <div class="row mt-4">
                         <div class="col-xl-12">
+                          <label class="control control--checkbox" style="margin-bottom: 0px; display: inline-block;">
+                            Make this folder private
+                            <input type="checkbox" />
+                            <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+                          </label>
+                          <span class="tollTipWorkspace">
+                            <img src="../../../assets/images/Info-icon.svg" alt="" class="infoIcon" />
+                            <div class="customToolTipWorkspace infoHover">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</div>
+                          </span>
+                        </div>
+                        <div class="col-xl-12 mt-15">
                           <div *ngIf="showError" class="errorMessage">
                             Please complete all mandatory fields
                           </div>
                           <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef, folderDescriptionRef)" style="pointer-events: auto;" [ngClass]="{'disableBtn': !folderNameRef}">
                             Create folder
-                            <!-- <div *ngIf="!folderNameRef" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
-                              Please complete all mandatory fields to proceed
-                            </div> -->
                           </button>
                         </div>
 
@@ -247,19 +267,17 @@
                   </div>
                 </div>
 
-
-
-
-
-
-
                 <ul class="uploadAssetsClassifications" *ngIf="showLinkCopy">
-                  <!-- <li (click)="openModal()" class="tollTipWorkspace workspaceInfoHover">
+                  <!-- <li class="tollTipWorkspace">
+                    <img src="../../../assets/images/upload-icon.svg" class="uploadIcon">
+                    <div class="customToolTipWorkspace">Upload</div>
+                  </li> -->
+                  <li (click)="openModal()" class="tollTipWorkspace workspaceInfoHover">
                     <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                       <path d="M0 17H18V19H0V17ZM10 3.828V15H8V3.828L1.929 9.9L0.515 8.486L9 0L17.485 8.485L16.071 9.899L10 3.83V3.828Z" fill="#937206"/>
                     </svg>
-                    <div class="customToolTipWorkspace">Upload here</div>
-                  </li> -->
+                    <div class="customToolTipWorkspace">Upload</div>
+                  </li>
                   <li (click)="openUpdateClassModal(breadCrumb[0] ?breadCrumb[0] :null )" class="tollTipWorkspace" [ngClass]="{'uploadClassificationDisable':breadCrumb[0]? false || !sortedData.length :true  }"> <!-- !upadtePermission(breadCrumb[0]) -->
                     <!-- <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                       <path d="M28.1873 16.7728V1.58597C28.1873 1.26187 27.9357 1 27.625 1H1.56254C1.25178 1 1 1.26205 1 1.58597V28.539C1 28.8625 1.25176 29.125 1.56254 29.125H16.1391C16.4503 29.125 16.7017 28.8628 16.7017 28.539C16.7017 28.2153 16.4501 27.9531 16.1391 27.9531H2.12488V2.17203H27.0626V16.7726C27.0626 17.0961 27.3142 17.3586 27.6252 17.3586C27.9359 17.3588 28.1873 17.0965 28.1873 16.7728Z" fill="#937206" stroke="#937206" stroke-width="0.5"/>
@@ -318,6 +336,15 @@
               <img src="../../../assets/images/no-items.svg" alt="No items here" />
               No items here
             </div>
+
+            <!-- Start adding collaborators to this private folder -->
+            <div class="main-content row">
+              <div class="col-xl-12 col-md-12">
+                hi
+              </div>
+            </div>
+            <!-- End adding collaborators to this private folder -->
+
             <div class="main-content row" *ngIf="selectedMenu === 0">
               <div class="col-xl-12 col-md-12" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
