@@ -188,8 +188,7 @@
                             <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
                         </div>
                         <div class="col-xl-12">
-                          <!-- <input [ngClass]="{'goldenText': folderNameRef}" [(ngModel)]="folderNameRef" name="folderNameRef" type="text" placeholder="Enter a folder name"> -->
-                          <input [ngClass]="{'goldenText': folderNameRef}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name">
+                          <input [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name">
                           <!-- <input *ngIf="showError" [ngClass]="{'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name"> -->
                         </div>
                       </div>
@@ -231,17 +230,17 @@
                         </div>
                       </div>
                       <div class="row mt-4">
-                      <div class="col-xl-12">
-                        <div *ngIf="showError" class="errorMessage">
-                          Please complete all mandatory fields
+                        <div class="col-xl-12">
+                          <div *ngIf="showError" class="errorMessage">
+                            Please complete all mandatory fields
+                          </div>
+                          <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef, folderDescriptionRef)" style="pointer-events: auto;" [ngClass]="{'disableBtn': !folderNameRef}">
+                            Create folder
+                            <!-- <div *ngIf="!folderNameRef" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
+                              Please complete all mandatory fields to proceed
+                            </div> -->
+                          </button>
                         </div>
-                        <button class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef.value, folderDescriptionRef.value)" style="pointer-events: auto;" [ngClass]="{'disableBtn': !folderNameRef}">
-                          Create folder
-                          <!-- <div *ngIf="!folderNameRef" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
-                            Please complete all mandatory fields to proceed
-                          </div> -->
-                        </button>
-                      </div>
 
                       </div>
                     </form>

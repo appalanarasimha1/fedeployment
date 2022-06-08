@@ -25,7 +25,7 @@
              <label for="title">Description</label>
           </div>
           <div class="col-xl-10 col-md-10">
-             <textarea [(ngModel)]="description" id="title" name="Title" class="goldenText"></textarea>
+             <textarea [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description}" class="goldenText"></textarea>
           </div>
        </div>
        <div class="row upload-form-input custom-date-picker mb-20">
@@ -33,9 +33,9 @@
              <label for="date">Date</label>
           </div>
           <div class="col-xl-10 col-md-10" >
-             <mat-form-field class="goldenText">
+             <mat-form-field>
                 <input  matInput [matDatepicker]="picker" [(ngModel)]="associatedDate"
-                placeholder="Choose a date" (click)="picker.open()">
+                 (click)="picker.open()" [ngClass]="{'goldenText': associatedDate}">
                 <mat-datepicker-toggle  matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
              </mat-form-field>
@@ -53,7 +53,7 @@
               <label for="confidentiality" style="margin-bottom: 0px;">Confidentiality</label>
             </div>
             <div class="col-xl-8 col-md-8">
-              <ng-select name="confidentiality" [searchable]="false" [clearable]="false"
+              <ng-select  placeholder="Specify confidentiality" name="confidentiality" [searchable]="false" [clearable]="false"
                 (change)="onSelectConfidentiality()"
                 [(ngModel)]="overallConfidentiality"
                  [ngClass]="{'goldenText': overallConfidentiality}"
@@ -87,34 +87,35 @@
             </div>
           </div>
         </div>
-
-        <div *ngIf="checkShowUserDropdown()" class="upload-form-input row" style="display: flex;">
-          <div class="col-xl-4">
-            <!-- <label for="user">Users</label> -->
-            &nbsp;
+        <div class="col-xl-6 col-md-6">&nbsp;</div>
+        <div class="col-xl-6 col-md-6">
+          <div class="row upload-form-input" *ngIf="checkShowUserDropdown()">
+            <div class="col-xl-3 col-md-3">
+              <!-- <label for="access" style="margin-bottom: 0px;">{{ACCESS_TITLE}}</label> -->
+            </div>
+            <div class="col-xl-9 col-md-9">
+              <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
+                <ng-select
+                [items]="userList$ | async"
+                bindLabel="id"
+                bindValue="id"
+                [multiple]="true"
+                [hideSelected]="true"
+                [trackByFn]="trackByFn"
+                [minTermLength]="2"
+                [loading]="userLoading"
+                typeToSearchText="Search users"
+                [typeahead]="userInput$"
+                [(ngModel)]="overallUsers"
+                [ngClass]="{'goldenText': overallUsers}">
+                <ng-template ng-option-tmp let-item="item">
+                  {{item.id}} ({{item.fullname}})
+                </ng-template>
+              </ng-select>
+            </div>
           </div>
-          <div class="col-xl-8">
-            <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
-            <ng-select
-            [items]="userList$ | async"
-            bindLabel="id"
-            bindValue="id"
-            [multiple]="true"
-            [hideSelected]="true"
-            [trackByFn]="trackByFn"
-            [minTermLength]="2"
-            [loading]="userLoading"
-            typeToSearchText="Search users"
-            [typeahead]="userInput$"
-            [(ngModel)]="overallUsers"
-            [ngClass]="{'goldenText': overallUsers}">
-            <ng-template ng-option-tmp let-item="item">
-              {{item.id}} ({{item.fullname}})
-            </ng-template>
-          </ng-select>
-          </div>
-
         </div>
+
         <div class="col-xl-12 col-md-12 mb-20">
           <div class="upload-form-input" style="overflow: hidden; margin-bottom: 0px;">
             <label class="control control--checkbox" style="margin-bottom: 0px;float: left;">
@@ -133,8 +134,8 @@
     </div>
 
     <div class="upload-form-input row mb-20">
-      <div *ngIf="overallDownloadApproval" class="col-xl-6 col-md-6">
-        <div class="row">
+      <div class="col-xl-6 col-md-6">
+        <div class="row" *ngIf="overallDownloadApproval">
           <div class="col-xl-4">
             <label style="margin-bottom: 0px;">Specify approver</label>
           </div>

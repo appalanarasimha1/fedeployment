@@ -1122,3 +1122,6 @@ input.copyright-input {
 .reviewClassifaction .workspaceName {
   font-size: 14px;
 }
+.custom-date-picker ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #C49900 !important;
+}
