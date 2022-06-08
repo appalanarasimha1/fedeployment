@@ -13,7 +13,7 @@ export class AppConfigProduction {
         AUDIT_TABLE: 'audit'
       },
       domain: 'https://groundx.oci.sense.neomos.online/',
-      elasticDbUrl: 'http://10.101.21.63:9700',
+      elasticDbUrl: 'http://10.149.49.21:9200,10.149.49.22:9200,10.149.49.18:9200',
       // elasticDbUrl: 'https://10.101.21.140:9200'
     };
   
