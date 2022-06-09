@@ -391,7 +391,7 @@
       <button *ngIf="step === 2" class="upload-btn" >
         Updating
       </button>
-      <button *ngIf="step !== 2" (click)="toNextStep()" class="upload-btn" >
+      <button *ngIf="step !== 2" (click)="toNextStep()" [ngClass]="{'btn-disable': checkFormState()}" class="upload-btn" >
         Update
       </button>
 

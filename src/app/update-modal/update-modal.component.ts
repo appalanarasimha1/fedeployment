@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL, SPECIFIC_USER_LABEL } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL, SPECIFIC_USER_LABEL, ALLOW_VALUE_MAP } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
@@ -338,7 +338,7 @@ export class UpdateModalComponent implements OnInit {
     this.updatedAclValue[index] = result["contextParameters"].acls;
   }
 
-  async updateAssetClassification(doc, index) {
+  async updateAssetClassification(doc, index: number) {
     const result = await this.nuxeo.nuxeoClient
       .operation("Scry.UpdateConfidentiality")
       .input([doc])
@@ -468,5 +468,25 @@ export class UpdateModalComponent implements OnInit {
       const allow = this.overallAccess === ACCESS.all ? ALLOW.any : ALLOW.internal;
       this.customAllowMap[i] = allow;
     }
+  }
+
+  checkFormState(): boolean {
+    const length = this.docs.length;
+    for (let i = 0; i < length; i++) {
+      console.log('index = ', i);
+      const access = this.customAccessMap[i];
+      const allow = this.customAllowMap[i];
+      const confidentiality = this.customConfidentialityMap[i];
+      if(!access || !allow || !confidentiality) {
+        return true;
+      } else if(access === ACCESS["restricted"] && !this.customUsersMap[i]?.length) {
+          return true;
+      } else if(this.customDownloadApprovalMap[i] && !this.customDownloadApprovalUsersMap[i]) {
+        return true;
+      } else if(i === length - 1) {
+        return false;
+      }
+    }
+    return true;
   }
 }
