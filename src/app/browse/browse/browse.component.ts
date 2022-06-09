@@ -28,6 +28,8 @@ import { UploadModalComponent } from "src/app/upload-modal/upload-modal.componen
 import { Sort } from "@angular/material/sort";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { DataService } from "src/app/services/data.service";
+import { ManageAccessModalComponent } from "src/app/manage-access-modal/manage-access-modal.component";
+import { AddUserModalComponent } from "src/app/add-user-modal/add-user-modal.component";
 
 @Component({
   selector: "app-browse",
@@ -1346,5 +1348,40 @@ export class BrowseComponent implements OnInit {
   getCreatorName(item) {
     const creatorName = item.properties['dc:creator']?.properties?.firstName + " " + item.properties['dc:creator']?.properties?.lastName;
     return item.properties['dc:creator']?.properties?.firstName ? creatorName : item.properties['dc:creator']?.id;
+  }
+
+
+  async openManageAccessModal() {
+    this.loading = true;
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.width = "550px";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+    const folder = await this.fetchFolder(this.selectedFolder.uid);
+    this.loading = false;
+
+    const modalDialog = this.matDialog.open(ManageAccessModalComponent, dialogConfig);
+
+    modalDialog.afterClosed().subscribe((result) => {
+      this.loading = false;
+    });
+  }
+
+  async openAddUserModal() {
+    this.loading = true;
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.width = "550px";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+    const folder = await this.fetchFolder(this.selectedFolder.uid);
+    this.loading = false;
+
+    const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
+
+    modalDialog.afterClosed().subscribe((result) => {
+      this.loading = false;
+    });
   }
 }

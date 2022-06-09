@@ -1969,12 +1969,52 @@ ul.downloadImgLisst li .contentListBlk {
   stroke:none;
 }
 
-/* .header-content .main-title.customWidth {
-  width: calc(100% - 80px);
+.header-content .customWidth {
+  width: calc(100% - 65px);
   display: inline-block;
 }
 .manageAccess {
-  width: 80px;
+  width: 65px;
   display: inline-block;
   text-align: right;
-} */
+}
+.header-content .manageAccess ul::after {
+  content: '';
+  clear: both;
+  display: block;
+}
+.header-content .manageAccess li {
+  float: left;
+  position: relative;
+}
+.header-content .manageAccess li:first-child {
+  margin-right: 10px;
+}
+.header-content .manageAccess li:last-child {
+  margin-left: 10px;
+}
+.header-content .manageAccess li .customToolTipWorkspace {
+  right: 0px;
+  left: auto;
+}
+.addignCollaborators h2{
+  color: #BAB8B2;
+  text-align: center;
+  padding-bottom: 40px;
+  font-size: 24px;
+  font-weight: 400;
+}
+.addUsers {
+  text-align: center;
+}
+.addUserBtn {
+  display: inline-block;
+  background: #23211E;
+  border-radius: 80px;
+  padding: 9px 38px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+}

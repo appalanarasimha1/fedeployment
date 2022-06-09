@@ -4305,3 +4305,22 @@ body {
   overflow: hidden !important;
   overflow-y: scroll !important;
 }
+
+.addUsers input::placeholder {
+  color: #BAB8B2 !important;
+  font-weight: 100 !important;
+  font-family: inherit !important;
+  opacity: 1;
+}
+
+.addUsers input:-ms-input-placeholder {
+  color: #BAB8B2 !important;
+  font-weight: 100 !important;
+  font-family: inherit !important;
+}
+
+.addUsers input::-ms-input-placeholder {
+  color: #BAB8B2 !important;
+  font-weight: 100 !important;
+  font-family: inherit !important;
+}
