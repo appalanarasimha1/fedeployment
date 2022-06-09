@@ -220,28 +220,28 @@ export class SharedService {
   }
 
 
-  markRecentlyViewed(data: any) {
-    let found = false;
-    // tslint:disable-next-line:prefer-const
-    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
-    if (recentlyViewed.length) {
-      recentlyViewed.map((item: any, index: number) => {
-        if (item.uid === data.uid) {
-          found = true;
-          recentlyViewed[index] = data;
-        }
-      });
-    }
-    if (found) {
-      localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
-      return;
-    }
+  // markRecentlyViewed(data: any) {
+  //   let found = false;
+  //   // tslint:disable-next-line:prefer-const
+  //   let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+  //   if (recentlyViewed.length) {
+  //     recentlyViewed.map((item: any, index: number) => {
+  //       if (item.uid === data.uid) {
+  //         found = true;
+  //         recentlyViewed[index] = data;
+  //       }
+  //     });
+  //   }
+  //   if (found) {
+  //     localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+  //     return;
+  //   }
 
-    data['isSelected'] = false;
-    recentlyViewed.push(data);
-    localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
-    return;
-  }
+  //   data['isSelected'] = false;
+  //   recentlyViewed.push(data);
+  //   localStorage.setItem(localStorageVars.RECENTLY_VIEWED, JSON.stringify(recentlyViewed));
+  //   return;
+  // }
 
   chekForReportRoles(role: string): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -343,4 +343,47 @@ export class SharedService {
     }, 500);
   }
 
+  markRecentlyViewed(data: any): any[] {
+    let found = false;
+
+    // tslint:disable-next-line:prefer-const
+    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+    if (recentlyViewed.length) {
+      recentlyViewed.map((item: any, index: number) => {
+        if (item.uid === data.uid) {
+          found = true;
+          recentlyViewed.splice(index, 1);
+          recentlyViewed.push(data);
+        }
+      });
+    }
+    if (found) {
+      localStorage.setItem(
+        localStorageVars.RECENTLY_VIEWED,
+        JSON.stringify(recentlyViewed, this.getCircularReplacer())
+      );
+      return [...recentlyViewed.reverse()];
+    }
+
+    data["isSelected"] = false;
+    recentlyViewed.push(data);
+    localStorage.setItem(
+      localStorageVars.RECENTLY_VIEWED,
+      JSON.stringify(recentlyViewed, this.getCircularReplacer())
+    );
+    return [...recentlyViewed.reverse()];
+  }
+  
+  getCircularReplacer() {
+    const seen = new WeakSet();
+    return (key, value) => {
+      if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    };
+  }
 }

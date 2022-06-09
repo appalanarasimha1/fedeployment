@@ -370,8 +370,8 @@ export class BrowseComponent implements OnInit {
         break;
     }
     // }
+    this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
-      this.markRecentlyViewed(file);
 
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -396,35 +396,35 @@ export class BrowseComponent implements OnInit {
     this.previewModal.open();
   }
 
-  markRecentlyViewed(data: any) {
-    let found = false;
-    // tslint:disable-next-line:prefer-const
-    let recentlyViewed =
-      JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
-    if (recentlyViewed.length) {
-      recentlyViewed.map((item: any, index: number) => {
-        if (item.uid === data.uid) {
-          found = true;
-          recentlyViewed[index] = data;
-        }
-      });
-    }
-    if (found) {
-      localStorage.setItem(
-        localStorageVars.RECENTLY_VIEWED,
-        JSON.stringify(recentlyViewed)
-      );
-      return;
-    }
+  // markRecentlyViewed(data: any) {
+  //   let found = false;
+  //   // tslint:disable-next-line:prefer-const
+  //   let recentlyViewed =
+  //     JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+  //   if (recentlyViewed.length) {
+  //     recentlyViewed.map((item: any, index: number) => {
+  //       if (item.uid === data.uid) {
+  //         found = true;
+  //         recentlyViewed[index] = data;
+  //       }
+  //     });
+  //   }
+  //   if (found) {
+  //     localStorage.setItem(
+  //       localStorageVars.RECENTLY_VIEWED,
+  //       JSON.stringify(recentlyViewed)
+  //     );
+  //     return;
+  //   }
 
-    data["isSelected"] = false;
-    recentlyViewed.push(data);
-    localStorage.setItem(
-      localStorageVars.RECENTLY_VIEWED,
-      JSON.stringify(recentlyViewed)
-    );
-    return;
-  }
+  //   data["isSelected"] = false;
+  //   recentlyViewed.push(data);
+  //   localStorage.setItem(
+  //     localStorageVars.RECENTLY_VIEWED,
+  //     JSON.stringify(recentlyViewed)
+  //   );
+  //   return;
+  // }
 
   // handleSelectFile(item, index) {
   //   this.selectedFile.push(item);
@@ -693,7 +693,7 @@ export class BrowseComponent implements OnInit {
         data.contextParameters.favorites.isFavorite =
           !data.contextParameters.favorites.isFavorite;
         if (favouriteValue === "recent") {
-          this.markRecentlyViewed(data);
+          this.sharedService.markRecentlyViewed(data);
         }
         this.loading = false;
       });
@@ -713,7 +713,7 @@ export class BrowseComponent implements OnInit {
         data.contextParameters.favorites.isFavorite =
           !data.contextParameters.favorites.isFavorite;
         if (favouriteValue === "recent") {
-          this.markRecentlyViewed(data);
+          this.sharedService.markRecentlyViewed(data);
         }
         this.loading = false;
       });

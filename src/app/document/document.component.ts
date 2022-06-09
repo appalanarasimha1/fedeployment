@@ -646,8 +646,8 @@ export class DocumentComponent implements OnInit, OnChanges {
         break;
     }
     // }
+    this.recentDataShow = this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
-      this.markRecentlyViewed(file);
 
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -689,53 +689,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     event.toElement.play();
   }
 
-  getCircularReplacer() {
-    const seen = new WeakSet();
-    return (key, value) => {
-      if (typeof value === "object" && value !== null) {
-        if (seen.has(value)) {
-          return;
-        }
-        seen.add(value);
-      }
-      return value;
-    };
-  }
-
-  // TODO: move to shared service
-  markRecentlyViewed(data: any) {
-    let found = false;
-
-    // tslint:disable-next-line:prefer-const
-    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
-    if (recentlyViewed.length) {
-      recentlyViewed.map((item: any, index: number) => {
-        if (item.uid === data.uid) {
-          found = true;
-          recentlyViewed.splice(index, 1);
-          recentlyViewed.push(data);
-        }
-      });
-    }
-    if (found) {
-      localStorage.setItem(
-        localStorageVars.RECENTLY_VIEWED,
-        JSON.stringify(recentlyViewed, this.getCircularReplacer())
-      );
-      this.recentDataShow = [...recentlyViewed.reverse()];
-      return;
-    }
-
-    data["isSelected"] = false;
-    recentlyViewed.push(data);
-    localStorage.setItem(
-      localStorageVars.RECENTLY_VIEWED,
-      JSON.stringify(recentlyViewed, this.getCircularReplacer())
-    );
-    this.recentDataShow = [...recentlyViewed.reverse()];
-    return;
-  }
-
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return "by pressing ESC";
@@ -772,7 +725,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         data.contextParameters.favorites.isFavorite =
           !data.contextParameters.favorites.isFavorite;
         if (favouriteValue === "recent") {
-          this.markRecentlyViewed(data);
+          this.recentDataShow = this.sharedService.markRecentlyViewed(data);
         }
         this.addToFavorite(data);
         this.loading.pop();
@@ -803,7 +756,7 @@ export class DocumentComponent implements OnInit, OnChanges {
           !data.contextParameters.favorites.isFavorite;
         this.removeFromFavorite(data.uid);
         if (favouriteValue === "recent") {
-          this.markRecentlyViewed(data);
+          this.recentDataShow = this.sharedService.markRecentlyViewed(data);
         }
         this.loading.pop();
       });
