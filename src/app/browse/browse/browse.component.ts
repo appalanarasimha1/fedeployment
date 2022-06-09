@@ -652,6 +652,9 @@ export class BrowseComponent implements OnInit {
       if (!result) return;
       const updatedDocs = result.updatedDocs;
       const updatedFolder = result.selectedFolder;
+      if(!this.selectedFolder.properties) {
+        this.selectedFolder['properties'] = {};
+      }
       this.selectedFolder.properties["dc:description"] = updatedFolder.description;
       this.selectedFolder.properties["dc:start"] = updatedFolder.associatedDate;
       Object.keys(updatedDocs).forEach((key) => {

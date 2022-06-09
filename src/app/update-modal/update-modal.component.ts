@@ -274,10 +274,10 @@ export class UpdateModalComponent implements OnInit {
     this.classificationsUpdate();
   }
 
-  updateFolderInfo() {
+  async updateFolderInfo() {
     if (this.associatedDate === this.selectedFolder.properties["dc:start"]
      && this.description === this.selectedFolder.properties["dc:description"]) return;
-    return this.apiService
+    return await this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
         input: this.selectedFolder.uid,
         params: {
@@ -353,9 +353,10 @@ export class UpdateModalComponent implements OnInit {
       })
       .schemas(['scryAccess'])
       .enrichers({document: ["acls"]})
-      .execute()
+      .execute();
       // .then((result) => {
-      if (result.entries[0]) this.updatedDocs[index] = result.entries[0];
+      if (result.entries[0]) 
+        this.updatedDocs[index] = result.entries[0];
     //     resolve(null);
     //   });
     // });
@@ -446,7 +447,14 @@ export class UpdateModalComponent implements OnInit {
   }
 
   checkOwnerDropdownByValue(value?: string) {
-    return !!(value === 'true') || !(value === 'false');
+    switch(value) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      default:
+        return false;
+    }
   }
 
   applyToAll() {
