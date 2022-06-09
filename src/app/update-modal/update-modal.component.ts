@@ -75,8 +75,8 @@ export class UpdateModalComponent implements OnInit {
   overallConfidentiality: string;
   overallAccess: string;
   overallDownloadApproval: boolean = false;
-  overallUsers: [];
-  overallDownloadApprovalUsers : string;
+  overallUsers: string[];
+  overallDownloadApprovalUsers : string[];
   associatedDate: string;
   description: string;
 
@@ -108,7 +108,7 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = doc.properties['sa:confidentiality'];
       this.customAccessMap[index] = doc.properties['sa:access'];
       this.customUsersMap[index] = doc.properties['sa:users'];
-      this.customDownloadApprovalUsersMap[index] = doc.properties['sa:users'][0];
+      this.customDownloadApprovalUsersMap[index] = doc.properties['sa:downloadApprovalUsers'];
       return;
     }
     const aces = doc.contextParameters.acls.find(a => a.name === "local");
@@ -346,7 +346,8 @@ export class UpdateModalComponent implements OnInit {
         confidentiality: this.customConfidentialityMap[index],
         access: this.customAccessMap[index],
         allow: this.customAllowMap[index],
-        users: this.customDownloadApprovalMap[index] ? [this.customDownloadApprovalUsersMap[index]] : this.customUsersMap[index],
+        users: this.customUsersMap[index],
+        downloadApprovalUsers: this.customDownloadApprovalUsersMap[index],
         copyrightName: this.copyrightUserMap[index],
         copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index],
         downloadApproval: this.customDownloadApprovalMap[index]

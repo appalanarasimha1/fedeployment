@@ -337,7 +337,7 @@
                    <input 
                      type="checkbox" 
                      checked="checked"
-                     (change)="onCheckDownloadApproval()"
+                     (change)="onCheckDownloadApproval($event)"
                      [(ngModel)]="downloadApproval"
                      [ngModelOptions]="{standalone: true}"
                   />
@@ -372,7 +372,7 @@
                   [items]="userList$ | async"
                   bindLabel="id"
                   bindValue="id"
-                  [multiple]="false"
+                  [multiple]="true"
                   [hideSelected]="true"
                   [trackByFn]="trackByFn"
                   [minTermLength]="2"
@@ -530,6 +530,7 @@
                               <input 
                                  type="checkbox" 
                                  checked="checked"
+                                 (change)="changeDownloadTick(file.key)"
                                  [(ngModel)]="customDownloadApprovalMap[file.key]"
                                  [ngModelOptions]="{standalone: true}"
                               />
@@ -559,7 +560,7 @@
                            [items]="userList$ | async"
                            bindLabel="id"
                            bindValue="id"
-                           [multiple]="false"
+                           [multiple]="true"
                            [hideSelected]="true"
                            [trackByFn]="trackByFn"
                            [minTermLength]="2"
