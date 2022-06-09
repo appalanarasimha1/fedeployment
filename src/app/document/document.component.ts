@@ -262,7 +262,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    console.log({ changes });
 
     if (changes.searchTerm) {
       this.searchTerm = changes.searchTerm.currentValue;
@@ -291,9 +290,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   public async getRelatedTags() {
-    // console.log('this.tagsMetaRealdata1', this.tagsMetaRealdata)
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
-      console.log("this.searchTerm ===================", this.searchTerm);
 
       this.searchTem = searchTerm;
     });
@@ -303,7 +300,6 @@ export class DocumentComponent implements OnInit, OnChanges {
         (m) =>
           m.key !== this.searchTem
       );
-      console.log('this.tagsMetaRealdata2', this.tagsMetaRealdata);
       this.dummyPlaceholderTags = false;
     });
   }
@@ -584,7 +580,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         // TODO: add toastr with message 'Invalid token, please login again'
 
         this.modalLoading = false;
-        console.log(e);
+        console.error(e);
         // if(e.contains(`'fetch' on 'Window'`)) {
         //   this.router.navigate(['login']);
         // }
@@ -690,7 +686,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   };
 
   video(event: any) {
-    console.log("im Play!");
     event.toElement.play();
   }
 
@@ -712,8 +707,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     let found = false;
 
     // tslint:disable-next-line:prefer-const
-    let recentlyViewed =
-      JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+    let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
     if (recentlyViewed.length) {
       recentlyViewed.map((item: any, index: number) => {
         if (item.uid === data.uid) {
@@ -736,6 +730,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       localStorageVars.RECENTLY_VIEWED,
       JSON.stringify(recentlyViewed, this.getCircularReplacer())
     );
+    this.recentDataShow = [...recentlyViewed.reverse()];
     return;
   }
 
