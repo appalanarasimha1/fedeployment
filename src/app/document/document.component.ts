@@ -712,7 +712,8 @@ export class DocumentComponent implements OnInit, OnChanges {
       recentlyViewed.map((item: any, index: number) => {
         if (item.uid === data.uid) {
           found = true;
-          recentlyViewed[index] = data;
+          recentlyViewed.splice(index, 1);
+          recentlyViewed.push(data);
         }
       });
     }
@@ -721,6 +722,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         localStorageVars.RECENTLY_VIEWED,
         JSON.stringify(recentlyViewed, this.getCircularReplacer())
       );
+      this.recentDataShow = [...recentlyViewed.reverse()];
       return;
     }
 
