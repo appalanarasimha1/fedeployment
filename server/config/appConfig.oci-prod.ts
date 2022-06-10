@@ -1,5 +1,5 @@
-export class AppConfigProduction {
-    private static userName: string = 'scy:ZAvPslOL';
+export class AppConfigOCIProduction {
+    private static userName: string = 'scy';
     private static password: any = process.env.mongoPassword;
   
     private static config: any = {

@@ -138,14 +138,12 @@
                         Created
                         {{ toDateString(doc?.properties) }}
                         by
-                        <span style="color: #ebc03f">{{
-                          doc?.properties && doc?.properties["dc:creator"]
-                          }}</span>
+                        <span style="color: #ebc03f">{{getCreator()}}</span>
                       </li>
   
                       <li>
                         Usage approver <br /><span style="color: #ebc03f">{{
-                          doc?.properties && doc?.properties["dc:creator"]
+                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
                           }}</span>
                       </li>
   
@@ -156,9 +154,12 @@
                       </li>
   
                       <li>
-                        Location <br /><span style="color: #ebc03f; word-break: break-all;">{{
-                          doc?.path?.split('/'+doc.title)[0]
-                          }}</span>
+                        Location <br />
+                        <span style="color: #ebc03f; word-break: break-all">
+                          <!-- <a [routerLink]="['/common/terms']" target="_blank"> -->
+                            {{doc?.path?.split('/'+doc.title)[0]}}
+                          <!-- </a> -->
+                        </span>
                       </li>
   
                       <li>
