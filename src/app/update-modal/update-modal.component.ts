@@ -59,7 +59,7 @@ export class UpdateModalComponent implements OnInit {
   customAccessMap: any = {};
   customConfidentialityMap: any = {};
   customUsersMap: any = {};
-  customDownloadApprovalUsersMap: {[key: string]: string} = {};
+  customDownloadApprovalUsersMap: {[key: string]: string[]} = {};
   customAllowMap: any = {};
   customDownloadApprovalMap: {[key: string]: string|boolean} = {};
   userList$: Observable<any>;
@@ -116,7 +116,7 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = "";
       this.customAccessMap[index] = "";
       this.customUsersMap[index] = [];
-      this.customDownloadApprovalUsersMap[index] = "";
+      this.customDownloadApprovalUsersMap[index] = [];
       return;
     }
     const localAces = aces.aces;
@@ -125,12 +125,12 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.not;
       this.customAccessMap[index] = ACCESS.all;
       this.customUsersMap[index] = [];
-      this.customDownloadApprovalUsersMap[index] = "";
+      this.customDownloadApprovalUsersMap[index] = [];
     } else if (users.includes(GROUPS.company)) {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
       this.customAccessMap[index] = ACCESS.internal;
       this.customUsersMap[index] = [];
-      this.customDownloadApprovalUsersMap[index] = "";
+      this.customDownloadApprovalUsersMap[index] = [];
     } else if (users.length > 0) {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
       this.customAccessMap[index] = ACCESS.restricted;
