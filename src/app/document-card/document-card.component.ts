@@ -147,7 +147,11 @@ export class DocumentCardComponent implements OnChanges {
   }
 
   getCreator() {
-    return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
+    return this.doc.properties['sa:users'][0] 
+  }
+
+  getApprovalUsers(): string[] {
+    return this.doc.properties?.['sa:downloadApprovalUsers'] || [];
   }
 
   showLockIcon(): boolean {

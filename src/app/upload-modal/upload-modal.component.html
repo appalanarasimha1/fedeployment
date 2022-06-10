@@ -4,7 +4,8 @@
          <ng-template matStepLabel>Select assets</ng-template>
          <!-- <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div> -->
          <div>
-            <ngx-dropzone #drop class="drag-drop" [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" (change)="onSelect($event)">
+            <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)">
+               <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
             <ngx-dropzone-label  class="noborder">
                <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
                   <div class="upload-label">
@@ -22,11 +23,9 @@
                      </div>
                      <span>{{ !data ? 'or click to select files to upload' : 'or click to select assets to upload'}}</span>
                   </div>
-                  <div class="errortext">
+                  <!-- <div class="errortext">
                      <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
-                     <!-- <p class="errorMsg">Only documents in PDF format are acceptable.<br>
-                        Please make sure all the ducoments are converted into PDFs.</p> -->
-                  </div>
+                  </div> -->
                </div>
             </ngx-dropzone-label>
             <ul class="flexible upload-prevoew">
@@ -59,7 +58,7 @@
             </div>
             <div class="col-xl-9 flexible">
                <label class="control control--checkbox" *ngIf="getAssetNumber()" style="margin-bottom: 0px;">
-                  Where any of the assets being uploaded contains a photo of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo and make accessible to other users across NEOM
+                  Where any of the assets being uploaded contains a photo/video of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo/video and make accessible to other users across NEOM. I also acknowledge that I have a clear business justification for storing this asset
                   <input type="checkbox" checked="checked"
                   [(ngModel)]="agreeTerms"
                   [ngModelOptions]="{standalone: true}"/>
@@ -109,7 +108,7 @@
                         <div class="col-xl-8 col-md-8">
                            <div class="flexible">
                               <div class="workshaptitle">{{ selectedWorkspace.title || "Select workspace" }}</div>
-                              <div *ngIf="!data" class="select-workspace-menu-btn pointer" (click)="showWorkspaceList()" [ngClass]="{'disableDiv': data}" >Change workspace</div>
+                              <div class="select-workspace-menu-btn pointer" (click)="showWorkspaceList()">Change workspace</div> <!-- *ngIf="!data"  [ngClass]="{'disableDiv': data}" -->
                            </div>
                         </div>
                      </div>
@@ -117,13 +116,13 @@
                         <span class="triangle"></span>
                            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
                                  <li ngxSlickItem  *ngFor="let ws of workspaceList, let i = index"  class="slide">
-                                    <div class="workspace-title" [class.ws-selected]="selectedWorkspace.id === ws.id" (click)="selectWorkspace(ws)">{{ ws.title }}</div>
+                                    <div class="workspace-title" [class.ws-selected]="selectedWorkspace.uid === ws.uid" (click)="selectWorkspace(ws)">{{ ws.title }}</div>
                                  </li>
                            </ngx-slick-carousel>
                            <!-- <div *ngFor="let ws of workspaceList, let i = index">
                               <div *ngIf="filterWorkspaces(ws.title)"
                                  class="workspace-title"
-                                 [class.ws-selected]="selectedWorkspace.id === ws.id"
+                                 [class.ws-selected]="selectedWorkspace.uid === ws.uid"
                                  (click)="selectWorkspace(ws)"
                                  >
                                  {{ ws.title }}
@@ -141,9 +140,10 @@
                   <div id='custom-select-status' class='hidden-visually' aria-live="polite"></div>
                </div>
                <div class="col-xl-8 col-md-8 flexible">
-                  <div *ngIf="data" class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div>
-                  <div *ngIf="!data" class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}">
-                     <input type="text" id="title" #searchFolderInput [disabled]="data" value="{{sharedService.stringShortener(folderOrder,30)}}" [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" >
+                  <!-- <div *ngIf="data" class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div> -->
+                  <div  class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}"> <!-- *ngIf="!data"-->
+                     <input autocomplete="off" type="text" id="title" #searchFolderInput value="{{sharedService.stringShortener(folderOrder,30)}}" 
+                              [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" > <!-- [disabled]="data"-->
                      <span class="custom-select-icons">
                      <i class="fa fa-angle-down"></i>
                      </span>
@@ -157,13 +157,13 @@
                            <div style="display: block; clear: both; height: 1;"></div>
                            <div *ngIf="breadCrumb.length >= 2" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder.title)"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</div>
                         </div>
-                        <div style="min-height: 52px; max-height: 138px; overflow: auto;" id="customScrollBar">
+                        <div style="min-height: 52px; max-height: 138px; overflow: auto; margin-bottom: 10px;" id="customScrollBar">
                            <li *ngFor="let folder of dropdownFolderList" class="styled">
                               <span (click)="selectFolder(folder)" class="folderTitle">
                                  <img src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px; vertical-align: -2px;">
                                  {{folder.title}}
                               </span>
-                              <span (click)="getFolderByParentId(folder.id, folder.path); extractBreadcrumb(folder.contextParameters)" class="folderTitleArrow">
+                              <span (click)="getFolderByParentId(folder.uid, folder.path); extractBreadcrumb(folder.contextParameters)" class="folderTitleArrow">
                                  <img src="../../assets/images/back-arrow.svg" />
                               </span>
                            </li>
@@ -335,9 +335,10 @@
                  <label class="control control--checkbox" style="margin-bottom: 0px;">
                    Approval required before download
                    <input 
+                     autocomplete="off"
                      type="checkbox" 
                      checked="checked"
-                     (change)="onCheckDownloadApproval()"
+                     (change)="onCheckDownloadApproval($event)"
                      [(ngModel)]="downloadApproval"
                      [ngModelOptions]="{standalone: true}"
                   />
@@ -367,12 +368,12 @@
                <div class="col-xl-4 col-md-4">
                </div>
                <div class="col-xl-8 col-md-8">
-                  <p class="userText pb-4">{{OWNER_APPROVAL_LABEL}}</p>
+                  <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
                   <ng-select style="height: unset !important;"
                   [items]="userList$ | async"
                   bindLabel="id"
                   bindValue="id"
-                  [multiple]="false"
+                  [multiple]="true"
                   [hideSelected]="true"
                   [trackByFn]="trackByFn"
                   [minTermLength]="2"
@@ -450,7 +451,7 @@
                               </li>
                               <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
                                  <div class="copyright-input-block" >
-                                    Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
+                                    Ⓒ <input autocomplete="off" type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
                                  </div>
                               </li>
                               <li>
@@ -528,8 +529,10 @@
                            <label class="control control--checkbox" style="margin-bottom: 0px; float: left;">
                               Approval required before download
                               <input 
+                                 autocomplete="off"
                                  type="checkbox" 
                                  checked="checked"
+                                 (change)="changeDownloadTick(file.key)"
                                  [(ngModel)]="customDownloadApprovalMap[file.key]"
                                  [ngModelOptions]="{standalone: true}"
                               />
@@ -554,12 +557,12 @@
                            &nbsp;
                         </div>
                         <div class="col-xl-8">
-                           <p class="userText pb-3">{{OWNER_APPROVAL_LABEL}}</p>
+                           <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"
                            bindValue="id"
-                           [multiple]="false"
+                           [multiple]="true"
                            [hideSelected]="true"
                            [trackByFn]="trackByFn"
                            [minTermLength]="2"
@@ -584,7 +587,8 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
+               <button *ngIf="!publishing" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
+               <button *ngIf="publishing" mat-button class="upload-btn" >Publishing...</button>
             </div>
          </div>
       </mat-step>

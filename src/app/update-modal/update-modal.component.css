@@ -1039,3 +1039,113 @@ input.copyright-input {
   border-radius: 50%;
   background: #fff;
 }
+
+.updateClassificationBlk {margin-bottom: 20px; border-bottom: 1px solid #D1CFC9; padding-bottom: 10px;}
+.updateClassification {display: block;width: 100%;overflow: hidden;}
+
+.updateClassification .updateClassiNameblock {float: left;}
+
+.updateClassification .assetsBlock {float: right;padding-top: 18px;}
+
+.updateClassification .updateClassiNameblock .folderImg {display: inline-block;vertical-align: middle;margin-right: 20px;}
+
+.updateClassification .updateClassiNameblock .nameBreadcrumbBlk {display: inline-block;vertical-align: middle;}
+.workspaceName {color: #040404; font-style: normal;font-weight: 600;font-size: 16px;line-height: 35px;}
+.renameFolderImg {
+  display: inline-block;
+  max-width: 17px;
+  cursor: pointer;
+  vertical-align: -1px;
+  margin-left: 10px;
+}
+.descriptionDadBlk {
+  margin: 0px auto;
+  max-width: 85%;
+}
+.descriptionDadBlk .upload-form-input textarea {
+  width: 98%;
+  height: 33px;
+  min-height: auto;
+}
+
+.custom-date-picker ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #000 !important;
+  bottom: 0em !important;
+  width: 94% !important;
+}
+.custom-date-picker ::ng-deep .mat-form-field-hint-spacer {
+  flex: none !important;
+}
+.custom-date-picker ::ng-deep .mat-form-field-infix {
+  overflow: hidden !important;
+}
+
+.custom-date-picker ::ng-deep .mat-form-field-label-wrapper {
+  top: -0.94375em !important;
+}
+.custom-date-picker ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  top: 0.6em;
+  font-family: 'myBrown' !important;
+  font-size: 14px !important;
+  color: #999 !important;
+}
+
+.custom-date-picker ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #000 !important;
+  height: 1px !important;
+}
+/* .upload-modal.customHeight {
+  /* height: calc(100vh - 100px); /
+  height: 80vh;
+  overflow: hidden;
+  overflow-y: scroll;
+} */
+::ng-deep .mat-dialog-container {
+  margin-top: 30px !important;
+}
+::ng-deep .cdk-global-overlay-wrapper{
+  overflow: auto !important;
+  pointer-events: auto !important;
+}
+::ng-deep .cdk-global-scrollblock {
+  overflow: auto;
+}
+
+.upload-modal.customHeight ::ng-deep ng-select {
+  width: 100% !important;
+}
+
+.upload-modal.customHeight ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder,
+.upload-modal.customHeight .upload-form-input ::ng-deep .ng-select .ng-arrow-wrapper {
+  padding-bottom: 5px !important;
+}
+.reviewClassifaction .workspaceName {
+  font-size: 14px;
+}
+.custom-date-picker ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: transparent !important;
+  width: 0px !important;
+}
+
+button.btn-disable {
+  background-color: #cccccc;
+  color: #666666;
+  border-color: #cccccc;
+  cursor: no-drop;
+  pointer-events: none;
+}
+.updateClassificationBlk ::ng-deep .mat-form-field-flex {
+  width: 100%;
+}
+.updateClassificationBlk ::ng-deep .mat-form-field {
+  width: auto;
+}
+.updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-wrapper {
+  width: auto;
+}
+.updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-infix {
+  width: 70px;
+}
+.updateClassificationBlk .upload-form-input input {
+  width: 100%;
+}

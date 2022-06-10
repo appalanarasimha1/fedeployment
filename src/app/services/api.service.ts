@@ -11,7 +11,7 @@ const apiVersion1 = environment.apiVersion;
   providedIn: "root",
 })
 export class ApiService {
-  private getHeaders() {
+  private getHeaders(customHeader: any = {}) {
     return {
       "Access-Control-Allow-Origin": "*",
       accept: "text/plain,application/json, application/json",
@@ -20,14 +20,16 @@ export class ApiService {
         "thumbnail,permissions,preview,acls,favorites,audit,tags,folderAssetsCount,breadcrumb",
       "X-Authentication-Token": localStorage.getItem("token"),
       properties: "*",
+      ...customHeader
     };
   }
 
   constructor(private http: HttpClient) {}
 
   get(urlAddress: string, options?: any) {
+    const customHeader = options?.headers || {};
     options = options
-      ? Object.assign(options, { headers: this.getHeaders() })
+      ? Object.assign(options, { headers: this.getHeaders(customHeader) })
       : { headers: this.getHeaders() };
     return this.http
       .get<any>(SERVER_URL + apiVersion1 + urlAddress, options)
@@ -52,7 +54,10 @@ export class ApiService {
   }
 
   post(urlAddress: string, payload: any, options?: any) {
-    options = options || { headers: this.getHeaders() };
+    const customHeader = options?.headers || {};
+    options = options
+      ? Object.assign(options, { headers: this.getHeaders(customHeader) })
+      : { headers: this.getHeaders() };
     return this.http
       .post<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
       .pipe(map((data) => data));

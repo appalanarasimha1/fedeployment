@@ -13,3 +13,10 @@ When you create a new field or want to update the mapping/index, please follow t
     3.1. update the `elastic_data_migration.json` file inside `server/bin`.
     3.2. `curl -H 'Content-Type: application/json' -X POST "http://localhost:9200/_reindex" -d "@bin/elastic_data_migration.json"`.
 4. To check the status `curl 'localhost:9200/_cat/indices?v'`.
+
+
+When setting up a new environemnt, things you need from dev-ops are:
+1. domain URL.
+2. mongodb `username` and `password`.
+3. mongodb `DB` name.
+4. ElasticDB url(this should be running on the same machine as UI server).

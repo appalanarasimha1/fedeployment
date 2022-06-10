@@ -275,7 +275,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         data.contextParameters.favorites.isFavorite =
           !data.contextParameters.favorites.isFavorite;
         if (favouriteValue === "recent") {
-          this.markRecentlyViewed(data);
+          this.sharedService.markRecentlyViewed(data);
         }
         this.modalLoading = false;
       });
@@ -295,41 +295,41 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         data.contextParameters.favorites.isFavorite =
           !data.contextParameters.favorites.isFavorite;
         if (favouriteValue === "recent") {
-          this.markRecentlyViewed(data);
+          this.sharedService.markRecentlyViewed(data);
         }
         this.modalLoading = false;
       });
   }
 
-  markRecentlyViewed(data: any) {
-    let found = false;
-    // tslint:disable-next-line:prefer-const
-    let recentlyViewed =
-      JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
-    if (recentlyViewed.length) {
-      recentlyViewed.map((item: any, index: number) => {
-        if (item.uid === data.uid) {
-          found = true;
-          recentlyViewed[index] = data;
-        }
-      });
-    }
-    if (found) {
-      localStorage.setItem(
-        localStorageVars.RECENTLY_VIEWED,
-        JSON.stringify(recentlyViewed)
-      );
-      return;
-    }
+  // markRecentlyViewed(data: any) {
+  //   let found = false;
+  //   // tslint:disable-next-line:prefer-const
+  //   let recentlyViewed =
+  //     JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
+  //   if (recentlyViewed.length) {
+  //     recentlyViewed.map((item: any, index: number) => {
+  //       if (item.uid === data.uid) {
+  //         found = true;
+  //         recentlyViewed[index] = data;
+  //       }
+  //     });
+  //   }
+  //   if (found) {
+  //     localStorage.setItem(
+  //       localStorageVars.RECENTLY_VIEWED,
+  //       JSON.stringify(recentlyViewed)
+  //     );
+  //     return;
+  //   }
 
-    data["isSelected"] = false;
-    recentlyViewed.push(data);
-    localStorage.setItem(
-      localStorageVars.RECENTLY_VIEWED,
-      JSON.stringify(recentlyViewed)
-    );
-    return;
-  }
+  //   data["isSelected"] = false;
+  //   recentlyViewed.push(data);
+  //   localStorage.setItem(
+  //     localStorageVars.RECENTLY_VIEWED,
+  //     JSON.stringify(recentlyViewed)
+  //   );
+  //   return;
+  // }
 
   hasNoRestriction() {
     return (!this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any && this.doc.properties["sa:downloadApproval"] !== 'true');
@@ -349,6 +349,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   getCreator() {
     return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
+  }
+  
+  getApprovalUsers(): string[] {
+    return this.doc.properties?.['sa:downloadApprovalUsers'] || [];
   }
 
   getCopyright() {

@@ -1677,3 +1677,23 @@ document-card .lock-icon img {
 .internal-use .error-disabled .control__indicator {
   border: 1px solid #E03C31;
 }
+
+.permission-required ul.emailList {
+  width: 100%;
+  margin: 20px 0px;
+  padding: 0px;
+}
+
+.permission-required ul.emailList li {
+  padding: 0px;
+  margin: 0px;
+}
+.permission-required ul.emailList li .nameBlk {
+  float: left;
+  cursor: auto;
+  width: 85%;
+}
+.permission-required ul.emailList li .emailIconBlk {
+  float: right;
+  cursor: pointer;
+}

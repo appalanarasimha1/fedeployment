@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
@@ -19,6 +19,7 @@ import { apiRoutes } from '../config';
 })
 export class HeaderComponent implements OnInit {
   @Output() sendSelectedTab: EventEmitter<any> = new EventEmitter();
+  // @ViewChild('videoPlayer') player: ElementRef;
 
   selectedTab: string;
   searchHeader: boolean = true;
@@ -64,6 +65,7 @@ export class HeaderComponent implements OnInit {
           this.showBrowseHeader = false;
         }
         if (event.url === '/' || event.url.includes('/#favorites')) {
+          localStorage.removeItem('workspaceState');
           this.searchHeader = true;
         } else {
           this.searchHeader = false;
@@ -161,6 +163,10 @@ export class HeaderComponent implements OnInit {
     dialogConfig.maxHeight = "900px"
     dialogConfig.width = "650px";
     dialogConfig.disableClose = true;
+    const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
+    if(workspaceState) {
+      dialogConfig.data = workspaceState;
+    }
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }

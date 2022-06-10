@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { UpdateModalComponent } from "./update-modal.component";
 import { SharedModule } from "../shared/shared.module";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [UpdateModalComponent],
@@ -23,7 +24,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatNativeDateModule,
     NgSelectModule,
     SharedModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatInputModule
   ],
 })
 export class UpdateModalModule {}
