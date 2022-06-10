@@ -4305,3 +4305,10 @@ body {
   overflow: hidden !important;
   overflow-y: scroll !important;
 }
+
+.updateClassificationBlk .custom-date-picker button.mat-focus-indicator.mat-icon-button.mat-button-base:after {
+  background-image: url('./assets/images/calendar-icon-golden.svg');
+}
+.updateClassificationBlk ::ng-deep .mat-datepicker-popup {
+  left: 40% !important;
+}

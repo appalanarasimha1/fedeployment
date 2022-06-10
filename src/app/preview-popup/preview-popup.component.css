@@ -1561,8 +1561,8 @@ color: #ACACAC;
   width: 346px;
   min-height: auto;
   /* height: auto; */
-  right: -8px;
-  top: 30px;
+  right: 2px;
+  top: 51px;
   background: #23211E;
   border-radius: 8px;
   display: none;
@@ -1811,4 +1811,39 @@ font-weight: 600;
     margin-left: 10px;
     cursor: pointer;
   }
+}
+.downloadBtn {
+  background: #289569;
+  width: 140px;
+  padding: 9px 20px;
+  border-radius: 100px;
+  color: #fff;
+  font-weight: 600;
+}
+.downloadBtn img {
+  max-width: 20px;
+}
+
+.modalHead ul li img {
+  width: 30px;
+}
+.downloadBlock::after {
+  height: 80px;
+}
+.permission-required ul.emailList {
+  width: 100%;
+  margin: 20px 0px;
+  padding: 0px;
+}
+
+.permission-required ul.emailList li {
+  padding: 0px;
+  margin: 0px;
+}
+.permission-required ul.emailList li .nameBlk {
+  display: inline-block;
+}
+.permission-required ul.emailList li .emailIconBlk {
+  float: right;
+  cursor: pointer;
 }

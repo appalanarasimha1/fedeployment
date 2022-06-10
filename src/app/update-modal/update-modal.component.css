@@ -1123,7 +1123,8 @@ input.copyright-input {
   font-size: 14px;
 }
 .custom-date-picker ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
-  background-color: #C49900 !important;
+  background-color: transparent !important;
+  width: 0px !important;
 }
 
 button.btn-disable {
@@ -1132,4 +1133,19 @@ button.btn-disable {
   border-color: #cccccc;
   cursor: no-drop;
   pointer-events: none;
+}
+.updateClassificationBlk ::ng-deep .mat-form-field-flex {
+  width: 100%;
+}
+.updateClassificationBlk ::ng-deep .mat-form-field {
+  width: auto;
+}
+.updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-wrapper {
+  width: auto;
+}
+.updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-infix {
+  width: 70px;
+}
+.updateClassificationBlk .upload-form-input input {
+  width: 100%;
 }

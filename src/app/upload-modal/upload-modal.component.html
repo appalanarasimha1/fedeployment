@@ -142,7 +142,7 @@
                <div class="col-xl-8 col-md-8 flexible">
                   <!-- <div *ngIf="data" class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div> -->
                   <div  class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}"> <!-- *ngIf="!data"-->
-                     <input type="text" id="title" #searchFolderInput value="{{sharedService.stringShortener(folderOrder,30)}}" 
+                     <input autocomplete="off" type="text" id="title" #searchFolderInput value="{{sharedService.stringShortener(folderOrder,30)}}" 
                               [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" > <!-- [disabled]="data"-->
                      <span class="custom-select-icons">
                      <i class="fa fa-angle-down"></i>
@@ -335,6 +335,7 @@
                  <label class="control control--checkbox" style="margin-bottom: 0px;">
                    Approval required before download
                    <input 
+                     autocomplete="off"
                      type="checkbox" 
                      checked="checked"
                      (change)="onCheckDownloadApproval($event)"
@@ -367,7 +368,7 @@
                <div class="col-xl-4 col-md-4">
                </div>
                <div class="col-xl-8 col-md-8">
-                  <p class="userText pb-4">{{OWNER_APPROVAL_LABEL}}</p>
+                  <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
                   <ng-select style="height: unset !important;"
                   [items]="userList$ | async"
                   bindLabel="id"
@@ -450,7 +451,7 @@
                               </li>
                               <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
                                  <div class="copyright-input-block" >
-                                    Ⓒ <input type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
+                                    Ⓒ <input autocomplete="off" type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
                                  </div>
                               </li>
                               <li>
@@ -528,6 +529,7 @@
                            <label class="control control--checkbox" style="margin-bottom: 0px; float: left;">
                               Approval required before download
                               <input 
+                                 autocomplete="off"
                                  type="checkbox" 
                                  checked="checked"
                                  (change)="changeDownloadTick(file.key)"
@@ -555,7 +557,7 @@
                            &nbsp;
                         </div>
                         <div class="col-xl-8">
-                           <p class="userText pb-3">{{OWNER_APPROVAL_LABEL}}</p>
+                           <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"

@@ -925,9 +925,9 @@ font-weight: 600;
   /* line-height: 20px; */
   color: #040505;
 }
-::ng-deep .mat-datepicker-popup{
+/* ::ng-deep .mat-datepicker-popup{
   left: 819px !important;
-}
+} */
 ::ng-deep .mat-expansion-panel-header-description{
   color: #937206;
 }
@@ -1123,9 +1123,9 @@ font-weight: 600;
 .groupFolder.checkDelete .delete-folder-action {
   opacity: 1;
 }
-::ng-deep .mat-datepicker-popup{
+/* ::ng-deep .mat-datepicker-popup{
   left: 819px !important;
-}
+} */
 ::ng-deep .mat-expansion-panel-header-description{
   color: #937206;
 }
@@ -2546,9 +2546,9 @@ font-weight: 600;
   /* line-height: 20px; */
   color: #040505;
 }
-::ng-deep .mat-datepicker-popup{
+/* ::ng-deep .mat-datepicker-popup{
   left: 819px !important;
-}
+} */
 ::ng-deep .mat-expansion-panel-header-description{
   color: #937206;
 }
@@ -2744,9 +2744,9 @@ font-weight: 600;
 .groupFolder.checkDelete .delete-folder-action {
   opacity: 1;
 }
-::ng-deep .mat-datepicker-popup{
+/* ::ng-deep .mat-datepicker-popup{
   left: 819px !important;
-}
+} */
 ::ng-deep .mat-expansion-panel-header-description{
   color: #937206;
 }
@@ -3481,3 +3481,10 @@ ul.downloadImgLisst li .contentListBlk {
   background: #fff;
 }
 /* custom checkbox end */
+
+svg.classificationsIcon.disablePermission path {
+  stroke: #bab8b1;
+}
+/* .updateClassificationBlk ::ng-deep .mat-datepicker-popup {
+  left: 40% !important;
+} */
