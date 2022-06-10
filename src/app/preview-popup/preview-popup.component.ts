@@ -350,6 +350,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   getCreator() {
     return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
   }
+  
+  getApprovalUsers(): string[] {
+    return this.doc.properties['sa:downloadApprovalUsers'];
+  }
 
   getCopyright() {
     if (this.doc.properties['sa:copyrightName'] && this.doc.properties['sa:copyrightYear']) {

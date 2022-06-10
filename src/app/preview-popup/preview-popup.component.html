@@ -45,20 +45,19 @@
                     </div>
 
                     <div *ngIf="hasRequestRestriction()" class="permission-required">
-                      <p>Always credit copyright owners (where applicable). <br /><br />To download this asset,
-                        please reach out to <a href="#">{{getCreator()}}</a> via Email.</p>
-
-                        <ul class="emailList">
-                          <li>
-                            <div class="nameBlk">Yasmin Al Fakher</div>
-                            <div class="emailIconBlk">
-                              <a href="mailto:{{getCreator()}}">
-                              <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.42171 1H18.5783C18.8115 1 19 1.18265 19 1.40826V12.5917C19 12.8175 18.8113 13 18.5783 13H1.42171C1.18853 13 1 12.8174 1 12.5917V1.40826C1 1.18252 1.18866 1 1.42171 1ZM18.1567 2.22922L10.2544 8.04031C10.0985 8.15476 9.88611 8.14767 9.73921 8.03486L1.84432 2.22929V12.1833H18.1569L18.1567 2.22922ZM2.67189 1.81717L10.0003 7.20578L17.3288 1.81717H2.67155H2.67189Z" fill="#EDD580" stroke="#EDD580" stroke-width="0.5"/>
-                              </svg></a>
-                            </div>
-                          </li>
-                        </ul>
+                      <p>Always credit copyright owners (where applicable). <br /><br />
+                        {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
+                      <ul class="emailList">
+                        <li *ngFor="let userName of getApprovalUsers()">
+                          <div class="nameBlk">{{userName}}</div>
+                          <div class="emailIconBlk">
+                            <a href="mailto:{{userName}}">
+                            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M1.42171 1H18.5783C18.8115 1 19 1.18265 19 1.40826V12.5917C19 12.8175 18.8113 13 18.5783 13H1.42171C1.18853 13 1 12.8174 1 12.5917V1.40826C1 1.18252 1.18866 1 1.42171 1ZM18.1567 2.22922L10.2544 8.04031C10.0985 8.15476 9.88611 8.14767 9.73921 8.03486L1.84432 2.22929V12.1833H18.1569L18.1567 2.22922ZM2.67189 1.81717L10.0003 7.20578L17.3288 1.81717H2.67155H2.67189Z" fill="#EDD580" stroke="#EDD580" stroke-width="0.5"/>
+                            </svg></a>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
 
                     <div *ngIf="showDownloadDropdown()" class="sub-dropdown-block">
@@ -364,8 +363,19 @@
                   </div>
 
                   <div *ngIf="hasRequestRestriction()" class="permission-required">
-                    <p>Always credit copyright owners (where applicable). <br /><br />To download this asset,
-                      please reach out to <a href="#">{{getCreator()}}</a> via Email.</p>
+                    <p>Always credit copyright owners (where applicable). <br /><br />
+                      {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
+                    <ul class="emailList">
+                      <li *ngFor="let userName of getApprovalUsers()">
+                        <div class="nameBlk">{{userName}}</div>
+                        <div class="emailIconBlk">
+                          <a href="mailto:{{userName}}">
+                          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.42171 1H18.5783C18.8115 1 19 1.18265 19 1.40826V12.5917C19 12.8175 18.8113 13 18.5783 13H1.42171C1.18853 13 1 12.8174 1 12.5917V1.40826C1 1.18252 1.18866 1 1.42171 1ZM18.1567 2.22922L10.2544 8.04031C10.0985 8.15476 9.88611 8.14767 9.73921 8.03486L1.84432 2.22929V12.1833H18.1569L18.1567 2.22922ZM2.67189 1.81717L10.0003 7.20578L17.3288 1.81717H2.67155H2.67189Z" fill="#EDD580" stroke="#EDD580" stroke-width="0.5"/>
+                          </svg></a>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
 
                   <div *ngIf="showDownloadDropdown()" class="sub-dropdown-block">

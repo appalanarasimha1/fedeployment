@@ -150,6 +150,10 @@ export class DocumentCardComponent implements OnChanges {
     return this.doc.properties['sa:users'][0] 
   }
 
+  getApprovalUsers(): string[] {
+    return this.doc.properties['sa:downloadApprovalUsers'];
+  }
+
   showLockIcon(): boolean {
     if(!this?.doc?.properties['sa:confidentiality']) return false;
     if(this.doc.properties['sa:confidentiality'].toLowerCase() === CONFIDENTIALITY.confidential.toLowerCase()) return true;
