@@ -352,7 +352,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
   
   getApprovalUsers(): string[] {
-    return this.doc.properties['sa:downloadApprovalUsers'];
+    return this.doc.properties?.['sa:downloadApprovalUsers'] || [];
   }
 
   getCopyright() {

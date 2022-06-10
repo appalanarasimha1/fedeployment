@@ -151,7 +151,7 @@ export class DocumentCardComponent implements OnChanges {
   }
 
   getApprovalUsers(): string[] {
-    return this.doc.properties['sa:downloadApprovalUsers'];
+    return this.doc.properties?.['sa:downloadApprovalUsers'] || [];
   }
 
   showLockIcon(): boolean {
