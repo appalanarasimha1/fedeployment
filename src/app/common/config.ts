@@ -16,6 +16,8 @@ export const apiRoutes = {
   ADVANCE_DOC_PP: "/search/pp/advanced_document_content/execute",
   SEARCH_USER: "/user/search",
   ADD_PERMISSION: "/automation/Document.AddPermission",
+  REMOVE_PERMISSION: "/automation/Document.RemovePermission",
+  REPLACE_PERMISSION: "/automation/Document.ReplacePermission",
   REMOVE_ACL: "/automation/Document.RemoveACL",
   NXQL_SEARCH: "/search/pp/nxql_search/execute",
   FETCH_PERSONALIZED_VIDEO: "/fetchPersonalizedVideo",

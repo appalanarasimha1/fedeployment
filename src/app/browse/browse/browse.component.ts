@@ -122,7 +122,7 @@ export class BrowseComponent implements OnInit {
   isTrashView = false;
   needReloadWs = [];
   hasUpdatedChildren = [];
-  sortedData;
+  sortedData = [];
   folderNotFound = false;
   renameFolderName: boolean = false;
   isShowDivIf: boolean = false;
@@ -139,6 +139,8 @@ export class BrowseComponent implements OnInit {
   isAware = false;
   downloadErrorShow: boolean = false;
   downloadEnable: boolean = false;
+
+  checkboxIsPrivate: boolean = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -285,7 +287,7 @@ export class BrowseComponent implements OnInit {
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-    
+
     this.saveState(item);
     this.searchBarValue = "";
     this.paginator.firstPage();
@@ -484,7 +486,7 @@ export class BrowseComponent implements OnInit {
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-    
+
     this.saveState(item);
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -516,7 +518,8 @@ export class BrowseComponent implements OnInit {
   }
 
   async fetchFolder(id) {
-    const result = await this.apiService.get(`/id/${id}`, {headers: { "fetch-document": "properties"}}).toPromise();
+    const result = await this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
+      {headers: { "fetch-document": "properties"}}).toPromise();
     return result;
   }
 
@@ -560,7 +563,7 @@ export class BrowseComponent implements OnInit {
     // if (this.folderAssetsResult[id]) {
     //   return this.folderAssetsResult[id];
     // }
-    const url = `/id/${assetUid}`;
+    const url = `/id/${assetUid}?fetch-acls=username%2Ccreator%2Cextended&depth=children`;
     const { contextParameters }: any = await this.apiService
       .get(url)
       .toPromise();
@@ -995,6 +998,7 @@ export class BrowseComponent implements OnInit {
     dialogConfig.disableClose = true;
     this.selectedFolder["sectorId"] = this.selectedFolder2.uid;
     dialogConfig.data = this.selectedFolder;
+    dialogConfig.data.isPrivate = this.isPrivateFolder();
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
@@ -1030,7 +1034,8 @@ export class BrowseComponent implements OnInit {
         this.selectedFolder2.title,
         this.selectedFolder,
         description,
-        date
+        date,
+        this.checkboxIsPrivate
       );
       const res = await this.apiService.post(url, payload, {headers: { "fetch-document": "properties"}}).toPromise();
       if (!res && !res["uid"]) return;
@@ -1039,6 +1044,7 @@ export class BrowseComponent implements OnInit {
       this.sortedData = this.searchList.slice();
       this.folderAssetsResult[this.selectedFolder.uid].entries.unshift(res);
       this.showMoreButton = false;
+      this.checkboxIsPrivate = false;
       $(".dropdownCreate").hide();
       $(".buttonCreate").removeClass("createNewFolderClick");
       this.sharedService.showSnackbar(
@@ -1326,11 +1332,11 @@ export class BrowseComponent implements OnInit {
   }
 
   saveState({uid, title, path, properties, sectorId, type, contextParameters}) {
-    let breadcrumb;
-    if(contextParameters) {
-      ({breadcrumb} = contextParameters);
-      contextParameters = { breadcrumb };
-    }
+    // let breadcrumb;
+    // if(contextParameters) {
+    //   ({breadcrumb} = contextParameters);
+    //   contextParameters = { breadcrumb };
+    // }
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
     this.navigateToWorkspaceFolder(uid);
@@ -1358,8 +1364,7 @@ export class BrowseComponent implements OnInit {
     dialogConfig.id = "modal-component";
     dialogConfig.width = "550px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
-    const folder = await this.fetchFolder(this.selectedFolder.uid);
-    this.loading = false;
+    // const folder = await this.fetchFolder(this.selectedFolder.uid);
 
     const modalDialog = this.matDialog.open(ManageAccessModalComponent, dialogConfig);
 
@@ -1369,6 +1374,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async openAddUserModal() {
+    const folderCollaborators = this.getFolderCollaborators();
     this.loading = true;
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -1377,11 +1383,46 @@ export class BrowseComponent implements OnInit {
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const folder = await this.fetchFolder(this.selectedFolder.uid);
     this.loading = false;
+    this.loading = false;
+    dialogConfig.data = {
+      folderId: this.selectedFolder.uid,
+      folderCollaborators
+    }
 
     const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
-      this.loading = false;
+      if (result) {
+        this.saveState(result);
+      }
     });
+  }
+
+  canSetAsPrivate() {
+    return this.selectedFolder?.type === 'Domain';
+  }
+
+  isPrivateFolder(isButton = true) {
+    if (this.selectedFolder?.type !== 'Workspace') return false;
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+
+    const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
+    if (isButton) return isPrivate;
+    const currentCollaborators = this.getFolderCollaborators();
+    return isPrivate && (!currentCollaborators || Object.keys(currentCollaborators).length === 0)
+  }
+
+  getFolderCollaborators() {
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (!selectedFolder?.contextParameters?.acls) return [];
+    const localAces = selectedFolder.contextParameters.acls.find(acl => acl.name === 'local');
+    if (!localAces?.aces) return;
+    const folderCollaborators = {};
+    localAces.aces.forEach(ace => folderCollaborators[ace.username.id] = {
+      user: ace.username,
+      permission: ace.permission,
+      id: ace.id,
+    });
+    return folderCollaborators;
   }
 }

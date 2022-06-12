@@ -12,8 +12,6 @@ export class InterceptorService implements HttpInterceptor {
   constructor(private router: Router) { }
   intercept(req: HttpRequest<any>, next: HttpHandler):
     Observable<HttpEvent<any>> {
-      console.log('inside interceptor');
-    
       req = req.clone(
         {setHeaders: { 'X-Authentication-Token': localStorage.getItem('token') }
       });

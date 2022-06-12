@@ -163,7 +163,7 @@ export class UploadModalComponent implements OnInit {
         this.selectedFolder = this.data;
       }
       this.associatedDate = this.data?.properties?.["dc:start"];
-    } 
+    }
     // else {
     //   this.showWorkspaceList();
     // }
@@ -252,6 +252,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkUploadFormStep() {
+    if (this.isPrivateFolder()) return false;
     if (
       (!this.selectedFolder && !this.folderToAdd && !this.folderNameParam) ||
       !this.access ||
@@ -321,7 +322,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   openBrowseRoute() {
-    // if(this.data) { 
+    // if(this.data) {
     //   // NOTE: as per the new requirements, we do not want to navigate to the folder in case of uploading asset in a folder.
     //   this.closeModal();
     //   return;
@@ -395,7 +396,7 @@ export class UploadModalComponent implements OnInit {
     this.dropdownFolderList = index === 0 ? result : result.filter(res => res.type === this.ORDERED_FOLDER);
     this.folderList = [...this.dropdownFolderList];
   }
-  
+
   extractBreadcrumb(contextParameters) {
     if (contextParameters) {
       this.breadCrumb = contextParameters?.breadcrumb.entries.filter((entry) => {
@@ -680,10 +681,10 @@ export class UploadModalComponent implements OnInit {
       folder = await this.createFolder(this.folderToAdd);
       this.selectedFolder = folder;
     }
-   
+
     for(let key in this.filesMap) {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
-      await this.setAssetPermission(asset, key);
+      if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
     }
     if(!this.showRedirectUrl()) {
       // this.dialogRef.close(this.uploadedAsset);
@@ -903,5 +904,12 @@ export class UploadModalComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  isPrivateFolder() {
+    if (this.selectedFolder?.type !== 'Workspace') return false;
+
+    const isPrivate = this.selectedFolder?.properties && this.selectedFolder?.properties["dc:isPrivate"];
+    return isPrivate || this.selectedFolder.isPrivate;
   }
 }
