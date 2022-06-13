@@ -1271,7 +1271,7 @@ export class BrowseComponent implements OnInit {
       user = Workspace[ID];
     }
 
-    if (breadcrumb?.title?.toLowerCase() === user.toLowerCase()) return true;
+    if (breadcrumb?.title?.toLowerCase() === user?.toLowerCase()) return true;
     return false;
   }
 

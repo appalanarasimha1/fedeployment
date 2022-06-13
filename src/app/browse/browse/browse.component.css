@@ -1872,3 +1872,7 @@ a.downloadDisbable {
 a.downloadDisbable path {
     stroke: gray;
 }
+
+.delete-folder-action.activeHover {
+  opacity: 1;
+}
