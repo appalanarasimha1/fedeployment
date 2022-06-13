@@ -57,6 +57,7 @@ export class SubHeaderComponent implements OnInit {
     { label: "Sports", value: "sport" },
     { label: "Water", value: "water" },
     { label: "Food", value: "food" },
+    { label: "Tourism", value: "tourism" }
   ]; // , {label: 'Water', value: 'water'}
   sectorSelected =
     localStorage.getItem("videoSector") || this.allSectors[0].value;
