@@ -46,7 +46,7 @@
     <div [ngClass]="{'activeHover': doc.isSelected}">
       <div class="mouse-hover-bg" (click)="openPreview()"></div>
       <div class="form-group-custom">
-        <input type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
+        <input class ="vh" type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
           (change)="selectImage($event)">
         <label for="html-{{doc.uid}}"></label>
       </div>
@@ -76,7 +76,7 @@
 
               <div class="control-group" [ngClass]="downloadErrorShow && !isAware ? 'error-disabled' : '' ">
                 <label class="control control--checkbox">I'm aware this asset must NOT be used in public
-                  <input type="checkbox" [(ngModel)]="isAware" checked="isAware" (change)="onCheckboxChange($event)"/>
+                  <input class ="vh" type="checkbox" [(ngModel)]="isAware" checked="isAware" (change)="onCheckboxChange($event)"/>
                   <div class="control__indicator"></div>
                 </label>
               </div>
@@ -146,8 +146,8 @@
   </div>
   <div [ngClass]="{'activeHover': doc.isSelected}">
 
-    <div class="form-group-custom">
-      <input type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
+    <div class="form-group-custom"  >
+      <input class ="vh" type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
         (change)="selectImage($event)">
       <label for="html-{{doc.uid}}"></label>
     </div>

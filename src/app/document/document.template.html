@@ -399,24 +399,24 @@
   <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
 
   <div *ngIf="fileSelected.length" class="downloadAssets"  [ngClass]="{'fileSelected.length' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
-    <div class="selectedItems">Selected {{fileSelected.length}} <img src="../../assets/images/remove-icon.svg" alt="" (click)="clearSelected()" /></div>
+    <div class="selectedItems">Selected {{downloadCount}} <img src="../../assets/images/remove-icon.svg" alt="" (click)="removeAssets()" /></div>
     <div class="downloadSelectedAssets downloadFileWorkspace">
       <span (click)="multiDownload()"><img src="../../assets/images/download-golden.svg" alt="" /> Download selected assets</span>
       <div class="multiDownloadBlock">
-        <div class="internal-use">
+        <div class="internal-use"  *ngIf="forInternalUse.length>0 && needPermissionToDownload.length <1">
           <p>Always credit copyright owners. </p>
 
-          <p class="pt-15">Your download exceeds 50 GB. This will likely take some time.</p>
+          <p class="pt-15" *ngIf="sizeExeeded">Your download exceeds 1 GB. This will likely take some time.</p>
 
           <div class="control-group" [ngClass]="downloadErrorShow && !isAware ? 'error-disabled' : '' ">
-            <label class="control control--checkbox">I'm aware certain seleted asset(s) must NOT be used in public
+            <label class="control control--checkbox">I'm aware certain selected asset(s) must NOT be used in public
               <input type="checkbox" [(ngModel)]="isAware" checked="isAware" (change)="onCheckboxChange($event)"/>
               <div class="control__indicator"></div>
             </label>
           </div>
           <div class="error" *ngIf="downloadErrorShow && !isAware">Please check the box to proceed</div>
           <div class="download-btn" (click)="downloadClick()">
-            <a href="#">
+            <a (click)="downloadAssets($event)" [ngClass]="{'downloadDisbable':!downloadEnable}">
               <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.9673 19.5525V12.0525" stroke="#EDD580" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893" stroke="#EDD580" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

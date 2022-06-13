@@ -1881,3 +1881,11 @@ color: #ACACAC;
   background: #fff;
 }
 /* custom checkbox end */
+
+a.downloadDisbable {
+    color: gray!important;
+}
+
+a.downloadDisbable path {
+    stroke: gray;
+}

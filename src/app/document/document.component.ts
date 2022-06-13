@@ -316,7 +316,10 @@ export class DocumentComponent implements OnInit, OnChanges {
           .subscribe((resp: any) => {
             let locationForDownload = resp.headers.get("location");
 
-            console.log("1111111111111111000000000000000000000022222222222222222", resp);
+            console.log(
+              "1111111111111111000000000000000000000022222222222222222",
+              resp
+            );
           });
 
         setTimeout(() => {
@@ -517,6 +520,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
+    this.selectAsset(event, file, index);
     if (event.checked || event.target?.checked) {
       this.fileSelected.push(file);
     } else {
@@ -1080,16 +1084,139 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
   }
   downloadClick() {
-    if(!this.downloadEnable) {
+    if (!this.downloadEnable) {
       this.downloadErrorShow = true;
     }
   }
   onCheckboxChange(e: any) {
-    if(e.target.checked){
+    if (e.target.checked) {
       this.downloadErrorShow = false;
       this.downloadEnable = true;
     } else {
       this.downloadEnable = false;
     }
+  }
+  forInternalUse: any = [];
+  downloadArray: any = [];
+  sizeExeeded: boolean = false;
+  forInternaCheck: boolean = false;
+  downloadFullItem: any = [];
+  needPermissionToDownload: any = [];
+  downloadCount: number = 0;
+
+  selectAsset($event, item, i) {
+    console.log("itemitemitemitemitem", item, $event);
+    // if (!$event.target?.checked || !$event.checked) {
+    //   console.log("inside unchecked");
+    //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+    //   this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+    //   this.downloadFullItem = this.downloadFullItem.filter(
+    //     (m) => m.uid !== item.uid
+    //   );
+    //   this.needPermissionToDownload = this.needPermissionToDownload.filter(
+    //     (m) => m.uid !== item.uid
+    //   );
+    //   this.downloadCount = this.downloadCount - 1;
+    // }
+    // else
+    if ($event.target?.checked || $event.checked) {
+      this.downloadCount = this.downloadCount + 1;
+      if (item.properties["sa:users"].length > 0) {
+        this.needPermissionToDownload.push(item);
+      } else {
+        if (item.properties["sa:access"] === "Internal access only") {
+          this.forInternalUse.push(item.uid);
+        }
+        this.downloadArray.push(item.uid);
+        this.downloadFullItem.push(item);
+      }
+    } else {
+      //  if (!$event.target?.checked || !$event.checked) {
+      console.log("inside unchecked");
+      this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+      this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+      this.downloadFullItem = this.downloadFullItem.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.needPermissionToDownload = this.needPermissionToDownload.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.downloadCount = this.downloadCount - 1;
+      //  }
+    }
+    this.getdownloadAssetsSize();
+  }
+
+  getUser(item) {
+    return item.properties["sa:users"];
+  }
+
+  getdownloadAssetsSize() {
+    let size = 0;
+    if (this.downloadArray.length > 0) {
+      this.downloadFullItem.forEach((doc) => {
+        size = size + parseInt(doc.properties["file:content"]?.length);
+      });
+      let sizeInGB = size / 1024 / 1024 / 1024;
+
+      if (sizeInGB > 1) {
+        this.sizeExeeded = true;
+      } else {
+        this.sizeExeeded = false;
+      }
+    } else {
+      this.sizeExeeded = false;
+    }
+  }
+
+  downloadAssets(e) {
+    if (!this.downloadEnable && this.forInternalUse.length > 0) {
+      return;
+    } else {
+      if (this.downloadArray.length > 0) {
+        $(".multiDownloadBlock").hide();
+        console.log("comming");
+        let r = Math.random().toString().substring(7);
+        let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
+        let uid: any;
+        let data = this.apiService
+          .downloaPost("/automation/Blob.BulkDownload/@async", {
+            params: {
+              filename: `selection-${r}.zip`,
+            },
+            context: {},
+            input,
+          })
+          .subscribe((res: any) => {
+            let splittedLocation = res.headers.get("location").split("/");
+            let newUID = splittedLocation[splittedLocation.length - 2];
+            uid = newUID;
+            this.apiService
+              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+              .subscribe((resp: any) => {
+                let locationForDownload = resp.headers.get("location");
+              });
+
+            setTimeout(() => {
+              window.open(
+                environment.apiServiceBaseUrl +
+                  "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                  uid
+              );
+            }, 1000);
+          });
+      }
+    }
+  }
+
+  removeAssets() {
+    this.forInternalUse = [];
+    this.downloadArray = [];
+    this.sizeExeeded = false;
+    this.forInternaCheck = false;
+    this.downloadFullItem = [];
+    this.needPermissionToDownload = [];
+    this.downloadCount = 0;
+    this.fileSelected = [];
   }
 }
