@@ -32,7 +32,12 @@ export class HeaderComponent implements OnInit {
 
   modalOption: NgbModalOptions = {}; // not null!
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
-  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'}, {label: 'Food', value: 'food'}]; // , {label: 'Water', value: 'water'}
+  allSectors = [
+    {label: 'All NEOM sectors', value: 'general'},
+    {label: 'Sports', value: 'sport'},
+    {label: 'Water', value: 'water'},
+    {label: 'Food', value: 'food'},
+    { label: "Tourism", value: "tourism" }]; // , {label: 'Water', value: 'water'}
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
   videoResponse;
   videoId;
