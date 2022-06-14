@@ -252,16 +252,16 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkUploadFormStep() {
-    if (
-      (!this.selectedFolder && !this.folderToAdd && !this.folderNameParam) ||
-      !this.access ||
-      !this.confidentiality || !this.allow ||
-      (this.checkShowUserDropdown() &&
-        this.selectedUsers &&
-        this.selectedUsers.length === 0)
-    )
-      return true;
-      else return false;
+    // if (
+    //   (!this.selectedFolder && !this.folderToAdd && !this.folderNameParam) ||
+    //   !this.access ||
+    //   !this.confidentiality || !this.allow ||
+    //   (this.checkShowUserDropdown() &&
+    //     this.selectedUsers &&
+    //     this.selectedUsers.length === 0)
+    // )
+    //   return true;
+    //   else return false;
   }
 
   checkButtonDisabled() {

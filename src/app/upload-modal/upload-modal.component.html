@@ -80,7 +80,7 @@
          </div>
       </mat-step>
 
-      <mat-step [completed]="!checkUploadFormStep()">
+      <mat-step >
          <ng-template matStepLabel>Add information</ng-template>
          <div class="upload-form" id="customScrollBar" >
             <div  class="publish-assets">
@@ -136,7 +136,7 @@
             <div class="row upload-form-input mb-10">
                <div class="col-xl-4 col-md-4">
                   <label for="title">Folder name<br>
-                  <span style="font-size: 14px" *ngIf="!data">e.g. Title of project or event</span></label>
+                  <span style="font-size: 12px" *ngIf="!data">e.g. Title of project or event</span></label>
                   <div id='custom-select-status' class='hidden-visually' aria-live="polite"></div>
                </div>
                <div class="col-xl-8 col-md-8 flexible">
@@ -202,7 +202,32 @@
             <div class="update-form-input row mb-20">
                <div class="col-xl-4 col-md-4"></div>
                <div [ngClass]="{'disableDiv': data}" class="col-xl-8 col-md-8">
-                  <mat-accordion>
+
+
+                  <div class="upload-form-input row mb-20">
+                     <div class="col-xl-4 col-md-4">
+                        <label for="title">Description <br><span style="font-size: 12px">Project or event description <br />(optional)</span></label>
+                     </div>
+                     <div class="col-xl-8 col-md-8"  [ngClass]="{'grayField': descriptionFilled}">
+                        <textarea [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
+                     </div>
+                  </div>
+                  <div class="row upload-form-input custom-date-picker mb-20">
+                     <div class="col-xl-4 col-md-4">
+                        <label for="date">Associated Date <br><span style="font-size: 12px">Project or event date <br />(optional)</span></label>
+                     </div>
+                     <div class="col-xl-8 col-md-8 flexible" [ngClass]="{'grayField': disableDateInput}">
+                        <mat-form-field appearance="fill">
+                           <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                           placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()" [disabled]="disableDateInput" [ngClass]="{'goldenText': associatedDate}">
+                           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                           <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                     </div>
+                  </div>
+
+
+                  <!-- <mat-accordion>
                      <mat-expansion-panel (opened)="panelOpenState = true"
                      (closed)="panelOpenState = false" >
                      <mat-expansion-panel-header class="set-width" *ngIf="!data">
@@ -224,28 +249,18 @@
                         </div>
                         <div class="col-xl-8 col-md-8 flexible" [ngClass]="{'grayField': disableDateInput}">
                            <mat-form-field appearance="fill">
-                              <!-- <mat-label>Choose a date</mat-label> -->
-                              <!-- #docregion toggle -->
                               <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
                               placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()" [disabled]="disableDateInput" [ngClass]="{'goldenText': associatedDate}">
                               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                               <mat-datepicker #picker></mat-datepicker>
-                              <!-- #enddocregion toggle -->
                            </mat-form-field>
-                           <!-- <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;"> -->
-                           <!-- <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
-                              <mat-datepicker #myDatepicker></mat-datepicker> -->
-                           <!-- <input type="date" id="start" name="trip-start" [(ngModel)]="associatedDate" style="border-bottom: 1.5px solid #000;"> -->
-                           <!-- <input id="date" [(ngModel)]="associatedDate" [matDatepicker]="myDatepicker" style="border-bottom: 1.5px solid #000;">
-                              <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
-                              <mat-datepicker #myDatepicker></mat-datepicker> -->
                         </div>
                      </div>
                      </mat-expansion-panel>
-                  </mat-accordion>
+                  </mat-accordion> -->
                </div>
             </div>
-            <div class="upload-form-input row mb-30">
+            <!-- <div class="upload-form-input row mb-30">
                <div class="col-xl-4 col-md-4">
                   <label for="confidentiality">Confidentiality</label>
                </div>
@@ -262,17 +277,6 @@
                         {{CONFIDENTIALITY_LABEL[c.value]}}
                      </ng-option>
                   </ng-select>
-                  <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
-                     <option value="" disabled selected hidden invalid >Specify sensitivity</option>
-                     <option style="color: golden;" [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-                     </select> -->
-                  <!-- <button type="button" class=" mr-2" placement="left" ngbTooltip="Confidentiality can't be changed once the asset is published.">
-                     <img src="../../assets/images/Info-icon.svg">
-                     </button> -->
-                  <!-- <button type="button" class="btn btn-outline-secondary mr-2" placement="left" ngbTooltip="Tooltip on left">
-                     Tooltip on left
-                     </button> -->
-                  <!-- <mat-icon class="info-icon" matTooltip="Confidentiality can't be changed once the asset is published.">info</mat-icon> -->
                   <div class="tooltip1">
                      <img src="../../assets/images/Info-icon.svg">
                      <span class="tooltiptext">Ground X will classify the asset(s) as per the sensitivity specified.</span>
@@ -289,11 +293,6 @@
                      {{ACCESS_LABEL[c.value]}}
                      </ng-option>
                   </ng-select>
-                  <!-- <select name="access" (change)="onSelectAccess($event.target.value)" id="access" [ngClass]="{'goldenText': access }" >
-                     <option value="" disabled selected hidden invalid >Specify sensitivity</option>
-                     <option [selected]="access === c.value" [disabled]="checkAccessOptionDisabled(c.value)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-                     </select> -->
-                  <!-- <mat-icon class="info-icon" matTooltip="Acess rights can't be changed once the asset is published.">info</mat-icon> -->
                   <div class="tooltip1">
                      <img src="../../assets/images/Info-icon.svg">
                      <span class="tooltiptext">Ground X will only display the asset(s) to the specified users</span>
@@ -303,7 +302,6 @@
 
             <div *ngIf="checkShowUserDropdown()" class="upload-form-input row mb-30">
                <div class="col-xl-4 col-md-4">
-                  <!-- <label for="user">Users</label> -->
                </div>
                <div class="col-xl-8 col-md-8">
                   <p class="userText pb-4">{{SPECIFIC_USER_LABEL}}</p>
@@ -347,23 +345,6 @@
                </div>
             </div>
 
-            <!-- <div class="upload-form-input row mb-30">
-               <div class="col-xl-4 col-md-4">
-                  <label for="allow">Allow use</label>
-               </div>
-               <div class="col-xl-8 col-md-8 flexible">
-                  <ng-select placeholder="Specify permissible usage" [searchable]="false" [clearable]="false" (change)="onSelectAllow($event)" [(ngModel)]="allow" id="allow" [ngClass]="{'goldenText': allow}">
-                  <ng-option *ngFor="let c of ALLOW | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
-                     {{ALLOW_LABEL[c.value]}}
-                  </ng-option>
-                  </ng-select>
-                  <div class="tooltip1">
-                     <img src="../../assets/images/Info-icon.svg">
-                     <span class="tooltiptext">Ground X advises users of permissible usage as specified here. You may also choose to give your permission for each download request.</span>
-                  </div>
-               </div>
-            </div> -->
-
             <div *ngIf="checkOwnerDropdown()" class="upload-form-input row mb-30">
                <div class="col-xl-4 col-md-4">
                </div>
@@ -387,7 +368,7 @@
                   </ng-template>
                   </ng-select>
                </div>
-            </div> 
+            </div> -->
          </div>
 
          <div class="button-groups" style="padding-top: 15px;">
@@ -405,25 +386,173 @@
 
       <mat-step>
          <ng-template matStepLabel >Publish assets</ng-template>
-         <div>
-            <div>Please review the classifications of the uploaded files.</div>
-            <div class="publish-summary">
-               <!-- <span>{{ getSelectedAssetsTitle() }}</span> -->
+         <div class="reviewClassifaction"> 
+            <!-- Upload Classification start -->
+            <div class="updateClassificationBlk">
+               <div class="updateClassification">
+               <div class="updateClassiNameblock">
+                  <div class="folderImg"><img src="../../assets/images/folder-icon.svg" alt="" /></div>
+                  <div class="nameBreadcrumbBlk">
+                     <div class="workspaceName">{{ folderToAdd || selectedFolder?.title || data?.title }} 
+                     <!-- <img src="../../assets/images/pencil-write.svg" alt="" class="renameFolderImg" /> -->
+                     </div>
+                     <div class="updateClassiBreadcrumb">/All sectors/Energy, Water & Food/Conference 2022</div>
+                  </div>
+               </div>
+               <div class="assetsBlock">
+                  <span style="padding-right: 3px; color: #413E3C; font-weight: normal;">56 assets, </span>
+                  <span style="color: #413E3C;font-weight: normal;">1.21 GB</span>
+               </div>
+               </div>
+            </div>
+            <!-- Upload Classification start -->
+
+            
+            <div class="upload-form-input row mb-30 uploadModalBlk">
+               <div class="col-xl-12 mb-30">
+                  <div class="workspaceName">Please review the classifications of the uploaded files.</div>
+               </div>
+               <div class="col-xl-6 col-md-6">
+                  <div class="row">
+                     <div class="col-xl-4 col-md-4">
+                        <label for="confidentiality">Confidentiality</label>
+                     </div>
+                     <div class="col-xl-8 col-md-8 flexible">
+                        <ng-select placeholder="Specify sensitivity"
+                           (change)="onSelectConfidentiality($event)"
+                           [searchable]="false"
+                           [clearable]="false"
+                           [(ngModel)]="confidentiality"
+                           id="confidentiality"
+                           [ngClass]="{'goldenText': confidentiality}"
+                        >
+                           <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" [value]="c.value">
+                              {{CONFIDENTIALITY_LABEL[c.value]}}
+                           </ng-option>
+                        </ng-select>
+                        <!-- <div class="tooltip1">
+                           <img src="../../assets/images/Info-icon.svg">
+                           <span class="tooltiptext">Ground X will classify the asset(s) as per the sensitivity specified.</span>
+                        </div> -->
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xl-6 col-md-6">
+                  <div class="row">
+                     <div class="col-xl-4 col-md-4">
+                        <label for="access">{{ACCESS_TITLE}}</label>
+                     </div>
+                     <div class="col-xl-8 col-md-8 flexible">
+                        <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="access" id="access" [ngClass]="{'goldenText': access}">
+                           <ng-option *ngFor="let c of ACCESS | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
+                           {{ACCESS_LABEL[c.value]}}
+                           </ng-option>
+                        </ng-select>
+                        <!-- <div class="tooltip1">
+                           <img src="../../assets/images/Info-icon.svg">
+                           <span class="tooltiptext">Ground X will only display the asset(s) to the specified users</span>
+                        </div> -->
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+            <div class="upload-form-input row mb-30 uploadModalBlk" *ngIf="checkShowUserDropdown()">
+               <div class="col-xl-6 col-md-6">&nbsp;</div>
+               <div class="col-xl-6 col-md-6">
+                  <div class="row">
+                     <div class="col-xl-12 col-md-12">
+                        <label for="{{SPECIFIC_USER_LABEL}}">{{SPECIFIC_USER_LABEL}}</label>
+                        <ng-select style="height: unset !important;"
+                        [items]="userList$ | async"
+                        bindLabel="id"
+                        bindValue="id"
+                        [multiple]="true"
+                        [hideSelected]="true"
+                        [trackByFn]="trackByFn"
+                        [minTermLength]="2"
+                        [loading]="userLoading"
+                        typeToSearchText="Search users"
+                        [typeahead]="userInput$"
+                        [(ngModel)]="selectedUsers"
+                        [ngClass]="{'goldenText': selectedUsers }" >
+                        <ng-template ng-option-tmp let-item="item">
+                           {{item.id}} ({{item.fullname}})
+                        </ng-template>
+                        </ng-select>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+            <div class="upload-form-input row mb-30">
+               <div class="col-xl-6 col-md-6">
+                  <div class="row">
+                     <div class="col-xl-12">
+                        <label class="control control--checkbox" style="margin-bottom: 0px;">
+                          Approval required before download
+                          <input 
+                            autocomplete="off"
+                            type="checkbox" 
+                            checked="checked"
+                            (change)="onCheckDownloadApproval($event)"
+                            [(ngModel)]="downloadApproval"
+                            [ngModelOptions]="{standalone: true}"
+                         />
+                         <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+                        </label>
+                      </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="upload-form-input row mb-30 uploadModalBlk">
+               <div class="col-xl-6 col-md-6">
+                  <div class="row" *ngIf="checkOwnerDropdown()">
+                     <div class="col-xl-12 col-md-12">
+                        <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
+                        <ng-select style="height: unset !important;"
+                        [items]="userList$ | async"
+                        bindLabel="id"
+                        bindValue="id"
+                        [multiple]="true"
+                        [hideSelected]="true"
+                        [trackByFn]="trackByFn"
+                        [minTermLength]="2"
+                        [loading]="userLoading"
+                        typeToSearchText="Search users"
+                        [typeahead]="userInput$"
+                        [(ngModel)]="ownerName"
+                        [ngClass]="{'goldenText': ownerName }" >
+                        <ng-template ng-option-tmp let-item="item">
+                           {{item.id}} ({{item.fullname}})
+                        </ng-template>
+                        </ng-select>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xl-6 col-md-6">
+                  <button class="cancel-btn" style="float: right;">Apply to all</button>
+               </div>
+            </div> 
+
+            <!-- <div class="publish-summary">
+               <!-- <span>{{ getSelectedAssetsTitle() }}</span> -/->
                <div class="assets-details">
                   <div class="flexible">
                      <img src="../../assets/images/upload.png">
-                     <!-- <mat-icon>folder</mat-icon> -->
+                     <!-- <mat-icon>folder</mat-icon> -/->
                      <span style="margin-left: 10px; display: block;">{{ folderToAdd || selectedFolder?.title || data?.title }}</span>
                   </div>
                </div>
                <div class="publish-summary-location flexible">
                   <div *ngIf="associatedDate" style="margin-left: 20px;">
-                     <!-- <mat-icon>calendar_today</mat-icon> -->
+                     <!-- <mat-icon>calendar_today</mat-icon> -/->
                      <img src="../../assets/images/calendar.png" style="vertical-align: top;">
                      <span style="margin-left: 6px; display: inline-block;">{{ showLocaleDate(associatedDate) }}</span>
                   </div>
                </div>
-            </div>
+            </div> -->
             <div class="publish-file-preview-groups fix-scroll" id="customScrollBar">
                <div *ngFor="let file of filesMap | keyvalue" class="publish-file-preview">
                   <div class="publish-file-preview-img">
