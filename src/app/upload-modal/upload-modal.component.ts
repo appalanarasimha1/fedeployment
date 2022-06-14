@@ -202,6 +202,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   publish() {
+    this.step = 4;
     this.publishAssets();
     return;
   }

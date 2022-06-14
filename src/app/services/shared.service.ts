@@ -264,7 +264,7 @@ export class SharedService {
       "entity-type": "document",
       repository: "default",
       path: parentFolder.path,
-      type: parentFolder.type ?? "Workspace",
+      type: parentFolder.childType ?? "Workspace",
       parentRef: parentFolder.id,
       isCheckedOut: true,
       isRecord: false,

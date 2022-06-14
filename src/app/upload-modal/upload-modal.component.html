@@ -71,7 +71,14 @@
          <div class="button-groups" style="padding-top: 15px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
-               <button mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">Next
+               <button *ngIf="!isPrivateFolder()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                  Next
+                  <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
+                     Please complete all mandatory fields to proceed
+                   </div>
+               </button>
+               <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                  Publish
                   <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                      Please complete all mandatory fields to proceed
                    </div>
@@ -396,8 +403,14 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button mat-button matStepperNext class="upload-btn tollTipCustom" (click)="copyUserMap()" [disabled]="checkUploadFormStep()">Review
+               <button *ngIf="!isPrivateFolder()" mat-button matStepperNext class="upload-btn tollTipCustom" (click)="copyUserMap()" [disabled]="checkUploadFormStep()">Review
                   <div *ngIf="checkUploadFormStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
+                     Please complete all mandatory fields to proceed
+                   </div>
+               </button>
+               <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                  Publish
+                  <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                      Please complete all mandatory fields to proceed
                    </div>
                </button>
