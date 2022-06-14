@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ApiService } from "../../services/api.service";
 import { PreviewPopupComponent } from "src/app/preview-popup/preview-popup.component";
@@ -28,6 +28,8 @@ import { UploadModalComponent } from "src/app/upload-modal/upload-modal.componen
 import { Sort } from "@angular/material/sort";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { DataService } from "src/app/services/data.service";
+import { fromEvent } from "rxjs";
+import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators";
 
 @Component({
   selector: "app-browse",
@@ -35,11 +37,13 @@ import { DataService } from "src/app/services/data.service";
   templateUrl: "./browse.component.html",
   styleUrls: ["./browse.component.css"],
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
   // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
   @ViewChild("paginator") paginator: MatPaginator;
+  @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
+  
 
   constructor(
     private modalService: NgbModal,
@@ -153,6 +157,7 @@ export class BrowseComponent implements OnInit {
       path: "",
     },
   ];
+  searchInitialised: any;
 
   // routeParams = {
   //   sector: "",
@@ -215,6 +220,24 @@ export class BrowseComponent implements OnInit {
         parent.addClass("is-open");
       }
     });
+  }
+
+  initWorkspaceSearch() {
+    if(!this.searchInitialised) {
+      this.searchInitialised = fromEvent(this.workspaceSearch.nativeElement,'keyup')
+        .pipe(
+            filter(Boolean),
+            debounceTime(150),
+            distinctUntilChanged(),
+            tap((text: Event) => {
+              if(!this.workspaceSearch.nativeElement.value) {
+                this.getWorkspaceFolders(this.selectedFolder.uid, 1);
+                return;
+              }
+              this.searchFolders(this.workspaceSearch.nativeElement.value);
+            })
+        ).subscribe();
+    }
   }
 
   datePickerDefaultAction() {
