@@ -1889,3 +1889,46 @@ a.downloadDisbable {
 a.downloadDisbable path {
     stroke: gray;
 }
+
+.pt-15 {
+  padding-top: 15px;
+}
+
+ul.downloadImgLisst {
+  margin-top: 15px;
+}
+ul.downloadImgLisst li {
+  padding-bottom: 10px;
+}
+ul.downloadImgLisst li:last-child {
+  padding-bottom: 0px;
+}
+
+ul.downloadImgLisst li .imgListBlk, 
+ul.downloadImgLisst li .contentListBlk,
+ul.downloadImgLisst li .imgMailIcon {
+  display: inline-block;
+  vertical-align: middle;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk,
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon {
+  max-width: 20px;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk img,
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
+  margin-left: 0px;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
+  vertical-align: -3px;
+}
+ul.downloadImgLisst li .contentListBlk {
+  padding: 0px 10px;
+  color: #fff;
+  width: calc(100% - 40px);
+}
+.download-btn a.cancelDownload {
+  margin-right: 25px;
+}

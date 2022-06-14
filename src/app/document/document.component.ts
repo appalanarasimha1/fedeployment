@@ -1203,6 +1203,7 @@ export class DocumentComponent implements OnInit, OnChanges {
                   "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
                   uid
               );
+              this.removeAssets();
             }, 1000);
           });
       }
@@ -1218,5 +1219,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.needPermissionToDownload = [];
     this.downloadCount = 0;
     this.fileSelected = [];
+    this.assetsBySector.forEach((e) => (e.isSelected = false));
+    this.recentDataShow.forEach((e) => (e.isSelected = false));
+    this.favourites.forEach((e) => (e.isSelected = false));
+
   }
 }
