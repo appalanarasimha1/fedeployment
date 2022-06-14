@@ -58,7 +58,7 @@
         <a class="hover-icon download-icon" href="javascript:void(0)">
           <div *ngIf="doc" class="download-dropdown">
             <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
-              <p>Always credit copyright owners (where applicable).</p>
+              <p *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
               <div class="download-btn">
                 <a href="{{getFileContent()}}" >
                   <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +72,7 @@
             </div>
 
             <div *ngIf="hasInternalRestriction()" class="internal-use">
-              <p>Always credit copyright owners (where applicable).</p>
+              <p *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
 
               <div class="control-group" [ngClass]="downloadErrorShow && !isAware ? 'error-disabled' : '' ">
                 <label class="control control--checkbox">I am aware this asset is for internal use only
@@ -94,8 +94,8 @@
             </div>
 
             <div *ngIf="hasRequestRestriction()" class="permission-required">
-              <p>Always credit copyright owners (where applicable). <br /><br />
-                {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
+              <p *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable). <br /><br /></p>
+               <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
               <ul class="emailList">
                 <li *ngFor="let userName of getApprovalUsers()">
                   <div class="nameBlk">{{userName}}</div>

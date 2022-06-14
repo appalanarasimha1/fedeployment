@@ -195,4 +195,21 @@ export class DocumentCardComponent implements OnChanges {
     
   }
 
+  checkCopyRight() {
+    let m = this.doc
+    // console.log({m});
+    
+    if (
+      m.properties["imd:copyright"] !== null ||
+      m.properties["imd:copyright"] !== ""
+    ) {
+    // console.log({ m });
+
+      return false;
+    } else {
+    console.log({ m });
+
+      return true;
+    }
+  }
 }
