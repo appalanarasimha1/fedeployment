@@ -11,6 +11,9 @@
     </div>
   </div>
 </section> -->
+<app-sub-header
+      >
+    </app-sub-header>
 <section style="background-color: #fff;" class="lpBAck">
   <section class="lpSecOne ">
     <div class="container ">
@@ -291,13 +294,13 @@
                       <path d="M13.1406 19.75C13.6844 19.75 14.125 19.3298 14.125 18.8125C14.125 18.2949 13.6848 17.875 13.1406 17.875H7.6094C7.06559 17.875 6.625 18.2946 6.625 18.8125C6.625 19.3304 7.06556 19.75 7.6094 19.75H13.1406Z" fill="#937206"/>
                       <path d="M25.375 31C22.2684 31 19.75 28.4816 19.75 25.375C19.75 22.2684 22.2684 19.75 25.375 19.75C28.4816 19.75 31 22.2684 31 25.375C31 28.4816 28.4816 31 25.375 31ZM23.3296 26.0568C23.4028 25.978 23.526 25.9735 23.6048 26.0467L24.551 26.9254C24.6149 26.9847 24.716 26.9766 24.7695 26.9077L27.1471 23.8508C27.2131 23.7659 27.3355 23.7506 27.4204 23.8166C27.5053 23.8827 27.5206 24.0051 27.4546 24.09L24.8416 27.4494C24.7743 27.5359 24.6473 27.5462 24.5669 27.4716L23.3398 26.332C23.261 26.2588 23.2564 26.1356 23.3296 26.0568ZM25.375 30.6591C28.2933 30.6591 30.6591 28.2933 30.6591 25.375C30.6591 22.4567 28.2933 20.0909 25.375 20.0909C22.4567 20.0909 20.0909 22.4567 20.0909 25.375C20.0909 28.2933 22.4567 30.6591 25.375 30.6591Z" fill="#937206" stroke="#937206" stroke-width="1.2"/>
                     </svg> -->
-                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon" [ngClass]="{'disablePermission': breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true}">
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#C49900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#C49900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !!sortedData.length :false">Manage folder</div>
-                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !sortedData.length :false">There are no assets in the folder to update</div>
-                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true">You do not have permissions to update classification</div>
+                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !sortedData.length :false" style="left: auto; right: 0px">There are no assets in the folder to update</div>
+                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true" style="left: auto; right: 0px">You do not have permissions to update classification</div>
                   </li>
                   <li *ngIf="checkForDescription()" class="workspaceInfoHover">
                     <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">

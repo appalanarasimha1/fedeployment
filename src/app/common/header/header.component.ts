@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
@@ -19,6 +19,7 @@ import { apiRoutes } from '../config';
 })
 export class HeaderComponent implements OnInit {
   @Output() sendSelectedTab: EventEmitter<any> = new EventEmitter();
+  // @ViewChild('videoPlayer') player: ElementRef;
 
   selectedTab: string;
   searchHeader: boolean = true;
@@ -31,7 +32,12 @@ export class HeaderComponent implements OnInit {
 
   modalOption: NgbModalOptions = {}; // not null!
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
-  allSectors = [{label: 'All NEOM sectors', value: 'general'}, {label: 'Sports', value: 'sport'}, {label: 'Water', value: 'water'}, {label: 'Food', value: 'food'}]; // , {label: 'Water', value: 'water'}
+  allSectors = [
+    {label: 'All NEOM sectors', value: 'general'},
+    {label: 'Sports', value: 'sport'},
+    {label: 'Water', value: 'water'},
+    {label: 'Food', value: 'food'},
+    { label: "Tourism", value: "tourism" }]; // , {label: 'Water', value: 'water'}
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
   videoResponse;
   videoId;

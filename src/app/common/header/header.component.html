@@ -197,7 +197,7 @@
           >
         </ng-select>
        </div>
-          <video style="width: 100%" preload="false" autoplay  controls tabindex="0">
+          <video *ngIf="videoResponse" style="width: 100%" preload="false" autoplay  controls tabindex="0">
             <source [src]=defaultVideoSrc type="video/mp4" />
           </video>
       </div>

@@ -16,6 +16,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { UploadModalModule } from '../upload-modal/upload-modal.module';
+import { SearchModule } from '../search/search.module';
 @NgModule({
   declarations: [
     BrowseComponent,
@@ -36,7 +37,8 @@ import { UploadModalModule } from '../upload-modal/upload-modal.module';
     MatPaginatorModule,
     MatExpansionModule,
     MatDatepickerModule,
-    UploadModalModule
+    UploadModalModule,
+    SearchModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

@@ -12,7 +12,7 @@ import {
 } from "rxjs/operators";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
-import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL, SPECIFIC_USER_LABEL } from "../upload-modal/constant";
+import { ACCESS, CONFIDENTIALITY, GROUPS, ALLOW, ACCESS_LABEL, ALLOW_LABEL, CONFIDENTIALITY_LABEL, ACCESS_TITLE, YEARS, OWNER_APPROVAL_LABEL, SPECIFIC_USER_LABEL, ALLOW_VALUE_MAP } from "../upload-modal/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
@@ -59,7 +59,7 @@ export class UpdateModalComponent implements OnInit {
   customAccessMap: any = {};
   customConfidentialityMap: any = {};
   customUsersMap: any = {};
-  customDownloadApprovalUsersMap: {[key: string]: string} = {};
+  customDownloadApprovalUsersMap: {[key: string]: string[]} = {};
   customAllowMap: any = {};
   customDownloadApprovalMap: {[key: string]: string|boolean} = {};
   userList$: Observable<any>;
@@ -75,8 +75,8 @@ export class UpdateModalComponent implements OnInit {
   overallConfidentiality: string;
   overallAccess: string;
   overallDownloadApproval: boolean = false;
-  overallUsers: [];
-  overallDownloadApprovalUsers : string;
+  overallUsers: string[];
+  overallDownloadApprovalUsers : string[];
   associatedDate: string;
   description: string;
 
@@ -108,7 +108,7 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = doc.properties['sa:confidentiality'];
       this.customAccessMap[index] = doc.properties['sa:access'];
       this.customUsersMap[index] = doc.properties['sa:users'];
-      this.customDownloadApprovalUsersMap[index] = doc.properties['sa:users'][0];
+      this.customDownloadApprovalUsersMap[index] = doc.properties['sa:downloadApprovalUsers'];
       return;
     }
     const aces = doc.contextParameters.acls.find(a => a.name === "local");
@@ -116,7 +116,7 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = "";
       this.customAccessMap[index] = "";
       this.customUsersMap[index] = [];
-      this.customDownloadApprovalUsersMap[index] = "";
+      this.customDownloadApprovalUsersMap[index] = [];
       return;
     }
     const localAces = aces.aces;
@@ -125,12 +125,12 @@ export class UpdateModalComponent implements OnInit {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.not;
       this.customAccessMap[index] = ACCESS.all;
       this.customUsersMap[index] = [];
-      this.customDownloadApprovalUsersMap[index] = "";
+      this.customDownloadApprovalUsersMap[index] = [];
     } else if (users.includes(GROUPS.company)) {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
       this.customAccessMap[index] = ACCESS.internal;
       this.customUsersMap[index] = [];
-      this.customDownloadApprovalUsersMap[index] = "";
+      this.customDownloadApprovalUsersMap[index] = [];
     } else if (users.length > 0) {
       this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
       this.customAccessMap[index] = ACCESS.restricted;
@@ -274,10 +274,10 @@ export class UpdateModalComponent implements OnInit {
     this.classificationsUpdate();
   }
 
-  updateFolderInfo() {
+  async updateFolderInfo() {
     if (this.associatedDate === this.selectedFolder.properties["dc:start"]
      && this.description === this.selectedFolder.properties["dc:description"]) return;
-    return this.apiService
+    return await this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
         input: this.selectedFolder.uid,
         params: {
@@ -338,7 +338,7 @@ export class UpdateModalComponent implements OnInit {
     this.updatedAclValue[index] = result["contextParameters"].acls;
   }
 
-  async updateAssetClassification(doc, index) {
+  async updateAssetClassification(doc, index: number) {
     const result = await this.nuxeo.nuxeoClient
       .operation("Scry.UpdateConfidentiality")
       .input([doc])
@@ -346,16 +346,18 @@ export class UpdateModalComponent implements OnInit {
         confidentiality: this.customConfidentialityMap[index],
         access: this.customAccessMap[index],
         allow: this.customAllowMap[index],
-        users: this.customDownloadApprovalMap[index] ? [this.customDownloadApprovalUsersMap[index]] : this.customUsersMap[index],
+        users: this.customUsersMap[index],
+        downloadApprovalUsers: this.customDownloadApprovalUsersMap[index],
         copyrightName: this.copyrightUserMap[index],
         copyrightYear: this.copyrightYearMap[index]?.name || this.copyrightYearMap[index],
         downloadApproval: this.customDownloadApprovalMap[index]
       })
       .schemas(['scryAccess'])
       .enrichers({document: ["acls"]})
-      .execute()
+      .execute();
       // .then((result) => {
-      if (result.entries[0]) this.updatedDocs[index] = result.entries[0];
+      if (result.entries[0]) 
+        this.updatedDocs[index] = result.entries[0];
     //     resolve(null);
     //   });
     // });
@@ -446,7 +448,14 @@ export class UpdateModalComponent implements OnInit {
   }
 
   checkOwnerDropdownByValue(value?: string) {
-    return !!(value === 'true') || !(value === 'false');
+    switch(value) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      default:
+        return false;
+    }
   }
 
   applyToAll() {
@@ -460,5 +469,25 @@ export class UpdateModalComponent implements OnInit {
       const allow = this.overallAccess === ACCESS.all ? ALLOW.any : ALLOW.internal;
       this.customAllowMap[i] = allow;
     }
+  }
+
+  checkFormState(): boolean {
+    const length = this.docs.length;
+    for (let i = 0; i < length; i++) {
+      console.log('index = ', i);
+      const access = this.customAccessMap[i];
+      const allow = this.customAllowMap[i];
+      const confidentiality = this.customConfidentialityMap[i];
+      if(!access || !allow || !confidentiality) {
+        return true;
+      } else if(access === ACCESS["restricted"] && !this.customUsersMap[i]?.length) {
+          return true;
+      } else if(this.customDownloadApprovalMap[i] && !this.customDownloadApprovalUsersMap[i]) {
+        return true;
+      } else if(i === length - 1) {
+        return false;
+      }
+    }
+    return true;
   }
 }

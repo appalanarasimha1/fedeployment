@@ -112,7 +112,7 @@ export class UploadModalComponent implements OnInit {
   openCopyrightMap: any = {};
   copyrightUserMap: any = {};
   copyrightYearMap: any = {};
-  ownerName: string;
+  ownerName: string[] = [];
 
   showCustomDropdown: boolean = false;
   disableDateInput = false;
@@ -240,9 +240,9 @@ export class UploadModalComponent implements OnInit {
         this.customUsersMap[key] = [...this.selectedUsers];
       });
     }
-    if(this.downloadApproval && this.ownerName) {
+    if(this.downloadApproval && this.ownerName.length > 0) {
       Object.keys(this.filesMap).forEach((key) => {
-        this.customDownloadApprovalUsersMap[key] = this.ownerName;
+        this.customDownloadApprovalUsersMap[key] = [...this.ownerName];
       });
     }
   }
@@ -626,10 +626,15 @@ export class UploadModalComponent implements OnInit {
     }
   }
 
-  onCheckDownloadApproval() {
+  onCheckDownloadApproval(event) {
+    if(!event.target.checked) {
+      this.ownerName = [];
+      for(let i = 0; i < this.getAssetNumber(); i++) {
+        this.customDownloadApprovalUsersMap[i] = [];
+      }
+    }
     for(let i = 0; i < this.getAssetNumber(); i++) {
       this.customDownloadApprovalMap[i] = this.downloadApproval;
-
     }
   }
 
@@ -737,7 +742,8 @@ export class UploadModalComponent implements OnInit {
         "dc:sector": this.selectedWorkspace.title,
         "sa:confidentiality": this.customConfidentialityMap[index] || this.confidentiality,
         "sa:access": this.customAccessMap[index] || this.access,
-        "sa:users": this.customDownloadApprovalMap[index] ? [this.customDownloadApprovalUsersMap[index]] : this.customUsersMap[index],
+        "sa:users": this.customUsersMap[index],
+        "sa:downloadApprovalUsers": this.customDownloadApprovalUsersMap[index],
         "sa:allow": this.customAllowMap[index] || this.allow,
         "sa:copyrightName": this.openCopyrightMap[index] ? this.copyrightUserMap[index] : null,
         "sa:copyrightYear": this.openCopyrightMap[index] ? this.copyrightYearMap[index]?.name : null,
@@ -912,5 +918,8 @@ export class UploadModalComponent implements OnInit {
 
     const isPrivate = this.selectedFolder?.properties && this.selectedFolder?.properties["dc:isPrivate"];
     return isPrivate || this.selectedFolder.isPrivate;
+  }
+  changeDownloadTick(key: string): void {
+    this.customDownloadApprovalUsersMap[key] = [];
   }
 }

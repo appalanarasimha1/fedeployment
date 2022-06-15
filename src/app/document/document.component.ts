@@ -262,7 +262,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    console.log({ changes });
 
     if (changes.searchTerm) {
       this.searchTerm = changes.searchTerm.currentValue;
@@ -291,9 +290,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   public async getRelatedTags() {
-    // console.log('this.tagsMetaRealdata1', this.tagsMetaRealdata)
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
-      console.log("this.searchTerm ===================", this.searchTerm);
 
       this.searchTem = searchTerm;
     });
@@ -303,7 +300,6 @@ export class DocumentComponent implements OnInit, OnChanges {
         (m) =>
           m.key !== this.searchTem
       );
-      console.log('this.tagsMetaRealdata2', this.tagsMetaRealdata);
       this.dummyPlaceholderTags = false;
     });
   }
@@ -584,7 +580,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         // TODO: add toastr with message 'Invalid token, please login again'
 
         this.modalLoading = false;
-        console.log(e);
+        console.error(e);
         // if(e.contains(`'fetch' on 'Window'`)) {
         //   this.router.navigate(['login']);
         // }
@@ -650,8 +646,8 @@ export class DocumentComponent implements OnInit, OnChanges {
         break;
     }
     // }
+    this.recentDataShow = this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
-      this.markRecentlyViewed(file);
 
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -690,53 +686,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   };
 
   video(event: any) {
-    console.log("im Play!");
     event.toElement.play();
-  }
-
-  getCircularReplacer() {
-    const seen = new WeakSet();
-    return (key, value) => {
-      if (typeof value === "object" && value !== null) {
-        if (seen.has(value)) {
-          return;
-        }
-        seen.add(value);
-      }
-      return value;
-    };
-  }
-
-  // TODO: move to shared service
-  markRecentlyViewed(data: any) {
-    let found = false;
-
-    // tslint:disable-next-line:prefer-const
-    let recentlyViewed =
-      JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
-    if (recentlyViewed.length) {
-      recentlyViewed.map((item: any, index: number) => {
-        if (item.uid === data.uid) {
-          found = true;
-          recentlyViewed[index] = data;
-        }
-      });
-    }
-    if (found) {
-      localStorage.setItem(
-        localStorageVars.RECENTLY_VIEWED,
-        JSON.stringify(recentlyViewed, this.getCircularReplacer())
-      );
-      return;
-    }
-
-    data["isSelected"] = false;
-    recentlyViewed.push(data);
-    localStorage.setItem(
-      localStorageVars.RECENTLY_VIEWED,
-      JSON.stringify(recentlyViewed, this.getCircularReplacer())
-    );
-    return;
   }
 
   private getDismissReason(reason: any): string {
@@ -775,7 +725,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         data.contextParameters.favorites.isFavorite =
           !data.contextParameters.favorites.isFavorite;
         if (favouriteValue === "recent") {
-          this.markRecentlyViewed(data);
+          this.recentDataShow = this.sharedService.markRecentlyViewed(data);
         }
         this.addToFavorite(data);
         this.loading.pop();
@@ -806,7 +756,7 @@ export class DocumentComponent implements OnInit, OnChanges {
           !data.contextParameters.favorites.isFavorite;
         this.removeFromFavorite(data.uid);
         if (favouriteValue === "recent") {
-          this.markRecentlyViewed(data);
+          this.recentDataShow = this.sharedService.markRecentlyViewed(data);
         }
         this.loading.pop();
       });

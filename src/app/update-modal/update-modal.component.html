@@ -32,7 +32,7 @@
           <div class="col-xl-2 col-md-2">
              <label for="date">Date</label>
           </div>
-          <div class="col-xl-10 col-md-10" >
+          <div class="col-xl-3 col-md-3" >
              <mat-form-field>
                 <input  matInput [matDatepicker]="picker" [(ngModel)]="associatedDate"
                  (click)="picker.open()" [ngClass]="{'goldenText': associatedDate}">
@@ -348,7 +348,7 @@
                    [items]="userList$ | async"
                    bindLabel="id"
                    bindValue="id"
-                   [multiple]="false"
+                   [multiple]="true"
                    [hideSelected]="true"
                    [trackByFn]="trackByFn"
                    [minTermLength]="2"
@@ -391,7 +391,7 @@
       <button *ngIf="step === 2" class="upload-btn" >
         Updating
       </button>
-      <button *ngIf="step !== 2" (click)="toNextStep()" class="upload-btn" >
+      <button *ngIf="step !== 2" (click)="toNextStep()" [ngClass]="{'btn-disable': checkFormState()}" class="upload-btn" >
         Update
       </button>
 
