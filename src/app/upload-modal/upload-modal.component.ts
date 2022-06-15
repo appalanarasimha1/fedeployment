@@ -692,6 +692,7 @@ export class UploadModalComponent implements OnInit {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
       if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
     }
+    // TODO: add api POST call /upload/batchId-<batchID>/execute/FileManager.Import
     if(!this.showRedirectUrl()) {
       // this.dialogRef.close(this.uploadedAsset);
       this.publishing = false;

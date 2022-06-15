@@ -76,7 +76,7 @@
                   <div style="position: relative;">
                     <form autocomplete="off" style="position: relative;">
                       <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
-                      <input [(ngModel)]="searchBarValue" autocomplete="off" (ngModelChange)="searchFolders($event)" name="searchBar" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar">
+                      <input #workspaceSearch [(ngModel)]="searchBarValue" name="searchBar" (focus)="initWorkspaceSearch()" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar" autocomplete="off"> <!--[(ngModel)]="searchBarValue" (ngModelChange)="searchFolders($event)"-->
                       <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; getWorkspaceFolders(selectedFolder.uid, 1)" src="../assets/images/circle-close.png" class="placeholder-search">
                     </form>
                   </div>
