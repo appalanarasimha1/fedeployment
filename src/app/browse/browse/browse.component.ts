@@ -37,7 +37,7 @@ import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators"
   templateUrl: "./browse.component.html",
   styleUrls: ["./browse.component.css"],
 })
-export class BrowseComponent implements OnInit, AfterViewInit {
+export class BrowseComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
   // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
