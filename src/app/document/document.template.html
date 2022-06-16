@@ -685,7 +685,7 @@
       >
       <div class="multiDownloadBlock">
         <div class="internal-use">
-          <p>Always credit copyright owners.</p>
+          <p *ngIf="copyRightItem.length>0">Always credit copyright owners.</p>
 
           <p class="pt-15" *ngIf="sizeExeeded">
             Your download exceeds 1 GB. This will likely take some time.

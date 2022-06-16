@@ -286,7 +286,7 @@ export class BrowseComponent implements OnInit {
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-    
+
     this.saveState(item);
     this.searchBarValue = "";
     this.paginator.firstPage();
@@ -378,7 +378,6 @@ export class BrowseComponent implements OnInit {
     // }
     this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
-
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
@@ -488,7 +487,7 @@ export class BrowseComponent implements OnInit {
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-    
+
     this.saveState(item);
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -520,7 +519,9 @@ export class BrowseComponent implements OnInit {
   }
 
   async fetchFolder(id) {
-    const result = await this.apiService.get(`/id/${id}`, {headers: { "fetch-document": "properties"}}).toPromise();
+    const result = await this.apiService
+      .get(`/id/${id}`, { headers: { "fetch-document": "properties" } })
+      .toPromise();
     return result;
   }
 
@@ -537,7 +538,9 @@ export class BrowseComponent implements OnInit {
       return this.folderAssetsResult[id];
     }
     const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
-    const result: any = await this.apiService.get(url, {headers: { "fetch-document": "properties"}}).toPromise();
+    const result: any = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, true)
     );
@@ -598,34 +601,36 @@ export class BrowseComponent implements OnInit {
     this.selectedFolder = { ...selected, uid: selected.id };
     this.sharedService.toTop();
     const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    this.apiService.get(url, {headers: { "fetch-document": "properties"}}).subscribe((docs: any) => {
-      this.searchList = docs.entries.filter(
-        (sector) =>
-          UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-      );
-      let workSpaceIndex = this.searchList.findIndex(
-        (res) => res.title === "Workspaces"
-      );
-      if (workSpaceIndex >= 0) {
-        this.handleChangeClick(
-          this.searchList[workSpaceIndex],
-          index,
-          selected,
-          childIndex
+    this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .subscribe((docs: any) => {
+        this.searchList = docs.entries.filter(
+          (sector) =>
+            UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
         );
-      } else {
-        this.sortedData = this.searchList.slice();
-        if (childIndex !== null && childIndex !== undefined) {
-          this.folderStructure[index].children[childIndex].children =
-            docs.entries;
-          this.folderStructure[index].children[childIndex].isExpand = true;
-          this.handleTest(selected);
+        let workSpaceIndex = this.searchList.findIndex(
+          (res) => res.title === "Workspaces"
+        );
+        if (workSpaceIndex >= 0) {
+          this.handleChangeClick(
+            this.searchList[workSpaceIndex],
+            index,
+            selected,
+            childIndex
+          );
         } else {
-          this.folderStructure[index].children = docs.entries;
-          this.folderStructure[index].isExpand = true;
+          this.sortedData = this.searchList.slice();
+          if (childIndex !== null && childIndex !== undefined) {
+            this.folderStructure[index].children[childIndex].children =
+              docs.entries;
+            this.folderStructure[index].children[childIndex].isExpand = true;
+            this.handleTest(selected);
+          } else {
+            this.folderStructure[index].children = docs.entries;
+            this.folderStructure[index].isExpand = true;
+          }
         }
-      }
-    });
+      });
   }
 
   handleSelectMenu(index, type) {
@@ -652,10 +657,10 @@ export class BrowseComponent implements OnInit {
     dialogConfig.maxHeight = "900px";
     dialogConfig.width = "650px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
-   const folder = await this.fetchFolder(this.selectedFolder.uid);
+    const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {
       docs: this.searchList,
-      folder
+      folder,
     };
 
     const modalDialog = this.matDialog.open(UpdateModalComponent, dialogConfig);
@@ -664,10 +669,11 @@ export class BrowseComponent implements OnInit {
       if (!result) return;
       const updatedDocs = result.updatedDocs;
       const updatedFolder = result.selectedFolder;
-      if(!this.selectedFolder.properties) {
-        this.selectedFolder['properties'] = {};
+      if (!this.selectedFolder.properties) {
+        this.selectedFolder["properties"] = {};
       }
-      this.selectedFolder.properties["dc:description"] = updatedFolder.description;
+      this.selectedFolder.properties["dc:description"] =
+        updatedFolder.description;
       this.selectedFolder.properties["dc:start"] = updatedFolder.associatedDate;
       Object.keys(updatedDocs).forEach((key) => {
         this.searchList[key].contextParameters.acls =
@@ -928,32 +934,34 @@ export class BrowseComponent implements OnInit {
     }
     this.loading = true;
     const url = `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
-    this.apiService.get(url, {headers: { "fetch-document": "properties"}}).subscribe((docs: any) => {
-      this.numberOfPages = docs.numberOfPages;
-      this.resultCount = docs.resultsCount;
-      this.trashedList = docs.entries.filter((sector) => {
-        if (UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
-          --this.resultCount;
-          return true;
-        } else {
-          return false;
-        }
-      });
-      if (!this.myDeletedCheck) {
-        this.searchList = this.trashedList;
-        this.sortedData = this.searchList.slice();
-      } else {
-        this.deletedByMeFilter().then(() => {
-          this.searchList = this.deletedByMe;
-          this.sortedData = this.searchList.slice();
+    this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .subscribe((docs: any) => {
+        this.numberOfPages = docs.numberOfPages;
+        this.resultCount = docs.resultsCount;
+        this.trashedList = docs.entries.filter((sector) => {
+          if (UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
+            --this.resultCount;
+            return true;
+          } else {
+            return false;
+          }
         });
-      }
-      this.isTrashView = true;
-      this.handleSelectMenu(1, this.viewType || "LIST");
-      this.showMoreButton = false;
-      this.loading = false;
-      this.deletedByMeFilter();
-    });
+        if (!this.myDeletedCheck) {
+          this.searchList = this.trashedList;
+          this.sortedData = this.searchList.slice();
+        } else {
+          this.deletedByMeFilter().then(() => {
+            this.searchList = this.deletedByMe;
+            this.sortedData = this.searchList.slice();
+          });
+        }
+        this.isTrashView = true;
+        this.handleSelectMenu(1, this.viewType || "LIST");
+        this.showMoreButton = false;
+        this.loading = false;
+        this.deletedByMeFilter();
+      });
   }
 
   async deletedByMeFilter() {
@@ -1044,7 +1052,9 @@ export class BrowseComponent implements OnInit {
         description,
         date
       );
-      const res = await this.apiService.post(url, payload, {headers: { "fetch-document": "properties"}}).toPromise();
+      const res = await this.apiService
+        .post(url, payload, { headers: { "fetch-document": "properties" } })
+        .toPromise();
       if (!res && !res["uid"]) return;
 
       this.searchList.unshift(res);
@@ -1101,8 +1111,10 @@ export class BrowseComponent implements OnInit {
           return this.compare(a.title, b.title, isAsc);
         case "dc:creator":
           return this.compare(
-            (a.properties["dc:creator"].properties?.firstName || a.properties["dc:creator"].id),
-            (b.properties["dc:creator"].properties?.firstName || b.properties["dc:creator"].id),
+            a.properties["dc:creator"].properties?.firstName ||
+              a.properties["dc:creator"].id,
+            b.properties["dc:creator"].properties?.firstName ||
+              b.properties["dc:creator"].id,
             isAsc
           );
         case "dc:created":
@@ -1349,8 +1361,11 @@ export class BrowseComponent implements OnInit {
       queryParams: query,
     };
     const result: any = await this.apiService
-    .get(apiRoutes.NXQL_SEARCH, { params, headers: { "fetch-document": "properties"} })
-    .toPromise();
+      .get(apiRoutes.NXQL_SEARCH, {
+        params,
+        headers: { "fetch-document": "properties" },
+      })
+      .toPromise();
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, true)
     );
@@ -1365,23 +1380,39 @@ export class BrowseComponent implements OnInit {
   }
 
   navigateToWorkspaceFolder(uid: string) {
-    this.router.navigate(['workspace'], {queryParams: {folder: uid}});
+    this.router.navigate(["workspace"], { queryParams: { folder: uid } });
   }
 
-  saveState({uid, title, path, properties, sectorId, type, contextParameters}) {
+  saveState({
+    uid,
+    title,
+    path,
+    properties,
+    sectorId,
+    type,
+    contextParameters,
+  }) {
     let breadcrumb;
-    if(contextParameters) {
-      ({breadcrumb} = contextParameters);
+    if (contextParameters) {
+      ({ breadcrumb } = contextParameters);
       contextParameters = { breadcrumb };
     }
-    const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
-    localStorage.setItem('workspaceState', workspaceState);
+    const workspaceState = JSON.stringify({
+      title,
+      uid,
+      path,
+      properties,
+      sectorId,
+      type,
+      contextParameters,
+    });
+    localStorage.setItem("workspaceState", workspaceState);
     this.navigateToWorkspaceFolder(uid);
     return;
   }
 
   inputChange() {
-    if(!this.folderNameRef) {
+    if (!this.folderNameRef) {
       this.showError = true;
     } else {
       this.showError = false;
@@ -1389,31 +1420,52 @@ export class BrowseComponent implements OnInit {
   }
 
   getCreatorName(item) {
-    const creatorName = item.properties['dc:creator']?.properties?.firstName + " " + item.properties['dc:creator']?.properties?.lastName;
-    return item.properties['dc:creator']?.properties?.firstName ? creatorName : item.properties['dc:creator']?.id;
+    const creatorName =
+      item.properties["dc:creator"]?.properties?.firstName +
+      " " +
+      item.properties["dc:creator"]?.properties?.lastName;
+    return item.properties["dc:creator"]?.properties?.firstName
+      ? creatorName
+      : item.properties["dc:creator"]?.id;
   }
   multiDownload() {
-    $(".downloadFileWorkspace").on("click", function (e) {
-      // $(".dropdownCreate").toggle();
-      $(".multiDownloadBlock").show();
-      $(".downloadFileWorkspace").addClass("multiDownlodClick");
-      e.stopPropagation();
-    });
-    $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
-      $(".multiDownloadBlock").hide();
-      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-      e.stopPropagation();
-    });
+    console.log(
+      this.downloadArray.length,
+      this.copyRightItem.length,
+      !this.sizeExeeded,
+      this.forInternalUse.length
+    );
+    
+    if (
+      this.downloadArray.length > 0 &&
+      this.copyRightItem.length < 1 &&
+      !this.sizeExeeded &&
+      this.forInternalUse.length < 1
+    ) {
+      this.downloadAssets();
+    } else {
+      $(".downloadFileWorkspace").on("click", function (e) {
+        // $(".dropdownCreate").toggle();
+        $(".multiDownloadBlock").show();
+        $(".downloadFileWorkspace").addClass("multiDownlodClick");
+        e.stopPropagation();
+      });
+      $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+        e.stopPropagation();
+      });
 
-    $(".multiDownloadBlock").click(function (e) {
-      e.stopPropagation();
-      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-    });
+      $(".multiDownloadBlock").click(function (e) {
+        e.stopPropagation();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
 
-    $(document).click(function () {
-      $(".multiDownloadBlock").hide();
-      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-    });
+      $(document).click(function () {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
+    }
   }
 
   downloadClick() {
@@ -1437,6 +1489,7 @@ export class BrowseComponent implements OnInit {
   downloadFullItem: any = [];
   needPermissionToDownload: any = [];
   count: number = 0;
+  copyRightItem: any = [];
 
   selectAsset($event, item, i) {
     console.log("itemitemitemitemitem", item, $event);
@@ -1455,6 +1508,12 @@ export class BrowseComponent implements OnInit {
     // else
     if ($event.target?.checked || $event.checked) {
       this.count = this.count + 1;
+       if (
+         item.properties['sa:copyrightName'] !== null &&
+         item.properties['sa:copyrightName'] !== ""
+       ) {
+         this.copyRightItem.push(item.uid);
+       }
       if (item.properties["sa:users"].length > 0) {
         this.needPermissionToDownload.push(item);
       } else {
@@ -1469,6 +1528,7 @@ export class BrowseComponent implements OnInit {
       console.log("inside unchecked");
       this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
       this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+      this.copyRightItem = this.copyRightItem.filter((m) => m !== item.uid);
       this.downloadFullItem = this.downloadFullItem.filter(
         (m) => m.uid !== item.uid
       );
@@ -1491,7 +1551,7 @@ export class BrowseComponent implements OnInit {
       this.downloadFullItem.forEach((doc) => {
         size = size + parseInt(doc.properties["file:content"]?.length);
       });
-      let sizeInGB = size / 1024/1024/1024;
+      let sizeInGB = size / 1024 / 1024 / 1024;
 
       if (sizeInGB > 1) {
         this.sizeExeeded = true;
@@ -1503,7 +1563,7 @@ export class BrowseComponent implements OnInit {
     }
   }
 
-  downloadAssets(e) {
+  downloadAssets(e?:any) {
     // this.uncheckAll1()
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
@@ -1555,7 +1615,7 @@ export class BrowseComponent implements OnInit {
     this.count = 0;
     this.fileSelected = [];
     // $(".vh").prop("checked", false);
-    this.sortedData.forEach(e =>e.isSelected=false);
+    this.sortedData.forEach((e) => (e.isSelected = false));
   }
 
   cancelDownloadClick(e) {
@@ -1565,7 +1625,7 @@ export class BrowseComponent implements OnInit {
 
   uncheckAll1() {
     $(".uncheckAfterSuccess").click(function () {
-       $("input:checkbox").removeAttr("checked");
+      $("input:checkbox").removeAttr("checked");
     });
-  } 
+  }
 }
