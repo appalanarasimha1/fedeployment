@@ -4343,7 +4343,14 @@ body {
 .addUserBlock .ng-select.ng-select-disabled>.ng-select-container{background-color:transparent !important;}
 .addUserBlock .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
   margin-top: 2px;
+  padding-left: 0px;
 }
 .addUserBlock .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
   padding-left: 0px !important;
+}
+.addUserBlock .ng-select .ng-select-container .ng-value-container {
+  padding-left: 0px !important;
+}
+.addUserBlock .ng-dropdown-panel.ng-select-bottom {
+  border-top: 1px solid #DEB31A !important;
 }

@@ -115,6 +115,14 @@ export class AddUserModalComponent implements OnInit {
     }
     this.folderUpdated = await this.fetchFolder(this.folderId);
     this.closeModal();
+
+    this.sharedService.showSnackbar(
+      "User successfully added",
+      6000,
+      "top",
+      "center",
+      "snackBarMiddle"
+    );
   }
 
   updatePermission(item) {

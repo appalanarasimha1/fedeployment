@@ -3698,3 +3698,7 @@ svg.classificationsIcon.disablePermission path {
   cursor: pointer;
   margin-top: 10px;
 }
+.classificationsIcon.manageUsers:hover path {
+  fill: #DAAA00;
+  stroke: none;
+} 
