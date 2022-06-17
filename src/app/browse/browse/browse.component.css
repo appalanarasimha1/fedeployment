@@ -3656,7 +3656,16 @@ svg.classificationsIcon.disablePermission path {
   cursor: pointer;
   position: relative;
 }
-.publicUseBlk:hover {
+.publicUseBlk::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 200%;
+  width: 100%;
+}
+.publicUseBlock:hover .publicUseBlk {
   background: #B1AAA1;
   color: #1E1B19;
 }
@@ -3664,17 +3673,28 @@ svg.classificationsIcon.disablePermission path {
   background: #1E1B19;
   border-radius: 4px;
   padding: 4px 12px 7px;
-  width: 256px;
+  width: 290px;
   color: #FFFFFF;
   font-size: 14px;
   line-height: 16px;
   font-weight: 500;
   position: absolute;
-  top: 35px;
+  top: 32px;
   left: 0px;
   z-index: 9;
   display: none;
 }
 .publicUseBlock:hover .mouseHoverInfo {
   display: block;
+}
+
+.manageAccessBtn {
+  float: right;
+  clear: both;
+  background: #EDD580;
+  padding: 5px 12px;
+  border-radius: 24px;
+  color: #040505;
+  cursor: pointer;
+  margin-top: 10px;
 }
