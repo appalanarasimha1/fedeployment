@@ -1699,3 +1699,6 @@ document-card .lock-icon img {
   float: right;
   cursor: pointer;
 }
+.internal-use .removeMarginTop .control {
+  margin-top: 0px !important;
+}

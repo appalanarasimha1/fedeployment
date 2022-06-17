@@ -19,24 +19,24 @@
                   </div>
                 </div>
 
-                <div class="internalUseBlock" *ngIf="hasInternalRestriction()">
+                <div class="internalUseBlock" *ngIf="internalUse()">
                   <div class="publicUseBlk">Internal use</div>
                   <div class="mouseHoverInfo">
                     Cannot be used in the public domain. i.e. only for use in internal documents or media.
                   </div>
                 </div>
-
+<!-- 
                 <div class="privateBlock" *ngIf="hasRequestRestriction()">
                   <div class="publicUseBlk">Private</div>
                   <div class="mouseHoverInfo">
                     Yet to be published on Ground X. No usage information available.
                   </div>
-                </div>
+                </div> -->
               </li>
               <li>
-                <div class="usagePermission">Usage permission not required</div>
+                <div class="usagePermission">Usage permission{{hasNoRestriction()? ' not':''}} required</div>
                 <div class="mouseHoverInfo w219">
-                  Requires approval before use.
+                  {{hasNoRestriction()? 'Does not requires approval before use':'Requires approval before use'}}.
                 </div>
               </li>
               <li>

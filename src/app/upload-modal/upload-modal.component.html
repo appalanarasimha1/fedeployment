@@ -20,13 +20,8 @@
                               <span>/{{WORKSPACE_ROOT}}{{shortTheString(sharedService.removeWrokspaceFromBreadcrumb(data.path), 70)}}</span>
                            </div>
                         </div>
-                        <span>{{ !data ? 'or click to select files to upload' : 'or click to select assets to upload'}}</span>
                      </div>
-                     <div class="errortext">
-                        <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
-                        <!-- <p class="errorMsg">Only documents in PDF format are acceptable.<br>
-                           Please make sure all the ducoments are converted into PDFs.</p> -->
-                     </div>
+                     <span>{{ !data ? 'or click to select files to upload' : 'or click to select assets to upload'}}</span>
                   </div>
                   <!-- <div class="errortext">
                      <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
@@ -53,25 +48,15 @@
             <div class="row pt-2" style="display: flex; align-items: baseline;">
                <div class="col-xl-3">
                   <div *ngIf="getAssetNumber()" class="flexible pt-3 pointer" style="align-items: end;" (click)="drop.showFileSelector()">
-                     <a>
-                     <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
-                     </a>
-                     <span class="goldenText">
-                     Add more assets
-                     </span>
-                  </div>
-               </div>
-               <div class="col-xl-9 flexible">
-                  <label class="control control--checkbox" [ngClass]="{'validationError': showErrorCheckbox}" *ngIf="getAssetNumber()" style="margin-bottom: 0px;">
-                     Where any of the assets being uploaded contains a photo of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo and make accessible to other users across NEOM
-                     <input type="checkbox" checked="checked" (change)="checkValidationCheckbox()"
-                     [(ngModel)]="agreeTerms"
-                     [ngModelOptions]="{standalone: true}"/>
-                     <div class="control__indicator"></div>
-                  </label>
+                  <a>
+                  <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
+                  </a>
+                  <span class="goldenText">
+                  Add more assets
+                  </span>
                </div>
             </div>
-            <!-- <div class="col-xl-9 flexible">
+            <div class="col-xl-9 flexible">
                <label class="control control--checkbox" *ngIf="getAssetNumber()" style="margin-bottom: 0px;">
                   Where any of the assets being uploaded contains a photo/video of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo/video and make accessible to other users across NEOM. I also acknowledge that I have a clear business justification for storing this asset
                   <input type="checkbox" checked="checked"
@@ -79,9 +64,9 @@
                   [ngModelOptions]="{standalone: true}"/>
                   <div class="control__indicator"></div>
                </label>
-            </div> -->
+            </div>
          </div>
-         
+         </div>
 
          <div class="button-groups" style="padding-top: 15px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
@@ -95,10 +80,8 @@
                <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
                   Publish
                   <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
-                     <div class="errorMessage" *ngIf="showError && !showErrorCheckbox">Please select assets first</div>
-                     <div class="errorMessage" *ngIf="!showError && showErrorCheckbox">Please select checkbox first</div>
-                     
-                  </div>
+                     Please complete all mandatory fields to proceed
+                   </div>
                </button>
             </div>
          </div>

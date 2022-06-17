@@ -55,7 +55,9 @@
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
         </div> -->
-        <a class="hover-icon download-icon" href="javascript:void(0)">
+        <a class="hover-icon download-icon"*ngIf="doc && !checkPopupNeeds()" href="{{getFileContent()}}"></a>
+
+        <a class="hover-icon download-icon" href="javascript:void(0)" *ngIf="checkPopupNeeds()">
           <div *ngIf="doc" class="download-dropdown">
             <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
               <p *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
@@ -74,7 +76,7 @@
             <div *ngIf="hasInternalRestriction()" class="internal-use">
               <p *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
 
-              <div class="control-group" [ngClass]="downloadErrorShow && !isAware ? 'error-disabled' : '' ">
+              <div class="control-group" [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : !checkCopyRight()} ">
                 <label class="control control--checkbox">I am aware this asset is for internal use only
                   <input type="checkbox" [(ngModel)]="isAware" checked="isAware" (change)="onCheckboxChange($event)"/>
                   <div class="control__indicator"></div>
