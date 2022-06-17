@@ -385,7 +385,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   async getTrendingAssetsByIds(ids) {
     if (!ids || ids.length === 0) return;
     const idsString = ids.map(id => `'${id}'`).join(',');
-    const query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString})`;
+    const query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString}) AND sa:duplicateShow = '1'`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
