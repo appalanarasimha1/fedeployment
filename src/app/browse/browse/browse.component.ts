@@ -8,6 +8,8 @@ import { NgxMasonryComponent } from "ngx-masonry";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UpdateModalComponent } from "../../update-modal/update-modal.component";
 import { SharedService } from "src/app/services/shared.service";
+import { environment } from "../../../environments/environment";
+
 import {
   ASSET_TYPE,
   constants,
@@ -31,6 +33,7 @@ import { ManageAccessModalComponent } from "src/app/manage-access-modal/manage-a
 import { AddUserModalComponent } from "src/app/add-user-modal/add-user-modal.component";
 import { fromEvent } from "rxjs";
 import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators";
+import { Departments, Workspace } from "./../../config/sector.config";
 
 @Component({
   selector: "app-browse",
@@ -183,7 +186,7 @@ export class BrowseComponent implements OnInit {
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
-        if(this.selectedFolder.isTrashed) {
+        if (this.selectedFolder.isTrashed) {
           this.folderNotFound = true;
           this.loading = false;
           return;
@@ -324,7 +327,10 @@ export class BrowseComponent implements OnInit {
     this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
     this.loading = true;
-    const { entries, numberOfPages, resultsCount} = await this.fetchAssets(item.uid, true);
+    const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
+      item.uid,
+      true
+    );
     this.searchList = entries.filter(
       (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
     );
@@ -400,7 +406,6 @@ export class BrowseComponent implements OnInit {
     // }
     this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
-
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
@@ -547,14 +552,22 @@ export class BrowseComponent implements OnInit {
     return result;
   }
 
-  async fetchAssets(id: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+  async fetchAssets(
+    id: string,
+    checkCache = true,
+    pageSize = PAGE_SIZE_20,
+    pageIndex = 0,
+    offset = 0
+  ) {
     this.currentPageCount = 0;
     this.showMoreButton = true;
     if (checkCache && this.folderAssetsResult[id]) {
       return this.folderAssetsResult[id];
     }
     const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
-    const result: any = await this.apiService.get(url, {headers: { "fetch-document": "properties"}}).toPromise();
+    const result: any = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, true)
     );
@@ -615,34 +628,36 @@ export class BrowseComponent implements OnInit {
     this.selectedFolder = { ...selected, uid: selected.id };
     this.sharedService.toTop();
     const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    this.apiService.get(url, {headers: { "fetch-document": "properties"}}).subscribe((docs: any) => {
-      this.searchList = docs.entries.filter(
-        (sector) =>
-          UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-      );
-      let workSpaceIndex = this.searchList.findIndex(
-        (res) => res.title === "Workspaces"
-      );
-      if (workSpaceIndex >= 0) {
-        this.handleChangeClick(
-          this.searchList[workSpaceIndex],
-          index,
-          selected,
-          childIndex
+    this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .subscribe((docs: any) => {
+        this.searchList = docs.entries.filter(
+          (sector) =>
+            UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
         );
-      } else {
-        this.sortedData = this.searchList.slice();
-        if (childIndex !== null && childIndex !== undefined) {
-          this.folderStructure[index].children[childIndex].children =
-            docs.entries;
-          this.folderStructure[index].children[childIndex].isExpand = true;
-          this.handleTest(selected);
+        let workSpaceIndex = this.searchList.findIndex(
+          (res) => res.title === "Workspaces"
+        );
+        if (workSpaceIndex >= 0) {
+          this.handleChangeClick(
+            this.searchList[workSpaceIndex],
+            index,
+            selected,
+            childIndex
+          );
         } else {
-          this.folderStructure[index].children = docs.entries;
-          this.folderStructure[index].isExpand = true;
+          this.sortedData = this.searchList.slice();
+          if (childIndex !== null && childIndex !== undefined) {
+            this.folderStructure[index].children[childIndex].children =
+              docs.entries;
+            this.folderStructure[index].children[childIndex].isExpand = true;
+            this.handleTest(selected);
+          } else {
+            this.folderStructure[index].children = docs.entries;
+            this.folderStructure[index].isExpand = true;
+          }
         }
-      }
-    });
+      });
   }
 
   handleSelectMenu(index, type) {
@@ -669,10 +684,10 @@ export class BrowseComponent implements OnInit {
     dialogConfig.maxHeight = "900px";
     dialogConfig.width = "650px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
-   const folder = await this.fetchFolder(this.selectedFolder.uid);
+    const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {
       docs: this.searchList,
-      folder
+      folder,
     };
 
     const modalDialog = this.matDialog.open(UpdateModalComponent, dialogConfig);
@@ -681,10 +696,11 @@ export class BrowseComponent implements OnInit {
       if (!result) return;
       const updatedDocs = result.updatedDocs;
       const updatedFolder = result.selectedFolder;
-      if(!this.selectedFolder.properties) {
-        this.selectedFolder['properties'] = {};
+      if (!this.selectedFolder.properties) {
+        this.selectedFolder["properties"] = {};
       }
-      this.selectedFolder.properties["dc:description"] = updatedFolder.description;
+      this.selectedFolder.properties["dc:description"] =
+        updatedFolder.description;
       this.selectedFolder.properties["dc:start"] = updatedFolder.associatedDate;
       Object.keys(updatedDocs).forEach((key) => {
         this.searchList[key].contextParameters.acls =
@@ -749,6 +765,7 @@ export class BrowseComponent implements OnInit {
   }
 
   selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
+    this.selectAsset(event, file, index);
     if (event.checked || event.target?.checked) {
       this.fileSelected.push(file);
     } else {
@@ -817,7 +834,7 @@ export class BrowseComponent implements OnInit {
   getIconByType(type: string): string {
     switch (type.toLowerCase()) {
       case "workspace":
-        return "../../../assets/images/folderBlack.png";
+        return "../../../assets/images/folder-table-list.svg";
       case "picture":
         return "../../../assets/images/list-viewImg.svg";
       case "video":
@@ -825,7 +842,7 @@ export class BrowseComponent implements OnInit {
       case "file":
         return "../../../assets/images/Doc.svg";
       default:
-        return "../../../assets/images/folderBlack.png";
+        return "../../../assets/images/folder-table-list.svg";
     }
   }
 
@@ -944,34 +961,34 @@ export class BrowseComponent implements OnInit {
     }
     this.loading = true;
     const url = `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
-    this.apiService.get(url, {headers: { "fetch-document": "properties"}}).subscribe((docs: any) => {
-      this.numberOfPages = docs.numberOfPages;
-      this.resultCount = docs.resultsCount;
-      this.trashedList = docs.entries.filter(
-        (sector) => {
-          if(UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
+    this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .subscribe((docs: any) => {
+        this.numberOfPages = docs.numberOfPages;
+        this.resultCount = docs.resultsCount;
+        this.trashedList = docs.entries.filter((sector) => {
+          if (UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
             --this.resultCount;
             return true;
           } else {
             return false;
           }
-        }
-      );
-      if (!this.myDeletedCheck) {
-        this.searchList = this.trashedList;
-        this.sortedData = this.searchList.slice();
-      } else {
-        this.deletedByMeFilter().then(() => {
-          this.searchList = this.deletedByMe;
-          this.sortedData = this.searchList.slice();
         });
-      }
-      this.isTrashView = true;
-      this.handleSelectMenu(1, this.viewType || "LIST");
-      this.showMoreButton = false;
-      this.loading = false;
-      this.deletedByMeFilter();
-    });
+        if (!this.myDeletedCheck) {
+          this.searchList = this.trashedList;
+          this.sortedData = this.searchList.slice();
+        } else {
+          this.deletedByMeFilter().then(() => {
+            this.searchList = this.deletedByMe;
+            this.sortedData = this.searchList.slice();
+          });
+        }
+        this.isTrashView = true;
+        this.handleSelectMenu(1, this.viewType || "LIST");
+        this.showMoreButton = false;
+        this.loading = false;
+        this.deletedByMeFilter();
+      });
   }
 
   async deletedByMeFilter() {
@@ -1044,7 +1061,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
-    if(!this.folderNameRef) {
+    if (!this.folderNameRef) {
       this.showError = true;
     } else {
       this.createFolderLoading = true;
@@ -1126,8 +1143,10 @@ export class BrowseComponent implements OnInit {
           return this.compare(a.title, b.title, isAsc);
         case "dc:creator":
           return this.compare(
-            (a.properties["dc:creator"].properties?.firstName || a.properties["dc:creator"].id),
-            (b.properties["dc:creator"].properties?.firstName || b.properties["dc:creator"].id),
+            a.properties["dc:creator"].properties?.firstName ||
+              a.properties["dc:creator"].id,
+            b.properties["dc:creator"].properties?.firstName ||
+              b.properties["dc:creator"].id,
             isAsc
           );
         case "dc:created":
@@ -1158,14 +1177,14 @@ export class BrowseComponent implements OnInit {
           return 0;
       }
     });
-   this.sortedData.sort(this.assetTypeCompare);
+    this.sortedData.sort(this.assetTypeCompare);
   }
 
   /**
    * brings folder to top position and then assets
    */
-  assetTypeCompare(a: {type: string}, b: {type: string}): number {
-    return a.type.toLowerCase() === 'orderedfolder' ? -1 : 1;
+  assetTypeCompare(a: { type: string }, b: { type: string }): number {
+    return a.type.toLowerCase() === "orderedfolder" ? -1 : 1;
   }
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
@@ -1238,8 +1257,10 @@ export class BrowseComponent implements OnInit {
   }
 
   async getWorkspaceFolders(sectorUid: string, viewType = 0) {
-    // this.loading = true;
-    let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
+    this.loading = true;
+    let { entries, numberOfPages, resultsCount } = await this.fetchAssets(
+      sectorUid
+    );
     let workSpaceIndex: number;
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
@@ -1252,17 +1273,19 @@ export class BrowseComponent implements OnInit {
       return;
     }
     workSpaceIndex = entries.findIndex((res) => res.title === "Workspaces");
-    if(workSpaceIndex !== -1) {
+    if (workSpaceIndex !== -1) {
       this.sectorWorkspace = entries[workSpaceIndex];
     }
-    if(workSpaceIndex === -1) {
+    if (workSpaceIndex === -1) {
       this.sortedData = entries;
       this.searchList = entries;
       this.showLinkCopy = true;
       // this.loading = false;
       return;
     }
-    ({ entries, numberOfPages, resultsCount } = await this.fetchAssets(entries[workSpaceIndex].uid));
+    ({ entries, numberOfPages, resultsCount } = await this.fetchAssets(
+      entries[workSpaceIndex].uid
+    ));
     this.sortedData = entries;
     this.searchList = entries;
     this.numberOfPages = numberOfPages;
@@ -1289,9 +1312,22 @@ export class BrowseComponent implements OnInit {
     // this.loading = false;
   }
 
-  async fetchCurrentFolderAssets(sectorUid: string, showLinkCopy = true, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+  async fetchCurrentFolderAssets(
+    sectorUid: string,
+    showLinkCopy = true,
+    checkCache = true,
+    pageSize = PAGE_SIZE_20,
+    pageIndex = 0,
+    offset = 0
+  ) {
     this.loading = true;
-    const { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid, checkCache, pageSize, pageIndex, offset);
+    const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
+      sectorUid,
+      checkCache,
+      pageSize,
+      pageIndex,
+      offset
+    );
     this.sortedData = entries;
     this.searchList = entries;
     this.numberOfPages = numberOfPages;
@@ -1310,8 +1346,15 @@ export class BrowseComponent implements OnInit {
   }
 
   upadtePermission(breadcrumb: any) {
-    let user = this.userSector?.split("-")[0].trim().toLowerCase();
-    if (breadcrumb?.title?.toLowerCase() === user) return true;
+    let user: any;
+    let checkAvailabity = Departments.hasOwnProperty(this.userSector);
+    if (checkAvailabity) {
+      let ID = Departments[this.userSector];
+      // console.log(Workspace[ID]);
+      user = Workspace[ID];
+    }
+
+    if (breadcrumb?.title?.toLowerCase() === user?.toLowerCase()) return true;
     return false;
   }
 
@@ -1320,14 +1363,21 @@ export class BrowseComponent implements OnInit {
    */
   paginatorEvent(event: PageEvent) {
     const offset = event.pageIndex * event.pageSize;
-    if(!this.isTrashView) {
+    if (!this.isTrashView) {
       let uid = this.selectedFolder.uid;
       let showLinkCopy = true;
-      if(this.selectedFolder.type.toLowerCase() === 'domain') {
+      if (this.selectedFolder.type.toLowerCase() === "domain") {
         uid = this.sectorWorkspace.uid;
         showLinkCopy = false;
       }
-      this.fetchCurrentFolderAssets(uid, showLinkCopy, false, event.pageSize, event.pageIndex, offset);
+      this.fetchCurrentFolderAssets(
+        uid,
+        showLinkCopy,
+        false,
+        event.pageSize,
+        event.pageIndex,
+        offset
+      );
     } else {
       this.getTrashedWS(event.pageSize, event.pageIndex, offset);
     }
@@ -1343,8 +1393,11 @@ export class BrowseComponent implements OnInit {
       queryParams: query,
     };
     const result: any = await this.apiService
-    .get(apiRoutes.NXQL_SEARCH, { params, headers: { "fetch-document": "properties"} })
-    .toPromise();
+      .get(apiRoutes.NXQL_SEARCH, {
+        params,
+        headers: { "fetch-document": "properties" },
+      })
+      .toPromise();
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, true)
     );
@@ -1359,7 +1412,7 @@ export class BrowseComponent implements OnInit {
   }
 
   navigateToWorkspaceFolder(uid: string) {
-    this.router.navigate(['workspace'], {queryParams: {folder: uid}});
+    this.router.navigate(["workspace"], { queryParams: { folder: uid } });
   }
 
   saveState({uid, title, path, properties, sectorId, type, contextParameters}) {
@@ -1375,7 +1428,7 @@ export class BrowseComponent implements OnInit {
   }
 
   inputChange() {
-    if(!this.folderNameRef) {
+    if (!this.folderNameRef) {
       this.showError = true;
     } else {
       this.showError = false;
@@ -1383,8 +1436,213 @@ export class BrowseComponent implements OnInit {
   }
 
   getCreatorName(item) {
-    const creatorName = item.properties['dc:creator']?.properties?.firstName + " " + item.properties['dc:creator']?.properties?.lastName;
-    return item.properties['dc:creator']?.properties?.firstName ? creatorName : item.properties['dc:creator']?.id;
+    const creatorName =
+      item.properties["dc:creator"]?.properties?.firstName +
+      " " +
+      item.properties["dc:creator"]?.properties?.lastName;
+    return item.properties["dc:creator"]?.properties?.firstName
+      ? creatorName
+      : item.properties["dc:creator"]?.id;
+  }
+  multiDownload() {
+    console.log(
+      this.downloadArray.length,
+      this.copyRightItem.length,
+      !this.sizeExeeded,
+      this.forInternalUse.length
+    );
+    
+    if (
+      this.downloadArray.length > 0 &&
+      this.copyRightItem.length < 1 &&
+      !this.sizeExeeded &&
+      this.forInternalUse.length < 1
+    ) {
+      this.downloadAssets();
+    } else {
+      $(".downloadFileWorkspace").on("click", function (e) {
+        // $(".dropdownCreate").toggle();
+        $(".multiDownloadBlock").show();
+        $(".downloadFileWorkspace").addClass("multiDownlodClick");
+        e.stopPropagation();
+      });
+      $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+        e.stopPropagation();
+      });
+
+      $(".multiDownloadBlock").click(function (e) {
+        e.stopPropagation();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
+
+      $(document).click(function () {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
+    }
+  }
+
+  downloadClick() {
+    if (!this.downloadEnable) {
+      this.downloadErrorShow = true;
+    }
+  }
+  onCheckboxChange(e: any) {
+    if (e.target.checked) {
+      this.downloadErrorShow = false;
+      this.downloadEnable = true;
+    } else {
+      this.downloadEnable = false;
+    }
+  }
+
+  forInternalUse: any = [];
+  downloadArray: any = [];
+  sizeExeeded: boolean = false;
+  forInternaCheck: boolean = false;
+  downloadFullItem: any = [];
+  needPermissionToDownload: any = [];
+  count: number = 0;
+  copyRightItem: any = [];
+
+  selectAsset($event, item, i) {
+    console.log("itemitemitemitemitem", item, $event);
+    // if (!$event.target?.checked || !$event.checked) {
+    //   console.log("inside unchecked");
+    //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+    //   this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+    //   this.downloadFullItem = this.downloadFullItem.filter(
+    //     (m) => m.uid !== item.uid
+    //   );
+    //   this.needPermissionToDownload = this.needPermissionToDownload.filter(
+    //     (m) => m.uid !== item.uid
+    //   );
+    //   this.count = this.count - 1;
+    // }
+    // else
+    if ($event.target?.checked || $event.checked) {
+      this.count = this.count + 1;
+       if (
+         item.properties['sa:copyrightName'] !== null &&
+         item.properties['sa:copyrightName'] !== ""
+       ) {
+         this.copyRightItem.push(item.uid);
+       }
+      if (item.properties["sa:users"].length > 0) {
+        this.needPermissionToDownload.push(item);
+      } else {
+        if (item.properties["sa:access"] === "Internal access only") {
+          this.forInternalUse.push(item.uid);
+        }
+        this.downloadArray.push(item.uid);
+        this.downloadFullItem.push(item);
+      }
+    } else {
+      //  if (!$event.target?.checked || !$event.checked) {
+      console.log("inside unchecked");
+      this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+      this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+      this.copyRightItem = this.copyRightItem.filter((m) => m !== item.uid);
+      this.downloadFullItem = this.downloadFullItem.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.needPermissionToDownload = this.needPermissionToDownload.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.count = this.count - 1;
+      //  }
+    }
+    this.getdownloadAssetsSize();
+  }
+
+  getUser(item) {
+    return item.properties["sa:users"];
+  }
+
+  getdownloadAssetsSize() {
+    let size = 0;
+    if (this.downloadArray.length > 0) {
+      this.downloadFullItem.forEach((doc) => {
+        size = size + parseInt(doc.properties["file:content"]?.length);
+      });
+      let sizeInGB = size / 1024 / 1024 / 1024;
+
+      if (sizeInGB > 1) {
+        this.sizeExeeded = true;
+      } else {
+        this.sizeExeeded = false;
+      }
+    } else {
+      this.sizeExeeded = false;
+    }
+  }
+
+  downloadAssets(e?:any) {
+    // this.uncheckAll1()
+    if (!this.downloadEnable && this.forInternalUse.length > 0) {
+      return;
+    } else {
+      if (this.downloadArray.length > 0) {
+        $(".multiDownloadBlock").hide();
+        console.log("comming");
+        let r = Math.random().toString().substring(7);
+        let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
+        let uid: any;
+        let data = this.apiService
+          .downloaPost("/automation/Blob.BulkDownload/@async", {
+            params: {
+              filename: `selection-${r}.zip`,
+            },
+            context: {},
+            input,
+          })
+          .subscribe((res: any) => {
+            let splittedLocation = res.headers.get("location").split("/");
+            let newUID = splittedLocation[splittedLocation.length - 2];
+            uid = newUID;
+            this.apiService
+              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+              .subscribe((resp: any) => {
+                let locationForDownload = resp.headers.get("location");
+              });
+
+            setTimeout(() => {
+              window.open(
+                environment.apiServiceBaseUrl +
+                  "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                  uid
+              );
+              this.removeAssets();
+            }, 1000);
+          });
+      }
+    }
+  }
+
+  removeAssets() {
+    this.forInternalUse = [];
+    this.downloadArray = [];
+    this.sizeExeeded = false;
+    this.forInternaCheck = false;
+    this.downloadFullItem = [];
+    this.needPermissionToDownload = [];
+    this.count = 0;
+    this.fileSelected = [];
+    // $(".vh").prop("checked", false);
+    this.sortedData.forEach((e) => (e.isSelected = false));
+  }
+
+  cancelDownloadClick(e) {
+    e.stopPropagation();
+    $(".multiDownloadBlock").hide();
+  }
+
+  uncheckAll1() {
+    $(".uncheckAfterSuccess").click(function () {
+      $("input:checkbox").removeAttr("checked");
+    });
   }
 
 

@@ -8,7 +8,7 @@
   min-height: 60px !important;
   max-height: 100%!important;
   height: auto !important;
-  /* overflow: auto; */
+  /* overflow: auto;  */
 }
 .upload-form{
   margin: 0px 2px;
@@ -1438,4 +1438,64 @@ button.upload-btn.tollTipCustom.disableBtn, button.upload-btn.tollTipCustom.disa
 }
 .custom-select-options li.styled:hover .folderTitleArrow:hover {
   background-color: #937206 !important;
+}
+
+::ng-deep .cdk-global-overlay-wrapper{
+  overflow: auto !important;
+  pointer-events: auto !important;
+}
+::ng-deep .mat-dialog-container {
+  margin-top: 30px !important;
+}
+
+/* .updateClassificationBlk ::ng-deep .mat-form-field-flex {
+  width: 100%;
+}
+.updateClassificationBlk ::ng-deep .mat-form-field {
+  width: auto;
+}
+.updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-wrapper {
+  width: auto;
+}
+.updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-infix {
+  width: 70px;
+}
+.updateClassificationBlk .upload-form-input input {
+  width: 100%;
+} */
+
+.updateClassificationBlk {margin-bottom: 20px; border-bottom: 0px solid #D1CFC9; padding-bottom: 10px;}
+.updateClassification {display: block;width: 100%;overflow: hidden;}
+
+.updateClassification .updateClassiNameblock {float: left;}
+
+.updateClassification .assetsBlock {float: right;padding-top: 18px;}
+
+.updateClassification .updateClassiNameblock .folderImg {display: inline-block;vertical-align: middle;margin-right: 20px;}
+
+.updateClassification .updateClassiNameblock .nameBreadcrumbBlk {display: inline-block;vertical-align: middle;}
+.workspaceName {color: #040404; font-style: normal;font-weight: 600;font-size: 16px;line-height: 35px;}
+.renameFolderImg {
+  display: inline-block;
+  max-width: 17px;
+  cursor: pointer;
+  vertical-align: -1px;
+  margin-left: 10px;
+}
+
+.uploadModalBlk ::ng-deep ng-select {
+  width: 100%;
+}
+.cancel-btn{
+  color: #23211E;
+  background: #fff;
+  border-radius: 50px !important;
+  padding: 8px 32px;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0.055em;
+  border: 1px solid #23211E;
+}
+.reviewClassifaction .workspaceName {
+  font-size: 14px;
 }

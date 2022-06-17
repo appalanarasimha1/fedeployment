@@ -19,7 +19,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   @Input() docUrl: string;
   @Input() openInModal: boolean = true;
 
-  @ViewChild('preview', {static: false}) modalTemp: TemplateRef<void>;
+  @ViewChild("preview", { static: false }) modalTemp: TemplateRef<void>;
 
   modalLoading = false;
   inputTag: string;
@@ -31,7 +31,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   commentText: string;
   comments = [];
   isAware = false;
-  currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW
+  currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   copiedString;
 
@@ -74,47 +74,67 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         (reason) => {
           this.showTagInput = false;
           this.modalLoading = false;
-          this.copiedString = '';
+          this.copiedString = "";
         }
       );
   }
 
   getTags() {
     this.tags = this.doc.contextParameters["tags"]?.map((tag) => tag) || [];
-    this.doc.properties[TAG_ATTRIBUTES.ACTIVITY_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.EMOTION_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
+    this.doc.properties[TAG_ATTRIBUTES.ACTIVITY_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.EMOTION_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
     // this.doc.properties[TAG_ATTRIBUTES.NX_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.OBJECT_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.WEATHER_CLASSIFICATION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.PUBLIC_FIGURE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
+    this.doc.properties[TAG_ATTRIBUTES.OBJECT_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.WEATHER_CLASSIFICATION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.PUBLIC_FIGURE_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
   }
 
   checkDuplicateAndAddTags(tag: string): void {
-    if(this.tags.indexOf(tag) !== -1) {
+    if (this.tags.indexOf(tag) !== -1) {
       return;
-    } else if(unwantedTags.indexOf(tag.toLowerCase()) === -1) {
+    } else if (unwantedTags.indexOf(tag.toLowerCase()) === -1) {
       this.tags.push(tag);
     }
     return;
   }
 
   getParentFolderName() {
-    if (!this.doc) return '';
+    if (!this.doc) return "";
     // const split = this.doc.path.split('/');
     // return split[split.length - 2];
-    return this.doc.properties['dc:sector'];
+    return this.doc.properties["dc:sector"];
   }
 
   getComments() {
     const queryParams = { pageSize: 10, currentPageIndex: 0 };
-    const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.doc.uid);
-    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
-      .get().then((docs) => {
+    const route = apiRoutes.FETCH_COMMENTS.replace("[assetId]", this.doc.uid);
+    this.nuxeo.nuxeoClient
+      .request(route, {
+        queryParams,
+        headers: { "enrichers.user": "userprofile" },
+      })
+      .get()
+      .then((docs) => {
         this.comments = docs.entries;
-      }).catch((err) => {
-        console.log('get comment error', err);
+      })
+      .catch((err) => {
+        console.log("get comment error", err);
       });
   }
 
@@ -189,7 +209,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getNames(users: any) {
-    if(!users?.["dc:contributors"]) return '';
+    if (!users?.["dc:contributors"]) return "";
     let result = "";
     users["dc:contributors"].map((user) => {
       result += user + ", ";
@@ -198,8 +218,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   toDateString(date: string): string {
-    if(!date?.['dc:created']) return '';
-    return `${new Date(date['dc:created']).toDateString()}`;
+    if (!date?.["dc:created"]) return "";
+    return `${new Date(date["dc:created"]).toDateString()}`;
   }
 
   saveComment(comment: string): void {
@@ -226,7 +246,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
-    return this.sharedService.returnDaysAgoFromTodayDate(fromDate, showHours, toDate);
+    return this.sharedService.returnDaysAgoFromTodayDate(
+      fromDate,
+      showHours,
+      toDate
+    );
   }
 
   getDoubleDigit(value: number) {
@@ -333,36 +357,52 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   // }
 
   hasNoRestriction() {
-    return (!this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any && this.doc.properties["sa:downloadApproval"] !== 'true');
+    return (
+      !this.doc.properties["sa:allow"] ||
+      (this.doc.properties["sa:allow"] === ALLOW.any &&
+        this.doc.properties["sa:downloadApproval"] !== "true")
+    );
   }
 
   hasInternalRestriction() {
-    return ((this.doc.properties["sa:allow"] === ALLOW.internal || this.doc.properties["sa:allow"] === ALLOW.request) && this.doc.properties["sa:downloadApproval"] !== 'true');
+    return (
+      (this.doc.properties["sa:allow"] === ALLOW.internal ||
+        this.doc.properties["sa:allow"] === ALLOW.request) &&
+      this.doc.properties["sa:downloadApproval"] !== "true"
+    );
   }
 
   hasRequestRestriction() {
-    return this.doc.properties["sa:allow"] === ALLOW.request || this.doc.properties["sa:downloadApproval"] === 'true';
+    return (
+      this.doc.properties["sa:allow"] === ALLOW.request ||
+      this.doc.properties["sa:downloadApproval"] === "true"
+    );
   }
 
   showDownloadDropdown() {
-    return this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware);
+    return (
+      this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware)
+    );
   }
 
   getCreator() {
     return this.doc?.properties?.['dc:creator']?.id || this.doc?.properties?.['dc:creator'];
   }
-  
+
   getApprovalUsers(): string[] {
-    return this.doc.properties?.['sa:downloadApprovalUsers'] || [];
+    return this.doc.properties?.["sa:downloadApprovalUsers"] || [];
   }
 
   getCopyright() {
-    if (this.doc.properties['sa:copyrightName'] && this.doc.properties['sa:copyrightYear']) {
-      return `©️ ${this.doc.properties['sa:copyrightName']} ${this.doc.properties['sa:copyrightYear']}`;
-    } else if(this.doc.properties['sa:copyrightName']) {
-      return `©️ ${this.doc.properties['sa:copyrightName']}`;
+    if (
+      this.doc.properties["sa:copyrightName"] &&
+      this.doc.properties["sa:copyrightYear"]
+    ) {
+      return `©️ ${this.doc.properties["sa:copyrightName"]} ${this.doc.properties["sa:copyrightYear"]}`;
+    } else if (this.doc.properties["sa:copyrightName"]) {
+      return `©️ ${this.doc.properties["sa:copyrightName"]}`;
     }
-    return '';
+    return "";
   }
 
   getUsageAllowed() {
@@ -373,7 +413,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     //   return `${this.doc.properties['sa:allow']}`;
     // }
 
-    switch(this.doc.properties['sa:allow']) {
+    switch (this.doc.properties["sa:allow"]) {
       case ALLOW.any:
         return ALLOW_VALUE_MAP["Anywhere (including external publications)"];
       case ALLOW.internal:
@@ -437,6 +477,18 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   getImageDimensions(): string {
     return `${this.doc?.properties?.["picture:info"]?.width} x ${this.doc?.properties?.["picture:info"]?.height}`;
+  }
+  
+  checkCopyRight() {
+    let m = this.doc;
+    if (
+      m.properties["sa:copyrightName"] !== null &&
+      m.properties["sa:copyrightName"] !== ""
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

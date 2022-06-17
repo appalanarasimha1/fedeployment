@@ -174,7 +174,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 .views img {
   margin-left: 15px;
   opacity: 0.2;
-  width: 24px;
+  width: 28px;
   cursor: pointer;
 }
 .views img.active{
@@ -730,11 +730,11 @@ font-weight: 600;
 }
 .folderListview tr:nth-child(odd){
   background-color: #F6F5F2;
-  border-bottom: 2px solid #fff;
+  /* border-bottom: 8px solid #fff; */
 }
 .folderListview tr:nth-child(even){
   background-color: #FBF7E6;
-  border-bottom: 2px solid #fff;
+  /* border-bottom: 8px solid #fff; */
 }
 /* .folderListview tr{
   margin: 3px 0px;
@@ -842,7 +842,7 @@ font-weight: 600;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   padding: 20px;
-  width: 380px;
+  width: 420px;
   right: 0px;
   top: 50px;
   /* left: auto; */
@@ -865,22 +865,25 @@ font-weight: 600;
   border: unset;
   border-bottom: 2px solid #413E3C;
   width: 100%;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 24px;
   color: #040404;
   padding-bottom: 5px;
+  padding-left: 0px;
+  font-weight: 500;
 }
 .createFolder input::placeholder{
   font-size: 16px !important;
   line-height: 24px !important;
   color: #040404 !important;
+  font-weight: normal !important;
 }
 .createFolder label{
   font-size: 16px;
-line-height: 24px;
-color: #040404;
-font-weight: 600;
+  line-height: 24px;
+  color: #040404;
+  font-weight: 600;
 }
 .mat-expansion-panel:not([class*=mat-elevation-z]){
   box-shadow: unset;
@@ -1020,12 +1023,12 @@ font-weight: 600;
 }
 .delete-folder-action .control__indicator {
   position: absolute;
-  top: 8px;
+  top: 6px;
   left: 0;
-  height: 26px;
-  width: 26px;
+  height: 24px;
+  width: 24px;
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 20px;
 }
 .delete-folder-action .control--radio .control__indicator {
   border-radius: 50%;
@@ -1035,14 +1038,14 @@ font-weight: 600;
   background: #fff;
 }
 .delete-folder-action .control input:checked ~ .control__indicator {
-  background: #006845;
+  background: #C49900;
 }
 .delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
 .delete-folder-action .control input:checked:focus ~ .control__indicator {
-  background: #006845;
+  background: #C49900;
 }
 .delete-folder-action .control input:disabled ~ .control__indicator {
-  background: #006845;
+  background: #C49900;
   opacity: 0.6;
   pointer-events: none;
 }
@@ -1060,8 +1063,8 @@ font-weight: 600;
 .delete-folder-action .control--checkbox .control__indicator:before {
   left: 10px;
   top: 6px;
-  width: 6px;
-  height: 12px;
+  width: 5px;
+  height: 10px;
   border: solid #fff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
@@ -1109,16 +1112,16 @@ font-weight: 600;
 }
 .createNew, .deleteFolder, .recoverFolder{
   font-size: 16px;
-  line-height: 24px;
+  line-height: 31px;
   color: #937206;
   font-weight: 600;
   vertical-align: middle;
 }
-.deleteFolder img, .recoverFolder img {
+.recoverFolder img {
   margin-right: 8px; margin-top: -4px;
 }
 .createNew {
-  margin-left: 10px;
+  margin-left: 0px;
 }
 .groupFolder.checkDelete .delete-folder-action {
   opacity: 1;
@@ -1276,7 +1279,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover .workspaceInfo {
 ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   display: block;
 }
-.dropdownCreate {
+.dropdownCreate, .multiDownloadBlock {
   display:none;
   text-align: left;
 }
@@ -1588,8 +1591,8 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   float: right;
   border-left: 1px solid #EFEEE9;
 }
-.buttonCreate img {opacity: 1 !important;width: 14px !important;}
-.deleteRecover {display: inline-block;}
+.buttonCreate img {opacity: 1 !important;width: 14px !important; margin-top: 3px;}
+.deleteRecover {display: inline-block; margin-left: 10px;}
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
 .uploadClassificationDisable {
   opacity: 0.5;
@@ -3702,3 +3705,16 @@ svg.classificationsIcon.disablePermission path {
   fill: #DAAA00;
   stroke: none;
 } 
+/* custom checkbox end */
+
+a.downloadDisbable {
+    color: gray!important;
+}
+
+a.downloadDisbable path {
+    stroke: gray;
+}
+
+.delete-folder-action.activeHover {
+  opacity: 1;
+}

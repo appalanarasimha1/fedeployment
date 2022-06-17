@@ -29,7 +29,6 @@ import { NgxMasonryComponent } from "ngx-masonry";
 import { DataService } from "../services/data.service";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { UNWANTED_WORKSPACES } from "../upload-modal/constant";
-
 @Component({
   selector: "app-content",
   // Our list of styles in our component. We may add more to compose many styles together
@@ -207,6 +206,10 @@ export class DocumentComponent implements OnInit, OnChanges {
   dummyPlaceholderTags: boolean = true;
   searchBarClicked: boolean = false;
 
+  downloadErrorShow: boolean = false;
+  downloadEnable: boolean = false;
+  isAware;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
@@ -219,6 +222,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
+    this.getZippedFile();
     this.route.fragment.subscribe((f) => {
       setTimeout(() => {
         const element = document.getElementById(f);
@@ -264,7 +268,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-
     if (changes.searchTerm) {
       this.searchTerm = changes.searchTerm.currentValue;
       this.getRelatedTags();
@@ -291,23 +294,57 @@ export class DocumentComponent implements OnInit, OnChanges {
     return;
   }
 
+  getZippedFile() {
+    let uid: any;
+    let data = this.apiService
+      .downloaPost("/automation/Blob.BulkDownload/@async", {
+        params: {
+          filename: "selection-2753893969999.zip",
+        },
+        context: {},
+        input:
+          "docs:f112353d-c904-48c0-af6c-2745dbb782dd,31a6e390-4b9d-4df6-a6c1-f1ecd49b0b4f",
+      })
+      .subscribe((res: any) => {
+        let splittedLocation = res.headers.get("location").split("/");
+        let newUID = splittedLocation[splittedLocation.length - 2];
+        uid = newUID;
+        console.log("11111111111111110000000000000000000000", newUID);
+        this.apiService
+          .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+          .subscribe((resp: any) => {
+            let locationForDownload = resp.headers.get("location");
+
+            console.log(
+              "1111111111111111000000000000000000000022222222222222222",
+              resp
+            );
+          });
+
+        setTimeout(() => {
+          console.log(
+            "================================================================="
+          );
+          // window.open(
+          //   environment.apiServiceBaseUrl +
+          //     "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+          //     uid
+          // );
+        }, 1000);
+      });
+  }
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
-
       this.searchTem = searchTerm;
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
       this.dummyPlaceholderTags = true;
-      this.tagsMetaRealdata = data?.filter(
-        (m) =>
-          m.key !== this.searchTem
-      );
+      this.tagsMetaRealdata = data?.filter((m) => m.key !== this.searchTem);
       this.dummyPlaceholderTags = false;
     });
   }
 
   resetResult() {
-    this.dataService.searchBarClickInit(false);
     this.documents = "";
     // this.selectTab('recentUpload');
     this.docSliceInput = 39;
@@ -521,6 +558,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
+    this.selectAsset(event, file, index);
     if (event.checked || event.target?.checked) {
       this.fileSelected.push(file);
     } else {
@@ -692,7 +730,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     // }
     this.recentDataShow = this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
-
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
@@ -1018,6 +1055,181 @@ export class DocumentComponent implements OnInit, OnChanges {
   searchRelatedClick(searchTerm) {
     this.dataService.termSearchInit(searchTerm);
     this.dataService.termSearchForHideInit(searchTerm);
+  }
 
+  multiDownload() {
+    if (this.downloadArray.length>0 && this.copyRightItem.length<1 && !this.sizeExeeded && this.forInternalUse.length<1) {
+      this.downloadAssets();
+    }else{
+      $(".downloadFileWorkspace").on("click", function (e) {
+        // $(".dropdownCreate").toggle();
+        $(".multiDownloadBlock").show();
+        $(".downloadFileWorkspace").addClass("multiDownlodClick");
+        e.stopPropagation();
+      });
+      $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+        e.stopPropagation();
+      });
+
+      $(".multiDownloadBlock").click(function (e) {
+        e.stopPropagation();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
+
+      $(document).click(function () {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
+    }
+  }
+  downloadClick() {
+    if (!this.downloadEnable) {
+      this.downloadErrorShow = true;
+    }
+  }
+  onCheckboxChange(e: any) {
+    if (e.target.checked) {
+      this.downloadErrorShow = false;
+      this.downloadEnable = true;
+    } else {
+      this.downloadEnable = false;
+    }
+  }
+  forInternalUse: any = [];
+  downloadArray: any = [];
+  sizeExeeded: boolean = false;
+  forInternaCheck: boolean = false;
+  downloadFullItem: any = [];
+  needPermissionToDownload: any = [];
+  downloadCount: number = 0;
+  copyRightItem:any=[]
+
+  selectAsset($event, item, i) {
+    console.log("itemitemitemitemitem", item, $event);
+    // if (!$event.target?.checked || !$event.checked) {
+    //   console.log("inside unchecked");
+    //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+    //   this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+    //   this.downloadFullItem = this.downloadFullItem.filter(
+    //     (m) => m.uid !== item.uid
+    //   );
+    //   this.needPermissionToDownload = this.needPermissionToDownload.filter(
+    //     (m) => m.uid !== item.uid
+    //   );
+    //   this.downloadCount = this.downloadCount - 1;
+    // }
+    // else
+    if ($event.target?.checked || $event.checked) {
+      this.downloadCount = this.downloadCount + 1;
+    if (
+      item.properties['sa:copyrightName'] !== null &&
+      item.properties['sa:copyrightName'] !== ""
+    ) {
+      this.copyRightItem.push(item.uid);
+    } 
+      if (item.properties["sa:users"].length > 0) {
+        this.needPermissionToDownload.push(item);
+      } else {
+        if (item.properties["sa:access"] === "Internal access only") {
+          this.forInternalUse.push(item.uid);
+        }
+        this.downloadArray.push(item.uid);
+        this.downloadFullItem.push(item);
+      }
+    } else {
+      //  if (!$event.target?.checked || !$event.checked) {
+      console.log("inside unchecked");
+      this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+      this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+      this.copyRightItem = this.copyRightItem.filter((m) => m !== item.uid);
+      this.downloadFullItem = this.downloadFullItem.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.needPermissionToDownload = this.needPermissionToDownload.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.downloadCount = this.downloadCount - 1;
+      //  }
+    }
+    this.getdownloadAssetsSize();
+  }
+
+  getUser(item) {
+    return item.properties["sa:users"];
+  }
+
+  getdownloadAssetsSize() {
+    let size = 0;
+    if (this.downloadArray.length > 0) {
+      this.downloadFullItem.forEach((doc) => {
+        size = size + parseInt(doc.properties["file:content"]?.length);
+      });
+      let sizeInGB = size / 1024 / 1024 / 1024;
+
+      if (sizeInGB > 1) {
+        this.sizeExeeded = true;
+      } else {
+        this.sizeExeeded = false;
+      }
+    } else {
+      this.sizeExeeded = false;
+    }
+  }
+
+  downloadAssets(e?:any) {
+    if (!this.downloadEnable && this.forInternalUse.length > 0) {
+      return;
+    } else {
+      if (this.downloadArray.length > 0) {
+        $(".multiDownloadBlock").hide();
+        console.log("comming");
+        let r = Math.random().toString().substring(7);
+        let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
+        let uid: any;
+        let data = this.apiService
+          .downloaPost("/automation/Blob.BulkDownload/@async", {
+            params: {
+              filename: `selection-${r}.zip`,
+            },
+            context: {},
+            input,
+          })
+          .subscribe((res: any) => {
+            let splittedLocation = res.headers.get("location").split("/");
+            let newUID = splittedLocation[splittedLocation.length - 2];
+            uid = newUID;
+            this.apiService
+              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+              .subscribe((resp: any) => {
+                let locationForDownload = resp.headers.get("location");
+              });
+
+            setTimeout(() => {
+              window.open(
+                environment.apiServiceBaseUrl +
+                  "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                  uid
+              );
+              this.removeAssets();
+            }, 1000);
+          });
+      }
+    }
+  }
+
+  removeAssets() {
+    this.forInternalUse = [];
+    this.downloadArray = [];
+    this.sizeExeeded = false;
+    this.forInternaCheck = false;
+    this.downloadFullItem = [];
+    this.needPermissionToDownload = [];
+    this.downloadCount = 0;
+    this.fileSelected = [];
+    this.assetsBySector.forEach((e) => (e.isSelected = false));
+    this.recentDataShow.forEach((e) => (e.isSelected = false));
+    this.favourites.forEach((e) => (e.isSelected = false));
   }
 }

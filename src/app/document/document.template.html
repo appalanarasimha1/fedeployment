@@ -1,5 +1,3 @@
-
-
 <section class="min-height positionRelative">
   <app-loader [show]="loading.length && !innerLoading.length"></app-loader>
   <!-- <div *ngIf="loading">
@@ -11,8 +9,6 @@
         </div>
     </div>
   </div> -->
-
-
 
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
@@ -50,21 +46,50 @@
         <li>
           <div ngbDropdown class="d-inline-block sectorsDropdown">
             <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-              <button class="sectorrBtn mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{assetsBySectorSelected || 'All sectors'}} </button>
-              <div ngbDropdownMenu aria-labelledby="dropdownManual" class="sectorDropMain" style="z-index: 1;top: -3px;">
-                <button ngbDropdownItem class="sectorDropBtn" (click)="assetsBySectorSelect(null)">All sectors</button>
-                <button *ngFor="let sector of sectorsHomepage" ngbDropdownItem class="sectorDropBtn" (click)="assetsBySectorSelect(sector)">{{sector}}</button>
+              <button
+                class="sectorrBtn mr-2"
+                id="dropdownManual"
+                ngbDropdownAnchor
+                ngbDropdownToggle
+              >
+                {{assetsBySectorSelected || 'All sectors'}}
+              </button>
+              <div
+                ngbDropdownMenu
+                aria-labelledby="dropdownManual"
+                class="sectorDropMain"
+                style="z-index: 1; top: -3px"
+              >
+                <button
+                  ngbDropdownItem
+                  class="sectorDropBtn"
+                  (click)="assetsBySectorSelect(null)"
+                >
+                  All sectors
+                </button>
+                <button
+                  *ngFor="let sector of sectorsHomepage"
+                  ngbDropdownItem
+                  class="sectorDropBtn"
+                  (click)="assetsBySectorSelect(sector)"
+                >
+                  {{sector}}
+                </button>
               </div>
             </div>
           </div>
         </li>
       </ul>
-      <div *ngIf="!assetsBySector.length"  style="height: 150px;">
+      <div *ngIf="!assetsBySector.length" style="height: 150px">
         <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
         <h2 class="noresult pb-3 pt-4">No assets by sector found</h2>
         <p class="searchcontent">Please select another sector.</p>
       </div>
-      <div *ngIf="assetsBySector.length" class="tab-content" [ngClass]="{'animate__animated animate__fadeIn animate__delay-1s' : assetsBySector.length}">
+      <div
+        *ngIf="assetsBySector.length"
+        class="tab-content"
+        [ngClass]="{'animate__animated animate__fadeIn animate__delay-1s' : assetsBySector.length}"
+      >
         <div class="tab-pane active" id="favourite">
           <div (click)="showAll('sectorPage')" class="show-all">Show all</div>
           <ngx-slick-carousel
@@ -72,14 +97,18 @@
             #slickModal="slick-carousel"
             [config]="slideConfig"
           >
-            <div ngxSlickItem *ngFor="let file of assetsBySector; let i = index" class="slide">
+            <div
+              ngxSlickItem
+              *ngFor="let file of assetsBySector; let i = index"
+              class="slide"
+            >
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
                 (onOpenPreview)="open(file, file.type)"
                 (onSelect)="selectImage($event, file, i)"
                 (onMarkFavourite)="markFavourite(file, 'recent')"
-                >
+              >
               </document-card>
             </div>
           </ngx-slick-carousel>
@@ -87,11 +116,25 @@
       </div>
     </div>
 
-    <div id="exTab2" class="container-fluid pb-50" style="position: relative; z-index: 2;">
-      <h2 class="commonHeading recentFont" style="display: inline-block;">Your Activity</h2>
-      <ul class="nav nav-tabs" style="display: inline-block;">
-        <li class="active pointer"><a (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a></li>
-        <li class="pointer"><a (click)="selectTab('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
+    <div
+      id="exTab2"
+      class="container-fluid pb-50"
+      style="position: relative; z-index: 2"
+    >
+      <h2 class="commonHeading recentFont" style="display: inline-block">
+        Your Activity
+      </h2>
+      <ul class="nav nav-tabs" style="display: inline-block">
+        <li class="active pointer">
+          <a (click)="selectTab('recentView')" data-toggle="tab"
+            >Recently Viewed</a
+          >
+        </li>
+        <li class="pointer">
+          <a (click)="selectTab('recentUpload')" data-toggle="tab"
+            >Recently Uploaded</a
+          >
+        </li>
       </ul>
 
       <div class="tab-content">
@@ -103,26 +146,33 @@
             #slickModal="slick-carousel"
             [config]="slideConfig"
           >
-            <div ngxSlickItem *ngFor="let file of recentDataShow; let i = index" class="slide">
+            <div
+              ngxSlickItem
+              *ngFor="let file of recentDataShow; let i = index"
+              class="slide"
+            >
               <!-- <div class="slide-inner"> -->
-                <document-card
+              <document-card
                 [doc]="file"
                 [viewType]="viewType"
                 (onOpenPreview)="open(file, file.type)"
                 (onSelect)="selectImage($event, file, i)"
                 (onMarkFavourite)="markFavourite(file, 'recent')"
-                >
+              >
               </document-card>
               <!-- </div> -->
-
             </div>
           </ngx-slick-carousel>
 
-          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12 ">
-            <div class="text-center" style="height: 150px;">
+          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12">
+            <div class="text-center" style="height: 150px">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-              <h2 class="noresult pb-3">You have not recently viewed any asset</h2>
-              <p class="searchcontent">Your recently viewed assets will show up here.</p>
+              <h2 class="noresult pb-3">
+                You have not recently viewed any asset
+              </h2>
+              <p class="searchcontent">
+                Your recently viewed assets will show up here.
+              </p>
             </div>
           </div>
         </div>
@@ -134,38 +184,70 @@
             #slickModal="slick-carousel"
             [config]="slideConfig"
           >
-            <div ngxSlickItem *ngFor="let file of recentDataShow ; let i = index" class="slide">
+            <div
+              ngxSlickItem
+              *ngFor="let file of recentDataShow ; let i = index"
+              class="slide"
+            >
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
                 (onOpenPreview)="open(file, file.type)"
                 (onSelect)="selectImage($event, file, i)"
                 (onMarkFavourite)="markFavourite(file, 'recent')"
-                >
+              >
               </document-card>
             </div>
           </ngx-slick-carousel>
-          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12" [ngClass]="{'animate__animated animate__fadeIn' : !recentDataShow?.length}">
-            <div class="text-center" style="height: 150px;">
+          <div
+            *ngIf="!recentDataShow?.length"
+            class="col-xl-12 col-md-12"
+            [ngClass]="{'animate__animated animate__fadeIn' : !recentDataShow?.length}"
+          >
+            <div class="text-center" style="height: 150px">
               <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
               <h2 class="noresult pb-3">You have not uploaded any assets</h2>
-              <p class="searchcontent">Your recently uploaded assets will show up here.</p>
+              <p class="searchcontent">
+                Your recently uploaded assets will show up here.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div id="favorites" class="container-fluid pb-50"  style="position: relative; z-index: 1;">
+    <div
+      id="favorites"
+      class="container-fluid pb-50"
+      style="position: relative; z-index: 1"
+    >
       <ul class="nav nav-tabs">
-        <li><a class="commonHeading recentFont" style=""  href="#favourite" data-toggle="tab">Your Favourites</a></li>
+        <li>
+          <a
+            class="commonHeading recentFont"
+            style=""
+            href="#favourite"
+            data-toggle="tab"
+            >Your Favourites</a
+          >
+        </li>
       </ul>
-      <div *ngIf="!favourites.length"  style="height: 150px;" [ngClass]="{'animate__animated animate__fadeIn' : !favourites.length}">
+      <div
+        *ngIf="!favourites.length"
+        style="height: 150px"
+        [ngClass]="{'animate__animated animate__fadeIn' : !favourites.length}"
+      >
         <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-        <h2 class="noresult pb-3 pt-4">You have not marked any asset as favourite</h2>
+        <h2 class="noresult pb-3 pt-4">
+          You have not marked any asset as favourite
+        </h2>
         <p class="searchcontent">Your favourite assets will show up here.</p>
       </div>
-      <div *ngIf="favourites.length" class="tab-content" [ngClass]="{'animate__animated animate__fadeIn' : favourites.length}">
+      <div
+        *ngIf="favourites.length"
+        class="tab-content"
+        [ngClass]="{'animate__animated animate__fadeIn' : favourites.length}"
+      >
         <div class="tab-pane active" id="favourite">
           <div (click)="showAll('favourite')" class="show-all">Show all</div>
           <ngx-slick-carousel
@@ -173,14 +255,18 @@
             #slickModal="slick-carousel"
             [config]="slideConfig"
           >
-            <div ngxSlickItem *ngFor="let file of favourites; let i = index" class="slide">
+            <div
+              ngxSlickItem
+              *ngFor="let file of favourites; let i = index"
+              class="slide"
+            >
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
                 (onOpenPreview)="open(file, file.type)"
                 (onSelect)="selectImage($event, file, i)"
                 (onMarkFavourite)="markFavourite(file, 'recent')"
-                >
+              >
               </document-card>
             </div>
           </ngx-slick-carousel>
@@ -190,8 +276,10 @@
   </div>
 
   <section class="search-subpage">
-
-    <div class="customTagBar" *ngIf="searchBarClicked && tagsMetaRealdata.length<1">
+    <div
+      class="customTagBar"
+      *ngIf="searchBarClicked && tagsMetaRealdata.length<1"
+    >
       <ul>
         <li>
           <div class="relatedTagHeading">Related Tags</div>
@@ -237,39 +325,73 @@
       </ul>
     </div>
 
-    <div *ngIf="!checkShowRecent() || checkShowDetailview()" class="container" [ngClass]="{'animate__animated animate__fadeIn' : !checkShowRecent() || checkShowDetailview()}">
+    <div
+      *ngIf="!checkShowRecent() || checkShowDetailview()"
+      class="container"
+      [ngClass]="{'animate__animated animate__fadeIn' : !checkShowRecent() || checkShowDetailview()}"
+    >
       <div class="row" style="justify-content: space-between">
         <div *ngIf="!searchTerm.ecm_fulltext" class="back-btn pt-5">
-          <span (click)="resetResult();"><img src="../../assets/images/back-arrow.svg" /> Back</span>
+          <span (click)="resetResult();"
+            ><img src="../../assets/images/back-arrow.svg" /> Back</span
+          >
         </div>
         <div class="view-title">
-          <span style="padding-left: 11px;">{{getDetailViewTitle()}}</span>
+          <span style="padding-left: 11px">{{getDetailViewTitle()}}</span>
         </div>
-        <div class="main-headingSearch flexible pb-4 col-xl-8" style="align-items: baseline;">
-          <span *ngIf="searchTerm.ecm_fulltext" (click)="resetResult()" class="commonHeading" style="font-size: 28px; text-transform: capitalize; cursor: pointer;">
-            {{searchTerm.ecm_fulltext}} <img src="../assets/images/circle-close.png" style="width: 14px;margin-left: 3px;">
+        <div
+          class="main-headingSearch flexible pb-4 col-xl-8"
+          style="align-items: baseline"
+        >
+          <span
+            *ngIf="searchTerm.ecm_fulltext"
+            (click)="resetResult()"
+            class="commonHeading"
+            style="font-size: 28px; text-transform: capitalize; cursor: pointer"
+          >
+            {{searchTerm.ecm_fulltext}}
+            <img
+              src="../assets/images/circle-close.png"
+              style="width: 14px; margin-left: 3px"
+            />
           </span>
           <!-- <span class="numberFiles">{{documents.resultsCount}} files</span> -->
-       </div>
+        </div>
 
-       <!-- <div *ngIf="false">
+        <!-- <div *ngIf="false">
         <ul class="nav nav-tabs">
           <li [ngClass]="detailView === 'recentUpload' ? 'active' : ''"><a (click)="showAll('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
           <li [ngClass]="detailView === 'recentView' ? 'active' : ''"><a (click)="showAll('recentView')" data-toggle="tab">Recently Viewed</a></li>
         </ul> -->
 
-        <div class="col-xl-4" *ngIf="!detailView"> <!-- detailView !== 'recentView' -->
+        <div class="col-xl-4" *ngIf="!detailView">
+          <!-- detailView !== 'recentView' -->
           <div class="row" style="">
             <div class="col-xl-8">
               <span><b>Sort by:</b> </span>
               <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
-
-                <button class="btn" id="dropdownBasic4" ngbDropdownToggle>{{sortValue || 'Most relevant'}}</button>
-                <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
-                  <button (click)="dropdownMenu($event); sortValue = 'Most recent'" ngbDropdownItem
-                    value='dc:created'>Most recent</button>
-                  <button (click)="dropdownMenu($event); sortValue = 'Most relevant'" ngbDropdownItem
-                    value=''>Most relevant</button>
+                <button class="btn" id="dropdownBasic4" ngbDropdownToggle>
+                  {{sortValue || 'Most relevant'}}
+                </button>
+                <div
+                  ngbDropdownMenu
+                  aria-labelledby="dropdownBasic4"
+                  class="dropdownBasic4"
+                >
+                  <button
+                    (click)="dropdownMenu($event); sortValue = 'Most recent'"
+                    ngbDropdownItem
+                    value="dc:created"
+                  >
+                    Most recent
+                  </button>
+                  <button
+                    (click)="dropdownMenu($event); sortValue = 'Most relevant'"
+                    ngbDropdownItem
+                    value=""
+                  >
+                    Most relevant
+                  </button>
                   <!-- <button (click)="dropdownMenu($event); sortValue = 'Last Contibutor'" ngbDropdownItem
                     value='dc:lastContributor'>Last Contibutor</button> -->
                   <!-- <button (click)="dropdownMenu($event); sortValue = 'State'" ngbDropdownItem value='state'>State</button>
@@ -281,21 +403,40 @@
             <div class="col-xl-4">
               <div id="view" class="e-btn-group flexible">
                 <div>
-                  <input type="radio" (change)="viewChange($event)" id="left" name="align" value="gallery" checked />
-                  <label class="e-btn" for="left"><img src="../../assets/images/gallery-view.svg"
-                      style="width: 22px;"></label>
+                  <input
+                    type="radio"
+                    (change)="viewChange($event)"
+                    id="left"
+                    name="align"
+                    value="gallery"
+                    checked
+                  />
+                  <label class="e-btn" for="left"
+                    ><img
+                      src="../../assets/images/gallery-view.svg"
+                      style="width: 22px"
+                  /></label>
                 </div>
                 <div>
-                  <input type="radio" (change)="viewChange($event)" id="right" name="align" value="list" />
-                  <label class="e-btn" for="right"><img src="../../assets/images/list-view.svg"
-                      style="width: 22px;"></label>
+                  <input
+                    type="radio"
+                    (change)="viewChange($event)"
+                    id="right"
+                    name="align"
+                    value="list"
+                  />
+                  <label class="e-btn" for="right"
+                    ><img
+                      src="../../assets/images/list-view.svg"
+                      style="width: 22px"
+                  /></label>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="col-xl-4 " style="float: right;">
+        <div class="col-xl-4" style="float: right">
           <!-- slider -->
           <!-- <div>
               <input type="checkbox" id="switch" class="checkbox" />
@@ -307,9 +448,7 @@
             </div> -->
 
           <!-- end -->
-
         </div>
-
       </div>
 
 
@@ -328,10 +467,35 @@
               value='dc:lastContributor'>Last Contibutor</button>
           </div> -->
           <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-            <button class="sectorrBtn mr-2" id="dropdownManual" ngbDropdownAnchor ngbDropdownToggle>{{sectorSelected || 'All sectors'}} </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownManual" class="sectorDropMain" style="z-index: 1;top: -3px;">
-              <button ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(null)">All sectors</button>
-              <button *ngFor="let sector of sectors" ngbDropdownItem class="sectorDropBtn" (click)="sectorSelect(sector)">{{sector}}</button>
+            <button
+              class="sectorrBtn mr-2"
+              id="dropdownManual"
+              ngbDropdownAnchor
+              ngbDropdownToggle
+            >
+              {{sectorSelected || 'All sectors'}}
+            </button>
+            <div
+              ngbDropdownMenu
+              aria-labelledby="dropdownManual"
+              class="sectorDropMain"
+              style="z-index: 1; top: -3px"
+            >
+              <button
+                ngbDropdownItem
+                class="sectorDropBtn"
+                (click)="sectorSelect(null)"
+              >
+                All sectors
+              </button>
+              <button
+                *ngFor="let sector of sectors"
+                ngbDropdownItem
+                class="sectorDropBtn"
+                (click)="sectorSelect(sector)"
+              >
+                {{sector}}
+              </button>
             </div>
 
             <!-- <ng-select placeholder="All sectors"  [ngClass]="{'goldenText': confidentiality}">
@@ -339,44 +503,104 @@
                 {{sector}}
               </ng-option>
               </ng-select> -->
-
-
-
           </div>
         </div>
         <div class="typeSelections">
-          <div [ngClass]="selectedType === 'all' ? 'viewSelected' : ''" (click)="selectType('all')" class="recentHeading">All <span class="itemCount">{{count()}}</span></div>
-          <div [ngClass]="selectedType === 'Picture' ? 'viewSelected' : ''" (click)="selectType('Picture')" class="recentHeading">Images <span class="itemCount">{{count('Picture')}}</span></div>
-          <div [ngClass]="selectedType === 'Video' ? 'viewSelected' : ''" (click)="selectType('Video')" class="recentHeading">Videos <span class="itemCount">{{count('Video')}}</span></div>
-          <div [ngClass]="selectedType === 'File' ? 'viewSelected' : ''" (click)="selectType('File')" class="recentHeading">Documents <span class="itemCount">{{count('File')}}</span></div>
-        </div>
-        <div class="moreFilter" [ngClass]="filtersCount > 0 ? 'hasFilterSelected' : ''">
-          <button (click)="clearFilter()" *ngIf="filtersCount > 0">Clear</button>
-          <div (click)="openAdvancedFilter()" class="flexible" style="cursor: pointer;">
-            <label  class="e-btn" style="opacity: 1" >
-              <img *ngIf="filtersCount === 0" src="../../assets/images/IconFilters.svg" style="width: 20px;">
-              <img *ngIf="filtersCount > 0" src="../../assets/images/IconFiltersYellow.svg" style="width: 20px;">
-            </label>
-            <span>More filters</span><span *ngIf="filtersCount > 0" class="itemCount">{{filtersCount}}</span>
+          <div
+            [ngClass]="selectedType === 'all' ? 'viewSelected' : ''"
+            (click)="selectType('all')"
+            class="recentHeading"
+          >
+            All <span class="itemCount">{{count()}}</span>
           </div>
+          <div
+            [ngClass]="selectedType === 'Picture' ? 'viewSelected' : ''"
+            (click)="selectType('Picture')"
+            class="recentHeading"
+          >
+            Images <span class="itemCount">{{count('Picture')}}</span>
+          </div>
+          <div
+            [ngClass]="selectedType === 'Video' ? 'viewSelected' : ''"
+            (click)="selectType('Video')"
+            class="recentHeading"
+          >
+            Videos <span class="itemCount">{{count('Video')}}</span>
+          </div>
+          <div
+            [ngClass]="selectedType === 'File' ? 'viewSelected' : ''"
+            (click)="selectType('File')"
+            class="recentHeading"
+          >
+            Documents <span class="itemCount">{{count('File')}}</span>
+          </div>
+        </div>
+        <div
+          class="moreFilter"
+          [ngClass]="filtersCount > 0 ? 'hasFilterSelected' : ''"
+        >
+          <button (click)="clearFilter()" *ngIf="filtersCount > 0">
+            Clear
+          </button>
+          <div
+            (click)="openAdvancedFilter()"
+            class="flexible"
+            style="cursor: pointer"
+          >
+            <label class="e-btn" style="opacity: 1">
+              <img
+                *ngIf="filtersCount === 0"
+                src="../../assets/images/IconFilters.svg"
+                style="width: 20px"
+              />
+              <img
+                *ngIf="filtersCount > 0"
+                src="../../assets/images/IconFiltersYellow.svg"
+                style="width: 20px"
+              />
+            </label>
+            <span>More filters</span
+            ><span *ngIf="filtersCount > 0" class="itemCount"
+              >{{filtersCount}}</span
+            >
+          </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> sprint30_nitin
         </div>
       </div>
 
       <div class="row">
         <div *ngIf="!showListView">
           <div class="row">
-            <div class="col-xl-12 col-md-12 pt-4 positionRelative" style="min-height: 300px;">
-              <app-loader [show]="innerLoading.length && !loading.length"></app-loader>
+            <div
+              class="col-xl-12 col-md-12 pt-4 positionRelative"
+              style="min-height: 300px"
+            >
+              <app-loader
+                [show]="innerLoading.length && !loading.length"
+              ></app-loader>
               <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
                 <div ngxMasonryItem class="masonry-item" *ngFor="let doc of masonryImg; let i = index">
                   <img src="{{doc.url}}" alt="" />
                 </div>
               </ngx-masonry> -->
 
-              <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout">
-                <div ngxMasonryItem class="masonry-item" [ngClass]="{'masonrZindex': masoneryItemIndex === i}"
-                  *ngFor="let doc of documents.entries?.slice(0, docSliceInput); let i = index" (mouseover)='over(i)' (mouseout)='out()'>
+              <ngx-masonry
+                [options]="myOptions"
+                [ordered]="true"
+                (layoutComplete)="completeLoadingMasonry($event)"
+                [updateLayout]="updateMasonryLayout"
+              >
+                <div
+                  ngxMasonryItem
+                  class="masonry-item"
+                  [ngClass]="{'masonrZindex': masoneryItemIndex === i}"
+                  *ngFor="let doc of documents.entries?.slice(0, docSliceInput); let i = index"
+                  (mouseover)="over(i)"
+                  (mouseout)="out()"
+                >
                   <!-- <img *ngIf="doc.type === 'Picture" id="fileId" src (error)="getAssetUrl($event, file.contextParameters.thumbnail.url)" alt=""
                 (click)="open(file, 'image')" /> -->
                   <document-card
@@ -385,7 +609,7 @@
                     (onOpenPreview)="open(doc, doc.type)"
                     (onSelect)="selectImage($event, doc, i)"
                     (onMarkFavourite)="markFavourite(doc, false)"
-                    >
+                  >
                   </document-card>
                 </div>
               </ngx-masonry>
@@ -395,59 +619,187 @@
 
         <div class="col-xl-12 col-md-12">
           <div *ngIf="showListView" class="card-view positionRelative">
-            <app-loader [show]="innerLoading.length && !loading.length"></app-loader>
+            <app-loader
+              [show]="innerLoading.length && !loading.length"
+            ></app-loader>
             <ul class="flexible">
-              <li *ngFor="let doc of documents.entries.slice(0, docSliceInput); let i = index">
-              <document-card
-                [doc]="doc"
-                [viewType]="viewType"
-                (onOpenPreview)="open(doc, doc.type)"
-                (onSelect)="selectImage($event, doc, i)"
-                (onMarkFavourite)="markFavourite(doc, false)"
+              <li
+                *ngFor="let doc of documents.entries.slice(0, docSliceInput); let i = index"
+              >
+                <document-card
+                  [doc]="doc"
+                  [viewType]="viewType"
+                  (onOpenPreview)="open(doc, doc.type)"
+                  (onSelect)="selectImage($event, doc, i)"
+                  (onMarkFavourite)="markFavourite(doc, false)"
                 >
-              </document-card>
+                </document-card>
               </li>
             </ul>
           </div>
         </div>
-        <div *ngIf="!hideShowMoreBtn && !loading.length && !innerLoading.length" (click)="showMore()" class="showMoreBtn">Show more</div>
+        <div
+          *ngIf="!hideShowMoreBtn && !loading.length && !innerLoading.length"
+          (click)="showMore()"
+          class="showMoreBtn"
+        >
+          Show more
+        </div>
       </div>
     </div>
-    <div *ngIf="!loading.length && !documents?.entries?.length && !checkShowRecent()" class="row" [ngClass]="{'animate__animated animate__fadeIn' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
-      <div class="col-xl-12 col-md-12 ">
-        <div class="text-center" style="height: 600px;">
-          <img src="../../assets/images/search.svg" style="width: 50px;">
+    <div
+      *ngIf="!loading.length && !documents?.entries?.length && !checkShowRecent()"
+      class="row"
+      [ngClass]="{'animate__animated animate__fadeIn' : !loading.length && !documents?.entries?.length && !checkShowRecent()}"
+    >
+      <div class="col-xl-12 col-md-12">
+        <div class="text-center" style="height: 600px">
+          <img src="../../assets/images/search.svg" style="width: 50px" />
           <h2 class="noresult pb-3 pt-4">No results found</h2>
-          <p class="searchcontent">Try adjusting your search or filter to find what you are looking for.</p>
+          <p class="searchcontent">
+            Try adjusting your search or filter to find what you are looking
+            for.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <preview-popup #previewModal [doc]="selectedFile" [docUrl]="selectedFileUrl"></preview-popup>
+  <preview-popup
+    #previewModal
+    [doc]="selectedFile"
+    [docUrl]="selectedFileUrl"
+  ></preview-popup>
 
-  <div *ngIf="fileSelected.length" class="footer-listing" [ngClass]="{'fileSelected.length' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
-    <div class="row">
-      <div class="col-md-6 footer-add-items">
-        <span>{{fileSelected.length}} item(s) selected</span>
-        <a (click)="clearSelected()">Clear</a>
-      </div>
-      <!-- <div class="col-md-4">
-        <img src="../../assets/images/synchronize-arrow-clock-footer.svg" alt="" class="footer-icons">
-        <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
-      </div> -->
-      <div class="col-md-6">
-        <!-- <img src="../../assets/images/download-all-as-zip.svg" placement="top"
-          ngbTooltip="This function will be available soon" alt="" class="footer-icons"
-          style="    cursor: not-allowed;opacity: 0.4;"> -->
-        <!-- <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top"
-          ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
-        <!-- <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to clipboard" style="cursor: not-allowed;opacity: 0.4;"> -->
-        <!-- <img src="../../assets/images/upload-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
-        <!-- <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" placement="top"
-          ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;width: 20px;"> -->
+  <div
+    *ngIf="fileSelected.length"
+    class="downloadAssets"
+    [ngClass]="{'fileSelected.length' : !loading.length && !documents?.entries?.length && !checkShowRecent()}"
+  >
+    <div class="selectedItems">
+      Selected {{downloadCount}}
+      <img
+        src="../../assets/images/remove-icon.svg"
+        alt=""
+        (click)="removeAssets()"
+      />
+    </div>
+    <div class="downloadSelectedAssets downloadFileWorkspace">
+      <span (click)="multiDownload()"
+        ><img src="../../assets/images/download-golden.svg" alt="" /> Download
+        selected assets</span
+      >
+      <div class="multiDownloadBlock">
+        <div class="internal-use">
+          <p *ngIf="copyRightItem.length>0">Always credit copyright owners.</p>
+
+          <p class="pt-15" *ngIf="sizeExeeded">
+            Your download exceeds 1 GB. This will likely take some time.
+          </p>
+          <p class="pt-15" *ngIf="needPermissionToDownload.length >0">
+            {{ needPermissionToDownload.length }} assets you selected require
+            download permission, please reach out owner(s) via email:
+          </p>
+
+          <ul class="downloadImgLisst">
+            <li *ngFor="let item of needPermissionToDownload">
+              <div class="imgListBlk">
+                <img src="../../../assets/images/doc-white.svg" />
+              </div>
+              <div class="contentListBlk">{{ item.title }}</div>
+              <div class="imgMailIcon">
+                <a href="mailto:{{ getUser(item) }}"
+                  ><img src="../../../assets/images/mail-icon.svg"
+                /></a>
+              </div>
+            </li>
+          </ul>
+          <div
+            class="control-group"
+            [ngClass]="downloadErrorShow && !isAware ? 'error-disabled' : '' "
+          >
+            <label
+              class="control control--checkbox"
+              *ngIf="forInternalUse.length>0"
+              >I'm aware certain selected asset(s) must NOT be used in public
+              <input
+                type="checkbox"
+                [(ngModel)]="isAware"
+                checked="isAware"
+                (change)="onCheckboxChange($event)"
+              />
+              <div class="control__indicator"></div>
+            </label>
+          </div>
+          <div class="error" *ngIf="downloadErrorShow && !isAware">
+            Please check the box to proceed
+          </div>
+          <div class="download-btn" (click)="downloadClick()">
+            <a (click)="removeAssets()" class="cancelDownload"
+              >Cancel download</a
+            >
+            <a
+              (click)="downloadAssets($event)"
+              [ngClass]="{'downloadDisbable':!downloadEnable}"
+            >
+              <svg
+                width="22"
+                height="21"
+                viewBox="0 0 22 21"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.9673 19.5525V12.0525"
+                  stroke="#EDD580"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
+                  stroke="#EDD580"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                  stroke="#EDD580"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Download
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
 </section>
+
+<!-- <div *ngIf="fileSelected.length" class="footer-listing" [ngClass]="{'fileSelected.length' : !loading.length && !documents?.entries?.length && !checkShowRecent()}">
+  <div class="row">
+    <div class="col-md-6 footer-add-items">
+      <span>{{fileSelected.length}} item(s) selected</span>
+      <a (click)="clearSelected()">Clear</a>
+    </div>
+    <!-- <div class="col-md-4">
+      <img src="../../assets/images/synchronize-arrow-clock-footer.svg" alt="" class="footer-icons">
+      <img src="../../assets/images/synchronize-arrow-clock-footer-1.svg" alt="" class="footer-icons">
+    </div> -/->
+    <div class="col-md-6">
+      <!-- <img src="../../assets/images/download-all-as-zip.svg" placement="top"
+        ngbTooltip="This function will be available soon" alt="" class="footer-icons"
+        style="    cursor: not-allowed;opacity: 0.4;"> -->
+<!-- <img src="../../assets/images/plus-footer.svg" alt="" class="footer-icons" placement="top"
+        ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
+<!-- <img src="../../assets/images/copy-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="Add to clipboard" style="cursor: not-allowed;opacity: 0.4;"> -->
+<!-- <img src="../../assets/images/upload-footer.svg" alt="" class="footer-icons" placement="top" ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;"> -->
+<!-- <img src="../../assets/images/delete-footer.svg" alt="" class="footer-icons" placement="top"
+        ngbTooltip="This function will be available soon" style="cursor: not-allowed;opacity: 0.4;width: 20px;"> -/->
+    </div>
+  </div>
+</div> -->
