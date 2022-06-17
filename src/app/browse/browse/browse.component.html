@@ -114,12 +114,15 @@
                       </div>
                     </span>
                     <img src="../../../assets/images/pencil-write.svg" alt="" *ngIf="showLinkCopy" class="renameFolderImg" (click)="renameFolderAction()" />
-                    <span style="display: inline-block; margin-left: 10px; vertical-align: top;">
+                    <span *ngIf="showLinkCopy" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                       <div class="publicUseBlock">
                         <div class="publicUseBlk">Private</div>
-                        <!-- <div class="mouseHoverInfo">
-                          Can be used in the public domain, e.g. on social media.
-                        </div> -->
+                        <div class="mouseHoverInfo">
+                          <p>You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
+                          <div class="manageAccessBtn">
+                            Manage access
+                          </div>
+                        </div>
                       </div>
                     </span>
                   </span>
@@ -157,7 +160,7 @@
                         <path d="M0 21C0 18.8783 0.842855 16.8434 2.34315 15.3431C3.84344 13.8429 5.87827 13 8 13C10.1217 13 12.1566 13.8429 13.6569 15.3431C15.1571 16.8434 16 18.8783 16 21H14C14 19.4087 13.3679 17.8826 12.2426 16.7574C11.1174 15.6321 9.5913 15 8 15C6.4087 15 4.88258 15.6321 3.75736 16.7574C2.63214 17.8826 2 19.4087 2 21H0ZM8 12C4.685 12 2 9.315 2 6C2 2.685 4.685 0 8 0C11.315 0 14 2.685 14 6C14 9.315 11.315 12 8 12ZM8 10C10.21 10 12 8.21 12 6C12 3.79 10.21 2 8 2C5.79 2 4 3.79 4 6C4 8.21 5.79 10 8 10ZM16.284 13.703C17.6893 14.3359 18.882 15.3612 19.7186 16.6557C20.5552 17.9502 21.0002 19.4587 21 21H19C19.0002 19.844 18.6666 18.7125 18.0391 17.7416C17.4116 16.7707 16.5171 16.0017 15.463 15.527L16.283 13.703H16.284ZM15.596 2.413C16.6035 2.8283 17.465 3.53354 18.071 4.43923C18.6771 5.34492 19.0004 6.41024 19 7.5C19.0004 8.87233 18.4877 10.1952 17.5625 11.2088C16.6374 12.2224 15.3667 12.8535 14 12.978V10.965C14.7409 10.8589 15.4283 10.518 15.9613 9.99246C16.4943 9.4669 16.8447 8.78432 16.9612 8.04493C17.0776 7.30555 16.954 6.5483 16.6084 5.88435C16.2628 5.22041 15.7134 4.68475 15.041 4.356L15.596 2.413Z" fill="#937206"/>
                       </svg>
                       <!-- <img src="../../../assets/images/user-icon.svg" alt="" /> -->
-                      <!-- <div class="customToolTipWorkspace">Manage Access</div> -->
+                      <div class="customToolTipWorkspace">Manage users</div>
                     </li>
                   </ul>
                 </div>
@@ -353,14 +356,14 @@
             </div>
 
             <!-- Start adding collaborators to this private folder -->
-            <div *ngIf="isPrivateFolder(false) || !checkShowNoTrashItem()" class="addignCollaborators" style="padding-top: 40px;">
+            <div *ngIf="isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
               <h2>Start adding collaborators to this private folder</h2>
               <div class="addUsers">
                 <div class="addUserBtn" (click)="openAddUserModal()">Add users</div>
               </div>
             </div>
             <!-- End adding collaborators to this private folder -->
-            <div class="no-items" *ngIf="checkShowNoTrashItem() && !isPrivateFolder(false)">
+            <div class="no-items" *ngIf="checkShowNoTrashItem()">
               <img src="../../../assets/images/no-items.svg" alt="No items here" />
               No items here
             </div>
@@ -461,6 +464,17 @@
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left; word-break: break-all;">{{item.title}}</p>
+                        <span style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+                          <div class="publicUseBlock">
+                            <div class="publicUseBlk">Private</div>
+                            <!-- <div class="mouseHoverInfo">
+                              <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
+                              <div class="manageAccessBtn">
+                                Manage access
+                              </div>
+                            </div> -->
+                          </div>
+                        </span>
                       </td>
                       <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
