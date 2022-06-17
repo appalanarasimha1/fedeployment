@@ -12,6 +12,7 @@
       [(ngModel)]="selectedCollaborator"
       [typeahead]="userInput$"
       (change)="selectChange(selectedCollaborator)"
+      placeholder="Add users by their name or email address"
     >
       <ng-template ng-option-tmp let-item="item">
         {{ item.id }} ({{ item.fullname }})
