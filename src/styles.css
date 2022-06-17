@@ -4429,3 +4429,7 @@ body {
 .addUserBlock .ng-dropdown-panel.ng-select-bottom {
   border-top: 1px solid #DEB31A !important;
 }
+.customSlider .slick-prev.slick-disabled:before, .customSlider .slick-next.slick-disabled:before {
+	opacity: 0 !important;
+	display: none !important;
+}
