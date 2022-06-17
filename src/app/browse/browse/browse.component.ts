@@ -237,9 +237,11 @@ export class BrowseComponent implements OnInit {
             filter(Boolean),
             debounceTime(150),
             distinctUntilChanged(),
-            tap((text: Event) => {
+            tap(async (text: Event) => {
               if(!this.workspaceSearch.nativeElement.value) {
-                this.getWorkspaceFolders(this.selectedFolder.uid, 1);
+                this.loading = true;
+                await this.getWorkspaceFolders(this.selectedFolder.uid, 1);
+                this.loading = false;
                 return;
               }
               this.searchFolders(this.workspaceSearch.nativeElement.value);
@@ -534,7 +536,9 @@ export class BrowseComponent implements OnInit {
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
       const listView = 1;
+      this.loading = true;
       await this.getWorkspaceFolders(item.uid, listView);
+      this.loading = false;
     } else {
       this.showSearchbar = false;
       await this.handleClickNew(item.uid);
@@ -1257,7 +1261,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async getWorkspaceFolders(sectorUid: string, viewType = 0) {
-    this.loading = true;
+    // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(
       sectorUid
     );
