@@ -10,28 +10,28 @@
       <div class="modalHead">
         <div class="row flexible" style="justify-content: space-between">
           <div class="col-xl-6 col-md-6">
-            <ol class="publicUse">
+            <ol class="publicUse" >
               <li>
-                <div class="publicUseBlock">
-                  <div class="publicUseBlk">Public use</div>
+                <div class="publicUseBlock" *ngIf="hasNoRestriction()">
+                  <div class="publicUseBlk" >Public use</div>
                   <div class="mouseHoverInfo">
                     Can be used in the public domain, e.g. on social media.
                   </div>
                 </div>
 
-                <!-- <div class="internalUseBlock">
+                <div class="internalUseBlock" *ngIf="hasInternalRestriction()">
                   <div class="publicUseBlk">Internal use</div>
                   <div class="mouseHoverInfo">
                     Cannot be used in the public domain. i.e. only for use in internal documents or media.
                   </div>
                 </div>
 
-                <div class="privateBlock">
+                <div class="privateBlock" *ngIf="hasRequestRestriction()">
                   <div class="publicUseBlk">Private</div>
                   <div class="mouseHoverInfo">
                     Yet to be published on Ground X. No usage information available.
                   </div>
-                </div> -->
+                </div>
               </li>
               <li>
                 <div class="usagePermission">Usage permission not required</div>
@@ -70,11 +70,11 @@
                   <div *ngIf="doc" class="download-dropdown">
 
                     <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
-                      <p>Always credit copyright owners (where applicable).</p>
+                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
                     </div>
 
                     <div *ngIf="hasInternalRestriction()" class="internal-use">
-                      <p>Always credit copyright owners (where applicable).</p>
+                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
 
                       <div class="control-group">
                         <label class="control control--checkbox">I am aware this asset is for internal use only
@@ -85,8 +85,8 @@
                     </div>
 
                     <div *ngIf="hasRequestRestriction()" class="permission-required">
-                      <p>Always credit copyright owners (where applicable). <br /><br />
-                        {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
+                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable). <br /><br /></p>
+                       <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
                       <ul class="emailList">
                         <li *ngFor="let userName of getApprovalUsers()">
                           <div class="nameBlk">{{userName}}</div>

@@ -218,25 +218,29 @@
             </div>
             <div class="update-form-input row mb-20">
                <div class="col-xl-4 col-md-4"></div>
-               <div [ngClass]="{'disableDiv': data}" class="col-xl-8 col-md-8">
-
+               <div  class="col-xl-8 col-md-8">
+                  <!-- [ngClass]="{'disableDiv': data}" -->
 
                   <div class="upload-form-input row mb-20">
                      <div class="col-xl-4 col-md-4">
                         <label for="title">Description <br><span style="font-size: 12px">Project or event description <br />(optional)</span></label>
                      </div>
-                     <div class="col-xl-8 col-md-8"  [ngClass]="{'grayField': descriptionFilled}">
-                        <textarea [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
+                     <div class="col-xl-8 col-md-8"  >
+                        <!-- [ngClass]="{'grayField': descriptionFilled}" -->
+                        <textarea  [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
+                        <!-- [disabled]="descriptionFilled" -->
                      </div>
                   </div>
                   <div class="row upload-form-input custom-date-picker mb-20">
                      <div class="col-xl-4 col-md-4">
                         <label for="date">Associated Date <br><span style="font-size: 12px">Project or event date <br />(optional)</span></label>
                      </div>
-                     <div class="col-xl-8 col-md-8 flexible" [ngClass]="{'grayField': disableDateInput}">
+                     <div class="col-xl-8 col-md-8 flexible" >
+                        <!-- [ngClass]="{'grayField': disableDateInput}" -->
                         <mat-form-field appearance="fill">
                            <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
-                           placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()" [disabled]="disableDateInput" [ngClass]="{'goldenText': associatedDate}">
+                           placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()"  [ngClass]="{'goldenText': associatedDate}">
+                           <!-- [disabled]="disableDateInput" -->
                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                            <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
@@ -413,12 +417,12 @@
                      <div class="workspaceName">{{ folderToAdd || selectedFolder?.title || data?.title }} 
                      <!-- <img src="../../assets/images/pencil-write.svg" alt="" class="renameFolderImg" /> -->
                      </div>
-                     <div class="updateClassiBreadcrumb">/All sectors/Energy, Water & Food/Conference 2022</div>
+                     <!-- <div class="updateClassiBreadcrumb">/All sectors/Energy, Water & Food/Conference 2022</div> -->
                   </div>
                </div>
                <div class="assetsBlock">
-                  <span style="padding-right: 3px; color: #413E3C; font-weight: normal;">56 assets, </span>
-                  <span style="color: #413E3C;font-weight: normal;">1.21 GB</span>
+                  <span style="padding-right: 3px; color: #413E3C; font-weight: normal;">{{getSelectedAssetsTitle1()}}, </span>
+                  <span style="color: #413E3C;font-weight: normal;">{{getTotalFileSize()}}</span>
                </div>
                </div>
             </div>
@@ -439,9 +443,9 @@
                            (change)="onSelectConfidentiality($event)"
                            [searchable]="false"
                            [clearable]="false"
-                           [(ngModel)]="confidentiality"
+                           [(ngModel)]="overallConfidentiality"
                            id="confidentiality"
-                           [ngClass]="{'goldenText': confidentiality}"
+                           [ngClass]="{'goldenText': overallConfidentiality}"
                         >
                            <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" [value]="c.value">
                               {{CONFIDENTIALITY_LABEL[c.value]}}
@@ -460,7 +464,7 @@
                         <label for="access">{{ACCESS_TITLE}}</label>
                      </div>
                      <div class="col-xl-8 col-md-8 flexible">
-                        <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="access" id="access" [ngClass]="{'goldenText': access}">
+                        <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="overallAccess" id="access" [ngClass]="{'goldenText': overallAccess}">
                            <ng-option *ngFor="let c of ACCESS | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
                            {{ACCESS_LABEL[c.value]}}
                            </ng-option>
@@ -491,8 +495,8 @@
                         [loading]="userLoading"
                         typeToSearchText="Search users"
                         [typeahead]="userInput$"
-                        [(ngModel)]="selectedUsers"
-                        [ngClass]="{'goldenText': selectedUsers }" >
+                        [(ngModel)]="overallUsers"
+                        [ngClass]="{'goldenText': overallUsers }" >
                         <ng-template ng-option-tmp let-item="item">
                            {{item.id}} ({{item.fullname}})
                         </ng-template>
@@ -513,7 +517,7 @@
                             type="checkbox" 
                             checked="checked"
                             (change)="onCheckDownloadApproval($event)"
-                            [(ngModel)]="downloadApproval"
+                            [(ngModel)]="overallDownloadApproval"
                             [ngModelOptions]="{standalone: true}"
                          />
                          <div class="control__indicator" style="top: 4px;left: 0px;"></div>
@@ -525,7 +529,7 @@
 
             <div class="upload-form-input row mb-30 uploadModalBlk">
                <div class="col-xl-6 col-md-6">
-                  <div class="row" *ngIf="checkOwnerDropdown()">
+                  <div class="row" *ngIf="overallDownloadApproval">
                      <div class="col-xl-12 col-md-12">
                         <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
                         <ng-select style="height: unset !important;"
@@ -539,8 +543,8 @@
                         [loading]="userLoading"
                         typeToSearchText="Search users"
                         [typeahead]="userInput$"
-                        [(ngModel)]="ownerName"
-                        [ngClass]="{'goldenText': ownerName }" >
+                        [(ngModel)]="overallDownloadApprovalUsers"
+                        [ngClass]="{'goldenText': overallDownloadApprovalUsers }" >
                         <ng-template ng-option-tmp let-item="item">
                            {{item.id}} ({{item.fullname}})
                         </ng-template>
@@ -548,7 +552,7 @@
                      </div>
                   </div>
                </div>
-               <div class="col-xl-6 col-md-6">
+               <div class="col-xl-6 col-md-6" (click)=" applyToAll()">
                   <button class="cancel-btn" style="float: right;">Apply to all</button>
                </div>
             </div> 
@@ -571,7 +575,7 @@
                </div>
             </div> -->
             <div class="publish-file-preview-groups fix-scroll" id="customScrollBar">
-               <div *ngFor="let file of filesMap | keyvalue" class="publish-file-preview">
+               <div *ngFor="let file of filesMap| keyvalue" class="publish-file-preview">
                   <div class="publish-file-preview-img">
                      <img [src]="imageSrc[file.key] || getPreviewSrc(file.value, file.key)" alt="preview" class="preview-img"
                         onerror="this.src='./assets/images/preview-placeholder.png';"/>
@@ -622,7 +626,7 @@
                            <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
                               <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                               </select> -->
-                           <ng-select (change)="onSelectConfidentiality($event, file.key)" [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [ngModel]="confidentiality"  [ngClass]="{'goldenText': confidentiality }">
+                           <ng-select (change)="onSelectConfidentiality($event, file.key)" [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
                            <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                            </ng-option>
                            </ng-select>
