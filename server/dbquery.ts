@@ -38,7 +38,7 @@ export function createTopDownloadAndViewQuery() {
     },
     {
       $group: {
-        _id: { type: "$docUUID" },
+        _id: { uid: "$docUUID" },
         count: { $sum: 1 },
       },
     },

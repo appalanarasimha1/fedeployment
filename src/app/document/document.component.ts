@@ -178,6 +178,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectorsHomepage: string[] = [];
   assetsBySector = [];
   assetsBySectorSelected;
+  trendingAssets = [];
 
   filtersCount = 0;
 
@@ -226,6 +227,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
     this.getRecentlyViewed();
     this.getFavorites();
+    this.getTrendingAssets();
     this.getAssetBySectors();
     this.selectTab("recentlyViewed");
     this.showRecentlyViewed = true;
@@ -352,6 +354,47 @@ export class DocumentComponent implements OnInit, OnChanges {
       }
       return;
     }
+  }
+
+  getTrendingAssets() {
+    try {
+      this.loading.push(true);
+      this.nuxeo.nuxeoClient.request(apiRoutes.TRENDING_FETCH)
+        .get()
+        .then(result => {
+          const trending = result?.data?.trendingAssets || [];
+          const trendingIds = trending.map(e => e._id.uid);
+          this.getTrendingAssetsByIds(trendingIds);
+        })
+        .catch((error) => {
+          console.log("fetch trending assets error = ", error);
+          this.loading.pop();
+        });
+    } catch (error) {
+      this.loading.pop();
+      if (error && error.message) {
+        if (error.message.toLowerCase() === "unauthorized") {
+          this.sharedService.redirectToLogin();
+        }
+      }
+      return;
+    }
+  }
+
+  async getTrendingAssetsByIds(ids) {
+    if (!ids || ids.length === 0) return;
+    const idsString = ids.map(id => `'${id}'`).join(',');
+    const query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString})`;
+    const params = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 100,
+      queryParams: query,
+    };
+    const res = await this.apiService
+      .get(apiRoutes.NXQL_SEARCH, { params })
+      .toPromise();
+    this.trendingAssets = res["entries"].map((e) => e);
   }
 
   getAssetBySectors(sector = "", dontResetSectors: boolean = true) {
@@ -909,6 +952,10 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.documents = this.createStaticDocumentResults(this.recentlyViewed);
       this.documents["entity-type"] = {};
     }
+    if (page === "trendingPage") {
+      this.documents = this.createStaticDocumentResults(this.trendingAssets);
+      this.documents["entity-type"] = {};
+    }
     if (page === "sectorPage") {
       this.sectorSelected = this.assetsBySectorSelected;
     }
@@ -938,6 +985,8 @@ export class DocumentComponent implements OnInit, OnChanges {
         return "Your Favorites";
       case "sectorPage":
         return "Asset by Sectors";
+      case "trendingPage":
+        return "What’s Trending";
     }
 
     return "";

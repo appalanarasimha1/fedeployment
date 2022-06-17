@@ -17,6 +17,34 @@
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
     <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
+      <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">What’s Trending</a>
+      <div *ngIf="!trendingAssets.length"  style="height: 150px;">
+        <h2 class="noresult pb-3 pt-4">No Trending Assets found</h2>
+      </div>
+      <div *ngIf="trendingAssets.length" class="tab-content" [ngClass]="{'animate__animated animate__fadeIn animate__delay-1s' : trendingAssets.length}">
+        <div class="tab-pane active" id="favourite">
+          <div (click)="showAll('trendingPage')" class="show-all">Show all</div>
+          <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfig"
+          >
+            <div ngxSlickItem *ngFor="let file of trendingAssets; let i = index" class="slide">
+              <document-card
+                [doc]="file"
+                [viewType]="viewType"
+                (onOpenPreview)="open(file, file.type)"
+                (onSelect)="selectImage($event, file, i)"
+                (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+              </document-card>
+            </div>
+          </ngx-slick-carousel>
+        </div>
+      </div>
+    </div>
+
+    <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
       <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">Asset by Sectors</a>
       <ul class="nav nav-tabs" style="display: inline-block; width: 50%;">
         <li>
@@ -67,7 +95,7 @@
       </ul>
 
       <div class="tab-content">
-        
+
         <div class="tab-pane active animate__animated animate__fadeIn animate__delay-3s" id="recentlyViewed">
           <div (click)="showAll('recentView')" class="show-all">Show all</div>
           <ngx-slick-carousel
@@ -98,7 +126,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="tab-pane" id="recentlyUploaded">
           <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
           <ngx-slick-carousel
@@ -171,8 +199,8 @@
         <li>
           <div class="search-tags">
             <div class="customTagSlider">
-              <ngx-slick-carousel class="carousel" 
-                #slickModal="slick-carousel" 
+              <ngx-slick-carousel class="carousel"
+                #slickModal="slick-carousel"
                 [config]="tagsConfig" >
                 <div ngxSlickItem *ngFor="let bucket of tagsMetadataDummy; let i = index" class="slide">
                   <div class="item" >
@@ -194,8 +222,8 @@
         <li>
           <div class="search-tags">
             <div class="customTagSlider animate__animated animate__fadeIn">
-              <ngx-slick-carousel class="carousel" 
-                #slickModal="slick-carousel" 
+              <ngx-slick-carousel class="carousel"
+                #slickModal="slick-carousel"
                 [config]="tagsConfig" >
                 <div ngxSlickItem *ngFor="let bucket of tagsMetaRealdata; let i = index" class="slide">
                   <div class="item" >
@@ -286,7 +314,7 @@
 
 
 
-      <div *ngIf="detailView !== 'recentView'" class="filterMenuRow">
+      <div *ngIf="detailView !== 'recentView' && detailView !== 'trendingPage'" class="filterMenuRow">
         <div ngbDropdown class="d-inline-block mb-4 sectorsDropdown">
           <!-- <button class="btn" id="dropdownBasic5" ngbDropdownToggle>{{sortValue || 'Select a sector'}}</button> -->
           <!-- <div ngbDropdownMenu aria-labelledby="dropdownBasic4" class="dropdownBasic4">
@@ -331,7 +359,7 @@
             </label>
             <span>More filters</span><span *ngIf="filtersCount > 0" class="itemCount">{{filtersCount}}</span>
           </div>
-          
+
         </div>
       </div>
 
