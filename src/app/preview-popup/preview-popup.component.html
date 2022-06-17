@@ -74,7 +74,7 @@
                           <li>
                             <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                               Original File
-                              <span>{{getDownloadFileEstimation(doc?.properties["file:content"]?.length)}}</span>
+                              <span>{{getDownloadFileEstimation()}}</span>
                             </a>
                           </li>
                         </ul>
@@ -152,6 +152,7 @@
                         Created
                         {{ toDateString(doc?.properties) }}
                         by
+                        <br />
                         <span style="color: #ebc03f">{{getCreator()}}</span>
                       </li>
   
@@ -201,9 +202,7 @@
                       
                       <li>
                         Size <br /><span style="opacity: 0.7">{{
-                          getDownloadFileEstimation(
-                          doc?.properties["file:content"]?.length
-                          )
+                          getDownloadFileEstimation()
                           }}</span>
                       </li>
   
@@ -222,7 +221,7 @@
                         <br />
                         Date
                         <span style="opacity: 0.7">{{
-                          doc?.properties["dc:created"]
+                          doc?.properties || doc?.properties["dc:created"]
                           }}</span>
                         <br />
                         Orientation
@@ -266,7 +265,7 @@
           <div class="weight-size-block">
             <ul>
               <li>
-                {{ getDownloadFileEstimation(doc?.properties["file:content"]?.length || null) }}
+                {{ getDownloadFileEstimation() }}
               </li>
               <li>
                 <img src="../../assets/images/briefcase.svg" alt="Folder" /> {{getParentFolderName()}}
@@ -326,7 +325,7 @@
   </ng-template>
 </div>
 
-<div *ngIf="!openInModal">
+<div *ngIf="!openInModal && doc">
   <div class="modal-body">
     <div class="modalHead">
       <div class="row flexible" style="justify-content: space-between">
@@ -468,15 +467,14 @@
                     <li>
                       Created
                       {{ toDateString(doc?.properties) }}
-                      by
-                      <span style="color: #ebc03f">{{
-                        doc?.properties && doc?.properties["dc:creator"]
-                        }}</span>
+                      by 
+                      <br />
+                      <span style="color: #ebc03f">{{getCreator()}}</span>
                     </li>
 
                     <li>
                       Usage approver <br /><span style="color: #ebc03f">{{
-                        doc?.properties && doc?.properties["dc:creator"]
+                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
                         }}</span>
                     </li>
 
@@ -497,8 +495,7 @@
 
                     <li>
                       Description <br /><span style="opacity: 0.7">{{
-                        doc?.properties["dc:description"] ||
-                        doc?.properties["imd:image_description"]
+                       getDescription()
                         }}</span>
                     </li>
 
@@ -514,15 +511,12 @@
                   <ul>
 
                     <li>
-                      Dimensions <br /><span style="opacity: 0.7">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x
-                        {{ doc?.properties["picture:info"]?.height }}</span>
+                      Dimensions <br /><span style="opacity: 0.7">{{ getImageDimensions() }}</span>
                     </li>
                     
                     <li>
                       Size <br /><span style="opacity: 0.7">{{
-                        getDownloadFileEstimation(
-                        doc?.properties["file:content"]?.length
-                        )
+                        getDownloadFileEstimation()
                         }}</span>
                     </li>
 
@@ -540,9 +534,7 @@
                       EXIF
                       <br />
                       Date
-                      <span style="opacity: 0.7">{{
-                        doc?.properties["dc:created"]
-                        }}</span>
+                      <span style="opacity: 0.7">{{doc?.properties || doc?.properties["dc:created"]}}</span>
                       <br />
                       Orientation
                       <span style="opacity: 0.7">{{

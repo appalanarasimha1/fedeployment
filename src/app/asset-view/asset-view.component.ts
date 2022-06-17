@@ -8,9 +8,9 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./asset-view.component.css']
 })
 export class AssetViewComponent implements OnInit {
-  sector: string;
-  folderStructure: string;
-  assetName: string;
+  // sector: string;
+  // folderStructure: string;
+  // assetName: string;
   file = '';
   fileUrl = '';
 
@@ -21,18 +21,21 @@ export class AssetViewComponent implements OnInit {
 
   ngOnInit(): void {
     const routeParams = this.route.queryParams.subscribe(params => {
-      this.sector = params['sector'];
-      this.folderStructure = params['folderStructure'];
-      this.assetName = params['assetName'];
-      this.fetchAsset();
+      const assetId = params['assetId'];
+      this.fetchAsset(assetId);
     });
   }
 
-  fetchAsset() {
-    this.apiService.get(`/path${this.sector.trim()}/workspaces${this.folderStructure.trim()}${encodeURIComponent(this.assetName)}`).subscribe((doc: any) => {
+  async fetchAsset(assetId: string): Promise<void>{
+    
+    const doc: any = await this.apiService.get(`/id/${assetId}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
+      {headers: { "fetch-document": "properties"}}).toPromise();
       this.file = doc;
       this.fileUrl = `${window.location.origin}/nuxeo/${doc.properties['file:content'].data.split('/nuxeo/')[1]}`;
-    });
+    // this.apiService.get(`/path${this.sector.trim()}/workspaces${this.folderStructure.trim()}${encodeURIComponent(this.assetName)}`).subscribe((doc: any) => {
+    //   this.file = doc;
+    //   this.fileUrl = `${window.location.origin}/nuxeo/${doc.properties['file:content'].data.split('/nuxeo/')[1]}`;
+    // });
   }
 
 }

@@ -154,12 +154,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       });
   }
 
-  getDownloadFileEstimation(data: any) {
-    if (!data) return;
+  getDownloadFileEstimation(data?: any): string {
+    data = this.doc?.properties?.["file:content"]?.length || data;
+    if (!data) return '0 Kb';
     return `${
       data / 1024 > 1024
         ? (data / 1024 / 1024).toFixed(2) + " MB"
-        : (data / 1024).toFixed(2) + " KB"
+        : (data / 1024).toFixed(2) + " Kb"
     }`;
   }
 
@@ -348,7 +349,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getCreator() {
-    return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
+    return this.doc?.properties?.['dc:creator']?.id || this.doc?.properties?.['dc:creator'];
   }
   
   getApprovalUsers(): string[] {
@@ -402,19 +403,20 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   copyLink() {
     // copyLinkOfAsset() {
-      const pathArray = this.doc.path.split('/workspaces');
-      const sector = pathArray[0]
-      let assetName = pathArray[1].split('/').pop();
-      const folderStructure = pathArray[1].split(assetName)[0];
-      const extention: string[] = specialExtensions.filter((item: string) => assetName.includes(item));
+      // const pathArray = this.doc.path.split('/workspaces');
+      // const sector = pathArray[0]
+      // let assetName = pathArray[1].split('/').pop();
+      // const folderStructure = pathArray[1].split(assetName)[0];
+      // const extention: string[] = specialExtensions.filter((item: string) => assetName.includes(item));
       // assetName = assetName.replace(extention[0], '');
+      const assetId = this.doc.uid;
       
       const selBox = document.createElement("textarea");
       selBox.style.position = "fixed";
       selBox.style.left = "0";
       selBox.style.top = "0";
       selBox.style.opacity = "0";
-      selBox.value = `${window.location.origin}/asset-view?sector=${sector}&folderStructure=${folderStructure}&extension=${extention[0] || 'allowed'}&assetName=${assetName}`;
+      selBox.value = `${window.location.origin}/asset-view?assetId=${assetId}`;
       this.copiedString = selBox.value;
       document.body.appendChild(selBox);
       selBox.focus();
@@ -427,6 +429,14 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   navigateTo(location: string): void {
     this.router.navigate(['workspace'], { queryParams: {folder: location }});
     this.modalService?.dismissAll();
+  }
+
+  getDescription(): string {
+    return  this.doc?.properties?.["dc:description"] || this.doc?.properties?.["imd:image_description"];
+  }
+
+  getImageDimensions(): string {
+    return `${this.doc?.properties?.["picture:info"]?.width} x ${this.doc?.properties?.["picture:info"]?.height}`;
   }
 
 }
