@@ -234,6 +234,9 @@ export class SearchComponent implements OnInit {
       case "recentView":
         url = "";
         break;
+      case "trendingPage":
+        url = "";
+        break;
       case "favourite":
         url = apiRoutes.FETCH_FAVORITE;
         params.queryParams = this.favoriteCollectionId;

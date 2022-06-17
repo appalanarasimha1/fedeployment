@@ -24,6 +24,7 @@ export const apiRoutes = {
   FETCH_RECENT_UPLOAD: "/search/pp/recent_upload/execute",
   FETCH_FAVORITE: "/search/pp/favoritepp/execute",
   REPORT_FETCH: "/report/fetch-report",
+  TRENDING_FETCH: "/report/fetchTrendingAssets",
   REPORT_SECTOR_FETCH: "/report/fetch-sector-report",
   TRASH_DOC: "/automation/Document.Trash",
   UN_TRASH_DOC: "/automation/Document.Untrash",
