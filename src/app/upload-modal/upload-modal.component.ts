@@ -1017,12 +1017,6 @@ export class UploadModalComponent implements OnInit {
     return true;
   }
 
-  isPrivateFolder() {
-    if (this.selectedFolder?.type !== 'Workspace') return false;
-
-    const isPrivate = this.selectedFolder?.properties && this.selectedFolder?.properties["dc:isPrivate"];
-    return isPrivate || this.selectedFolder.isPrivate;
-  }
   changeDownloadTick(key: string): void {
     this.customDownloadApprovalUsersMap[key] = [];
   }
