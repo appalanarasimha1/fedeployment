@@ -363,8 +363,9 @@ export class DocumentComponent implements OnInit, OnChanges {
         .get()
         .then(result => {
           const trending = result?.data?.trendingAssets || [];
-          const trendingIds = trending.map(e => e._id.uid);
-          this.getTrendingAssetsByIds(trendingIds);
+          const trendingIds = trending.map(e => e._id.uid) || [];
+          this.getTrendingAssetsByIds(trendingIds.slice(0, 100));
+          this.loading.pop();
         })
         .catch((error) => {
           console.log("fetch trending assets error = ", error);
