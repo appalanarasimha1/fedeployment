@@ -37,7 +37,7 @@
                 <div
                   class="d-flex set"
                   [ngClass]="
-                    selectedFolder2.uid === item.uid && !isTrashView
+                    selectedFolder2?.uid === item.uid && !isTrashView
                       ? 'active-tab'
                       : ''
                   "
@@ -396,7 +396,7 @@
                           needPermissionToDownload.length < 1
                         "
                       >
-                        <p>Always credit copyright owners.</p>
+                        <p *ngIf="copyRightItem.length>0">Always credit copyright owners.</p>
                         <p class="pt-15" *ngIf="sizeExeeded">
                           Your download exceeds 1 GB. This will likely take some
                           time.
@@ -452,7 +452,7 @@
                           needPermissionToDownload.length < 1
                         "
                       >
-                        <p>Always credit copyright owners.</p>
+                        <p *ngIf="copyRightItem.length>0">Always credit copyright owners.</p>
 
                         <p class="pt-15" *ngIf="sizeExeeded">
                           Your download exceeds 1 GB. This will likely take some
@@ -534,7 +534,7 @@
                         class="internal-use"
                         *ngIf="needPermissionToDownload.length > 0"
                       >
-                        <p>Always credit copyright owners.</p>
+                        <p *ngIf="copyRightItem.length>0">Always credit copyright owners.</p>
                         <p class="pt-15" *ngIf="sizeExeeded">
                           Your download exceeds 1 GB. This will likely take some
                           time.

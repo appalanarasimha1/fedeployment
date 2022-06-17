@@ -267,7 +267,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-
     if (changes.searchTerm) {
       this.searchTerm = changes.searchTerm.currentValue;
       this.getRelatedTags();
@@ -335,15 +334,11 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
-
       this.searchTem = searchTerm;
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
       this.dummyPlaceholderTags = true;
-      this.tagsMetaRealdata = data?.filter(
-        (m) =>
-          m.key !== this.searchTem
-      );
+      this.tagsMetaRealdata = data?.filter((m) => m.key !== this.searchTem);
       this.dummyPlaceholderTags = false;
     });
   }
@@ -692,7 +687,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     // }
     this.recentDataShow = this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
-
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
@@ -1015,27 +1009,31 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   multiDownload() {
-    $(".downloadFileWorkspace").on("click", function (e) {
-      // $(".dropdownCreate").toggle();
-      $(".multiDownloadBlock").show();
-      $(".downloadFileWorkspace").addClass("multiDownlodClick");
-      e.stopPropagation();
-    });
-    $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
-      $(".multiDownloadBlock").hide();
-      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-      e.stopPropagation();
-    });
+    if (this.downloadArray.length>0 && this.copyRightItem.length<1 && !this.sizeExeeded && this.forInternalUse.length<1) {
+      this.downloadAssets();
+    }else{
+      $(".downloadFileWorkspace").on("click", function (e) {
+        // $(".dropdownCreate").toggle();
+        $(".multiDownloadBlock").show();
+        $(".downloadFileWorkspace").addClass("multiDownlodClick");
+        e.stopPropagation();
+      });
+      $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+        e.stopPropagation();
+      });
 
-    $(".multiDownloadBlock").click(function (e) {
-      e.stopPropagation();
-      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-    });
+      $(".multiDownloadBlock").click(function (e) {
+        e.stopPropagation();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
 
-    $(document).click(function () {
-      $(".multiDownloadBlock").hide();
-      $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-    });
+      $(document).click(function () {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
+    }
   }
   downloadClick() {
     if (!this.downloadEnable) {
@@ -1057,6 +1055,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   downloadFullItem: any = [];
   needPermissionToDownload: any = [];
   downloadCount: number = 0;
+  copyRightItem:any=[]
 
   selectAsset($event, item, i) {
     console.log("itemitemitemitemitem", item, $event);
@@ -1075,6 +1074,12 @@ export class DocumentComponent implements OnInit, OnChanges {
     // else
     if ($event.target?.checked || $event.checked) {
       this.downloadCount = this.downloadCount + 1;
+    if (
+      item.properties['sa:copyrightName'] !== null &&
+      item.properties['sa:copyrightName'] !== ""
+    ) {
+      this.copyRightItem.push(item.uid);
+    } 
       if (item.properties["sa:users"].length > 0) {
         this.needPermissionToDownload.push(item);
       } else {
@@ -1089,6 +1094,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       console.log("inside unchecked");
       this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
       this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+      this.copyRightItem = this.copyRightItem.filter((m) => m !== item.uid);
       this.downloadFullItem = this.downloadFullItem.filter(
         (m) => m.uid !== item.uid
       );
@@ -1123,7 +1129,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
   }
 
-  downloadAssets(e) {
+  downloadAssets(e?:any) {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
@@ -1176,6 +1182,5 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.assetsBySector.forEach((e) => (e.isSelected = false));
     this.recentDataShow.forEach((e) => (e.isSelected = false));
     this.favourites.forEach((e) => (e.isSelected = false));
-
   }
 }

@@ -123,19 +123,19 @@ export class UploadModalComponent implements OnInit {
 
   slideConfig = {
     rows: 2,
-		dots: false,
-		arrows: true,
-		infinite: false,
-		speed: 300,
-		slidesToShow: 6,
-		slidesToScroll: 6,
+    dots: false,
+    arrows: true,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 6,
+    slidesToScroll: 6,
     variableWidth: true,
-    centerMode: false
+    centerMode: false,
   };
   uploadedAsset;
   downloadApproval: boolean = false;
   breadCrumb = [];
-  assetCache: {[id: string]: any} = {};
+  assetCache: { [id: string]: any } = {};
   folderOrder: string = "";
   folderToAddName: string = "";
   publishing: boolean;
@@ -153,20 +153,22 @@ export class UploadModalComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    console.log('incoming data = ', this.data);
+    console.log("incoming data = ", this.data);
     await this.showWorkspaceList();
-    if(this.data) {
-      const title = this.data.path.split('/workspaces')[0].substring(1);
-      const workspace = this.data.contextParameters.breadcrumb.entries.filter(workspace => workspace.type.toLowerCase() === 'domain');
+    if (this.data) {
+      const title = this.data.path.split("/workspaces")[0].substring(1);
+      const workspace = this.data.contextParameters.breadcrumb.entries.filter(
+        (workspace) => workspace.type.toLowerCase() === "domain"
+      );
       await this.selectWorkspace(workspace[0]);
       this.showWsList = false;
-      if(this.data.type.toLowerCase() !== 'domain') {
+      if (this.data.type.toLowerCase() !== "domain") {
         await this.selectWorkspace(this.data, true);
         this.folderNameParam = this.data.title;
         this.selectedFolder = this.data;
       }
       this.associatedDate = this.data?.properties?.["dc:start"];
-    } 
+    }
     // else {
     //   this.showWorkspaceList();
     // }
@@ -184,12 +186,12 @@ export class UploadModalComponent implements OnInit {
   // }
 
   shortTheString(str: string, length: number): string {
-    if(!str) return;
+    if (!str) return;
     return this.sharedService.stringShortener(str, length);
   }
 
   closeModal() {
-    if(this.data?.sectorId) {
+    if (this.data?.sectorId) {
       this.dialogRef.close(this.uploadedAsset);
       return;
     }
@@ -197,8 +199,8 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelect(event) {
-    console.log('event.addedFiles', event.addedFiles)
-    if(!event.addedFiles && !this.agreeTerms) {
+    console.log("event.addedFiles", event.addedFiles);
+    if (!event.addedFiles && !this.agreeTerms) {
       this.showError = true;
       this.showErrorCheckbox = false;
     } else {
@@ -218,7 +220,6 @@ export class UploadModalComponent implements OnInit {
   }
 
   toNextStep() {
-
     this.stepper.next();
     if (this.step === 3) {
       this.publishAssets();
@@ -249,7 +250,7 @@ export class UploadModalComponent implements OnInit {
         this.customUsersMap[key] = [...this.selectedUsers];
       });
     }
-    if(this.downloadApproval && this.ownerName.length > 0) {
+    if (this.downloadApproval && this.ownerName.length > 0) {
       Object.keys(this.filesMap).forEach((key) => {
         this.customDownloadApprovalUsersMap[key] = [...this.ownerName];
       });
@@ -257,7 +258,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkUploadStep() {
-    if(Object.keys(this.filesMap).length === 0 || !this.agreeTerms){
+    if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) {
       // this.showError = true;
       return true;
     } else {
@@ -281,7 +282,8 @@ export class UploadModalComponent implements OnInit {
 
   checkButtonDisabled() {
     if (this.step === 1) {
-      if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) return true;
+      if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms)
+        return true;
       // else if(!this.agreeTerms) return true;
     }
     if (this.step === 2) {
@@ -299,14 +301,22 @@ export class UploadModalComponent implements OnInit {
   }
 
   getDateFormat(date) {
-    return new Date(date).toISOString().split('T')[0];
+    return new Date(date).toISOString().split("T")[0];
   }
 
   getSelectedAssetsTitle() {
-    if(!Object.keys(this.filesMap).length) return;
+    if (!Object.keys(this.filesMap).length) return;
     const file = this.filesMap[Object.keys(this.filesMap)[0]];
     const len = Object.keys(this.filesMap).length;
-    return `${this.shortTheString(file.name, 20)} ${len > 1 ? `and other ${len - 1} files` : ""}`;
+    return `${this.shortTheString(file.name, 20)} ${
+      len > 1 ? `and other ${len - 1} files` : ""
+    }`;
+  }
+  getSelectedAssetsTitle1() {
+    // const title = this.filesMap[0]?.title;
+    const len = Object.keys(this.filesMap).length;
+
+    return `${len} assets`;
   }
 
   async showWorkspaceList() {
@@ -326,28 +336,33 @@ export class UploadModalComponent implements OnInit {
     // }
     // this.showWsList = false;
     this.folderList = await this.getFolderList(ws.uid);
-    if(!incomingParam) {
+    if (!incomingParam) {
       this.selectedWorkspace = ws;
       this.dropdownFolderList = [...this.folderList];
       return;
     }
-    this.dropdownFolderList = [...this.folderList.filter(item => ["orderedfolder", "workspace"].indexOf(item.type.toLowerCase()) > -1)];
+    this.dropdownFolderList = [
+      ...this.folderList.filter(
+        (item) =>
+          ["orderedfolder", "workspace"].indexOf(item.type.toLowerCase()) > -1
+      ),
+    ];
     return;
   }
 
   openBrowseRoute() {
-    // if(this.data) { 
+    // if(this.data) {
     //   // NOTE: as per the new requirements, we do not want to navigate to the folder in case of uploading asset in a folder.
     //   this.closeModal();
     //   return;
     // }
     this.dialogRef.close();
-    if(this.data?.uid === this.selectedFolder?.uid) {
+    if (this.data?.uid === this.selectedFolder?.uid) {
       this.dataService.uploadedAssetDataInit(this.uploadedAsset);
       return;
     }
     const folderUid = this.selectedFolder?.uid; //  this.data?.uid || this.selectedFolder?.uid;
-    this.router.navigate(['workspace'], {queryParams: {folder: folderUid }});
+    this.router.navigate(["workspace"], { queryParams: { folder: folderUid } });
   }
 
   async getWsList() {
@@ -358,28 +373,39 @@ export class UploadModalComponent implements OnInit {
       currentPageIndex: 0,
       offset: 0,
       pageSize: PAGE_SIZE_200,
-      queryParams: "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'Domain'",
+      queryParams:
+        "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'Domain'",
     };
     // TODO: loader
-    const res = await this.apiService.get(apiRoutes.NXQL_SEARCH, {params}).toPromise();
-    this.workspaceList = this.formatWsList(res["entries"], res['uid'], res['contextParameters']).filter(sector => {
-      if(UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
+    const res = await this.apiService
+      .get(apiRoutes.NXQL_SEARCH, { params })
+      .toPromise();
+    this.workspaceList = this.formatWsList(
+      res["entries"],
+      res["uid"],
+      res["contextParameters"]
+    ).filter((sector) => {
+      if (UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
         return sector;
       }
     });
   }
 
   filterWorkspaces(title: string): boolean {
-    if(UNWANTED_WORKSPACES.indexOf(title.toLowerCase()) === -1) {
+    if (UNWANTED_WORKSPACES.indexOf(title.toLowerCase()) === -1) {
       return true;
     }
     return false;
   }
 
-  checkAccessOptionDisabled(value, fileIndex?: any) {
-    const confidentiality = this.customConfidentialityMap[fileIndex] || this.confidentiality;
-    const currentAccess = this.customAccessMap[fileIndex] || this.access;
-    if (!confidentiality || confidentiality === CONFIDENTIALITY.not) return false;
+  checkAccessOptionDisabled(value: string, fileIndex?: any) {
+    const confidentiality = !fileIndex
+      ? this.overallConfidentiality
+      : this.customConfidentialityMap[fileIndex];
+    // console.log({ confidentiality });
+
+    if (!confidentiality || confidentiality === CONFIDENTIALITY.not)
+      return false;
     if (value === ACCESS.all) {
       return true;
     }
@@ -397,37 +423,46 @@ export class UploadModalComponent implements OnInit {
     return this.fetchByParent(rootWs.uid);
   }
 
-  async getFolderByParentId(id: string, path: string, index?: number|null) {
-    this.parentFolder = {id, path, type: this.ORDERED_FOLDER};
+  async getFolderByParentId(id: string, path: string, index?: number | null) {
+    this.parentFolder = { id, path, type: this.ORDERED_FOLDER };
     const result = await this.getFolderList(id);
     this.folderNameParam = "";
-    if(index === null) {
-      this.dropdownFolderList = result.filter(res => res.type === this.ORDERED_FOLDER || res.type === 'Workspace');
+    if (index === null) {
+      this.dropdownFolderList = result.filter(
+        (res) => res.type === this.ORDERED_FOLDER || res.type === "Workspace"
+      );
       this.folderList = [...this.dropdownFolderList];
       this.breadCrumb.pop();
       return;
     }
-    this.dropdownFolderList = index === 0 ? result : result.filter(res => res.type === this.ORDERED_FOLDER);
+    this.dropdownFolderList =
+      index === 0
+        ? result
+        : result.filter((res) => res.type === this.ORDERED_FOLDER);
     this.folderList = [...this.dropdownFolderList];
   }
-  
+
   extractBreadcrumb(contextParameters) {
     if (contextParameters) {
-      this.breadCrumb = contextParameters?.breadcrumb.entries.filter((entry) => {
-        return entry.type.toLowerCase() !== "workspaceroot";
-      });
+      this.breadCrumb = contextParameters?.breadcrumb.entries.filter(
+        (entry) => {
+          return entry.type.toLowerCase() !== "workspaceroot";
+        }
+      );
     }
   }
 
   removeBreadcrumb(title: string) {
-    const breadCrumbIndex = this.breadCrumb.findIndex(bread => bread.title === title);
-    this.breadCrumb.splice(breadCrumbIndex+1);
+    const breadCrumbIndex = this.breadCrumb.findIndex(
+      (bread) => bread.title === title
+    );
+    this.breadCrumb.splice(breadCrumbIndex + 1);
   }
 
   async fetchByParent(parentId) {
-    if(this.assetCache[parentId]) {
+    if (this.assetCache[parentId]) {
       // this.extractBreadcrumb(this.assetCache[parentId]["contextParameters"]);
-      return this.assetCache[parentId]['entries'];
+      return this.assetCache[parentId]["entries"];
     }
     const params = {
       currentPageIndex: 0,
@@ -437,25 +472,29 @@ export class UploadModalComponent implements OnInit {
       ecm_trashed: false,
     };
     const domainRes: any = await this.apiService
-      .get(apiRoutes.ADVANCE_DOC_PP, {params})
+      .get(apiRoutes.ADVANCE_DOC_PP, { params })
       .toPromise();
-      // this.extractBreadcrumb(domainRes["contextParameters"]);
-    return this.formatWsList(domainRes["entries"], parentId, domainRes["contextParameters"]);
+    // this.extractBreadcrumb(domainRes["contextParameters"]);
+    return this.formatWsList(
+      domainRes["entries"],
+      parentId,
+      domainRes["contextParameters"]
+    );
   }
 
   formatWsList(entries: any[], uid: string, contextParameters: any) {
     if (!entries) return [];
     this.assetCache[uid] = {};
-    this.assetCache[uid]['entries'] = entries.map((entry) => ({
+    this.assetCache[uid]["entries"] = entries.map((entry) => ({
       uid: entry.uid,
       title: entry.title,
       type: entry.type,
       path: entry.path,
       properties: entry.properties,
-      contextParameters: entry.contextParameters
+      contextParameters: entry.contextParameters,
     }));
-    this.assetCache[uid]['contextParameters'] = contextParameters;
-    return this.assetCache[uid]['entries'];
+    this.assetCache[uid]["contextParameters"] = contextParameters;
+    return this.assetCache[uid]["entries"];
   }
 
   async uploadFile(files) {
@@ -474,10 +513,12 @@ export class UploadModalComponent implements OnInit {
   }
 
   setUploadProgressBar(index, percentDone) {
-    const element = <HTMLElement> document.getElementsByClassName(`upload-progress-bar-${index}`)[0];
+    const element = <HTMLElement>(
+      document.getElementsByClassName(`upload-progress-bar-${index}`)[0]
+    );
     const background = `background-image: linear-gradient(to right, rgba(0, 104, 69, 0.1) ${percentDone}%,#ffffff ${percentDone}%) !important;`;
     let attr = element.getAttribute("style");
-    attr = attr.replace(/background-image:.*?;/g,"");
+    attr = attr.replace(/background-image:.*?;/g, "");
     if (percentDone === 100) return;
     element.setAttribute("style", attr + background);
   }
@@ -487,7 +528,7 @@ export class UploadModalComponent implements OnInit {
     const blob = new Nuxeo.Blob({ content: file });
     const options = {
       reportProgress: true,
-      observe: 'events',
+      observe: "events",
       headers: {
         "Cache-Control": "no-cache",
         "X-File-Name": encodeURIComponent(blob.name),
@@ -525,7 +566,7 @@ export class UploadModalComponent implements OnInit {
     delete this.filesMap[index];
     const url = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     this.apiService.delete(url).subscribe((res) => {
-      if(this.filesMap[index]) {
+      if (this.filesMap[index]) {
         delete this.filesMap[index];
       }
     });
@@ -534,7 +575,7 @@ export class UploadModalComponent implements OnInit {
   //// Custom input dropdown
   focusDropdown() {
     // if(this.data) return;
-    this.folderNameParam = '';
+    this.folderNameParam = "";
     this.selectedFolder = null;
     this.showCustomDropdown = true;
   }
@@ -555,13 +596,12 @@ export class UploadModalComponent implements OnInit {
   }
 
   showCreateFolderButton(input: string): boolean {
-    if(!input.trim()) return false;
+    if (!input.trim()) return false;
 
     let dropdownFolderList: any[] = this.folderList.filter((folder) => {
-        const folderSplit = input.split('/').pop();
-        return folder.title.toLowerCase() === folderSplit.toLowerCase();
-      }
-    );
+      const folderSplit = input.split("/").pop();
+      return folder.title.toLowerCase() === folderSplit.toLowerCase();
+    });
     return !dropdownFolderList.length;
   }
 
@@ -578,22 +618,24 @@ export class UploadModalComponent implements OnInit {
 
   createFolderOrder(type?: string) {
     this.folderNameParam = "";
-    this.breadCrumb.forEach(element => {
+    this.breadCrumb.forEach((element) => {
       this.folderNameParam = `${this.folderNameParam}/${element.title}`;
     });
-    if(type === 'new') {
-      this.folderNameParam = `${this.folderNameParam}/${this.folderToAdd}`.slice(1);
+    if (type === "new") {
+      this.folderNameParam =
+        `${this.folderNameParam}/${this.folderToAdd}`.slice(1);
       return;
     }
-    this.folderNameParam = `${this.folderNameParam}/${this.selectedFolder.title}`.slice(1);
+    this.folderNameParam =
+      `${this.folderNameParam}/${this.selectedFolder.title}`.slice(1);
   }
 
   addNewFolder(folderName) {
     this.descriptionFilled = false;
-    this.description = '';
+    this.description = "";
     this.folderToAddName = folderName.value;
-    this.folderToAdd = folderName.value.split('/').pop();
-    this.createFolderOrder('new');
+    this.folderToAdd = folderName.value.split("/").pop();
+    this.createFolderOrder("new");
     this.selectedFolder = null;
     this.showCustomDropdown = false;
     this.disableDateInput = false;
@@ -601,26 +643,44 @@ export class UploadModalComponent implements OnInit {
     this.description = "";
   }
 
+  // onSelectConfidentiality(confidentiality, fileIndex?: any) {
+  //   console.log("confidentiality", confidentiality);
+
+  //   if (fileIndex !== null && fileIndex !== undefined) {
+  //     this.filesMap[fileIndex] = confidentiality;
+  //     this.customAccessMap[fileIndex] = undefined;
+  //     this.customAllowMap[fileIndex] = undefined;
+  //     this.confidentiality = confidentiality;
+  //   } else {
+  //     this.allow = undefined;
+  //     this.access = undefined;
+  //     this.confidentiality = confidentiality;
+  //     this.overallAccess = undefined;
+  //   }
+  //   this.checkShowUserDropdown(fileIndex);
+  // }
+
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
-    if (fileIndex !== null && fileIndex !== undefined) {
-      this.customConfidentialityMap[fileIndex] = confidentiality;
-      this.customAccessMap[fileIndex] = undefined;
-      this.customAllowMap[fileIndex] = undefined;
-    } else {
-      this.allow = undefined;
-      this.access = undefined;
-      this.confidentiality = confidentiality;
+    console.log({ fileIndex, asdfrgthgfd: this.customConfidentialityMap });
+
+    if (fileIndex == null) {
+      this.overallAccess = undefined;
+      return;
     }
+    // this.customConfidentialityMap[fileIndex] = confidentiality;
+    this.customAccessMap[fileIndex] = undefined;
+    this.customAllowMap[fileIndex] = undefined;
     this.checkShowUserDropdown(fileIndex);
   }
 
   onSelectAccess(access, fileIndex?: any) {
+    console.log({ fileIndex });
     const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAccessMap[fileIndex] = access;
     } else {
-      for(let i = 0; i < this.getAssetNumber(); i++) {
-        this.customAccessMap[i] = access;
+      for (let i = 0; i < this.getAssetNumber(); i++) {
+        // this.customAccessMap[i] = access;
       }
       this.access = access;
     }
@@ -632,7 +692,7 @@ export class UploadModalComponent implements OnInit {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAllowMap[fileIndex] = allow;
     } else {
-      for(let i = 0; i < this.getAssetNumber(); i++) {
+      for (let i = 0; i < this.getAssetNumber(); i++) {
         this.customAllowMap[i] = allow;
       }
       this.allow = allow;
@@ -640,13 +700,13 @@ export class UploadModalComponent implements OnInit {
   }
 
   onCheckDownloadApproval(event) {
-    if(!event.target.checked) {
+    if (!event.target.checked) {
       this.ownerName = [];
-      for(let i = 0; i < this.getAssetNumber(); i++) {
+      for (let i = 0; i < this.getAssetNumber(); i++) {
         this.customDownloadApprovalUsersMap[i] = [];
       }
     }
-    for(let i = 0; i < this.getAssetNumber(); i++) {
+    for (let i = 0; i < this.getAssetNumber(); i++) {
       this.customDownloadApprovalMap[i] = this.downloadApproval;
     }
   }
@@ -660,9 +720,15 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkShowUserDropdown(fileIndex?: any) {
-    const access = this.customAccessMap[fileIndex] || this.access;
-    const confidentiality = this.customConfidentialityMap[fileIndex] || this.confidentiality;
-    if ( access === ACCESS.restricted ) {
+    const access =
+      fileIndex == null
+        ? this.overallAccess
+        : this.customAccessMap[fileIndex] || this.access;
+    const confidentiality =
+      fileIndex == null
+        ? this.overallConfidentiality
+        : this.customConfidentialityMap[fileIndex] || this.confidentiality;
+    if (access === ACCESS.restricted) {
       return true;
     } else {
       return false;
@@ -681,13 +747,17 @@ export class UploadModalComponent implements OnInit {
   }
 
   humanFileSize(size) {
-    const i = Math.floor( Math.log(size) / Math.log(1024) );
-    return ( size / Math.pow(1024, i) ).toFixed(2)  + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+    const i = Math.floor(Math.log(size) / Math.log(1024));
+    return (
+      (size / Math.pow(1024, i)).toFixed(2) +
+      " " +
+      ["B", "kB", "MB", "GB", "TB"][i]
+    );
   }
 
   getTotalFileSize() {
     let size = 0;
-    Object.keys(this.filesMap).forEach(key => {
+    Object.keys(this.filesMap).forEach((key) => {
       size += this.filesMap[key].size;
     });
     return this.humanFileSize(size);
@@ -700,15 +770,28 @@ export class UploadModalComponent implements OnInit {
       folder = await this.createFolder(this.folderToAdd);
       this.selectedFolder = folder;
     }
-   
-    for(let key in this.filesMap) {
+    console.log("++++++++++++++++++++++++++++++++++++++", this.filesMap);
+
+    for (let key in this.filesMap) {
+      console.log(
+        "++++++++++++++++++++++++++++++++++++++1111111111111111111",
+        key,
+        this.filesMap[key]
+      );
+
       const asset = await this.createAsset(this.filesMap[key], key, folder);
       await this.setAssetPermission(asset, key);
     }
-    if(!this.showRedirectUrl()) {
+    if (!this.showRedirectUrl()) {
       // this.dialogRef.close(this.uploadedAsset);
       this.publishing = false;
-      this.sharedService.showSnackbar('Asset added successfully.', 3000, 'bottom', 'center', 'snackBarMiddle');
+      this.sharedService.showSnackbar(
+        "Asset added successfully.",
+        3000,
+        "bottom",
+        "center",
+        "snackBarMiddle"
+      );
       return;
     }
     this.publishing = false;
@@ -716,13 +799,15 @@ export class UploadModalComponent implements OnInit {
   }
 
   async createAsset(file, index, folder) {
+    console.log({ file, index, folder });
+
     const url = `/path${folder.path}`;
     let fileType = "File";
-    if (file.type.includes("image/")) {
+    if (file.type?.includes("image/")) {
       fileType = "Picture";
-    } else if (file.type.includes("video/")) {
+    } else if (file.type?.includes("video/")) {
       fileType = "Video";
-    } else if (file.type.includes("audio/")) {
+    } else if (file.type?.includes("audio/")) {
       fileType = "Audio";
     }
     const payload = {
@@ -753,14 +838,19 @@ export class UploadModalComponent implements OnInit {
         "dc:title": file.name,
         "dc:parentName": folder.title,
         "dc:sector": this.selectedWorkspace.title,
-        "sa:confidentiality": this.customConfidentialityMap[index] || this.confidentiality,
+        "sa:confidentiality":
+          this.customConfidentialityMap[index] || this.confidentiality,
         "sa:access": this.customAccessMap[index] || this.access,
         "sa:users": this.customUsersMap[index],
         "sa:downloadApprovalUsers": this.customDownloadApprovalUsersMap[index],
         "sa:allow": this.customAllowMap[index] || this.allow,
-        "sa:copyrightName": this.openCopyrightMap[index] ? this.copyrightUserMap[index] : null,
-        "sa:copyrightYear": this.openCopyrightMap[index] ? this.copyrightYearMap[index]?.name : null,
-        "sa:downloadApproval": this.customDownloadApprovalMap[index]
+        "sa:copyrightName": this.openCopyrightMap[index]
+          ? this.copyrightUserMap[index]
+          : null,
+        "sa:copyrightYear": this.openCopyrightMap[index]
+          ? this.copyrightYearMap[index]?.name
+          : null,
+        "sa:downloadApproval": this.customDownloadApprovalMap[index],
       },
       facets: [
         "Versionable",
@@ -802,7 +892,7 @@ export class UploadModalComponent implements OnInit {
       ],
       name: file.name,
     };
-    if(this.associatedDate) {
+    if (this.associatedDate) {
       payload["dc:start"] = new Date(this.associatedDate).toISOString();
     }
     const res = await this.apiService.post(url, payload).toPromise();
@@ -849,7 +939,13 @@ export class UploadModalComponent implements OnInit {
   async createFolder(name, parentFolder?: any, data?: any) {
     const url = `/path${this.parentFolder.path}`;
 
-    const payload = await this.sharedService.getCreateFolderPayload(name, this.selectedWorkspace.title, this.parentFolder, this.description, this.associatedDate);
+    const payload = await this.sharedService.getCreateFolderPayload(
+      name,
+      this.selectedWorkspace.title,
+      this.parentFolder,
+      this.description,
+      this.associatedDate
+    );
     const res = await this.apiService.post(url, payload).toPromise();
     return {
       uid: res["uid"],
@@ -893,7 +989,7 @@ export class UploadModalComponent implements OnInit {
       q: term.toLowerCase(),
       currentPageIndex: 0,
     };
-    return this.apiService.get(apiRoutes.SEARCH_USER, {params}).pipe(
+    return this.apiService.get(apiRoutes.SEARCH_USER, { params }).pipe(
       map((resp) => {
         return resp["entries"].map((entry) => ({
           id: entry.id,
@@ -910,16 +1006,15 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkOwnerDropdown(index?: string) {
-    if(index && this.customDownloadApprovalMap) {
+    if (index && this.customDownloadApprovalMap) {
       return this.customDownloadApprovalMap[index];
     }
     return !!this.downloadApproval;
     // return ALLOW_VALUE_MAP[this.allow] === 'Permission Required';
-
   }
 
   showRedirectUrl(): boolean {
-    if(this.data?.sectorId) {
+    if (this.data?.sectorId) {
       this.step = 4;
       return false;
     }
@@ -930,7 +1025,7 @@ export class UploadModalComponent implements OnInit {
     this.customDownloadApprovalUsersMap[key] = [];
   }
   checkValidation() {
-    if(Object.keys(this.filesMap).length === 0 && !this.agreeTerms){
+    if (Object.keys(this.filesMap).length === 0 && !this.agreeTerms) {
       this.showError = true;
       this.showErrorCheckbox = false;
     } else {
@@ -940,7 +1035,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkValidationCheckbox() {
-    if(!this.agreeTerms) {
+    if (!this.agreeTerms) {
       this.showErrorCheckbox = true;
     } else {
       this.showErrorCheckbox = false;
@@ -949,4 +1044,93 @@ export class UploadModalComponent implements OnInit {
   backBtn() {
     this.showErrorCheckbox = false;
   }
+  overallConfidentiality: string;
+  overallAccess: string;
+  overallDownloadApproval: boolean = false;
+  overallUsers: string[];
+  overallDownloadApprovalUsers: string[];
+
+  applyToAll() {
+    const len = Object.keys(this.filesMap).length;
+    console.log({ len });
+
+    for (let i = 0; i < len; i++) {
+      this.customConfidentialityMap[i] = this.overallConfidentiality;
+      // this.filesMap[i] = this.overallConfidentiality;
+      this.customAccessMap[i] = this.overallAccess;
+      this.customDownloadApprovalMap[i] = this.overallDownloadApproval;
+      this.customUsersMap[i] = this.overallUsers;
+      this.customDownloadApprovalUsersMap[i] =
+        this.overallDownloadApprovalUsers;
+      const allow =
+        this.overallAccess === ACCESS.all ? ALLOW.any : ALLOW.internal;
+      this.customAllowMap[i] = allow;
+    }
+  }
+  
+  isPrivateFolder() {
+    if (this.selectedFolder?.type !== "Workspace") return false;
+
+    const isPrivate =
+      this.selectedFolder?.properties &&
+      this.selectedFolder?.properties["dc:isPrivate"];
+    return isPrivate || this.selectedFolder.isPrivate;
+  }
+  // checkOwnerDropdownByValue(value?: string) {
+  //   switch (value) {
+  //     case "true":
+  //       return true;
+  //     case "false":
+  //       return false;
+  //     default:
+  //       return false;
+  //   }
+  // }
+  // initACLValue() {
+  //   for (let i = 0; i < Object.keys(this.filesMap).length; i++) {
+  //     this.computeAclValue(this.filesMap[i], i);
+  //   }
+  // }
+  // computeAclValue(doc, index) {
+  //   this.customAllowMap[index] = doc.properties["sa:allow"];
+  //   this.customDownloadApprovalMap[index] = this.checkOwnerDropdownByValue(
+  //     doc.properties["sa:downloadApproval"]
+  //   );
+  //   this.copyrightUserMap[index] = doc.properties["sa:copyrightName"];
+  //   this.copyrightYearMap[index] = doc.properties["sa:copyrightYear"];
+  //   if (doc.properties["sa:confidentiality"]) {
+  //     this.customConfidentialityMap[index] =
+  //       doc.properties["sa:confidentiality"];
+  //     this.customAccessMap[index] = doc.properties["sa:access"];
+  //     this.customUsersMap[index] = doc.properties["sa:users"];
+  //     this.customDownloadApprovalUsersMap[index] =
+  //       doc.properties["sa:downloadApprovalUsers"];
+  //     return;
+  //   }
+  //   const aces = doc.contextParameters.acls.find((a) => a.name === "local");
+  //   if (!aces) {
+  //     this.customConfidentialityMap[index] = "";
+  //     this.customAccessMap[index] = "";
+  //     this.customUsersMap[index] = [];
+  //     this.customDownloadApprovalUsersMap[index] = [];
+  //     return;
+  //   }
+  //   const localAces = aces.aces;
+  //   const users = localAces.map((a) => a.username);
+  //   if (users.includes(GROUPS.all)) {
+  //     this.customConfidentialityMap[index] = CONFIDENTIALITY.not;
+  //     this.customAccessMap[index] = ACCESS.all;
+  //     this.customUsersMap[index] = [];
+  //     this.customDownloadApprovalUsersMap[index] = [];
+  //   } else if (users.includes(GROUPS.company)) {
+  //     this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
+  //     this.customAccessMap[index] = ACCESS.internal;
+  //     this.customUsersMap[index] = [];
+  //     this.customDownloadApprovalUsersMap[index] = [];
+  //   } else if (users.length > 0) {
+  //     this.customConfidentialityMap[index] = CONFIDENTIALITY.confidential;
+  //     this.customAccessMap[index] = ACCESS.restricted;
+  //     this.customUsersMap[index] = [...users];
+  //   }
+  // }
 }
