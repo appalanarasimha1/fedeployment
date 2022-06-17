@@ -28,6 +28,28 @@ export function createDownloadQuery() {
   ];
 }
 
+export function createTopDownloadAndViewQuery() {
+  return [
+    {
+      $match: {
+        eventId: "download",
+        docType: { $in: ["Video", "Picture", "File"] },
+      },
+    },
+    {
+      $group: {
+        _id: { uid: "$docUUID" },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ];
+}
+
 export function createPreviewQuery() {
   return [
     {

@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
   showFooter = false;
 
   constructor(
-    private router: Router, 
+    private router: Router,
     public matDialog: MatDialog,
     private dataService: DataService,
     private nuxeoService: NuxeoService) {
@@ -30,7 +30,6 @@ export class AppComponent implements OnInit{
         //   this.showHeader = false;
         // }
         if (event.url && event instanceof NavigationStart) {
-          console.log('app = ', event);
           // TODO: will break if we have another url that contains /user.
           if (event.url.includes('/login')) {
             this.showHeader = false;
@@ -70,7 +69,7 @@ export class AppComponent implements OnInit{
     //   this.showHeader =
     // }
   }
-  
+
   openModal() {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body

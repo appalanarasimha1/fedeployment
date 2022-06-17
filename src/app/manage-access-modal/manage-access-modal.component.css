@@ -1,0 +1,218 @@
+::ng-deep .mat-dialog-container {
+    padding: 20px !important;
+}
+/* Custom checkbox start */
+.makePrivate .control-group {
+    display: block;
+}
+.makePrivate .control {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 0px;
+    padding-left: 30px;
+    border: 0px;
+    margin: 0px 0px 0px;
+    color: #040404;
+}
+.makePrivate .control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+.makePrivate .control__indicator {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #404040;
+}
+.makePrivate .control--radio .control__indicator {
+    border-radius: 50%;
+}
+.makePrivate .control input:checked ~ .control__indicator {
+    background: #006845;
+    border-color: #006845;
+}
+.makePrivate .control input:disabled ~ .control__indicator {
+    background: #fff;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.makePrivate .control__indicator:after {
+    content: '';
+    position: absolute;
+    display: none;
+}
+.makePrivate .control input:checked ~ .control__indicator:after {
+    display: block;
+}
+.makePrivate .control--checkbox .control__indicator:after {
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.makePrivate .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #fff;
+}
+.makePrivate .control--radio .control__indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #23211E;
+}
+.makePrivate .control--radio input:disabled ~ .control__indicator:after {
+    background: #fff;
+}
+/* Custom checkbox end */
+.makePrivate {
+    position: relative;
+}
+.makePrivate img {
+    display: inline-block;
+    max-width: 21px;
+    margin-left: 10px;
+    vertical-align: -6px;
+    cursor: pointer;
+}
+.tollTipWorkspace {
+    position: relative;
+}
+.customToolTipWorkspace {
+    display: none;
+    position: absolute;
+    top: 28px;
+    left: 0px;
+    z-index: 9;
+    border-radius: 4px;
+    padding: 6px 12px;
+    background: #413E3C;
+    color: #fff;
+    font-size: 13px;
+    line-height: 20px;
+    width: 100%;
+    /* width: -webkit-max-content;
+    width: max-content;
+    white-space: nowrap;
+    max-width: -webkit-max-content;
+    max-width: -moz-max-content;
+    max-width: max-content;
+    width: max-content; */
+}
+.tollTipWorkspace .showTollTip:hover .customToolTipWorkspace {
+    display: block;
+}
+
+.button-groups {
+    padding-top: 20px
+}
+.button-groups::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.button-groups button.cancel-btn {
+    float: left;
+    appearance: none;
+    border: 1px solid #BAB8B2;
+    border-radius: 30px;
+    color: #090808;
+    line-height: 34px;
+    padding: 0px 20px;
+    min-width: 100px;
+    letter-spacing: 0.5px;
+}
+button.upload-btn {
+    float: right;
+    appearance: none;
+    border: 1px solid #23211E;
+    border-radius: 30px;
+    color: #fff;
+    line-height: 34px;
+    padding: 0px 20px;
+    min-width: 100px;
+    background: #23211E;
+    letter-spacing: 0.5px;
+}
+
+.manageAccessHeader {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 3px;
+}
+
+.manageAccessHeader .imgBlock {
+    margin-right: 10px;
+}
+
+.manageAccessHeader .imgBlock img {
+    display: block;
+}
+
+.nameBlock, .manageAccessBlock h3 {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    color: #040404;
+    line-height: normal;
+}
+.manageAccessBlock h3 {
+    padding-bottom: 20px;
+}
+
+.tagBlock {
+    background: #E6E2DA;
+    border-radius: 4px;
+    padding: 0px 8px;
+    line-height: 24px;
+    margin-left: 10px;
+    font-weight: 600;
+    color: #645D57;
+}
+
+.breadcrumbBlock {
+    padding-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+.breadcrumbBlock span.active {
+    color: #24221f;
+}
+.breadcrumbBlock {
+    color: rgba(35, 33, 30, 0.6);
+}
+.breadcrumbBlock a {
+    color: rgba(35, 33, 30, 0.6);
+    text-decoration: none;
+    outline: none;
+}
+.breadcrumbBlock a:hover {
+    text-decoration: underline;
+}
+
+.whenYouConvert {
+    background: #E6F2FF;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #0072A2;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.button-groups button.upload-btn.disabled {
+    background: #ccc;
+    color: #fff;
+    border: 1px solid #ccc;
+}

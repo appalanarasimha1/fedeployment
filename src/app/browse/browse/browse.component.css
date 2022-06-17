@@ -1316,7 +1316,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   opacity: 0.6;
 }
 
-::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+::ng-deep .mat-snack-bar-container.snackBarMiddle,
 ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
   max-width: 50vw !important;
   margin-top: 200px !important;
@@ -2937,7 +2937,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   opacity: 0.6;
 }
 
-::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+::ng-deep .mat-snack-bar-container.snackBarMiddle,
 ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
   max-width: 50vw !important;
   margin-top: 200px !important;
@@ -3209,7 +3209,7 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   float: right;
   border-left: 1px solid #EFEEE9;
 }
-.buttonCreate img {opacity: 1 !important;width: 14px !important; margin-top: 3px;}
+.buttonCreate img {opacity: 1 !important;width: 18px !important; margin-top: 4px;}
 .deleteRecover {display: inline-block; margin-left: 10px;}
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
 .uploadClassificationDisable {
@@ -3373,7 +3373,7 @@ ul.downloadImgLisst li:last-child {
   padding-bottom: 0px;
 }
 
-ul.downloadImgLisst li .imgListBlk, 
+ul.downloadImgLisst li .imgListBlk,
 ul.downloadImgLisst li .contentListBlk,
 ul.downloadImgLisst li .imgMailIcon {
   display: inline-block;
@@ -3480,6 +3480,162 @@ ul.downloadImgLisst li .contentListBlk {
 .internal-use .control--radio input:disabled ~ .control__indicator:after {
   background: #fff;
 }
+
+.dropdownCreate .control-group {
+  display: block;
+}
+.dropdownCreate .control {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0px;
+  padding-left: 30px;
+  border: 0px;
+  margin: 0px 0px 0px;
+  color: #040404;
+}
+.dropdownCreate .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.dropdownCreate .control__indicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #404040;
+}
+.dropdownCreate .control--radio .control__indicator {
+  border-radius: 50%;
+}
+/* .dropdownCreate .control:hover input ~ .control__indicator, */
+/* .dropdownCreate .control input:focus ~ .control__indicator {
+  background: #006845;
+} */
+.dropdownCreate .control input:checked ~ .control__indicator {
+  background: #006845;
+}
+/* .dropdownCreate .control:hover input:not([disabled]):checked ~ .control__indicator,
+.dropdownCreate .control input:checked:focus ~ .control__indicator {
+  background: #fff;
+} */
+.dropdownCreate .control input:disabled ~ .control__indicator {
+  background: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.dropdownCreate .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.dropdownCreate .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.dropdownCreate .control--checkbox .control__indicator:after {
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.dropdownCreate .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #fff;
+}
+.dropdownCreate .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #23211E;
+}
+.dropdownCreate .control--radio input:disabled ~ .control__indicator:after {
+  background: #fff;
+}
+/* custom checkbox end */
+
+.views img.uploadIcon{
+  margin-right: 8px;
+  opacity: 1;
+  width: 18px;
+}
+.views img.infoIcon{
+  opacity: 1;
+  width: 22px
+}
+
+.customToolTipWorkspace.infoHover {
+  width: 380px;
+  left: -196px;
+  white-space: normal;
+  font-size: 13px;
+  font-weight: normal;
+}
+.mt-15 {
+  margin-top: 15px !important;
+}
+.tollTipWorkspace.workspaceInfoHover .classificationsIcon:hover path {
+  stroke:none;
+}
+
+.header-content .customWidth {
+  width: calc(100% - 65px);
+  display: inline-block;
+}
+.manageAccess {
+  width: 65px;
+  display: inline-block;
+  text-align: right;
+}
+.header-content .manageAccess ul::after {
+  content: '';
+  clear: both;
+  display: block;
+}
+.header-content .manageAccess li {
+  float: left;
+  position: relative;
+}
+.header-content .manageAccess li:first-child {
+  margin-right: 10px;
+}
+.header-content .manageAccess li:last-child {
+  margin-left: 10px;
+}
+.header-content .manageAccess li .customToolTipWorkspace {
+  right: 0px;
+  left: auto;
+}
+.addignCollaborators h2{
+  color: #BAB8B2;
+  text-align: center;
+  padding-bottom: 40px;
+  font-size: 24px;
+  font-weight: 400;
+}
+.addUsers {
+  text-align: center;
+}
+.addUserBtn {
+  display: inline-block;
+  background: #23211E;
+  border-radius: 80px;
+  padding: 9px 38px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+}
 /* custom checkbox end */
 
 svg.classificationsIcon.disablePermission path {
@@ -3488,3 +3644,37 @@ svg.classificationsIcon.disablePermission path {
 /* .updateClassificationBlk ::ng-deep .mat-datepicker-popup {
   left: 40% !important;
 } */
+
+.publicUseBlk {
+  background: #E6E2DA;
+  border-radius: 4px;
+  color: #645D57;
+  padding: 0px 8px;
+  font-size: 14px;
+  line-height: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+.publicUseBlk:hover {
+  background: #B1AAA1;
+  color: #1E1B19;
+}
+.mouseHoverInfo {
+  background: #1E1B19;
+  border-radius: 4px;
+  padding: 4px 12px 7px;
+  width: 256px;
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  position: absolute;
+  top: 35px;
+  left: 0px;
+  z-index: 9;
+  display: none;
+}
+.publicUseBlock:hover .mouseHoverInfo {
+  display: block;
+}

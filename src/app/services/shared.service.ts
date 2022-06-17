@@ -259,12 +259,12 @@ export class SharedService {
     return tag;
   }
 
-  async getCreateFolderPayload(name: string, sector: string, parentFolder: any, description?: String, associatedDate?: string) {
+  async getCreateFolderPayload(name: string, sector: string, parentFolder: any, description?: String, associatedDate?: string, isPrivate?: boolean) {
     return {
       "entity-type": "document",
       repository: "default",
       path: parentFolder.path,
-      type: parentFolder.type ?? "Workspace",
+      type: parentFolder.childType ?? "Workspace",
       parentRef: parentFolder.id,
       isCheckedOut: true,
       isRecord: false,
@@ -289,6 +289,7 @@ export class SharedService {
         "dc:sector": sector,
         "dc:primaryType": "event",
         "dc:folderType": associatedDate ? "singleDayEvent" : "generic",
+        "dc:isPrivate": isPrivate,
       },
       facets: ["Folderish", "NXTag", "SuperSpace"],
       schemas: [

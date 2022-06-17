@@ -1,0 +1,283 @@
+::ng-deep .mat-dialog-container {
+    padding: 20px !important;
+}
+/* Custom checkbox start */
+.makePrivate .control-group {
+    display: block;
+}
+.makePrivate .control {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 0px;
+    padding-left: 30px;
+    border: 0px;
+    margin: 0px 0px 0px;
+    color: #040404;
+}
+.makePrivate .control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+.makePrivate .control__indicator {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #404040;
+}
+.makePrivate .control--radio .control__indicator {
+    border-radius: 50%;
+}
+.makePrivate .control input:checked ~ .control__indicator {
+    background: #006845;
+    border-color: #006845;
+}
+.makePrivate .control input:disabled ~ .control__indicator {
+    background: #fff;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.makePrivate .control__indicator:after {
+    content: '';
+    position: absolute;
+    display: none;
+}
+.makePrivate .control input:checked ~ .control__indicator:after {
+    display: block;
+}
+.makePrivate .control--checkbox .control__indicator:after {
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.makePrivate .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #fff;
+}
+.makePrivate .control--radio .control__indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #23211E;
+}
+.makePrivate .control--radio input:disabled ~ .control__indicator:after {
+    background: #fff;
+}
+/* Custom checkbox end */
+
+.makePrivate {
+    position: relative;
+}
+.makePrivate img {
+    display: inline-block;
+    max-width: 21px;
+    margin-left: 10px;
+    vertical-align: -6px;
+    cursor: pointer;
+}
+.tollTipWorkspace {
+    position: relative;
+}
+.customToolTipWorkspace {
+    display: none;
+    position: absolute;
+    top: 28px;
+    left: 0px;
+    z-index: 9;
+    border-radius: 4px;
+    padding: 6px 12px;
+    background: #413E3C;
+    color: #fff;
+    font-size: 13px;
+    line-height: 20px;
+    width: 100%;
+}
+.tollTipWorkspace .showTollTip:hover .customToolTipWorkspace {
+    display: block;
+}
+
+.button-groups {
+    padding-top: 20px
+}
+.button-groups::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.button-groups button.cancel-btn {
+    float: left;
+    appearance: none;
+    border: 1px solid #BAB8B2;
+    border-radius: 30px;
+    color: #090808;
+    line-height: 34px;
+    padding: 0px 20px;
+    min-width: 100px;
+    letter-spacing: 0.5px;
+}
+button.upload-btn {
+    float: right;
+    appearance: none;
+    border: 1px solid #23211E;
+    border-radius: 30px;
+    color: #fff;
+    line-height: 34px;
+    padding: 0px 20px;
+    min-width: 100px;
+    background: #23211E;
+    letter-spacing: 0.5px;
+}
+
+.button-groups button.upload-btn.disabled {
+    background: #ccc;
+    color: #fff;
+    border: 1px solid #ccc;
+}
+
+.addUserBlock h3 {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    color: #040404;
+    line-height: normal;
+    padding-bottom: 20px;
+}
+.disableColor {
+    color: #BAB8B2;
+}
+.mb-20 {
+    margin-bottom: 20px !important;
+}
+.pl-10 {
+    padding-left: 10px;
+}
+
+.makeAdminBlock {
+    padding: 0px 0px 20px;
+    margin-top: 10px;
+}
+.makeAdminBlock ul li {
+    line-height: 40px;
+    padding: 0px 10px;
+    margin-bottom: 0px;
+    border-radius: 8px;
+    font-weight: normal;
+    color: #040404;
+    font-size: 15px;
+}
+.makeAdminBlock ul {
+    margin: 0px -10px;
+    min-height: 100px;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    max-height: 200px;
+}
+.makeAdminBlock ul li:hover, .makeAdminBlock ul li.active {
+    background: #F8EECC;
+}
+span.makeAdminAction {
+    float: right;
+    cursor: pointer;
+    color: #937206;
+    font-weight: normal;
+    display: none;
+}
+span.makeAdminAction img {
+    display: inline-block;
+    vertical-align: -4px;
+    padding-left: 5px;
+}
+.makeAdminBlock ul li:hover .makeAdminAction {
+    display: block;
+}
+.addUsers {
+    position: relative;
+}
+.addUsers input[type="text"] {
+    border: 0px;
+    outline: none;
+    border-bottom: 1px solid #413E3C;
+    color: #040404;
+    width: 100%;
+    padding: 0px 100px 5px 0px;
+    line-height: 30px;
+    font-weight: 100;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+.addBtn, .sendInviteBtn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1px solid #BAB8B2;
+    border-radius: 50px;
+    color: #BAB8B2;
+    line-height: 28px;
+    outline: none;
+    padding: 0px 20px;
+    text-align: center;
+    position: absolute;
+    right: 0px;
+    cursor: pointer
+}
+.sendInviteBtn {
+    color: #1E1B19;
+}
+
+.makeAdminAction {
+    position: relative;
+}
+.removeInfo {
+    position: absolute;
+    right: 0px;
+    bottom: -23px;
+    background: #1E1B19;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    width: 100px;
+    display: none;
+    color: #fff;
+    width: fit-content;
+    white-space: nowrap;
+}
+.removeIcon:hover .removeInfo {
+    display: block;
+}
+.removeIcon:hover path {
+    fill: #DAAA00;
+}
+span.makeAdminAction svg {
+    vertical-align: -5px;
+    margin-left: 8px;
+}
+
+/* Track */
+.makeAdminBlock ul::-webkit-scrollbar-track{
+	background-color: transparent;
+}
+
+.makeAdminBlock ul::-webkit-scrollbar{
+	width: 6px;
+	background-color:transparent;
+}
+
+.makeAdminBlock ul::-webkit-scrollbar-thumb{
+	background-color: #E8E6DF;
+  border-radius: 10px;
+}
