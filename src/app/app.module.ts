@@ -32,6 +32,7 @@ import { initializer } from './AppInit';
 import { RoleGuardService } from './services/roleGaurd';
 import { AuthGuardService } from './services/authGaurd';
 // import { AssetViewComponent } from './asset-view/asset-view.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { AuthGuardService } from './services/authGaurd';
     UpdateModalModule,
     NgSelectModule,
     KeycloakAngularModule,
+    SlickCarouselModule,
   ],
   providers: [
     // CookieService,

@@ -67,3 +67,6 @@ footer{
     position: absolute;
     bottom: 0px;
 }
+.customSlider img {
+    max-width: 100%;
+}

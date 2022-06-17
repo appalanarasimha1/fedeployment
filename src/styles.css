@@ -4312,3 +4312,77 @@ body {
 .updateClassificationBlk ::ng-deep .mat-datepicker-popup {
   left: 40% !important;
 }
+
+.modal-customWidth.modal-dialog {
+  max-width:800px !important;
+  width: 100%;
+}
+.modal-customWidth.modal-dialog .modal-content {
+  background-image: url(./assets/images/popup-bg.png);
+  background-position: left bottom;
+  background-size: cover;
+  margin-top: 60px !important;
+  min-height: 200px;
+}
+.modal-customWidth.modal-dialog .modal-content button.close {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 1;
+  opacity: 1;
+  width: 25px;
+  height: 25px;
+}
+.modal-customWidth.modal-dialog .modal-content button.close img {
+  max-width: 100%;
+}
+
+.customSlider .slick-dots li.slick-active button:before {
+  color: transparent;
+  opacity: 1;
+  border: 2px solid #fff;
+  border-radius: 100px;
+  background: transparent;
+}
+.customSlider .slick-dots li button:before {
+  height: 15px;
+  width: 15px;
+  border: 2px solid #EDD580;
+  border-radius: 100px;
+  background: #EDD580;
+  color: transparent;
+  opacity: 1;
+}
+
+.customSlider .slick-next:before, .customSlider .slick-prev:before {
+  color: #EDD580;
+  font-size: 13px;
+  font-family: myBrown;
+  white-space: nowrap;
+}
+.customSlider .slick-next:before {
+  content: "Next >";
+}
+.customSlider .slick-prev:before {
+  content: "< Previous";
+}
+
+.customSlider .slick-next {
+  right: 20px;
+  width: auto;
+  z-index: 2;
+}
+.customSlider .slick-prev {
+  left: 20px;
+  width: auto;
+  z-index: 2;
+}
+.customSlider .slick-prev, .customSlider .slick-next {
+  top: 100%;
+}
+.customSlider .slick-dots {
+  bottom: -15px;
+}
+.customSlider .slick-prev:before, .customSlider .slick-next:before {
+  opacity: 1;
+}
