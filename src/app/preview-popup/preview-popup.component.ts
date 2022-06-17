@@ -377,7 +377,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.doc.properties["sa:downloadApproval"] === "true"
     );
   }
-
+  internalUse(){
+    return this.doc.properties["sa:allow"] === ALLOW.internal;
+  }
   showDownloadDropdown() {
     return (
       this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware)

@@ -399,11 +399,13 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkAccessOptionDisabled(value: string, fileIndex?: any) {
-    
-    const confidentiality = !fileIndex ? this.overallConfidentiality : this.customConfidentialityMap[fileIndex];
+    const confidentiality = !fileIndex
+      ? this.overallConfidentiality
+      : this.customConfidentialityMap[fileIndex];
     // console.log({ confidentiality });
 
-    if (!confidentiality || confidentiality === CONFIDENTIALITY.not) return false;
+    if (!confidentiality || confidentiality === CONFIDENTIALITY.not)
+      return false;
     if (value === ACCESS.all) {
       return true;
     }
@@ -659,7 +661,7 @@ export class UploadModalComponent implements OnInit {
   // }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
-    console.log({ fileIndex ,asdfrgthgfd:this.customConfidentialityMap }); 
+    console.log({ fileIndex, asdfrgthgfd: this.customConfidentialityMap });
 
     if (fileIndex == null) {
       this.overallAccess = undefined;
@@ -672,7 +674,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelectAccess(access, fileIndex?: any) {
-    console.log({ fileIndex }); 
+    console.log({ fileIndex });
     const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAccessMap[fileIndex] = access;
@@ -1064,6 +1066,15 @@ export class UploadModalComponent implements OnInit {
         this.overallAccess === ACCESS.all ? ALLOW.any : ALLOW.internal;
       this.customAllowMap[i] = allow;
     }
+  }
+  
+  isPrivateFolder() {
+    if (this.selectedFolder?.type !== "Workspace") return false;
+
+    const isPrivate =
+      this.selectedFolder?.properties &&
+      this.selectedFolder?.properties["dc:isPrivate"];
+    return isPrivate || this.selectedFolder.isPrivate;
   }
   // checkOwnerDropdownByValue(value?: string) {
   //   switch (value) {
