@@ -169,10 +169,10 @@
   
                       <li>
                         Location <br />
-                        <span style="color: #ebc03f; word-break: break-all">
-                          <!-- <a [routerLink]="['/common/terms']" target="_blank"> -->
+                        <span style=" word-break: break-all">
+                          <a (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
                             {{doc?.path?.split('/'+doc.title)[0]}}
-                          <!-- </a> -->
+                          </a>
                         </span>
                       </li>
   
@@ -487,9 +487,12 @@
                     </li>
 
                     <li>
-                      Location <br /><span style="color: #ebc03f; word-break: break-all">{{
-                        doc?.path?.split('/'+doc.title)[0]
-                        }}</span>
+                      Location <br />
+                      <span style=" word-break: break-all">
+                        <a (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                          {{doc?.path?.split('/'+doc.title)[0]}}
+                        </a>
+                      </span>
                     </li>
 
                     <li>
