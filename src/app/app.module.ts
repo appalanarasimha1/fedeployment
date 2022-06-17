@@ -34,6 +34,7 @@ import { AuthGuardService } from './services/authGaurd';
 import { ManageAccessModalComponent } from './manage-access-modal/manage-access-modal.component';
 import { AddUserModalComponent } from './add-user-modal/add-user-modal.component';
 // import { AssetViewComponent } from './asset-view/asset-view.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { AddUserModalComponent } from './add-user-modal/add-user-modal.component
     UpdateModalModule,
     NgSelectModule,
     KeycloakAngularModule,
+    SlickCarouselModule,
   ],
   providers: [
     // CookieService,

@@ -117,6 +117,7 @@ export class HeaderComponent implements OnInit {
 
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
+    // this.openOnboardingModal(this.onboarding);
     return;
   }
 

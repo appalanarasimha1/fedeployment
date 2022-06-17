@@ -680,3 +680,7 @@ header.updateHeader .navbar .navbar-collapse {
         display: none;
     }
 }
+
+.customSlider img {
+    max-width: 100%;
+}

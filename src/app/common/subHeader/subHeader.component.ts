@@ -112,11 +112,11 @@ export class SubHeaderComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (!localStorage.getItem("openVideo")) {
-      // this.openSm(this.videoModal);
-      localStorage.setItem("openVideo", "1");
-    }
-    return;
+    // if (!localStorage.getItem("openVideo")) {
+    //   // this.openSm(this.videoModal);
+    //   localStorage.setItem("openVideo", "1");
+    // }
+    // return;
   }
 
   videoPayEnded(event: any) {
