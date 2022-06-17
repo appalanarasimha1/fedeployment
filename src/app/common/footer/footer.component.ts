@@ -33,6 +33,7 @@ export class FooterComponent implements OnInit {
     slidesToShow: 1,
     slidesToScroll: 1,
     dots: true,
+    autoplay: true,
     infinite: false,
     speed: 300,
     centerMode: false,
@@ -82,10 +83,9 @@ export class FooterComponent implements OnInit {
   }
 
   openOnboardingModal(onboarding) {
-    // this.modalService.open(onboarding);
-    setTimeout(() => {
+    // setTimeout(() => {
       this.modalService.open(this.onboarding, { size: 'customWidth' });
-    }, 1000);
+    // }, 5000);
   }
 
   closeModal() {
