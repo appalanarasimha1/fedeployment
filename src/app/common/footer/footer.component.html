@@ -35,9 +35,29 @@
     <ngx-slick-carousel class="carousel customSlider" 
       #slickModal="slick-carousel" 
       [config]="tagsConfig" >
-      <div ngxSlickItem *ngFor="let bucket of tagsMetadataDummy; let i = index" class="slide">
+      <!-- <div ngxSlickItem *ngFor="let bucket of tagsMetadataDummy; let i = index" class="slide">
         <div class="item" >
           <img src="{{bucket.image}}" />
+        </div>
+      </div> -->
+      <div ngxSlickItem class="slide">
+        <div class="item" >
+          <img src="../../../assets/images/mask-group1.png" />
+        </div>
+      </div>
+      <div ngxSlickItem class="slide">
+        <div class="item" >
+          <img src="../../../assets/images/mask-group2.png" />
+        </div>
+      </div>
+      <div ngxSlickItem class="slide">
+        <div class="item" >
+          <img src="../../../assets/images/mask-group3.png" />
+        </div>
+      </div>
+      <div ngxSlickItem class="slide">
+        <div class="item" >
+          <img src="../../../assets/images/mask-group4.png" />
         </div>
       </div>
     </ngx-slick-carousel>

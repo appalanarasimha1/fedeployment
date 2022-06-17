@@ -33,7 +33,7 @@ export class FooterComponent implements OnInit {
     slidesToShow: 1,
     slidesToScroll: 1,
     dots: true,
-    autoplay: true,
+    // autoplay: true,
     infinite: false,
     speed: 300,
     centerMode: false,

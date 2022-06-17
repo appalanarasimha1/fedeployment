@@ -4422,3 +4422,7 @@ body {
 .addUserBlock .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
   padding-left: 0px !important;
 }
+.customSlider .slick-prev.slick-disabled:before, .customSlider .slick-next.slick-disabled:before {
+	opacity: 0 !important;
+	display: none !important;
+}
