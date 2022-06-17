@@ -424,4 +424,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     // }
   }
 
+  navigateTo(location: string): void {
+    this.router.navigate(['workspace'], { queryParams: {folder: location }});
+    this.modalService?.dismissAll();
+  }
+
 }
