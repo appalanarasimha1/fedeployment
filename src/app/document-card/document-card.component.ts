@@ -27,10 +27,7 @@ export class DocumentCardComponent implements OnChanges {
   ngOnChanges() {}
 
   getFileContent(): string {
-    return this.getAssetUrl(
-      null,
-      this.doc?.properties["file:content"]?.data || ""
-    );
+    return this.getAssetUrl(null,this.doc?.properties["file:content"]?.data || "");
   }
 
   openPreview() {
@@ -234,9 +231,8 @@ export class DocumentCardComponent implements OnChanges {
       return false;
     }
   }
-  // downloadOnClick(){
-  //   if(!this.checkCopyRight() && this.hasNoRestriction()){
-  //     window.open(this.getFileContent());
-  //   }
-  // }
+  checkPopupNeeds(){
+    if(this.checkCopyRight() ||this.hasInternalRestriction()|| this.hasRequestRestriction()) return true
+    return false
+  }
 }
