@@ -1063,9 +1063,9 @@ export class UploadModalComponent implements OnInit {
       this.customAllowMap[i] = allow;
     }
   }
-  
+
   isPrivateFolder() {
-    if (this.selectedFolder?.type !== "Workspace") return false;
+    // if (this.selectedFolder?.type !== "Workspace") return false;
 
     const isPrivate =
       this.selectedFolder?.properties &&

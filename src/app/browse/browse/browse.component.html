@@ -197,10 +197,10 @@
                     <img src="../../../assets/images/pencil-write.svg" alt="" *ngIf="showLinkCopy" class="renameFolderImg" (click)="renameFolderAction()" />
                     <span *ngIf="showLinkCopy" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                       <div class="publicUseBlock">
-                        <div class="publicUseBlk">Private</div>
+                        <div *ngIf="isPrivateFolder(true, true)" class="publicUseBlk">Private</div>
                         <div class="mouseHoverInfo">
                           <p>You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
-                          <div class="manageAccessBtn">
+                          <div (click)="openAddUserModal()" class="manageAccessBtn">
                             Manage access
                           </div>
                         </div>
@@ -940,14 +940,21 @@
             </div>
 
             <!-- Start adding collaborators to this private folder -->
-            <div *ngIf="isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
+            <div *ngIf="isPrivateFolder(false) && checkShowNoTrashItem()" class="addignCollaborators" style="padding-top: 40px;">
               <h2>Start adding collaborators to this private folder</h2>
               <div class="addUsers">
                 <div class="addUserBtn" (click)="openAddUserModal()">Add users</div>
               </div>
             </div>
+
+            <div *ngIf="checkShowNoTrashItem() && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
+              <h2>Start adding assets to this private folder</h2>
+              <div class="addUsers">
+                <div class="addUserBtn" (click)="openModal()">Upload</div>
+              </div>
+            </div>
             <!-- End adding collaborators to this private folder -->
-            <div class="no-items" *ngIf="checkShowNoTrashItem()">
+            <div class="no-items" *ngIf="checkShowNoTrashItem() && !isPrivateFolder(true, true)">
               <img
                 src="../../../assets/images/no-items.svg"
                 alt="No items here"
@@ -1171,7 +1178,7 @@
                         <p style="text-align: left; word-break: break-all;">{{item.title}}</p>
                         <span style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                           <div class="publicUseBlock">
-                            <div class="publicUseBlk">Private</div>
+                            <div *ngIf="item.properties['dc:isPrivate']" class="publicUseBlk">Private</div>
                             <!-- <div class="mouseHoverInfo">
                               <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
                               <div class="manageAccessBtn">
