@@ -3,7 +3,7 @@
   <div class="filter-box">
     <div class="filter-background">
 
-   
+
     <div class="filter-box-header">
       <img src="../../assets/images/modalclose.svg" (click)="closeModal()" style="cursor: pointer;width: 20px">
       <span style="font-size: 20px;margin-left: 108px;" *ngIf="selectedType === 'all'"> Filter all assets</span>
@@ -77,6 +77,36 @@
           ></ng-multiselect-dropdown>
         </div>
 
+      </div>
+    </div>
+    <div>
+      <div class="col-xl-8">
+        <label class="control control--checkbox" style="margin-bottom: 0px;">
+          <input
+            autocomplete="off"
+            type="checkbox"
+            checked="checked"
+            (change)="onCheckIncludePrivate($event)"
+            [(ngModel)]="includePrivate"
+            [ngModelOptions]="{standalone: true}"
+          />
+          Only show assets that can use publicity
+         <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+        </label>
+      </div>
+      <div class="col-xl-8">
+        <label class="control control--checkbox" style="margin-bottom: 0px;">
+          <input
+            autocomplete="off"
+            type="checkbox"
+            checked="checked"
+            (change)="onCheckDownloadApproval($event)"
+            [(ngModel)]="downloadApproval"
+            [ngModelOptions]="{standalone: true}"
+          />
+          Only show assets that don't require usage approval
+         <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+        </label>
       </div>
     </div>
   </div>

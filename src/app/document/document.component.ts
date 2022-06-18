@@ -452,6 +452,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       queryParams["sectors"] = `["${sector}"]`;
     }
     queryParams["duplicate_show"] = "1";
+    queryParams["not_private"] = true;
     this.loading.push(true);
     this.nuxeo.nuxeoClient
       .request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
@@ -1045,6 +1046,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
   }
 
+  showGridListSwitcher() {
+    return !!this.detailView;
+  }
+
   over(index) {
     this.masoneryItemIndex = index;
   }
@@ -1128,7 +1133,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       item.properties['sa:copyrightName'] !== ""
     ) {
       this.copyRightItem.push(item.uid);
-    } 
+    }
       if (item.properties["sa:users"].length > 0) {
         this.needPermissionToDownload.push(item);
       } else {

@@ -161,7 +161,7 @@ export class SearchComponent implements OnInit {
 
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40 };
     for (const key in data) {
-      if (typeof data[key] !== "string" && typeof data[key] !== "number") {
+      if (typeof data[key] !== "string" && typeof data[key] !== "number" && typeof data[key] !== "boolean") {
         data[key].map((item: string) => {
           if (queryParams[key]) {
             queryParams[key] =
@@ -245,14 +245,31 @@ export class SearchComponent implements OnInit {
         params["sortBy"] = "dc:created";
         params["sortOrder"] = "desc";
         params["duplicate_show"] = "1";
+        params["not_private"] = true;
         if (this.documentsView.sectorSelected) {
           params["sectors"] = `["${this.documentsView.sectorSelected}"]`;
         }
         break;
       default:
         params["duplicate_show"] = "1";
+        params["not_private"] = true;
+        params["download_approval"] = "true";
     }
     if (!url) return;
+
+    if (params["downloadApproval"] !== undefined) {
+      if (params["downloadApproval"]) {
+        delete params["download_approval"];
+      }
+      delete params["downloadApproval"];
+    }
+
+    if (params["includePrivate"] !== undefined) {
+      if (params["includePrivate"]) {
+        delete params["not_private"];
+      }
+      delete params["includePrivate"];
+    }
 
     this.dataService.loaderValueChange(true);
     this.nuxeo.nuxeoClient
