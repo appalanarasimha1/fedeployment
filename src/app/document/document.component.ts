@@ -452,7 +452,6 @@ export class DocumentComponent implements OnInit, OnChanges {
       queryParams["sectors"] = `["${sector}"]`;
     }
     queryParams["duplicate_show"] = "1";
-    queryParams["not_private"] = true;
     this.loading.push(true);
     this.nuxeo.nuxeoClient
       .request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
