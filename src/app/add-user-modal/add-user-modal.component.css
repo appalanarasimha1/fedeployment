@@ -281,3 +281,6 @@ span.makeAdminAction svg {
 	background-color: #E8E6DF;
   border-radius: 10px;
 }
+.addUserBlock {
+    width: 500px !important;
+}
