@@ -52,8 +52,8 @@
         <span *ngIf="c.value.permission === 'Everything'" class="disableColor pl-10">Admin</span>
         <span class="makeAdminAction">
           <span (click)="makeAdmin(c.key, 'updated')" *ngIf="c.value.permission !== 'Everything'">Make admin</span>
-          <span (click)="removeAdmin(c.key, 'updated')" *ngIf="c.value.permission === 'Everything'">Remove admin</span>
-          <span (click)="removeUser(c.key, 'removed')" class="removeIcon">
+          <span (click)="removeAdmin(c.key, 'updated')" *ngIf="c.value.permission === 'Everything' && canRemoveAdmin(c.value)">Remove admin</span>
+          <span (click)="removeUser(c.key, 'removed')" *ngIf="canRemoveAdmin(c.value)" class="removeIcon">
             <svg
               width="20"
               height="20"
