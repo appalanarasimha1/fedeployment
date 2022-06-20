@@ -46,6 +46,7 @@ export class AddUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.selectedFolder = this.data.selectedFolder;
     this.folderId = this.data.folderId;
     this.folderCollaborators = this.data.folderCollaborators || {};
     this.addedCollaborators = {};
@@ -208,6 +209,10 @@ export class AddUserModalComponent implements OnInit {
         }));
       })
     );
+  }
+
+  canRemoveAdmin(item) {
+    return item.user?.id !== this.selectedFolder?.properties["dc:creator"];
   }
 
   loadUsers() {

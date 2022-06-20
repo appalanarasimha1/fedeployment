@@ -47,7 +47,7 @@ export class BrowseComponent implements OnInit {
   // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
   @ViewChild("paginator") paginator: MatPaginator;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
-  
+
 
   constructor(
     private modalService: NgbModal,
@@ -1463,7 +1463,7 @@ export class BrowseComponent implements OnInit {
       !this.sizeExeeded,
       this.forInternalUse.length
     );
-    
+
     if (
       this.downloadArray.length > 0 &&
       this.copyRightItem.length < 1 &&
@@ -1683,6 +1683,7 @@ export class BrowseComponent implements OnInit {
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {
+      selectedFolder: this.selectedFolder,
       folderId: this.selectedFolder.uid,
       folderCollaborators
     }
@@ -1712,6 +1713,9 @@ export class BrowseComponent implements OnInit {
 
   hasNoOtherCollaborators(currentCollaborators) {
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return true;
+    const otherUser = Object.keys(currentCollaborators).find(id => this.user !== id);
+    if (otherUser) return false;
+    else return true;
   }
 
   getFolderCollaborators() {
@@ -1721,7 +1725,7 @@ export class BrowseComponent implements OnInit {
     if (!localAces?.aces) return;
     const folderCollaborators = {};
     localAces.aces.forEach(ace => {
-      if (!ace.granted || ace.username.id === this.user || ace.username.id === 'administrators') return;
+      if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
       folderCollaborators[ace.username.id] = {
         user: ace.username,
         permission: ace.permission,
