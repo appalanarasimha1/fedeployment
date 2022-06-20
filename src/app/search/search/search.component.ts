@@ -263,7 +263,7 @@ export class SearchComponent implements OnInit {
 
     if (params["includePrivate"] !== undefined) {
       if (params["includePrivate"]) {
-        params["not_private"] = true;
+        params["sa_access"] = "All access";
       }
       delete params["includePrivate"];
     }
