@@ -87,9 +87,9 @@
          </div>
       </mat-step>
 
-      <mat-step >
+      <mat-step [completed]="!checkUploadFormStep()" >
          <ng-template matStepLabel>Add information</ng-template>
-         <div class="upload-form" id="customScrollBar" >
+         <div class="upload-form" id="customScrollBar" *ngIf="!isPrivateFolder()">
             <div  class="publish-assets">
                <div class="custompadding">
                   <ul class="flexible upload-prevoew">
@@ -270,134 +270,6 @@
                      </mat-expansion-panel>
                   </mat-accordion> -->
                </div>
-            </div>
-            <div *ngIf="!isPrivateFolder()">
-               <div class="upload-form-input row mb-30">
-                  <div class="col-xl-4 col-md-4">
-                     <label for="confidentiality">Confidentiality</label>
-                  </div>
-                  <div class="col-xl-8 col-md-8 flexible">
-                     <ng-select placeholder="Specify sensitivity"
-                        (change)="onSelectConfidentiality($event)"
-                        [searchable]="false"
-                        [clearable]="false"
-                        [(ngModel)]="confidentiality"
-                        id="confidentiality"
-                        [ngClass]="{'goldenText': confidentiality}"
-                     >
-                        <ng-option *ngFor="let c of CONFIDENTIALITY | keyvalue" [value]="c.value">
-                           {{CONFIDENTIALITY_LABEL[c.value]}}
-                        </ng-option>
-                     </ng-select>
-                     <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
-                        <option value="" disabled selected hidden invalid >Specify sensitivity</option>
-                        <option style="color: golden;" [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-                        </select> -->
-                     <!-- <button type="button" class=" mr-2" placement="left" ngbTooltip="Confidentiality can't be changed once the asset is published.">
-                        <img src="../../assets/images/Info-icon.svg">
-                        </button> -->
-                     <!-- <button type="button" class="btn btn-outline-secondary mr-2" placement="left" ngbTooltip="Tooltip on left">
-                        Tooltip on left
-                        </button> -->
-                     <!-- <mat-icon class="info-icon" matTooltip="Confidentiality can't be changed once the asset is published.">info</mat-icon> -->
-                     <div class="tooltip1">
-                        <img src="../../assets/images/Info-icon.svg">
-                        <span class="tooltiptext">Ground X will classify the asset(s) as per the sensitivity specified.</span>
-                     </div>
-                  </div>
-               </div>
-               <div class="upload-form-input row mb-30">
-                  <div class="col-xl-4 col-md-4">
-                     <label for="access">{{ACCESS_TITLE}}</label>
-                  </div>
-                  <div class="col-xl-8 col-md-8 flexible">
-                     <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="access" id="access" [ngClass]="{'goldenText': access}">
-                        <ng-option *ngFor="let c of ACCESS | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
-                        {{ACCESS_LABEL[c.value]}}
-                        </ng-option>
-                     </ng-select>
-                     <!-- <select name="access" (change)="onSelectAccess($event.target.value)" id="access" [ngClass]="{'goldenText': access }" >
-                        <option value="" disabled selected hidden invalid >Specify sensitivity</option>
-                        <option [selected]="access === c.value" [disabled]="checkAccessOptionDisabled(c.value)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-                        </select> -->
-                     <!-- <mat-icon class="info-icon" matTooltip="Acess rights can't be changed once the asset is published.">info</mat-icon> -->
-                     <div class="tooltip1">
-                        <img src="../../assets/images/Info-icon.svg">
-                        <span class="tooltiptext">Ground X will only display the asset(s) to the specified users</span>
-                     </div>
-                  </div>
-               </div>
-
-               <div *ngIf="checkShowUserDropdown()" class="upload-form-input row mb-30">
-                  <div class="col-xl-4 col-md-4">
-                     <!-- <label for="user">Users</label> -->
-                  </div>
-                  <div class="col-xl-8 col-md-8">
-                     <p class="userText pb-4">{{SPECIFIC_USER_LABEL}}</p>
-                     <ng-select style="height: unset !important;"
-                     [items]="userList$ | async"
-                     bindLabel="id"
-                     bindValue="id"
-                     [multiple]="true"
-                     [hideSelected]="true"
-                     [trackByFn]="trackByFn"
-                     [minTermLength]="2"
-                     [loading]="userLoading"
-                     typeToSearchText="Search users"
-                     [typeahead]="userInput$"
-                     [(ngModel)]="selectedUsers"
-                     [ngClass]="{'goldenText': selectedUsers }" >
-                     <ng-template ng-option-tmp let-item="item">
-                        {{item.id}} ({{item.fullname}})
-                     </ng-template>
-                     </ng-select>
-                  </div>
-               </div>
-
-               <div class="upload-form-input row mb-30">
-                  <div class="col-xl-4">
-                     <label>Usage permission</label>
-                  </div>
-                  <div class="col-xl-8">
-                    <label class="control control--checkbox" style="margin-bottom: 0px;">
-                      Approval required before download
-                      <input
-                        autocomplete="off"
-                        type="checkbox"
-                        checked="checked"
-                        (change)="onCheckDownloadApproval($event)"
-                        [(ngModel)]="downloadApproval"
-                        [ngModelOptions]="{standalone: true}"
-                     />
-                     <div class="control__indicator" style="top: 4px;left: 0px;"></div>
-                    </label>
-                  </div>
-               </div>
-
-            <div *ngIf="checkOwnerDropdown()" class="upload-form-input row mb-30">
-               <div class="col-xl-4 col-md-4">
-               </div>
-               <div class="col-xl-8 col-md-8">
-                  <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
-                  <ng-select style="height: unset !important;"
-                  [items]="userList$ | async"
-                  bindLabel="id"
-                  bindValue="id"
-                  [multiple]="true"
-                  [hideSelected]="true"
-                  [trackByFn]="trackByFn"
-                  [minTermLength]="2"
-                  [loading]="userLoading"
-                  typeToSearchText="Search users"
-                  [typeahead]="userInput$"
-                  [(ngModel)]="ownerName"
-                  [ngClass]="{'goldenText': ownerName }" >
-                  <ng-template ng-option-tmp let-item="item">
-                     {{item.id}} ({{item.fullname}})
-                  </ng-template>
-                  </ng-select>
-               </div>
-            </div>
             </div>
          </div>
 
