@@ -1932,3 +1932,9 @@ ul.downloadImgLisst li .contentListBlk {
 .download-btn a.cancelDownload {
   margin-right: 25px;
 }
+
+.col-xl-8.fludeSortBy {
+  flex: 0 0 auto;
+  width: 100%;
+  text-align: right;
+}
