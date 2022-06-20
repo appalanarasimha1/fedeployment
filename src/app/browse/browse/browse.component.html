@@ -388,10 +388,10 @@
                           time.
                         </p>
                         <div class="download-btn">
-                          <a
+                          <!-- <a
                             (click)="cancelDownloadClick($event)"
                             class="cancelDownload"
-                            >Cancel download</a>
+                            >Cancel download</a> -->
                           <a
                             (click)="downloadAssets($event)"
                             class="uncheckAfterSuccess"
@@ -471,11 +471,11 @@
                           Please check the box to proceed
                         </div>
                         <div class="download-btn" (click)="downloadClick()">
-                          <a
+                          <!-- <a
                             (click)="cancelDownloadClick($event)"
                             class="cancelDownload"
                             >Cancel download</a
-                          >
+                          > -->
                           <a
                             (click)="downloadAssets($event)"
                             [ngClass]="{ downloadDisbable: !downloadEnable }"
