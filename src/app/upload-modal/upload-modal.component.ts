@@ -1133,4 +1133,24 @@ export class UploadModalComponent implements OnInit {
   //     this.customUsersMap[index] = [...users];
   //   }
   // }
+
+  checkFormState(): boolean {
+    const length = Object.keys(this.filesMap).length;
+    for (let i = 0; i < length; i++) {
+      console.log('index = ', i);
+      const access = this.customAccessMap[i];
+      const allow = this.customAllowMap[i];
+      const confidentiality = this.customConfidentialityMap[i];
+      if(!access || !allow || !confidentiality) {
+        return true;
+      } else if(access === ACCESS["restricted"] && !this.customUsersMap[i]?.length) {
+          return true;
+      } else if(this.customDownloadApprovalMap[i] && !this.customDownloadApprovalUsersMap[i]) {
+        return true;
+      } else if(i === length - 1) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

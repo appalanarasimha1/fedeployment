@@ -1141,6 +1141,12 @@ export class BrowseComponent implements OnInit {
             b.properties["dc:modified"],
             isAsc
           );
+          case "file:content":
+          return this.compare(
+            a.properties["file:content"],
+            b.properties["file:content"],
+            isAsc
+          );
         default:
           return 0;
       }
@@ -1245,6 +1251,8 @@ export class BrowseComponent implements OnInit {
       this.sectorWorkspace = entries[workSpaceIndex];
     }
     if (workSpaceIndex === -1) {
+      console.log("yaha se ",entries);
+      
       this.sortedData = entries;
       this.searchList = entries;
       this.showLinkCopy = true;
@@ -1514,7 +1522,7 @@ export class BrowseComponent implements OnInit {
        ) {
          this.copyRightItem.push(item.uid);
        }
-      if (item.properties["sa:users"].length > 0) {
+      if (item.properties["sa:downloadApprovalUsers"].length > 0) {
         this.needPermissionToDownload.push(item);
       } else {
         if (item.properties["sa:access"] === "Internal access only") {
@@ -1542,7 +1550,7 @@ export class BrowseComponent implements OnInit {
   }
 
   getUser(item) {
-    return item.properties["sa:users"];
+    return item.properties["sa:downloadApprovalUsers"];
   }
 
   getdownloadAssetsSize() {

@@ -1080,7 +1080,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     ) {
       this.copyRightItem.push(item.uid);
     } 
-      if (item.properties["sa:users"].length > 0) {
+      if (item.properties["sa:downloadApprovalUsers"].length > 0) {
         this.needPermissionToDownload.push(item);
       } else {
         if (item.properties["sa:access"] === "Internal access only") {
@@ -1108,7 +1108,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   getUser(item) {
-    return item.properties["sa:users"];
+    return item.properties["sa:downloadApprovalUsers"];
   }
 
   getdownloadAssetsSize() {
@@ -1135,7 +1135,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     } else {
       if (this.downloadArray.length > 0) {
         $(".multiDownloadBlock").hide();
-        console.log("comming");
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
         let uid: any;
