@@ -212,20 +212,21 @@
                   <!-- [ngClass]="{'disableDiv': data}" -->
 
                   <div class="upload-form-input row mb-20">
-                     <div class="col-xl-4 col-md-4">
-                        <label for="title">Description <br><span style="font-size: 12px">Project or event description <br />(optional)</span></label>
+                     <div class="col-xl-5 col-md-5">
+                        <label for="title">Description <br><span style="font-size: 12px">Project or event description (optional)</span></label>
                      </div>
-                     <div class="col-xl-8 col-md-8"  >
+                     <div class="col-xl-7 col-md-7"  >
                         <!-- [ngClass]="{'grayField': descriptionFilled}" -->
-                        <textarea  [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
+                        <input type="text" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }" style="width: 95%; margin-top: 26px;" />
+                        <!-- <textarea  [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea> -->
                         <!-- [disabled]="descriptionFilled" -->
                      </div>
                   </div>
                   <div class="row upload-form-input custom-date-picker mb-20">
-                     <div class="col-xl-4 col-md-4">
-                        <label for="date">Associated Date <br><span style="font-size: 12px">Project or event date <br />(optional)</span></label>
+                     <div class="col-xl-5 col-md-5">
+                        <label for="date">Associated Date <br><span style="font-size: 12px">Project or event date (optional)</span></label>
                      </div>
-                     <div class="col-xl-8 col-md-8 flexible" >
+                     <div class="col-xl-7 col-md-7 flexible" >
                         <!-- [ngClass]="{'grayField': disableDateInput}" -->
                         <mat-form-field appearance="fill">
                            <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"

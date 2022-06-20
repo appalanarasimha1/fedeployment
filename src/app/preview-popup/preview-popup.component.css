@@ -1899,6 +1899,6 @@ ol.publicUse li:hover .mouseHoverInfo {
   width: 219px !important;
 }
 
-.internal-use .removeMarginTop .control {
+.internal-use .removeMarginTop .control, .removeMarginTop .sub-dropdown-block {
   margin-top: 0px !important;
 }

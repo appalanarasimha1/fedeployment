@@ -67,16 +67,16 @@
                   <div class="downloadBtn">
                     <img src="../../assets/images/download-white-icon.svg" /> Download
                   </div>
-                  <div *ngIf="doc" class="download-dropdown">
+                  <div *ngIf="doc" class="download-dropdown"  [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
 
                     <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
                       <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
                     </div>
 
-                    <div *ngIf="hasInternalRestriction() && getApprovalUsers().length<1" class="internal-use" [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
+                    <div *ngIf="hasInternalRestriction() && getApprovalUsers().length<1" class="internal-use">
                       <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
 
-                      <div class="control-group">
+                      <div class="control-group" [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
                         <label class="control control--checkbox">I am aware this asset is for internal use only
                           <input type="checkbox" [(ngModel)]="isAware" checked="isAware" />
                           <div class="control__indicator"></div>
