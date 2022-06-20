@@ -70,3 +70,21 @@ footer{
 .customSlider img {
     max-width: 100%;
 }
+
+.footerGoundx {
+    padding: 10px 20px;
+    border: 1px solid #fff;
+    border-radius: 100px;
+    color: #fff;
+    letter-spacing: 0.1rem;
+    width: 190px;
+    float: right;
+    cursor: pointer;
+}
+
+.footerGoundx svg {
+    display: inline-block;
+    max-width: 61%;
+    margin-left: 5px;
+    vertical-align: -6px;
+}
