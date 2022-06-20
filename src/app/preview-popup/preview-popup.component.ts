@@ -381,6 +381,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   internalUse(){
     return this.doc.properties["sa:allow"] === ALLOW.internal;
   }
+  
   showDownloadDropdown() {
     return (
       this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware)
@@ -493,4 +494,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     }
   }
 
+  getApprovalUsers1() {
+    return this.doc.properties?.["sa:downloadApprovalUsers"].length>0 ? true:false
+  }
 }
