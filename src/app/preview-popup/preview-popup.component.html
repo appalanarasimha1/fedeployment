@@ -34,9 +34,9 @@
                 </div> -->
               </li>
               <li>
-                <div class="usagePermission">Usage permission{{hasNoRestriction()? ' not':''}} required</div>
+                <div class="usagePermission">Usage permission{{!getApprovalUsers1() ? ' not':''}} required</div>
                 <div class="mouseHoverInfo w219">
-                  {{hasNoRestriction()? 'Does not requires approval before use':'Requires approval before use'}}.
+                  {{!getApprovalUsers1()? 'Does not requires approval before use':'Requires approval before use'}}.
                 </div>
               </li>
               <li>
@@ -73,7 +73,7 @@
                       <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
                     </div>
 
-                    <div *ngIf="hasInternalRestriction()" class="internal-use">
+                    <div *ngIf="hasInternalRestriction() && getApprovalUsers().length<1" class="internal-use" [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
                       <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
 
                       <div class="control-group">
@@ -84,7 +84,7 @@
                       </div>
                     </div>
 
-                    <div *ngIf="hasRequestRestriction()" class="permission-required">
+                    <div *ngIf="getApprovalUsers().length>0" class="permission-required">
                       <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable). <br /><br /></p>
                        <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
                       <ul class="emailList">

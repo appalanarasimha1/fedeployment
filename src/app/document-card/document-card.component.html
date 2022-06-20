@@ -50,7 +50,7 @@
           (change)="selectImage($event)">
         <label for="html-{{doc.uid}}"></label>
       </div>
-      <div class="hover-icon-group">
+      <div class="hover-icon-group" (click)="logDoc()">
         
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
@@ -73,7 +73,7 @@
               </div>
             </div>
 
-            <div *ngIf="hasInternalRestriction()" class="internal-use">
+            <div *ngIf="hasInternalRestriction() && getApprovalUsers().length <1" class="internal-use">
               <p *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
 
               <div class="control-group" [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : !checkCopyRight()} ">
@@ -95,7 +95,7 @@
               </div>
             </div>
 
-            <div *ngIf="hasRequestRestriction()" class="permission-required">
+            <div *ngIf="getApprovalUsers().length>0" class="permission-required">
               <p *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable). <br /><br /></p>
                <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
               <ul class="emailList">

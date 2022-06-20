@@ -624,7 +624,7 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button *ngIf="!publishing" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
+               <button *ngIf="!publishing" [ngClass]="{'btn-disable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
                <button *ngIf="publishing" mat-button class="upload-btn" >Publishing...</button>
             </div>
          </div>

@@ -139,39 +139,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
-    if (!url) return "";
-    if (!event) {
-      return `${window.location.origin}/nuxeo/${url.split("/nuxeo/")[1]}`;
-    }
-
-    const updatedUrl = `${window.location.origin}/nuxeo/${
-      url.split("/nuxeo/")[1]
-    }`;
-    this.modalLoading = true;
-    fetch(updatedUrl, {
-      headers: { "X-Authentication-Token": localStorage.getItem("token") },
-    })
-      .then((r) => {
-        if (r.status === 401) {
-          localStorage.removeItem("token");
-          this.router.navigate(["login"]);
-
-          this.modalLoading = false;
-          return;
-        }
-        return r.blob();
-      })
-      .then((d) => {
-        event.target.src = window.URL.createObjectURL(d);
-
-        this.modalLoading = false;
-      })
-      .catch((e) => {
-        // TODO: add toastr with message 'Invalid token, please login again'
-
-        this.modalLoading = false;
-        console.log(e);
-      });
+    return this.sharedService.getAssetUrl(event, url, type);
   }
 
   getDownloadFileEstimation(data?: any): string {
@@ -381,6 +349,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   internalUse(){
     return this.doc.properties["sa:allow"] === ALLOW.internal;
   }
+  
   showDownloadDropdown() {
     return (
       this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware)
@@ -493,4 +462,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     }
   }
 
+  getApprovalUsers1() {
+    return this.doc.properties?.["sa:downloadApprovalUsers"].length>0 ? true:false
+  }
 }
