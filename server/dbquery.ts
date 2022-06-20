@@ -47,6 +47,7 @@ export function createTopDownloadAndViewQuery() {
         count: -1,
       },
     },
+    { $limit : 100 },
   ];
 }
 

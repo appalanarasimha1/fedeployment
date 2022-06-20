@@ -25,7 +25,7 @@
             #slickModal="slick-carousel"
             [config]="slideConfig"
           >
-            <div ngxSlickItem *ngFor="let file of trendingAssets; let i = index" class="slide">
+            <div ngxSlickItem *ngFor="let file of trendingAssets | slice:0:20; let i = index" class="slide">
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
