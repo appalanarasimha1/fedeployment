@@ -1284,7 +1284,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   text-align: left;
 }
 .buttonCreate {
-  padding-top: 0px;
+  padding-top: 4px;
   display: inline-block;
   margin-right: 17px;
   vertical-align: top;
@@ -2905,7 +2905,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   text-align: left;
 }
 .buttonCreate {
-  padding-top: 0px;
+  padding-top: 4px;
   display: inline-block;
   margin-right: 17px;
   vertical-align: top;
