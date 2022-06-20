@@ -363,6 +363,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     // this.clearFilter();
     // this.resetView();
     this.selectTab("recentlyViewed");
+    this.dataService.searchBarClickInit(false);
   }
 
   getRecentlyViewed() {

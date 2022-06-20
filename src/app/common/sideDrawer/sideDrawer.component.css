@@ -399,3 +399,83 @@ button:focus {
   bottom: 0px;
   position: relative !important;
 }
+
+/* Custom checkbox start */
+.makePrivate {
+  margin-left: 10px;
+  margin-top: 40px;
+}
+.makePrivate .control-group {
+  display: block;
+}
+.makePrivate .control {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+  padding-left: 40px;
+  border: 0px;
+  margin: 0px 0px 30px;
+  color: #fff;
+}
+.makePrivate .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.makePrivate .control__indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #404040;
+}
+.makePrivate .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.makePrivate .control input:checked ~ .control__indicator {
+  background: #006845;
+  border-color: #006845;
+}
+.makePrivate .control input:disabled ~ .control__indicator {
+  background: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.makePrivate .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.makePrivate .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.makePrivate .control--checkbox .control__indicator:after {
+  left: 8px;
+  top: 4px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.makePrivate .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #fff;
+}
+.makePrivate .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #23211E;
+}
+.makePrivate .control--radio input:disabled ~ .control__indicator:after {
+  background: #fff;
+}
+/* Custom checkbox end */

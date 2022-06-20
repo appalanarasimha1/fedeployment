@@ -1070,7 +1070,7 @@ export class UploadModalComponent implements OnInit {
     const isPrivate =
       this.selectedFolder?.properties &&
       this.selectedFolder?.properties["dc:isPrivate"];
-    return isPrivate || this.selectedFolder.isPrivate;
+    return isPrivate || this.selectedFolder?.isPrivate;
   }
   // checkOwnerDropdownByValue(value?: string) {
   //   switch (value) {

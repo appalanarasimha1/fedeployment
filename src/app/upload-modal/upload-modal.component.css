@@ -407,7 +407,7 @@ color: #FFFFFF;
   font-weight: 700;
 }
 
-::ng-deep .ng-select .ng-select-container{
+.upload-form-input ::ng-deep .ng-select .ng-select-container{
   border: unset !important;
   /* border-bottom: 1.5px solid #000 !important; */
   border-radius: 0px !important;
@@ -423,7 +423,7 @@ letter-spacing: 0.055em;
 color: #040404;
 font-weight: 600;
 }
-::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+.upload-form-input ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   white-space: nowrap;
   background: #EDD580;
   padding: 2px 7px;
@@ -440,7 +440,7 @@ font-weight: 600;
 ::ng-deep .ng-value.ng-star-inserted span:nth-child(1) {
   order: 2;
 }
-::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left{
+.upload-form-input ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left{
   border: unset;
 }
 .info-icon {
@@ -681,7 +681,7 @@ select option{
 .goldenText.ng-select .ng-select-container{
   border-color: #C49900 !important;
 }
-::ng-deep ng-select {
+.upload-form-input ::ng-deep ng-select {
   width: calc(100% - 50px);
   border-bottom: 1.5px solid #000 !important;
 }
@@ -827,11 +827,11 @@ opacity: 0.5;
 ::ng-deep .grayField input, ::ng-deep .grayField textarea{
 opacity: 0.5;
 }
-::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+.upload-form-input ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
     color: #000 !important;
     font-weight: 400;
 }
-::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
+.upload-form-input ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
   background-color: #E1BB33 !important;
 }
 .errorInfotxt{
@@ -985,14 +985,14 @@ padding: 10px 18px
   border-top-color: #000;
 }
 
-.ng-select-focused:focus, .ng-select-focused:active {
+.upload-form-input .ng-select-focused:focus, .upload-form-input .ng-select-focused:active {
   box-shadow: none !important;
   border: none !important;
 }
-::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+.upload-form-input ::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
   box-shadow: unset !important;
 }
-::ng-deep .ng-select .ng-select-container{
+.upload-form-input ::ng-deep .ng-select .ng-select-container{
   background-color: transparent !important;
 }
 .numberAssets{
@@ -1004,19 +1004,19 @@ color: #737373;
 /* ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
   position: unset !important;
 } */
-::ng-deep .ng-select{
+.upload-form-input ::ng-deep .ng-select{
   min-height: 30px !important;
 }
-::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
+.upload-form-input ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
   overflow: visible !important;
 }
-::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input, ::ng-deep .ng-select-container {
+.upload-form-input ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input, .upload-form-input ::ng-deep .ng-select-container {
   cursor: pointer !important;
 }
 /* ::ng-deep .ng-select.ng-select-single .ng-select-container{
   height: 36px !important;
 } */
-::ng-deep .ng-select .ng-select-container:hover {
+.upload-form-input ::ng-deep .ng-select .ng-select-container:hover {
   box-shadow: unset !important;
 }
 .goldenText .copyright-input-block{
@@ -1200,7 +1200,7 @@ input.copyright-input::placeholder{
   border-radius: 4px;
 }
 
-::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
+.upload-form-input ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
   padding: 1px 5px 1px 4px;
   border: 1px solid transparent !important;
   height: 16px;
@@ -1230,7 +1230,7 @@ input.copyright-input::placeholder{
 ::ng-deep .mat-horizontal-content-container {
   padding-bottom: 0px !important;
 }
-::ng-deep .ng-select .ng-select-container .ng-value-container{
+.upload-form-input ::ng-deep .ng-select .ng-select-container .ng-value-container{
   padding-left: 0px !important;
 }
 
@@ -1250,10 +1250,10 @@ input.copyright-input::placeholder{
 .assets-selected-text {
   line-height: 16px;
 }
-::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow{
+.upload-form-input ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow{
   border: 0px !important;
 }
-::ng-deep .ng-select .ng-select-container{
+.upload-form-input ::ng-deep .ng-select .ng-select-container{
   color: inherit;
 }
 

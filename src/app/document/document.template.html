@@ -367,7 +367,7 @@
         <div class="col-xl-4" *ngIf="!detailView">
           <!-- detailView !== 'recentView' -->
           <div class="row" style="">
-            <div class="col-xl-8">
+            <div class="col-xl-8" [ngClass]="!showGridListSwitcher() ? 'fludeSortBy' : '' ">
               <span><b>Sort by:</b> </span>
               <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
                 <button class="btn" id="dropdownBasic4" ngbDropdownToggle>
@@ -400,8 +400,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-4">
-              <div *ngIf="showGridListSwitcher()" id="view" class="e-btn-group flexible">
+            <div class="col-xl-4" *ngIf="showGridListSwitcher()">
+              <div id="view" class="e-btn-group flexible">
                 <div>
                   <input
                     type="radio"
