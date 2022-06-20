@@ -54,10 +54,10 @@ export class SharedService {
   getAssetUrl(event: any, url: string, type?: string): string {
     if (!url) return '';
     if (!event) {
-      return `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+      return `${window.location.origin}/nuxeo/${url.split('nuxeo/')[1]}`;
     }
 
-    const updatedUrl = `${window.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    const updatedUrl = `${window.location.origin}/nuxeo/${url.split('nuxeo/')[1]}`;
     // this.modalLoading = true;
     fetch(updatedUrl, { headers: { 'X-Authentication-Token': localStorage.getItem('token') } })
       .then(r => {

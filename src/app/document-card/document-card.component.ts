@@ -1,6 +1,7 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { MONTH_MAP_SHORT } from '../common/constant';
+import { SharedService } from '../services/shared.service';
 import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
 
 @Component({
@@ -22,7 +23,10 @@ export class DocumentCardComponent implements OnChanges {
   downloadErrorShow: boolean = false;
   downloadEnable: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private sharedService: SharedService
+    ) {}
 
   ngOnChanges() {}
 
@@ -83,47 +87,7 @@ export class DocumentCardComponent implements OnChanges {
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
-    if (!url) return "";
-    if (!event) {
-      return `${window.location.origin}/nuxeo/${url.split("nuxeo/")[1]}`;
-    }
-
-    const updatedUrl = `${window.location.origin}/nuxeo/${
-      url.split("/nuxeo/")[1]
-    }`;
-    this.modalLoading = true;
-    fetch(updatedUrl, {
-      headers: { "X-Authentication-Token": localStorage.getItem("token") },
-    })
-      .then((r) => {
-        if (r.status === 401) {
-          localStorage.removeItem("token");
-          this.router.navigate(["login"]);
-
-          this.modalLoading = false;
-          return;
-        }
-        return r.blob();
-      })
-      .then((d) => {
-        event.target.src = window.URL.createObjectURL(d);
-        this.showLock = true;
-
-        this.modalLoading = false;
-        // event.target.src = new Blob(d);
-      })
-      .catch((e) => {
-        // TODO: add toastr with message 'Invalid token, please login again'
-
-        this.modalLoading = false;
-        console.log(e);
-        // if(e.contains(`'fetch' on 'Window'`)) {
-        //   this.router.navigate(['login']);
-        // }
-      });
-    // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
+    return this.sharedService.getAssetUrl(event, url, type);
   }
 
   getAssetDate() {
