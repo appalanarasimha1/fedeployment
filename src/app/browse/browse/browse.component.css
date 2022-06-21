@@ -3718,3 +3718,18 @@ a.downloadDisbable path {
 .delete-folder-action.activeHover {
   opacity: 1;
 }
+.downloadFileWorkspace {
+  cursor: pointer;
+}
+.downloadFileWorkspace::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 200%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.downloadFileWorkspace:hover .multiDownloadBlock {
+  display: block;
+}

@@ -70,11 +70,11 @@
                   <div *ngIf="doc" class="download-dropdown"  [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
 
                     <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
-                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
+                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
                     </div>
 
                     <div *ngIf="hasInternalRestriction() && getApprovalUsers().length<1" class="internal-use">
-                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable).</p>
+                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
 
                       <div class="control-group" [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
                         <label class="control control--checkbox">I am aware this asset is for internal use only
@@ -85,7 +85,7 @@
                     </div>
 
                     <div *ngIf="getApprovalUsers().length>0" class="permission-required">
-                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners (where applicable). <br /><br /></p>
+                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
                        <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
                       <ul class="emailList">
                         <li *ngFor="let userName of getApprovalUsers()">
@@ -387,11 +387,11 @@
                 <div *ngIf="doc" class="download-dropdown">
 
                   <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
-                    <p>Always credit copyright owners (where applicable).</p>
+                    <p>Always credit copyright owners.</p>
                   </div>
 
                   <div *ngIf="hasInternalRestriction()" class="internal-use">
-                    <p>Always credit copyright owners (where applicable).</p>
+                    <p>Always credit copyright owners.</p>
 
                     <div class="control-group">
                       <label class="control control--checkbox">I am aware this asset is for internal use only
@@ -402,7 +402,7 @@
                   </div>
 
                   <div *ngIf="hasRequestRestriction()" class="permission-required">
-                    <p>Always credit copyright owners (where applicable). <br /><br />
+                    <p>Always credit copyright owners. <br /><br />
                       {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
                     <ul class="emailList">
                       <li *ngFor="let userName of getApprovalUsers()">

@@ -1472,27 +1472,27 @@ export class BrowseComponent implements OnInit {
     ) {
       this.downloadAssets();
     } else {
-      $(".downloadFileWorkspace").on("click", function (e) {
-        // $(".dropdownCreate").toggle();
-        $(".multiDownloadBlock").show();
-        $(".downloadFileWorkspace").addClass("multiDownlodClick");
-        e.stopPropagation();
-      });
-      $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
-        $(".multiDownloadBlock").hide();
-        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-        e.stopPropagation();
-      });
+      // $(".downloadFileWorkspace").on("click", function (e) {
+      //   // $(".dropdownCreate").toggle();
+      //   $(".multiDownloadBlock").show();
+      //   $(".downloadFileWorkspace").addClass("multiDownlodClick");
+      //   e.stopPropagation();
+      // });
+      // $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
+      //   $(".multiDownloadBlock").hide();
+      //   $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      //   e.stopPropagation();
+      // });
 
-      $(".multiDownloadBlock").click(function (e) {
-        e.stopPropagation();
-        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-      });
+      // $(".multiDownloadBlock").click(function (e) {
+      //   e.stopPropagation();
+      //   $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      // });
 
-      $(document).click(function () {
-        $(".multiDownloadBlock").hide();
-        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
-      });
+      // $(document).click(function () {
+      //   $(".multiDownloadBlock").hide();
+      //   $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      // });
     }
   }
 
