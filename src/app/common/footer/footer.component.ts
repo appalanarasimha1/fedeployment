@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ngAfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -8,7 +8,7 @@ import { ApiService } from 'src/app/services/api.service';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit, ngAfterViewInit {
   @ViewChild("onboarding",{static:true}) onboarding:ElementRef;
 
   tagsMetadataDummy = [
@@ -73,7 +73,10 @@ export class FooterComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    if(!JSON.parse(localStorage.getItem('openVideo'))) {
+  }
+
+  ngAfterViewInit() {
+    if(!JSON.parse(localStorage.getItem('openVideo')) && JSON.parse(localStorage.getItem('token'))) {
       this.openOnboardingModal(this.onboarding);
       localStorage.setItem("openVideo", "1");
     }

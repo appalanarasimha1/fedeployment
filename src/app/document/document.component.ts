@@ -422,18 +422,20 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   async getTrendingAssetsByIds(ids) {
     if (!ids || ids.length === 0) return;
+    this.loading.push(true);
     const idsString = ids.map(id => `'${id}'`).join(',');
     const query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString}) AND sa:duplicateShow = '1'`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
-      pageSize: 100,
+      pageSize: 50,
       queryParams: query,
     };
     const res = await this.apiService
       .get(apiRoutes.NXQL_SEARCH, { params })
       .toPromise();
     this.trendingAssets = res["entries"].map((e) => e);
+    this.loading.pop();
   }
 
   getAssetBySectors(sector = "", dontResetSectors: boolean = true) {
