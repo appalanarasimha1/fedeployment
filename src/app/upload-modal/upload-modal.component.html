@@ -215,9 +215,9 @@
                      <div class="col-xl-5 col-md-5">
                         <label for="title">Description <br><span style="font-size: 12px">Project or event description (optional)</span></label>
                      </div>
-                     <div class="col-xl-7 col-md-7"  >
+                     <div class="col-xl-7 col-md-7"  [ngClass]="{'grayField': descriptionFilled}" >
                         <!-- [ngClass]="{'grayField': descriptionFilled}" -->
-                        <input type="text" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }" style="width: 95%; margin-top: 26px;" />
+                        <input type="text" [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }" style="width: 95%; margin-top: 26px;" />
                         <!-- <textarea  [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea> -->
                         <!-- [disabled]="descriptionFilled" -->
                      </div>
@@ -226,10 +226,10 @@
                      <div class="col-xl-5 col-md-5">
                         <label for="date">Associated Date <br><span style="font-size: 12px">Project or event date (optional)</span></label>
                      </div>
-                     <div class="col-xl-7 col-md-7 flexible" >
+                     <div class="col-xl-7 col-md-7 flexible" [ngClass]="{'grayField': descriptionFilled}" >
                         <!-- [ngClass]="{'grayField': disableDateInput}" -->
                         <mat-form-field appearance="fill">
-                           <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                           <input matInput [disabled]="disableDateInput" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
                            placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()"  [ngClass]="{'goldenText': associatedDate}">
                            <!-- [disabled]="disableDateInput" -->
                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
