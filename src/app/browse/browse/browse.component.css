@@ -3741,3 +3741,6 @@ a.addMarginRight {
 .removeMarginTop .control, .removeMarginTop {
   margin-top: 0px !important;
 }
+.pt-15.removeMarginTop {
+  padding-top: 0px !important;
+}
