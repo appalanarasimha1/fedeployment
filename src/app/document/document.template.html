@@ -694,7 +694,7 @@
             Your download exceeds 1 GB. This will likely take some time.
           </p>
           <p class="pt-15" *ngIf="needPermissionToDownload.length >0">
-            {{ needPermissionToDownload.length }} assets you selected require
+            {{ needPermissionToDownload.length }} asset{{ needPermissionToDownload.length>1 ?'s':'' }} you selected require
             download permission, please reach out owner(s) via email:
           </p>
 
@@ -738,6 +738,7 @@
             <a
               (click)="downloadAssets($event)"
               [ngClass]="{'downloadDisbable':!downloadEnable}"
+              *ngIf="downloadArray.length>0"
             >
               <svg
                 width="22"
