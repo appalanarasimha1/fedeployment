@@ -629,7 +629,7 @@
                       ><img src="../../../assets/images/delete-icon.svg"
                     /></span>
                   </div>
-                  <div class="buttonCreate tollTipWorkspace">
+                  <div class="buttonCreate tollTipWorkspace" *ngIf="count < 1">
                     <a
                       href="javascript:void(0)"
                       *ngIf="!isTrashView"
@@ -643,7 +643,7 @@
                     </a>
                     <div class="customToolTipWorkspace">Create new folder</div>
                   </div>
-                  <div class='dropdownCreate createFolder'>
+                  <div class='dropdownCreate createFolder'*ngIf="count < 1">
                     <form>
                       <div class="row">
                         <div class="col-xl-12">
@@ -726,6 +726,7 @@
                   <li
                     (click)="openModal()"
                     class="tollTipWorkspace workspaceInfoHover"
+                    *ngIf="count < 1"
                   >
                     <!-- <svg width="24" height="24" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                       <path d="M15 29.0625V17.8125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -751,7 +752,7 @@
                     (click)="
                       openUpdateClassModal(breadCrumb[0] ? breadCrumb[0] : null)
                     "
-                    *ngIf="!isPrivateFolder(true, true)"
+                    *ngIf="!isPrivateFolder(true, true) && count < 1"
                     class="tollTipWorkspace"
                     [ngClass]="{
                       uploadClassificationDisable: breadCrumb[0]

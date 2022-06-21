@@ -517,7 +517,7 @@ export class BrowseComponent implements OnInit {
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-
+    this.removeAssets()
     this.saveState(item);
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -665,6 +665,7 @@ export class BrowseComponent implements OnInit {
   }
 
   handleSelectMenu(index, type) {
+    this.removeAssets()
     this.selectedMenu = index;
     this.viewType = type;
   }
@@ -1468,7 +1469,8 @@ export class BrowseComponent implements OnInit {
       this.downloadArray.length > 0 &&
       this.copyRightItem.length < 1 &&
       !this.sizeExeeded &&
-      this.forInternalUse.length < 1
+      this.forInternalUse.length < 1 && 
+      this.needPermissionToDownload.length < 1
     ) {
       this.downloadAssets();
     } else {
@@ -1642,6 +1644,7 @@ export class BrowseComponent implements OnInit {
     this.needPermissionToDownload = [];
     this.count = 0;
     this.fileSelected = [];
+    this.copyRightItem = []
     // $(".vh").prop("checked", false);
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
