@@ -3735,3 +3735,9 @@ a.downloadDisbable path {
 .downloadFileWorkspace:hover .multiDownloadBlock {
   display: block;
 }
+a.addMarginRight {
+  margin-right: 15px;
+}
+.removeMarginTop .control, .removeMarginTop {
+  margin-top: 0px !important;
+}
