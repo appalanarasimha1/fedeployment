@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ngAfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -8,7 +8,7 @@ import { ApiService } from 'src/app/services/api.service';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit, ngAfterViewInit {
+export class FooterComponent implements OnInit, AfterViewInit {
   @ViewChild("onboarding",{static:true}) onboarding:ElementRef;
 
   tagsMetadataDummy = [
