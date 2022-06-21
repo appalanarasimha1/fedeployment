@@ -1065,7 +1065,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   multiDownload() {
-    if (this.downloadArray.length>0 && this.copyRightItem.length<1 && !this.sizeExeeded && this.forInternalUse.length<1) {
+    if (this.downloadArray.length>0 && this.copyRightItem.length<1 && !this.sizeExeeded && this.forInternalUse.length<1 && this.needPermissionToDownload.length < 1) {
       this.downloadAssets();
     }else{
       $(".downloadFileWorkspace").on("click", function (e) {

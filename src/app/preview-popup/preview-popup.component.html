@@ -12,28 +12,28 @@
           <div class="col-xl-6 col-md-6">
             <ol class="publicUse" >
               <li>
-                <div class="publicUseBlock" *ngIf="hasNoRestriction()">
+                <div class="publicUseBlock" *ngIf="hasNoRestriction() && !hasPrivateAccess()">
                   <div class="publicUseBlk" >Public use</div>
                   <div class="mouseHoverInfo">
                     Can be used in the public domain, e.g. on social media.
                   </div>
                 </div>
 
-                <div class="internalUseBlock" *ngIf="internalUse()">
+                <div class="internalUseBlock" *ngIf="internalUse() && !hasPrivateAccess()">
                   <div class="publicUseBlk">Internal use</div>
                   <div class="mouseHoverInfo">
                     Cannot be used in the public domain. i.e. only for use in internal documents or media.
                   </div>
                 </div>
-<!-- 
-                <div class="privateBlock" *ngIf="hasRequestRestriction()">
+
+                <div class="privateBlock" *ngIf="hasPrivateAccess()">
                   <div class="publicUseBlk">Private</div>
                   <div class="mouseHoverInfo">
                     Yet to be published on Ground X. No usage information available.
                   </div>
-                </div> -->
+                </div>
               </li>
-              <li>
+              <li *ngIf="!hasPrivateAccess()">
                 <div class="usagePermission">Usage permission{{!getApprovalUsers1() ? ' not':''}} required</div>
                 <div class="mouseHoverInfo w219">
                   {{!getApprovalUsers1()? 'Does not requires approval before use':'Requires approval before use'}}.

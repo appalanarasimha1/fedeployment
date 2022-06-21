@@ -346,6 +346,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.doc.properties["sa:downloadApproval"] === "true"
     );
   }
+
+  hasPrivateAccess(){
+    return this.doc.properties["dc:isPrivate"]===true ? true: false
+  }
   internalUse(){
     return this.doc.properties["sa:allow"] === ALLOW.internal;
   }

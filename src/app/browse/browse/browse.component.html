@@ -523,8 +523,9 @@
                           time.
                         </p>
 
-                        <p class="pt-15">
-                          {{ needPermissionToDownload.length }} assets you
+                          
+                          <p class="pt-15"  [ngClass]="{ 'removeMarginTop' : copyRightItem.length < 1 }">
+                          {{ needPermissionToDownload.length }} asset{{ needPermissionToDownload.length>1?'s':'' }} you
                           selected require download permission, please reach out
                           owner(s) via email:
                         </p>
@@ -546,7 +547,7 @@
 
                         <div
                           class="control-group"
-                          [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : copyRightItem.length < 1  }"
+                          [ngClass]="{'error-disabled' : downloadErrorShow && !isAware }"
                           *ngIf="forInternalUse.length > 0"
                         >
                           <label class="control control--checkbox"
@@ -571,7 +572,7 @@
                         >
                           Please check the box to proceed
                         </div>
-                        <div class="download-btn" (click)="downloadClick()" *ngIf="needPermissionToDownload.length == downloadArray.length">
+                        <div class="download-btn" (click)="downloadClick()" *ngIf="downloadArray.length>0">
                           <a
                             (click)="downloadAssets($event)"
                             [ngClass]="{ downloadDisbable: !downloadEnable && forInternalUse.length > 0 }"
