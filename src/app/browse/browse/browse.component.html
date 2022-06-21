@@ -645,14 +645,11 @@
                       </a
                     >
                   </div>
-                  <div class="dropdownCreate createFolder">
+                  <div class='dropdownCreate createFolder'>
                     <form>
                       <div class="row">
-                        <div class="col-xl-12 pb-5">
-                          <label>Folder Name</label
-                          ><span class="placeholderText"
-                            >e.g. Title of project or event</span
-                          >
+                        <div class="col-xl-12">
+                            <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
                         </div>
                         <div class="col-xl-12">
                           <input [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name" autocomplete="off">
@@ -662,10 +659,8 @@
                       <div class="row mt-4">
                         <div class="col-xl-12">
                           <mat-accordion>
-                            <mat-expansion-panel
-                              (opened)="panelOpenState = true"
-                              (closed)="panelOpenState = false"
-                            >
+                            <mat-expansion-panel (opened)="panelOpenState = true"
+                                                (closed)="panelOpenState = false">
                               <mat-expansion-panel-header>
                                 <mat-panel-description>
                                   Show optional information
@@ -673,57 +668,27 @@
                               </mat-expansion-panel-header>
                               <div class="row mt-4">
                                 <div class="col-xl-12">
-                                  <label>Description </label
-                                  ><span class="placeholderText"
-                                    >Project or event description</span
-                                  >
+                                    <label>Description </label><span class="placeholderText">Project or event description</span>
                                 </div>
                                 <div class="col-xl-12">
-                                  <input
-                                    [ngClass]="{
-                                      goldenText: folderDescriptionRef.value
-                                    }"
-                                    #folderDescriptionRef
-                                    type="text"
-                                  />
+                                  <input [ngClass]="{'goldenText': folderDescriptionRef}" autocomplete="off"  [(ngModel)]="folderDescriptionRef" name="folderDescriptionRef" type="text">
                                 </div>
                               </div>
                               <div class="row custom-date-picker mt-4">
                                 <div class="col-xl-12 col-md-12">
-                                  <label for="date">Date</label>
-                                  <span class="placeholderText"
-                                    >Date of project or event</span
-                                  >
+                                  <label for="date">Date</label><span class="placeholderText">Date of project or event</span>
                                 </div>
-                                <div class="col-xl-12 col-md-12">
+                                <div class="col-xl-12 col-md-12 " >
                                   <mat-form-field appearance="fill">
                                     <div class="flexible">
-                                      <input
-                                        [ngClass]="{
-                                          goldenText: folderDateRef.value
-                                        }"
-                                        #folderDateRef
-                                        matInput
-                                        [matDatepicker]="picker"
-                                        style="
-                                          width: 88.2%;
-                                          border-bottom: 1.5px solid #000;
-                                        "
-                                        placeholder="Choose a date"
-                                        (click)="
-                                          picker.open();
-                                          datePickerDefaultAction()
-                                        "
-                                      />
-                                      <mat-datepicker-toggle
-                                        matSuffix
-                                        [for]="picker"
-                                      ></mat-datepicker-toggle>
+                                      <input [ngClass]="{'goldenText': folderDateRef}" autocomplete="off" [(ngModel)]="folderDateRef" name="folderDateRef" matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 2px solid #000;"
+                                      placeholder="Choose a date"  (click)="picker.open(); datePickerDefaultAction()" >
+                                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     </div>
-                                    <mat-datepicker #picker></mat-datepicker>
+                                      <mat-datepicker #picker></mat-datepicker>
                                   </mat-form-field>
                                 </div>
-                              </div>
+                            </div>
                             </mat-expansion-panel>
                           </mat-accordion>
                         </div>
@@ -746,24 +711,14 @@
                           <div *ngIf="showError" class="errorMessage">
                             Please complete all mandatory fields
                           </div>
-                          <button
-                            class="createBtn btn tollTipCustom"
-                            (click)="
-                              createFolder(
-                                folderNameRef,
-                                folderDateRef.value,
-                                folderDescriptionRef.value
-                              )
-                            "
-                            style="pointer-events: auto"
-                            [ngClass]="{ disableBtn: !folderNameRef }"
-                          >
+                          <button *ngIf="!createFolderLoading" class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef, folderDescriptionRef)" style="pointer-events: auto;" [ngClass]="{'disableBtn': !folderNameRef}">
                             Create folder
-                            <!-- <div *ngIf="!folderNameRef" class="tolltipContent" style="left: auto;right: 0px;top: -33px;">
-                            Please complete all mandatory fields to proceed
-                          </div> -->
+                          </button>
+                          <button *ngIf="createFolderLoading" class="createBtn btn tollTipCustom" style="pointer-events: auto;" [ngClass]="{'disableBtn': true}">
+                            Creating folder...
                           </button>
                         </div>
+                
                       </div>
                     </form>
                   </div>
