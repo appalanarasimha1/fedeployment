@@ -88,3 +88,6 @@ footer{
     margin-left: 5px;
     vertical-align: -6px;
 }
+.slide {
+    min-height: 400px;
+}

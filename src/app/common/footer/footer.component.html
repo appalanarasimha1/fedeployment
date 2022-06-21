@@ -39,6 +39,7 @@
 </footer>
 
 <ng-template #onboarding let-c="close" let-d="dismiss">
+  <!-- <app-loader [show]="loading"></app-loader> -->
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click'); closeModal()">
       <img src="../../../assets/images/modalclose.svg" />
     </button>
@@ -53,22 +54,22 @@
       </div> -->
       <div ngxSlickItem class="slide">
         <div class="item" >
-          <img src="../../../assets/images/mask-group1.png" />
+          <img src="../../../assets/images/mask-group1.jpg" />
         </div>
       </div>
       <div ngxSlickItem class="slide">
         <div class="item" >
-          <img src="../../../assets/images/mask-group2.png" />
+          <img src="../../../assets/images/mask-group2.jpg" />
         </div>
       </div>
       <div ngxSlickItem class="slide">
         <div class="item" >
-          <img src="../../../assets/images/mask-group3.png" />
+          <img src="../../../assets/images/mask-group3.jpg" />
         </div>
       </div>
       <div ngxSlickItem class="slide">
         <div class="item" >
-          <img src="../../../assets/images/mask-group4.png" />
+          <img src="../../../assets/images/mask-group4.jpg" />
         </div>
       </div>
     </ngx-slick-carousel>
