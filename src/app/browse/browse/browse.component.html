@@ -365,13 +365,17 @@
                     /></a>
                   </div>
                   <div class="downloadFileWorkspace">
-                    <a
+                    <a (click)="multiDownload()"
                       href="javascript:void(0)"
                       *ngIf="!isTrashView && count > 0"
-                      (click)="multiDownload()"
                       ><img src="../../../assets/images/download-workspace.svg"
                     /></a>
-                    <div class="multiDownloadBlock">
+                    <div class="multiDownloadBlock"
+                    *ngIf="
+                    copyRightItem.length > 0 ||
+                    sizeExeeded ||
+                    forInternalUse.length > 0 ||
+                    needPermissionToDownload.length > 0">
                       <!-- forInternalUse.length {{forInternalUse.length}};needPermissionToDownload.length{{needPermissionToDownload.length}} -->
                       <div
                         class="no-use-restrictions"
