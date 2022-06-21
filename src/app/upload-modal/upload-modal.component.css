@@ -1499,3 +1499,10 @@ button.upload-btn.tollTipCustom.disableBtn, button.upload-btn.tollTipCustom.disa
 .reviewClassifaction .workspaceName {
   font-size: 14px;
 }
+button.btn-disable {
+  background-color: #cccccc;
+  color: #666666;
+  border-color: #cccccc;
+  cursor: no-drop;
+  pointer-events: none;
+}

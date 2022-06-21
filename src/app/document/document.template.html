@@ -732,9 +732,9 @@
             Please check the box to proceed
           </div>
           <div class="download-btn" (click)="downloadClick()">
-            <a (click)="removeAssets()" class="cancelDownload"
+            <!-- <a (click)="removeAssets()" class="cancelDownload"
               >Cancel download</a
-            >
+            > -->
             <a
               (click)="downloadAssets($event)"
               [ngClass]="{'downloadDisbable':!downloadEnable}"

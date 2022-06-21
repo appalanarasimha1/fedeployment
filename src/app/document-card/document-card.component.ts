@@ -33,7 +33,10 @@ export class DocumentCardComponent implements OnChanges {
   getFileContent(): string {
     return this.getAssetUrl(null,this.doc?.properties["file:content"]?.data || "");
   }
-
+  logDoc(){
+    console.log("========================",this.doc);
+    
+  }
   openPreview() {
     this.onOpenPreview.emit();
   }
@@ -125,7 +128,7 @@ export class DocumentCardComponent implements OnChanges {
   }
 
   getCreator() {
-    return this.doc.properties["sa:users"][0];
+    return this.doc.properties["sa:downloadApprovalUsers"][0];
   }
 
   getApprovalUsers(): string[] {
