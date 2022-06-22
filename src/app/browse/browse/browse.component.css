@@ -3768,3 +3768,6 @@ a.addMarginRight {
 .pt-15.removeMarginTop {
   padding-top: 0px !important;
 }
+.classificationsIcon-disabled.manageUsers path {
+  fill: #bab8b1;
+}
