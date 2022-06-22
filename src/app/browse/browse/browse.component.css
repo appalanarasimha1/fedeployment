@@ -1435,7 +1435,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   cursor: pointer;
 }
 .classificationsIcon-disabled {
-  cursor: not-allowed;
+  cursor: auto;
 }
 .classificationsIcon:hover path {
   stroke:#DAAA00;
@@ -3718,11 +3718,11 @@ svg.classificationsIcon.disablePermission path {
 .manageAccessBtn-disabled {
   float: right;
   clear: both;
-  background: #EDD580;
+  background: #bab8b1;
   padding: 5px 12px;
   border-radius: 24px;
   color: #585858;
-  cursor: not-allowed;
+  cursor: auto;
   margin-top: 10px;
 }
 .classificationsIcon.manageUsers:hover path {
