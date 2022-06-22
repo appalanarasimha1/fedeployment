@@ -228,9 +228,10 @@
                      </div>
                      <div class="col-xl-7 col-md-7 flexible" [ngClass]="{'grayField': descriptionFilled}" >
                         <!-- [ngClass]="{'grayField': disableDateInput}" -->
+                        <!-- placeholder="Choose a date"  -->
                         <mat-form-field appearance="fill">
                            <input matInput [disabled]="disableDateInput" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
-                           placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()"  [ngClass]="{'goldenText': associatedDate}">
+                           [(ngModel)]="associatedDate" (click)="picker.open()"  [ngClass]="{'goldenText': associatedDate}">
                            <!-- [disabled]="disableDateInput" -->
                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                            <mat-datepicker #picker></mat-datepicker>
