@@ -456,7 +456,7 @@
                             <input
                               type="checkbox"
                               [(ngModel)]="isAware"
-                              checked="isAware"
+                              [checked]="isAware"
                               (change)="onCheckboxChange($event)"
                             />
                             <div class="control__indicator"></div>
@@ -1080,6 +1080,26 @@
                           </label>
                         </div>
                       </div>
+                      <div
+                        class="delete-folder-action"
+                        *ngIf="checkAssetType(item.type)"
+                        [ngClass]="{ activeHover: item.isSelected }"
+                      >
+                        <div class="control-group">
+                          <label class="control control--checkbox">
+                            <input
+                              id="checkbox-{{ i }}"
+                              type="checkbox"
+                              class="vh"
+                              (change)="selectAsset($event, item, i)"
+                              [checked]="item.isSelected"
+                              [(ngModel)]="item.isSelected"
+                            />
+                            <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                      </div>
+                    </td>
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left; word-break: break-all;">{{item.title}}</p>

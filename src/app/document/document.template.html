@@ -690,7 +690,7 @@
         <div class="internal-use">
           <p *ngIf="copyRightItem.length>0">Always credit copyright owners.</p>
 
-          <p class="pt-15" *ngIf="sizeExeeded">
+          <p class="pt-15" *ngIf="sizeExeeded" [ngClass]="{'removeMarginTop' : copyRightItem.length < 1 }">
             Your download exceeds 1 GB. This will likely take some time.
           </p>
           <p class="pt-15" *ngIf="needPermissionToDownload.length >0">
@@ -698,7 +698,7 @@
             download permission, please reach out owner(s) via email:
           </p>
 
-          <ul class="downloadImgLisst">
+          <ul class="downloadImgLisst" *ngIf="needPermissionToDownload.length > 0">
             <li *ngFor="let item of needPermissionToDownload">
               <div class="imgListBlk">
                 <img src="../../../assets/images/doc-white.svg" />
@@ -713,7 +713,7 @@
           </ul>
           <div
             class="control-group"
-            [ngClass]="downloadErrorShow && !isAware ? 'error-disabled' : '' "
+            [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : !sizeExeeded &&  needPermissionToDownload.length<1}"
           >
             <label
               class="control control--checkbox"
@@ -737,7 +737,7 @@
             > -->
             <a
               (click)="downloadAssets($event)"
-              [ngClass]="{'downloadDisbable':!downloadEnable}"
+              [ngClass]="{'downloadDisbable':!downloadEnable && forInternalUse.length > 0}"
               *ngIf="downloadArray.length>0"
             >
               <svg

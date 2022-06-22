@@ -113,6 +113,12 @@ export class DocumentCardComponent implements OnChanges {
       this.doc.properties["sa:downloadApproval"] !== "true"
     );
   }
+  hasInternalRestriction1() {
+    return (
+      this.doc.properties["sa:allow"] === ALLOW.internal ||
+        this.doc.properties["sa:allow"] === ALLOW.request
+    );
+  }
 
   hasRequestRestriction() {
     return (

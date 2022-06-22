@@ -1938,3 +1938,9 @@ ul.downloadImgLisst li .contentListBlk {
   width: 100%;
   text-align: right;
 }
+.removeMarginTop .control, .removeMarginTop {
+  margin-top: 0px !important;
+}
+.pt-15.removeMarginTop {
+  padding-top: 0px !important;
+}

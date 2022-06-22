@@ -82,8 +82,8 @@ export class AppComponent implements OnInit{
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
   }
   onActivate() {
-    window.scroll(0,0);
-
-}
+    $("body").animate({ scrollTop: 0 }, "slow");
+    // window.scroll(0,0);
+  }
 }
 

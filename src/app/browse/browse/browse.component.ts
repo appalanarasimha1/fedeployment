@@ -1611,6 +1611,7 @@ export class BrowseComponent implements OnInit {
     this.count = 0;
     this.fileSelected = [];
     this.copyRightItem = []
+    // this.isAware=false
     // $(".vh").prop("checked", false);
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
