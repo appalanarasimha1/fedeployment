@@ -1727,6 +1727,7 @@ export class BrowseComponent implements OnInit {
 
   hasAdminPermission(currentCollaborators) {
     if (this.user === "Administrator") return true;
+    if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return false;
     const ace = currentCollaborators[this.user];
     if (!ace) return false;
     return ace.permission === 'Everything';
