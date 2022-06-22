@@ -112,7 +112,7 @@ export const TOTAL_ASSETS_LABEL = 'Total Assets';
 export const UNWANTED_WORKSPACES = ['domain'];
 export const DEFAULT_NUMBER_OF_TAGS_PREVIEW = 10;
 
-export const ROOT_ID = '00000000-0000-0000-0000-000000000000';
+export const ROOT_ID = '915820d4-c2c3-4789-bbdc-2c7c98c5356a';
 export const REPORT_ROLE = 'reportAdmin';
 export const specialExtensions = [ // NOTE: this is the extensions of special routes in backend, please connect with me before changing it
     '.js',

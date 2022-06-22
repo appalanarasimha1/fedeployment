@@ -166,10 +166,11 @@
                         </div>
                         <div style="min-height: 52px; max-height: 138px; overflow: auto; margin-bottom: 10px;" id="customScrollBar">
                            <li *ngFor="let folder of dropdownFolderList" class="styled">
-                              <span (click)="selectFolder(folder)" class="folderTitle">
+                              <div (click)="selectFolder(folder)" class="folderTitle">
                                  <img src="../../assets/images/folderBlack.png" style="width: 18px; margin-right: 10px; vertical-align: -2px;">
                                  {{folder.title}}
-                              </span>
+                                 <span *ngIf="folder?.properties['dc:isPrivate']" class="publicUseBlk">Private</span>
+                              </div>
                               <span (click)="getFolderByParentId(folder.uid, folder.path); extractBreadcrumb(folder.contextParameters)" class="folderTitleArrow">
                                  <img src="../../assets/images/back-arrow.svg" />
                               </span>
@@ -295,14 +296,14 @@
 
       <mat-step>
          <ng-template matStepLabel >Publish assets</ng-template>
-         <div class="reviewClassifaction"> 
+         <div class="reviewClassifaction">
             <!-- Upload Classification start -->
             <div class="updateClassificationBlk">
                <div class="updateClassification">
                <div class="updateClassiNameblock">
                   <div class="folderImg"><img src="../../assets/images/folder-icon.svg" alt="" /></div>
                   <div class="nameBreadcrumbBlk">
-                     <div class="workspaceName">{{ folderToAdd || selectedFolder?.title || data?.title }} 
+                     <div class="workspaceName">{{ folderToAdd || selectedFolder?.title || data?.title }}
                      <!-- <img src="../../assets/images/pencil-write.svg" alt="" class="renameFolderImg" /> -->
                      </div>
                      <!-- <div class="updateClassiBreadcrumb">/All sectors/Energy, Water & Food/Conference 2022</div> -->
@@ -316,7 +317,7 @@
             </div>
             <!-- Upload Classification start -->
 
-            
+
             <div class="upload-form-input row mb-30 uploadModalBlk">
                <div class="col-xl-12 mb-30">
                   <div class="workspaceName">Please review the classifications of the uploaded files.</div>
@@ -365,7 +366,7 @@
                   </div>
                </div>
             </div>
-            
+
             <div class="upload-form-input row mb-30 uploadModalBlk" *ngIf="checkShowUserDropdown()">
                <div class="col-xl-6 col-md-6">&nbsp;</div>
                <div class="col-xl-6 col-md-6">
@@ -393,16 +394,16 @@
                   </div>
                </div>
             </div>
-            
+
             <div class="upload-form-input row mb-30">
                <div class="col-xl-6 col-md-6">
                   <div class="row">
                      <div class="col-xl-12">
                         <label class="control control--checkbox" style="margin-bottom: 0px;">
                           Approval required before download
-                          <input 
+                          <input
                             autocomplete="off"
-                            type="checkbox" 
+                            type="checkbox"
                             checked="checked"
                             (change)="onCheckDownloadApproval($event)"
                             [(ngModel)]="overallDownloadApproval"
@@ -443,7 +444,7 @@
                <div class="col-xl-6 col-md-6" (click)=" applyToAll()">
                   <button class="cancel-btn" style="float: right;">Apply to all</button>
                </div>
-            </div> 
+            </div>
 
             <!-- <div class="publish-summary">
                <!-- <span>{{ getSelectedAssetsTitle() }}</span> -/->
