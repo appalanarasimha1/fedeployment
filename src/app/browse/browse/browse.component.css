@@ -3771,3 +3771,26 @@ a.addMarginRight {
 .classificationsIcon-disabled.manageUsers path {
   fill: #bab8b1;
 }
+ul.uploadAssetsClassifications li:hover path,
+.buttonCreate:hover path {
+  fill: #DAAA00;
+}
+.customWidth:hover path,
+.downloadFileWorkspace:hover path,
+.deleteFolder:hover path {
+  stroke: #DAAA00;
+}
+.downloadIcon {
+  vertical-align: -10px;
+  margin-right: 0px;
+  margin-left: 15px;
+  width: 30px;
+  height: 30px;
+}
+.deleteFolder {
+  margin-right: 15px;
+}
+.deleteFolder svg{
+  width: 20px;
+  height: 22px;
+}
