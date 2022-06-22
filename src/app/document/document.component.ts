@@ -1237,5 +1237,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.assetsBySector.forEach((e) => (e.isSelected = false));
     this.recentDataShow.forEach((e) => (e.isSelected = false));
     this.favourites.forEach((e) => (e.isSelected = false));
+    this.trendingAssets.forEach((e) => (e.isSelected = false));
   }
 }
