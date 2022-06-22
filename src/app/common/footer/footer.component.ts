@@ -45,6 +45,8 @@ export class FooterComponent implements OnInit, AfterViewInit {
     centerMode: false,
     variableWidth: false,
     pauseOnHover: false,
+    pauseOnFocus: false, 
+    autoplaySpeed:5000,
     responsive: [
       {
         breakpoint: 1024,
