@@ -1434,6 +1434,9 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 .classificationsIcon {
   cursor: pointer;
 }
+.classificationsIcon-disabled {
+  cursor: not-allowed;
+}
 .classificationsIcon:hover path {
   stroke:#DAAA00;
 }
@@ -3639,6 +3642,17 @@ ul.downloadImgLisst li .contentListBlk {
   line-height: 24px;
   color: #fff;
 }
+.addUserBtn-disabled {
+  display: inline-block;
+  background: #23211E;
+  border-radius: 80px;
+  padding: 9px 38px;
+  cursor: not-allowed;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+}
 /* custom checkbox end */
 
 svg.classificationsIcon.disablePermission path {
@@ -3701,10 +3715,20 @@ svg.classificationsIcon.disablePermission path {
   cursor: pointer;
   margin-top: 10px;
 }
+.manageAccessBtn-disabled {
+  float: right;
+  clear: both;
+  background: #EDD580;
+  padding: 5px 12px;
+  border-radius: 24px;
+  color: #585858;
+  cursor: not-allowed;
+  margin-top: 10px;
+}
 .classificationsIcon.manageUsers:hover path {
   fill: #DAAA00;
   stroke: none;
-} 
+}
 /* custom checkbox end */
 
 a.downloadDisbable {

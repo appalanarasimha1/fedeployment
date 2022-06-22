@@ -150,6 +150,8 @@ export class BrowseComponent implements OnInit {
 
   createFolderLoading = false;
 
+  isAdmin = false;
+
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
     this.masonry?.layout();
@@ -1289,7 +1291,7 @@ export class BrowseComponent implements OnInit {
     }
     if (workSpaceIndex === -1) {
       console.log("yaha se ",entries);
-      
+
       this.sortedData = entries;
       this.searchList = entries;
       this.showLinkCopy = true;
@@ -1469,7 +1471,7 @@ export class BrowseComponent implements OnInit {
       this.downloadArray.length > 0 &&
       this.copyRightItem.length < 1 &&
       !this.sizeExeeded &&
-      this.forInternalUse.length < 1 && 
+      this.forInternalUse.length < 1 &&
       this.needPermissionToDownload.length < 1
     ) {
       this.downloadAssets();
@@ -1679,6 +1681,7 @@ export class BrowseComponent implements OnInit {
   }
 
   async openAddUserModal() {
+    if (!this.isAdmin) return;
     const folderCollaborators = this.getFolderCollaborators();
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -1712,6 +1715,7 @@ export class BrowseComponent implements OnInit {
     const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
     if (isButton) return isPrivate;
     const currentCollaborators = this.getFolderCollaborators();
+    this.isAdmin = this.hasAdminPermission(currentCollaborators);
     return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
 
@@ -1720,6 +1724,14 @@ export class BrowseComponent implements OnInit {
     const otherUser = Object.keys(currentCollaborators).find(id => this.user !== id);
     if (otherUser) return false;
     else return true;
+  }
+
+  hasAdminPermission(currentCollaborators) {
+    if (this.user === "Administrator") return true;
+    if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return false;
+    const ace = currentCollaborators[this.user];
+    if (!ace) return false;
+    return ace.permission === 'Everything';
   }
 
   getFolderCollaborators() {

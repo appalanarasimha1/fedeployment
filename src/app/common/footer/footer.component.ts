@@ -11,6 +11,12 @@ import { ApiService } from 'src/app/services/api.service';
 export class FooterComponent implements OnInit, AfterViewInit {
   @ViewChild("onboarding",{static:true}) onboarding:ElementRef;
 
+  modalOpen: boolean = true;
+  hideVideo: boolean = true;
+  modalLoading: boolean = false;
+  videoCompleted: boolean = false;
+  loading = false;
+
   tagsMetadataDummy = [
     {
       "id"     : 1,
@@ -39,6 +45,8 @@ export class FooterComponent implements OnInit, AfterViewInit {
     centerMode: false,
     variableWidth: false,
     pauseOnHover: false,
+    pauseOnFocus: false, 
+    autoplaySpeed:5000,
     responsive: [
       {
         breakpoint: 1024,
@@ -60,11 +68,6 @@ export class FooterComponent implements OnInit, AfterViewInit {
       },
     ],
   };
-
-  modalOpen: boolean = true;
-  hideVideo: boolean = true;
-  modalLoading: boolean = false;
-  videoCompleted: boolean = false;
 
   constructor(
     private router: Router,
@@ -93,10 +96,10 @@ export class FooterComponent implements OnInit, AfterViewInit {
   }
 
   closeModal() {
-    this.modalOpen = true;
-    this.hideVideo = true;
+    // this.modalOpen = true;
+    // this.hideVideo = true;
     this.modalLoading = false;
-    this.videoCompleted = false;
+    // this.videoCompleted = false;
   }
 
 }

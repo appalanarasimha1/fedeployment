@@ -1065,8 +1065,6 @@ export class UploadModalComponent implements OnInit {
   }
 
   isPrivateFolder() {
-    // if (this.selectedFolder?.type !== "Workspace") return false;
-
     const isPrivate =
       this.selectedFolder?.properties &&
       this.selectedFolder?.properties["dc:isPrivate"];

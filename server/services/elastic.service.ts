@@ -17,7 +17,6 @@ export class ElasticSearchService {
         isDeleted: false,
       },
     });
-    console.log("pppppppppppppppppppppppppppp", response);
     
     return;
   }
