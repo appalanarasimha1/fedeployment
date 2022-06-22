@@ -1706,6 +1706,7 @@ export class BrowseComponent implements OnInit {
     const folderCollaborators = {};
     localAces.aces.forEach(ace => {
       if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
+      if (!ace.granted || ace.username === "Administrator" || ace.username === 'administrators') return;
       folderCollaborators[ace.username.id] = {
         user: ace.username,
         permission: ace.permission,
