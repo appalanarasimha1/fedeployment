@@ -713,7 +713,7 @@
           </ul>
           <div
             class="control-group"
-            [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : !sizeExeeded}"
+            [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : !sizeExeeded &&  needPermissionToDownload.length<1}"
           >
             <label
               class="control control--checkbox"
