@@ -73,7 +73,7 @@
               </div>
             </div>
 
-            <div *ngIf="hasInternalRestriction() && getApprovalUsers().length <1" class="internal-use">
+            <div *ngIf="hasInternalRestriction1() && getApprovalUsers().length <1" class="internal-use">
               <p *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
 
               <div class="control-group" [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : !checkCopyRight()} ">
