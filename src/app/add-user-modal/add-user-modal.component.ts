@@ -74,6 +74,12 @@ export class AddUserModalComponent implements OnInit {
     }
   }
 
+  canSave() {
+    return Object.keys(this.addedCollaborators).length > 0
+    || Object.keys(this.removedCollaborators).length > 0
+    || Object.keys(this.updatedCollaborators).length > 0;
+  }
+
   removeUser(userId, type) {
     if (type === 'added') {
       delete this.addedCollaborators[userId];
@@ -105,6 +111,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   async updateCollaborators() {
+    if (!this.canSave()) return;
     for (const key in this.removedCollaborators) {
       await this.removePermission(this.removedCollaborators[key])
     }
@@ -118,8 +125,8 @@ export class AddUserModalComponent implements OnInit {
     this.closeModal();
 
     this.sharedService.showSnackbar(
-      "User successfully added",
-      6000,
+      "Collaborators updated",
+      4000,
       "top",
       "center",
       "snackBarMiddle"

@@ -95,5 +95,5 @@
 </div>
 <div class="button-groups">
   <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-  <button (click)="updateCollaborators()" class="upload-btn">Done</button>
+  <button (click)="updateCollaborators()" [ngClass]="canSave() ? 'upload-btn' : 'upload-btn disabled'" class="upload-btn">Done</button>
 </div>

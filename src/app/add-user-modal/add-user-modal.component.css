@@ -144,6 +144,7 @@ button.upload-btn {
     background: #ccc;
     color: #fff;
     border: 1px solid #ccc;
+    cursor: not-allowed;
 }
 
 .addUserBlock h3 {
