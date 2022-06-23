@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -8,7 +8,7 @@ import { ApiService } from 'src/app/services/api.service';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit, AfterViewInit {
+export class FooterComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild("onboarding",{static:true}) onboarding:ElementRef;
 
   modalOpen: boolean = true;
@@ -79,10 +79,18 @@ export class FooterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if(!JSON.parse(localStorage.getItem('openVideo')) && JSON.parse(localStorage.getItem('token'))) {
+    if(!JSON.parse(localStorage.getItem('openVideo')) && localStorage.getItem('token')) {
       this.openOnboardingModal(this.onboarding);
       localStorage.setItem("openVideo", "1");
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    
+    // if(!JSON.parse(localStorage.getItem('openVideo')) && localStorage.getItem('token')) {
+    //   this.openOnboardingModal(this.onboarding);
+    //   localStorage.setItem("openVideo", "1");
+    // }
   }
 
   openTermsPage() {

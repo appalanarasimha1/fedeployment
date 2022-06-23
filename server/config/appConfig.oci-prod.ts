@@ -13,7 +13,7 @@ export class AppConfigOCIProduction {
         AUDIT_TABLE: 'audit'
       },
       domain: 'https://groundx.oci.sense.neomos.online/',
-      elasticDbUrl: 'https://https://ES3.groundx.com:9200,https://https://ES2.groundx.com:9200,https://https://ES1.groundx.com:9200', // 'http://10.149.49.21:9200,10.149.49.22:9200,10.149.49.18:9200',
+      elasticDbUrl: 'https://ES1.groundx.com:9200', // 'http://10.149.49.21:9200,10.149.49.22:9200,10.149.49.18:9200',
       elsticDbUserName: 'elastic'
       // elasticDbUrl: 'https://10.101.21.140:9200'
     };

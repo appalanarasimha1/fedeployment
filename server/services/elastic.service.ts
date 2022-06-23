@@ -2,14 +2,15 @@ import { AppConfig } from "../config/appConfigSelection";
 const { Client } = require("@elastic/elasticsearch");
 
 export class ElasticSearchService {
-  private client = new Client({ node: AppConfig.Config.elasticDbUrl });
+  private client = process.env.NODE_ENV !== 'prod-oci' 
+  ? new Client({ node: AppConfig.Config.elasticDbUrl })
+  : new Client({ 
+      node: AppConfig.Config.elasticDbUrl,
+      auth: {
+        username: AppConfig.Config.elsticDbUserName,
+        password: process.env.ELASTIC_DB_PASSWORD
+      } });
   
-  // private client = new Client({ 
-  //   node: AppConfig.Config.elasticDbUrl,
-  //   auth: {
-  //     username: AppConfig.Config.elsticDbUserName,
-  //     password: 'changeme'
-  //   } });
   private indexValue = "searchindex_v4";
 
   public async insertData(searchTerm: any, username: any,sector:any) {
