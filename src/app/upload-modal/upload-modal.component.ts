@@ -777,6 +777,7 @@ export class UploadModalComponent implements OnInit {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
       if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
     }
+    this.calFileManagerApi();
     // TODO: add api POST call /upload/batchId-<batchID>/execute/FileManager.Import
     if(!this.showRedirectUrl()) {
       // this.dialogRef.close(this.uploadedAsset);
@@ -1146,5 +1147,30 @@ export class UploadModalComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  async calFileManagerApi() {
+    const url = `/upload/${this.batchId}/execute/FileManager.Import`;
+    const data = {
+      "params": {
+        "context": {
+          "currentDocument":"/CSR/workspaces/Test Specific Users"
+        }
+      },
+      "context": {
+        "currentDocument":"/CSR/workspaces/Test Specific Users"
+      }
+    };
+    const assets = await this.apiService.post(url, data).toPromise();
+    console.log('calFileManagerApi() = ', assets);
+    await this.deleteUploadedBatchMetaData(this.batchId);
+    return assets;
+  }
+
+  async deleteUploadedBatchMetaData(batchId: string): Promise<any> {
+    const url = `/upload/${this.batchId}`;
+    const response = await this.apiService.delete(url).toPromise();
+    console.log('deleteUploadedBatchMetaData() = ', response);
+    return;
   }
 }
