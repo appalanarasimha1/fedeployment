@@ -1150,21 +1150,21 @@ export class UploadModalComponent implements OnInit {
   }
 
   async calFileManagerApi() {
-    const url = `/upload/${this.batchId}/execute/FileManager.Import`;
-    const data = {
-      "params": {
-        "context": {
-          "currentDocument":"/CSR/workspaces/Test Specific Users"
-        }
-      },
-      "context": {
-        "currentDocument":"/CSR/workspaces/Test Specific Users"
-      }
-    };
-    const assets = await this.apiService.post(url, data).toPromise();
-    console.log('calFileManagerApi() = ', assets);
+    // const url = `/upload/${this.batchId}/execute/FileManager.Import`;
+    // const data = {
+    //   "params": {
+    //     "context": {
+    //       "currentDocument":"/CSR/workspaces/Test Specific Users"
+    //     }
+    //   },
+    //   "context": {
+    //     "currentDocument":"/CSR/workspaces/Test Specific Users"
+    //   }
+    // };
+    // const assets = await this.apiService.post(url, data).toPromise();
+    // console.log('calFileManagerApi() = ', assets);
     await this.deleteUploadedBatchMetaData(this.batchId);
-    return assets;
+    // return assets;
   }
 
   async deleteUploadedBatchMetaData(batchId: string): Promise<any> {
