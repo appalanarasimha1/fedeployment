@@ -1,5 +1,6 @@
 import { AppConfig } from "../config/appConfigSelection";
 const { Client } = require("@elastic/elasticsearch");
+import * as fs from "fs";
 
 export class ElasticSearchService {
   private client = process.env.NODE_ENV !== 'prod-oci' 
@@ -9,7 +10,12 @@ export class ElasticSearchService {
       auth: {
         username: AppConfig.Config.elsticDbUserName,
         password: process.env.ELASTIC_DB_PASSWORD
-      } });
+      },
+      tls: {
+        ca: fs.readFileSync(AppConfig.Config.elasticCertificatePath),
+        rejectUnauthorized: false
+      }
+    });
   
   private indexValue = "searchindex_v4";
 
