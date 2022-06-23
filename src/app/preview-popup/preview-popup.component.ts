@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, ViewChild, TemplateRef } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
 import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions } from "../common/constant";
@@ -41,7 +41,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     private modalService: NgbModal,
     public nuxeo: NuxeoService,
     public dataService: DataService,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
