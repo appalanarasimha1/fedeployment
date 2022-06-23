@@ -683,7 +683,7 @@ select option{
 }
 .upload-form-input ::ng-deep ng-select {
   width: calc(100% - 50px);
-  border-bottom: 1.5px solid #000 !important;
+  border-bottom: 1.5px solid #000;
 }
 ::placeholder {
   color: #000;

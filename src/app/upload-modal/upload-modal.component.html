@@ -140,7 +140,7 @@
                </div>
             </div>
 
-            <div class="row upload-form-input mb-30">
+            <div class="row upload-form-input mb-20">
                <div class="col-xl-4 col-md-4">
                   <label for="title">Folder name<br>
                   <span style="font-size: 12px" *ngIf="!data">e.g. Title of project or event</span></label>
@@ -148,7 +148,7 @@
                </div>
                <div class="col-xl-8 col-md-8 flexible">
                   <!-- <div *ngIf="data" class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div> -->
-                  <div  class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}" style="width: calc(100% - 17px);"> <!-- *ngIf="!data"-->
+                  <div  class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}"> <!-- *ngIf="!data"-->
                      <input autocomplete="off" type="text" id="title" #searchFolderInput value="{{sharedService.stringShortener(folderOrder,30)}}"
                               [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" > <!-- [disabled]="data"-->
                      <span class="custom-select-icons">
