@@ -20,7 +20,6 @@ export class ElasticSearchService {
   private indexValue = "searchindex_v4";
 
   constructor() {
-    console.log(fs.readFileSync(AppConfig.Config.elasticCertificatePath));
   }
 
   public async insertData(searchTerm: any, username: any,sector:any) {
