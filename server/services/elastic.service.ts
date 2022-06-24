@@ -9,7 +9,7 @@ export class ElasticSearchService {
       node: AppConfig.Config.elasticDbUrl,
       auth: {
         username: AppConfig.Config.elsticDbUserName,
-        password: process.env.ELASTIC_DB_PASSWORD
+        password: process.env.ELASTIC_DB_PASSWORD || "changeme"
       },
       tls: {
         ca: fs.readFileSync(AppConfig.Config.elasticCertificatePath),
@@ -20,7 +20,6 @@ export class ElasticSearchService {
   private indexValue = "searchindex_v4";
 
   constructor() {
-    console.log(fs.readFileSync(AppConfig.Config.elasticCertificatePath));
   }
 
   public async insertData(searchTerm: any, username: any,sector:any) {
