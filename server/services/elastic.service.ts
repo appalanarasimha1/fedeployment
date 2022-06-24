@@ -9,7 +9,7 @@ export class ElasticSearchService {
       node: AppConfig.Config.elasticDbUrl,
       auth: {
         username: AppConfig.Config.elsticDbUserName,
-        password: process.env.ELASTIC_DB_PASSWORD
+        password: process.env.ELASTIC_DB_PASSWORD || "changeme"
       },
       tls: {
         ca: fs.readFileSync(AppConfig.Config.elasticCertificatePath),
