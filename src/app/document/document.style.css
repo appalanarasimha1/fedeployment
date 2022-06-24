@@ -1948,3 +1948,6 @@ ul.downloadImgLisst li .contentListBlk {
 .sectorsDropdown .dropdown .dropdown-menu.show, .sectorsDropdown .dropup .dropdown-menu.show {
   transform: translate(0px, 38px) !important;
 }
+.pt-50{
+  padding-top: 60px !important;
+}

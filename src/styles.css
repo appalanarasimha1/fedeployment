@@ -271,6 +271,7 @@ html, body {
   /* background:#f6f9fa;*/
   /*background: #fafafa;*/
   /* background: #F6F7FA; */
+  scroll-behavior: smooth;
   background: #ffffff;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
@@ -4432,4 +4433,8 @@ body {
 .customSlider .slick-prev.slick-disabled:before, .customSlider .slick-next.slick-disabled:before {
 	opacity: 0 !important;
 	display: none !important;
+}
+header.updateHeader .container {
+  padding-left: var(--bs-gutter-x,1.75rem);
+  padding-right: var(--bs-gutter-x,2.75rem);
 }
