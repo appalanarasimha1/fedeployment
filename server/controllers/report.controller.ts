@@ -8,6 +8,7 @@ export class ReportController {
   constructor() {
     this.router.get('/fetch-report', this.fetchReport);
     this.router.get("/fetch-sector-report", this.fetchSectorReportAll);
+    this.router.get('/fetchTrendingAssets', this.fetchTrendingAssets);
 
   }
 
@@ -30,9 +31,19 @@ export class ReportController {
       return;
     }
   }
+  public async fetchTrendingAssets(req: Request, res: Response) {
+    try {
+      const dbService: DBService = new DBService();
+      const trendingAssets = await dbService.getTopDownloadAndView();
+      res.send({message: 'done', error: null, data: {trendingAssets}});
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+      return;
+    }
+  }
  public async fetchSectorReportAll(req: Request, res: Response) {
    console.log("Above req-----");
-   
+
     try {
       const dbService: DBService = new DBService();
         const sectorReport = await dbService.findSectorReport();

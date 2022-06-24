@@ -1803,7 +1803,7 @@ font-weight: 600;
   opacity: 1;
 }
 .copy-link{
-  color: #937206;
+  color: #C49900;
   font-weight: 600;
 }
 @media (max-width:768px) {
@@ -1848,4 +1848,57 @@ font-weight: 600;
 .permission-required ul.emailList li .emailIconBlk {
   float: right;
   cursor: pointer;
+}
+
+ol.publicUse {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+ol.publicUse li {
+  float: left;
+  margin-right: 20px;
+  position: relative;
+}
+
+ol.publicUse li .publicUseBlk, ol.publicUse li .usagePermission {
+  background: #E6E2DA;
+  border-radius: 4px;
+  color: #645D57;
+  padding: 0px 8px;
+  font-size: 14px;
+  line-height: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+
+ol.publicUse li .publicUseBlk:hover, ol.publicUse li .usagePermission:hover {
+  background: #B1AAA1;
+  color: #1E1B19;
+}
+.mouseHoverInfo {
+  background: #1E1B19;
+  border-radius: 4px;
+  padding: 4px 12px 7px;
+  width: 256px;
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  position: absolute;
+  top: 35px;
+  left: 0px;
+  z-index: 9;
+  display: none;
+}
+ol.publicUse li:hover .mouseHoverInfo {
+  display: block;
+}
+.w219 {
+  width: 219px !important;
+}
+
+.internal-use .removeMarginTop .control, .removeMarginTop .sub-dropdown-block {
+  margin-top: 0px !important;
 }

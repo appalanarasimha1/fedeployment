@@ -161,7 +161,7 @@ export class SearchComponent implements OnInit {
 
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40 };
     for (const key in data) {
-      if (typeof data[key] !== "string" && typeof data[key] !== "number") {
+      if (typeof data[key] !== "string" && typeof data[key] !== "number" && typeof data[key] !== "boolean") {
         data[key].map((item: string) => {
           if (queryParams[key]) {
             queryParams[key] =
@@ -234,6 +234,9 @@ export class SearchComponent implements OnInit {
       case "recentView":
         url = "";
         break;
+      case "trendingPage":
+        url = "";
+        break;
       case "favourite":
         url = apiRoutes.FETCH_FAVORITE;
         params.queryParams = this.favoriteCollectionId;
@@ -250,6 +253,20 @@ export class SearchComponent implements OnInit {
         params["duplicate_show"] = "1";
     }
     if (!url) return;
+
+    if (params["downloadApproval"] !== undefined) {
+      if (params["downloadApproval"]) {
+        params["download_approval"] = "true";
+      }
+      delete params["downloadApproval"];
+    }
+
+    if (params["includePrivate"] !== undefined) {
+      if (params["includePrivate"]) {
+        params["sa_access"] = "All access";
+      }
+      delete params["includePrivate"];
+    }
 
     this.dataService.loaderValueChange(true);
     this.nuxeo.nuxeoClient

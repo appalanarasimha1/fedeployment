@@ -45,20 +45,22 @@
   <div class="cardBlock newDesign pa-0">
     <div [ngClass]="{'activeHover': doc.isSelected}">
       <div class="mouse-hover-bg" (click)="openPreview()"></div>
-      <!-- <div class="form-group-custom">
-        <input type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
+      <div class="form-group-custom">
+        <input class ="vh" type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
           (change)="selectImage($event)">
         <label for="html-{{doc.uid}}"></label>
-      </div> -->
-      <div class="hover-icon-group">
+      </div>
+      <div class="hover-icon-group" (click)="logDoc()">
         
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
         </div> -->
-        <a class="hover-icon download-icon" href="javascript:void(0)">
+        <a class="hover-icon download-icon"*ngIf="doc && !checkPopupNeeds()" href="{{getFileContent()}}"></a>
+
+        <a class="hover-icon download-icon" href="javascript:void(0)" *ngIf="checkPopupNeeds()">
           <div *ngIf="doc" class="download-dropdown">
             <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
-              <p>Always credit copyright owners (where applicable).</p>
+              <p *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
               <div class="download-btn">
                 <a href="{{getFileContent()}}" >
                   <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,10 +73,10 @@
               </div>
             </div>
 
-            <div *ngIf="hasInternalRestriction()" class="internal-use">
-              <p>Always credit copyright owners (where applicable).</p>
+            <div *ngIf="hasInternalRestriction1() && getApprovalUsers().length <1" class="internal-use">
+              <p *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
 
-              <div class="control-group" [ngClass]="downloadErrorShow && !isAware ? 'error-disabled' : '' ">
+              <div class="control-group" [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : !checkCopyRight()} ">
                 <label class="control control--checkbox">I am aware this asset is for internal use only
                   <input type="checkbox" [(ngModel)]="isAware" checked="isAware" (change)="onCheckboxChange($event)"/>
                   <div class="control__indicator"></div>
@@ -93,9 +95,9 @@
               </div>
             </div>
 
-            <div *ngIf="hasRequestRestriction()" class="permission-required">
-              <p>Always credit copyright owners (where applicable). <br /><br />
-                {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
+            <div *ngIf="getApprovalUsers().length>0" class="permission-required">
+              <p *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
+               <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
               <ul class="emailList">
                 <li *ngFor="let userName of getApprovalUsers()">
                   <div class="nameBlk">{{userName}}</div>
@@ -158,8 +160,8 @@
   </div>
   <div [ngClass]="{'activeHover': doc.isSelected}">
 
-    <div class="form-group-custom">
-      <input type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
+    <div class="form-group-custom"  >
+      <input class ="vh" type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
         (change)="selectImage($event)">
       <label for="html-{{doc.uid}}"></label>
     </div>

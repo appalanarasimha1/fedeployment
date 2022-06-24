@@ -174,7 +174,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 .views img {
   margin-left: 15px;
   opacity: 0.2;
-  width: 24px;
+  width: 28px;
   cursor: pointer;
 }
 .views img.active{
@@ -730,11 +730,11 @@ font-weight: 600;
 }
 .folderListview tr:nth-child(odd){
   background-color: #F6F5F2;
-  border-bottom: 2px solid #fff;
+  /* border-bottom: 8px solid #fff; */
 }
 .folderListview tr:nth-child(even){
   background-color: #FBF7E6;
-  border-bottom: 2px solid #fff;
+  /* border-bottom: 8px solid #fff; */
 }
 /* .folderListview tr{
   margin: 3px 0px;
@@ -842,7 +842,7 @@ font-weight: 600;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   padding: 20px;
-  width: 380px;
+  width: 420px;
   right: 0px;
   top: 50px;
   /* left: auto; */
@@ -865,22 +865,25 @@ font-weight: 600;
   border: unset;
   border-bottom: 2px solid #413E3C;
   width: 100%;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 24px;
   color: #040404;
   padding-bottom: 5px;
+  padding-left: 0px;
+  font-weight: 500;
 }
 .createFolder input::placeholder{
   font-size: 16px !important;
   line-height: 24px !important;
   color: #040404 !important;
+  font-weight: normal !important;
 }
 .createFolder label{
   font-size: 16px;
-line-height: 24px;
-color: #040404;
-font-weight: 600;
+  line-height: 24px;
+  color: #040404;
+  font-weight: 600;
 }
 .mat-expansion-panel:not([class*=mat-elevation-z]){
   box-shadow: unset;
@@ -1020,12 +1023,12 @@ font-weight: 600;
 }
 .delete-folder-action .control__indicator {
   position: absolute;
-  top: 8px;
+  top: 6px;
   left: 0;
-  height: 26px;
-  width: 26px;
+  height: 24px;
+  width: 24px;
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 20px;
 }
 .delete-folder-action .control--radio .control__indicator {
   border-radius: 50%;
@@ -1035,14 +1038,14 @@ font-weight: 600;
   background: #fff;
 }
 .delete-folder-action .control input:checked ~ .control__indicator {
-  background: #006845;
+  background: #C49900;
 }
 .delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
 .delete-folder-action .control input:checked:focus ~ .control__indicator {
-  background: #006845;
+  background: #C49900;
 }
 .delete-folder-action .control input:disabled ~ .control__indicator {
-  background: #006845;
+  background: #C49900;
   opacity: 0.6;
   pointer-events: none;
 }
@@ -1060,8 +1063,8 @@ font-weight: 600;
 .delete-folder-action .control--checkbox .control__indicator:before {
   left: 10px;
   top: 6px;
-  width: 6px;
-  height: 12px;
+  width: 5px;
+  height: 10px;
   border: solid #fff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
@@ -1109,16 +1112,16 @@ font-weight: 600;
 }
 .createNew, .deleteFolder, .recoverFolder{
   font-size: 16px;
-  line-height: 24px;
+  line-height: 31px;
   color: #937206;
   font-weight: 600;
   vertical-align: middle;
 }
-.deleteFolder img, .recoverFolder img {
+.recoverFolder img {
   margin-right: 8px; margin-top: -4px;
 }
 .createNew {
-  margin-left: 10px;
+  margin-left: 0px;
 }
 .groupFolder.checkDelete .delete-folder-action {
   opacity: 1;
@@ -1276,12 +1279,12 @@ ul.uploadAssetsClassifications li.workspaceInfoHover .workspaceInfo {
 ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   display: block;
 }
-.dropdownCreate {
+.dropdownCreate, .multiDownloadBlock {
   display:none;
   text-align: left;
 }
 .buttonCreate {
-  padding-top: 0px;
+  padding-top: 4px;
   display: inline-block;
   margin-right: 17px;
   vertical-align: top;
@@ -1316,7 +1319,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   opacity: 0.6;
 }
 
-::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+::ng-deep .mat-snack-bar-container.snackBarMiddle,
 ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
   max-width: 50vw !important;
   margin-top: 200px !important;
@@ -1430,6 +1433,9 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 }
 .classificationsIcon {
   cursor: pointer;
+}
+.classificationsIcon-disabled {
+  cursor: auto;
 }
 .classificationsIcon:hover path {
   stroke:#DAAA00;
@@ -1588,8 +1594,8 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   float: right;
   border-left: 1px solid #EFEEE9;
 }
-.buttonCreate img {opacity: 1 !important;width: 14px !important;}
-.deleteRecover {display: inline-block;}
+.buttonCreate img {opacity: 1 !important;width: 14px !important; margin-top: 3px;}
+.deleteRecover {display: inline-block; margin-left: 10px;}
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
 .uploadClassificationDisable {
   opacity: 0.5;
@@ -2902,7 +2908,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   text-align: left;
 }
 .buttonCreate {
-  padding-top: 0px;
+  padding-top: 4px;
   display: inline-block;
   margin-right: 17px;
   vertical-align: top;
@@ -2937,7 +2943,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   opacity: 0.6;
 }
 
-::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+::ng-deep .mat-snack-bar-container.snackBarMiddle,
 ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
   max-width: 50vw !important;
   margin-top: 200px !important;
@@ -3209,7 +3215,7 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   float: right;
   border-left: 1px solid #EFEEE9;
 }
-.buttonCreate img {opacity: 1 !important;width: 14px !important; margin-top: 3px;}
+.buttonCreate img {opacity: 1 !important;width: 18px !important; margin-top: 4px;}
 .deleteRecover {display: inline-block; margin-left: 10px;}
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
 .uploadClassificationDisable {
@@ -3373,7 +3379,7 @@ ul.downloadImgLisst li:last-child {
   padding-bottom: 0px;
 }
 
-ul.downloadImgLisst li .imgListBlk, 
+ul.downloadImgLisst li .imgListBlk,
 ul.downloadImgLisst li .contentListBlk,
 ul.downloadImgLisst li .imgMailIcon {
   display: inline-block;
@@ -3480,6 +3486,173 @@ ul.downloadImgLisst li .contentListBlk {
 .internal-use .control--radio input:disabled ~ .control__indicator:after {
   background: #fff;
 }
+
+.dropdownCreate .control-group {
+  display: block;
+}
+.dropdownCreate .control {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0px;
+  padding-left: 30px;
+  border: 0px;
+  margin: 0px 0px 0px;
+  color: #040404;
+}
+.dropdownCreate .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.dropdownCreate .control__indicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #404040;
+}
+.dropdownCreate .control--radio .control__indicator {
+  border-radius: 50%;
+}
+/* .dropdownCreate .control:hover input ~ .control__indicator, */
+/* .dropdownCreate .control input:focus ~ .control__indicator {
+  background: #006845;
+} */
+.dropdownCreate .control input:checked ~ .control__indicator {
+  background: #006845;
+}
+/* .dropdownCreate .control:hover input:not([disabled]):checked ~ .control__indicator,
+.dropdownCreate .control input:checked:focus ~ .control__indicator {
+  background: #fff;
+} */
+.dropdownCreate .control input:disabled ~ .control__indicator {
+  background: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.dropdownCreate .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.dropdownCreate .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.dropdownCreate .control--checkbox .control__indicator:after {
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.dropdownCreate .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #fff;
+}
+.dropdownCreate .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #23211E;
+}
+.dropdownCreate .control--radio input:disabled ~ .control__indicator:after {
+  background: #fff;
+}
+/* custom checkbox end */
+
+.views img.uploadIcon{
+  margin-right: 8px;
+  opacity: 1;
+  width: 18px;
+}
+.views img.infoIcon{
+  opacity: 1;
+  width: 22px
+}
+
+.customToolTipWorkspace.infoHover {
+  width: 380px;
+  left: -196px;
+  white-space: normal;
+  font-size: 13px;
+  font-weight: normal;
+}
+.mt-15 {
+  margin-top: 15px !important;
+}
+.tollTipWorkspace.workspaceInfoHover .classificationsIcon:hover path {
+  stroke:none;
+}
+
+.header-content .customWidth {
+  width: calc(100% - 65px);
+  display: inline-block;
+}
+.manageAccess {
+  width: 65px;
+  display: inline-block;
+  text-align: right;
+}
+.header-content .manageAccess ul::after {
+  content: '';
+  clear: both;
+  display: block;
+}
+.header-content .manageAccess li {
+  float: left;
+  position: relative;
+}
+.header-content .manageAccess li:first-child {
+  margin-right: 10px;
+}
+.header-content .manageAccess li:last-child {
+  margin-left: 10px;
+}
+.header-content .manageAccess li .customToolTipWorkspace {
+  right: 0px;
+  left: auto;
+}
+.addignCollaborators h2{
+  color: #BAB8B2;
+  text-align: center;
+  padding-bottom: 40px;
+  font-size: 24px;
+  font-weight: 400;
+}
+.addUsers {
+  text-align: center;
+}
+.addUserBtn {
+  display: inline-block;
+  background: #23211E;
+  border-radius: 80px;
+  padding: 9px 38px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+}
+.addUserBtn-disabled {
+  display: inline-block;
+  background: #23211E;
+  border-radius: 80px;
+  padding: 9px 38px;
+  cursor: not-allowed;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+}
 /* custom checkbox end */
 
 svg.classificationsIcon.disablePermission path {
@@ -3488,3 +3661,140 @@ svg.classificationsIcon.disablePermission path {
 /* .updateClassificationBlk ::ng-deep .mat-datepicker-popup {
   left: 40% !important;
 } */
+
+.publicUseBlk {
+  background: #E6E2DA;
+  border-radius: 4px;
+  color: #645D57;
+  padding: 0px 8px;
+  font-size: 14px;
+  line-height: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+.publicUseBlk::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 200%;
+  width: 100%;
+}
+.publicUseBlock:hover .publicUseBlk {
+  background: #B1AAA1;
+  color: #1E1B19;
+}
+.mouseHoverInfo {
+  background: #1E1B19;
+  border-radius: 4px;
+  padding: 4px 12px 7px;
+  width: 290px;
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  position: absolute;
+  top: 32px;
+  left: 0px;
+  z-index: 9;
+  display: none;
+}
+.publicUseBlock:hover .mouseHoverInfo {
+  display: block;
+}
+
+.manageAccessBtn {
+  float: right;
+  clear: both;
+  background: #EDD580;
+  padding: 5px 12px;
+  border-radius: 24px;
+  color: #040505;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.manageAccessBtn-disabled {
+  float: right;
+  clear: both;
+  background: #BAB8B2;
+  padding: 5px 12px;
+  border-radius: 24px;
+  color: #fff;
+  cursor: auto;
+  margin-top: 10px;
+}
+.classificationsIcon.manageUsers:hover path {
+  fill: #DAAA00;
+  stroke: none;
+}
+/* custom checkbox end */
+
+a.downloadDisbable {
+    color: gray!important;
+}
+
+a.downloadDisbable path {
+    stroke: gray;
+}
+
+.delete-folder-action.activeHover {
+  opacity: 1;
+}
+.downloadFileWorkspace {
+  cursor: pointer;
+  z-index: 2;
+}
+.downloadFileWorkspace::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 200%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+}
+.downloadFileWorkspace:hover .multiDownloadBlock {
+  display: block;
+}
+a.addMarginRight {
+  margin-right: 15px;
+}
+.removeMarginTop .control, .removeMarginTop {
+  margin-top: 0px !important;
+}
+.pt-15.removeMarginTop {
+  padding-top: 0px !important;
+}
+.classificationsIcon-disabled.manageUsers path {
+  fill: #bab8b1;
+}
+ul.uploadAssetsClassifications li:hover path,
+.buttonCreate:hover path {
+  fill: #DAAA00;
+}
+.customWidth:hover path,
+.downloadFileWorkspace:hover path,
+.deleteFolder:hover path {
+  stroke: #DAAA00;
+}
+.downloadIcon {
+  vertical-align: -10px;
+  margin-right: 0px;
+  margin-left: 15px;
+  width: 30px;
+  height: 30px;
+}
+.deleteFolder {
+  margin-right: 15px;
+}
+.deleteFolder svg{
+  width: 20px;
+  height: 22px;
+}
+
+ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
+  fill: transparent;
+}

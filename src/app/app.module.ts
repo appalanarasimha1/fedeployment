@@ -31,7 +31,10 @@ import { TermsOfUseComponent } from './common/terms-of-use/terms-of-use.componen
 import { initializer } from './AppInit';
 import { RoleGuardService } from './services/roleGaurd';
 import { AuthGuardService } from './services/authGaurd';
+import { ManageAccessModalComponent } from './manage-access-modal/manage-access-modal.component';
+import { AddUserModalComponent } from './add-user-modal/add-user-modal.component';
 // import { AssetViewComponent } from './asset-view/asset-view.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,8 @@ import { AuthGuardService } from './services/authGaurd';
     LandingPageComponent,
     FooterComponent,
     LoaderYellowComponent,
+    ManageAccessModalComponent,
+    AddUserModalComponent,
     // AssetViewComponent,
   ],
   imports: [
@@ -58,6 +63,7 @@ import { AuthGuardService } from './services/authGaurd';
     UpdateModalModule,
     NgSelectModule,
     KeycloakAngularModule,
+    SlickCarouselModule,
   ],
   providers: [
     // CookieService,

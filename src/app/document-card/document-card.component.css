@@ -764,7 +764,9 @@ background-color:#EBC03F !important;
   margin-bottom: 0px;
   position: absolute;
   z-index: 9;
-  /* opacity: 0; */
+  top: 10px;
+  left: 10px;
+  opacity: 0;
 
   /* padding: 15px;
   top: 0px;
@@ -860,7 +862,7 @@ background-color:#EBC03F !important;
 .cardBlock:hover .cardBlockContentHover,
 .cardBlock:hover .form-group-custom,
 .cardBlock:hover .hover-icon-group{
-  /* opacity: 1; */
+  opacity: 1;
    position: absolute;
   top: 10px;
   right: 10px;
@@ -878,7 +880,7 @@ background-color:#EBC03F !important;
   left: auto;
   right: 10px;
   height: auto;
-  width: 103px;
+  width: 66px;
   text-align: right;
   padding: 0px;
   margin-bottom: 0px;
@@ -1696,4 +1698,7 @@ document-card .lock-icon img {
 .permission-required ul.emailList li .emailIconBlk {
   float: right;
   cursor: pointer;
+}
+.internal-use .removeMarginTop .control {
+  margin-top: 0px !important;
 }

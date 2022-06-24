@@ -17,7 +17,7 @@ import { OWNER_APPROVAL_LABEL } from "./../../upload-modal/constant";
 import { concat, Observable, of, Subject } from "rxjs";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ApiService } from "src/app/services/api.service";
-import { NuxeoService } from '../../services/nuxeo.service';
+import { NuxeoService } from "../../services/nuxeo.service";
 import { apiRoutes } from "../config";
 import {
   TRIGGERED_FROM_DOCUMENT,
@@ -57,6 +57,7 @@ export class SubHeaderComponent implements OnInit {
     { label: "Sports", value: "sport" },
     { label: "Water", value: "water" },
     { label: "Food", value: "food" },
+    { label: "Tourism", value: "tourism" },
   ]; // , {label: 'Water', value: 'water'}
   sectorSelected =
     localStorage.getItem("videoSector") || this.allSectors[0].value;
@@ -111,11 +112,11 @@ export class SubHeaderComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (!localStorage.getItem("openVideo")) {
-      // this.openSm(this.videoModal);
-      localStorage.setItem("openVideo", "1");
-    }
-    return;
+    // if (!localStorage.getItem("openVideo")) {
+    //   // this.openSm(this.videoModal);
+    //   localStorage.setItem("openVideo", "1");
+    // }
+    // return;
   }
 
   videoPayEnded(event: any) {
@@ -481,25 +482,30 @@ export class SubHeaderComponent implements OnInit {
       .get()
       .then((res) => {
         const docs = res.entries;
-        const newData = docs?.filter((m) =>
-          m.title.includes(".")
-            ? ["jpg", "gif", "png", "mp4","MOV","tif","mov",].indexOf(
-                m.title.split(".")[m.title.split(".").length - 1]
-              ) === -1
-            : true
+        // const newData = docs?.filter((m) =>
+        //   m.title.includes(".")
+        //     ? ["jpg", "gif", "png", "mp4","MOV","tif","mov",].indexOf(
+        //         m.title.split(".")[m.title.split(".").length - 1]
+        //       ) === -1
+        //     : true
+        // );
+        const newData = docs?.filter(
+          (m) =>
+            ["workspace", "folder", "orderedfolder"].indexOf(
+              m.type.toLowerCase()
+            ) !== -1
         );
         this.searchedAdeadData = newData;
         this.userLoading = false;
-
       })
       .catch((error) => {});
   }
 
-  splitStr(str:any){
-    return str.split(" ")
+  splitStr(str: any) {
+    return str.split(" ");
   }
 
-  highlightStr(str:any){
-   return str.toLowerCase().includes(this.searchText.toLowerCase());
+  highlightStr(str: any) {
+    return str.toLowerCase().includes(this.searchText.toLowerCase());
   }
 }

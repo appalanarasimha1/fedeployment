@@ -54,7 +54,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     video_duration_agg?: string[]
     sectors?: string[],
     dc_modified_agg: string[],
-    dublincore_created_agg: string[]
+    dublincore_created_agg: string[],
+    downloadApproval: boolean,
+    includePrivate: boolean
   } = {
       system_primaryType_agg: [],
       system_mimetype_agg: [],
@@ -62,7 +64,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       asset_height_agg: [],
       video_duration_agg: [],
       dc_modified_agg: [],
-      dublincore_created_agg: []
+      dublincore_created_agg: [],
+      downloadApproval: false,
+      includePrivate: false
     };
   // modifiedDate = { dc_modified_agg: [] };
   showImageSize = true;
@@ -85,6 +89,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   modifiedDateDropDown = [{ key: 'last24h', id: 0 }, { key: 'lastWeek', id: 1 }, { key: 'lastMonth', id: 2 }, { key: 'lastYear', id: 3 }, { key: 'priorToLastYear', id: 4 }];
   // sharedService: any;
   selectedMimetypeByType = [];
+
+  downloadApproval = false;
+  includePrivate = false;
 
   isOpen = false;
   selectedType: string;
@@ -503,6 +510,18 @@ export class SideDrawerComponent implements OnInit, OnChanges {
     return;
   }
 
+  onCheckDownloadApproval(event) {
+    this.searchCriteria['downloadApproval'] = this.downloadApproval;
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
+  onCheckIncludePrivate(event) {
+    this.searchCriteria['includePrivate'] = this.includePrivate;
+    this.emitData(this.searchCriteria);
+    return;
+  }
+
   // selectModifiedDate(value: string) {
   //   const mimeType = value;
   //   const index = this.modifiedDate['dc_modified_agg'].indexOf(mimeType);
@@ -550,7 +569,9 @@ export class SideDrawerComponent implements OnInit, OnChanges {
       video_duration_agg: [],
       sectors: [],
       dc_modified_agg: [],
-      dublincore_created_agg: []
+      dublincore_created_agg: [],
+      downloadApproval: false,
+      includePrivate: false
     };
   }
 }

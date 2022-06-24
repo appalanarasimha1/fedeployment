@@ -3,7 +3,7 @@ import { DbConnection } from '../connectionManager/DbConnection';
 import { ObjectId } from 'mongodb';
 import * as _ from 'underscore';
 import { AppConfig } from '../config/appConfigSelection';
-import { createDownloadQuery, createUploadQuery, createPreviewQuery, getSectorReport } from '../dbquery';
+import { createDownloadQuery, createUploadQuery, createPreviewQuery, getSectorReport, createTopDownloadAndViewQuery } from '../dbquery';
 
 export class DBService {
   private connectionManager: DbConnection =
@@ -112,6 +112,23 @@ export class DBService {
     } catch (e) {
       console.error(
         "find download asset count: Exception occurred while execution - ",
+        e
+      );
+      throw e;
+    }
+  }
+
+  public async getTopDownloadAndView() {
+    try {
+      let connection: any = await this.connectionManager.getConnection();
+      const query = createTopDownloadAndViewQuery();
+      return await connection
+        .collection(AppConfig.Config.mongodbTables.AUDIT_TABLE)
+        .aggregate(query)
+        .toArray();
+    } catch (e) {
+      console.error(
+        "getTopDownloadAndView: Exception occurred while execution - ",
         e
       );
       throw e;

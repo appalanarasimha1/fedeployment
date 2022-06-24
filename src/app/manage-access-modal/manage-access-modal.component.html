@@ -1,0 +1,34 @@
+<div class="manageAccessBlock">
+
+    <h3>Manage access</h3>
+    <div class="manageAccessHeader">
+        <div class="imgBlock"><img src="../../assets/images/folder-table-list.svg" /></div>
+        <div class="nameBlock">Photoshoot-2022-02-10</div>
+        <div class="tagBlock">Private</div>
+    </div>
+
+    <div class="breadcrumbBlock">
+        / <a href="#" class="active">Marketing</a> <span class="active">/ Photoshoot-2022-02-10</span>
+    </div>
+
+    <div class="whenYouConvert">
+        When you convert this folder to published, it's contents will become available for all Ground X users or internal users only. They will appear in Ground X search.
+    </div>
+
+    <div class="makePrivate tollTipWorkspace">
+        <label class="control control--checkbox">
+          Make this folder private
+          <input type="checkbox" (click)="getCheckAction($event)" />
+          <div class="control__indicator"></div>
+        </label>
+        <span class="showTollTip">
+          <img src="../../assets/images/Info-icon.svg" alt="" class="infoIcon" />
+          <div class="customToolTipWorkspace infoHover">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</div>
+        </span>
+    </div>
+</div>
+
+<div class="button-groups">
+    <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+    <button class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Publish</button>
+</div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, ViewChild, TemplateRef } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
 import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions } from "../common/constant";
@@ -19,7 +19,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   @Input() docUrl: string;
   @Input() openInModal: boolean = true;
 
-  @ViewChild('preview', {static: false}) modalTemp: TemplateRef<void>;
+  @ViewChild("preview", { static: false }) modalTemp: TemplateRef<void>;
 
   modalLoading = false;
   inputTag: string;
@@ -31,7 +31,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   commentText: string;
   comments = [];
   isAware = false;
-  currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW
+  currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   copiedString;
 
@@ -41,7 +41,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     private modalService: NgbModal,
     public nuxeo: NuxeoService,
     public dataService: DataService,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -74,92 +75,81 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         (reason) => {
           this.showTagInput = false;
           this.modalLoading = false;
-          this.copiedString = '';
+          this.copiedString = "";
         }
       );
   }
 
   getTags() {
     this.tags = this.doc.contextParameters["tags"]?.map((tag) => tag) || [];
-    this.doc.properties[TAG_ATTRIBUTES.ACTIVITY_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.EMOTION_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
+    this.doc.properties[TAG_ATTRIBUTES.ACTIVITY_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.EMOTION_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
     // this.doc.properties[TAG_ATTRIBUTES.NX_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.OBJECT_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.WEATHER_CLASSIFICATION]?.map((item) => this.checkDuplicateAndAddTags(item));
-    this.doc.properties[TAG_ATTRIBUTES.PUBLIC_FIGURE_DETECTION]?.map((item) => this.checkDuplicateAndAddTags(item));
+    this.doc.properties[TAG_ATTRIBUTES.OBJECT_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.OCR_TAGS]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.SCENE_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.WEATHER_CLASSIFICATION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
+    this.doc.properties[TAG_ATTRIBUTES.PUBLIC_FIGURE_DETECTION]?.map((item) =>
+      this.checkDuplicateAndAddTags(item)
+    );
   }
 
   checkDuplicateAndAddTags(tag: string): void {
-    if(this.tags.indexOf(tag) !== -1) {
+    if (this.tags.indexOf(tag) !== -1) {
       return;
-    } else if(unwantedTags.indexOf(tag.toLowerCase()) === -1) {
+    } else if (unwantedTags.indexOf(tag.toLowerCase()) === -1) {
       this.tags.push(tag);
     }
     return;
   }
 
   getParentFolderName() {
-    if (!this.doc) return '';
+    if (!this.doc) return "";
     // const split = this.doc.path.split('/');
     // return split[split.length - 2];
-    return this.doc.properties['dc:sector'];
+    return this.doc.properties["dc:sector"];
   }
 
   getComments() {
     const queryParams = { pageSize: 10, currentPageIndex: 0 };
-    const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.doc.uid);
-    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
-      .get().then((docs) => {
+    const route = apiRoutes.FETCH_COMMENTS.replace("[assetId]", this.doc.uid);
+    this.nuxeo.nuxeoClient
+      .request(route, {
+        queryParams,
+        headers: { "enrichers.user": "userprofile" },
+      })
+      .get()
+      .then((docs) => {
         this.comments = docs.entries;
-      }).catch((err) => {
-        console.log('get comment error', err);
+      })
+      .catch((err) => {
+        console.log("get comment error", err);
       });
   }
 
   getAssetUrl(event: any, url: string, type?: string): string {
-    if (!url) return "";
-    if (!event) {
-      return `${window.location.origin}/nuxeo/${url.split("/nuxeo/")[1]}`;
-    }
-
-    const updatedUrl = `${window.location.origin}/nuxeo/${
-      url.split("/nuxeo/")[1]
-    }`;
-    this.modalLoading = true;
-    fetch(updatedUrl, {
-      headers: { "X-Authentication-Token": localStorage.getItem("token") },
-    })
-      .then((r) => {
-        if (r.status === 401) {
-          localStorage.removeItem("token");
-          this.router.navigate(["login"]);
-
-          this.modalLoading = false;
-          return;
-        }
-        return r.blob();
-      })
-      .then((d) => {
-        event.target.src = window.URL.createObjectURL(d);
-
-        this.modalLoading = false;
-      })
-      .catch((e) => {
-        // TODO: add toastr with message 'Invalid token, please login again'
-
-        this.modalLoading = false;
-        console.log(e);
-      });
+    return this.sharedService.getAssetUrl(event, url, type);
   }
 
-  getDownloadFileEstimation(data: any) {
-    if (!data) return;
+  getDownloadFileEstimation(data?: any): string {
+    data = this.doc?.properties?.["file:content"]?.length || data;
+    if (!data) return '0 Kb';
     return `${
       data / 1024 > 1024
         ? (data / 1024 / 1024).toFixed(2) + " MB"
-        : (data / 1024).toFixed(2) + " KB"
+        : (data / 1024).toFixed(2) + " Kb"
     }`;
   }
 
@@ -188,7 +178,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getNames(users: any) {
-    if(!users?.["dc:contributors"]) return '';
+    if (!users?.["dc:contributors"]) return "";
     let result = "";
     users["dc:contributors"].map((user) => {
       result += user + ", ";
@@ -197,8 +187,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   toDateString(date: string): string {
-    if(!date?.['dc:created']) return '';
-    return `${new Date(date['dc:created']).toDateString()}`;
+    if (!date?.["dc:created"]) return "";
+    return `${new Date(date["dc:created"]).toDateString()}`;
   }
 
   saveComment(comment: string): void {
@@ -225,7 +215,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getTime(fromDate: Date, showHours: boolean, toDate?: Date) {
-    return this.sharedService.returnDaysAgoFromTodayDate(fromDate, showHours, toDate);
+    return this.sharedService.returnDaysAgoFromTodayDate(
+      fromDate,
+      showHours,
+      toDate
+    );
   }
 
   getDoubleDigit(value: number) {
@@ -332,36 +326,59 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   // }
 
   hasNoRestriction() {
-    return (!this.doc.properties["sa:allow"] || this.doc.properties["sa:allow"] === ALLOW.any && this.doc.properties["sa:downloadApproval"] !== 'true');
+    return (
+      !this.doc.properties["sa:allow"] ||
+      (this.doc.properties["sa:allow"] === ALLOW.any &&
+        this.doc.properties["sa:downloadApproval"] !== "true")
+    );
   }
 
   hasInternalRestriction() {
-    return ((this.doc.properties["sa:allow"] === ALLOW.internal || this.doc.properties["sa:allow"] === ALLOW.request) && this.doc.properties["sa:downloadApproval"] !== 'true');
+    return (
+      (this.doc.properties["sa:allow"] === ALLOW.internal ||
+        this.doc.properties["sa:allow"] === ALLOW.request) &&
+      this.doc.properties["sa:downloadApproval"] !== "true"
+    );
   }
 
   hasRequestRestriction() {
-    return this.doc.properties["sa:allow"] === ALLOW.request || this.doc.properties["sa:downloadApproval"] === 'true';
+    return (
+      this.doc.properties["sa:allow"] === ALLOW.request ||
+      this.doc.properties["sa:downloadApproval"] === "true"
+    );
   }
 
+  hasPrivateAccess(){
+    return this.doc.properties["dc:isPrivate"]===true ? true: false
+  }
+  internalUse(){
+    return this.doc.properties["sa:allow"] === ALLOW.internal;
+  }
+  
   showDownloadDropdown() {
-    return this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware);
+    return (
+      this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware)
+    );
   }
 
   getCreator() {
-    return this.doc.properties['dc:creator'].id || this.doc.properties['dc:creator'];
+    return this.doc?.properties?.['dc:creator']?.id || this.doc?.properties?.['dc:creator'];
   }
-  
+
   getApprovalUsers(): string[] {
-    return this.doc.properties?.['sa:downloadApprovalUsers'] || [];
+    return this.doc.properties?.["sa:downloadApprovalUsers"] || [];
   }
 
   getCopyright() {
-    if (this.doc.properties['sa:copyrightName'] && this.doc.properties['sa:copyrightYear']) {
-      return `©️ ${this.doc.properties['sa:copyrightName']} ${this.doc.properties['sa:copyrightYear']}`;
-    } else if(this.doc.properties['sa:copyrightName']) {
-      return `©️ ${this.doc.properties['sa:copyrightName']}`;
+    if (
+      this.doc.properties["sa:copyrightName"] &&
+      this.doc.properties["sa:copyrightYear"]
+    ) {
+      return `©️ ${this.doc.properties["sa:copyrightName"]} ${this.doc.properties["sa:copyrightYear"]}`;
+    } else if (this.doc.properties["sa:copyrightName"]) {
+      return `©️ ${this.doc.properties["sa:copyrightName"]}`;
     }
-    return '';
+    return "";
   }
 
   getUsageAllowed() {
@@ -372,7 +389,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     //   return `${this.doc.properties['sa:allow']}`;
     // }
 
-    switch(this.doc.properties['sa:allow']) {
+    switch (this.doc.properties["sa:allow"]) {
       case ALLOW.any:
         return ALLOW_VALUE_MAP["Anywhere (including external publications)"];
       case ALLOW.internal:
@@ -402,19 +419,20 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   copyLink() {
     // copyLinkOfAsset() {
-      const pathArray = this.doc.path.split('/workspaces');
-      const sector = pathArray[0]
-      let assetName = pathArray[1].split('/').pop();
-      const folderStructure = pathArray[1].split(assetName)[0];
-      const extention: string[] = specialExtensions.filter((item: string) => assetName.includes(item));
+      // const pathArray = this.doc.path.split('/workspaces');
+      // const sector = pathArray[0]
+      // let assetName = pathArray[1].split('/').pop();
+      // const folderStructure = pathArray[1].split(assetName)[0];
+      // const extention: string[] = specialExtensions.filter((item: string) => assetName.includes(item));
       // assetName = assetName.replace(extention[0], '');
+      const assetId = this.doc.uid;
       
       const selBox = document.createElement("textarea");
       selBox.style.position = "fixed";
       selBox.style.left = "0";
       selBox.style.top = "0";
       selBox.style.opacity = "0";
-      selBox.value = `${window.location.origin}/asset-view?sector=${sector}&folderStructure=${folderStructure}&extension=${extention[0] || 'allowed'}&assetName=${assetName}`;
+      selBox.value = `${window.location.origin}/asset-view?assetId=${assetId}`;
       this.copiedString = selBox.value;
       document.body.appendChild(selBox);
       selBox.focus();
@@ -424,4 +442,32 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     // }
   }
 
+  navigateTo(location: string): void {
+    this.router.navigate(['workspace'], { queryParams: {folder: location }});
+    this.modalService?.dismissAll();
+  }
+
+  getDescription(): string {
+    return  this.doc?.properties?.["dc:description"] || this.doc?.properties?.["imd:image_description"];
+  }
+
+  getImageDimensions(): string {
+    return `${this.doc?.properties?.["picture:info"]?.width} x ${this.doc?.properties?.["picture:info"]?.height}`;
+  }
+  
+  checkCopyRight() {
+    let m = this.doc;
+    if (
+      m.properties["sa:copyrightName"] !== null &&
+      m.properties["sa:copyrightName"] !== ""
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getApprovalUsers1() {
+    return this.doc.properties?.["sa:downloadApprovalUsers"].length>0 ? true:false
+  }
 }
