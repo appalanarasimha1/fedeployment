@@ -1944,3 +1944,10 @@ ul.downloadImgLisst li .contentListBlk {
 .pt-15.removeMarginTop {
   padding-top: 0px !important;
 }
+
+.sectorsDropdown .dropdown .dropdown-menu.show, .sectorsDropdown .dropup .dropdown-menu.show {
+  transform: translate(0px, 38px) !important;
+}
+.pt-50{
+  padding-top: 60px !important;
+}

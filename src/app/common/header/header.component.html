@@ -139,7 +139,7 @@
                         <li><a class="dropdown-item" [routerLink]="['/workspace']" >Workspace</a></li>
                         <!-- <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Collections</a></li>
                         <li><a class="dropdown-item tooltipCustom"  style="cursor: not-allowed;" placement="bottom" ngbTooltip="This function will be available soon">Tasks</a></li> -->
-                        <li><a class="dropdown-item"  placement="bottom" (click)="selectTab('favourite'); toFavouriteSection()" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
+                        <li><a class="dropdown-item favorites"  placement="bottom" (click)="toFavouriteSection(); selectTab('favourite')" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
                         <li *ngIf="checkForUserGroup()"><a class="dropdown-item" [routerLink]="['/report']">Analytics</a></li>
                         <li class="logout-line"><a class="dropdown-item" (click)="logout()">Logout</a></li>
                       </ul>
