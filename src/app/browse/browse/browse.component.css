@@ -3794,3 +3794,7 @@ ul.uploadAssetsClassifications li:hover path,
   width: 20px;
   height: 22px;
 }
+
+ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
+  fill: transparent;
+}
