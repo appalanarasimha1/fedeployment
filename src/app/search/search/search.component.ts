@@ -16,6 +16,7 @@ import { SideDrawerComponent } from "src/app/common/sideDrawer/sideDrawer.compon
 import { DocumentComponent } from "src/app/document/document.component";
 import { data } from "jquery";
 import { ApiService } from "src/app/services/api.service";
+import { KeycloakService } from "keycloak-angular";
 @Component({
   selector: "app-search",
   styleUrls: ["./search.component.css"],
@@ -71,13 +72,16 @@ export class SearchComponent implements OnInit {
     private router: Router,
     private sharedService: SharedService,
     private dataService: DataService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    protected readonly keycloak: KeycloakService
   ) {}
 
   ngOnInit() {
     this.fetchMostSearchedTags();
     this.fetchUserData();
     this.fetchFavoriteCollection();
+
+    this.oneTimeTask();
 
     if (!this.nuxeo.nuxeoClient || !localStorage.getItem("token")) {
       this.sharedService.redirectToLogin();
@@ -615,5 +619,14 @@ export class SearchComponent implements OnInit {
         .execute();
       this.favoriteCollectionId = res.uid;
     }
+  }
+
+  oneTimeTask() {
+    if(localStorage.getItem("logout-once")) {
+      return;
+    }
+    this.nuxeo.logout();
+    localStorage.setItem("logout-once", "true");
+    this.keycloak.logout(window.location.origin + '/login');
   }
 }

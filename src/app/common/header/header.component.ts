@@ -134,8 +134,9 @@ export class HeaderComponent implements OnInit {
 
   toFavouriteSection() {
     setTimeout(() => {
-      window.scrollTo(0,document.body.scrollHeight);
-    }, 0);
+      // window.scrollTo(0,document.body.scrollHeight);
+      $('#favorites').animate({scrollTop: document.body.scrollHeight},"slow");
+    }, 300);
   }
 
   selectTab(tab: string) {
