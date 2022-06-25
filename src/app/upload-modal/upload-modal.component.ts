@@ -259,6 +259,8 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkUploadStep() {
+    const notUploadDone = Object.keys(this.filesUploadDone).find(key => !this.filesUploadDone[key]);
+    if (notUploadDone) return true;
     if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) {
       // this.showError = true;
       return true;
@@ -541,7 +543,7 @@ export class UploadModalComponent implements OnInit {
       },
     };
     this.filesMap[index] = file;
-
+    this.filesUploadDone[index] = false;
     this.apiService.post(uploadUrl, blob.content, options).subscribe(
       (event) => {
         if (event.type == HttpEventType.UploadProgress) {
@@ -570,6 +572,7 @@ export class UploadModalComponent implements OnInit {
     this.apiService.delete(url).subscribe((res) => {
       if (this.filesMap[index]) {
         delete this.filesMap[index];
+        delete this.filesUploadDone[index];
       }
     });
   }
@@ -1132,7 +1135,6 @@ export class UploadModalComponent implements OnInit {
   checkFormState(): boolean {
     const length = Object.keys(this.filesMap).length;
     for (let i = 0; i < length; i++) {
-      console.log('index = ', i);
       const access = this.customAccessMap[i];
       const allow = this.customAllowMap[i];
       const confidentiality = this.customConfidentialityMap[i];
