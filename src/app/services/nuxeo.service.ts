@@ -81,13 +81,12 @@ export class NuxeoService {
     }
   }
 
-  logout(): void {
+  async logout(): Promise<void> {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.nuxeoClient = null;
-    this.http.get(`${this.baseUrl}/nuxeo/logout`)
-      .subscribe((response: any) => {
-      });
+    const response = await this.http.get(`${this.baseUrl}/nuxeo/logout`);
+    return;
   }
 
   authenticateUser(username: string, password: string) {

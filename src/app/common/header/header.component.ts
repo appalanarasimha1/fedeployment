@@ -156,8 +156,8 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  logout() {
-    this.nuxeo.logout();
+  async logout() {
+    await this.nuxeo.logout();
     this.keycloak.logout(window.location.origin + '/login');
   }
 
