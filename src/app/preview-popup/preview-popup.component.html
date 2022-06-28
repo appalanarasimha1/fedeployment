@@ -193,24 +193,24 @@
                         {{ toDateString(doc?.properties) }}
                         by
                         <br />
-                        <span style="color: #ebc03f">{{getCreator()}}</span>
+                        <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
                       </li>
   
                       <li>
-                        Usage approver <br /><span style="color: #ebc03f">{{
+                        Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
                           }}</span>
                       </li>
   
                       <li>
-                        Name <br /><span style="opacity: 0.7">{{
+                        Name <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.title
                           }}</span>
                       </li>
   
                       <li>
                         Location <br />
-                        <span style=" word-break: break-all">
+                        <span style="word-break: break-all">
                           <a href="/workspace?folder={{doc?.parentRef}}"
                           (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
                             {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
@@ -219,14 +219,14 @@
                       </li>
   
                       <li>
-                        Description <br /><span style="opacity: 0.7">{{
+                        Description <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties["dc:description"] ||
                           doc?.properties["imd:image_description"]
                           }}</span>
                       </li>
   
                       <li>
-                        Format <br /><span style="opacity: 0.7">{{
+                        Format <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties && doc?.properties["picture:info"]?.format
                           }}</span>
                       </li>
@@ -237,23 +237,23 @@
                     <ul>
   
                       <li>
-                        Dimensions <br /><span style="opacity: 0.7">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x
+                        Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x
                           {{ doc?.properties["picture:info"]?.height }}</span>
                       </li>
                       
                       <li>
-                        Size <br /><span style="opacity: 0.7">{{
+                        Size <br /><span style="opacity: 0.7; word-break: break-all">{{
                           getDownloadFileEstimation()
                           }}</span>
                       </li>
   
                       <li>
-                        Colour Profile <br /><span style="opacity: 0.7">{{
+                        Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties && doc?.properties["picture:info"]?.colorSpace
                           }}</span>
                       </li>
                       <li>
-                        Bit Depth <br /><span style="opacity: 0.7">{{ doc?.properties && doc?.properties["picture:info"]?.depth
+                        Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
                           }}</span>
                       </li>
   
@@ -261,32 +261,32 @@
                         EXIF
                         <br />
                         Date
-                        <span style="opacity: 0.7">{{
+                        <span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties || doc?.properties["dc:created"]
                           }}</span>
                         <br />
                         Orientation
-                        <span style="opacity: 0.7">{{
+                        <span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties["imd:orientation"]
                           }}</span>
                         <br />
                         Aperture
-                        <span style="opacity: 0.7">{{
+                        <span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties["imd:fnumber"]
                           }}</span>
                         <br />
                         Exposure
-                        <span style="opacity: 0.7">{{
+                        <span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties["imd:exposure_time"]
                           }}</span>
                         <br />
                         ISO
-                        <span style="opacity: 0.7">{{
+                        <span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties["imd:iso_speed_ratings"]
                           }}</span>
                         <br />
                         Focal Length
-                        <span style="opacity: 0.7">{{
+                        <span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties["imd:focalLength"]
                           }}</span>
                       </li>
@@ -510,17 +510,17 @@
                       {{ toDateString(doc?.properties) }}
                       by 
                       <br />
-                      <span style="color: #ebc03f">{{getCreator()}}</span>
+                      <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
                     </li>
 
                     <li>
-                      Usage approver <br /><span style="color: #ebc03f">{{
+                      Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
                         doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
                         }}</span>
                     </li>
 
                     <li>
-                      Name <br /><span style="opacity: 0.7">{{
+                      Name <br /><span style="opacity: 0.7; word-break: break-all">{{
                         doc?.title
                         }}</span>
                     </li>
@@ -535,13 +535,13 @@
                     </li>
 
                     <li>
-                      Description <br /><span style="opacity: 0.7">{{
+                      Description <br /><span style="opacity: 0.7; word-break: break-all">{{
                        getDescription()
                         }}</span>
                     </li>
 
                     <li>
-                      Format <br /><span style="opacity: 0.7">{{
+                      Format <br /><span style="opacity: 0.7; word-break: break-all">{{
                         doc?.properties && doc?.properties["picture:info"]?.format
                         }}</span>
                     </li>
@@ -552,22 +552,22 @@
                   <ul>
 
                     <li>
-                      Dimensions <br /><span style="opacity: 0.7">{{ getImageDimensions() }}</span>
+                      Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ getImageDimensions() }}</span>
                     </li>
                     
                     <li>
-                      Size <br /><span style="opacity: 0.7">{{
+                      Size <br /><span style="opacity: 0.7; word-break: break-all">{{
                         getDownloadFileEstimation()
                         }}</span>
                     </li>
 
                     <li>
-                      Colour Profile <br /><span style="opacity: 0.7">{{
+                      Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
                         doc?.properties && doc?.properties["picture:info"]?.colorSpace
                         }}</span>
                     </li>
                     <li>
-                      Bit Depth <br /><span style="opacity: 0.7">{{ doc?.properties && doc?.properties["picture:info"]?.depth
+                      Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
                         }}</span>
                     </li>
 
@@ -575,30 +575,30 @@
                       EXIF
                       <br />
                       Date
-                      <span style="opacity: 0.7">{{doc?.properties || doc?.properties["dc:created"]}}</span>
+                      <span style="opacity: 0.7; word-break: break-all">{{doc?.properties || doc?.properties["dc:created"]}}</span>
                       <br />
                       Orientation
-                      <span style="opacity: 0.7">{{
+                      <span style="opacity: 0.7; word-break: break-all">{{
                         doc?.properties["imd:orientation"]
                         }}</span>
                       <br />
                       Aperture
-                      <span style="opacity: 0.7">{{
+                      <span style="opacity: 0.7; word-break: break-all">{{
                         doc?.properties["imd:fnumber"]
                         }}</span>
                       <br />
                       Exposure
-                      <span style="opacity: 0.7">{{
+                      <span style="opacity: 0.7; word-break: break-all">{{
                         doc?.properties["imd:exposure_time"]
                         }}</span>
                       <br />
                       ISO
-                      <span style="opacity: 0.7">{{
+                      <span style="opacity: 0.7; word-break: break-all">{{
                         doc?.properties["imd:iso_speed_ratings"]
                         }}</span>
                       <br />
                       Focal Length
-                      <span style="opacity: 0.7">{{
+                      <span style="opacity: 0.7; word-break: break-all">{{
                         doc?.properties["imd:focalLength"]
                         }}</span>
                     </li>
