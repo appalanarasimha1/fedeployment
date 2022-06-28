@@ -1364,7 +1364,7 @@ export class BrowseComponent implements OnInit {
 
   async searchFolders(searchString: string) {
     // this.loading = true;
-    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:mixinType = 'Folderish' AND ecm:path STARTSWITH '/${this.selectedFolder.title}/workspaces/' AND dc:title ILIKE '%${searchString}%'`;
+    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '/${this.selectedFolder.title}/workspaces/' AND dc:title ILIKE '%${searchString}%'`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
