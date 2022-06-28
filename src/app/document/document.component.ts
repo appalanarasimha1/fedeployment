@@ -309,28 +309,22 @@ export class DocumentComponent implements OnInit, OnChanges {
         let splittedLocation = res.headers.get("location").split("/");
         let newUID = splittedLocation[splittedLocation.length - 2];
         uid = newUID;
-        console.log("11111111111111110000000000000000000000", newUID);
         this.apiService
           .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
           .subscribe((resp: any) => {
             let locationForDownload = resp.headers.get("location");
-
-            console.log(
-              "1111111111111111000000000000000000000022222222222222222",
-              resp
-            );
           });
 
-        setTimeout(() => {
-          console.log(
-            "================================================================="
-          );
-          // window.open(
-          //   environment.apiServiceBaseUrl +
-          //     "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-          //     uid
-          // );
-        }, 1000);
+        // setTimeout(() => {
+        //   console.log(
+        //     "================================================================="
+        //   );
+        //   // window.open(
+        //   //   environment.apiServiceBaseUrl +
+        //   //     "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+        //   //     uid
+        //   // );
+        // }, 1000);
       });
   }
   public async getRelatedTags() {

@@ -131,6 +131,10 @@ export class SubHeaderComponent implements OnInit {
   getRecentSearch() {
     const user = JSON.parse(localStorage.getItem("user"));
 
+    if(!user) {
+      return;
+    }
+
     this.apiService
       .get("/searchTerm/findUserRecentTags?username=" + user.email, {})
       .subscribe((response) => {
@@ -143,6 +147,7 @@ export class SubHeaderComponent implements OnInit {
         this.recentSearch = filteredData;
       });
   }
+  
   dropdownMenu(event: any): void {
     let sortBy = event.target.value;
     if (sortBy) {

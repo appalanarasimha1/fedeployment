@@ -492,7 +492,7 @@ export class BrowseComponent implements OnInit {
     // }
     if (breadCrumbIndex === this.breadCrumb.length) return;
     if (breadCrumbIndex === 0) {
-      this.showSearchbar = false;
+      // this.showSearchbar = false;
       this.selectedFolder2 = this.folderStructure[0];
       this.selectedFolder = this.selectedFolder2;
       this.sectorSelected = null;
@@ -506,7 +506,7 @@ export class BrowseComponent implements OnInit {
       await this.getWorkspaceFolders(item.uid, listView);
       this.loading = false;
     } else {
-      this.showSearchbar = false;
+      // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
     this.loading = true;
@@ -1241,7 +1241,7 @@ export class BrowseComponent implements OnInit {
     let workSpaceIndex: number;
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
-    this.showSearchbar = false;
+    // this.showSearchbar = false;
     if (!entries?.length) {
       this.sortedData = [];
       this.searchList = [];
@@ -1364,7 +1364,7 @@ export class BrowseComponent implements OnInit {
 
   async searchFolders(searchString: string) {
     // this.loading = true;
-    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:mixinType = 'Folderish' AND ecm:path STARTSWITH '/${this.selectedFolder.title}/workspaces/' AND dc:title ILIKE '%${searchString}%'`;
+    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '/${this.selectedFolder.title}/workspaces/' AND dc:title ILIKE '%${searchString}%'`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
