@@ -492,7 +492,7 @@ export class BrowseComponent implements OnInit {
     // }
     if (breadCrumbIndex === this.breadCrumb.length) return;
     if (breadCrumbIndex === 0) {
-      this.showSearchbar = false;
+      // this.showSearchbar = false;
       this.selectedFolder2 = this.folderStructure[0];
       this.selectedFolder = this.selectedFolder2;
       this.sectorSelected = null;
@@ -506,7 +506,7 @@ export class BrowseComponent implements OnInit {
       await this.getWorkspaceFolders(item.uid, listView);
       this.loading = false;
     } else {
-      this.showSearchbar = false;
+      // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
     this.loading = true;
@@ -1241,7 +1241,7 @@ export class BrowseComponent implements OnInit {
     let workSpaceIndex: number;
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
-    this.showSearchbar = false;
+    // this.showSearchbar = false;
     if (!entries?.length) {
       this.sortedData = [];
       this.searchList = [];
