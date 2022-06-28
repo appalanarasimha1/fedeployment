@@ -20,8 +20,26 @@
   font-display: block;
 }
 
+@font-face {
+  font-family: 'brownlight';
+  src: url('./assets/fonts/brown-light-webfont.woff2') format('woff2'),
+       url('./assets/fonts/brown-light-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+@font-face {
+  font-family: 'brownregular';
+  src: url('./assets/fonts/brown-regular-webfont.woff2') format('woff2'),
+       url('./assets/fonts/brown-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
 body,html{
   font-family: myBrown !important;
+  /* font-family: 'brownregular' !important; */
   position: relative;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -30,7 +48,8 @@ body,html{
   overflow-y: scroll; */
 }
 .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel-header, .mat-expansion-panel-content, .mat-calendar{
-  font-family: myBrown !important;
+  /* font-family: myBrown !important; */
+  font-family: 'brownregular' !important;
 }
 /* Change the white to any color */
 input:-webkit-autofill,

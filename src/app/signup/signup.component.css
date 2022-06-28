@@ -10,7 +10,7 @@
     margin: auto;
     background-color: #fff;
     border-radius: 8px;
-    padding: 40px 50px;
+    padding: 22px 50px 22px;
 }
 .login form label{
     font-weight: 400;
@@ -32,9 +32,10 @@
 .form-control{
     border-radius: 8px;
     padding: 0px 15px;
-    /* border: unset; */
     font-family: myBrown;
-    border: 1px solid;
+    line-height: 45px;
+    min-height: 45px;
+    border: 1px solid #404040;
 }
 .orText{
     position: relative;
@@ -45,9 +46,9 @@
     background-color: #b6b6b6;
     position: absolute;
     height: 1px;
-    width: 44%;
+    width: 46%;
     left: 0px;
-    top: 5px;
+    top: 0px;
     bottom: 0px;
     margin: auto;
 }
@@ -56,9 +57,9 @@
     background-color: #b6b6b6;
     position: absolute;
     height: 1px;
-    width: 44%;
+    width: 46%;
     right: 0px;
-    top: 5px;
+    top: 0px;
     bottom: 0px;
     margin: auto;
 }
@@ -70,17 +71,19 @@
     padding: 12px 0px;
     border: 1px solid #13100D;
     letter-spacing: normal;
+    font-size: 16px;
+    line-height: 24px;
 }
 .loginBtn:hover{
     background-color: #13100D;
 }
 .login h2{
     font-size: 24px;
-line-height: 28px;
-letter-spacing: 0.31em;
-text-transform: uppercase;
-color: #FFFFFF;
-font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0.31em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    font-weight: 600;
 }
 button.btn-primary:focus, button.btn-primary:hover{
     background: #13100D !important;
@@ -95,31 +98,57 @@ button.btn-primary:focus, button.btn-primary:hover{
     border-radius: 8px;
     padding: 12px 0px;
     border: 1px solid #13100D;
-    font-family: 'brownregular';
     letter-spacing: normal;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 24px;
 }
 .loginKeycloakBtn:hover{
     background-color: #13100D;
 }
 
-.form-control{
-    border-radius: 8px;
-    padding: 0px 15px;
-    font-family: myBrown;
-    line-height: 45px;
-    min-height: 45px;
-    border: 1px solid #404040;
+ul.signupForm {
+    display: block;
 }
-.login form.signupForm a{
+ul.signupForm::after {
+    display: block;
+    clear: both;
+    content: '';
+}
+ul.signupForm li {
+    display: block;
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+    font-family: 'brownregular';
+    font-size: 14px;
+    line-height: 20px;
+}
+.signupForm h3 {
+    text-align: center;
+    color: #040404;
+    font-family: 'brownregular';
+    font-size: 20px;
+    line-height: 32px;
+}
+ul.signupForm li a{
     color: #937206;
     text-decoration: none;
+}
+.form-control.showError {
+    border-color: #C6342A !important;
+}
+.showError {
+    color: #C6342A;
+    font-family: 'brownregular';
+    font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+.signupForm .btn-primary.disabled, .signupForm .btn-primary:disabled {
+    color: #BAB8B2;
+    background-color: #E8E6DF;
+    border-color: #E8E6DF;
 }
 
 .signupForm .form-control::placeholder, .signupForm .form-control:focus::placeholder {
@@ -134,6 +163,7 @@ button.btn-primary:focus, button.btn-primary:hover{
 .signupForm .form-control::-ms-input-placeholder, .signupForm .form-control:focus::-ms-input-placeholder {
     color: #ACACAC !important;
 }
+
 /* mobile responsive */
 @media(max-width: 991.5px){
     .login form{
