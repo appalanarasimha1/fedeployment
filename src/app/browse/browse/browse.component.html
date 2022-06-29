@@ -1077,7 +1077,8 @@
                         *ngIf="
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
-                          checkCanDelete(item)
+                          checkCanDelete(item)&&
+                          item.title !== 'General'
                         "
                       >
                         <div class="control-group">

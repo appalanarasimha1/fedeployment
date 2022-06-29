@@ -1169,7 +1169,20 @@ export class BrowseComponent implements OnInit {
   }
 
   renameFolderAction() {
-    this.renameFolderName = true;
+    if (this.selectedFolder.title==='General') {
+        this.sharedService.showSnackbar(
+          "You do not have permission to update this folder",
+          6000,
+          "top",
+          "center",
+          "snackBarMiddle"
+          // "Updated folder",
+          // this.getTrashedWS.bind(this)
+        );
+      
+    }else{
+      this.renameFolderName = true;
+    }
   }
 
   updateFolderAction() {
@@ -1189,7 +1202,7 @@ export class BrowseComponent implements OnInit {
         },
       })
       .subscribe((res: any) => {
-        console.log({ res });
+        // console.log({ res });
         this.updateFolderAction();
         this.sharedService.showSnackbar(
           "Folder name is updated",
@@ -1254,7 +1267,7 @@ export class BrowseComponent implements OnInit {
       this.sectorWorkspace = entries[workSpaceIndex];
     }
     if (workSpaceIndex === -1) {
-      console.log("yaha se ",entries);
+      // console.log("yaha se ",entries);
 
       this.sortedData = entries;
       this.searchList = entries;
