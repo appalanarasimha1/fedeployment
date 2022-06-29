@@ -16,6 +16,7 @@
     border: 0px;
     margin: 0px 0px 0px;
     color: #040404;
+    width: 100%;
 }
 .makePrivate .control input {
     position: absolute;
@@ -147,7 +148,7 @@ button.upload-btn {
     cursor: not-allowed;
 }
 
-.addUserBlock h3 {
+.modalContentBlock .addUserBlock h3 {
     font-weight: 600;
     font-size: 15px;
     letter-spacing: 0.5px;
@@ -160,6 +161,9 @@ button.upload-btn {
 }
 .mb-20 {
     margin-bottom: 20px !important;
+}
+.mb-10 {
+    margin-bottom: 10px !important;
 }
 .pl-10 {
     padding-left: 10px;
@@ -280,8 +284,42 @@ span.makeAdminAction svg {
 
 .makeAdminBlock ul::-webkit-scrollbar-thumb{
 	background-color: #E8E6DF;
-  border-radius: 10px;
+    border-radius: 10px;
 }
-.addUserBlock {
-    width: 500px !important;
+.modalContentBlock .addUserBlock {
+    width: 100% !important;
+}
+::ng-deep .modal-edit-access .modal-dialog {
+    max-width: 640px !important;
+}
+.modalContentBlock {
+    padding: 20px;
+}
+.modalContentBlock .addUserBlock {
+    width: 100% !important;
+}
+.modalContentBlock ol {
+    display: block;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+.modalContentBlock ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    content: "";
+    background-image: url(../../assets/images/black-downarrow.png) !important;
+    background-position: 0px 4px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 10px !important;
+    width: 10px !important;
+}
+.modalContentBlock ::ng-deep .ng-select .ng-arrow-wrapper {
+    width: 25px;
+    padding-right: 0px;
+}
+.modalContentBlock .addUserBlock {
+    margin-bottom: 20px;
+}
+.modalContentBlock ::ng-deep .ng-select-top .ng-arrow-wrapper .ng-arrow, .modalContentBlock ::ng-deep .ng-select-bottom .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../assets/images/down-arrow-yellow.svg) !important;
 }

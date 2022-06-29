@@ -1650,7 +1650,7 @@ export class BrowseComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
-    dialogConfig.width = "550px";
+    dialogConfig.width = "640px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {

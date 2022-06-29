@@ -4438,3 +4438,8 @@ header.updateHeader .container {
   padding-left: var(--bs-gutter-x,1.75rem);
   padding-right: var(--bs-gutter-x,2.75rem);
 }
+::ng-deep .modal-dialog {
+  display: block;
+  max-width: 400px !important;
+  width: 400px;
+}
