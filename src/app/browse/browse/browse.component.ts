@@ -210,11 +210,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     this.dataService.uploadedAssetData$.subscribe((result) => {
       if (!result) return;
-      this.folderAssetsResult[
-        this.breadCrumb[this.breadCrumb.length - 1].uid
-      ].entries.unshift(result);
       this.searchList.unshift(result);
       this.sortedData = this.searchList.slice();
+      this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
+      
       this.showMoreButton = false;
     });
 

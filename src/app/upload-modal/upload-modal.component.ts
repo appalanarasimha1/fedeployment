@@ -215,7 +215,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   publish() {
-    this.step = 4;
+    // this.step = 4;
     this.publishAssets();
     return;
   }
@@ -780,8 +780,7 @@ export class UploadModalComponent implements OnInit {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
       if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
     }
-    this.calFileManagerApi();
-    // TODO: add api POST call /upload/batchId-<batchID>/execute/FileManager.Import
+    // this.calFileManagerApi();
     if(!this.showRedirectUrl()) {
       // this.dialogRef.close(this.uploadedAsset);
       this.publishing = false;
@@ -933,7 +932,13 @@ export class UploadModalComponent implements OnInit {
       context: {},
       input: asset.id,
     };
-    this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
+    try{
+      await this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
+      return;
+    } catch (err) {
+      console.error(err?.message);
+      return;
+    }
   }
 
   async createFolder(name, parentFolder?: any, data?: any) {
