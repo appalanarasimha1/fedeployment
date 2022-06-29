@@ -41,7 +41,7 @@ import { Departments, Workspace } from "./../../config/sector.config";
   templateUrl: "./browse.component.html",
   styleUrls: ["./browse.component.css"],
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
   // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
@@ -180,6 +180,7 @@ export class BrowseComponent implements OnInit {
     this.fetchUserData();
     this.route.queryParams.subscribe(async (params) => {
       this.loading = true;
+      this.searchInitialised = null;
       // this.routeParams.folder = params.folder;
 
       if (params.folder && params.folder !== ROOT_ID) {
@@ -232,7 +233,10 @@ export class BrowseComponent implements OnInit {
     });
   }
 
-  initWorkspaceSearch() {
+  ngAfterViewInit(): void {
+  }
+
+  initWorkspaceSearch(initialiseViews?: boolean): void {
     if(!this.searchInitialised) {
       this.searchInitialised = fromEvent(this.workspaceSearch.nativeElement,'keyup')
         .pipe(
@@ -325,19 +329,14 @@ export class BrowseComponent implements OnInit {
     if (item.isTrashed) return;
     this.newTitle = item.title;
     this.showLinkCopy = true;
-    this.showSearchbar = false;
+    this.showSearchbar = true;
     this.copiedString = "";
     this.selectedFolder = item;
     this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
     this.loading = true;
-    const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
-      item.uid,
-      true
-    );
-    this.searchList = entries.filter(
-      (sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-    );
+    const { entries, numberOfPages, resultsCount } = await this.fetchAssets(item.uid, true);
+    this.searchList = entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
     this.sortedData = this.searchList.slice(); //shallow copy
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
@@ -522,13 +521,7 @@ export class BrowseComponent implements OnInit {
     return result;
   }
 
-  async fetchAssets(
-    id: string,
-    checkCache = true,
-    pageSize = PAGE_SIZE_20,
-    pageIndex = 0,
-    offset = 0
-  ) {
+  async fetchAssets(id: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.currentPageCount = 0;
     this.showMoreButton = true;
     if (checkCache && this.folderAssetsResult[id]) {
@@ -601,25 +594,14 @@ export class BrowseComponent implements OnInit {
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
-        this.searchList = docs.entries.filter(
-          (sector) =>
-            UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
-        );
-        let workSpaceIndex = this.searchList.findIndex(
-          (res) => res.title === "Workspaces"
-        );
+        this.searchList = docs.entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
+        let workSpaceIndex = this.searchList.findIndex((res) => res.title === "Workspaces");
         if (workSpaceIndex >= 0) {
-          this.handleChangeClick(
-            this.searchList[workSpaceIndex],
-            index,
-            selected,
-            childIndex
-          );
+          this.handleChangeClick(this.searchList[workSpaceIndex], index, selected, childIndex);
         } else {
           this.sortedData = this.searchList.slice();
           if (childIndex !== null && childIndex !== undefined) {
-            this.folderStructure[index].children[childIndex].children =
-              docs.entries;
+            this.folderStructure[index].children[childIndex].children = docs.entries;
             this.folderStructure[index].children[childIndex].isExpand = true;
             this.handleTest(selected);
           } else {
@@ -637,9 +619,7 @@ export class BrowseComponent implements OnInit {
   }
 
   checkShowUpdateBtn() {
-    return (
-      this.searchList?.length > 0 && this.selectedFolder?.type === "Workspace"
-    );
+    return (this.searchList?.length > 0 && this.selectedFolder?.type === "Workspace");
   }
 
   async openUpdateClassModal(breadCrumb: any) {
@@ -792,10 +772,7 @@ export class BrowseComponent implements OnInit {
     if (this.isTrashView) {
       return `Search for folder in trash`;
     }
-    return `Search for folder in ${this.sharedService.stringShortener(
-      this.selectedFolder?.title,
-      19
-    )} workspace`;
+    return `Search for folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
   }
 
   getDateInFormat(date: string): string {
@@ -1235,13 +1212,11 @@ export class BrowseComponent implements OnInit {
 
   async getWorkspaceFolders(sectorUid: string, viewType = 0) {
     // this.loading = true;
-    let { entries, numberOfPages, resultsCount } = await this.fetchAssets(
-      sectorUid
-    );
+    let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
-    // this.showSearchbar = false;
+    this.showSearchbar = true;
     if (!entries?.length) {
       this.sortedData = [];
       this.searchList = [];
@@ -1271,7 +1246,7 @@ export class BrowseComponent implements OnInit {
     this.resultCount = resultsCount;
     this.showLinkCopy = false;
     this.selectedMenu = viewType;
-    this.showSearchbar = true;
+    // this.showSearchbar = true;
     this.extractBreadcrumb();
     // this.loading = false;
   }
@@ -1291,14 +1266,7 @@ export class BrowseComponent implements OnInit {
     // this.loading = false;
   }
 
-  async fetchCurrentFolderAssets(
-    sectorUid: string,
-    showLinkCopy = true,
-    checkCache = true,
-    pageSize = PAGE_SIZE_20,
-    pageIndex = 0,
-    offset = 0
-  ) {
+  async fetchCurrentFolderAssets(sectorUid: string, showLinkCopy = true, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.loading = true;
     const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
       sectorUid,
@@ -1313,7 +1281,7 @@ export class BrowseComponent implements OnInit {
     this.resultCount = resultsCount;
     this.extractBreadcrumb();
     this.showLinkCopy = showLinkCopy;
-    this.showSearchbar = !showLinkCopy;
+    this.showSearchbar = true;
     this.loading = false;
   }
 
@@ -1364,7 +1332,10 @@ export class BrowseComponent implements OnInit {
 
   async searchFolders(searchString: string) {
     // this.loading = true;
-    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '/${this.selectedFolder.title}/workspaces/' AND dc:title ILIKE '%${searchString}%'`;
+    const path = this.sectorSelected.uid === this.selectedFolder.uid ? 
+    `/${this.sectorSelected.title}/workspaces/` :
+    `${this.selectedFolder.path}/`;
+    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
