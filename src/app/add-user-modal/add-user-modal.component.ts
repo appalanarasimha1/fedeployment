@@ -15,6 +15,7 @@ import { apiRoutes } from "../common/config";
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-user-modal',
@@ -35,6 +36,7 @@ export class AddUserModalComponent implements OnInit {
   updatedCollaborators: {};
   folderId: string;
   folderUpdated: any;
+  closeResult: string;
 
   constructor(
     private apiService: ApiService,
@@ -42,7 +44,8 @@ export class AddUserModalComponent implements OnInit {
     private router: Router,
     public sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dataService: DataService
+    private dataService: DataService,
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -241,5 +244,33 @@ export class AddUserModalComponent implements OnInit {
       )
     );
   }
+
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'modal-edit-access'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
+  selectedMonth;
+  month = [
+    {id: 1, name: '1 month'},
+    {id: 2, name: '2 month'},
+    {id: 3, name: '3 month'},
+    {id: 4, name: '4 month'},
+    {id: 5, name: '5 month'}
+  ];
 
 }
