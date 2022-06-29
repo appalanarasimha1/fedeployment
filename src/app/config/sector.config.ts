@@ -64,7 +64,9 @@ export const Departments ={
   'Corporate IT- Customer Interface': '#N/A',
   'Corporate Services and Asset Development': '#N/A',
   'Corporate Social Responsbility': '#N/A',
-  CSR: '7',
+  CSR: '45',
+  'Social Responsibility':"45",
+  
   'Customer & Digital': '40',
   'Customer Interface': '#N/A',
   'Cyber Security': '6',
@@ -148,8 +150,8 @@ export const Departments ={
   'Governance, Risk & Compliance': '15',
   'Governance, Strategy and Policy': '15',
   'Government Affairs': '16',
-  'Government Affairs - Business and Executive Support': '16',
-  'Government Affairs - Community and Social Responsibility': '16',
+  'Government Affairs - Business and Executive Support': '45',
+  'Government Affairs - Community and Social Responsibility': '45',
   'Government Affairs - Digital Governme': '16',
   'Government Affairs - Digital Government': '16',
   'Government Affairs - Government Affairs': '16',
@@ -485,4 +487,5 @@ export const Workspace = {
   "42": "Tourism",
   "43": "TROJENA",
   "44": "Urban Development",
+  "45":'Social Responsibility'
 };
