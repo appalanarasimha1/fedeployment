@@ -18,10 +18,24 @@
                             <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full name" />
                         </li>
                         <li>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
+                            <mat-form-field appearance="fill">
+                                <!-- <mat-label>Password</mat-label> -->
+                                <input matInput [type]="showPassword ? 'text' : 'password'" name="password" placeholder="Password" [(ngModel)]="newPassword">
+                                <mat-icon matSuffix (click)="togglePasswordVisibility()" [ngClass]="{'clickCheck': showPassword}">
+                                    visibility<!-- {{showPassword?'visibility':'visibility'}} -->
+                                </mat-icon>
+                            </mat-form-field>
+                            <!-- <input type="password" class="form-control" id="password" name="password" placeholder="Password" /> -->
                         </li>
                         <li>
-                            <input type="password" class="form-control" id="comfirmPassword" name="comfirmPassword" placeholder="Comfirm password" />
+                            <mat-form-field appearance="fill">
+                                <!-- <mat-label>Password</mat-label> -->
+                                <input matInput [type]="showPasswordRenter ? 'text' : 'password'" name="password" [(ngModel)]="resetNewPassword" placeholder="Comfirm password">
+                                <mat-icon matSuffix (click)="togglePasswordVisibilityRenter()" [ngClass]="{'clickCheck': showPasswordRenter}">
+                                    visibility<!-- {{showPasswordRenter?'visibility':'visibility'}} -->
+                                </mat-icon>
+                            </mat-form-field>
+                            <!-- <input type="password" class="form-control" id="comfirmPassword" name="comfirmPassword" placeholder="Comfirm password" /> -->
                         </li>
                         <li>
                             Already have an account? <a [routerLink]="['/login']">Log in</a>

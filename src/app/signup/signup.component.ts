@@ -9,6 +9,12 @@ import { ApiService } from '../services/api.service';
 })
 export class SignupComponent implements OnInit {
   loading = false;
+  resetPassword: '';
+  resetNewPassword: '';
+  newPassword: boolean = false;
+  successfullyReset: boolean = false;
+  public showPassword: boolean = false;
+  public showPasswordRenter: boolean = false;
 
   constructor(
     private router: Router,
@@ -17,6 +23,14 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+  }
+
+  public togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  public togglePasswordVisibilityRenter(): void {
+    this.showPasswordRenter = !this.showPasswordRenter;
   }
 
 }

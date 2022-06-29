@@ -164,6 +164,43 @@ ul.signupForm li a{
     color: #ACACAC !important;
 }
 
+.signupForm ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 8px;
+    padding: 0em 0.75em 0 0.75em;
+    border: 1px solid #404040;
+}
+.signupForm ::ng-deep .mat-form-field-appearance-fill .mat-form-field-underline::before {
+    height: 0;
+}
+.signupForm ::ng-deep .mat-form-field-appearance-fill:not(.mat-form-field-disabled) .mat-form-field-flex:hover~.mat-form-field-underline .mat-form-field-ripple {
+    opacity: 0;
+}
+.signupForm ::ng-deep .mat-form-field-appearance-fill .mat-form-field-ripple {
+    bottom: 0;
+    height: 0px;
+}
+.signupForm ::ng-deep .mat-form-field-prefix .mat-icon, .signupForm ::ng-deep .mat-form-field-suffix .mat-icon {
+    font-size: 22px;
+    line-height: 1.125;
+    color: #BAB8B2;
+}
+.signupForm ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: transparent;
+}
+.signupForm ::ng-deep .mat-form-field.mat-focused {
+    background-color: #f0f0f0;
+}
+.signupForm ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0px;
+    border-radius: 8px;
+}
+.signupForm ::ng-deep .mat-form-field-prefix, .signupForm ::ng-deep .mat-form-field-suffix {
+    top: 3px;
+}
+.signupForm ::ng-deep .mat-icon.clickCheck {
+    color: #E1BB33 !important;
+}
+
 /* mobile responsive */
 @media(max-width: 991.5px){
     .login form{
