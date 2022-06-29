@@ -68,7 +68,7 @@
                   All sectors
                 </button>
                 <button
-                  *ngFor="let sector of sectorsHomepage"
+                  *ngFor="let sector of sectorsHomepage.sort()"
                   ngbDropdownItem
                   class="sectorDropBtn"
                   (click)="assetsBySectorSelect(sector)"
