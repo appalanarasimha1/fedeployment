@@ -876,24 +876,13 @@
               No items here
             </div>
 
-            <div class="main-content row" *ngIf="selectedMenu === 0">
+            <div  *ngIf="selectedMenu === 0" class="main-content row"> <!--  -->
               <div
                 class="col-xl-12 col-md-12"
                 *ngIf="searchList && searchList.length"
               >
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                <div
-                  *ngIf="selectedFolder.uid === parentId && !isTrashView"
-                  class="mb-5 text-center animate__animated animate__fadeIn"
-                >
-                  <img
-                    src="../../../assets/images/sectorss.svg"
-                    style="margin-top: 48px"
-                  />
-                  <p class="sectorssText">
-                    Choose a workspace on the left to begin
-                  </p>
-                </div>
+                
                 <ul
                   class="all-sectors"
                   *ngIf="selectedFolder.uid !== parentId || isTrashView"
@@ -1011,17 +1000,19 @@
               </div>
             </div>
 
-            <div
-              class="row justify-content-between pt-25"
-              *ngIf="selectedMenu === 1"
-              style="width: 100%; --bs-gutter-x: 0px"
-            >
+            <div *ngIf="selectedMenu === 1" class="row justify-content-between pt-25" style="width: 100%; --bs-gutter-x: 0px">
+              <div *ngIf="selectedFolder.uid === parentId && !isTrashView" class="mb-5 text-center animate__animated animate__fadeIn" >
+                <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px" />
+                <p class="sectorssText">
+                  Choose a workspace on the left to begin
+                </p>
+              </div>
               <div class="col-xl-12 col-md-12 customTableStyle">
                 <table
                   matSort
                   (matSortChange)="sortData($event)"
                   class="folderListview pb-5"
-                  *ngIf="searchList.length"
+                  *ngIf="searchList.length && selectedFolder.uid !== parentId"
                 >
                   <tr>
                     <th style="width: 3%">&nbsp;&nbsp;</th>

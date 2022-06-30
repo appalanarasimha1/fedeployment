@@ -17,12 +17,10 @@ export class ManageAccessModalComponent implements OnInit {
   makePrivate: boolean = false;
 
   constructor(
-    private apiService: ApiService,
     public dialogRef: MatDialogRef<ManageAccessModalComponent>,
     private router: Router,
     public sharedService: SharedService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dataService: DataService
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {

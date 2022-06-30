@@ -21,6 +21,7 @@ import {
   WORKSPACE_ROOT,
   ROOT_ID,
   ORDERED_FOLDER,
+  FOLDER_TYPE_WORKSPACE
 } from "src/app/common/constant";
 import { apiRoutes } from "src/app/common/config";
 import { NuxeoService } from "src/app/services/nuxeo.service";
@@ -310,7 +311,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkWSType(assetType: string) {
-    return assetType === "Workspace" || assetType === "OrderedFolder";
+    return assetType.toLowerCase() === ASSET_TYPE.WORKSPACE || assetType.toLowerCase() === ASSET_TYPE.ORDERED_FOLDER;
   }
 
   openVerticallyCentered(content) {
@@ -358,11 +359,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let fileRenditionUrl;
     this.selectedFile = file;
     // if (!fileType) {
-    switch (fileType) {
-      case "Picture":
+    switch (fileType.toLowerCase()) {
+      case ASSET_TYPE.PICTURE:
         fileType = "image";
         break;
-      case "Video":
+      case ASSET_TYPE.VIDEO:
         fileType = "video";
         break;
       default:
@@ -534,7 +535,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.compare(a.title, b.title, true)
     );
     result.entries = result.entries.sort((a, b) =>
-      this.compare(a.type, b.type, true)
+      this.assetTypeCompare(a.type, b.type)
     );
     this.numberOfPages = result.numberOfPages;
     this.resultCount = result.resultsCount;
@@ -618,7 +619,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkShowUpdateBtn() {
-    return (this.searchList?.length > 0 && this.selectedFolder?.type === "Workspace");
+    return (this.searchList?.length > 0 && this.selectedFolder?.type.toLowerCase() === ASSET_TYPE.WORKSPACE);
   }
 
   async openUpdateClassModal(breadCrumb: any) {
@@ -780,13 +781,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   getIconByType(type: string): string {
     switch (type.toLowerCase()) {
-      case "workspace":
+      case ASSET_TYPE.WORKSPACE:
         return "../../../assets/images/folder-table-list.svg";
-      case "picture":
+      case ASSET_TYPE.PICTURE:
         return "../../../assets/images/list-viewImg.svg";
-      case "video":
+      case ASSET_TYPE.VIDEO:
         return "../../../assets/images/list-viewVideo.svg";
-      case "file":
+      case ASSET_TYPE.FILE:
         return "../../../assets/images/Doc.svg";
       default:
         return "../../../assets/images/folder-table-list.svg";
@@ -1017,7 +1018,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (this.selectedFolder.type.toLowerCase() === "domain") {
         url = `/path${this.selectedFolder.path}/workspaces`;
         this.selectedFolder.path = `${this.selectedFolder.path}/workspaces/null`;
-        this.selectedFolder.childType = "Workspace";
+        this.selectedFolder.childType = FOLDER_TYPE_WORKSPACE;
       } else {
         this.selectedFolder.childType = ORDERED_FOLDER;
       }
@@ -1136,8 +1137,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   /**
    * brings folder to top position and then assets
    */
-  assetTypeCompare(a: { type: string }, b: { type: string }): number {
-    return a.type.toLowerCase() === "orderedfolder" ? -1 : 1;
+  assetTypeCompare(a: string , b: string): number {
+    return [ASSET_TYPE.WORKSPACE, ASSET_TYPE.FOLDER, ASSET_TYPE.ORDERED_FOLDER].indexOf(a.toLowerCase()) > -1? -1 : 1;
   }
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
@@ -1350,7 +1351,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.compare(a.title, b.title, true)
     );
     result.entries = result.entries.sort((a, b) =>
-      this.compare(a.type, b.type, true)
+      this.assetTypeCompare(a.type, b.type)
     );
     this.numberOfPages = result.numberOfPages;
     this.resultCount = result.resultsCount;
@@ -1360,7 +1361,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   navigateToWorkspaceFolder(uid: string) {
-    this.router.navigate(["workspace"], { queryParams: { folder: uid } });
+    this.router.navigate([ASSET_TYPE.WORKSPACE], { queryParams: { folder: uid } });
   }
 
   saveState({uid, title, path, properties, sectorId, type, contextParameters}) {

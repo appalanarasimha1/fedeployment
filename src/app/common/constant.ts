@@ -65,10 +65,15 @@ export const TRIGGERED_FROM_SUB_HEADER = 'sub-header';
 export const TRIGGERED_FROM_DOCUMENT = 'document';
 export const WORKSPACE_ROOT = 'All workspaces';
 export const ORDERED_FOLDER = 'OrderedFolder';
+export const FOLDER_TYPE_WORKSPACE = 'Workspace';
 export const ASSET_TYPE = {
     DOMAIN: 'domain',
     PICTURE: 'picture',
-    WORKSPACE: 'workspace'
+    WORKSPACE: 'workspace',
+    ORDERED_FOLDER: 'orderedfolder',
+    FOLDER: 'folder',
+    FILE: 'file',
+    VIDEO: 'video',
 };
 export const TAG_ATTRIBUTES = {
     ACTIVITY_DETECTION: 'nxtag:activityDetectionTag',
