@@ -929,7 +929,8 @@
                         *ngIf="
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
-                          checkCanDelete(item)
+                          checkCanDelete(item) &&
+                          !checkGeneralFolder(item)
                         "
                       >
                         <div class="control-group">
@@ -1070,7 +1071,7 @@
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
                           checkCanDelete(item)&&
-                          item.title !== 'General'
+                          !checkGeneralFolder(item)
                         "
                       >
                         <div class="control-group">

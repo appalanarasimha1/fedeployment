@@ -312,6 +312,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkWSType(assetType: string) {
     return assetType === "Workspace" || assetType === "OrderedFolder";
   }
+  
+  checkGeneralFolder(item){
+    return item.type.toLowerCase() === constants.WORKSPACE && item.title.toLowerCase() === constants.GENERAL_FOLDER
+  }
 
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true, backdrop: "static" });
