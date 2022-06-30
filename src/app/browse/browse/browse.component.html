@@ -36,11 +36,7 @@
               >
                 <div
                   class="d-flex set"
-                  [ngClass]="
-                    selectedFolder2?.uid === item.uid && !isTrashView
-                      ? 'active-tab'
-                      : ''
-                  "
+                  [ngClass]="selectedFolder2?.uid === item.uid && !isTrashView ? 'active-tab' : ''"
                   (click)="
                     fetchAllSectors(item.isExpand);
                     selectedFolder2 = item;
@@ -911,9 +907,7 @@
                     *ngFor="let item of sortedData; let i = index"
                   >
                     <span
-                      *ngIf="
-                        !checkAssetType(item.type) && !checkWSType(item.type)
-                      "
+                      *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)"
                       class="folder-structure pointerCursor"
                       (click)="
                         handleViewClick(item, i);
@@ -1066,9 +1060,7 @@
                   </tr>
                   <tr
                     *ngFor="let item of sortedData; let i = index"
-                    [ngClass]="
-                      selectedFolderList[i] != null ? 'checkDelete' : ''
-                    "
+                    [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''"
                     class="groupFolder"
                   >
                     <td>

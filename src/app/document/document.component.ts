@@ -980,7 +980,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       case "favourite":
         return "Your Favorites";
       case "sectorPage":
-        return "Asset by Sectors";
+        return "Assets by Sector";
       case "trendingPage":
         return "What’s Trending";
     }
