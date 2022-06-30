@@ -326,7 +326,7 @@ export class SharedService {
     };
   }
 
-  removeWrokspaceFromBreadcrumb(data: string): string {
+  removeWorkspacesFromString(data: string): string {
     return data.replace(/\/workspaces/gi, '');
   }
 

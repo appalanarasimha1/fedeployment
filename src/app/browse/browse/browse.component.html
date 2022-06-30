@@ -290,7 +290,7 @@
                     >
                   </span>
                   <!-- <div class="tolltipContent" style="top: auto; bottom: -30px;">
-                    {{sharedService.removeWrokspaceFromBreadcrumb(breadcrrumb)}}
+                    {{sharedService.removeWorkspacesFromString(breadcrrumb)}}
                   </div> -->
                   <span *ngIf="showLinkCopy" class="copy-section">
                     <a class="flexible">
@@ -304,13 +304,7 @@
                       />
                       <span
                         class="copy-link pointer"
-                        (click)="
-                          copyToClipboard(
-                            sharedService.removeWrokspaceFromBreadcrumb(
-                              breadcrrumb
-                            )
-                          )
-                        "
+                        (click)="copyToClipboard(sharedService.removeWorkspacesFromString(breadcrrumb))"
                         style="color: #937206; font-size: 15px"
                         >{{ !copiedString ? "Copy Link" : "Copied!" }}</span
                       >
@@ -1097,6 +1091,7 @@
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left; word-break: break-all;">{{item.title}}</p>
+                        <p *ngIf="searchBarValue" style="text-align: left; word-break: break-all">{{removeWorkspacesFromString(item.path)}}</p>
                         <span style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                           <div class="publicUseBlock">
                             <div *ngIf="item.properties['dc:isPrivate']" class="publicUseBlk">Private</div>

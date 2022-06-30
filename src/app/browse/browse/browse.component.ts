@@ -1685,4 +1685,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
     return folderCollaborators;
   }
+
+  removeWorkspacesFromString(data: string): string {
+    return this.sharedService.removeWorkspacesFromString(data);
+  }
 }
