@@ -80,7 +80,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   newTitle;
   selectedFolder2 = null;
   sectorSelected = null;
-  selectedMenu = 0;
+  selectedMenu = 1;
   uploadSuccess = null;
   pathSuccess = null;
   items: any;
@@ -339,7 +339,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.sortedData = this.searchList.slice(); //shallow copy
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
-    this.handleSelectMenu(0, "GRID");
+    this.handleSelectMenu(1, "LIST");
     this.loading = false;
     this.sharedService.toTop();
     this.createDynamicSidebarScroll();
@@ -494,7 +494,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.selectedFolder2 = this.folderStructure[0];
       this.selectedFolder = this.selectedFolder2;
       this.sectorSelected = null;
-      this.selectedMenu = 0;
+      this.selectedMenu = 1;
       return;
     }
     this.isTrashView = false;
@@ -771,7 +771,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (this.isTrashView) {
       return `Search for folder in trash`;
     }
-    return `Search for folder in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)} workspace`;
+    return `Search in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)}`;
   }
 
   getDateInFormat(date: string): string {
@@ -1209,7 +1209,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.loading = false;
   }
 
-  async getWorkspaceFolders(sectorUid: string, viewType = 0) {
+  async getWorkspaceFolders(sectorUid: string, viewType = 1) {
     // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
@@ -1228,7 +1228,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.sectorWorkspace = entries[workSpaceIndex];
     }
     if (workSpaceIndex === -1) {
-      console.log("yaha se ",entries);
 
       this.sortedData = entries;
       this.searchList = entries;
@@ -1259,7 +1258,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.folderStructure[0]["children"] = entries;
     this.folderStructure[0].isExpand = !isExpand;
     this.searchList = entries;
-    this.selectedMenu = 0;
+    this.selectedMenu = 1;
     this.showSearchbar = false;
     this.createDynamicSidebarScroll();
     // this.loading = false;
