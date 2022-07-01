@@ -508,7 +508,7 @@
                      </div>
                   </div>
                   <div *ngIf="!isPrivateFolder()" class="publish-file-preview-access">
-                     <div class="upload-form-input row mb-20">
+                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': !customConfidentialityMap[file.key] }">
                         <div class="col-xl-4">
                            <label for="confidentiality">Confidentiality</label>
                         </div>
@@ -523,7 +523,7 @@
                         </div>
                      </div>
 
-                     <div class="upload-form-input row mb-20">
+                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': !customAccessMap[file.key] }">
                         <div class="col-xl-4">
                            <label for="access">{{ACCESS_TITLE}}</label>
                         </div>
@@ -535,12 +535,12 @@
                         </div>
                      </div>
 
-                     <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;">
+                     <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;"  ``>
                         <div class="col-xl-4">
                           &nbsp; <!-- <label for="user" style="text-align: right;">Please specify who can access</label> -->
                         </div>
                         <div class="col-xl-8">
-                           <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
+                           <p class="userText pb-3">{{SPECIFIC_USER_LABEL}} 1</p>
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"
@@ -561,7 +561,7 @@
                         </div>
                      </div>
 
-                     <div class="upload-form-input row mb-20">
+                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': !customDownloadApprovalMap[file.key] }">
                         <div class="col-xl-4">
                            <label>Usage permission</label>
                         </div>
@@ -592,12 +592,12 @@
                            </ng-select>
                         </div>
                      </div>-->
-                     <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20">
+                     <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20" [ngClass]="{'validationMsg': !customDownloadApprovalUsersMap[file.key]}">
                         <div class="col-xl-4">
                            &nbsp;
                         </div>
                         <div class="col-xl-8">
-                           <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
+                           <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}} 2</label>
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"
@@ -610,7 +610,7 @@
                            typeToSearchText="Search users"
                            [typeahead]="userInput$"
                            [(ngModel)]="customDownloadApprovalUsersMap[file.key]"
-                           [ngClass]="{'goldenText': ownerName }" >
+                           [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }" >
                            <ng-template ng-option-tmp let-item="item">
                               {{item.id}} ({{item.fullname}})
                            </ng-template>
