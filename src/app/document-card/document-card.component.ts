@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { MONTH_MAP_SHORT } from '../common/constant';
+import { ASSET_TYPE, MONTH_MAP_SHORT } from '../common/constant';
 import { SharedService } from '../services/shared.service';
 import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
 
@@ -207,5 +207,18 @@ export class DocumentCardComponent implements OnChanges {
   checkPopupNeeds(){
     if(this.checkCopyRight() ||this.hasInternalRestriction()|| this.hasRequestRestriction()) return true
     return false
+  }
+
+  checkMimeType(document): string {
+    const mimeType = document.properties['file:content']['mime-type'];
+    
+      if(mimeType.includes('image'))
+        return ASSET_TYPE.PICTURE;
+      if(mimeType.includes('video'))
+        return ASSET_TYPE.VIDEO;
+      if(mimeType.includes('pdf'))
+        return ASSET_TYPE.FILE;
+      
+      return 'nopreview';
   }
 }
