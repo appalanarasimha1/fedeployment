@@ -377,8 +377,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
     } else if (fileType === "video") {
-      fileRenditionUrl =
-        file.properties["vid:transcodedVideos"][0]?.content.data || "";
+      fileRenditionUrl = file.properties["vid:transcodedVideos"][0]?.content.data || file.properties['file:content'].data;
     } else if (fileType === "file") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
       // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
