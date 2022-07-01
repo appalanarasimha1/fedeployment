@@ -1521,6 +1521,6 @@ button.btn-disable {
   background: rgba(0, 104, 69, 0.1) !important;
   background-image: linear-gradient(to right, rgba(0, 104, 69, 0) 100%,#ffffff 100%) !important;
 }
-.upload-form-input.validationMsg ng-select {
+/* .upload-form-input.validationMsg ng-select {
   border-bottom: 1px solid #E03C31 !important;
-}
+} */
