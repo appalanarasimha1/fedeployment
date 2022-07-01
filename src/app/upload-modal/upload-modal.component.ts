@@ -523,7 +523,7 @@ export class UploadModalComponent implements OnInit {
     const background = `background-image: linear-gradient(to right, rgba(0, 104, 69, 0.1) ${percentDone}%,#ffffff ${percentDone}%) !important;`;
     let attr = element.getAttribute("style");
     attr = attr.replace(/background-image:.*?;/g, "");
-    if (percentDone === 100) return;
+    // if (percentDone === 100) return;
     element.setAttribute("style", attr + background);
   }
 
