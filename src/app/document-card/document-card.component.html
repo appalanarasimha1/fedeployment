@@ -36,8 +36,8 @@
     
 
 
-  <img *ngIf="checkMimeType(doc) === 'pdf'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
-  <div *ngIf="doc.type === 'File'" class="pdfWhiteBlock">
+  <img *ngIf="checkMimeType(doc) === 'file'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
+  <div *ngIf="checkMimeType(doc) === 'file'" class="pdfWhiteBlock">
     <div class="flexible pb-2" style="justify-content: space-between ;">
       <p>{{doc.title}}</p>
       <div style="display: inline-grid;

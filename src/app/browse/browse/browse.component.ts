@@ -1703,6 +1703,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   removeWorkspacesFromString(data: string): string {
-    return this.sharedService.removeWorkspacesFromString(data);
+  
+    return this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40) ;
   }
 }
