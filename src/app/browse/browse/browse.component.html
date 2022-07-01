@@ -1107,6 +1107,7 @@
                       <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
+                        <p *ngIf="searchBarValue" style="text-align: left; word-break: break-all">{{removeWorkspacesFromString(item.path)}}</p>
                       </td>
                       <td class="tollTipCustom">
                         <p>{{getCreatorName(item)}}</p>
