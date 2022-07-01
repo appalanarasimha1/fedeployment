@@ -5,6 +5,15 @@
     (click)="openPreview()" /> -->
     <!-- <button (click)="copyLinkOfAsset()">copy link</button> -->
     <div style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
+      <img *ngIf="doc.type === 'NoPreview'"
+        id="fileId" 
+        src="../../assets/images/no-preview.png" 
+        alt=""
+        (click)="openPreview()"
+        (load)="showLock = true"
+        crossorigin="use-credentials"
+        loading="lazy" style="object-fit: none !important; background: #FBF7E6;" />
+
       <img *ngIf="doc.type === 'Picture'" 
         id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 

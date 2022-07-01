@@ -1108,6 +1108,11 @@
                         <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}</p>
                       </td>
+                      <!-- no preview show td -->
+                      <!-- <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
+                        <img src="../../../assets/images/no-preview.png" style="width: 20px;margin-right: 10px;object-fit: contain;"/>
+                        <p style="text-align: left">{{item.title}}</p>
+                      </td> -->
                       <td class="tollTipCustom">
                         <p>{{getCreatorName(item)}}</p>
                         <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
