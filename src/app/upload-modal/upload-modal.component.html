@@ -29,8 +29,8 @@
                </div>
             </ngx-dropzone-label>
             <ul class="flexible upload-prevoew">
-               <li  *ngFor="let f of filesMap | keyvalue">
-                  <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
+               <li *ngFor="let f of filesMap | keyvalue">
+                  <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [ngClass]="{'fillbar': filesUploadDone[f.key]}" [removable]="true" (removed)="onRemove(f)">
                   <ngx-dropzone-label class="flexible" style="margin: unset;">
                      <div style="width: 80%;text-align: left;margin-top: 0px;">
                         <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>

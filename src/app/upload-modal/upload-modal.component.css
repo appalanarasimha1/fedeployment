@@ -1517,3 +1517,7 @@ button.btn-disable {
   cursor: no-drop;
   pointer-events: none;
 }
+.upload-file-preview.fillbar {
+  background: rgba(0, 104, 69, 0.1) !important;
+  background-image: linear-gradient(to right, rgba(0, 104, 69, 0) 100%,#ffffff 100%) !important;
+}
