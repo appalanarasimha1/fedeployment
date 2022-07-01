@@ -38,7 +38,9 @@ export class HeaderComponent implements OnInit {
     {label: 'Sports', value: 'sport'},
     { label: "Tourism", value: "tourism" },
     {label: 'Water', value: 'water'},
-   ]; // , {label: 'Water', value: 'water'}
+    {label: 'Mobility', value: 'mobility'},
+    {label: 'Manufacturing', value: 'manufacturing'}
+   ];
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
   videoResponse;
   videoId;
