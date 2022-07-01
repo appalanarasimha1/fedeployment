@@ -241,7 +241,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.searchInitialised = fromEvent(this.workspaceSearch.nativeElement,'keyup')
         .pipe(
             filter(Boolean),
-            debounceTime(150),
+            debounceTime(250),
             distinctUntilChanged(),
             tap(async (text: Event) => {
               if(!this.workspaceSearch.nativeElement.value) {
