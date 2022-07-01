@@ -222,7 +222,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.getZippedFile();
+    // this.downloadAssets1();
     this.route.fragment.subscribe((f) => {
       setTimeout(() => {
         const element = document.getElementById(f);
@@ -294,39 +294,38 @@ export class DocumentComponent implements OnInit, OnChanges {
     return;
   }
 
-  getZippedFile() {
+  downloadAssets1() {
+    let r = Math.random().toString().substring(7);
+    let input = "docs:6713a207-bb97-45e3-84ac-0a8fb11f0ab8"
     let uid: any;
-    let data = this.apiService
-      .downloaPost("/automation/Blob.BulkDownload/@async", {
-        params: {
-          filename: "selection-2753893969999.zip",
-        },
-        context: {},
-        input:
-          "docs:f112353d-c904-48c0-af6c-2745dbb782dd,31a6e390-4b9d-4df6-a6c1-f1ecd49b0b4f",
-      })
-      .subscribe((res: any) => {
-        let splittedLocation = res.headers.get("location").split("/");
-        let newUID = splittedLocation[splittedLocation.length - 2];
-        uid = newUID;
-        this.apiService
-          .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-          .subscribe((resp: any) => {
-            let locationForDownload = resp.headers.get("location");
-          });
+    this.apiService
+    .downloaPost("/automation/Blob.BulkDownload/@async", {
+      params: {
+        filename: `selection-${r}.zip`,
+      },
+      context: {},
+      input,
+    })
+    .subscribe((res: any) => {
+      let splittedLocation = res.headers.get("location").split("/");
+      let newUID = splittedLocation[splittedLocation.length - 2];
+      uid = newUID;
+      this.apiService
+        .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+        .subscribe((resp: any) => {
+          let locationForDownload = resp.headers.get("location");
+        });
 
-        // setTimeout(() => {
-        //   console.log(
-        //     "================================================================="
-        //   );
-        //   // window.open(
-        //   //   environment.apiServiceBaseUrl +
-        //   //     "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-        //   //     uid
-        //   // );
-        // }, 1000);
-      });
-  }
+      setTimeout(() => {
+        window.open(
+          environment.apiServiceBaseUrl +
+            "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+            uid
+        );
+        this.removeAssets();
+      }, 1000);
+    });
+}
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.searchTem = searchTerm;
@@ -472,6 +471,7 @@ export class DocumentComponent implements OnInit, OnChanges {
             }
           }
         }
+        // this.sectorsHomepage.sort((a:any,b:any)=>a - b)
         this.loading.pop();
       })
       .catch((error) => {

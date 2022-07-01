@@ -727,7 +727,7 @@
                   </div>
                 </div>
 
-                <ul class="uploadAssetsClassifications" *ngIf="showLinkCopy">
+                <ul class="uploadAssetsClassifications">
                   <li
                     (click)="openModal()"
                     class="tollTipWorkspace workspaceInfoHover"
@@ -912,7 +912,8 @@
                         *ngIf="
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
-                          checkCanDelete(item)
+                          checkCanDelete(item) &&
+                          !checkGeneralFolder(item)
                         "
                       >
                         <div class="control-group">
@@ -1054,7 +1055,8 @@
                         *ngIf="
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
-                          checkCanDelete(item)
+                          checkCanDelete(item)&&
+                          !checkGeneralFolder(item)
                         "
                       >
                         <div class="control-group">
@@ -1111,6 +1113,11 @@
                           <span *ngIf="searchBarValue" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path)}}</span>
                         </p>
                       </td>
+                      <!-- no preview show td -->
+                      <!-- <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
+                        <img src="../../../assets/images/no-preview.png" style="width: 20px;margin-right: 10px;object-fit: contain;"/>
+                        <p style="text-align: left">{{item.title}}</p>
+                      </td> -->
                       <td class="tollTipCustom">
                         <p>{{getCreatorName(item)}}</p>
                         <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>

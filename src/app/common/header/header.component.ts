@@ -34,10 +34,11 @@ export class HeaderComponent implements OnInit {
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
   allSectors = [
     {label: 'All NEOM sectors', value: 'general'},
-    {label: 'Sports', value: 'sport'},
-    {label: 'Water', value: 'water'},
     {label: 'Food', value: 'food'},
-    { label: "Tourism", value: "tourism" }]; // , {label: 'Water', value: 'water'}
+    {label: 'Sports', value: 'sport'},
+    { label: "Tourism", value: "tourism" },
+    {label: 'Water', value: 'water'},
+   ]; // , {label: 'Water', value: 'water'}
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
   videoResponse;
   videoId;
