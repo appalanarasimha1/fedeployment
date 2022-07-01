@@ -313,6 +313,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkWSType(assetType: string) {
     return assetType.toLowerCase() === ASSET_TYPE.WORKSPACE || assetType.toLowerCase() === ASSET_TYPE.ORDERED_FOLDER;
   }
+  
+  checkGeneralFolder(item){
+    return item.type.toLowerCase() === constants.WORKSPACE && item.title.toLowerCase() === constants.GENERAL_FOLDER
+  }
 
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true, backdrop: "static" });
@@ -1146,7 +1150,20 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   renameFolderAction() {
-    this.renameFolderName = true;
+    if (this.selectedFolder.title==='General') {
+        this.sharedService.showSnackbar(
+          "You do not have permission to update this folder",
+          6000,
+          "top",
+          "center",
+          "snackBarMiddle"
+          // "Updated folder",
+          // this.getTrashedWS.bind(this)
+        );
+      
+    }else{
+      this.renameFolderName = true;
+    }
   }
 
   updateFolderAction() {
@@ -1166,7 +1183,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         },
       })
       .subscribe((res: any) => {
-        console.log({ res });
+        // console.log({ res });
         this.updateFolderAction();
         this.sharedService.showSnackbar(
           "Folder name is updated",
