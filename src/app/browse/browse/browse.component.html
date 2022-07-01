@@ -727,7 +727,7 @@
                   </div>
                 </div>
 
-                <ul class="uploadAssetsClassifications" *ngIf="showLinkCopy">
+                <ul class="uploadAssetsClassifications">
                   <li
                     (click)="openModal()"
                     class="tollTipWorkspace workspaceInfoHover"
@@ -912,7 +912,8 @@
                         *ngIf="
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
-                          checkCanDelete(item)
+                          checkCanDelete(item) &&
+                          !checkGeneralFolder(item)
                         "
                       >
                         <div class="control-group">
@@ -1054,7 +1055,8 @@
                         *ngIf="
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
-                          checkCanDelete(item)
+                          checkCanDelete(item)&&
+                          !checkGeneralFolder(item)
                         "
                       >
                         <div class="control-group">

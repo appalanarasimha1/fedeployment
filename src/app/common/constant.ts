@@ -9,6 +9,8 @@ export const constants = {
     PICTURE_SMALL_CASE: 'picture',
     FILE_TITLE_CASE: 'File',
     FILE_SMALL_CASE: 'file',
+    WORKSPACE:'workspace',
+    GENERAL_FOLDER:'general'
 };
 
 export const localStorageVars = {
