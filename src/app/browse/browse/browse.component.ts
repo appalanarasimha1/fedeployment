@@ -1254,8 +1254,6 @@ export class BrowseComponent implements OnInit {
       this.sectorWorkspace = entries[workSpaceIndex];
     }
     if (workSpaceIndex === -1) {
-      console.log("yaha se ",entries);
-
       this.sortedData = entries;
       this.searchList = entries;
       this.showLinkCopy = true;
@@ -1710,6 +1708,8 @@ export class BrowseComponent implements OnInit {
       folderCollaborators[ace.username.id] = {
         user: ace.username,
         permission: ace.permission,
+        externalUser: ace.externalUser,
+        end: ace.end,
         id: ace.id,
       }
     });

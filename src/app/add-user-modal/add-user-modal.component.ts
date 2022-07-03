@@ -30,13 +30,26 @@ export class AddUserModalComponent implements OnInit {
   userInput$ = new Subject<string>();
   userLoading = false;
   folderCollaborators = {};
+  internalCollaborators = {};
+  externalCollaborators = {};
   selectedCollaborator: any;
   addedCollaborators: {};
   removedCollaborators: {};
   updatedCollaborators: {};
+  invitedCollaborators: {};
+  selectedExternalUser: any;
   folderId: string;
   folderUpdated: any;
   closeResult: string;
+  userInputText = "";
+  selectedMonth;
+  month = [
+    {id: 1, name: '1 month'},
+    {id: 2, name: '2 month'},
+    {id: 3, name: '3 month'},
+    {id: 4, name: '4 month'},
+    {id: 5, name: '5 month'}
+  ];
 
   constructor(
     private apiService: ApiService,
@@ -55,6 +68,8 @@ export class AddUserModalComponent implements OnInit {
     this.addedCollaborators = {};
     this.removedCollaborators = {};
     this.updatedCollaborators = {};
+    this.invitedCollaborators = {};
+    this.computeCollaborators();
     this.loadUsers();
   }
 
@@ -62,7 +77,20 @@ export class AddUserModalComponent implements OnInit {
     this.dialogRef.close(this.folderUpdated);
   }
 
+  computeCollaborators() {
+    this.externalCollaborators = {};
+    this.internalCollaborators = {};
+    Object.keys(this.folderCollaborators).forEach(key => {
+      if (this.folderCollaborators[key].externalUser) {
+        this.externalCollaborators[key] = this.folderCollaborators[key];
+      } else {
+        this.internalCollaborators[key] = this.folderCollaborators[key];
+      }
+    });
+  }
+
   selectChange(item) {
+    this.userInputText = null;
     this.selectedCollaborator = null;
     const isExist = this.folderCollaborators[item.id];
     if (isExist) return;
@@ -90,6 +118,9 @@ export class AddUserModalComponent implements OnInit {
       this.removedCollaborators[userId] = this.folderCollaborators[userId];
       delete this.folderCollaborators[userId];
       delete this.updatedCollaborators[userId];
+      this.computeCollaborators();
+    } else if (type === 'invited') {
+      delete this.invitedCollaborators[userId];
     }
   }
 
@@ -123,6 +154,9 @@ export class AddUserModalComponent implements OnInit {
     }
     for (const key in this.addedCollaborators) {
       await this.addPermission(this.addedCollaborators[key])
+    }
+    for (const key in this.invitedCollaborators) {
+      await this.inviteUser(this.invitedCollaborators[key])
     }
     this.folderUpdated = await this.fetchFolder(this.folderId);
     this.closeModal();
@@ -186,6 +220,38 @@ export class AddUserModalComponent implements OnInit {
     return result;
   }
 
+  async inviteUser(item) {
+    const params = {
+      permission: 'Read',
+      email: item.user.id,
+      end: item.end,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: this.folderId,
+    };
+    await this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
+
+    const inviteUserParams = {
+      folderName: this.selectedFolder.title
+    }
+    const inviteUserPayload = {
+      params: inviteUserParams,
+      context: {},
+      input: {
+          "entity-type": "user",
+          "id": "",
+          "properties": {
+              "username": item.user.id,
+              "email": item.user.id,
+              "groups": ["external-user"]
+          }
+      }
+    }
+    await this.apiService.post(apiRoutes.INVITE_USER, inviteUserPayload).toPromise();
+  }
+
   getCheckAction(event) {
     if (event.target.checked) {
       this.makePrivate = true;
@@ -236,6 +302,7 @@ export class AddUserModalComponent implements OnInit {
         debounceTime(300),
         tap(() => (this.userLoading = true)),
         switchMap((term) => {
+          this.userInputText = term;
           return this.searchUser(term).pipe(
             catchError(() => of([])),
             tap(() => (this.userLoading = false))
@@ -246,14 +313,30 @@ export class AddUserModalComponent implements OnInit {
   }
 
 
-  open(content) {
+  open(content, item) {
+    this.selectedExternalUser = item;
+
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'modal-edit-access'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
+      if (result !== 'done') return;
+      console.log(this.selectedExternalUser);
+      this.updateExternalUserAccess();
+      this.selectedMonth = undefined;
+
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  
+
+  updateExternalUserAccess() {
+    const end = new Date();
+    end.setMonth(new Date().getMonth() + this.selectedExternalUser.duration);
+    if (this.externalCollaborators[this.selectedExternalUser.id]) {
+      // this.update
+    } else {
+      
+    }
+  }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -264,13 +347,37 @@ export class AddUserModalComponent implements OnInit {
     }
   }
 
-  selectedMonth;
-  month = [
-    {id: 1, name: '1 month'},
-    {id: 2, name: '2 month'},
-    {id: 3, name: '3 month'},
-    {id: 4, name: '4 month'},
-    {id: 5, name: '5 month'}
-  ];
+  checkInviteExternal() {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.userInputText) && !this.selectedCollaborator) return true;
+  }
+
+  sendInvite() {
+    const invitedEmail = this.userInputText;
+    this.userInputText = "";
+    const end = new Date();
+    end.setMonth(new Date().getMonth() + 1);
+    this.invitedCollaborators[invitedEmail] = {
+      end,
+      user: {
+        id: invitedEmail
+      },
+      duration: 1,
+    }
+  }
+
+  getEndDate(end) {
+    if (!end) return "";
+    const date = new Date(end);
+    const yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1; // Months start at 0!
+    let dd = date.getDate();
+
+    return dd + '.' + mm + '.' + yyyy;
+  }
+
+  selectDuration(duration) {
+    this.selectedExternalUser.duration = duration;
+  }
+
 
 }
