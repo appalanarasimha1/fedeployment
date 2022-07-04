@@ -142,6 +142,7 @@ export class UploadModalComponent implements OnInit {
 
   showError: boolean = false;
   showErrorCheckbox: boolean = false;
+  showErrorUpload: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -216,8 +217,13 @@ export class UploadModalComponent implements OnInit {
 
   publish() {
     // this.step = 4;
-    this.publishAssets();
-    return;
+    if(!this.checkFormState()){
+      this.showErrorUpload = false;
+      this.publishAssets();
+      return;
+    } else {
+      this.showErrorUpload = true;
+    }
   }
 
   toNextStep() {
