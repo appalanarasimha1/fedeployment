@@ -389,7 +389,7 @@ export class SharedService {
   }
 
   checkMimeType(document): string {
-    const mimeType = document.properties['file:content']['mime-type'];
+    const mimeType = document.properties['file:content']?.['mime-type'];
     
     if(mimeType.includes('image'))
       return ASSET_TYPE.PICTURE;
