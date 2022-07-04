@@ -188,7 +188,7 @@
                         {{selectedFolder?.title}}
                       </div>
                     </span>
-                    <svg *ngIf="showLinkCopy" class="renameFolderImg" (click)="renameFolderAction()" 
+                    <svg *ngIf="showLinkCopy && !checkGeneralFolder(selectedFolder)" class="renameFolderImg" (click)="renameFolderAction()" 
                       width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
