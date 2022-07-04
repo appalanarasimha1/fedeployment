@@ -856,9 +856,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i) {
-    if (!$event.target.checked && this.selectedFolderList[i]) {
+    if ((!$event.target?.checked && this.selectedFolderList[i])||(!$event.checked && this.selectedFolderList[i])) {
       delete this.selectedFolderList[i];
-    } else if ($event.target.checked) {
+    } else if ($event.target?.checked || $event.checked) {
       this.selectedFolderList[i] = item;
     }
   }
@@ -1474,6 +1474,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   copyRightItem: any = [];
 
   selectAsset($event, item, i) {
+    let canDelete = this.checkCanDelete(item)
+    if(canDelete){
+      this.selectFolder($event, item, i)
+    }
     console.log("itemitemitemitemitem", item, $event);
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
