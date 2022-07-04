@@ -213,11 +213,11 @@ export class DocumentCardComponent implements OnChanges {
     const mimeType = document.properties['file:content']?.['mime-type'];
     console.log('mimeType', mimeType);
     
-      if(mimeType.includes('image'))
+      if(mimeType?.includes('image'))
         return ASSET_TYPE.PICTURE;
-      if(mimeType.includes('video'))
+      if(mimeType?.includes('video'))
         return ASSET_TYPE.VIDEO;
-      if(mimeType.includes('pdf'))
+      if(mimeType?.includes('pdf'))
         return ASSET_TYPE.FILE;
       
       return 'nopreview';
