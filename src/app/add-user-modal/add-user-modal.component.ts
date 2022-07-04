@@ -10,6 +10,7 @@ import {
   map,
   filter,
 } from "rxjs/operators";
+import { EXTERNAL_GROUP_GLOBAL, EXTERNAL_USER } from "../common/constant";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -108,7 +109,8 @@ export class AddUserModalComponent implements OnInit {
   canSave() {
     return Object.keys(this.addedCollaborators).length > 0
     || Object.keys(this.removedCollaborators).length > 0
-    || Object.keys(this.updatedCollaborators).length > 0;
+    || Object.keys(this.updatedCollaborators).length > 0
+    || Object.keys(this.invitedCollaborators).length > 0;
   }
 
   removeUser(userId, type) {
@@ -178,6 +180,7 @@ export class AddUserModalComponent implements OnInit {
       username: item.user.id,
       id: item.id,
     };
+    if (item.end) params['end'] = item.end;
     const payload = {
       params,
       context: {},
@@ -234,7 +237,8 @@ export class AddUserModalComponent implements OnInit {
     await this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
 
     const inviteUserParams = {
-      folderName: this.selectedFolder.title
+      folderName: this.selectedFolder.title,
+      groundXUrl: location.protocol + '//' + location.host
     }
     const inviteUserPayload = {
       params: inviteUserParams,
@@ -243,9 +247,9 @@ export class AddUserModalComponent implements OnInit {
           "entity-type": "user",
           "id": "",
           "properties": {
-              "username": item.user.id,
-              "email": item.user.id,
-              "groups": ["external-user"]
+            "username": item.user.id,
+            "email": item.user.id,
+            "groups": item.isGlobal ? [EXTERNAL_GROUP_GLOBAL, EXTERNAL_USER] : [EXTERNAL_USER]
           }
       }
     }
@@ -263,6 +267,10 @@ export class AddUserModalComponent implements OnInit {
   getUsername(item) {
     const name = item.user?.properties?.firstName + " " + item.user?.properties?.lastName;
     return item.user?.properties?.firstName ? name : item.user?.id;
+  }
+
+  getExternalName(item) {
+    return item.user.id.replace('transient/', '');
   }
 
   trackByFn(item: any) {
@@ -318,7 +326,6 @@ export class AddUserModalComponent implements OnInit {
 
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'modal-edit-access'}).result.then((result) => {
       if (result !== 'done') return;
-      console.log(this.selectedExternalUser);
       this.updateExternalUserAccess();
       this.selectedMonth = undefined;
 
@@ -330,11 +337,17 @@ export class AddUserModalComponent implements OnInit {
   updateExternalUserAccess() {
     const end = new Date();
     end.setMonth(new Date().getMonth() + this.selectedExternalUser.duration);
-    if (this.externalCollaborators[this.selectedExternalUser.id]) {
-      // this.update
+    if (this.externalCollaborators[this.selectedExternalUser.user.id]) {
+      if (!this.updatedCollaborators[this.selectedExternalUser.user.id])
+        this.updatedCollaborators[this.selectedExternalUser.user.id] = this.externalCollaborators[this.selectedExternalUser.user.id];
+      this.updatedCollaborators[this.selectedExternalUser.user.id].end = end;
     } else {
-      
+      this.invitedCollaborators[this.selectedExternalUser.user.id].end = end;
+      if (this.selectedExternalUser.isGlobal !== undefined)
+        this.invitedCollaborators[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     }
+
+    this.selectedExternalUser = undefined;
   }
 
   private getDismissReason(reason: any): string {
@@ -362,6 +375,7 @@ export class AddUserModalComponent implements OnInit {
         id: invitedEmail
       },
       duration: 1,
+      isGlobal: false,
     }
   }
 
@@ -379,5 +393,8 @@ export class AddUserModalComponent implements OnInit {
     this.selectedExternalUser.duration = duration;
   }
 
+  onFullAccessCheckboxChange(e) {
+    this.selectedExternalUser.isGlobal = e.target.checked;
+  }
 
 }

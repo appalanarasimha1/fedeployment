@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -10,11 +11,16 @@ import { ApiService } from '../services/api.service';
 export class SignupComponent implements OnInit {
   loading = false;
   resetPassword: '';
-  resetNewPassword: '';
-  newPassword: boolean = false;
+  confirmNewPassword: '';
+  newPassword: '';
   successfullyReset: boolean = false;
   public showPassword: boolean = false;
   public showPasswordRenter: boolean = false;
+  registrationId: string;
+  email: string;
+  fullName: string;
+  signUpError;
+  private baseUrl: string = environment.apiServiceBaseUrl;
 
   constructor(
     private router: Router,
@@ -23,6 +29,10 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(async (params) => {
+      this.registrationId = params.registrationId;
+      this.email = params.email;
+    })
   }
 
   public togglePasswordVisibility(): void {
@@ -31,6 +41,40 @@ export class SignupComponent implements OnInit {
 
   public togglePasswordVisibilityRenter(): void {
     this.showPasswordRenter = !this.showPasswordRenter;
+  }
+
+  checkPassword() {
+    return this.newPassword && this.confirmNewPassword && this.newPassword !== this.confirmNewPassword;
+  }
+
+  checkProcessSignUp() {
+    return this.newPassword && this.confirmNewPassword && this.newPassword === this.confirmNewPassword && this.registrationId;
+  }
+
+  createAccount() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("RequestId", this.registrationId);
+    urlencoded.append("ConfigurationName", "default_registration");
+    urlencoded.append("Password", this.newPassword);
+    urlencoded.append("PasswordConfirmation", this.confirmNewPassword);
+    urlencoded.append("submit", "Submit");
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow'
+    };
+
+    fetch(`${this.baseUrl}/nuxeo/site/userInvitation/validate`, requestOptions)
+      .then(response => {
+        if (response.status === 200) this.router.navigate(['/login'])
+      })
+      .catch(error => {
+        console.log('error', error);
+        this.signUpError = error;
+      });
   }
 
 }

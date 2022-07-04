@@ -77,7 +77,7 @@
     <h3 class="externalUsers">External users</h3>
     <ul style="min-height: auto;">
       <li *ngFor="let c of invitedCollaborators | keyvalue">
-        {{c.value.user.id}}
+        {{getExternalName(c.value)}}
         <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
         <span class="makeAdminAction">
           <span (click)="open(mymodal, c.value)">Edit Access</span>
@@ -99,7 +99,7 @@
         </span>
       </li>
       <li *ngFor="let c of externalCollaborators | keyvalue">
-        {{c.value.user.id}}
+        {{getExternalName(c.value)}}
         <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
         <span class="makeAdminAction">
           <span (click)="open(mymodal, c.value)">Edit Access</span>
@@ -180,7 +180,7 @@
               <li>
                 <label class="control control--checkbox">
                   Full site access to all public assets
-                  <input type="checkbox" />
+                  <input type="checkbox" (change)="onFullAccessCheckboxChange($event)"/>
                   <div class="control__indicator"></div>
                 </label>
               </li>
