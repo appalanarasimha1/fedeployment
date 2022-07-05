@@ -148,7 +148,7 @@ button.upload-btn {
     cursor: not-allowed;
 }
 
-.modalContentBlock .addUserBlock h3 {
+.modalContentBlock .addUserBlock h3, .addUserBlock h3 {
     font-weight: 600;
     font-size: 15px;
     letter-spacing: 0.5px;
@@ -241,6 +241,12 @@ span.makeAdminAction img {
 }
 .sendInviteBtn {
     color: #1E1B19;
+    top: 0px;
+}
+.sendInviteBtn:hover {
+    border: 1px solid #23211E;
+    background: #23211E;
+    color: #fff;
 }
 
 .makeAdminAction {
