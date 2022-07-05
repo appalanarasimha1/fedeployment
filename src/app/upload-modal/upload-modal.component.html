@@ -508,7 +508,7 @@
                      </div>
                   </div>
                   <div *ngIf="!isPrivateFolder()" class="publish-file-preview-access">
-                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': !customConfidentialityMap[file.key] }">
+                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customConfidentialityMap[file.key] }">
                         <div class="col-xl-4">
                            <label for="confidentiality">Confidentiality</label>
                         </div>
@@ -520,10 +520,11 @@
                            <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                            </ng-option>
                            </ng-select>
+                           <div class="showErrorMessage" *ngIf="showErrorUpload && !customConfidentialityMap[file.key] ">Please complete all mandatory fields</div>
                         </div>
                      </div>
 
-                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': !customAccessMap[file.key] }">
+                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customAccessMap[file.key] }">
                         <div class="col-xl-4">
                            <label for="access">{{ACCESS_TITLE}}</label>
                         </div>
@@ -532,6 +533,7 @@
                               <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
                               </ng-option>
                            </ng-select>
+                           <div class="showErrorMessage" *ngIf="showErrorUpload && !customAccessMap[file.key] ">Please complete all mandatory fields</div>
                         </div>
                      </div>
 
@@ -561,7 +563,7 @@
                         </div>
                      </div>
 
-                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': !customDownloadApprovalMap[file.key] }">
+                     <div class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalMap[file.key] }">
                         <div class="col-xl-4">
                            <label>Usage permission</label>
                         </div>
@@ -578,6 +580,7 @@
                               />
                               <div class="control__indicator" style="top: 4px;left: 0px;"></div>
                            </label>
+                           <!-- <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalMap[file.key] ">Please complete all mandatory fields</div> -->
                         </div>
                      </div>
 
@@ -592,7 +595,7 @@
                            </ng-select>
                         </div>
                      </div>-->
-                     <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20" [ngClass]="{'validationMsg': !customDownloadApprovalUsersMap[file.key]}">
+                     <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalUsersMap[file.key] }" >
                         <div class="col-xl-4">
                            &nbsp;
                         </div>
@@ -615,6 +618,7 @@
                               {{item.id}} ({{item.fullname}})
                            </ng-template>
                            </ng-select>
+                           <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalUsersMap[file.key] ">Please complete all mandatory fields</div>
                         </div>
                      </div>
 
@@ -627,7 +631,7 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button *ngIf="!publishing" [ngClass]="{'btn-disable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
+               <button *ngIf="!publishing" [ngClass]="{'btnDisable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
                <button *ngIf="publishing" mat-button class="upload-btn" >Publishing...</button>
             </div>
          </div>
