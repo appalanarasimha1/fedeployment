@@ -211,7 +211,7 @@ export class DocumentCardComponent implements OnChanges {
 
   checkMimeType(document): string {
     const mimeType = document.properties['file:content']?.['mime-type'];
-    console.log('mimeType', mimeType);
+    // console.log('mimeType', mimeType);
     
       if(mimeType?.includes('image'))
         return ASSET_TYPE.PICTURE;

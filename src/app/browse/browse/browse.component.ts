@@ -856,6 +856,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i) {
+    console.log('11',item);
+    
     if (!$event.target.checked && this.selectedFolderList[i]) {
       delete this.selectedFolderList[i];
     } else if ($event.target.checked) {

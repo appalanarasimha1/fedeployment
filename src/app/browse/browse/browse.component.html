@@ -1007,7 +1007,7 @@
                   matSort
                   (matSortChange)="sortData($event)"
                   class="folderListview pb-5"
-                  *ngIf="searchList.length && selectedFolder.uid !== parentId"
+                  *ngIf="searchList?.length && selectedFolder.uid !== parentId"
                 >
                   <tr>
                     <th style="width: 3%">&nbsp;&nbsp;</th>
