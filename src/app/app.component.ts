@@ -31,7 +31,7 @@ export class AppComponent implements OnInit{
         // }
         if (event.url && event instanceof NavigationStart) {
           // TODO: will break if we have another url that contains /user.
-          if (event.url.includes('/login')) {
+          if (event.url.includes('/login') || event.url.includes('/signup') || event.url.includes('/forgot-password')) {
             this.showHeader = false;
             this.showAddButton = false;
             setTimeout(()=>{

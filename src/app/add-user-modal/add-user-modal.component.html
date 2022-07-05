@@ -1,6 +1,6 @@
 <div class="addUserBlock">
   <h3>Who can have private access to this folder?</h3>
-  <div class="addUsers">
+  <div class="addUsers" style="margin-bottom: 30px">
     <ng-select
       style="height: unset !important"
       [items]="userList$ | async"
@@ -19,7 +19,7 @@
       </ng-template>
     </ng-select>
     <!-- <button class="addBtn">Add</button> -->
-    <!-- <button class="sendInviteBtn">Send invite</button> -->
+    <button (click)="sendInvite()" *ngIf="checkInviteExternal()" class="sendInviteBtn">Send invite</button>
   </div>
 
   <div class="makeAdminBlock">
@@ -47,13 +47,63 @@
           </span>
         </span>
       </li>
-      <li *ngFor="let c of folderCollaborators | keyvalue">
+      <li *ngFor="let c of internalCollaborators | keyvalue">
         {{ getUsername(c.value) }}
         <span *ngIf="c.value.permission === 'Everything'" class="disableColor pl-10">Admin</span>
         <span class="makeAdminAction">
           <span (click)="makeAdmin(c.key, 'updated')" *ngIf="c.value.permission !== 'Everything'">Make admin</span>
           <span (click)="removeAdmin(c.key, 'updated')" *ngIf="c.value.permission === 'Everything' && canRemoveAdmin(c.value)">Remove admin</span>
           <span (click)="removeUser(c.key, 'removed')" *ngIf="canRemoveAdmin(c.value)" class="removeIcon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10C20 15.523 15.523 20 10 20ZM10 18C12.1217 18 14.1566 17.1571 15.6569 15.6569C17.1571 14.1566 18 12.1217 18 10C18 7.87827 17.1571 5.84344 15.6569 4.34315C14.1566 2.84285 12.1217 2 10 2C7.87827 2 5.84344 2.84285 4.34315 4.34315C2.84285 5.84344 2 7.87827 2 10C2 12.1217 2.84285 14.1566 4.34315 15.6569C5.84344 17.1571 7.87827 18 10 18ZM10 8.586L12.828 5.757L14.243 7.172L11.414 10L14.243 12.828L12.828 14.243L10 11.414L7.172 14.243L5.757 12.828L8.586 10L5.757 7.172L7.172 5.757L10 8.586Z"
+                fill="#937206"
+              />
+            </svg>
+            <div class="removeInfo">Remove user</div>
+          </span>
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="makeAdminBlock">
+    <h3 class="externalUsers">External users</h3>
+    <ul style="min-height: auto;">
+      <li *ngFor="let c of invitedCollaborators | keyvalue">
+        {{getExternalName(c.value)}}
+        <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
+        <span class="makeAdminAction">
+          <span (click)="open(mymodal, c.value)">Edit Access</span>
+          <span (click)="removeUser(c.key, 'invited')" class="removeIcon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10C20 15.523 15.523 20 10 20ZM10 18C12.1217 18 14.1566 17.1571 15.6569 15.6569C17.1571 14.1566 18 12.1217 18 10C18 7.87827 17.1571 5.84344 15.6569 4.34315C14.1566 2.84285 12.1217 2 10 2C7.87827 2 5.84344 2.84285 4.34315 4.34315C2.84285 5.84344 2 7.87827 2 10C2 12.1217 2.84285 14.1566 4.34315 15.6569C5.84344 17.1571 7.87827 18 10 18ZM10 8.586L12.828 5.757L14.243 7.172L11.414 10L14.243 12.828L12.828 14.243L10 11.414L7.172 14.243L5.757 12.828L8.586 10L5.757 7.172L7.172 5.757L10 8.586Z"
+                fill="#937206"
+              />
+            </svg>
+            <div class="removeInfo">Remove user</div>
+          </span>
+        </span>
+      </li>
+      <li *ngFor="let c of externalCollaborators | keyvalue">
+        {{getExternalName(c.value)}}
+        <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
+        <span class="makeAdminAction">
+          <span (click)="open(mymodal, c.value)">Edit Access</span>
+          <span (click)="removeUser(c.key, 'removed')" class="removeIcon">
             <svg
               width="20"
               height="20"
@@ -97,3 +147,73 @@
   <button (click)="closeModal()" class="cancel-btn">Cancel</button>
   <button (click)="updateCollaborators()" [ngClass]="canSave() ? 'upload-btn' : 'upload-btn disabled'" class="upload-btn">Done</button>
 </div>
+
+
+<ng-template #mymodal let-modal>
+  <div class="modalContentBlock">
+    <div class="addUserBlock">
+      <h3>Edit access</h3>
+      <ul class="mb-20">
+        <li>
+          {{selectedExternalUser.user.id}}
+          <span class="disableColor pl-10">Pending - Access expires {{getEndDate(selectedExternalUser.end)}}</span>
+        </li>
+      </ul>
+      <div class="makePrivate tollTipWorkspace">
+        <div class="row mb-20">
+          <div class="col-md-3">
+            Access scope
+          </div>
+          <div class="col-md-9">
+            <ol>
+              <li>
+                <label class="control control--checkbox mb-10" style="width: calc(100% - 31px);">
+                  This folder
+                  <input type="checkbox" checked />
+                  <div class="control__indicator"></div>
+                </label>
+                <span class="removeIcon" style="position: relative;">
+                  <img src="../../assets/images/Info-icon.svg" />
+                  <div class="removeInfo" style="bottom: -30px;">Remove user</div>
+                </span>
+              </li>
+              <li>
+                <label class="control control--checkbox">
+                  Full site access to all public assets
+                  <input type="checkbox" (change)="onFullAccessCheckboxChange($event)"/>
+                  <div class="control__indicator"></div>
+                </label>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            Access duration
+          </div>
+          <div class="col-md-9">
+            <span style="width: calc(100% - 31px);display: inline-block;">
+              <ng-select [items]="month"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Select month"
+                [(ngModel)]="selectedMonth"
+                (change)="selectDuration(selectedMonth)">
+              </ng-select>
+            </span>
+            <span class="removeIcon" style="position: relative;">
+              <img src="../../assets/images/Info-icon.svg" />
+              <div class="removeInfo" style="bottom: -30px;">Remove user</div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-groups">
+      <button (click)="modal.close('cancel')" class="cancel-btn">Cancel</button>
+      <button (click)="modal.close('done')" class="upload-btn">Done</button>
+    </div>
+  </div>
+</ng-template>
