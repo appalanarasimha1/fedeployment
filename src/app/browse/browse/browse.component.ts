@@ -1304,6 +1304,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   createDynamicSidebarScroll() {
     setTimeout(() => {
       var storeHeight = $(".main-content").outerHeight();
+      // console.log('storeHeight', storeHeight);
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
     }, 0);
   }
