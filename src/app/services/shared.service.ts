@@ -82,9 +82,6 @@ export class SharedService {
         console.log(e);
 
       });
-    // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
 

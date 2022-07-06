@@ -16,6 +16,7 @@ export class FooterComponent implements OnInit, AfterViewInit, OnChanges {
   modalLoading: boolean = false;
   videoCompleted: boolean = false;
   loading = false;
+  readonly adminEmail: string = "groundxfeedback@neom.com";
 
   tagsMetadataDummy = [
     {
