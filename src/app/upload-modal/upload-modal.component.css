@@ -1538,3 +1538,10 @@ button.btnDisable {
 .createFolder input.errorInput {
   border-bottom: 2px solid #E03C31 !important;
 }
+
+.upload-btn ::ng-deep app-loader-small .text-center {
+  top: 0px !important;
+  left: 0px !important;
+  border-radius: 100px !important;
+  background: #fff !important;
+}

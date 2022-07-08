@@ -632,7 +632,9 @@
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
                <button *ngIf="!publishing" [ngClass]="{'btnDisable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
-               <button *ngIf="publishing" mat-button class="upload-btn" >Publishing...</button>
+               <button *ngIf="publishing" mat-button class="upload-btn" style="position: relative" >
+                  Publish <app-loader-small [show]="loading"></app-loader-small>
+               </button>
             </div>
          </div>
       </mat-step>
