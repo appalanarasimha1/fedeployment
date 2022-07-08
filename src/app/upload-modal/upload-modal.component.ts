@@ -142,6 +142,9 @@ export class UploadModalComponent implements OnInit {
 
   showError: boolean = false;
   showErrorCheckbox: boolean = false;
+  showErrorUpload: boolean = false;
+
+  loading = true;
 
   constructor(
     private apiService: ApiService,
@@ -215,9 +218,15 @@ export class UploadModalComponent implements OnInit {
   }
 
   publish() {
-    this.step = 4;
-    this.publishAssets();
-    return;
+    // this.step = 4;
+    // return
+    if(!this.checkFormState()){
+      this.showErrorUpload = false;
+      this.publishAssets();
+      return;
+    } else {
+      this.showErrorUpload = true;
+    }
   }
 
   toNextStep() {
@@ -523,7 +532,7 @@ export class UploadModalComponent implements OnInit {
     const background = `background-image: linear-gradient(to right, rgba(0, 104, 69, 0.1) ${percentDone}%,#ffffff ${percentDone}%) !important;`;
     let attr = element.getAttribute("style");
     attr = attr.replace(/background-image:.*?;/g, "");
-    if (percentDone === 100) return;
+    // if (percentDone === 100) return;
     element.setAttribute("style", attr + background);
   }
 
@@ -769,6 +778,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async publishAssets() {
+    this.loading = true;
     this.publishing = true;
     let folder = Object.assign({}, this.selectedFolder); // this.data ? Object.assign({}, this.data) : Object.assign({}, this.selectedFolder);
     if (this.folderToAdd) {
@@ -780,8 +790,7 @@ export class UploadModalComponent implements OnInit {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
       if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
     }
-    this.calFileManagerApi();
-    // TODO: add api POST call /upload/batchId-<batchID>/execute/FileManager.Import
+    // this.calFileManagerApi();
     if(!this.showRedirectUrl()) {
       // this.dialogRef.close(this.uploadedAsset);
       this.publishing = false;
@@ -933,7 +942,13 @@ export class UploadModalComponent implements OnInit {
       context: {},
       input: asset.id,
     };
-    this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
+    try{
+      await this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
+      return;
+    } catch (err) {
+      console.error(err?.message);
+      return;
+    }
   }
 
   async createFolder(name, parentFolder?: any, data?: any) {

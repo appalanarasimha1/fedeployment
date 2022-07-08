@@ -470,4 +470,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   getApprovalUsers1() {
     return this.doc.properties?.["sa:downloadApprovalUsers"].length>0 ? true:false
   }
+
+  checkMimeType(document): string {
+    return this.sharedService.checkMimeType(document);
+  }
 }

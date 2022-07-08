@@ -68,7 +68,7 @@
                   All sectors
                 </button>
                 <button
-                  *ngFor="let sector of sectorsHomepage"
+                  *ngFor="let sector of sectorsHomepage.sort()"
                   ngbDropdownItem
                   class="sectorDropBtn"
                   (click)="assetsBySectorSelect(sector)"
@@ -277,7 +277,7 @@
   </div>
 
   <section class="search-subpage">
-    <div
+    <div [ngClass]="{'hideTag': !checkShowDetailview()}"
       class="customTagBar"
       *ngIf="searchBarClicked && tagsMetaRealdata.length<1"
     >
@@ -490,7 +490,7 @@
                 All sectors
               </button>
               <button
-                *ngFor="let sector of sectors"
+                *ngFor="let sector of sectors.sort()"
                 ngbDropdownItem
                 class="sectorDropBtn"
                 (click)="sectorSelect(sector)"

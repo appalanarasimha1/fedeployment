@@ -4,7 +4,7 @@ import { Moment } from 'moment'; // for interface
 import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { localStorageVars } from '../common/constant';
+import { ASSET_TYPE, localStorageVars } from '../common/constant';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 
@@ -326,7 +326,7 @@ export class SharedService {
     };
   }
 
-  removeWrokspaceFromBreadcrumb(data: string): string {
+  removeWorkspacesFromString(data: string): string {
     return data.replace(/\/workspaces/gi, '');
   }
 
@@ -386,5 +386,18 @@ export class SharedService {
       }
       return value;
     };
+  }
+
+  checkMimeType(document): string {
+    const mimeType = document.properties['file:content']?.['mime-type'];
+    
+    if(mimeType?.includes('image'))
+      return ASSET_TYPE.PICTURE;
+    if(mimeType?.includes('video'))
+      return ASSET_TYPE.VIDEO;
+    if(mimeType?.includes('pdf'))
+      return ASSET_TYPE.FILE;
+      
+    return 'nopreview';
   }
 }

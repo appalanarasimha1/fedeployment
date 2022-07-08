@@ -17,7 +17,7 @@
                         <div class="folder-content">
                            <div class="folderHeading">
                               {{shortTheString(data.title, 35)}}
-                              <span>/{{WORKSPACE_ROOT}}{{shortTheString(sharedService.removeWrokspaceFromBreadcrumb(data.path), 70)}}</span>
+                              <span>/{{WORKSPACE_ROOT}}{{shortTheString(sharedService.removeWorkspacesFromString(data.path), 70)}}</span>
                            </div>
                         </div>
                      </div>
@@ -29,8 +29,8 @@
                </div>
             </ngx-dropzone-label>
             <ul class="flexible upload-prevoew">
-               <li  *ngFor="let f of filesMap | keyvalue">
-                  <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [removable]="true" (removed)="onRemove(f)">
+               <li *ngFor="let f of filesMap | keyvalue">
+                  <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [ngClass]="{'fillbar': filesUploadDone[f.key]}" [removable]="true" (removed)="onRemove(f)">
                   <ngx-dropzone-label class="flexible" style="margin: unset;">
                      <div style="width: 80%;text-align: left;margin-top: 0px;">
                         <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
@@ -508,7 +508,7 @@
                      </div>
                   </div>
                   <div *ngIf="!isPrivateFolder()" class="publish-file-preview-access">
-                     <div class="upload-form-input row mb-20">
+                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customConfidentialityMap[file.key] }">
                         <div class="col-xl-4">
                            <label for="confidentiality">Confidentiality</label>
                         </div>
@@ -520,10 +520,11 @@
                            <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                            </ng-option>
                            </ng-select>
+                           <div class="showErrorMessage" *ngIf="showErrorUpload && !customConfidentialityMap[file.key] ">Please complete all mandatory fields</div>
                         </div>
                      </div>
 
-                     <div class="upload-form-input row mb-20">
+                     <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customAccessMap[file.key] }">
                         <div class="col-xl-4">
                            <label for="access">{{ACCESS_TITLE}}</label>
                         </div>
@@ -532,15 +533,16 @@
                               <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
                               </ng-option>
                            </ng-select>
+                           <div class="showErrorMessage" *ngIf="showErrorUpload && !customAccessMap[file.key] ">Please complete all mandatory fields</div>
                         </div>
                      </div>
 
-                     <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;">
+                     <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;"  ``>
                         <div class="col-xl-4">
                           &nbsp; <!-- <label for="user" style="text-align: right;">Please specify who can access</label> -->
                         </div>
                         <div class="col-xl-8">
-                           <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
+                           <p class="userText pb-3">{{SPECIFIC_USER_LABEL}} 1</p>
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"
@@ -561,7 +563,7 @@
                         </div>
                      </div>
 
-                     <div class="upload-form-input row mb-20">
+                     <div class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalMap[file.key] }">
                         <div class="col-xl-4">
                            <label>Usage permission</label>
                         </div>
@@ -578,6 +580,7 @@
                               />
                               <div class="control__indicator" style="top: 4px;left: 0px;"></div>
                            </label>
+                           <!-- <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalMap[file.key] ">Please complete all mandatory fields</div> -->
                         </div>
                      </div>
 
@@ -592,12 +595,12 @@
                            </ng-select>
                         </div>
                      </div>-->
-                     <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20">
+                     <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalUsersMap[file.key] }" >
                         <div class="col-xl-4">
                            &nbsp;
                         </div>
                         <div class="col-xl-8">
-                           <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
+                           <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}} 2</label>
                            <ng-select style="height: unset !important;"
                            [items]="userList$ | async"
                            bindLabel="id"
@@ -610,11 +613,12 @@
                            typeToSearchText="Search users"
                            [typeahead]="userInput$"
                            [(ngModel)]="customDownloadApprovalUsersMap[file.key]"
-                           [ngClass]="{'goldenText': ownerName }" >
+                           [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }" >
                            <ng-template ng-option-tmp let-item="item">
                               {{item.id}} ({{item.fullname}})
                            </ng-template>
                            </ng-select>
+                           <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalUsersMap[file.key] ">Please complete all mandatory fields</div>
                         </div>
                      </div>
 
@@ -627,8 +631,10 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button *ngIf="!publishing" [ngClass]="{'btn-disable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
-               <button *ngIf="publishing" mat-button class="upload-btn" >Publishing...</button>
+               <button *ngIf="!publishing" [ngClass]="{'btnDisable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
+               <button *ngIf="publishing" mat-button class="upload-btn" style="position: relative" >
+                  Publish <app-loader-small [show]="loading"></app-loader-small>
+               </button>
             </div>
          </div>
       </mat-step>
