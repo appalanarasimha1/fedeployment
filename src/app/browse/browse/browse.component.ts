@@ -1227,12 +1227,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
+    this.showSearchbar = true;
     // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
-    this.showSearchbar = true;
     if (!entries?.length) {
       this.sortedData = [];
       this.searchList = [];
@@ -1267,6 +1267,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async fetchAllSectors(isExpand = false) {
+    this.showSearchbar = false;
     // this.loading = true;
     this.isTrashView = false;
     this.sectorSelected = null;
@@ -1276,7 +1277,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.folderStructure[0].isExpand = !isExpand;
     this.searchList = entries;
     this.selectedMenu = 1;
-    this.showSearchbar = false;
     this.createDynamicSidebarScroll();
     // this.loading = false;
   }

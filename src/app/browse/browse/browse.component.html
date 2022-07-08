@@ -130,7 +130,10 @@
             />
             This folder has been deleted
           </div>
-          <div *ngIf="!folderNotFound">
+
+          <div
+            *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+            
             <div class="row">
               <div class="col-xl-7">
                 <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
@@ -165,10 +168,7 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          <div
-            *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+            
             <div
               class="header-content"
               *ngIf="!isTrashView"
