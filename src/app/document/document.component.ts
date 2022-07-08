@@ -261,7 +261,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
 
     this.filtersCount = this.getFilterCount();
-
+    
     this.dataService.searchBarClick$.subscribe((show: boolean) => {
       this.searchBarClicked = show;
     });

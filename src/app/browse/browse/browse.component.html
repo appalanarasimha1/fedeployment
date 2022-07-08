@@ -130,10 +130,13 @@
             />
             This folder has been deleted
           </div>
-          <div *ngIf="!folderNotFound">
+
+          <div
+            *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+            
             <div class="row">
               <div class="col-xl-7">
-                <div *ngIf="showSearchbar && !folderNotFound" class="pb-5">
+                <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
                   <div style="position: relative;">
                     <form autocomplete="off" style="position: relative;">
                       <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
