@@ -358,11 +358,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFolder = item;
   }
 
-  getAssetUrl(event: any, document: any, type?: string): string {
-    if(this.checkAssetMimeTypes(document) === 'nopreview') {
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
       return '../../../assets/images/no-preview.png';
     }
-   return this.sharedService.getAssetUrl(event, document.contextParameters.thumbnail.url, type);
+   return this.sharedService.getAssetUrl(event, url, type);
   }
 
   open(file, fileType?: string): void {
