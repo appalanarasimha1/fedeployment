@@ -323,6 +323,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async handleTest(item) {
+    this.renameFolderName = false;
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
