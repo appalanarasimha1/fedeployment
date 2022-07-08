@@ -30,5 +30,6 @@ export const apiRoutes = {
   UN_TRASH_DOC: "/automation/Document.Untrash",
   DOCUMENT_UPDATE: "/automation/Document.Update",
   INVITE_USER: "/automation/Scry.InviteUser",
-  DEFAULT_DOCUMENT_SUGGESTION: '/search/pp/DEFAULT_DOCUMENT_SUGGESTION/execute'
+  DEFAULT_DOCUMENT_SUGGESTION: '/search/pp/DEFAULT_DOCUMENT_SUGGESTION/execute',
+  GROUP_USER_LIST: '/group/[groupName]/@users?pageSize=1000'
 };

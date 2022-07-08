@@ -73,7 +73,7 @@
     </ul>
   </div>
 
-  <div class="makeAdminBlock">
+  <div class="makeAdminBlock" *ngIf="checkShowExternalUser()">
     <h3 class="externalUsers">External users</h3>
     <ul style="min-height: auto;">
       <li *ngFor="let c of invitedCollaborators | keyvalue">

@@ -51,6 +51,7 @@ export class AddUserModalComponent implements OnInit {
     {id: 4, name: '4 month'},
     {id: 5, name: '5 month'}
   ];
+  listExternalUser: string[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -63,6 +64,7 @@ export class AddUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getExternalGroupUser();
     this.selectedFolder = this.data.selectedFolder;
     this.folderId = this.data.folderId;
     this.folderCollaborators = this.data.folderCollaborators || {};
@@ -82,7 +84,8 @@ export class AddUserModalComponent implements OnInit {
     this.externalCollaborators = {};
     this.internalCollaborators = {};
     Object.keys(this.folderCollaborators).forEach(key => {
-      if (this.folderCollaborators[key].externalUser) {
+      if (this.folderCollaborators[key].externalUser
+        || this.listExternalUser.includes(key)) {
         this.externalCollaborators[key] = this.folderCollaborators[key];
       } else {
         this.internalCollaborators[key] = this.folderCollaborators[key];
@@ -395,6 +398,16 @@ export class AddUserModalComponent implements OnInit {
 
   onFullAccessCheckboxChange(e) {
     this.selectedExternalUser.isGlobal = e.target.checked;
+  }
+
+  checkShowExternalUser() {
+    return Object.keys(this.externalCollaborators).length > 0
+      || Object.keys(this.invitedCollaborators).length > 0;
+  }
+
+  async getExternalGroupUser() {
+    this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
+    console.log(this.listExternalUser);
   }
 
 }

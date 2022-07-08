@@ -152,6 +152,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   createFolderLoading = false;
 
   isAdmin = false;
+  listExternalUser: [];
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -179,6 +180,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.fetchUserData();
+    this.getExternalGroupUser();
     this.route.queryParams.subscribe(async (params) => {
       this.loading = true;
       this.searchInitialised = null;
@@ -857,7 +859,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   selectFolder($event, item, i) {
     console.log('11',item);
-    
+
     if (!$event.target.checked && this.selectedFolderList[i]) {
       delete this.selectedFolderList[i];
     } else if ($event.target.checked) {
@@ -1709,5 +1711,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   removeWorkspacesFromString(data: string): string {
 
     return this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40) ;
+  }
+
+  async getExternalGroupUser() {
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', 'external_user')).toPromise();
+    const users = res['entries'];
+    this.listExternalUser = users.map(user => user.id);
+    localStorage.setItem("listExternalUser", JSON.stringify(this.listExternalUser));
   }
 }
