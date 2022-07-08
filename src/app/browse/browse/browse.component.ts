@@ -247,10 +247,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
               if(!this.workspaceSearch.nativeElement.value) {
                 this.loading = true;
                 await this.getWorkspaceFolders(this.selectedFolder.uid, 1);
+                this.handleSelectMenu(1, "LIST");
                 this.loading = false;
                 return;
               }
               this.searchFolders(this.workspaceSearch.nativeElement.value);
+              this.handleSelectMenu(1, "LIST");
             })
         ).subscribe();
     }
@@ -296,6 +298,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     ];
     if (assetTypes.indexOf(assetType.toLowerCase()) !== -1) return true;
     else return false;
+  }
+
+  checkAssetMimeTypes(document: any): string {
+    return this.sharedService.checkMimeType(document);
   }
 
   closeOtherSectore(child, children) {
@@ -351,8 +357,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFolder = item;
   }
 
-  getAssetUrl(event: any, url: string, type?: string): string {
-   return this.sharedService.getAssetUrl(event, url, type);
+  getAssetUrl(event: any, document: any, type?: string): string {
+    if(this.checkAssetMimeTypes(document) === 'nopreview') {
+      return '../../../assets/images/no-preview.png';
+    }
+   return this.sharedService.getAssetUrl(event, document.contextParameters.thumbnail.url, type);
   }
 
   open(file, fileType?: string): void {
@@ -1702,8 +1711,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return folderCollaborators;
   }
 
-  removeWorkspacesFromString(data: string): string {
+  removeWorkspacesFromString(data: string, title: string): string {
   
-    return this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40) ;
+    let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40);
+    return dataWithoutWorkspace.replace('/'+title, '');
   }
 }
