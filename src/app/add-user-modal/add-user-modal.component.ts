@@ -407,7 +407,6 @@ export class AddUserModalComponent implements OnInit {
 
   async getExternalGroupUser() {
     this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
-    console.log(this.listExternalUser);
   }
 
 }

@@ -28,7 +28,7 @@
               Workspace
             </h2>
           </div>
-          <div class="tree">
+          <div *ngIf="!isExternalView" class="tree">
             <ul style="list-style: none" class="leftPanel">
               <li
                 *ngFor="let item of folderStructure; let i = index"
@@ -116,6 +116,18 @@
               </li>
             </ul>
           </div>
+          <div *ngIf="isExternalView" class="tree">
+            <ul style="list-style: none" class="leftPanel">
+              <li
+                style="cursor: pointer"
+                [ngClass]="isExternalView ? 'active-tab' : ''"
+                class="d-flex set"
+                (click)="fetchAllPrivateWorkspaces()"
+              >
+                <span>Shared Folders</span>
+              </li>
+            </ul>
+          </div>
           <!-- </div> -->
         </div>
         <div
@@ -174,7 +186,7 @@
               *ngIf="!isTrashView"
               style="width: 100%"
             >
-              <div *ngIf="selectedFolder2.uid !== parentId" style="width: 100%">
+              <div *ngIf="selectedFolder2?.uid !== parentId" style="width: 100%">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
                   aria-label="Button that displays a tooltip when focused or hovered over">
@@ -188,7 +200,7 @@
                         {{selectedFolder?.title}}
                       </div>
                     </span>
-                    <svg *ngIf="showLinkCopy && !checkGeneralFolder(selectedFolder)" class="renameFolderImg" (click)="renameFolderAction()" 
+                    <svg *ngIf="showLinkCopy && !checkGeneralFolder(selectedFolder) && !isExternalView" class="renameFolderImg" (click)="renameFolderAction()"
                       width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -265,7 +277,7 @@
                   </ul>
                 </div>
                 <h6 class="tollTipCustom">
-                  <span
+                  <span *ngIf="!isExternalView"
                     >/<a
                       [ngClass]="
                         breadCrumb.length !== 0
@@ -278,6 +290,16 @@
                       >All Workspace</a
                     ></span
                   >
+                  <span *ngIf="isExternalView">/<a
+                      [ngClass]="
+                        breadCrumb.length !== 0
+                          ? 'breadcrumb-active'
+                          : 'breadcrumb-not-active'
+                      "
+                      (click)="
+                      fetchAllPrivateWorkspaces()
+                      "
+                      >Shared Folders</a></span>
                   <span *ngFor="let c of breadCrumb; let i = index">
                     /<a
                       [ngClass]="
@@ -634,7 +656,7 @@
                       <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Delete</div>
                     </span>
                   </div>
-                  <div class="buttonCreate tollTipWorkspace" *ngIf="count < 1">
+                  <div class="buttonCreate tollTipWorkspace" *ngIf="count < 1 && !isExternalView">
                     <a
                       href="javascript:void(0)"
                       *ngIf="!isTrashView"
@@ -651,7 +673,7 @@
                     </a>
                     <div class="customToolTipWorkspace" style="right: 5px; left: auto; top: 32px">Create new folder</div>
                   </div>
-                  <div class='dropdownCreate createFolder'*ngIf="count < 1">
+                  <div class='dropdownCreate createFolder' *ngIf="count < 1">
                     <form>
                       <div class="row">
                         <div class="col-xl-12">
@@ -730,7 +752,7 @@
                   </div>
                 </div>
 
-                <ul class="uploadAssetsClassifications">
+                <ul class="uploadAssetsClassifications" *ngIf="!isExternalView">
                   <li
                     (click)="openModal()"
                     class="tollTipWorkspace workspaceInfoHover"
@@ -851,14 +873,14 @@
             </div>
 
             <!-- Start adding collaborators to this private folder -->
-            <div *ngIf="isPrivateFolder(false) && checkShowNoTrashItem()" class="addignCollaborators" style="padding-top: 40px;">
+            <div *ngIf="isPrivateFolder(false) && checkShowNoTrashItem() && !isExternalView" class="addignCollaborators" style="padding-top: 40px;">
               <h2>Start adding collaborators to this private folder</h2>
               <div class="addUsers">
                 <div [ngClass]="isAdmin ? 'addUserBtn' : 'addUserBtn-disabled'" (click)="openAddUserModal()">Add users</div>
               </div>
             </div>
 
-            <div *ngIf="checkShowNoTrashItem() && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
+            <div *ngIf="checkShowNoTrashItem() && isPrivateFolder(true, true) && !isPrivateFolder(false) && !isExternalView" class="addignCollaborators" style="padding-top: 40px;">
               <h2>Start adding assets to this private folder</h2>
               <div class="addUsers">
                 <div class="addUserBtn" (click)="openModal()">Upload</div>
@@ -879,13 +901,13 @@
                 *ngIf="searchList && searchList.length"
               >
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                
+
                 <ul
                   class="all-sectors"
-                  *ngIf="selectedFolder.uid !== parentId || isTrashView"
+                  *ngIf="selectedFolder.uid !== parentId || isTrashView || isExternalView"
                   [ngClass]="{
                     'animate__animated animate__fadeIn':
-                      selectedFolder.uid !== parentId || isTrashView
+                      selectedFolder.uid !== parentId || isTrashView || isExternalView
                   }"
                 >
                   <li
@@ -999,7 +1021,7 @@
             </div>
 
             <div *ngIf="selectedMenu === 1" class="row justify-content-between pt-25" style="width: 100%; --bs-gutter-x: 0px">
-              <div *ngIf="selectedFolder.uid === parentId && !isTrashView" class="mb-5 text-center animate__animated animate__fadeIn" >
+              <div *ngIf="selectedFolder.uid === parentId && !isTrashView && !isExternalView" class="mb-5 text-center animate__animated animate__fadeIn" >
                 <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px" />
                 <p class="sectorssText">
                   Choose a workspace on the left to begin

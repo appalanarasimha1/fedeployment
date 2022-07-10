@@ -21,7 +21,9 @@ import {
   WORKSPACE_ROOT,
   ROOT_ID,
   ORDERED_FOLDER,
-  FOLDER_TYPE_WORKSPACE
+  FOLDER_TYPE_WORKSPACE,
+  EXTERNAL_GROUP_GLOBAL,
+  EXTERNAL_USER,
 } from "src/app/common/constant";
 import { apiRoutes } from "src/app/common/config";
 import { NuxeoService } from "src/app/services/nuxeo.service";
@@ -152,7 +154,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   createFolderLoading = false;
 
   isAdmin = false;
-  listExternalUser: [];
+  listExternalUser: string[] = [];
+  listExternalUserGlobal: string[] = [];
+  isExternalView = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -180,7 +184,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.fetchUserData();
-    this.getExternalGroupUser();
+    let fetchAll = false;
     this.route.queryParams.subscribe(async (params) => {
       this.loading = true;
       this.searchInitialised = null;
@@ -203,6 +207,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.saveState(folder);
         this.loading = false;
       } else {
+        fetchAll = true;
         this.selectedFolder2 = this.folderStructure[0];
         this.sectorSelected = this.folderStructure[0];
         this.selectedFolder = this.folderStructure[0];
@@ -233,6 +238,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         parent.addClass("is-open");
       }
     });
+
+    this.fetchExternalUserInfo(fetchAll);
   }
 
   ngAfterViewInit(): void {
@@ -317,7 +324,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkGeneralFolder(item){
-    return item.type.toLowerCase() === constants.WORKSPACE && item.title.toLowerCase() === constants.GENERAL_FOLDER
+    return item?.type?.toLowerCase() === constants.WORKSPACE && item?.title?.toLowerCase() === constants.GENERAL_FOLDER
   }
 
   openVerticallyCentered(content) {
@@ -1713,10 +1720,53 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40) ;
   }
 
+  async fetchAllPrivateWorkspaces() {
+    const query = "SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1";
+    const params = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 20,
+      queryParams: query,
+    };
+    const result: any = await this.apiService
+      .get(apiRoutes.NXQL_SEARCH, {
+        params,
+        headers: { "fetch-document": "properties" },
+      })
+      .toPromise();
+
+    this.searchList = result['entries'];
+    this.sortedData = this.searchList.slice();
+
+    this.handleSelectMenu(1, this.viewType || "LIST");
+    localStorage.setItem('workspaceState', JSON.stringify({}));
+    this.selectedFolder = {};
+    this.breadCrumb = [];
+  }
+
+  isExternalUser() {
+    return this.listExternalUser.includes(this.user) && !this.listExternalUserGlobal.includes(this.user);
+  }
+
+  async fetchExternalUserInfo(fetchAll = false) {
+    await this.getExternalGroupUser();
+    await this.getExternalGroupUserGlobal();
+    if (!this.isExternalUser()) return;
+    this.isExternalView = true;
+    if (fetchAll) this.fetchAllPrivateWorkspaces();
+  }
+
   async getExternalGroupUser() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', 'external_user')).toPromise();
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
     const users = res['entries'];
     this.listExternalUser = users.map(user => user.id);
     localStorage.setItem("listExternalUser", JSON.stringify(this.listExternalUser));
+  }
+
+  async getExternalGroupUserGlobal() {
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
+    const users = res['entries'];
+    this.listExternalUserGlobal = users.map(user => user.id);
+    localStorage.setItem("listExternalUserGlobal", JSON.stringify(this.listExternalUserGlobal));
   }
 }
