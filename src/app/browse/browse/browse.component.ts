@@ -889,6 +889,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.loading = false;
       });
     this.deleteModal(listDocs);
+    this.removeAssets()
   }
 
   async unTrashFolders() {
