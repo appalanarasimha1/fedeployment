@@ -1,6 +1,6 @@
 {
     "script": "server/build/index.js",
-    "name": "uat_oci_groundX_UI",
+    "name": "GroundX-UI-OCI1",
     "exec_mode": "cluster",
     "instances": "4", 
     "log_date_format": "YYYY-MM-DD HH:mm Z",

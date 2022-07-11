@@ -1283,12 +1283,6 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   display:none;
   text-align: left;
 }
-.buttonCreate {
-  padding-top: 4px;
-  display: inline-block;
-  margin-right: 17px;
-  vertical-align: top;
-}
 .deleteFolder{
   display: inline-block;
   vertical-align: 2px;
@@ -2908,7 +2902,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   text-align: left;
 }
 .buttonCreate {
-  padding-top: 4px;
+  padding-top: 7px;
   display: inline-block;
   margin-right: 17px;
   vertical-align: top;

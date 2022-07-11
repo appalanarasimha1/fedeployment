@@ -214,7 +214,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.searchList.unshift(result);
       this.sortedData = this.searchList.slice();
       this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
-      
+
       this.showMoreButton = false;
     });
 
@@ -319,7 +319,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkWSType(assetType: string) {
     return assetType.toLowerCase() === ASSET_TYPE.WORKSPACE || assetType.toLowerCase() === ASSET_TYPE.ORDERED_FOLDER;
   }
-  
+
   checkGeneralFolder(item){
     return item.type.toLowerCase() === constants.WORKSPACE && item.title.toLowerCase() === constants.GENERAL_FOLDER
   }
@@ -1170,7 +1170,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           // "Updated folder",
           // this.getTrashedWS.bind(this)
         );
-      
+
     }else{
       this.renameFolderName = true;
     }
@@ -1256,7 +1256,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.sectorWorkspace = entries[workSpaceIndex];
     }
     if (workSpaceIndex === -1) {
-
       this.sortedData = entries;
       this.searchList = entries;
       this.showLinkCopy = true;
@@ -1314,6 +1313,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   createDynamicSidebarScroll() {
     setTimeout(() => {
       var storeHeight = $(".main-content").outerHeight();
+      // console.log('storeHeight', storeHeight);
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
     }, 0);
   }
@@ -1358,7 +1358,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   async searchFolders(searchString: string) {
     // this.loading = true;
-    const path = this.sectorSelected.uid === this.selectedFolder.uid ? 
+    const path = this.sectorSelected.uid === this.selectedFolder.uid ?
     `/${this.sectorSelected.title}/workspaces/` :
     `${this.selectedFolder.path}/`;
     const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
@@ -1651,7 +1651,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
-    dialogConfig.width = "550px";
+    dialogConfig.width = "640px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {
@@ -1711,6 +1711,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       folderCollaborators[ace.username.id] = {
         user: ace.username,
         permission: ace.permission,
+        externalUser: ace.externalUser,
+        end: ace.end,
         id: ace.id,
       }
     });

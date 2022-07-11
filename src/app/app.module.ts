@@ -35,6 +35,11 @@ import { ManageAccessModalComponent } from './manage-access-modal/manage-access-
 import { AddUserModalComponent } from './add-user-modal/add-user-modal.component';
 // import { AssetViewComponent } from './asset-view/asset-view.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { SignupComponent } from './signup/signup.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -46,6 +51,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     LoaderYellowComponent,
     ManageAccessModalComponent,
     AddUserModalComponent,
+    SignupComponent,
+    ForgotPasswordComponent,
     // AssetViewComponent,
   ],
   imports: [
@@ -64,6 +71,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     NgSelectModule,
     KeycloakAngularModule,
     SlickCarouselModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [
     // CookieService,
