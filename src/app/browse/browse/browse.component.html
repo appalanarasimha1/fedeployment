@@ -130,10 +130,13 @@
             />
             This folder has been deleted
           </div>
-          <div *ngIf="!folderNotFound">
+
+          <div
+            *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+            
             <div class="row">
               <div class="col-xl-7">
-                <div *ngIf="showSearchbar && !folderNotFound" class="pb-5">
+                <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
                   <div style="position: relative;">
                     <form autocomplete="off" style="position: relative;">
                       <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
@@ -167,7 +170,7 @@
             </div>
           </div>
 
-          <div
+          <div class="main-content"
             *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
             <div
               class="header-content"
@@ -640,8 +643,11 @@
                       *ngIf="!isTrashView"
                       (click)="datePickerDefaultAction()"
                       class="createNew flexible">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;width: 20px;height: 20px;margin-top: 3px;" >
+                      <!-- Old Icon <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;width: 20px;height: 20px;margin-top: 3px;" >
                         <path d="M1 6.25C0.585786 6.25 0.25 6.58579 0.25 7C0.25 7.41421 0.585786 7.75 1 7.75V6.25ZM13 7.75C13.4142 7.75 13.75 7.41421 13.75 7C13.75 6.58579 13.4142 6.25 13 6.25V7.75ZM6.25 13C6.25 13.4142 6.58579 13.75 7 13.75C7.41421 13.75 7.75 13.4142 7.75 13H6.25ZM7.75 1C7.75 0.585786 7.41421 0.25 7 0.25C6.58579 0.25 6.25 0.585786 6.25 1H7.75ZM1 7.75H13V6.25H1V7.75ZM7.75 13V1H6.25V13H7.75Z" fill="#937206"/>
+                      </svg> -->
+                      <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.50857 18.24V1.50857H9.00864L11.2029 3.70286H20.4343V9.18672C20.9668 9.34171 21.4725 9.55954 21.9429 9.83165V3.29143C21.9429 3.00045 21.8273 2.72139 21.6215 2.51563C21.4158 2.30988 21.1367 2.19429 20.8457 2.19429H11.4256L9.23136 0H1.09714C0.806162 0 0.5271 0.115591 0.321346 0.321346C0.115591 0.5271 0 0.806162 0 1.09714V18.6514C0 18.9424 0.115591 19.2215 0.321346 19.4272C0.5271 19.633 0.806162 19.7486 1.09714 19.7486H12.9277C12.5972 19.2852 12.323 18.7791 12.1149 18.24H1.50857ZM18.5143 19.8571C20.7708 19.8571 22.6 18.0279 22.6 15.7714C22.6 13.515 20.7708 11.6857 18.5143 11.6857C16.2578 11.6857 14.4286 13.515 14.4286 15.7714C14.4286 18.0279 16.2578 19.8571 18.5143 19.8571ZM18.5143 21.2571C21.544 21.2571 24 18.8011 24 15.7714C24 12.7418 21.544 10.2857 18.5143 10.2857C15.4846 10.2857 13.0286 12.7418 13.0286 15.7714C13.0286 18.8011 15.4846 21.2571 18.5143 21.2571ZM17.9657 13.0286V15.2229H15.7714V16.32H17.9657V18.5143H19.0629V16.32H21.2571V15.2229H19.0629V13.0286H17.9657Z" fill="#947200"/>
                       </svg>
                       <!-- <img src="../../../assets/images/add.svg" /> -->
                       <!-- Create new folder -->
@@ -1007,7 +1013,7 @@
                   matSort
                   (matSortChange)="sortData($event)"
                   class="folderListview pb-5"
-                  *ngIf="searchList.length && selectedFolder.uid !== parentId"
+                  *ngIf="searchList?.length && selectedFolder.uid !== parentId"
                 >
                   <tr>
                     <th style="width: 3%">&nbsp;&nbsp;</th>
@@ -1016,7 +1022,8 @@
                       width="30%"
                       style="padding-left: 35px"
                     >
-                      {{ !showLinkCopy ? "name" : "name" }}
+                      Name
+                      <!-- {{ !showLinkCopy ? "name" : "name" }} -->
                     </th>
                     <th mat-sort-header="dc:creator" width="20%">Created by</th>
                     <!-- <th width="20%">Last Updated by</th> -->
@@ -1093,13 +1100,13 @@
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left; word-break: break-all;">{{item.title}}
-                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path)}}
+                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
                           <span class="tolltipContent" style="width: 100%;
                           height: auto;
                           white-space: break-spaces;
                           text-align: left;
                           padding: 5px 10px;">
-                            {{sharedService.removeWorkspacesFromString(item.path)}}
+                            {{removeWorkspacesFromString(item.path, item.title)}}
                           </span>
                           </span>
                         </p>
@@ -1116,9 +1123,9 @@
                         </span>
                       </td>
                       <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                        <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
+                        <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}
-                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path)}}
+                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
                             <span class="tolltipContent" style="width: 100%;
                             height: auto;
                             white-space: break-spaces;

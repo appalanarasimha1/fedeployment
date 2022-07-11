@@ -277,7 +277,7 @@
   </div>
 
   <section class="search-subpage">
-    <div
+    <div [ngClass]="{'hideTag': !checkShowDetailview()}"
       class="customTagBar"
       *ngIf="searchBarClicked && tagsMetaRealdata.length<1"
     >

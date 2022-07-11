@@ -35,20 +35,6 @@ export class LoginComponent implements OnInit {
     this.checkLoginState();
   }
 
-  // login() {
-  //   const url = 'http://10.101.21.31:8080/nuxeo/startup'; //https://tomcat-groundx.neom.com:8087
-  //   const headers = {};
-  //   const body = {
-  //     user_name: 'Administrator',
-  //     user_password: 'Z7DaUfED',
-  //     language: 'en',
-  //     requestedUrl: '/'
-  //   };
-  //   this.apiService.post(url, body).subscribe(data => {
-  //     console.log(data);
-  //   });
-  // }
-
   async checkLoginState() {
     this.keycloakLoading = true;
     try {

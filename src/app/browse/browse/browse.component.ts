@@ -247,10 +247,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
               if(!this.workspaceSearch.nativeElement.value) {
                 this.loading = true;
                 await this.getWorkspaceFolders(this.selectedFolder.uid, 1);
+                this.handleSelectMenu(1, "LIST");
                 this.loading = false;
                 return;
               }
               this.searchFolders(this.workspaceSearch.nativeElement.value);
+              this.handleSelectMenu(1, "LIST");
             })
         ).subscribe();
     }
@@ -298,6 +300,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     else return false;
   }
 
+  checkAssetMimeTypes(document: any): string {
+    return this.sharedService.checkMimeType(document);
+  }
+
   closeOtherSectore(child, children) {
     this.createBreadCrumb(child.title, child.type, child.path);
     for (let i = 0; i < children.length; i++) {
@@ -323,6 +329,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async handleTest(item) {
+    this.renameFolderName = false;
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
@@ -351,7 +358,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFolder = item;
   }
 
-  getAssetUrl(event: any, url: string, type?: string): string {
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+      return '../../../assets/images/no-preview.png';
+    }
    return this.sharedService.getAssetUrl(event, url, type);
   }
 
@@ -1227,12 +1237,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
+    this.showSearchbar = true;
     // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
-    this.showSearchbar = true;
     if (!entries?.length) {
       this.sortedData = [];
       this.searchList = [];
@@ -1267,6 +1277,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async fetchAllSectors(isExpand = false) {
+    this.showSearchbar = false;
     // this.loading = true;
     this.isTrashView = false;
     this.sectorSelected = null;
@@ -1276,7 +1287,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.folderStructure[0].isExpand = !isExpand;
     this.searchList = entries;
     this.selectedMenu = 1;
-    this.showSearchbar = false;
     this.createDynamicSidebarScroll();
     // this.loading = false;
   }
@@ -1706,8 +1716,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return folderCollaborators;
   }
 
-  removeWorkspacesFromString(data: string): string {
+  removeWorkspacesFromString(data: string, title: string): string {
   
-    return this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40) ;
+    let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40);
+    return dataWithoutWorkspace.replace('/'+title, '');
   }
 }

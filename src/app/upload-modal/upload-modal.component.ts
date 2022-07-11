@@ -142,6 +142,9 @@ export class UploadModalComponent implements OnInit {
 
   showError: boolean = false;
   showErrorCheckbox: boolean = false;
+  showErrorUpload: boolean = false;
+
+  loading = true;
 
   constructor(
     private apiService: ApiService,
@@ -216,8 +219,14 @@ export class UploadModalComponent implements OnInit {
 
   publish() {
     // this.step = 4;
-    this.publishAssets();
-    return;
+    // return
+    if(!this.checkFormState()){
+      this.showErrorUpload = false;
+      this.publishAssets();
+      return;
+    } else {
+      this.showErrorUpload = true;
+    }
   }
 
   toNextStep() {
@@ -769,6 +778,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async publishAssets() {
+    this.loading = true;
     this.publishing = true;
     let folder = Object.assign({}, this.selectedFolder); // this.data ? Object.assign({}, this.data) : Object.assign({}, this.selectedFolder);
     if (this.folderToAdd) {
