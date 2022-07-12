@@ -218,16 +218,20 @@ export class UploadModalComponent implements OnInit {
   }
 
   publish() {
-    // this.step = 4;
-    // return
-    if(!this.checkFormState()){
-      this.showErrorUpload = false;
-      this.publishAssets();
-      return;
+    if(!this.isPrivateFolder()) {
+      if(!this.checkFormState()){
+        this.showErrorUpload = false;
+        this.publishAssets();
+        return;
+      } else {
+        this.showErrorUpload = true;
+      }
     } else {
-      this.showErrorUpload = true;
+      this.step = 4;	
+      this.publishAssets();	
+      return;
     }
-  }
+  } 
 
   toNextStep() {
     this.stepper.next();
