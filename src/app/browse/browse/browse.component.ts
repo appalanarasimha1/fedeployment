@@ -1023,9 +1023,27 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
+   
     if (!this.folderNameRef) {
       this.showError = true;
     } else {
+      let checkTitle = this.CheckTitleAlreadyExits(folderName)
+      if(checkTitle) {
+        this.showFolder = false
+        this.showMoreButton = false;
+        this.checkboxIsPrivate = false;
+        $(".dropdownCreate").hide();
+        $(".buttonCreate").removeClass("createNewFolderClick");
+          return this.sharedService.showSnackbar(
+            "Name already exists",
+            6000,
+            "top",
+            "center",
+            "snackBarMiddle"
+            // "Updated folder",
+            // this.getTrashedWS.bind(this)
+          );
+        }
       this.createFolderLoading = true;
       const backupPath = this.selectedFolder.path;
       let url = `/path${this.selectedFolder.path}`;
@@ -1178,11 +1196,25 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   updateFolderAction() {
     this.renameFolderName = false;
+    this.newTitle =this.selectedFolder.title
   }
 
   renameFolder() {
     let { newTitle, selectedFolder } = this;
     // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
+    if (newTitle?.trim() ===selectedFolder.title) return this.updateFolderAction();
+    let checkTitle = this.CheckTitleAlreadyExits(newTitle)
+    if(checkTitle) 
+      return this.sharedService.showSnackbar(
+        "Name already exists",
+        6000,
+        "top",
+        "center",
+        "snackBarMiddle"
+        // "Updated folder",
+        // this.getTrashedWS.bind(this)
+      );
+    
     this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
         input: selectedFolder.uid,
@@ -1724,4 +1756,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40);
     return dataWithoutWorkspace.replace('/'+title, '');
   }
+
+  CheckTitleAlreadyExits(name){
+    let titles = this.sortedData.map(m=>m.title.toLowerCase().trim())
+    if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
+    return false
+  }
 }
+
+
