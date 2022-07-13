@@ -324,6 +324,18 @@ export class AddUserModalComponent implements OnInit {
 
   open(content, item) {
     this.selectedExternalUser = item;
+    if (this.selectedExternalUser.duration) {
+      this.selectedMonth = this.selectedExternalUser.duration;
+      this.selectDuration(this.selectedMonth);
+    } else if (this.selectedExternalUser.end) {
+      const endDate = new Date(this.selectedExternalUser.end);
+      const now = new Date();
+      const duration = endDate.getMonth() - now.getMonth() + (12 * (endDate.getFullYear() - now.getFullYear()));
+      this.selectedMonth = duration === 0 ? 1 : duration;
+    } else {
+      this.selectedMonth = 1;
+      this.selectDuration(this.selectedMonth);
+    }
 
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'modal-edit-access'}).result.then((result) => {
       if (result !== 'done') return;
