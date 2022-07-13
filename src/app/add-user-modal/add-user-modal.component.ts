@@ -178,7 +178,6 @@ export class AddUserModalComponent implements OnInit {
   updatePermission(item) {
     const params = {
       permission: item.permission,
-      notify: true,
       comment: "",
       username: item.user.id,
       id: item.id,
@@ -195,7 +194,6 @@ export class AddUserModalComponent implements OnInit {
   addPermission(item) {
     const params = {
       permission: item.permission,
-      notify: true,
       comment: "",
       users: [item.user.id]
     };
