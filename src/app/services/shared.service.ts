@@ -4,7 +4,7 @@ import { Moment } from 'moment'; // for interface
 import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { ASSET_TYPE, localStorageVars } from '../common/constant';
+import { ASSET_TYPE, EXTERNAL_USER, localStorageVars } from '../common/constant';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 
@@ -248,6 +248,12 @@ export class SharedService {
   toTop(): void {
     window.scroll(0,0);
   }
+  
+  checkExternalUser() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user?.groups) return true;
+    return user?.groups.includes(EXTERNAL_USER);
+  }
 
   capitaliseSelectiveTags(tag: string): string {
     if(tag.toLowerCase().trim() === 'neom') {
@@ -371,7 +377,7 @@ export class SharedService {
     );
     return [...recentlyViewed.reverse()];
   }
-  
+
   getCircularReplacer() {
     const seen = new WeakSet();
     return (key, value) => {
@@ -387,14 +393,14 @@ export class SharedService {
 
   checkMimeType(document): string {
     const mimeType = document.properties['file:content']?.['mime-type'];
-    
+
     if(mimeType?.includes('image'))
       return ASSET_TYPE.PICTURE;
     if(mimeType?.includes('video'))
       return ASSET_TYPE.VIDEO;
     if(mimeType?.includes('pdf'))
       return ASSET_TYPE.FILE;
-      
+
     return 'nopreview';
   }
 }

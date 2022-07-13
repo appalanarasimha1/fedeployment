@@ -1748,6 +1748,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return this.listExternalUser.includes(this.user) && !this.listExternalUserGlobal.includes(this.user);
   }
 
+  checkExternalUser() {
+    return this.listExternalUser.includes(this.user);
+  }
+
   async fetchExternalUserInfo(fetchAll = false) {
     await this.getExternalGroupUser();
     await this.getExternalGroupUserGlobal();

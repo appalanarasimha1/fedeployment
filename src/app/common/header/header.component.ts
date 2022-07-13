@@ -83,7 +83,7 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        
+
       }
     });
 
@@ -215,6 +215,11 @@ export class HeaderComponent implements OnInit {
     this.videoCompleted = true;
   }
 
+
+  checkExternalUser() {
+    return this.sharedService.checkExternalUser();
+  }
+
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
     localStorage.setItem('videoSector', this.sectorSelected);
@@ -238,7 +243,7 @@ export class HeaderComponent implements OnInit {
           return;
         }
   }
-  
+
   showVideo() {
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
     this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`;
@@ -252,7 +257,7 @@ export class HeaderComponent implements OnInit {
   focusOnSearch() {
     this.searchPopup = true;
   }
-  
+
   blurOnSearch() {
     this.searchPopup = false;
   }
