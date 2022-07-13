@@ -156,7 +156,7 @@
       <ul class="mb-20">
         <li>
           {{selectedExternalUser.user.id}}
-          <span class="disableColor pl-10">Pending - Access expires {{getEndDate(selectedExternalUser.end)}}</span>
+          <span class="disableColor pl-10"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Access expires {{getEndDate(selectedExternalUser.end)}}</span>
         </li>
       </ul>
       <div class="makePrivate tollTipWorkspace">
@@ -180,7 +180,7 @@
               <li>
                 <label class="control control--checkbox">
                   Full site access to all public assets
-                  <input type="checkbox" (change)="onFullAccessCheckboxChange($event)"/>
+                  <input type="checkbox" [checked]="isGlobal" (change)="onFullAccessCheckboxChange($event)"/>
                   <div class="control__indicator"></div>
                 </label>
               </li>

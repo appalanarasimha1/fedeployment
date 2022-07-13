@@ -52,6 +52,8 @@ export class AddUserModalComponent implements OnInit {
     {id: 5, name: '5 month'}
   ];
   listExternalUser: string[] = [];
+  listExternalUserGlobal: string[] = [];
+  isGlobal = false;
 
   constructor(
     private apiService: ApiService,
@@ -65,6 +67,7 @@ export class AddUserModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.getExternalGroupUser();
+    this.getExternalGlobalGroupUser();
     this.selectedFolder = this.data.selectedFolder;
     this.folderId = this.data.folderId;
     this.folderCollaborators = this.data.folderCollaborators || {};
@@ -336,11 +339,15 @@ export class AddUserModalComponent implements OnInit {
       this.selectedMonth = 1;
       this.selectDuration(this.selectedMonth);
     }
+    if (this.listExternalUserGlobal.includes(this.selectedExternalUser.user?.id)) {
+      this.isGlobal = true;
+    }
+
 
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'modal-edit-access'}).result.then((result) => {
-      if (result !== 'done') return;
-      this.updateExternalUserAccess();
+      if (result === 'done') this.updateExternalUserAccess();
       this.selectedMonth = undefined;
+      this.isGlobal = false;
 
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -408,6 +415,7 @@ export class AddUserModalComponent implements OnInit {
 
   onFullAccessCheckboxChange(e) {
     this.selectedExternalUser.isGlobal = e.target.checked;
+    this.isGlobal = e.target.checked;
   }
 
   checkShowExternalUser() {
@@ -415,8 +423,12 @@ export class AddUserModalComponent implements OnInit {
       || Object.keys(this.invitedCollaborators).length > 0;
   }
 
-  async getExternalGroupUser() {
+  getExternalGroupUser() {
     this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
+  }
+
+  getExternalGlobalGroupUser() {
+    this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal"));
   }
 
 }
