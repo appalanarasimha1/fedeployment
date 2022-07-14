@@ -202,7 +202,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelect(event) {
-    console.log("event.addedFiles", event.addedFiles);
+    // console.log("event.addedFiles", event.addedFiles);
     if (!event.addedFiles && !this.agreeTerms) {
       this.showError = true;
       this.showErrorCheckbox = false;

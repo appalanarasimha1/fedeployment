@@ -916,14 +916,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.showSearchbar = true;
     this.searchBarValue = "";
-    offset || this.paginator.firstPage();
+    offset || this.paginator?.firstPage();
     if (this.folderNotFound) {
       this.folderNotFound = false;
       this.selectedFolder = {};
     }
     this.loading = true;
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
-    this.apiService
+    const url =this.myDeletedCheck ?
+     `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND dc:creator = '${this.user}' `:
+     `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1'`
+     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
         this.numberOfPages = docs.numberOfPages;
@@ -936,20 +938,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             return false;
           }
         });
-        if (!this.myDeletedCheck) {
-          this.searchList = this.trashedList;
-          this.sortedData = this.searchList.slice();
-        } else {
-          this.deletedByMeFilter().then(() => {
-            this.searchList = this.deletedByMe;
-            this.sortedData = this.searchList.slice();
-          });
-        }
+        // if (!this.myDeletedCheck) {
+        //   this.searchList = this.trashedList;
+        //   this.sortedData = this.searchList.slice();
+        // } else {
+        //   this.deletedByMeFilter().then(() => {
+        //     this.searchList = this.deletedByMe;
+        //     this.sortedData = this.searchList.slice();
+        //   });
+        // }
+        this.searchList = this.trashedList;
+        this.sortedData = this.searchList.slice();
         this.isTrashView = true;
         this.handleSelectMenu(1, this.viewType || "LIST");
         this.showMoreButton = false;
         this.loading = false;
-        this.deletedByMeFilter();
+        // this.deletedByMeFilter();
       });
   }
 
@@ -962,14 +966,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   myDeleted(e) {
-    if (e.target.checked) {
-      this.myDeletedCheck = true;
-      this.searchList = this.deletedByMe;
-    } else {
-      this.myDeletedCheck = false;
-      this.searchList = this.trashedList;
-    }
-    this.sortedData = this.searchList.slice();
+    // if (e.target.checked) {
+      this.myDeletedCheck = e.target.checked;
+      this.getTrashedWS()
+      // this.searchList = this.deletedByMe;
+   
   }
 
   checkCanDelete(item) {
@@ -1027,23 +1028,23 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (!this.folderNameRef) {
       this.showError = true;
     } else {
-      let checkTitle = this.CheckTitleAlreadyExits(folderName)
-      if(checkTitle) {
-        this.showFolder = false
-        this.showMoreButton = false;
-        this.checkboxIsPrivate = false;
-        $(".dropdownCreate").hide();
-        $(".buttonCreate").removeClass("createNewFolderClick");
-          return this.sharedService.showSnackbar(
-            "Name already exists",
-            6000,
-            "top",
-            "center",
-            "snackBarMiddle"
-            // "Updated folder",
-            // this.getTrashedWS.bind(this)
-          );
-        }
+      // let checkTitle = this.CheckTitleAlreadyExits(folderName)
+      // if(checkTitle) {
+      //   this.showFolder = false
+      //   this.showMoreButton = false;
+      //   this.checkboxIsPrivate = false;
+      //   $(".dropdownCreate").hide();
+      //   $(".buttonCreate").removeClass("createNewFolderClick");
+      //     return this.sharedService.showSnackbar(
+      //       "Name already exists",
+      //       6000,
+      //       "top",
+      //       "center",
+      //       "snackBarMiddle"
+      //       // "Updated folder",
+      //       // this.getTrashedWS.bind(this)
+      //     );
+      //   }
       this.createFolderLoading = true;
       const backupPath = this.selectedFolder.path;
       let url = `/path${this.selectedFolder.path}`;
@@ -1203,17 +1204,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let { newTitle, selectedFolder } = this;
     // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
     if (newTitle?.trim() ===selectedFolder.title) return this.updateFolderAction();
-    let checkTitle = this.CheckTitleAlreadyExits(newTitle)
-    if(checkTitle) 
-      return this.sharedService.showSnackbar(
-        "Name already exists",
-        6000,
-        "top",
-        "center",
-        "snackBarMiddle"
-        // "Updated folder",
-        // this.getTrashedWS.bind(this)
-      );
+    // let checkTitle = this.CheckTitleAlreadyExits(newTitle)
+    // if(checkTitle) 
+    //   return this.sharedService.showSnackbar(
+    //     "Name already exists",
+    //     6000,
+    //     "top",
+    //     "center",
+    //     "snackBarMiddle"
+    //     // "Updated folder",
+    //     // this.getTrashedWS.bind(this)
+    //   );
     
     this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
