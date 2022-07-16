@@ -274,6 +274,10 @@ export class SearchComponent implements OnInit {
       delete params["includePrivate"];
     }
 
+    if (this.sharedService.checkExternalUser()) {
+      params["sa_access"] = "All access";
+    }
+
     this.dataService.loaderValueChange(true);
     this.nuxeo.nuxeoClient
       .request(url, { queryParams: params, headers })

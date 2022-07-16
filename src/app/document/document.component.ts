@@ -417,7 +417,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (!ids || ids.length === 0) return;
     this.loading.push(true);
     const idsString = ids.map(id => `'${id}'`).join(',');
-    const query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString}) AND sa:duplicateShow = '1'`;
+    let query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString}) AND sa:duplicateShow = '1'`;
+    if (this.sharedService.checkExternalUser()) {
+      query = query + " AND sa_access = 'All access'";
+    }
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -448,6 +451,9 @@ export class DocumentComponent implements OnInit, OnChanges {
       queryParams["sectors"] = `["${sector}"]`;
     }
     queryParams["duplicate_show"] = "1";
+    if (this.sharedService.checkExternalUser()) {
+      queryParams["sa_access"] = "All access";
+    }
     this.loading.push(true);
     this.nuxeo.nuxeoClient
       .request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
@@ -1090,7 +1096,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       item.properties['sa:copyrightName'] !== ""
     ) {
       this.copyRightItem.push(item.uid);
-    } 
+    }
       if (item.properties["sa:downloadApprovalUsers"].length > 0) {
         this.needPermissionToDownload.push(item);
       } else {

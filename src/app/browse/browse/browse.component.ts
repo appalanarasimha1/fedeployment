@@ -916,7 +916,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.showSearchbar = true;
     this.searchBarValue = "";
-    offset || this.paginator.firstPage();
+    offset || this.paginator?.firstPage();
     if (this.folderNotFound) {
       this.folderNotFound = false;
       this.selectedFolder = {};
@@ -1358,10 +1358,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   async searchFolders(searchString: string) {
     // this.loading = true;
-    const path = this.sectorSelected.uid === this.selectedFolder.uid ?
-    `/${this.sectorSelected.title}/workspaces/` :
-    `${this.selectedFolder.path}/`;
-    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
+    let query;
+    if (this.isExternalView && !this.selectedFolder.uid && !this.selectedFolder.path) {
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
+    } else {
+      const path = this.sectorSelected.uid === this.selectedFolder.uid ?
+      `/${this.sectorSelected.title}/workspaces/` :
+      `${this.selectedFolder.path}/`;
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
+    }
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -1720,6 +1725,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40) ;
   }
 
+  initSharedRoot() {
+    return {
+      title: "Shared Folders",
+    }
+  }
+
   async fetchAllPrivateWorkspaces() {
     const query = "SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1";
     const params = {
@@ -1740,7 +1751,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     this.handleSelectMenu(1, this.viewType || "LIST");
     localStorage.setItem('workspaceState', JSON.stringify({}));
-    this.selectedFolder = {};
+    this.selectedFolder = this.initSharedRoot();
+    this.selectedFolder2 = this.initSharedRoot();
+    this.showSearchbar = true;
+    this.showLinkCopy = false;
     this.breadCrumb = [];
   }
 
