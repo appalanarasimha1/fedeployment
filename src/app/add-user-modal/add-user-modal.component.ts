@@ -179,6 +179,9 @@ export class AddUserModalComponent implements OnInit {
   }
 
   updatePermission(item) {
+    if (this.listExternalUser.includes(item.user.id) && item.isGlobal != undefined) {
+      this.updateExternalUserGroup(item.user.id, item.isGlobal);
+    }
     const params = {
       permission: item.permission,
       comment: "",
@@ -219,6 +222,19 @@ export class AddUserModalComponent implements OnInit {
       input: this.folderId,
     };
     return this.apiService.post(apiRoutes.REMOVE_PERMISSION, payload).toPromise();
+  }
+
+  updateExternalUserGroup(email, isAdded) {
+    const params = {
+      email,
+      isAdded,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: this.folderId,
+    };
+    return this.apiService.post(apiRoutes.UPDATE_EXTERNAL_GROUP_USER, payload).toPromise();
   }
 
   async fetchFolder(id) {
@@ -347,7 +363,7 @@ export class AddUserModalComponent implements OnInit {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'modal-edit-access'}).result.then((result) => {
       if (result === 'done') this.updateExternalUserAccess();
       this.selectedMonth = undefined;
-      this.isGlobal = false;
+      this.isGlobal = undefined;
 
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -361,6 +377,8 @@ export class AddUserModalComponent implements OnInit {
       if (!this.updatedCollaborators[this.selectedExternalUser.user.id])
         this.updatedCollaborators[this.selectedExternalUser.user.id] = this.externalCollaborators[this.selectedExternalUser.user.id];
       this.updatedCollaborators[this.selectedExternalUser.user.id].end = end;
+      if (this.selectedExternalUser.isGlobal !== undefined)
+        this.updatedCollaborators[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     } else {
       this.invitedCollaborators[this.selectedExternalUser.user.id].end = end;
       if (this.selectedExternalUser.isGlobal !== undefined)
