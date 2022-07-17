@@ -144,6 +144,8 @@ export class UploadModalComponent implements OnInit {
   showErrorCheckbox: boolean = false;
   showErrorUpload: boolean = false;
 
+  loading = true;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -200,7 +202,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onSelect(event) {
-    console.log("event.addedFiles", event.addedFiles);
+    // console.log("event.addedFiles", event.addedFiles);
     if (!event.addedFiles && !this.agreeTerms) {
       this.showError = true;
       this.showErrorCheckbox = false;
@@ -216,15 +218,20 @@ export class UploadModalComponent implements OnInit {
   }
 
   publish() {
-    // this.step = 4;
-    if(!this.checkFormState()){
-      this.showErrorUpload = false;
-      this.publishAssets();
-      return;
+    if(!this.isPrivateFolder()) {
+      if(!this.checkFormState()){
+        this.showErrorUpload = false;
+        this.publishAssets();
+        return;
+      } else {
+        this.showErrorUpload = true;
+      }
     } else {
-      this.showErrorUpload = true;
+      this.step = 4;	
+      this.publishAssets();	
+      return;
     }
-  }
+  } 
 
   toNextStep() {
     this.stepper.next();
@@ -775,6 +782,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async publishAssets() {
+    this.loading = true;
     this.publishing = true;
     let folder = Object.assign({}, this.selectedFolder); // this.data ? Object.assign({}, this.data) : Object.assign({}, this.selectedFolder);
     if (this.folderToAdd) {

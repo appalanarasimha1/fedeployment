@@ -177,7 +177,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectorsHomepage: string[] = [];
   assetsBySector = [];
   assetsBySectorSelected;
-  trendingAssets = [];
+  trendingAssets:any = [];
+  trendingIds:string[]=[]
 
   filtersCount = 0;
 
@@ -188,6 +189,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   private preFavouriteCall;
   private assetBySectorCall;
   masoneryItemIndex;
+  favouriteUID:any;
 
   tagsMetadataDummy = [
     "Tourism",
@@ -374,7 +376,10 @@ export class DocumentComponent implements OnInit, OnChanges {
         .post(apiRoutes.FAVORITE_FETCH, { context: {}, params: {} })
         .subscribe((response: any) => {
           this.loading.pop();
-          if (response) this.getFavouriteCollection(response.uid);
+          if (response) {
+            this.getFavouriteCollection(response.uid)
+            this.favouriteUID = response.uid
+            };
         });
     } catch (error) {
       this.loading.pop();
@@ -395,6 +400,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         .then(result => {
           const trending = result?.data?.trendingAssets || [];
           const trendingIds = trending.map(e => e._id.uid) || [];
+          this.trendingIds = trendingIds
           this.getTrendingAssetsByIds(trendingIds.slice(0, 100));
           this.loading.pop();
         })
@@ -413,9 +419,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
   }
 
-  async getTrendingAssetsByIds(ids) {
+  async getTrendingAssetsByIds(ids,offset= 0,pageSize=50) {
     if (!ids || ids.length === 0) return;
-    this.loading.push(true);
+    // this.loading.push(true);
     const idsString = ids.map(id => `'${id}'`).join(',');
     let query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString}) AND sa:duplicateShow = '1'`;
     if (this.sharedService.checkExternalUser()) {
@@ -423,25 +429,31 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
     const params = {
       currentPageIndex: 0,
-      offset: 0,
-      pageSize: 50,
+      offset,
+      pageSize,
       queryParams: query,
     };
     const res = await this.apiService
       .get(apiRoutes.NXQL_SEARCH, { params })
       .toPromise();
-    this.trendingAssets = res["entries"].map((e) => e);
+     res["entries"].map((e:any) => this.trendingAssets.push(e));
     this.loading.pop();
   }
 
-  getAssetBySectors(sector = "", dontResetSectors: boolean = true) {
+  sectorOffset:number=0
+  sectorPageSize:number=0
+
+  getAssetBySectors(sector = "", dontResetSectors: boolean = true,offset= 0,pageSize= 16,fromEvent=false ) {
+    this.sectorOffset = offset + pageSize
+    this.sectorPageSize=pageSize
     const queryParams = {
       currentPageIndex: 0,
-      offset: 0,
-      pageSize: 16,
+      offset,
+      pageSize,
       sortBy: "dc:created",
       sortOrder: "desc",
     };
+
     const headers = {
       "enrichers-document": ["thumbnail", "renditions", "favorites", "tags"],
       "fetch.document": "properties",
@@ -454,13 +466,13 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (this.sharedService.checkExternalUser()) {
       queryParams["sa_access"] = "All access";
     }
-    this.loading.push(true);
+    !fromEvent? this.loading.push(true):null;
     this.nuxeo.nuxeoClient
       .request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
       .get()
       .then((response) => {
         if (response) {
-          this.assetsBySector = response.entries ? response?.entries : [];
+          this.assetsBySector = response.entries ? this.assetsBySector.concat(response?.entries) : [];
           if (dontResetSectors) {
             this.sectorsHomepage = [];
             for (
@@ -490,12 +502,13 @@ export class DocumentComponent implements OnInit, OnChanges {
         return;
       });
   }
-
-  async getFavouriteCollection(favouriteUid: string) {
+  favouriteOffset:number=0
+  async getFavouriteCollection(favouriteUid: string,offset= 0, pageSize= 16,fromEvent:boolean=false) {
+    this.favouriteOffset = this.favouriteOffset + pageSize
     const queryParams = {
       currentPageIndex: 0,
-      offset: 0,
-      pageSize: 16,
+      offset,
+      pageSize,
       queryParams: favouriteUid,
     };
     const headers = {
@@ -503,14 +516,14 @@ export class DocumentComponent implements OnInit, OnChanges {
       "fetch.document": "properties",
       properties: "*",
     };
-    this.loading.push(true);
+   !fromEvent ? this.loading.push(true):null;
     this.favouriteCall = this.nuxeo.nuxeoClient
       .request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers })
       .get();
     this.favouriteCall
       .then((response) => {
         if (response)
-          this.favourites = response?.entries ? response?.entries : [];
+          this.favourites = response?.entries ? this.favourites.concat(response?.entries) :this.favourites;
         // setTimeout(() => {
         this.loading.pop();
         // }, 0);
@@ -1199,5 +1212,30 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.recentDataShow.forEach((e) => (e.isSelected = false));
     this.favourites.forEach((e) => (e.isSelected = false));
     this.trendingAssets.forEach((e) => (e.isSelected = false));
+  }
+
+  afterChangeTrending(e){
+    console.log(e);
+    // this.getTrendingAssets(20 , e.currentSlide+4,true)
+    if(e.last){
+      this.getTrendingAssetsByIds(this.trendingIds.slice(50, 100),50,50);
+    }
+  }
+
+  afterChangeSector(e){
+    console.log(e);
+    if(e.last){
+      this.getAssetBySectors("",  true,this.sectorOffset,16,true )
+
+    }
+  }
+  afterChangeFav(e){
+    console.log(e);
+
+    if(e.last){
+      // this.getAssetBySectors("",  true,this.sectorOffset,16,true )
+      this.getFavouriteCollection(this.favouriteUID,this.favouriteOffset,  16,true)
+
+    }
   }
 }

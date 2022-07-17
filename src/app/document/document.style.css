@@ -1951,3 +1951,6 @@ ul.downloadImgLisst li .contentListBlk {
 .pt-50{
   padding-top: 60px !important;
 }
+.hideTag {
+  display: none !important;
+}

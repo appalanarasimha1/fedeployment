@@ -256,10 +256,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
               if(!this.workspaceSearch.nativeElement.value) {
                 this.loading = true;
                 await this.getWorkspaceFolders(this.selectedFolder.uid, 1);
+                this.handleSelectMenu(1, "LIST");
                 this.loading = false;
                 return;
               }
               this.searchFolders(this.workspaceSearch.nativeElement.value);
+              this.handleSelectMenu(1, "LIST");
             })
         ).subscribe();
     }
@@ -307,6 +309,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     else return false;
   }
 
+  checkAssetMimeTypes(document: any): string {
+    return this.sharedService.checkMimeType(document);
+  }
+
   closeOtherSectore(child, children) {
     this.createBreadCrumb(child.title, child.type, child.path);
     for (let i = 0; i < children.length; i++) {
@@ -332,6 +338,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async handleTest(item) {
+    this.renameFolderName = false;
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
@@ -360,7 +367,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFolder = item;
   }
 
-  getAssetUrl(event: any, url: string, type?: string): string {
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+      return '../../../assets/images/no-preview.png';
+    }
    return this.sharedService.getAssetUrl(event, url, type);
   }
 
@@ -865,11 +875,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i) {
-    console.log('11',item);
-
-    if (!$event.target.checked && this.selectedFolderList[i]) {
+    if ((!$event.target?.checked && this.selectedFolderList[i])||(!$event.checked && this.selectedFolderList[i])) {
       delete this.selectedFolderList[i];
-    } else if ($event.target.checked) {
+    } else if ($event.target?.checked || $event.checked) {
       this.selectedFolderList[i] = item;
     }
   }
@@ -890,6 +898,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.loading = false;
       });
     this.deleteModal(listDocs);
+    this.removeAssets()
   }
 
   async unTrashFolders() {
@@ -922,8 +931,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.selectedFolder = {};
     }
     this.loading = true;
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND ecm:primaryType = 'Workspace' OR ecm:primaryType = 'OrderedFolder'`;
-    this.apiService
+    const url =this.myDeletedCheck ?
+     `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND dc:creator = '${this.user}' `:
+     `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1'`
+     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
         this.numberOfPages = docs.numberOfPages;
@@ -936,20 +947,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             return false;
           }
         });
-        if (!this.myDeletedCheck) {
-          this.searchList = this.trashedList;
-          this.sortedData = this.searchList.slice();
-        } else {
-          this.deletedByMeFilter().then(() => {
-            this.searchList = this.deletedByMe;
-            this.sortedData = this.searchList.slice();
-          });
-        }
+        // if (!this.myDeletedCheck) {
+        //   this.searchList = this.trashedList;
+        //   this.sortedData = this.searchList.slice();
+        // } else {
+        //   this.deletedByMeFilter().then(() => {
+        //     this.searchList = this.deletedByMe;
+        //     this.sortedData = this.searchList.slice();
+        //   });
+        // }
+        this.searchList = this.trashedList;
+        this.sortedData = this.searchList.slice();
         this.isTrashView = true;
         this.handleSelectMenu(1, this.viewType || "LIST");
         this.showMoreButton = false;
         this.loading = false;
-        this.deletedByMeFilter();
+        // this.deletedByMeFilter();
       });
   }
 
@@ -962,14 +975,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   myDeleted(e) {
-    if (e.target.checked) {
-      this.myDeletedCheck = true;
-      this.searchList = this.deletedByMe;
-    } else {
-      this.myDeletedCheck = false;
-      this.searchList = this.trashedList;
-    }
-    this.sortedData = this.searchList.slice();
+    // if (e.target.checked) {
+      this.myDeletedCheck = e.target.checked;
+      this.getTrashedWS()
+      // this.searchList = this.deletedByMe;
+
   }
 
   checkCanDelete(item) {
@@ -1023,9 +1033,27 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
+
     if (!this.folderNameRef) {
       this.showError = true;
     } else {
+      // let checkTitle = this.CheckTitleAlreadyExits(folderName)
+      // if(checkTitle) {
+      //   this.showFolder = false
+      //   this.showMoreButton = false;
+      //   this.checkboxIsPrivate = false;
+      //   $(".dropdownCreate").hide();
+      //   $(".buttonCreate").removeClass("createNewFolderClick");
+      //     return this.sharedService.showSnackbar(
+      //       "Name already exists",
+      //       6000,
+      //       "top",
+      //       "center",
+      //       "snackBarMiddle"
+      //       // "Updated folder",
+      //       // this.getTrashedWS.bind(this)
+      //     );
+      //   }
       this.createFolderLoading = true;
       const backupPath = this.selectedFolder.path;
       let url = `/path${this.selectedFolder.path}`;
@@ -1178,11 +1206,25 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   updateFolderAction() {
     this.renameFolderName = false;
+    this.newTitle =this.selectedFolder.title
   }
 
   renameFolder() {
     let { newTitle, selectedFolder } = this;
     // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
+    if (newTitle?.trim() ===selectedFolder.title) return this.updateFolderAction();
+    // let checkTitle = this.CheckTitleAlreadyExits(newTitle)
+    // if(checkTitle)
+    //   return this.sharedService.showSnackbar(
+    //     "Name already exists",
+    //     6000,
+    //     "top",
+    //     "center",
+    //     "snackBarMiddle"
+    //     // "Updated folder",
+    //     // this.getTrashedWS.bind(this)
+    //   );
+
     this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
         input: selectedFolder.uid,
@@ -1238,12 +1280,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
+    this.showSearchbar = true;
     // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
     let workSpaceIndex: number;
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
-    this.showSearchbar = true;
     if (!entries?.length) {
       this.sortedData = [];
       this.searchList = [];
@@ -1277,6 +1319,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async fetchAllSectors(isExpand = false) {
+    this.showSearchbar = false;
     // this.loading = true;
     this.isTrashView = false;
     this.sectorSelected = null;
@@ -1286,7 +1329,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.folderStructure[0].isExpand = !isExpand;
     this.searchList = entries;
     this.selectedMenu = 1;
-    this.showSearchbar = false;
     this.createDynamicSidebarScroll();
     // this.loading = false;
   }
@@ -1490,6 +1532,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   copyRightItem: any = [];
 
   selectAsset($event, item, i) {
+    let canDelete = this.checkCanDelete(item)
+    if(canDelete){
+      this.selectFolder($event, item, i)
+    }
     console.log("itemitemitemitemitem", item, $event);
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
@@ -1720,9 +1766,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return folderCollaborators;
   }
 
-  removeWorkspacesFromString(data: string): string {
+  removeWorkspacesFromString(data: string, title: string): string {
 
-    return this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40) ;
+    let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40);
+    return dataWithoutWorkspace.replace('/'+title, '');
+  }
+
+  CheckTitleAlreadyExits(name){
+    let titles = this.sortedData.map(m=>m.title.toLowerCase().trim())
+    if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
+    return false
   }
 
   initSharedRoot() {
@@ -1788,3 +1841,5 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     localStorage.setItem("listExternalUserGlobal", JSON.stringify(this.listExternalUserGlobal));
   }
 }
+
+

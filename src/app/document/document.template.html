@@ -24,8 +24,9 @@
             class="carousel"
             #slickModal="slick-carousel"
             [config]="slideConfig"
+            (afterChange)="afterChangeTrending($event)"
           >
-            <div ngxSlickItem *ngFor="let file of trendingAssets | slice:0:20; let i = index" class="slide">
+            <div ngxSlickItem *ngFor="let file of trendingAssets; let i = index" class="slide">
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
@@ -96,6 +97,8 @@
             class="carousel"
             #slickModal="slick-carousel"
             [config]="slideConfig"
+            (afterChange)="afterChangeSector($event)"
+
           >
             <div
               ngxSlickItem
@@ -154,6 +157,7 @@
             class="carousel"
             #slickModal="slick-carousel"
             [config]="slideConfig"
+            (afterChange)="afterChangeFav($event)"
           >
             <div
               ngxSlickItem
@@ -277,7 +281,7 @@
   </div>
 
   <section class="search-subpage">
-    <div
+    <div [ngClass]="{'hideTag': !checkShowDetailview()}"
       class="customTagBar"
       *ngIf="searchBarClicked && tagsMetaRealdata.length<1"
     >

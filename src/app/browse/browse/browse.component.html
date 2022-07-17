@@ -142,10 +142,13 @@
             />
             This folder has been deleted
           </div>
-          <div *ngIf="!folderNotFound">
+
+          <div
+            *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+            
             <div class="row">
               <div class="col-xl-7">
-                <div *ngIf="showSearchbar && !folderNotFound" class="pb-5">
+                <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
                   <div style="position: relative;">
                     <form autocomplete="off" style="position: relative;">
                       <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
@@ -1041,7 +1044,8 @@
                       width="30%"
                       style="padding-left: 35px"
                     >
-                      {{ !showLinkCopy ? "name" : "name" }}
+                      Name
+                      <!-- {{ !showLinkCopy ? "name" : "name" }} -->
                     </th>
                     <th mat-sort-header="dc:creator" width="20%">Created by</th>
                     <!-- <th width="20%">Last Updated by</th> -->
@@ -1118,13 +1122,13 @@
                       <td *ngIf="!checkAssetType(item.type)" (click)="handleTest(item);selectedFolder=item;" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                         <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left; word-break: break-all;">{{item.title}}
-                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path)}}
+                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
                           <span class="tolltipContent" style="width: 100%;
                           height: auto;
                           white-space: break-spaces;
                           text-align: left;
                           padding: 5px 10px;">
-                            {{sharedService.removeWorkspacesFromString(item.path)}}
+                            {{removeWorkspacesFromString(item.path, item.title)}}
                           </span>
                           </span>
                         </p>
@@ -1141,9 +1145,9 @@
                         </span>
                       </td>
                       <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                        <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url)" style="width: 30px;margin-right: 10px;object-fit: contain;">
+                        <img [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px;object-fit: contain;">
                         <p style="text-align: left">{{item.title}}
-                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path)}}
+                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
                             <span class="tolltipContent" style="width: 100%;
                             height: auto;
                             white-space: break-spaces;
