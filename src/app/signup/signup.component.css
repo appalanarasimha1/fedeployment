@@ -151,16 +151,19 @@ ul.signupForm li a{
     border-color: #E8E6DF;
 }
 
-.signupForm .form-control::placeholder, .signupForm .form-control:focus::placeholder {
+.signupForm .form-control::placeholder, .signupForm .form-control:focus::placeholder,
+.signupForm .show-password::placeholder, .signupForm .show-password:focus::placeholder {
     color: #ACACAC !important;
     opacity: 1;
 }
 
-.signupForm .form-control:-ms-input-placeholder, .signupForm .form-control:focus:-ms-input-placeholder {
+.signupForm .form-control:-ms-input-placeholder, .signupForm .form-control:focus:-ms-input-placeholder,
+.signupForm .show-password:-ms-input-placeholder, .signupForm .show-password:focus:-ms-input-placeholder {
     color: #ACACAC !important;
 }
 
-.signupForm .form-control::-ms-input-placeholder, .signupForm .form-control:focus::-ms-input-placeholder {
+.signupForm .form-control::-ms-input-placeholder, .signupForm .form-control:focus::-ms-input-placeholder,
+.signupForm .show-password::-ms-input-placeholder, .signupForm .show-password:focus::-ms-input-placeholder {
     color: #ACACAC !important;
 }
 
