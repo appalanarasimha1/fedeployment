@@ -93,7 +93,7 @@ static-card:nth-child(5){
     display: block;
     padding: 8px 0px;
     color: #000000;
-    font-size: 16px;
+    font-size: 15px;
   }
   .customTab .nav-tabs {
      border-bottom: 0px;
@@ -135,7 +135,7 @@ static-card:nth-child(5){
     position: relative;
   }
   .customTab .show-all {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 24px;
     color: #040404;
     position: absolute;

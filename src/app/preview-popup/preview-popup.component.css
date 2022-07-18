@@ -101,12 +101,12 @@ select option {
 .searchP{
   font-size: 24px;
 line-height: 22px;
-font-weight: 600;
+font-weight: normal;
 }
 .imgHead{
   font-size: 18px;
 line-height: 22px;
-font-weight: 600;
+font-weight: normal;
 }
 .videosList, .docList, .videosList1{
   list-style: none;
@@ -284,7 +284,7 @@ ul.set-width.portfolio-list li .cardBlock  {
   display: block;
   font-size: 14px;
 line-height: 22px;
-font-weight: 600;
+font-weight: normal;
 color: #000000;
 }
 /* modal css */
@@ -314,7 +314,7 @@ line-height: 34px;
 color: #000000;
 border: unset;
 padding-bottom: 15px;
-font-weight: 600;
+font-weight: normal;
 }
 .yellowBtn{
   background: #F7E6B2;
@@ -348,10 +348,10 @@ font-weight: 600;
   padding: 15px 0px;
 }
 .tripDivTwo p{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
   color: #000000;
-  font-weight: 600;
+  font-weight: normal;
 }
 .tripDivTwo span{
   font-size: 13px;
@@ -400,7 +400,7 @@ color: #000000;
   border: unset;
   border-bottom: 1px solid #C49900;
   border-radius: 0px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   padding: 6px 6px;
 }
@@ -435,7 +435,7 @@ color: #000000;
   position: absolute;
   bottom: 8px;
   left: 16px;
-  font-size: 16px;
+  font-size: 15px;
   color: #FFFFFF;
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.7);
 }
@@ -566,7 +566,7 @@ color: #FFFFFF;
   margin: auto;
 }
 .comment-content input{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
   color: #FFFFFF;
   border-radius: 4px;
@@ -639,10 +639,10 @@ padding: 15px 0px;
   object-fit: cover;
 }
 .card-view p{
-  font-size: 16px;
+  font-size: 15px;
 line-height: 24px;
 color: #161824;
-font-weight: 600;
+font-weight: normal;
 }
 .assetsDropdown .dropdown-menu.show {
   left: 0px !important;
@@ -687,8 +687,8 @@ background-color:#EBC03F !important;
   color: #000 !important;
 }
 .commonHeading{
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: normal;
   color: #000000;
   margin-right: 20px;
 }
@@ -1064,7 +1064,7 @@ img.footer-icons {
   cursor: pointer;
 }
 .footer-add-items span{
-  font-weight: 600;
+  font-weight: normal;
   padding-right: 40px;
 }
 .footer-add-items a {
@@ -1125,7 +1125,7 @@ img.footer-icons {
 }
 
 .footer-add-items span{
-  font-weight: 600;
+  font-weight: normal;
   padding-right: 40px;
 }
 .footer-add-items a {
@@ -1170,7 +1170,7 @@ li .videoBlock  {
   text-transform: capitalize;
 }
 .weightSize{
-  font-weight: 600;
+  font-weight: normal;
 font-size: 20px;
 line-height: 20px;
 color: #C4C4C4;
@@ -1289,7 +1289,7 @@ color: #ACACAC;
 
 /* Toggle text */
 p {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 /* Checkbox checked effect */
@@ -1358,8 +1358,8 @@ color: #ACACAC;
   /* width: 255px; */
 }
 .recentHeading{
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: normal;
   color: #000000;
   margin-right: 20px;
   cursor: pointer;
@@ -1429,7 +1429,7 @@ color: #ACACAC;
   display: block;
   padding: 8px 0px;
   color: #000000;
-  font-size: 16px;
+  font-size: 15px;
 }
 .customTab .nav-tabs {
    border-bottom: 0px;
@@ -1471,7 +1471,7 @@ color: #ACACAC;
   position: relative;
 }
 .customTab .show-all {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #040404;
   position: absolute;
@@ -1763,7 +1763,7 @@ color: #ACACAC;
   color: #737373;
   font-size: 14px;
   line-height: 20px;
-  font-family: myBrown;
+  font-family: 'brownregular';
 }
 
 .weight-size-block ul li img {
@@ -1780,13 +1780,13 @@ color: #ACACAC;
   bottom: 10px;
   left: 15px;
   color: #fff;
-  font-weight: bold;
+  font-weight: normal;
 }
 .preview-heading {
-  font-family: myBrown;
+  font-family: 'brownregular';
   font-size: 18px;
   line-height: 22px;
-  font-weight: bold;
+  font-weight: normal;
 }
 a.hover-icon.download-icon {
   position: relative;
@@ -1796,7 +1796,7 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
   font-size: 18px;
 line-height: 22px;
 color: #000000;
-font-weight: 600;
+font-weight: normal;
 } */
 
 .close{
@@ -1804,7 +1804,7 @@ font-weight: 600;
 }
 .copy-link{
   color: #C49900;
-  font-weight: 600;
+  font-weight: normal;
 }
 @media (max-width:768px) {
   .modalHead ul li, .iconsList li {
@@ -1818,7 +1818,7 @@ font-weight: 600;
   padding: 9px 20px;
   border-radius: 100px;
   color: #fff;
-  font-weight: 600;
+  font-weight: normal;
 }
 .downloadBtn img {
   max-width: 20px;
@@ -1868,7 +1868,7 @@ ol.publicUse li .publicUseBlk, ol.publicUse li .usagePermission {
   padding: 0px 8px;
   font-size: 14px;
   line-height: 25px;
-  font-weight: 600;
+  font-weight: normal;
   cursor: pointer;
   position: relative;
 }

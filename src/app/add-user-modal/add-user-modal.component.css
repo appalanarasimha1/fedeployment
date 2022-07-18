@@ -10,7 +10,7 @@
     position: relative;
     cursor: pointer;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: normal;
     padding: 0px;
     padding-left: 30px;
     border: 0px;
@@ -149,7 +149,7 @@ button.upload-btn {
 }
 
 .modalContentBlock .addUserBlock h3, .addUserBlock h3 {
-    font-weight: 600;
+    font-weight: normal;
     font-size: 15px;
     letter-spacing: 0.5px;
     color: #040404;
@@ -333,7 +333,7 @@ span.makeAdminAction svg {
 h3.externalUsers {
     color: #BAB8B2;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 24px;
     padding-bottom: 10px;
 }
