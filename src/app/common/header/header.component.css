@@ -27,7 +27,7 @@ header{
     line-height: 22px;
     letter-spacing: 0.055em;
     color: #000000;
-    /* font-weight: 600; */
+    /* font-weight: normal; */
     position: relative;
     cursor: pointer;
 }
@@ -80,7 +80,7 @@ header{
     line-height: 22px;
     letter-spacing: 0.055em;
     color: #fff;
-    /* font-weight: 600; */
+    /* font-weight: normal; */
     position: relative;
     cursor: pointer;
     padding-top: 0rem;
@@ -156,7 +156,7 @@ header.pt-4.pb-4.searchHeading.openDrawer {
 .fixedHeader .uploadBtn, .fixedHeader .uploadBtn:hover{
     background-color: #fff;
     color: #000 !important;
-    font-weight: 600;
+    font-weight: normal;
 }
 /* <!-- sprint12-fixes end --> */
 .nav-link.uploadBtn, .nav-link.uploadBtn:hover {
@@ -264,8 +264,8 @@ header.updateHeader .dropdown-toggle::after {
     border: 1px solid #E5E5E5;
     width: 500px;
     background-color: #FDFDFD;
-    font-weight: bold;
-    font-size: 16px;
+    font-weight: normal;
+    font-size: 15px;
     line-height: 24px;
     color: #040404;
 }
@@ -374,7 +374,7 @@ header.updateHeader .navbar .navbar-collapse {
   }
   .select-an-area h3 {
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
     padding-bottom: 20px;
     padding-top: 20px;
   }
