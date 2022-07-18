@@ -220,15 +220,6 @@ section.lpBAck:before, .lpSecOne:before {
 .paddingLeft1{
   padding-left: 60px;
 }
-.header-content .main-title{
-    font-size: 24px;
-    line-height: 22px;
-    color: #000000;
-    font-weight: 600;
-    margin-bottom: 9px !important;
-    display: block;
-    /* display: contents; */
-}
 .header-content h6{
   font-size: 15px;
   line-height: 24px;
@@ -1173,7 +1164,7 @@ ul.uploadAssetsClassifications li img {
   display: inline-block;
   margin: 0px;
   padding: 0px;
-  vertical-align: middle;
+  vertical-align: 0;
 }
 ul.uploadAssetsClassifications li ul.subDropdownMenu {
   position: absolute;
@@ -1282,10 +1273,6 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 .dropdownCreate, .multiDownloadBlock {
   display:none;
   text-align: left;
-}
-.deleteFolder{
-  display: inline-block;
-  vertical-align: 2px;
 }
 .btn-disabled, .recover-btn-disabled {
   cursor: default;
@@ -1445,9 +1432,6 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
   font-size: 16px;
   padding-bottom: 10px;
 }
-.tollTipWorkspace {
-  position: relative;
-}
 .customToolTipWorkspace {
   display: none;
   position: absolute;
@@ -1589,7 +1573,6 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   border-left: 1px solid #EFEEE9;
 }
 .buttonCreate img {opacity: 1 !important;width: 14px !important; margin-top: 3px;}
-.deleteRecover {display: inline-block; margin-left: 10px;}
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
 .uploadClassificationDisable {
   opacity: 0.5;
@@ -2775,7 +2758,6 @@ ul.uploadAssetsClassifications {
 }
 ul.uploadAssetsClassifications li {
   float: left;
-  margin-right: 25px;
   vertical-align: middle;
   position: relative;
   /* cursor: pointer; */
@@ -2902,14 +2884,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   text-align: left;
 }
 .buttonCreate {
-  padding-top: 7px;
-  display: inline-block;
-  margin-right: 17px;
-  vertical-align: top;
-}
-.deleteFolder{
-  display: inline-block;
-  vertical-align: 2px;
+  padding-top: 2px;
 }
 .btn-disabled, .recover-btn-disabled {
   cursor: default;
@@ -3068,6 +3043,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
 }
 .tollTipWorkspace {
   position: relative;
+  line-height: normal;;
 }
 .customToolTipWorkspace {
   display: none;
@@ -3210,7 +3186,7 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   border-left: 1px solid #EFEEE9;
 }
 .buttonCreate img {opacity: 1 !important;width: 18px !important; margin-top: 4px;}
-.deleteRecover {display: inline-block; margin-left: 10px;}
+.deleteRecover {display: inline-block;}
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
 .uploadClassificationDisable {
   opacity: 0.5;
@@ -3753,9 +3729,6 @@ a.downloadDisbable path {
 .downloadFileWorkspace:hover .multiDownloadBlock {
   display: block;
 }
-a.addMarginRight {
-  margin-right: 15px;
-}
 .removeMarginTop .control, .removeMarginTop {
   margin-top: 0px !important;
 }
@@ -3775,14 +3748,8 @@ ul.uploadAssetsClassifications li:hover path,
   stroke: #DAAA00;
 }
 .downloadIcon {
-  vertical-align: -10px;
-  margin-right: 0px;
-  margin-left: 15px;
   width: 30px;
   height: 30px;
-}
-.deleteFolder {
-  margin-right: 15px;
 }
 .deleteFolder svg{
   width: 20px;
@@ -3798,4 +3765,28 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 }
 .pb-30 {
   padding-bottom: 30px !important;
+}
+.moveFolderImg {
+  width: auto;
+  position: relative;
+  display: inline-block;
+  margin: 0px;
+  cursor: pointer;
+}
+ul.uploadAssetsClassifications li:hover .moveIcon path,
+.moveFolderImg .moveIcon:hover path, 
+ul.uploadAssetsClassifications .deleteRecover:hover path,
+ul.uploadAssetsClassifications li:hover .downloadIcon path {
+  stroke: #DAAA00 !important;
+  fill: transparent !important;
+}
+ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess.downloadDisbable path {
+  fill: transparent !important;
+  stroke: gray!important;
+}
+
+.download-btn:hover .uncheckAfterSuccess path,
+ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess path,
+ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
+  fill: transparent !important;
 }

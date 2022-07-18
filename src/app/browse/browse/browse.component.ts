@@ -35,6 +35,7 @@ import { AddUserModalComponent } from "src/app/add-user-modal/add-user-modal.com
 import { fromEvent } from "rxjs";
 import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators";
 import { Departments, Workspace } from "./../../config/sector.config";
+import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
 
 @Component({
   selector: "app-browse",
@@ -1762,6 +1763,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let titles = this.sortedData.map(m=>m.title.toLowerCase().trim())
     if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
     return false
+  }
+
+  async openMoveModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.width = "640px";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+
+    const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
+
+    modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.saveState(result);
+      }
+    });
   }
 }
 

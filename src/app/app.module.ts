@@ -40,6 +40,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MoveCopyAssetsComponent } from './move-copy-assets/move-copy-assets.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { MatInputModule } from '@angular/material/input';
     AddUserModalComponent,
     SignupComponent,
     ForgotPasswordComponent,
+    MoveCopyAssetsComponent,
     // AssetViewComponent,
   ],
   imports: [
