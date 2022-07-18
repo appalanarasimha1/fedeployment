@@ -337,3 +337,6 @@ h3.externalUsers {
     line-height: 24px;
     padding-bottom: 10px;
 }
+.addUserBlock {
+    width: 600px !important;
+}

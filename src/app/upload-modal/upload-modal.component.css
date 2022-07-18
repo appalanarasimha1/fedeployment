@@ -1,7 +1,7 @@
 ::ng-deep .cdk-global-overlay-wrapper{
   right: 0px;
 }
-::ng-deep .cdk-overlay-pane{
+::ng-deep .cdk-overlay-pane {
   /* min-width: auto !important;
   max-width: 1000px !important; */
   width: auto !important;
