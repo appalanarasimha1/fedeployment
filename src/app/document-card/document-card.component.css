@@ -101,12 +101,12 @@ select option {
 .searchP{
   font-size: 24px;
 line-height: 22px;
-font-weight: 600;
+font-weight: normal;
 }
 .imgHead{
   font-size: 18px;
 line-height: 22px;
-font-weight: 600;
+font-weight: normal;
 }
 .videosList, .docList, .videosList1{
   list-style: none;
@@ -279,7 +279,7 @@ ul.set-width.portfolio-list li .cardBlock  {
   display: block;
   font-size: 14px;
 line-height: 22px;
-font-weight: 600;
+font-weight: normal;
 color: #000000;
 }
 /* modal css */
@@ -309,7 +309,7 @@ line-height: 34px;
 color: #000000;
 border: unset;
 padding-bottom: 15px;
-font-weight: 600;
+font-weight: normal;
 }
 .yellowBtn{
   background: #F7E6B2;
@@ -345,10 +345,10 @@ font-weight: 600;
   padding: 15px 0px;
 }
 .tripDivTwo p{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
   color: #000000;
-  font-weight: 600;
+  font-weight: normal;
 }
 .tripDivTwo span{
   font-size: 13px;
@@ -544,7 +544,7 @@ color: #FFFFFF;
   margin: auto;
 }
 .comment-content input{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
   color: #FFFFFF;
   border-radius: 4px;
@@ -617,10 +617,10 @@ padding: 15px 0px;
   object-fit: cover;
 }
 .card-view p{
-  font-size: 16px;
+  font-size: 15px;
 line-height: 24px;
 color: #161824;
-font-weight: 600;
+font-weight: normal;
 }
 .assetsDropdown .dropdown-menu.show {
   left: 0px !important;
@@ -661,7 +661,7 @@ background-color:#EBC03F !important;
 .commonHeading{
   font-size: 24px;
   line-height: 22px;
-  font-weight: bold;
+  font-weight: normal;
   color: #000000;
 }
 
@@ -1093,7 +1093,7 @@ img.footer-icons {
   cursor: pointer;
 }
 .footer-add-items span{
-  font-weight: 600;
+  font-weight: normal;
   padding-right: 40px;
 }
 .footer-add-items a {
@@ -1155,7 +1155,7 @@ img.footer-icons {
 }
 
 .footer-add-items span{
-  font-weight: 600;
+  font-weight: normal;
   padding-right: 40px;
 }
 .footer-add-items a {
@@ -1196,7 +1196,7 @@ li .videoBlock  {
   display: inline-block;
 }
 .weightSize{
-  font-weight: 600;
+  font-weight: normal;
 font-size: 20px;
 line-height: 20px;
 color: #C4C4C4;
@@ -1311,7 +1311,7 @@ color: #ACACAC;
 
 /* Toggle text */
 p {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 /* Checkbox checked effect */
@@ -1573,7 +1573,7 @@ color: #ACACAC;
   color: #fff;
   font-size: 11px;
   line-height: 16px;
-  font-family: myBrown;
+  font-family: 'brownregular';
 }
 .weight-size-block ul li img {
   display: inline-block;
@@ -1661,7 +1661,7 @@ document-card .lock-icon img {
   right: 0px;
 }
 
-.download-btn {float: right;padding-top: 20px;cursor: pointer;font-weight: 600;}
+.download-btn {float: right;padding-top: 20px;cursor: pointer;font-weight: normal;}
 .download-btn a {text-decoration: none;color: #DAAA00; outline: none;}
 .download-btn svg {margin-right: 6px;vertical-align: top;}
 

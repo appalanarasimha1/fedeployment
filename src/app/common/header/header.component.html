@@ -4,7 +4,8 @@
       <div class="col-xl-3 col-xs-3">
           <nav class="navbar navbar-expand-lg navbar-light ">
             <div class="logo-block">
-              <a [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="!checkExternalUser(true)" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="checkExternalUser(true)" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
             </div>
             <span class="main-title tollTipCustom">
               <img class="play-button" src="../../../assets/images/button-play.svg" alt="" (click)="openSm(content)" />
@@ -109,7 +110,7 @@
                     <li class="show-something"><a href="#">Show me something cool</a></li>
                   </ul>
                 </div>
-                
+
               </div>
             </form>
           </div> -->
@@ -117,7 +118,7 @@
           <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right;">
               <div class=" navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto  mb-lg-0 rightDrop flexible">
-                    <li>
+                    <li *ngIf="!checkExternalUser()">
                       <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload</a>
                     </li>
                     <!-- <li class="nav-item">
@@ -164,11 +165,11 @@
       <div class="select-an-area" *ngIf="selectArea && !videoResponse && !videoCompleted && showItemOnlyOnce">
         <img src="../../../assets/images/logo-neom.png" class="logo" />
         <h3>Please select an area of interest.</h3>
-        <ng-select 
+        <ng-select
           class="pointer"
-          [items]="allSectors" 
+          [items]="allSectors"
           ngDefaultControl
-          placeholder="Select a sector" 
+          placeholder="Select a sector"
           [(ngModel)]="sectorSelected"
           bindLabel="label"
           bindValue="value"
@@ -177,17 +178,17 @@
         </ng-select>
         <div *ngIf="sectorSelected" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->
-          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />  
+          <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />
         </div>
-        
+
       </div>
-      
+
       <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
        <div class="ssector">
         <!-- <span>Change sector</span> -->
         <ng-select [items]="allSectors" class="sectorsss"
           ngDefaultControl
-          placeholder="Select a sector" 
+          placeholder="Select a sector"
           [(ngModel)]="sectorSelected"
           bindLabel="label"
           bindValue="value"
@@ -216,5 +217,5 @@
 
   </ng-template>
   <!-- sprint16 end -->
-  
+
 </header>

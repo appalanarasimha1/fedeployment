@@ -36,8 +36,8 @@ padding: unset;
   /* min-height: 400px; */
 }
 .upload-modal-step {
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   margin-bottom: 20px;
 }
 .upload-label {
@@ -49,10 +49,11 @@ border: unset;
   line-height: 22px;
   text-align: center;
   color: #8E6B0B;
-  font-weight: 600;
+  font-weight: normal;
 }
 .upload-label span b{
 font-size: 20px;
+font-weight: normal;
 }
 .upload-icon {
   font-size: 35px;
@@ -127,7 +128,7 @@ color: #C4C4C4;
   background: #000;
   border-radius: 50px !important;
   padding: 8px 32px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 18px;
   letter-spacing: 0.055em;
   border: 1px solid #000;
@@ -137,7 +138,7 @@ color: #C4C4C4;
   background: #fff;
   border-radius: 50px !important;
   padding: 8px 32px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 18px;
   letter-spacing: 0.055em;
   border: 1px solid #23211E;
@@ -165,13 +166,13 @@ px
   font-size: 14px;
   line-height: 22px;
   text-decoration-line: none;
-  font-weight: 600;
+  font-weight: normal;
   color: #8E6B0B;
   margin-left: 20px;
 }
 div.menu-title {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   line-height: 24px;
   color: #040404;
 }
@@ -199,7 +200,7 @@ div.menu-title {
   font-size: 12px;
   cursor: pointer;
   background: #FFFFFF;
-  font-weight: 600;
+  font-weight: normal;
 }
 .ws-selected {
   background-color: #8E6B0B;
@@ -222,13 +223,14 @@ color: #FFFFFF;
   font-size: 14px;
   line-height: 24px;
   color: #23211E;
+  font-weight: normal !important;
 }
 .upload-form-input input {
   width: calc(100% - 50px);
   border: unset;
   font-size: 14px;
-  font-family: myBrown !important;
-  /* font-weight: 600; */
+  font-family: 'brownregular' !important;
+  /* font-weight: normal; */
   /* border-bottom: 1.5px solid #000; */
 }
 .upload-form-input select {
@@ -238,7 +240,7 @@ color: #FFFFFF;
   border-bottom: 1.5px solid #000;
   font-size: 14px;
   background-color: transparent;
-  /* font-weight: 600; */
+  /* font-weight: normal; */
 }
 .upload-form-input select option {
   min-height: 30px !important;
@@ -361,7 +363,7 @@ color: #FFFFFF;
 }
 .add-new-btn {
   color: green;
-  font-weight: 700;
+  font-weight: normal;
 }
 ng-select {
   width: calc(100% - 50px);
@@ -379,7 +381,7 @@ line-height: 20px;
 letter-spacing: 0.055em;
 
 color: #23211E;
-font-weight: 600;
+font-weight: normal;
 }
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   white-space: nowrap;
@@ -393,7 +395,7 @@ font-weight: 600;
   align-items: center;
   text-align: center;
   color: #040505;
-  font-weight: 600;
+  font-weight: normal;
 }
 ::ng-deep .ng-value.ng-star-inserted span:nth-child(1) {
   order: 2;
@@ -487,10 +489,10 @@ line-height: 22px;
 text-align: center;
 
 color: #23211E;
-font-weight: 600;
+font-weight: normal;
 }
 .assetName{
-  font-size: 16px !important;
+  font-size: 15px !important;
   line-height: 22px !important;
 
 
@@ -540,7 +542,7 @@ font-weight: 600;
     color: #000;
     cursor: pointer;
     display: unset;
-    font-size: 16px;
+    font-size: 15px;
     height: 237px !important;
     overflow-x: auto;
 }
@@ -600,20 +602,20 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .publish-summary span{
   color: #413E3C;
-  font-weight: 600;
+  font-weight: normal;
 }
 .userText{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #23211E;
-  font-weight: 600;
+  font-weight: normal;
   padding-bottom: 15px !important;
 }
 ::ng-deep input:focus + .noborder{
   outline: unset !important;
 }
 .workshaptitle{
-  font-size: 16px;
+  font-size: 15px;
 line-height: 24px;
 padding-left: 4px;
 color: #23211E;
@@ -681,7 +683,7 @@ color: #23211E;
 .goldenText{
   color: #C49900  !important;
   border-color: #C49900 !important;
-  font-weight: 600;
+  font-weight: normal;
 }
 .goldenText .copyright-input-block{
   color: #C49900 !important;
@@ -714,7 +716,7 @@ select option{
   padding-top: 15px;
   color: #937206;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: normal;
   cursor: pointer;
 }
 .copyright-information img {
@@ -730,8 +732,8 @@ select option{
 .copyright-input-block {
   position: relative;
   width: 230px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: normal;
   /* height: 38px;
   line-height: 38px; */
   /* height: 30px; */
@@ -834,7 +836,7 @@ input.copyright-input {
 .goldenText input {
   color: #C49900 !important;
   border-color: #C49900 !important;
-  font-weight: 600;
+  font-weight: normal;
 }
 ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
   max-height: 120px !important;
@@ -878,7 +880,7 @@ input.copyright-input {
   color:  #C49900 !important;
   white-space: nowrap !important;
   line-height: 28px !important;
-  font-weight: 600;
+  font-weight: normal;
 }
 
 ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
@@ -942,7 +944,7 @@ input.copyright-input {
   font-size: 13px !important;
   font-weight: normal !important;
   text-align: center !important;
-  font-family: myBrown !important;
+  font-family: 'brownregular' !important;
 }
 ::ng-deep .mat-snack-bar-container.snackBarMiddle, 
 ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
@@ -1050,7 +1052,7 @@ input.copyright-input {
 .updateClassification .updateClassiNameblock .folderImg {display: inline-block;vertical-align: middle;margin-right: 20px;}
 
 .updateClassification .updateClassiNameblock .nameBreadcrumbBlk {display: inline-block;vertical-align: middle;}
-.workspaceName {color: #040404; font-style: normal;font-weight: 600;font-size: 16px;line-height: 35px;}
+.workspaceName {color: #040404; font-style: normal;font-weight: normal;font-size: 15px;line-height: 35px;}
 .renameFolderImg {
   display: inline-block;
   max-width: 17px;

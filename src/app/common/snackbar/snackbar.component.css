@@ -39,7 +39,7 @@
   }
   ::ng-deep .mat-simple-snackbar-action {
     color: #fff;
-    font-weight: 600;
+    font-weight: normal;
   }
   ::ng-deep .mat-simple-snackbar-action button {
     font-weight: bold !important;

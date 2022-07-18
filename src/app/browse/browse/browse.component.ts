@@ -21,7 +21,9 @@ import {
   WORKSPACE_ROOT,
   ROOT_ID,
   ORDERED_FOLDER,
-  FOLDER_TYPE_WORKSPACE
+  FOLDER_TYPE_WORKSPACE,
+  EXTERNAL_GROUP_GLOBAL,
+  EXTERNAL_USER,
 } from "src/app/common/constant";
 import { apiRoutes } from "src/app/common/config";
 import { NuxeoService } from "src/app/services/nuxeo.service";
@@ -153,6 +155,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   createFolderLoading = false;
 
   isAdmin = false;
+  listExternalUser: string[] = [];
+  listExternalUserGlobal: string[] = [];
+  isExternalView = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -171,19 +176,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   ];
   searchInitialised: any;
 
-  // routeParams = {
-  //   sector: "",
-  //   folder: "",
-  // };
+  routeParams = {
+    folderId: ""
+  };
   breadcrrumb = `/${WORKSPACE_ROOT}`;
   showFolder = false;
 
   ngOnInit(): void {
     this.fetchUserData();
+    let fetchAll = false;
     this.route.queryParams.subscribe(async (params) => {
       this.loading = true;
       this.searchInitialised = null;
-      // this.routeParams.folder = params.folder;
+      this.routeParams.folderId = params.folder;
 
       if (params.folder && params.folder !== ROOT_ID) {
         this.fetchAllSectors();
@@ -202,6 +207,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.saveState(folder);
         this.loading = false;
       } else {
+        fetchAll = true;
         this.selectedFolder2 = this.folderStructure[0];
         this.sectorSelected = this.folderStructure[0];
         this.selectedFolder = this.folderStructure[0];
@@ -232,6 +238,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         parent.addClass("is-open");
       }
     });
+
+    this.fetchExternalUserInfo(fetchAll);
   }
 
   ngAfterViewInit(): void {
@@ -322,7 +330,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkGeneralFolder(item){
-    return item.type.toLowerCase() === constants.WORKSPACE && item.title.toLowerCase() === constants.GENERAL_FOLDER
+    return item?.type?.toLowerCase() === constants.WORKSPACE && item?.title?.toLowerCase() === constants.GENERAL_FOLDER
   }
 
   openVerticallyCentered(content) {
@@ -541,7 +549,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (checkCache && this.folderAssetsResult[id]) {
       return this.folderAssetsResult[id];
     }
-    const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
+    let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
+    if (this.checkExternalUser()) {
+      url = url + '&sa_access=Internal access only'
+    }
     const result: any = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .toPromise();
@@ -604,7 +615,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFile = [];
     this.selectedFolder = { ...selected, uid: selected.id };
     this.sharedService.toTop();
-    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    // if (this.sharedService.checkExternalUser()) {
+    //   url = url + " AND sa_access != 'Internal access only'";
+    // }
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
@@ -971,7 +985,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.myDeletedCheck = e.target.checked;
       this.getTrashedWS()
       // this.searchList = this.deletedByMe;
-   
+
   }
 
   checkCanDelete(item) {
@@ -1025,7 +1039,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
-   
+
     if (!this.folderNameRef) {
       this.showError = true;
     } else {
@@ -1206,7 +1220,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
     if (newTitle?.trim() ===selectedFolder.title) return this.updateFolderAction();
     // let checkTitle = this.CheckTitleAlreadyExits(newTitle)
-    // if(checkTitle) 
+    // if(checkTitle)
     //   return this.sharedService.showSnackbar(
     //     "Name already exists",
     //     6000,
@@ -1216,7 +1230,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     //     // "Updated folder",
     //     // this.getTrashedWS.bind(this)
     //   );
-    
+
     this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
         input: selectedFolder.uid,
@@ -1392,10 +1406,18 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   async searchFolders(searchString: string) {
     // this.loading = true;
-    const path = this.sectorSelected.uid === this.selectedFolder.uid ?
-    `/${this.sectorSelected.title}/workspaces/` :
-    `${this.selectedFolder.path}/`;
-    const query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
+    let query;
+    if (this.isExternalView && !this.selectedFolder.uid && !this.selectedFolder.path) {
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
+    } else {
+      const path = this.sectorSelected.uid === this.selectedFolder.uid ?
+      `/${this.sectorSelected.title}/workspaces/` :
+      `${this.selectedFolder.path}/`;
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
+    }
+    if (this.checkExternalUser() && this.selectedFolder2?.title != "Shared Folders") {
+      query = query + " AND sa:access != 'Internal access only'";
+    }
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -1422,6 +1444,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   navigateToWorkspaceFolder(uid: string) {
+    if(this.routeParams.folderId === uid) {
+      return;
+    }
     this.router.navigate([ASSET_TYPE.WORKSPACE], { queryParams: { folder: uid } });
   }
 
@@ -1754,7 +1779,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   removeWorkspacesFromString(data: string, title: string): string {
-  
+
     let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40);
     return dataWithoutWorkspace.replace('/'+title, '');
   }
@@ -1763,6 +1788,69 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let titles = this.sortedData.map(m=>m.title.toLowerCase().trim())
     if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
     return false
+  }
+
+  initSharedRoot() {
+    return {
+      title: "Shared Folders",
+    }
+  }
+
+  async fetchAllPrivateWorkspaces() {
+    const query = "SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1";
+    const params = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 20,
+      queryParams: query,
+    };
+    const result: any = await this.apiService
+      .get(apiRoutes.NXQL_SEARCH, {
+        params,
+        headers: { "fetch-document": "properties" },
+      })
+      .toPromise();
+
+    this.searchList = result['entries'];
+    this.sortedData = this.searchList.slice();
+
+    this.handleSelectMenu(1, this.viewType || "LIST");
+    localStorage.setItem('workspaceState', JSON.stringify({}));
+    this.selectedFolder = this.initSharedRoot();
+    this.selectedFolder2 = this.initSharedRoot();
+    this.showSearchbar = true;
+    this.showLinkCopy = false;
+    this.breadCrumb = [];
+  }
+
+  isExternalUser() {
+    return this.listExternalUser.includes(this.user) && !this.listExternalUserGlobal.includes(this.user);
+  }
+
+  checkExternalUser() {
+    return this.listExternalUser.includes(this.user);
+  }
+
+  async fetchExternalUserInfo(fetchAll = false) {
+    await this.getExternalGroupUser();
+    await this.getExternalGroupUserGlobal();
+    if (!this.isExternalUser()) return;
+    this.isExternalView = true;
+    if (fetchAll) this.fetchAllPrivateWorkspaces();
+  }
+
+  async getExternalGroupUser() {
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
+    const users = res['entries'];
+    this.listExternalUser = users.map(user => user.id);
+    localStorage.setItem("listExternalUser", JSON.stringify(this.listExternalUser));
+  }
+
+  async getExternalGroupUserGlobal() {
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
+    const users = res['entries'];
+    this.listExternalUserGlobal = users.map(user => user.id);
+    localStorage.setItem("listExternalUserGlobal", JSON.stringify(this.listExternalUserGlobal));
   }
 
   async openMoveModal() {
@@ -1781,5 +1869,3 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 }
-
-
