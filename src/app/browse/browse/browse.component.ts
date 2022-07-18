@@ -175,10 +175,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   ];
   searchInitialised: any;
 
-  // routeParams = {
-  //   sector: "",
-  //   folder: "",
-  // };
+  routeParams = {
+    folderId: ""
+  };
   breadcrrumb = `/${WORKSPACE_ROOT}`;
   showFolder = false;
 
@@ -188,7 +187,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe(async (params) => {
       this.loading = true;
       this.searchInitialised = null;
-      // this.routeParams.folder = params.folder;
+      this.routeParams.folderId = params.folder;
 
       if (params.folder && params.folder !== ROOT_ID) {
         this.fetchAllSectors();
@@ -1444,6 +1443,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   navigateToWorkspaceFolder(uid: string) {
+    if(this.routeParams.folderId === uid) {
+      return;
+    }
     this.router.navigate([ASSET_TYPE.WORKSPACE], { queryParams: { folder: uid } });
   }
 
