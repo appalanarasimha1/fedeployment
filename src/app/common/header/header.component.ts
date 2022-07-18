@@ -6,7 +6,7 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
-import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER } from '../constant';
+import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL } from '../constant';
 import { SharedService } from 'src/app/services/shared.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -216,8 +216,14 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  checkExternalUser() {
-    return this.sharedService.checkExternalUser();
+  checkExternalUser(excludeGlobal = false) {
+    if (excludeGlobal) {
+      if (!this.sharedService.checkExternalUser()) return true;
+      const user = JSON.parse(localStorage.getItem('user'));
+    return !user?.groups.includes(EXTERNAL_GROUP_GLOBAL);
+    } else {
+      return this.sharedService.checkExternalUser();
+    }
   }
 
   playPersonalizedVideo() {

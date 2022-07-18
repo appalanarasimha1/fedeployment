@@ -549,7 +549,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (checkCache && this.folderAssetsResult[id]) {
       return this.folderAssetsResult[id];
     }
-    const url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
+    let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
+    if (this.checkExternalUser()) {
+      url = url + '&sa_access=Internal access only'
+    }
     const result: any = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .toPromise();
@@ -612,7 +615,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFile = [];
     this.selectedFolder = { ...selected, uid: selected.id };
     this.sharedService.toTop();
-    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    // if (this.sharedService.checkExternalUser()) {
+    //   url = url + " AND sa_access != 'Internal access only'";
+    // }
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
@@ -1408,6 +1414,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       `/${this.sectorSelected.title}/workspaces/` :
       `${this.selectedFolder.path}/`;
       query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
+    }
+    if (this.checkExternalUser() && this.selectedFolder2?.title != "Shared Folders") {
+      query = query + " AND sa:access != 'Internal access only'";
     }
     const params = {
       currentPageIndex: 0,
