@@ -360,7 +360,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
     this.handleSelectMenu(1, "LIST");
-    this.loading = false;
+    // this.loading = false;
     this.sharedService.toTop();
     this.createDynamicSidebarScroll();
     // this.selectedFolder = item;
