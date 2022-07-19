@@ -10,7 +10,7 @@
     position: relative;
     cursor: pointer;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: normal;
     padding: 0px;
     padding-left: 30px;
     border: 0px;
@@ -124,7 +124,7 @@
     border-radius: 30px;
     color: #090808;
     line-height: 34px;
-    padding: 0px 20px;
+    padding: 0px 20px 3px;
     min-width: 100px;
     letter-spacing: 0.5px;
 }
@@ -135,23 +135,24 @@ button.upload-btn {
     border-radius: 30px;
     color: #fff;
     line-height: 34px;
-    padding: 0px 20px;
+    padding: 0px 20px 3px;
     min-width: 100px;
     background: #23211E;
     letter-spacing: 0.5px;
 }
 
 .button-groups button.upload-btn.disabled {
-    background: #ccc;
+    background: #91908F;
     color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid #91908F;
     cursor: not-allowed;
+    padding: 0px 20px 3px;
 }
 
-.modalContentBlock .addUserBlock h3, .addUserBlock h3 {
-    font-weight: 600;
+.modalContentBlock .moveCopyBlock h3, .moveCopyBlock h3 {
+    font-weight: normal;
     font-size: 15px;
-    letter-spacing: 0.5px;
+    letter-spacing: normal;
     color: #040404;
     line-height: normal;
     padding-bottom: 20px;
@@ -293,7 +294,7 @@ span.makeAdminAction svg {
 	background-color: #E8E6DF;
     border-radius: 10px;
 }
-.modalContentBlock .addUserBlock {
+.modalContentBlock .moveCopyBlock {
     width: 100% !important;
 }
 ::ng-deep .modal-edit-access .modal-dialog {
@@ -302,7 +303,7 @@ span.makeAdminAction svg {
 .modalContentBlock {
     padding: 20px;
 }
-.modalContentBlock .addUserBlock {
+.modalContentBlock .moveCopyBlock {
     width: 100% !important;
 }
 .modalContentBlock ol {
@@ -324,7 +325,7 @@ span.makeAdminAction svg {
     width: 25px;
     padding-right: 0px;
 }
-.modalContentBlock .addUserBlock {
+.modalContentBlock .moveCopyBlock {
     margin-bottom: 20px;
 }
 .modalContentBlock ::ng-deep .ng-dirty .ng-arrow-wrapper .ng-arrow {
@@ -336,4 +337,260 @@ h3.externalUsers {
     font-size: 16px;
     line-height: 24px;
     padding-bottom: 10px;
+}
+.moveCopy {
+    background: #FFFFFF;
+    border: 1px solid #E8E6DF;
+    border-radius: 9px;
+    padding: 10px 15px;
+    /* height: 350px; */
+    position: relative;
+}
+.moveBreadcrumb, .moveBreadcrumb a {
+    font-family: 'brownlight';
+    color: #BAB8B2;
+}
+.moveBreadcrumb a {
+    padding: 0px 7px;
+    font-size: 14px;
+    position: relative;
+    font-family: 'brownlight';
+    outline: none;
+}
+.moveBreadcrumb a:hover {
+    text-decoration: underline;
+}
+.moveBreadcrumb {
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+.moveBreadcrumb a::after {
+    content: '/';
+    display: block;
+    position: absolute;
+    left: -3px;
+    top: 0px;
+    font-family: 'brownlight';
+}
+.moveBreadcrumb a:nth-child(1):after {
+    display: none;
+}
+.moveBreadcrumb a:nth-child(1) {
+    padding-left: 0px;
+}
+.moveBreadcrumb a.disabled {
+    cursor: default;
+    text-decoration: none;
+    color: #24221f;
+}
+.backArrow {
+    color: #BAB8B2;
+    line-height: 20px;
+    font-size: 14px;
+    vertical-align: middle;
+    font-family: 'brownlight';
+    cursor: pointer;
+    margin-bottom: 15px;
+    padding: 0px 5px;
+    display: inline-block;
+}
+.backArrow svg {
+    display: inline-block;
+    vertical-align: -2px;
+    margin-right: 2px;
+    padding: 1px;
+}
+.noFolder {
+    font-family: 'brownlight';
+    color: #040404;
+    margin-bottom: 10px;
+}
+.private {
+    color: #645D57;
+    font-family: 'brownregular';
+    font-size: 14px;
+    line-height: 21px;
+    background: #E6E2DA;
+    border-radius: 4px;
+    padding: 0px 8px 2px;
+    display: inline-block;
+}
+
+.moveItemList::after, .moveItemList ul::after {
+    content: '';
+    display: block;
+    clear: left;
+}
+
+.moveItemList li {
+    margin-bottom: 8px;
+    padding: 10px 50px 10px 20px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    line-height: 16px;
+    font-family: 'brownregular';
+    position: relative;
+    min-height: 40px;
+    line-height: 40px;
+}
+.moveItemList li:hover {
+    background: #F8EECC;
+}
+
+span.folderImgList {
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: 2px;
+}
+
+.moveItemList li span.folderTitleArrow {
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    border-radius: 100px;
+    line-height: 20px;
+    background: #FFFFFF;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -13px;
+}
+.moveItemList li:hover span.folderTitleArrow {
+    background: #DAAA00;
+}
+.moveItemList li:hover span.folderTitleArrow path {
+    fill: #fff;
+}
+.moveItemList li span.folderTitleArrow:hover {
+    background: #937206;
+}
+#customScrollBar::-webkit-scrollbar-track{
+	background-color: transparent;
+}
+
+#customScrollBar::-webkit-scrollbar{
+	width: 6px;
+	background-color:transparent;
+}
+#customScrollBar::-webkit-scrollbar-thumb{
+	background-color: #E8E6DF;
+    border-radius: 10px;
+}
+.moveItemList {
+    height: 270px;
+    overflow: hidden;
+    overflow-y: scroll;
+    margin: 0px -10px;
+}
+
+.moveItemList .control-group {
+    display: block;
+    position: absolute;
+    left: 8px;
+    top: 4px;
+  }
+.moveItemList .control {
+    display: block;
+    position: relative;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 0px;
+    padding-left: 30px;
+    border: 0px;
+    margin: 0px 0px 0px;
+    line-height: 28px;
+}
+.moveItemList .control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+.moveItemList .control__indicator {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: transparent !important;
+    border-radius: 20px;
+    border: 1px solid #444;
+    opacity: 0;
+}
+.moveItemList .control--radio .control__indicator {
+    border-radius: 50%;
+}
+.moveItemList .control:hover input ~ .control__indicator,
+.moveItemList .control input:focus ~ .control__indicator {
+    background: #fff;
+}
+.moveItemList .control input:checked ~ .control__indicator {
+    background: #C49900;
+}
+.moveItemList .control:hover input:not([disabled]):checked ~ .control__indicator,
+.moveItemList .control input:checked:focus ~ .control__indicator {
+    background: #C49900 !important;
+    border: 1px solid #C49900;
+}
+.moveItemList .control input:disabled ~ .control__indicator {
+    background: #C49900;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.moveItemList .control__indicator:after,
+.moveItemList .control__indicator:before {
+    content: '';
+    position: absolute;
+    display: none;
+}
+.moveItemList .control input:checked ~ .control__indicator:after,
+.moveItemList .control input ~ .control__indicator:before {
+    display: block;
+}
+.moveItemList .control--checkbox .control__indicator:after,
+.moveItemList .control--checkbox .control__indicator:before {
+    left: 6px;
+    top: 3px;
+    width: 6px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.moveItemList .control--checkbox .control__indicator:before{
+    border-color: transparent;
+}
+.moveItemList .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #7b7b7b;
+}
+.moveItemList .control--radio .control__indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #fff;
+}
+.moveItemList .control--radio input:disabled ~ .control__indicator:after {
+    background: #7b7b7b;
+}
+
+.moveItemList li:hover .control__indicator {
+    opacity: 1;
+}
+.movedContent {
+    padding: 8px 16px;
+    background: #E6F2FF;
+    border-radius: 8px;
+    color: #0072A2;
+    margin: 15px 0px;
+    display: inline-block;
+}
+.moveItemList li.active {
+    background: #F8EECC;
+}
+.moveItemList li.active .control__indicator {
+    opacity: 1;
 }

@@ -53,6 +53,8 @@ export class MoveCopyAssetsComponent implements OnInit {
     {id: 5, name: '5 month'}
   ];
 
+  movedContentShow: boolean = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<MoveCopyAssetsComponent>,
@@ -68,6 +70,14 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   closeModal() {
     this.dialogRef.close(this.folderUpdated);
+  }
+  selectFolder($event){
+    console.log('event', $event.target?.checked);
+    if($event.target?.checked) {
+      this.movedContentShow = true;
+    } else {
+      this.movedContentShow = false;
+    }
   }
 
 }
