@@ -64,6 +64,11 @@
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
         </div> -->
+
+        <div class="hover-icon not-downloadable-icon tollTipWorkspace">
+          <div class="customToolTipWorkspace" style="left: auto; right: 0px; top: 35px;">File not downloadable</div>
+        </div>
+
         <a class="hover-icon download-icon"*ngIf="doc && !checkPopupNeeds()" href="{{getFileContent()}}"></a>
 
         <a class="hover-icon download-icon" href="javascript:void(0)" *ngIf="checkPopupNeeds()">
