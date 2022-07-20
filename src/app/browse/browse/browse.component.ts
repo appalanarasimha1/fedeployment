@@ -1728,11 +1728,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   canSetAsPrivate() {
-    return this.selectedFolder?.type === 'Domain';
+    return !this.isPrivateFolder();
   }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    if (this.selectedFolder?.type !== 'Workspace' && !includeChild) return false;
+    if (!this.hasInheritAcl() && !includeChild) return false;
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
 
     const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
@@ -1755,6 +1755,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const ace = currentCollaborators[this.user];
     if (!ace) return false;
     return ace.permission === 'Everything';
+  }
+
+  hasInheritAcl() {
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (!selectedFolder?.contextParameters?.acls) return false;
+    const inheritAcl = selectedFolder.contextParameters.acls.find(acl => acl.name === 'local');
+    if (!inheritAcl?.aces) return false;
+    return true;
   }
 
   getFolderCollaborators() {
