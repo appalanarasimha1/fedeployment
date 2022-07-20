@@ -73,7 +73,7 @@
     </ul>
   </div>
 
-  <div class="makeAdminBlock">
+  <div class="makeAdminBlock" *ngIf="checkShowExternalUser()">
     <h3 class="externalUsers">External users</h3>
     <ul style="min-height: auto;">
       <li *ngFor="let c of invitedCollaborators | keyvalue">
@@ -100,7 +100,7 @@
       </li>
       <li *ngFor="let c of externalCollaborators | keyvalue">
         {{getExternalName(c.value)}}
-        <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
+        <span class="disableColor pl-10"><span *ngIf="c.value.externalUser">Pending - </span>Access expires {{getEndDate(c.value.end)}}</span>
         <span class="makeAdminAction">
           <span (click)="open(mymodal, c.value)">Edit Access</span>
           <span (click)="removeUser(c.key, 'removed')" class="removeIcon">
@@ -156,7 +156,7 @@
       <ul class="mb-20">
         <li>
           {{selectedExternalUser.user.id}}
-          <span class="disableColor pl-10">Pending - Access expires {{getEndDate(selectedExternalUser.end)}}</span>
+          <span class="disableColor pl-10"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Access expires {{getEndDate(selectedExternalUser.end)}}</span>
         </li>
       </ul>
       <div class="makePrivate tollTipWorkspace">
@@ -180,7 +180,7 @@
               <li>
                 <label class="control control--checkbox">
                   Full site access to all public assets
-                  <input type="checkbox" (change)="onFullAccessCheckboxChange($event)"/>
+                  <input type="checkbox" [checked]="isGlobal" (change)="onFullAccessCheckboxChange($event)"/>
                   <div class="control__indicator"></div>
                 </label>
               </li>

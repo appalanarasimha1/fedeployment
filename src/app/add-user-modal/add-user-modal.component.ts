@@ -51,6 +51,9 @@ export class AddUserModalComponent implements OnInit {
     {id: 4, name: '4 month'},
     {id: 5, name: '5 month'}
   ];
+  listExternalUser: string[] = [];
+  listExternalUserGlobal: string[] = [];
+  isGlobal = false;
 
   constructor(
     private apiService: ApiService,
@@ -63,6 +66,8 @@ export class AddUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getExternalGroupUser();
+    this.getExternalGlobalGroupUser();
     this.selectedFolder = this.data.selectedFolder;
     this.folderId = this.data.folderId;
     this.folderCollaborators = this.data.folderCollaborators || {};
@@ -82,7 +87,8 @@ export class AddUserModalComponent implements OnInit {
     this.externalCollaborators = {};
     this.internalCollaborators = {};
     Object.keys(this.folderCollaborators).forEach(key => {
-      if (this.folderCollaborators[key].externalUser) {
+      if (this.folderCollaborators[key].externalUser
+        || this.listExternalUser.includes(key)) {
         this.externalCollaborators[key] = this.folderCollaborators[key];
       } else {
         this.internalCollaborators[key] = this.folderCollaborators[key];
@@ -173,9 +179,11 @@ export class AddUserModalComponent implements OnInit {
   }
 
   updatePermission(item) {
+    if (this.listExternalUser.includes(item.user.id) && item.isGlobal != undefined) {
+      this.updateExternalUserGroup(item.user.id, item.isGlobal);
+    }
     const params = {
       permission: item.permission,
-      notify: true,
       comment: "",
       username: item.user.id,
       id: item.id,
@@ -192,7 +200,6 @@ export class AddUserModalComponent implements OnInit {
   addPermission(item) {
     const params = {
       permission: item.permission,
-      notify: true,
       comment: "",
       users: [item.user.id]
     };
@@ -215,6 +222,19 @@ export class AddUserModalComponent implements OnInit {
       input: this.folderId,
     };
     return this.apiService.post(apiRoutes.REMOVE_PERMISSION, payload).toPromise();
+  }
+
+  updateExternalUserGroup(email, isAdded) {
+    const params = {
+      email,
+      isAdded,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: this.folderId,
+    };
+    return this.apiService.post(apiRoutes.UPDATE_EXTERNAL_GROUP_USER, payload).toPromise();
   }
 
   async fetchFolder(id) {
@@ -323,11 +343,27 @@ export class AddUserModalComponent implements OnInit {
 
   open(content, item) {
     this.selectedExternalUser = item;
+    if (this.selectedExternalUser.duration) {
+      this.selectedMonth = this.selectedExternalUser.duration;
+      this.selectDuration(this.selectedMonth);
+    } else if (this.selectedExternalUser.end) {
+      const endDate = new Date(this.selectedExternalUser.end);
+      const now = new Date();
+      const duration = endDate.getMonth() - now.getMonth() + (12 * (endDate.getFullYear() - now.getFullYear()));
+      this.selectedMonth = duration === 0 ? 1 : duration;
+    } else {
+      this.selectedMonth = 1;
+      this.selectDuration(this.selectedMonth);
+    }
+    if (this.listExternalUserGlobal.includes(this.selectedExternalUser.user?.id)) {
+      this.isGlobal = true;
+    }
+
 
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'modal-edit-access'}).result.then((result) => {
-      if (result !== 'done') return;
-      this.updateExternalUserAccess();
+      if (result === 'done') this.updateExternalUserAccess();
       this.selectedMonth = undefined;
+      this.isGlobal = undefined;
 
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -341,6 +377,8 @@ export class AddUserModalComponent implements OnInit {
       if (!this.updatedCollaborators[this.selectedExternalUser.user.id])
         this.updatedCollaborators[this.selectedExternalUser.user.id] = this.externalCollaborators[this.selectedExternalUser.user.id];
       this.updatedCollaborators[this.selectedExternalUser.user.id].end = end;
+      if (this.selectedExternalUser.isGlobal !== undefined)
+        this.updatedCollaborators[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     } else {
       this.invitedCollaborators[this.selectedExternalUser.user.id].end = end;
       if (this.selectedExternalUser.isGlobal !== undefined)
@@ -395,6 +433,20 @@ export class AddUserModalComponent implements OnInit {
 
   onFullAccessCheckboxChange(e) {
     this.selectedExternalUser.isGlobal = e.target.checked;
+    this.isGlobal = e.target.checked;
+  }
+
+  checkShowExternalUser() {
+    return Object.keys(this.externalCollaborators).length > 0
+      || Object.keys(this.invitedCollaborators).length > 0;
+  }
+
+  getExternalGroupUser() {
+    this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
+  }
+
+  getExternalGlobalGroupUser() {
+    this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal"));
   }
 
 }

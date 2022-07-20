@@ -32,7 +32,7 @@
 .form-control{
     border-radius: 8px;
     padding: 0px 15px;
-    font-family: myBrown;
+    font-family: 'brownregular';
     line-height: 45px;
     min-height: 45px;
     border: 1px solid #404040;
@@ -71,7 +71,7 @@
     padding: 12px 0px;
     border: 1px solid #13100D;
     letter-spacing: normal;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 24px;
 }
 .loginBtn:hover{
@@ -83,7 +83,7 @@
     letter-spacing: 0.31em;
     text-transform: uppercase;
     color: #FFFFFF;
-    font-weight: 600;
+    font-weight: normal;
 }
 button.btn-primary:focus, button.btn-primary:hover{
     background: #13100D !important;
@@ -151,16 +151,19 @@ ul.signupForm li a{
     border-color: #E8E6DF;
 }
 
-.signupForm .form-control::placeholder, .signupForm .form-control:focus::placeholder {
+.signupForm .form-control::placeholder, .signupForm .form-control:focus::placeholder,
+.signupForm .show-password::placeholder, .signupForm .show-password:focus::placeholder {
     color: #ACACAC !important;
     opacity: 1;
 }
 
-.signupForm .form-control:-ms-input-placeholder, .signupForm .form-control:focus:-ms-input-placeholder {
+.signupForm .form-control:-ms-input-placeholder, .signupForm .form-control:focus:-ms-input-placeholder,
+.signupForm .show-password:-ms-input-placeholder, .signupForm .show-password:focus:-ms-input-placeholder {
     color: #ACACAC !important;
 }
 
-.signupForm .form-control::-ms-input-placeholder, .signupForm .form-control:focus::-ms-input-placeholder {
+.signupForm .form-control::-ms-input-placeholder, .signupForm .form-control:focus::-ms-input-placeholder,
+.signupForm .show-password::-ms-input-placeholder, .signupForm .show-password:focus::-ms-input-placeholder {
     color: #ACACAC !important;
 }
 

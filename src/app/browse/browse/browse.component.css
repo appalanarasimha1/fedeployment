@@ -130,8 +130,8 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 .active-tab {
   /* background: #48caf0; */
   color: #000;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   position: relative;
   background: #E1BB33;
 }
@@ -167,7 +167,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 }
 .update-classifications-btn {
   color: #E1BB33;
-  font-weight: 700;
+  font-weight: normal;
   cursor: pointer;
   margin-bottom: 6px;
 }
@@ -184,9 +184,9 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   padding: 0px;
 }
 .leftPanel li span{
-  font-size: 16px !important;
+  font-size: 15px !important;
   word-break: break-word;
-  font-weight: 600;
+  font-weight: normal;
 }
 section.lpSecOne {
   /* min-height: 600px; */
@@ -224,7 +224,7 @@ section.lpBAck:before, .lpSecOne:before {
     font-size: 24px;
     line-height: 22px;
     color: #000000;
-    font-weight: 600;
+    font-weight: normal;
     margin-bottom: 9px !important;
     display: block;
     /* display: contents; */
@@ -248,7 +248,7 @@ section.lpBAck:before, .lpSecOne:before {
   align-items: center;
   justify-content: center;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
   padding: 8px;
   transition: .4s;
 }
@@ -269,10 +269,10 @@ section.lpBAck:before, .lpSecOne:before {
   border-radius: 10px;
 }
 .folderTitle{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
   color: #000;
-  font-weight: 600;
+  font-weight: normal;
   padding-bottom: 12px;
 }
 
@@ -291,7 +291,7 @@ section.lpBAck:before, .lpSecOne:before {
   font-size: 14px;
   line-height: 14px;
   color: #000000;
-  font-weight: 600;
+  font-weight: normal;
   padding-bottom: 5px;
 }
 .folder-content span{
@@ -355,13 +355,13 @@ section.lpBAck:before, .lpSecOne:before {
 }
 /* sprint16-v1 end */
 li.has-children.is-open > .acnav__label {
-  font-weight: 600;
+  font-weight: normal;
 }
 
 .form__title {
 	color: #5c5d5e;
 	font-size: 2rem;
-	font-weight: 700;
+	font-weight: normal;
 	padding-bottom: 20px;
 	border-bottom: 1px solid #adadae;
 }
@@ -565,10 +565,10 @@ li.has-children.is-open > .acnav__label {
   overflow: auto;
 }
 .copy-link{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
 }
 .copy-section{
   position: relative;
@@ -590,9 +590,9 @@ li.has-children.is-open > .acnav__label {
   display: block;
 }
 .link-title{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: normal;
   color: #040404;
 }
 .please-copy{
@@ -603,20 +603,20 @@ li.has-children.is-open > .acnav__label {
 .copy-url{
   background: #F6F5F2;
 border-radius: 4px;
-font-size: 16px;
+font-size: 15px;
 line-height: 24px;
 color: #937206;
 margin-right: 10px;
 border: unset;
 padding: 3px 10px;
-font-weight: 600;
+font-weight: normal;
 }
 .copy-btn{
   background: #EDD580;
   border-radius: 24px;
   color: #040505;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: normal;
   padding: 3px 14px;
   border: 1px solid #EDD580;
 }
@@ -645,7 +645,7 @@ font-weight: 600;
   color: #fff;
   border-radius: 50px;
   padding: 8px 20px 10px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: normal;
   line-height: 22px;
   cursor: pointer;
@@ -673,8 +673,8 @@ font-weight: 600;
   border: 1px solid #F6F5F2;
   width: 100%;
   background-color: #F6F5F2;
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   line-height: 25px;
   color: #000;
 }
@@ -714,7 +714,7 @@ font-weight: 600;
   border-bottom: unset;
 }
 .folderListview td p{
-  /* font-size: 16px; */
+  /* font-size: 15px; */
   line-height: 24px;
   color: #040404;
   text-align: left;
@@ -743,10 +743,10 @@ font-weight: 600;
   position: relative;
 }
 .creteNewHeading{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
   cursor: pointer;
 }
 .inner-createNewFolder{
@@ -849,10 +849,10 @@ font-weight: 600;
   z-index: 9;
 }
 .createNew{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
 }
 .placeholderText{
   font-size: 14px;
@@ -865,8 +865,8 @@ font-weight: 600;
   border: unset;
   border-bottom: 2px solid #413E3C;
   width: 100%;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: normal;
   line-height: 24px;
   color: #040404;
   padding-bottom: 5px;
@@ -874,16 +874,16 @@ font-weight: 600;
   font-weight: 500;
 }
 .createFolder input::placeholder{
-  font-size: 16px !important;
+  font-size: 15px !important;
   line-height: 24px !important;
   color: #040404 !important;
   font-weight: normal !important;
 }
 .createFolder label{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #040404;
-  font-weight: 600;
+  font-weight: normal;
 }
 .mat-expansion-panel:not([class*=mat-elevation-z]){
   box-shadow: unset;
@@ -922,7 +922,7 @@ font-weight: 600;
   border-radius: 24px;
   float: right;
   width: unset;
-  font-weight: 600;
+  font-weight: normal;
   padding: 6px 19px;
   font-size: 14px;
   /* line-height: 20px; */
@@ -937,7 +937,7 @@ font-weight: 600;
 .sectorssText{
   font-size: 20px;
   line-height: 36px;
-  font-weight: 600;
+  font-weight: normal;
   color: #BAB8B2;
   padding-top: 10px;
 }
@@ -967,7 +967,7 @@ font-weight: 600;
 .hoverTooltip{
   font-size: 14px;
   line-height: 20px;
-  font-weight: 600;
+  font-weight: normal;
   color: #FFFFFF;
   background: #2D2926;
   box-shadow: 1px 1px 3px rgb(0 0 0 / 25%);
@@ -1111,10 +1111,10 @@ font-weight: 600;
   margin-right: 0px;
 }
 .createNew, .deleteFolder, .recoverFolder{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 31px;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
   vertical-align: middle;
 }
 .recoverFolder img {
@@ -1237,7 +1237,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   margin-bottom: 0px;
 }
 .createNewFolderDropdown {
-  padding: 0px !important; padding: 0px; font-size: 16px; line-height: 24px; color: #937206 !important; font-weight: 600;
+  padding: 0px !important; padding: 0px; font-size: 15px; line-height: 24px; color: #937206 !important; font-weight: normal;
 }
 .customNewFolder  .navbar-expand-lg .navbar-nav .dropdown-menu {
   position: absolute;
@@ -1247,7 +1247,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
 .goldenText{
   color: #C49900  !important;
   border-color: #C49900 !important;
-  font-weight: 600;
+  font-weight: normal;
 }
 .workspaceInfo {
   background: #23211E;
@@ -1269,8 +1269,8 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   color: #fff;
 }
 .workspaceInfo .workspaceHeading, .workspaceInfo .workspaceHeading {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   padding-bottom: 10px;
 }
 ul.uploadAssetsClassifications li.workspaceInfoHover .workspaceInfo {
@@ -1441,8 +1441,8 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
   opacity: 1;
 }
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li .workspaceHeading {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   padding-bottom: 10px;
 }
 .tollTipWorkspace {
@@ -1748,8 +1748,8 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 .active-tab {
   /* background: #48caf0; */
   color: #000;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   position: relative;
   background: #E1BB33;
 }
@@ -1785,7 +1785,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 }
 .update-classifications-btn {
   color: #E1BB33;
-  font-weight: 700;
+  font-weight: normal;
   cursor: pointer;
   margin-bottom: 6px;
 }
@@ -1802,9 +1802,9 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   padding: 0px;
 }
 .leftPanel li span{
-  font-size: 16px !important;
+  font-size: 15px !important;
   word-break: break-word;
-  font-weight: 600;
+  font-weight: normal;
 }
 section.lpSecOne {
   /* min-height: 600px; */
@@ -1842,7 +1842,7 @@ section.lpBAck:before, .lpSecOne:before {
     font-size: 24px;
     line-height: 22px;
     color: #000000;
-    font-weight: 600;
+    font-weight: normal;
     margin-bottom: 9px !important;
     display: block;
     /* display: contents; */
@@ -1866,7 +1866,7 @@ section.lpBAck:before, .lpSecOne:before {
   align-items: center;
   justify-content: center;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
   padding: 8px;
   transition: .4s;
 }
@@ -1887,10 +1887,10 @@ section.lpBAck:before, .lpSecOne:before {
   border-radius: 10px;
 }
 .folderTitle{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
   color: #000;
-  font-weight: 600;
+  font-weight: normal;
   padding-bottom: 12px;
 }
 
@@ -1909,7 +1909,7 @@ section.lpBAck:before, .lpSecOne:before {
   font-size: 14px;
   line-height: 14px;
   color: #000000;
-  font-weight: 600;
+  font-weight: normal;
   padding-bottom: 5px;
 }
 .folder-content span{
@@ -1973,13 +1973,13 @@ section.lpBAck:before, .lpSecOne:before {
 }
 /* sprint16-v1 end */
 li.has-children.is-open > .acnav__label {
-  font-weight: 600;
+  font-weight: normal;
 }
 
 .form__title {
 	color: #5c5d5e;
 	font-size: 2rem;
-	font-weight: 700;
+	font-weight: normal;
 	padding-bottom: 20px;
 	border-bottom: 1px solid #adadae;
 }
@@ -2183,10 +2183,10 @@ li.has-children.is-open > .acnav__label {
   overflow: auto;
 }
 .copy-link{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
 }
 .copy-section{
   position: relative;
@@ -2208,9 +2208,9 @@ li.has-children.is-open > .acnav__label {
   display: block;
 }
 .link-title{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: normal;
   color: #040404;
 }
 .please-copy{
@@ -2221,20 +2221,20 @@ li.has-children.is-open > .acnav__label {
 .copy-url{
   background: #F6F5F2;
 border-radius: 4px;
-font-size: 16px;
+font-size: 15px;
 line-height: 24px;
 color: #937206;
 margin-right: 10px;
 border: unset;
 padding: 3px 10px;
-font-weight: 600;
+font-weight: normal;
 }
 .copy-btn{
   background: #EDD580;
   border-radius: 24px;
   color: #040505;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: normal;
   padding: 3px 14px;
   border: 1px solid #EDD580;
 }
@@ -2263,7 +2263,7 @@ font-weight: 600;
   color: #fff;
   border-radius: 50px;
   padding: 8px 20px 10px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: normal;
   line-height: 22px;
   cursor: pointer;
@@ -2291,8 +2291,8 @@ font-weight: 600;
   border: 1px solid #F6F5F2;
   width: 100%;
   background-color: #F6F5F2;
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   line-height: 25px;
   color: #000;
 }
@@ -2332,7 +2332,7 @@ font-weight: 600;
   border-bottom: unset;
 }
 .folderListview td p{
-  /* font-size: 16px; */
+  /* font-size: 15px; */
   line-height: 24px;
   color: #040404;
   text-align: left;
@@ -2361,10 +2361,10 @@ font-weight: 600;
   position: relative;
 }
 .creteNewHeading{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
   cursor: pointer;
 }
 .inner-createNewFolder{
@@ -2467,10 +2467,10 @@ font-weight: 600;
   z-index: 9;
 }
 .createNew{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
 }
 .placeholderText{
   font-size: 14px;
@@ -2483,8 +2483,8 @@ font-weight: 600;
   border: unset;
   border-bottom: 2px solid #413E3C;
   width: 100%;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: normal;
   line-height: 24px;
   color: #040404;
   padding-bottom: 5px;
@@ -2492,16 +2492,16 @@ font-weight: 600;
   font-weight: 500;
 }
 .createFolder input::placeholder{
-  font-size: 16px !important;
+  font-size: 15px !important;
   line-height: 24px !important;
   color: #040404 !important;
   font-weight: normal !important;
 }
 .createFolder label{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #040404;
-  font-weight: 600;
+  font-weight: normal;
 }
 .mat-expansion-panel:not([class*=mat-elevation-z]){
   box-shadow: unset;
@@ -2540,7 +2540,7 @@ font-weight: 600;
   border-radius: 24px;
   float: right;
   width: unset;
-  font-weight: 600;
+  font-weight: normal;
   padding: 6px 19px;
   font-size: 14px;
   /* line-height: 20px; */
@@ -2555,7 +2555,7 @@ font-weight: 600;
 .sectorssText{
   font-size: 20px;
   line-height: 36px;
-  font-weight: 600;
+  font-weight: normal;
   color: #BAB8B2;
   padding-top: 10px;
 }
@@ -2585,7 +2585,7 @@ font-weight: 600;
 .hoverTooltip{
   font-size: 14px;
   line-height: 20px;
-  font-weight: 600;
+  font-weight: normal;
   color: #FFFFFF;
   background: #2D2926;
   box-shadow: 1px 1px 3px rgb(0 0 0 / 25%);
@@ -2729,10 +2729,10 @@ font-weight: 600;
   margin-right: 0px;
 }
 .createNew, .deleteFolder, .recoverFolder{
-  font-size: 16px;
+  font-size: 15px;
   line-height: 31px;
   color: #937206;
-  font-weight: 600;
+  font-weight: normal;
   vertical-align: middle;
 }
 .recoverFolder img {
@@ -2855,7 +2855,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   margin-bottom: 0px;
 }
 .createNewFolderDropdown {
-  padding: 0px !important; padding: 0px; font-size: 16px; line-height: 24px; color: #937206 !important; font-weight: 600;
+  padding: 0px !important; padding: 0px; font-size: 15px; line-height: 24px; color: #937206 !important; font-weight: normal;
 }
 .customNewFolder  .navbar-expand-lg .navbar-nav .dropdown-menu {
   position: absolute;
@@ -2865,7 +2865,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
 .goldenText{
   color: #C49900  !important;
   border-color: #C49900 !important;
-  font-weight: 600;
+  font-weight: normal;
 }
 .workspaceInfo {
   background: #23211E;
@@ -2887,8 +2887,8 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   color: #fff;
 }
 .workspaceInfo .workspaceHeading, .workspaceInfo .workspaceHeading {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   padding-bottom: 10px;
 }
 ul.uploadAssetsClassifications li.workspaceInfoHover .workspaceInfo {
@@ -3062,8 +3062,8 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
   opacity: 1;
 }
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li .workspaceHeading {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: normal;
+  font-size: 15px;
   padding-bottom: 10px;
 }
 .tollTipWorkspace {
@@ -3339,7 +3339,7 @@ button.createBtn.btn.tollTipCustom.disableBtn {background: #E8E6DF;color: #BAB8B
   color: #fff;
 }
 
-.download-btn {float: right;padding-top: 25px;cursor: pointer;font-weight: 600;}
+.download-btn {float: right;padding-top: 25px;cursor: pointer;font-weight: normal;}
 .download-btn a {text-decoration: none;color: #EDD580; outline: none;}
 .download-btn svg {margin-right: 6px;vertical-align: top;}
 
@@ -3489,7 +3489,7 @@ ul.downloadImgLisst li .contentListBlk {
   position: relative;
   cursor: pointer;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: normal;
   padding: 0px;
   padding-left: 30px;
   border: 0px;
@@ -3632,7 +3632,7 @@ ul.downloadImgLisst li .contentListBlk {
   padding: 9px 38px;
   cursor: pointer;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #fff;
 }
@@ -3643,7 +3643,7 @@ ul.downloadImgLisst li .contentListBlk {
   padding: 9px 38px;
   cursor: not-allowed;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   color: #fff;
 }
@@ -3663,7 +3663,7 @@ svg.classificationsIcon.disablePermission path {
   padding: 0px 8px;
   font-size: 14px;
   line-height: 25px;
-  font-weight: 600;
+  font-weight: normal;
   cursor: pointer;
   position: relative;
 }

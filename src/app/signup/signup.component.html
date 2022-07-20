@@ -20,7 +20,7 @@
                         <li>
                             <mat-form-field appearance="fill">
                                 <!-- <mat-label>Password</mat-label> -->
-                                <input matInput [type]="showPassword ? 'text' : 'password'" name="password" placeholder="Password" [(ngModel)]="newPassword">
+                                <input matInput [type]="showPassword ? 'text' : 'password'" name="password" placeholder="Password" [(ngModel)]="newPassword" class="show-password">
                                 <mat-icon matSuffix (click)="togglePasswordVisibility()" [ngClass]="{'clickCheck': showPassword}">
                                     visibility<!-- {{showPassword?'visibility':'visibility'}} -->
                                 </mat-icon>
@@ -30,7 +30,7 @@
                         <li>
                             <mat-form-field appearance="fill">
                                 <!-- <mat-label>Password</mat-label> -->
-                                <input matInput [type]="showPasswordRenter ? 'text' : 'password'" name="password" [(ngModel)]="confirmNewPassword" placeholder="Comfirm password">
+                                <input matInput [type]="showPasswordRenter ? 'text' : 'password'" name="password" [(ngModel)]="confirmNewPassword" placeholder="Comfirm password" class="show-password">
                                 <mat-icon matSuffix (click)="togglePasswordVisibilityRenter()" [ngClass]="{'clickCheck': showPasswordRenter}">
                                     visibility<!-- {{showPasswordRenter?'visibility':'visibility'}} -->
                                 </mat-icon>
