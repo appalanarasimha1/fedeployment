@@ -64,6 +64,12 @@
         <!-- <div class="hover-icon plus-icon" placement="top" ngbTooltip="This function will be available soon"
           style="cursor: not-allowed;">
         </div> -->
+        <div class="hover-icon star-icon tollTipWorkspace"
+          [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
+          (click)="markFavourite()">
+          <div class="customToolTipWorkspace">Add to favorites</div>
+        </div>
+        
         <a class="hover-icon download-icon"*ngIf="doc && !checkPopupNeeds()" href="{{getFileContent()}}"></a>
 
         <a class="hover-icon download-icon" href="javascript:void(0)" *ngIf="checkPopupNeeds()">
@@ -121,15 +127,11 @@
             </div>
           </div>
         </a>
-        <div class="hover-icon star-icon tollTipWorkspace"
-          [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
-          (click)="markFavourite()">
-          <div class="customToolTipWorkspace">Add to favorites</div>
-        </div>
       </div>
       
       <div class="caption-mousehover">
         <div class="weight-size-block">
+          <p>Young woman waiting to aboard the airplane</p>
           <ul>
             <li>{{getAssetDate()}}</li>
             <!-- <li><img src="../../assets/images/icon_location_white.svg" alt="Tourism"> NEOM airport</li> -->

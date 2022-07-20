@@ -941,7 +941,7 @@ background-color:#EBC03F !important;
   width: 29px;
   padding: 10px;
   margin-bottom: 15px;
-  margin-left: 8px;
+  margin-right: 8px;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -982,7 +982,8 @@ background-color:#EBC03F !important;
   background-size: 12px;
 }
 .hover-icon.download-icon{
-  background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #006845;
+  /* background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #fff; */
+  background: url(~/../../../../assets/images/download-gray.svg) no-repeat center center #fff;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -992,6 +993,10 @@ background-color:#EBC03F !important;
 }
 .cardBlock:hover .hover-icon.download-icon{
   opacity: 1;
+  /* background-color: #006845; */
+}
+.cardBlock .hover-icon.download-icon:hover{
+  background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #006845;
 }
 .hover-icon.star-icon:hover{
   background: url(~/../../../../assets/images/whitestar.png) no-repeat center center #e0b803;
@@ -1701,4 +1706,15 @@ document-card .lock-icon img {
 }
 .internal-use .removeMarginTop .control {
   margin-top: 0px !important;
+}
+.weight-size-block p {
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: 'brownregular';
+  padding-bottom: 5px;
+  width: 92%;
+}
+.form-group-custom {
+  width: fit-content;
 }
