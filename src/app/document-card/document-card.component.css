@@ -974,7 +974,7 @@ background-color:#EBC03F !important;
   opacity: 1;
 }
 .hover-icon.plus-icon{
-  background: url(~/../../../../assets/images/add-collectionbadge.svg) no-repeat center center #fff;
+  background: url(../..//assets/images/add-collectionbadge.svg) no-repeat center center #fff;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -983,7 +983,7 @@ background-color:#EBC03F !important;
 }
 .hover-icon.download-icon{
   /* background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #fff; */
-  background: url(~/../../../../assets/images/download-gray.svg) no-repeat center center #fff;
+  background: url(../../assets/images/download-gray.svg) no-repeat center center #fff;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -996,10 +996,11 @@ background-color:#EBC03F !important;
   /* background-color: #006845; */
 }
 .cardBlock .hover-icon.download-icon:hover{
-  background: url(~/../../../../assets/images/download-white-icon.svg) no-repeat center center #006845;
+  background: url(../../assets/images/download-white-icon.svg) no-repeat center center #006845;
+  background-size: 16px;
 }
 .hover-icon.star-icon:hover{
-  background: url(~/../../../../assets/images/whitestar.png) no-repeat center center #e0b803;
+  background: url(../..//assets/images/whitestar.png) no-repeat center center #e0b803;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
