@@ -267,6 +267,15 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.dataService.searchBarClick$.subscribe((show: boolean) => {
       this.searchBarClicked = show;
     });
+
+    this.dataService.showEverything$.subscribe((data: boolean) => {
+      // this.searchBarClicked = show;
+      if(data) {
+        this.showAll('sectorPage')
+      }
+    });
+
+
   }
 
   ngOnChanges(changes: any) {

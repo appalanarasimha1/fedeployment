@@ -78,7 +78,7 @@
                    </div>
                </button>
                <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
-                  Publish
+                  Upload
                   <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                      Please complete all mandatory fields to proceed
                    </div>
@@ -286,7 +286,7 @@
                    </div>
                </button>
                <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
-                  Publish
+                  Upload
                   <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                      Please complete all mandatory fields to proceed
                    </div>
@@ -631,9 +631,9 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button *ngIf="!publishing" [ngClass]="{'btnDisable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">Publish</button>
+               <button *ngIf="!publishing" [ngClass]="{'btnDisable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">{{!isPrivateFolder()?'Publish':'Upload'}}</button>
                <button *ngIf="publishing" mat-button class="upload-btn" style="position: relative" >
-                  Publish <app-loader-small [show]="loading"></app-loader-small>
+                  {{!isPrivateFolder()?'Publish':'Upload'}} <app-loader-small [show]="loading"></app-loader-small>
                </button>
             </div>
          </div>

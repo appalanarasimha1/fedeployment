@@ -1518,6 +1518,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   needPermissionToDownload: any = [];
   count: number = 0;
   copyRightItem: any = [];
+  canNotDelete: any = [];
 
   selectAsset($event, item, i) {
     let canDelete = this.checkCanDelete(item)
@@ -1540,6 +1541,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // else
     if ($event.target?.checked || $event.checked) {
       this.count = this.count + 1;
+      if (!canDelete) {
+        this.canNotDelete.push(item)
+      }
        if (
          item.properties['sa:copyrightName'] !== null &&
          item.properties['sa:copyrightName'] !== ""
@@ -1565,6 +1569,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         (m) => m.uid !== item.uid
       );
       this.needPermissionToDownload = this.needPermissionToDownload.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.canNotDelete = this.canNotDelete.filter(
         (m) => m.uid !== item.uid
       );
       this.count = this.count - 1;
@@ -1647,6 +1654,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.count = 0;
     this.fileSelected = [];
     this.copyRightItem = []
+    this.canNotDelete=[]
     // this.isAware=false
     // $(".vh").prop("checked", false);
     this.sortedData.forEach((e) => (e.isSelected = false));
