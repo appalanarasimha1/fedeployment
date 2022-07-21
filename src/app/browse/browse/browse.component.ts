@@ -1780,7 +1780,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   removeWorkspacesFromString(data: string, title: string): string {
 
-    let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40);
+    let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 35);
     return dataWithoutWorkspace.replace('/'+title, '');
   }
 
