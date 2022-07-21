@@ -101,10 +101,10 @@ export class NuxeoService {
       headers: this.defaultHeader
     });
 
-    return this.requestToken(null);
+    return this.requestToken(null, btoa(`${username}:${password}`));
   }
 
-  requestToken(token) {
+  requestToken(token, basicToken?: string) {
     if (!this.nuxeoClient) {
       const options = {
         baseURL: `${environment.nuxeoServerUrl || this.baseUrl}/nuxeo/`,
@@ -116,17 +116,23 @@ export class NuxeoService {
       if (token) options.headers['Authorization'] = `Bearer ${token}`;
       this.nuxeoClient = new Nuxeo(options);
     }
-    this.initNxfileRequest(token);
+    this.initNxfileRequest(token, basicToken);
     return this.nuxeoClient.requestAuthenticationToken('My App', '123', 'my-device', 'rw');
   }
 
-  initNxfileRequest(token) {
-    if (!token) return;
-    fetch(`${this.baseUrl}/nuxeo/nxfile/default`, {
-      headers: {
+  initNxfileRequest(token, basicToken?: string) {
+    if (!token && !basicToken) return;
+    const options = {};
+    if (token) {
+      options["headers"] = {
         "Authorization": `Bearer ${token}`
       }
-    });
+    } else {
+      options["headers"] = {
+        "Authorization": `Basic ${basicToken}`
+      }
+    }
+    fetch(`${this.baseUrl}/nuxeo/nxfile/default`, options);
   }
 
   getRedirectLocation() {
