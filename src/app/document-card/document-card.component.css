@@ -1711,7 +1711,7 @@ document-card .lock-icon img {
   opacity: 0;
   background-size: 12px;
   margin-left: 0px;
-  margin-right: 7px;
+  margin-right: 0px;
 }
 .cardBlock:hover .hover-icon.not-downloadable-icon {
   opacity: 1;

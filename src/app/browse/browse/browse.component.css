@@ -3783,6 +3783,8 @@ ul.uploadAssetsClassifications li:hover path,
 }
 .deleteFolder {
   margin-right: 15px;
+  position: relative;
+  z-index: 2;
 }
 .deleteFolder svg{
   width: 20px;
