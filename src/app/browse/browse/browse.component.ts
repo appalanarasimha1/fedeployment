@@ -37,6 +37,7 @@ import { AddUserModalComponent } from "src/app/add-user-modal/add-user-modal.com
 import { fromEvent } from "rxjs";
 import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators";
 import { Departments, Workspace } from "./../../config/sector.config";
+import { IEntry, ISearchResponse } from "src/app/common/interfaces";
 
 @Component({
   selector: "app-browse",
@@ -1851,6 +1852,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.listExternalUserGlobal = users.map(user => user.id);
     localStorage.setItem("listExternalUserGlobal", JSON.stringify(this.listExternalUserGlobal));
   }
+
+  copyLink(asset: IEntry, assetType: string) {
+    asset.copy = this.sharedService.copyLink(asset.uid, assetType);
+  }
+
 }
 
 

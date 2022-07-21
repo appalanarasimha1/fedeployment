@@ -403,4 +403,24 @@ export class SharedService {
 
     return 'nopreview';
   }
+
+  copyLink(assetId: string, assetType: string): string {
+    const selBox = document.createElement("textarea");
+    selBox.style.position = "fixed";
+    selBox.style.left = "0";
+    selBox.style.top = "0";
+    selBox.style.opacity = "0";
+    if(assetType === 'folder') {
+      selBox.value = `${window.location.origin}/workspace?folder=${assetId}`;
+    } else {
+      selBox.value = `${window.location.origin}/asset-view?assetId=${assetId}`;
+    }
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand("copy");
+    document.body.removeChild(selBox);
+    return selBox.value;
+  }
+
 }
