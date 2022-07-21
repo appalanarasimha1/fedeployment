@@ -1678,6 +1678,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.fileSelected = [];
     this.copyRightItem = []
     this.canNotDelete=[]
+    this.selectedFolderList={}
     // this.isAware=false
     // $(".vh").prop("checked", false);
     this.sortedData.forEach((e) => (e.isSelected = false));
