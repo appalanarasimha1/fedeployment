@@ -1073,6 +1073,7 @@
                     >
                       Workspace
                     </th>
+                    <th style="width: 3%">&nbsp;&nbsp;</th>
                   </tr>
                   <tr
                     *ngFor="let item of sortedData; let i = index"
@@ -1220,6 +1221,7 @@
                       <!-- <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td> -->
                       <!-- <td *ngIf="isTrashView"><p>{{item.lastModified ? getDateInFormat(item.lastModified) : ''}}</p></td> -->
                       <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
+                      <td><img src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" /></td>
                     </tr>
                 </table>
               </div>
