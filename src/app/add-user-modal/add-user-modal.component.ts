@@ -182,6 +182,11 @@ export class AddUserModalComponent implements OnInit {
     if (this.listExternalUser.includes(item.user.id) && item.isGlobal != undefined) {
       this.updateExternalUserGroup(item.user.id, item.isGlobal);
     }
+    if (this.listExternalUser.includes(item.user.id) && !item.end) {
+      const end = new Date();
+      end.setMonth(new Date().getMonth() + 1);
+      item.end = end;
+    }
     const params = {
       permission: item.permission,
       comment: "",
@@ -198,11 +203,17 @@ export class AddUserModalComponent implements OnInit {
   }
 
   addPermission(item) {
+    if (this.listExternalUser.includes(item.user.id) && !item.end) {
+      const end = new Date();
+      end.setMonth(new Date().getMonth() + 1);
+      item.end = end;
+    }
     const params = {
       permission: item.permission,
       comment: "",
       users: [item.user.id]
     };
+    if (item.end) params['end'] = item.end;
     const payload = {
       params,
       context: {},
@@ -345,7 +356,6 @@ export class AddUserModalComponent implements OnInit {
     this.selectedExternalUser = item;
     if (this.selectedExternalUser.duration) {
       this.selectedMonth = this.selectedExternalUser.duration;
-      this.selectDuration(this.selectedMonth);
     } else if (this.selectedExternalUser.end) {
       const endDate = new Date(this.selectedExternalUser.end);
       const now = new Date();
@@ -353,8 +363,8 @@ export class AddUserModalComponent implements OnInit {
       this.selectedMonth = duration === 0 ? 1 : duration;
     } else {
       this.selectedMonth = 1;
-      this.selectDuration(this.selectedMonth);
     }
+    this.selectDuration(this.selectedMonth);
     if (this.listExternalUserGlobal.includes(this.selectedExternalUser.user?.id)) {
       this.isGlobal = true;
     }
@@ -431,9 +441,9 @@ export class AddUserModalComponent implements OnInit {
     this.selectedExternalUser.duration = duration;
   }
 
-  onFullAccessCheckboxChange(e) {
-    this.selectedExternalUser.isGlobal = e.target.checked;
-    this.isGlobal = e.target.checked;
+  onFullAccessCheckboxChange(e, checkedGlobal = true) {
+    this.selectedExternalUser.isGlobal = e.target.checked && checkedGlobal;
+    this.isGlobal = e.target.checked && checkedGlobal;
   }
 
   checkShowExternalUser() {
