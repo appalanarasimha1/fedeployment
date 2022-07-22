@@ -718,15 +718,17 @@ export class UploadModalComponent implements OnInit {
   }
 
   onCheckDownloadApproval(event) {
-    if (!event.target.checked) {
-      this.ownerName = [];
+      
+      const user = JSON.parse(localStorage.getItem('user'));
       for (let i = 0; i < this.getAssetNumber(); i++) {
-        this.customDownloadApprovalUsersMap[i] = [];
+        if (!event.target.checked) {
+          this.customDownloadApprovalUsersMap[i] = [];
+        } else {
+          this.overallDownloadApprovalUsers = [user.username];
+        }
+        this.customDownloadApprovalMap[i] = this.downloadApproval;
       }
-    }
-    for (let i = 0; i < this.getAssetNumber(); i++) {
-      this.customDownloadApprovalMap[i] = this.downloadApproval;
-    }
+    
   }
 
   openCopyright(fileIndex) {
@@ -1041,8 +1043,10 @@ export class UploadModalComponent implements OnInit {
   }
 
   changeDownloadTick(key: string): void {
-    this.customDownloadApprovalUsersMap[key] = [];
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.customDownloadApprovalUsersMap[key] = [user.username];
   }
+  
   checkValidation() {
     if (Object.keys(this.filesMap).length === 0 && !this.agreeTerms) {
       this.showError = true;

@@ -1473,9 +1473,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   getCreatorName(item) {
     const creatorName = item.properties["dc:creator"]?.properties?.firstName +
       " " + item.properties["dc:creator"]?.properties?.lastName;
-    // return item.properties["dc:creator"]?.properties?.firstName
-    //   ? creatorName
-    //   : item.properties["dc:creator"]?.id;
 
       if(item.properties["dc:creator"]?.properties?.firstName) {
         return creatorName;
@@ -1865,5 +1862,3 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
 }
-
-

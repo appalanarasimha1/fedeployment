@@ -615,7 +615,7 @@
                            [(ngModel)]="customDownloadApprovalUsersMap[file.key]"
                            [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }" >
                            <ng-template ng-option-tmp let-item="item">
-                              {{item.id}} ({{item.fullname}})
+                              {{item.id}} {{item.fullname ? '('+item.fullname+')' : ''}}
                            </ng-template>
                            </ng-select>
                            <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalUsersMap[file.key] ">Please complete all mandatory fields</div>
