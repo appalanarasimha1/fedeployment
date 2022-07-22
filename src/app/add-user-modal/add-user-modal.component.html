@@ -169,7 +169,7 @@
               <li>
                 <label class="control control--checkbox mb-10" style="width: calc(100% - 31px);">
                   This folder
-                  <input type="checkbox" checked />
+                  <input type="radio" [checked]="!isGlobal" (change)="onFullAccessCheckboxChange($event, false)"/>
                   <div class="control__indicator"></div>
                 </label>
                 <span class="removeIcon" style="position: relative;">
@@ -180,7 +180,7 @@
               <li>
                 <label class="control control--checkbox">
                   Full site access to all public assets
-                  <input type="checkbox" [checked]="isGlobal" (change)="onFullAccessCheckboxChange($event)"/>
+                  <input type="radio" [checked]="isGlobal" (change)="onFullAccessCheckboxChange($event)"/>
                   <div class="control__indicator"></div>
                 </label>
               </li>
