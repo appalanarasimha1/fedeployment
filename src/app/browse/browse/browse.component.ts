@@ -1471,14 +1471,21 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   getCreatorName(item) {
-    const creatorName =
-      item.properties["dc:creator"]?.properties?.firstName +
-      " " +
-      item.properties["dc:creator"]?.properties?.lastName;
-    return item.properties["dc:creator"]?.properties?.firstName
-      ? creatorName
-      : item.properties["dc:creator"]?.id;
+    const creatorName = item.properties["dc:creator"]?.properties?.firstName +
+      " " + item.properties["dc:creator"]?.properties?.lastName;
+    // return item.properties["dc:creator"]?.properties?.firstName
+    //   ? creatorName
+    //   : item.properties["dc:creator"]?.id;
+
+      if(item.properties["dc:creator"]?.properties?.firstName) {
+        return creatorName;
+      } else if(item.properties["dc:creator"]?.id) {
+        return item.properties["dc:creator"]?.id;
+      } else {
+        return item.properties["dc:creator"];
+      }
   }
+
   multiDownload() {
     console.log(
       this.downloadArray.length,
