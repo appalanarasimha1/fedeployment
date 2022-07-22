@@ -424,9 +424,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     // this.loading.push(true);
     const idsString = ids.map(id => `'${id}'`).join(',');
     let query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString}) AND sa:duplicateShow = '1'`;
-    if (this.sharedService.checkExternalUser()) {
-      query = query + " AND sa_access = 'All access'";
-    }
     const params = {
       currentPageIndex: 0,
       offset,
