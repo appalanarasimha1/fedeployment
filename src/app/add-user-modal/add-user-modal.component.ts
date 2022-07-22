@@ -35,6 +35,7 @@ export class AddUserModalComponent implements OnInit {
   externalCollaborators = {};
   selectedCollaborator: any;
   addedCollaborators: {};
+  addedExternalUsers: {};
   removedCollaborators: {};
   updatedCollaborators: {};
   invitedCollaborators: {};
@@ -72,6 +73,7 @@ export class AddUserModalComponent implements OnInit {
     this.folderId = this.data.folderId;
     this.folderCollaborators = this.data.folderCollaborators || {};
     this.addedCollaborators = {};
+    this.addedExternalUsers = {};
     this.removedCollaborators = {};
     this.updatedCollaborators = {};
     this.invitedCollaborators = {};
@@ -101,7 +103,19 @@ export class AddUserModalComponent implements OnInit {
     this.selectedCollaborator = null;
     const isExist = this.folderCollaborators[item.id];
     if (isExist) return;
-    else {
+    else if (this.listExternalUser.includes(item.id)) {
+      const end = new Date();
+      end.setMonth(new Date().getMonth() + 1);
+      this.addedExternalUsers[item.id] = {
+        end,
+        user: {
+          id: item.id,
+          fullname: item.fullname
+        },
+        permission: "Read",
+        duration: 1,
+      }
+    } else {
       this.addedCollaborators[item.id] = {
         user: {
           id: item.id,
@@ -116,12 +130,14 @@ export class AddUserModalComponent implements OnInit {
     return Object.keys(this.addedCollaborators).length > 0
     || Object.keys(this.removedCollaborators).length > 0
     || Object.keys(this.updatedCollaborators).length > 0
-    || Object.keys(this.invitedCollaborators).length > 0;
+    || Object.keys(this.invitedCollaborators).length > 0
+    || Object.keys(this.addedExternalUsers).length > 0;
   }
 
   removeUser(userId, type) {
     if (type === 'added') {
       delete this.addedCollaborators[userId];
+      delete this.addedExternalUsers[userId];
     } else if (type === 'removed') {
       this.removedCollaborators[userId] = this.folderCollaborators[userId];
       delete this.folderCollaborators[userId];
@@ -162,6 +178,9 @@ export class AddUserModalComponent implements OnInit {
     }
     for (const key in this.addedCollaborators) {
       await this.addPermission(this.addedCollaborators[key])
+    }
+    for (const key in this.addedExternalUsers) {
+      await this.addPermission(this.addedExternalUsers[key])
     }
     for (const key in this.invitedCollaborators) {
       await this.inviteUser(this.invitedCollaborators[key])
@@ -208,6 +227,9 @@ export class AddUserModalComponent implements OnInit {
       end.setMonth(new Date().getMonth() + 1);
       item.end = end;
     }
+    if (item.isGlobal != undefined && this.listExternalUser.includes(item.user.id)) {
+      this.updateExternalUserGroup(item.user.id, item.isGlobal);
+    }
     const params = {
       permission: item.permission,
       comment: "",
@@ -235,7 +257,7 @@ export class AddUserModalComponent implements OnInit {
     return this.apiService.post(apiRoutes.REMOVE_PERMISSION, payload).toPromise();
   }
 
-  updateExternalUserGroup(email, isAdded) {
+  async updateExternalUserGroup(email, isAdded) {
     const params = {
       email,
       isAdded,
@@ -245,7 +267,8 @@ export class AddUserModalComponent implements OnInit {
       context: {},
       input: this.folderId,
     };
-    return this.apiService.post(apiRoutes.UPDATE_EXTERNAL_GROUP_USER, payload).toPromise();
+    await this.apiService.post(apiRoutes.UPDATE_EXTERNAL_GROUP_USER, payload).toPromise();
+    this.sharedService.fetchExternalUserInfo();
   }
 
   async fetchFolder(id) {
@@ -389,6 +412,10 @@ export class AddUserModalComponent implements OnInit {
       this.updatedCollaborators[this.selectedExternalUser.user.id].end = end;
       if (this.selectedExternalUser.isGlobal !== undefined)
         this.updatedCollaborators[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
+    } else if (this.addedExternalUsers[this.selectedExternalUser.user.id]) {
+      this.addedExternalUsers[this.selectedExternalUser.user.id].end = end;
+      if (this.selectedExternalUser.isGlobal !== undefined)
+        this.addedExternalUsers[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     } else {
       this.invitedCollaborators[this.selectedExternalUser.user.id].end = end;
       if (this.selectedExternalUser.isGlobal !== undefined)
@@ -448,7 +475,8 @@ export class AddUserModalComponent implements OnInit {
 
   checkShowExternalUser() {
     return Object.keys(this.externalCollaborators).length > 0
-      || Object.keys(this.invitedCollaborators).length > 0;
+      || Object.keys(this.invitedCollaborators).length > 0
+      || Object.keys(this.addedExternalUsers).length > 0;
   }
 
   getExternalGroupUser() {
