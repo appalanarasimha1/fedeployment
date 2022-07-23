@@ -5,7 +5,7 @@
           <nav class="navbar navbar-expand-lg navbar-light ">
             <div class="logo-block">
               <a *ngIf="!checkExternalUser(true)" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
-              <a *ngIf="checkExternalUser(true)"  [routerLink]="['/']" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="checkExternalUser(true)" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
             </div>
             <span class="main-title tollTipCustom">
               <img class="play-button" src="../../../assets/images/button-play.svg" alt="" (click)="openSm(content)" />
