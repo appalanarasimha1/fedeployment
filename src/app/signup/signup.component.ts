@@ -32,6 +32,7 @@ export class SignupComponent implements OnInit {
     this.route.queryParams.subscribe(async (params) => {
       this.registrationId = params.registrationId;
       this.email = params.email;
+      if (this.email) this.checkEmail();
     })
   }
 
@@ -49,6 +50,27 @@ export class SignupComponent implements OnInit {
 
   checkProcessSignUp() {
     return this.newPassword && this.confirmNewPassword && this.newPassword === this.confirmNewPassword && this.registrationId;
+  }
+
+  checkEmail() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("EmailAddress", this.email);
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow'
+    };
+
+    fetch(`${this.baseUrl}/nuxeo/site/resetPassword/checkEmail`, requestOptions)
+      .then(response => {
+        if (response.status === 200) this.router.navigate(['/login'])
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
   }
 
   createAccount() {
