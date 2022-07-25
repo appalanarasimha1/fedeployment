@@ -16,6 +16,7 @@ export class DataService {
   private tagsMetaReal = new Subject<boolean>();
   private searchBarClick = new Subject<boolean>();
   private uploadedAssetData = new Subject<string>();
+  private showEverything = new Subject<boolean>();
   constructor() {}
 
   // Observable string streams
@@ -29,6 +30,7 @@ export class DataService {
   tagsMetaReal$ = this.tagsMetaReal.asObservable();
   searchBarClick$ = this.searchBarClick.asObservable();
   uploadedAssetData$ = this.uploadedAssetData.asObservable();
+  showEverything$ = this.showEverything.asObservable();
 
   sectorDataPush(sector) {
     this.sectorChangedSource.next(sector);
@@ -67,5 +69,8 @@ export class DataService {
 
   uploadedAssetDataInit(data: any) {
     this.uploadedAssetData.next(data);
+  }
+  showEverythingInit(data:boolean){
+    this.showEverything.next(data)
   }
 }

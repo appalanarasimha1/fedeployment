@@ -1642,7 +1642,7 @@ document-card .lock-icon img {
   padding: 6px 12px;
   background: #413E3C;
   color: #fff;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 20px;
   width: -webkit-max-content;
   width: -moz-max-content;
@@ -1718,4 +1718,18 @@ document-card .lock-icon img {
 }
 .form-group-custom {
   width: fit-content;
+}
+.hover-icon.not-downloadable-icon {
+  background: url(~/../../../../assets/images/file-not-downloadable.svg) no-repeat center center #fff;
+  -webkit-transition: .5s ease all;
+  -moz-transition: .5s ease all;
+  -o-transition: .5s ease all;
+  transition: .5s ease all;
+  opacity: 0;
+  background-size: 12px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.cardBlock:hover .hover-icon.not-downloadable-icon {
+  opacity: 1;
 }

@@ -70,9 +70,14 @@
           <div class="customToolTipWorkspace">Add to favorites</div>
         </div>
         
+
+        <div class="hover-icon not-downloadable-icon tollTipWorkspace" *ngIf="hasRequestRestriction()">
+          <div class="customToolTipWorkspace" style="left: auto; right: 0px; top: 35px;">File not downloadable</div>
+        </div>
+
         <a class="hover-icon download-icon"*ngIf="doc && !checkPopupNeeds()" href="{{getFileContent()}}"></a>
 
-        <a class="hover-icon download-icon" href="javascript:void(0)" *ngIf="checkPopupNeeds()">
+        <a class="hover-icon download-icon" href="javascript:void(0)" *ngIf="checkPopupNeeds() && !hasRequestRestriction()">
           <div *ngIf="doc" class="download-dropdown">
             <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
               <p *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
