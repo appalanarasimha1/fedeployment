@@ -513,4 +513,8 @@ export class SubHeaderComponent implements OnInit {
   highlightStr(str: any) {
     return str.toLowerCase().includes(this.searchText.toLowerCase());
   }
+
+  showEverything(){
+    this.dataService.showEverythingInit(true);  
+  }
 }
