@@ -1833,7 +1833,7 @@ section.lpBAck:before, .lpSecOne:before {
   width: calc(50% - 10px);
 }
 .paddingLeft{
-  padding-left: 50px;
+  padding-left: 50px !important;
 }
 .paddingLeft1{
   padding-left: 60px;
