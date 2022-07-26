@@ -782,7 +782,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       input: data.uid,
       params: {},
     };
-    this.loading.push(true);
+    // this.loading.push(true);
     this.apiService
       .post(apiRoutes.MARK_FAVOURITE, body)
       .subscribe((docs: any) => {
@@ -792,7 +792,7 @@ export class DocumentComponent implements OnInit, OnChanges {
           this.recentDataShow = this.sharedService.markRecentlyViewed(data);
         }
         this.addToFavorite(data);
-        this.loading.pop();
+        // this.loading.pop();
       });
   }
 
