@@ -267,4 +267,12 @@ export class HeaderComponent implements OnInit {
   blurOnSearch() {
     this.searchPopup = false;
   }
+
+  allNotifactionOpen(allNotifactionContent) {
+    this.modalOpen = true;
+    this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+    }, (reason) => {
+      this.closeModal();
+    });;
+  }
 }
