@@ -4,7 +4,9 @@ import { Moment } from 'moment'; // for interface
 import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { ASSET_TYPE, EXTERNAL_USER, localStorageVars } from '../common/constant';
+import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars } from '../common/constant';
+import { ApiService } from './api.service';
+import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 
@@ -21,6 +23,7 @@ export class SharedService {
 
   constructor(
     private router: Router,
+    private apiService: ApiService,
     private _snackBar: MatSnackBar) {}
 
   setSidebarToggle(slideToggle) {
@@ -139,6 +142,25 @@ export class SharedService {
     return `${dateStringArr[0]} ${dateStringArr[1].split('.')[0]}`;
   }
 
+  async fetchExternalUserInfo() {
+    await this.getExternalGroupUser();
+    await this.getExternalGroupUserGlobal();
+  }
+
+  async getExternalGroupUser() {
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
+    const users = res['entries'];
+    const listExternalUser = users.map(user => user.id);
+    localStorage.setItem("listExternalUser", JSON.stringify(listExternalUser));
+  }
+
+  async getExternalGroupUserGlobal() {
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
+    const users = res['entries'];
+    const listExternalUserGlobal = users.map(user => user.id);
+    localStorage.setItem("listExternalUserGlobal", JSON.stringify(listExternalUserGlobal));
+  }
+
   /**
    * if toDate is 2021-5-1
    * ex case 1: 2021-5-1 02:30:00 output '02:30'
@@ -248,7 +270,7 @@ export class SharedService {
   toTop(): void {
     window.scroll(0,0);
   }
-  
+
   checkExternalUser() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user?.groups) return true;
