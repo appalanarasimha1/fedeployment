@@ -581,13 +581,25 @@ export class UploadModalComponent implements OnInit {
 
   removeFileIndex(index) {
     delete this.filesMap[index];
+    if (this.filesMap[index]) {
+      delete this.filesMap[index];
+      delete this.filesUploadDone[index];
+    }
     const url = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
-    this.apiService.delete(url).subscribe((res) => {
+    try {
+      this.apiService.delete(url)
+      .subscribe((res) => {
+        if (this.filesMap[index]) {
+          delete this.filesMap[index];
+          delete this.filesUploadDone[index];
+        }
+      })
+    } catch(err) {
       if (this.filesMap[index]) {
         delete this.filesMap[index];
         delete this.filesUploadDone[index];
       }
-    });
+    }
   }
 
   //// Custom input dropdown
