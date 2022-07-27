@@ -144,7 +144,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getDownloadFileEstimation(data?: any): string {
-    data = this.doc?.properties?.["file:content"]?.length || data;
+    data = data || this.doc?.properties?.["file:content"]?.length;
     if (!data) return '0 Kb';
     return `${
       data / 1024 > 1024
