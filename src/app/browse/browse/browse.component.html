@@ -1191,9 +1191,9 @@
                           </span>
                         </span>
                       </p>
-                      <span *ngIf="item.edit">
-                        <input type="text" value="{{item.title}}" [(ngModel)]="item.title" />
-                        <div class="actionIcon">
+                      <span *ngIf="item.edit" style="display: flex;">
+                        <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
+                        <div class="actionIcon" style="margin-top: 0px;">
                           <svg
                             width="18"
                             height="13"
@@ -1208,7 +1208,7 @@
                             />
                           </svg>
                         </div>
-                        <div class="actionIcon">
+                        <div class="actionIcon" style="margin-top: 0px;">
                           <svg
                             width="14"
                             height="14"
