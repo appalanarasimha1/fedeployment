@@ -581,10 +581,7 @@ export class UploadModalComponent implements OnInit {
 
   removeFileIndex(index) {
     delete this.filesMap[index];
-    if (this.filesMap[index]) {
-      delete this.filesMap[index];
-      delete this.filesUploadDone[index];
-    }
+    delete this.filesUploadDone[index];
     const url = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     try {
       this.apiService.delete(url)
