@@ -684,3 +684,19 @@ header.updateHeader .navbar .navbar-collapse {
 .customSlider img {
     max-width: 100%;
 }
+
+::ng-deep .ng-dropdown-panel-items::-webkit-scrollbar-track{
+	background-color: transparent;
+}
+::ng-deep .ng-dropdown-panel-items::-webkit-scrollbar{
+	width: 6px;
+	background-color:transparent;
+}
+::ng-deep .ng-dropdown-panel-items::-webkit-scrollbar-thumb{
+	background-color: #E8E6DF;
+    border-radius: 10px;
+}
+::ng-deep .ng-dropdown-panel-items {
+    overflow: hidden;
+    overflow-y: scroll;
+}
