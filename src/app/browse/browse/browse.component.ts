@@ -1209,36 +1209,30 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.newTitle =this.selectedFolder.title
   }
 
-  renameFolder() {
+  renameFolder(title?: string, assetUid?: number) {
     let { newTitle, selectedFolder } = this;
-    // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
     if (newTitle?.trim() ===selectedFolder.title) return this.updateFolderAction();
-    // let checkTitle = this.CheckTitleAlreadyExits(newTitle)
-    // if(checkTitle)
-    //   return this.sharedService.showSnackbar(
-    //     "Name already exists",
-    //     6000,
-    //     "top",
-    //     "center",
-    //     "snackBarMiddle"
-    //     // "Updated folder",
-    //     // this.getTrashedWS.bind(this)
-    //   );
 
     this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
-        input: selectedFolder.uid,
+        input: assetUid || selectedFolder.uid,
         params: {
           properties: {
-            "dc:title": newTitle,
+            "dc:title": title || newTitle,
           },
         },
       })
       .subscribe((res: any) => {
-        // console.log({ res });
-        this.updateFolderAction();
+        let msg;
+        if(!title && !assetUid) {
+            this.updateFolderAction();
+            this.handleTest(res);
+            msg = 'Folder name has been updated';
+        } else {
+            msg = 'Asset name has been updated';
+        }
         this.sharedService.showSnackbar(
-          "Folder name is updated",
+          msg,
           6000,
           "top",
           "center",
@@ -1246,7 +1240,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           // "Updated folder",
           // this.getTrashedWS.bind(this)
         );
-        this.handleTest(res);
       });
   }
 

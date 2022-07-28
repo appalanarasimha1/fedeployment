@@ -1094,11 +1094,7 @@
                     </th>
                     <th style="width: 3%">&nbsp;&nbsp;</th>
                   </tr>
-                  <tr
-                    *ngFor="let item of sortedData; let i = index"
-                    [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''"
-                    class="groupFolder"
-                  >
+                  <tr *ngFor="let item of sortedData; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
                     <td>
                       <div
                         class="delete-folder-action"
@@ -1140,108 +1136,136 @@
                         </div>
                       </div>
                     </td>
-                      <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                        <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
-                        <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;">
-                          <span class="tollTipCustom">
+                    <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
+                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
+                      <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;">
+                        <span class="tollTipCustom">
+                          {{item.title}}
+                          <span class="tolltipContent" style="top: 28px;
+                          height: auto;
+                          white-space: break-spaces;
+                          text-align: left;
+                          padding: 5px 10px;">
                             {{item.title}}
-                            <span class="tolltipContent" style="top: 28px;
-                            height: auto;
-                            white-space: break-spaces;
-                            text-align: left;
-                            padding: 5px 10px;">
-                              {{item.title}}
-                            </span>
                           </span>
-                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
-                            <span class="tolltipContent" style="width: 100%;
-                            height: auto;
-                            white-space: break-spaces;
-                            text-align: left;
-                            padding: 5px 10px;">
-                              {{removeWorkspacesFromString(item.path, item.title)}}
-                            </span>
-                          </span>
-                        </p>
-                        <span (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
-                          <div class="publicUseBlock">
-                            <div *ngIf="item.properties['dc:isPrivate']" class="publicUseBlk">Private</div>
-                            <!-- <div class="mouseHoverInfo">
-                              <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
-                              <div class="manageAccessBtn">
-                                Manage access
-                              </div>
-                            </div> -->
-                          </div>
                         </span>
-                      </td>
-                      <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                        <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px;object-fit: contain;">
-                        <p (click)="open(item, item.type)" style="text-align: left">
-                          <span class="tollTipCustom">
+                        <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
+                          <span class="tolltipContent" style="width: 100%;
+                          height: auto;
+                          white-space: break-spaces;
+                          text-align: left;
+                          padding: 5px 10px;">
+                            {{removeWorkspacesFromString(item.path, item.title)}}
+                          </span>
+                        </span>
+                      </p>
+                      <span (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+                        <div class="publicUseBlock">
+                          <div *ngIf="item.properties['dc:isPrivate']" class="publicUseBlk">Private</div>
+                          <!-- <div class="mouseHoverInfo">
+                            <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
+                            <div class="manageAccessBtn">
+                              Manage access
+                            </div>
+                          </div> -->
+                        </div>
+                      </span>
+                    </td>
+                    <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
+                      <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px;object-fit: contain;">
+                      <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left">
+                        <span class="tollTipCustom">
+                          {{item.title}}
+                          <span class="tolltipContent" style="top: 28px;
+                          height: auto;
+                          white-space: break-spaces;
+                          text-align: left;
+                          padding: 5px 10px;">
                             {{item.title}}
-                            <span class="tolltipContent" style="top: 28px;
+                          </span>
+                        </span>
+                        <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
+                          <span class="tolltipContent" style="width: 100%;
                             height: auto;
                             white-space: break-spaces;
                             text-align: left;
                             padding: 5px 10px;">
-                              {{item.title}}
-                            </span>
+                            {{sharedService.removeWorkspacesFromString(item.path)}}
                           </span>
-                          <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
-                            <span class="tolltipContent" style="width: 100%;
-                              height: auto;
-                              white-space: break-spaces;
-                              text-align: left;
-                              padding: 5px 10px;">
-                              {{sharedService.removeWorkspacesFromString(item.path)}}
-                            </span>
-                          </span>
-                        </p>
-                      </td>
-                      <td *ngIf="!checkAssetType(item.type)">
-                        <span (click)="copyLink(item, 'folder')">
-                          <div *ngIf="!item.copy; else other_content" class="copyHover">
-                            <img src="../../../assets/images/Link.svg" />
-                            <div class="copyHoverInfo">Copy link</div>
-                          </div>
-                          <ng-template #other_content>
-                            <div class="copyedBlock">
-                              <img src="../../../assets/images/Tick-box.svg" /> Copied!
-                            </div>
-                          </ng-template>
                         </span>
-                      </td>
-                      <td *ngIf="checkAssetType(item.type)">
-                        <span (click)="copyLink(item, 'asset')">
-                          <div *ngIf="!item.copy; else other_content" class="copyHover">
-                            <img src="../../../assets/images/Link.svg" />
-                            <div class="copyHoverInfo">Copy link</div>
+                      </p>
+                      <span *ngIf="item.edit" style="display: flex;">
+                        <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
+                        <div class="actionIcon" style="margin-top: 0px;">
+                          <svg
+                            width="18"
+                            height="13"
+                            viewBox="0 0 18 13"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            (click)="renameFolder(item.title, item.uid); item.edit = false"
+                          >
+                            <path
+                              d="M6.99974 10.172L16.1917 0.979004L17.6067 2.393L6.99974 13L0.635742 6.636L2.04974 5.222L6.99974 10.172Z"
+                              fill="#DAAA00"
+                            />
+                          </svg>
+                        </div>
+                        <div class="actionIcon" style="margin-top: 0px;">
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            (click)="item.edit = false"
+                          >
+                            <path
+                              d="M6.99974 5.58623L11.9497 0.63623L13.3637 2.05023L8.41374 7.00023L13.3637 11.9502L11.9497 13.3642L6.99974 8.41423L2.04974 13.3642L0.635742 11.9502L5.58574 7.00023L0.635742 2.05023L2.04974 0.63623L6.99974 5.58623Z"
+                              fill="#DAAA00"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                    </td>
+                    <td *ngIf="!checkAssetType(item.type)">
+                      <span (click)="copyLink(item, 'folder')">
+                        <div *ngIf="!item.copy; else other_content" class="copyHover">
+                          <img src="../../../assets/images/Link.svg" />
+                          <div class="copyHoverInfo">Copy link</div>
+                        </div>
+                        <ng-template #other_content>
+                          <div class="copyedBlock">
+                            <img src="../../../assets/images/Tick-box.svg" /> Copied!
                           </div>
-                          <ng-template #other_content>
-                            <div class="copyedBlock">
-                              <img src="../../../assets/images/Tick-box.svg" /> Copied!
-                            </div>
-                          </ng-template>
-                        </span>
-                      </td>
-                      <!-- no preview show td -->
-                      <!-- <td *ngIf="checkAssetType(item.type)" (click)="open(item, item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                        <img src="../../../assets/images/no-preview.png" style="width: 20px;margin-right: 10px;object-fit: contain;"/>
-                        <p style="text-align: left">{{item.title}}</p>
-                      </td> -->
-                      <td class="tollTipCustom">
-                        <p>{{getCreatorName(item)}}</p>
-                        <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
-                      </td>
-                      <!-- <td><p>Luis C</p></td> -->
-                      <td *ngIf="!isTrashView"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
-                      <td *ngIf="isTrashView"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
-                      <!-- <td *ngIf="!showLinkCopy && !isTrashView"><p>{{item.properties['dc:start'] ? getDateInFormat(item.properties['dc:start']) : ''}}</p></td> -->
-                      <!-- <td *ngIf="isTrashView"><p>{{item.lastModified ? getDateInFormat(item.lastModified) : ''}}</p></td> -->
-                      <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
-                      <td ><img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" /></td>
-                    </tr>
+                        </ng-template>
+                      </span>
+                    </td>
+                    <td *ngIf="checkAssetType(item.type)">
+                      <span (click)="copyLink(item, 'asset')">
+                        <div *ngIf="!item.copy; else other_content" class="copyHover">
+                          <img src="../../../assets/images/Link.svg" />
+                          <div class="copyHoverInfo">Copy link</div>
+                        </div>
+                        <ng-template #other_content>
+                          <div class="copyedBlock">
+                            <img src="../../../assets/images/Tick-box.svg" /> Copied!
+                          </div>
+                        </ng-template>
+                      </span>
+                    </td>
+                    <td class="tollTipCustom">
+                      <p>{{getCreatorName(item)}}</p>
+                      <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
+                    </td>
+                    <td *ngIf="!isTrashView"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
+                    <td *ngIf="isTrashView"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
+                    <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
+                    <td>
+                      <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
+                      <img *ngIf="checkAssetType(item.type)" src="../../../assets/images/pencil-write.svg" (click)="item.edit = !item.edit" alt="" class="renameFolderImg" />
+                    </td>
+                  </tr>
                 </table>
               </div>
               <!-- <div class="col-xl-6 col-md-6" *ngFor="let item of searchList; let i = $index">
