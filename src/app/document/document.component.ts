@@ -433,9 +433,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     // this.loading.push(true);
     const idsString = ids.map(id => `'${id}'`).join(',');
     let query = `SELECT * FROM Document WHERE ecm:uuid IN (${idsString}) AND sa:duplicateShow = '1'`;
-    if (this.sharedService.checkExternalUser()) {
-      query = query + " AND sa_access = 'All access'";
-    }
     const params = {
       currentPageIndex: 0,
       offset,
@@ -785,7 +782,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       input: data.uid,
       params: {},
     };
-    this.loading.push(true);
+    // this.loading.push(true);
     this.apiService
       .post(apiRoutes.MARK_FAVOURITE, body)
       .subscribe((docs: any) => {
@@ -795,7 +792,7 @@ export class DocumentComponent implements OnInit, OnChanges {
           this.recentDataShow = this.sharedService.markRecentlyViewed(data);
         }
         this.addToFavorite(data);
-        this.loading.pop();
+        // this.loading.pop();
       });
   }
 

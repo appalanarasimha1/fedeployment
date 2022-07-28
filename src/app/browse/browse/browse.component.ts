@@ -37,6 +37,7 @@ import { AddUserModalComponent } from "src/app/add-user-modal/add-user-modal.com
 import { fromEvent } from "rxjs";
 import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators";
 import { Departments, Workspace } from "./../../config/sector.config";
+import { IEntry, ISearchResponse } from "src/app/common/interfaces";
 
 @Component({
   selector: "app-browse",
@@ -554,9 +555,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return this.folderAssetsResult[id];
     }
     let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
-    if (this.checkExternalUser()) {
-      url = url + '&sa_access=Internal access only'
-    }
     const result: any = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .toPromise();
@@ -620,9 +618,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder = { ...selected, uid: selected.id };
     this.sharedService.toTop();
     let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    // if (this.sharedService.checkExternalUser()) {
-    //   url = url + " AND sa_access != 'Internal access only'";
-    // }
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
@@ -1219,36 +1214,30 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.newTitle =this.selectedFolder.title
   }
 
-  renameFolder() {
+  renameFolder(title?: string, assetUid?: number) {
     let { newTitle, selectedFolder } = this;
-    // console.log({ Nuewwerty: this.newTitle, selectedFolder: this.selectedFolder });
     if (newTitle?.trim() ===selectedFolder.title) return this.updateFolderAction();
-    // let checkTitle = this.CheckTitleAlreadyExits(newTitle)
-    // if(checkTitle)
-    //   return this.sharedService.showSnackbar(
-    //     "Name already exists",
-    //     6000,
-    //     "top",
-    //     "center",
-    //     "snackBarMiddle"
-    //     // "Updated folder",
-    //     // this.getTrashedWS.bind(this)
-    //   );
 
     this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
-        input: selectedFolder.uid,
+        input: assetUid || selectedFolder.uid,
         params: {
           properties: {
-            "dc:title": newTitle,
+            "dc:title": title || newTitle,
           },
         },
       })
       .subscribe((res: any) => {
-        // console.log({ res });
-        this.updateFolderAction();
+        let msg;
+        if(!title && !assetUid) {
+            this.updateFolderAction();
+            this.handleTest(res);
+            msg = 'Folder name has been updated';
+        } else {
+            msg = 'Asset name has been updated';
+        }
         this.sharedService.showSnackbar(
-          "Folder name is updated",
+          msg,
           6000,
           "top",
           "center",
@@ -1256,7 +1245,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           // "Updated folder",
           // this.getTrashedWS.bind(this)
         );
-        this.handleTest(res);
       });
   }
 
@@ -1419,9 +1407,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       `${this.selectedFolder.path}/`;
       query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
     }
-    if (this.checkExternalUser() && this.selectedFolder2?.title != "Shared Folders") {
-      query = query + " AND sa:access != 'Internal access only'";
-    }
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -1475,14 +1460,18 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   getCreatorName(item) {
-    const creatorName =
-      item.properties["dc:creator"]?.properties?.firstName +
-      " " +
-      item.properties["dc:creator"]?.properties?.lastName;
-    return item.properties["dc:creator"]?.properties?.firstName
-      ? creatorName
-      : item.properties["dc:creator"]?.id;
+    const creatorName = item.properties["dc:creator"]?.properties?.firstName +
+      " " + item.properties["dc:creator"]?.properties?.lastName;
+
+      if(item.properties["dc:creator"]?.properties?.firstName) {
+        return creatorName;
+      } else if(item.properties["dc:creator"]?.id) {
+        return item.properties["dc:creator"]?.id;
+      } else {
+        return item.properties["dc:creator"];
+      }
   }
+
   multiDownload() {
     console.log(
       this.downloadArray.length,
@@ -1742,11 +1731,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   canSetAsPrivate() {
-    return this.selectedFolder?.type === 'Domain';
+    return !this.isPrivateFolder();
   }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    if (this.selectedFolder?.type !== 'Workspace' && !includeChild) return false;
+    if (!this.hasInheritAcl() && !includeChild) return false;
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
 
     const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
@@ -1771,6 +1760,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return ace.permission === 'Everything';
   }
 
+  hasInheritAcl() {
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (!selectedFolder?.contextParameters?.acls) return false;
+    const inheritAcl = selectedFolder.contextParameters.acls.find(acl => acl.name === 'local');
+    if (!inheritAcl?.aces) return false;
+    return true;
+  }
+
   getFolderCollaborators() {
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
     if (!selectedFolder?.contextParameters?.acls) return [];
@@ -1793,7 +1790,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   removeWorkspacesFromString(data: string, title: string): string {
 
-    let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 40);
+    let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 35);
     return dataWithoutWorkspace.replace('/'+title, '');
   }
 
@@ -1865,6 +1862,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.listExternalUserGlobal = users.map(user => user.id);
     localStorage.setItem("listExternalUserGlobal", JSON.stringify(this.listExternalUserGlobal));
   }
+
+  copyLink(asset: IEntry, assetType: string) {
+    asset.copy = this.sharedService.copyLink(asset.uid, assetType);
+  }
+
 }
-
-
