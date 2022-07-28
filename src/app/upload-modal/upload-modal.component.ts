@@ -132,7 +132,7 @@ export class UploadModalComponent implements OnInit {
     variableWidth: true,
     centerMode: false,
   };
-  uploadedAsset;
+  uploadedAsset=[];
   downloadApproval: boolean = false;
   breadCrumb = [];
   assetCache: { [id: string]: any } = {};
@@ -909,7 +909,10 @@ export class UploadModalComponent implements OnInit {
       payload["dc:start"] = new Date(this.associatedDate).toISOString();
     }
     const res = await this.apiService.post(url, payload, {headers: {'X-Batch-No-Drop': 'true'}}).toPromise();
-    this.uploadedAsset = res;
+
+    console.log("111111111",res);
+    
+    this.uploadedAsset.push(res);
     return {
       uid: res["uid"],
       title: res["title"],

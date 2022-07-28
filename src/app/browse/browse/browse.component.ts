@@ -215,9 +215,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.dataService.uploadedAssetData$.subscribe((result) => {
-      if (!result) return;
-      this.searchList.unshift(result);
+    this.dataService.uploadedAssetData$.subscribe((result:any) => {
+      console.log("2222222222222",result);
+      
+      if (!result?.length) return;
+      result.map((asset:any)=>{
+        this.searchList.unshift(asset);
+      })
+      
       this.sortedData = this.searchList.slice();
       this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
 
