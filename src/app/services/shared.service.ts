@@ -43,7 +43,7 @@ export class SharedService {
   }
 
   toUsCommaSystem(number: string|number): string {
-    return number.toLocaleString('en-US');
+    return number.toLocaleString('en-US'); // 'en-IN' for indian numeric system.
   }
 
   public isEmpty(value: any): boolean {
