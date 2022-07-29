@@ -132,7 +132,7 @@ export class UploadModalComponent implements OnInit {
     variableWidth: true,
     centerMode: false,
   };
-  uploadedAsset=[];
+  uploadedAsset;
   downloadApproval: boolean = false;
   breadCrumb = [];
   assetCache: { [id: string]: any } = {};
@@ -195,9 +195,12 @@ export class UploadModalComponent implements OnInit {
 
   closeModal() {
     if (this.data?.sectorId) {
-      this.dialogRef.close(this.uploadedAsset);
+    console.log("12345678", this.uploadedAsset);
+    this.dialogRef.close(this.uploadedAsset);
       return;
     }
+    console.log("1234567", this.selectedFolder);
+    
     this.dialogRef.close(this.selectedFolder);
   }
 
@@ -375,7 +378,7 @@ export class UploadModalComponent implements OnInit {
     // }
     this.dialogRef.close();
     if (this.data?.uid === this.selectedFolder?.uid) {
-      this.dataService.uploadedAssetDataInit(this.uploadedAsset);
+      this.dataService.uploadedAssetDataInit(this.uploadedAsset1);
       return;
     }
     const folderUid = this.selectedFolder?.uid; //  this.data?.uid || this.selectedFolder?.uid;
@@ -791,7 +794,7 @@ export class UploadModalComponent implements OnInit {
     });
     return this.humanFileSize(size);
   }
-
+  uploadedAsset1 =[]
   async publishAssets() {
     this.loading = true;
     this.publishing = true;
@@ -923,7 +926,8 @@ export class UploadModalComponent implements OnInit {
 
     console.log("111111111",res);
     
-    this.uploadedAsset.push(res);
+    this.uploadedAsset=res;
+    this.uploadedAsset1.push(res);
     return {
       uid: res["uid"],
       title: res["title"],
