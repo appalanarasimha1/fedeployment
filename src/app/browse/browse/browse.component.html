@@ -69,14 +69,16 @@
                     *ngFor="let firstChild of item.children; let fIndex = index"
                     style="cursor: pointer"
                     class="hoverPin"
-                  >
-                    <div
-                      class="d-flex set paddingLeft"
-                      [ngClass]="
+
+                    [ngClass]="
                         sectorSelected?.uid === firstChild.uid && !isTrashView
                           ? 'active-tab'
                           : ''
                       "
+                  >
+                  <!-- remove class "d-flex" -->
+                    <div
+                      class="set"
                       (click)="
                         handleGotoBreadcrumb(firstChild, fIndex);
                         selectedFolder2 = firstChild;
@@ -92,14 +94,15 @@
 
                       <!-- </div> -->
                       <!-- <div class="hoverTooltip">Pin this sector</div> -->
-                      <span style="padding-left: 10px; z-index: 9">
-                        <a
+                      <span class="paddingLeft" style="padding-left: 10px; z-index: 9; display: block;">
+                        {{ firstChild.title }}
+                        <!-- <a
                           [routerLink]="['/workspace']"
                           [queryParams]="{ folder: firstChild.uid }"
-                          class="blackTetx"
+                          class="blackTetx paddingLeft"
                         >
                           {{ firstChild.title }}
-                        </a>
+                        </a> -->
                       </span>
                       <!--  class="pinIcon" -->
                     </div>
@@ -807,7 +810,7 @@
                     </svg>
                     <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !!sortedData.length :false">Manage folder</div>
                     <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !sortedData.length :false" style="left: auto; right: 0px">There are no assets in the folder to update</div>
-                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true" style="left: auto; right: 0px">You do not have permissions to update classification</div>
+                    <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true" style="left: auto; right: 0px">You do not have permissions to manage this folder</div>
                   </li>
                   <li *ngIf="checkForDescription()" class="workspaceInfoHover">
                     <svg
