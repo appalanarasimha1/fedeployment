@@ -83,7 +83,11 @@ export class LoginComponent implements OnInit {
         .catch((err) => {
           this.loading = false;
           this.error = true;
-          this.errorMessage = 'Incorrect credentials!';
+          if (err === "ip_lockout") {
+            this.errorMessage = 'IP lockout';
+          } else if (err === "username_lockout") {
+            this.errorMessage = 'User lockout';
+          } else this.errorMessage = 'Incorrect credentials!';
           throw err;
         });
     }
