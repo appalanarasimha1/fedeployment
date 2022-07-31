@@ -248,7 +248,7 @@ export class SharedService {
   toTop(): void {
     window.scroll(0,0);
   }
-  
+
   checkExternalUser() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user?.groups) return true;
@@ -421,6 +421,16 @@ export class SharedService {
     document.execCommand("copy");
     document.body.removeChild(selBox);
     return selBox.value;
+  }
+
+  timeSince(date) {
+    return moment(date).fromNow();
+  }
+
+  isInThisWeek(date) {
+    const now = moment();
+    const input = moment(date);
+    return now.isoWeek() === input.isoWeek();
   }
 
 }

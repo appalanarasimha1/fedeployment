@@ -53,6 +53,9 @@ export class HeaderComponent implements OnInit {
   videoCompleted = false;
   searched = false;
   showItemOnlyOnce = true;
+  notifications: any[];
+  thisWeekNoti: any[];
+  earlierNoti: any[];
 
   constructor(
     private nuxeo: NuxeoService,
@@ -117,6 +120,7 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+    this.getNotifications();
 
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
@@ -266,6 +270,49 @@ export class HeaderComponent implements OnInit {
 
   blurOnSearch() {
     this.searchPopup = false;
+  }
+
+  async getNotifications() {
+    const payload = {
+      params: {},
+      context: {},
+    };
+    const res = await this.apiService.post(apiRoutes.GET_NOTIFICATIONS, payload).toPromise();
+    this.notifications = res['value'];
+    this.thisWeekNoti = [];
+    this.earlierNoti = [];
+    this.computeNotifications();
+  }
+
+  computeNotifications() {
+    let i = 0;
+    for (i; i < this.notifications.length; i++) {
+      if (!this.sharedService.isInThisWeek(this.notifications[i].eventDate)) break;
+      this.thisWeekNoti.push(this.notifications[i]);
+    }
+    this.earlierNoti = this.notifications.slice(i);
+  }
+
+  buildNotificationTitle(notification) {
+    const extended = notification.extended;
+    const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
+    return `${extended.updatedBy} renamed ${isAsset ? '' : 'folder '} "${extended.oldTitle}" to "${extended.title}"`;
+  }
+
+  getNotificationSince(notification) {
+    return this.sharedService.timeSince(new Date(notification.eventDate));
+  }
+
+  buildNotificationIcon(notification) {
+    const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
+    if (!isAsset) return '../../../assets/images/folder-delete-icon.svg';
+    return `${window.location.origin}/nuxeo/api/v1/repo/default/id/${notification.docUUID}/@rendition/thumbnail`;
+  }
+
+  goToNotificationLink(notification) {
+    const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
+    if (isAsset) this.router.navigate(['asset-view'], {queryParams : {assetId: notification.docUUID}});
+    else this.router.navigate(['workspace'], {queryParams : {folder: notification.docUUID}});
   }
 
   allNotifactionOpen(allNotifactionContent) {

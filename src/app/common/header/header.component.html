@@ -136,7 +136,7 @@
                       <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="notifactionBlk">
                           <img src="../../../assets/images/alarm-bell.svg">
-                          <div class="notifactionCount">2</div>
+                          <div class="notifactionCount">{{notifications?.length || 0}}</div>
                         </div>
                       </a>
                       <div class="dropdown-menu borderNone" aria-labelledby="notificationDropdown">
@@ -151,84 +151,22 @@
                           </div> -->
                           <!-- No Notifaction show block end -->
                           <ul>
-                            <li>
-                              <div class="notifactionHead">
-                                Yasmin M. archived an asset from folder Conference 2022.
-                              </div>
-                              <div class="notifactionImgCont">
-                                <div class="notifactionImg">
-                                  <img src="../../../assets/images/card-small-pic.jpg" alt="" />
+                            <li *ngFor="let item of notifications | slice:0:10">
+                              <div (click)="goToNotificationLink(item)" style="cursor: pointer;">
+                                <div class="notifactionHead">
+                                  {{buildNotificationTitle(item)}}
                                 </div>
-                                <div class="notifactionCont">
-                                  photo_21_NEOM_2.jpg
+                                <div class="notifactionImgCont">
+                                  <div class="notifactionImg">
+                                    <img src="{{buildNotificationIcon(item)}}" alt="" />
+                                  </div>
+                                  <div class="notifactionCont">
+                                    {{item.extended.title}}
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="dayWeek">
-                                2 minutes ago
-                              </div>
-                            </li>
-                            <li>
-                              <div class="notifactionHead notActive">
-                                Yasmin M. archived an asset from folder Conference 2022.
-                              </div>
-                              <div class="notifactionImgCont">
-                                <div class="notifactionImg">
-                                  <img src="../../../assets/images/folder-delete-icon.svg" alt="" style="width: 30px;" />
+                                <div class="dayWeek">
+                                  {{getNotificationSince(item)}}
                                 </div>
-                                <div class="notifactionCont">
-                                  photo_21_NEOM_2.jpg
-                                </div>
-                              </div>
-                              <div class="dayWeek">
-                                1 week ago
-                              </div>
-                            </li>
-                            <li>
-                              <div class="notifactionHead">
-                                Yasmin M. archived an asset from folder Conference 2022.
-                              </div>
-                              <div class="notifactionImgCont">
-                                <div class="notifactionImg">
-                                  <img src="../../../assets/images/card-small-pic.jpg" alt="" />
-                                </div>
-                                <div class="notifactionCont">
-                                  photo_21_NEOM_2.jpg
-                                </div>
-                              </div>
-                              <div class="dayWeek">
-                                2 minutes ago
-                              </div>
-                            </li>
-                            <li>
-                              <div class="notifactionHead notActive">
-                                Yasmin M. archived an asset from folder Conference 2022.
-                              </div>
-                              <div class="notifactionImgCont">
-                                <div class="notifactionImg">
-                                  <img src="../../../assets/images/card-small-pic.jpg" alt="" />
-                                </div>
-                                <div class="notifactionCont">
-                                  photo_21_NEOM_2.jpg
-                                </div>
-                              </div>
-                              <div class="dayWeek">
-                                2 minutes ago
-                              </div>
-                            </li>
-                            <li>
-                              <div class="notifactionHead notActive">
-                                Yasmin M. archived an asset from folder Conference 2022.
-                              </div>
-                              <div class="notifactionImgCont">
-                                <div class="notifactionImg">
-                                  <img src="../../../assets/images/card-small-pic.jpg" alt="" />
-                                </div>
-                                <div class="notifactionCont">
-                                  photo_21_NEOM_2.jpg
-                                </div>
-                              </div>
-                              <div class="dayWeek">
-                                2 minutes ago
                               </div>
                             </li>
                           </ul>
@@ -331,117 +269,46 @@
       <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1.0625 32.936L32.9375 1.06104" stroke="#040404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M32.9375 32.936L1.0625 1.06104" stroke="#040404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>        
+      </svg>
     </button>
     <div class="modal-body fix-notifaction">
       <h1>Notifications</h1>
       <div id="customScrollBar" class="notificationModal">
-        <div class="weekHead">This week</div>
-        <div class="notifactionList">
+        <div *ngIf="thisWeekNoti.length > 0" class="weekHead">This week</div>
+        <div *ngIf="thisWeekNoti.length > 0" class="notifactionList">
           <ul>
-            <li>
-              <div class="notifactionListContLeft">
-                <p><span>Yasmin M.</span> archived an asset in folder Conference 2022 of your Workspace.</p>
-                <p>Reason for archiving this asset: "Out of date"</p>
-                <div class="notifactionImgCont">
-                  <div class="notifactionImg"><img src="../../../assets/images/card-small-pic.jpg" alt=""></div>
-                  <div class="notifactionCont"> photo_21_NEOM_2.jpg </div>
+            <li *ngFor="let item of thisWeekNoti">
+              <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;">
+                <div class="notifactionListContLeft">
+                  <p>{{buildNotificationTitle(item)}}</p>
+                  <div class="notifactionImgCont">
+                    <div class="notifactionImg"><img src="{{buildNotificationIcon(item)}}" alt=""></div>
+                    <div class="notifactionCont">{{item.extended.title}}</div>
+                  </div>
                 </div>
-              </div>
-              <div class="notifactionListContRight">
-                2 minutes ago
-              </div>
-              <div class="openArchived">
-                <span>
-                  Open archived folder in workspace 
-                  <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4.95 6.364L0 1.414L1.414 0L7.778 6.364L1.414 12.728L0 11.314L4.95 6.364Z" fill="#937206"/>
-                  </svg>
-                </span>
-              </div>
-            </li>
-            <li>
-              <div class="notifactionListContLeft">
-                <p><span>Yousef H.</span> reversed your archival action. </p>
-                <p>Please contact Yousef H. if you have any further question.</p>
-                <div class="notifactionImgCont">
-                  <div class="notifactionImg"><img src="../../../assets/images/card-small-pic.jpg" alt=""></div>
-                  <div class="notifactionCont"> photo_21_NEOM_2.jpg </div>
+                <div class="notifactionListContRight">
+                  {{getNotificationSince(item)}}
                 </div>
-              </div>
-              <div class="notifactionListContRight">
-                5 days ago
               </div>
             </li>
           </ul>
         </div>
 
-        <div class="weekHead mt30">Earlier</div>
-        <div class="notifactionList">
+        <div *ngIf="earlierNoti.length > 0" class="weekHead mt30">Earlier</div>
+        <div *ngIf="earlierNoti.length > 0" class="notifactionList">
           <ul>
-            <li>
-              <div class="notifactionListContLeft">
-                <p><span>Yasmin M.</span> archived an asset in folder Conference 2022 of your Workspace.</p>
-                <p>Reason for archiving this asset: "Out of date"</p>
-                <div class="notifactionImgCont">
-                  <div class="notifactionImg"><img src="../../../assets/images/folder-delete-icon.svg" alt="" style="width: 30px;" /></div>
-                  <div class="notifactionCont"> photo_21_NEOM_2.jpg </div>
+            <li *ngFor="let item of earlierNoti">
+              <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;">
+                <div class="notifactionListContLeft">
+                  <p>{{buildNotificationTitle(item)}}</p>
+                  <div class="notifactionImgCont">
+                    <div class="notifactionImg"><img src="{{buildNotificationIcon(item)}}" alt=""></div>
+                    <div class="notifactionCont">{{item.extended.title}}</div>
+                  </div>
                 </div>
-              </div>
-              <div class="notifactionListContRight">
-                2 minutes ago
-              </div>
-            </li>
-            <li>
-              <div class="notifactionListContLeft">
-                <p><span>Yasmin M.</span> archived an asset in folder Conference 2022 of your Workspace.</p>
-                <p>Reason for archiving this asset: "Out of date"</p>
-                <div class="notifactionImgCont">
-                  <div class="notifactionImg"><img src="../../../assets/images/folder-delete-icon.svg" alt="" style="width: 30px;" /></div>
-                  <div class="notifactionCont"> photo_21_NEOM_2.jpg </div>
+                <div class="notifactionListContRight">
+                  {{getNotificationSince(item)}}
                 </div>
-              </div>
-              <div class="notifactionListContRight">
-                2 minutes ago
-              </div>
-            </li>
-            <li>
-              <div class="notifactionListContLeft">
-                <p><span>Yasmin M.</span> archived an asset in folder Conference 2022 of your Workspace.</p>
-                <p>Reason for archiving this asset: "Out of date"</p>
-                <div class="notifactionImgCont">
-                  <div class="notifactionImg"><img src="../../../assets/images/folder-delete-icon.svg" alt="" style="width: 30px;" /></div>
-                  <div class="notifactionCont"> photo_21_NEOM_2.jpg </div>
-                </div>
-              </div>
-              <div class="notifactionListContRight">
-                2 minutes ago
-              </div>
-            </li>
-            <li>
-              <div class="notifactionListContLeft">
-                <p><span>Yasmin M.</span> archived an asset in folder Conference 2022 of your Workspace.</p>
-                <p>Reason for archiving this asset: "Out of date"</p>
-                <div class="notifactionImgCont">
-                  <div class="notifactionImg"><img src="../../../assets/images/folder-delete-icon.svg" alt="" style="width: 30px;" /></div>
-                  <div class="notifactionCont"> photo_21_NEOM_2.jpg </div>
-                </div>
-              </div>
-              <div class="notifactionListContRight">
-                2 minutes ago
-              </div>
-            </li>
-            <li>
-              <div class="notifactionListContLeft">
-                <p><span>Yasmin M.</span> archived an asset in folder Conference 2022 of your Workspace.</p>
-                <p>Reason for archiving this asset: "Out of date"</p>
-                <div class="notifactionImgCont">
-                  <div class="notifactionImg"><img src="../../../assets/images/folder-delete-icon.svg" alt="" style="width: 30px;" /></div>
-                  <div class="notifactionCont"> photo_21_NEOM_2.jpg </div>
-                </div>
-              </div>
-              <div class="notifactionListContRight">
-                2 minutes ago
               </div>
             </li>
           </ul>
