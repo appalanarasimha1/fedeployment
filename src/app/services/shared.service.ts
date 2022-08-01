@@ -445,4 +445,14 @@ export class SharedService {
     return selBox.value;
   }
 
+  timeSince(date) {
+    return moment(date).fromNow();
+  }
+
+  isInThisWeek(date) {
+    const now = moment();
+    const input = moment(date);
+    return now.isoWeek() === input.isoWeek();
+  }
+
 }
