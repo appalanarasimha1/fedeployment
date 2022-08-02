@@ -1841,25 +1841,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async fetchExternalUserInfo(fetchAll = false) {
-    await this.getExternalGroupUser();
-    await this.getExternalGroupUserGlobal();
+    await this.sharedService.fetchExternalUserInfo();
+    this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
+    this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal"));
     if (!this.isExternalUser()) return;
     this.isExternalView = true;
     if (fetchAll) this.fetchAllPrivateWorkspaces();
-  }
-
-  async getExternalGroupUser() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
-    const users = res['entries'];
-    this.listExternalUser = users.map(user => user.id);
-    localStorage.setItem("listExternalUser", JSON.stringify(this.listExternalUser));
-  }
-
-  async getExternalGroupUserGlobal() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
-    const users = res['entries'];
-    this.listExternalUserGlobal = users.map(user => user.id);
-    localStorage.setItem("listExternalUserGlobal", JSON.stringify(this.listExternalUserGlobal));
   }
 
   copyLink(asset: IEntry, assetType: string) {
