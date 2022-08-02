@@ -385,6 +385,9 @@
                       ><img src="../../../assets/images/remove-icon.svg" alt=""
                     /></a>
                   </div>
+                  <div *ngIf="!isTrashView && count === 1" class="downloadFileWorkspace">
+                    <img src="../../../assets/images/pencil-write.svg" (click)="editableAsset()" alt="" class="renameFolderImg" />
+                  </div>
                   <div class="downloadFileWorkspace">
                     <a (click)="multiDownload()"
                       href="javascript:void(0)"
@@ -1263,7 +1266,7 @@
                     <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     <td>
                       <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
-                      <img *ngIf="checkAssetType(item.type)" src="../../../assets/images/pencil-write.svg" (click)="item.edit = !item.edit" alt="" class="renameFolderImg" />
+                      <!-- <img *ngIf="checkAssetType(item.type)" src="../../../assets/images/pencil-write.svg" (click)="item.edit = !item.edit" alt="" class="renameFolderImg" /> -->
                     </td>
                   </tr>
                 </table>

@@ -1542,7 +1542,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(canDelete){
       this.selectFolder($event, item, i)
     }
-    console.log("itemitemitemitemitem", item, $event);
+    
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
     //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
@@ -1578,7 +1578,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
     } else {
       //  if (!$event.target?.checked || !$event.checked) {
-      console.log("inside unchecked");
       this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
       this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
       this.copyRightItem = this.copyRightItem.filter((m) => m !== item.uid);
@@ -1865,6 +1864,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   copyLink(asset: IEntry, assetType: string) {
     asset.copy = this.sharedService.copyLink(asset.uid, assetType);
+  }
+
+  editableAsset() {
+    console.log(this.downloadArray);
+    const index = this.sortedData.findIndex(item => item.uid === this.downloadArray[0]); //NOTE: downloadArray will have only 1 item when editing asset name
+    this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
   }
 
 }
