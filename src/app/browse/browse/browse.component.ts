@@ -964,7 +964,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.searchList = this.trashedList;
         this.sortedData = this.searchList.slice();
         this.isTrashView = true;
-        this.handleSelectMenu(1, this.viewType || "LIST");
+        this.handleSelectMenu(1,"LIST");
         this.showMoreButton = false;
         this.loading = false;
         // this.deletedByMeFilter();
@@ -1071,7 +1071,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       const payload = await this.sharedService.getCreateFolderPayload(
-        folderName,
+        folderName?.trim(),
         this.selectedFolder2.title,
         this.selectedFolder,
         description,
@@ -1223,7 +1223,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         input: assetUid || selectedFolder.uid,
         params: {
           properties: {
-            "dc:title": title || newTitle,
+            "dc:title": title?.trim() || newTitle?.trim(),
           },
         },
       })
@@ -1231,7 +1231,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         let msg;
         if(!title && !assetUid) {
             this.updateFolderAction();
-            this.handleTest(res);
+            
+            // this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
             msg = 'Asset name has been updated';
