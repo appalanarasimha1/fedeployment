@@ -8,3 +8,9 @@
     line-height: 24px;
     color: #000000;
 }
+.pl-160 {
+    padding-left: 160px !important;
+}
+.pt-5 {
+    padding-top: 1rem !important;
+}

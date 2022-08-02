@@ -17,8 +17,8 @@
     padding-top: 0px !important;
 }
 .reportBlock {
-    padding: 0px 0 60px;
-    min-height: calc(100vh - 130px);
+  padding: 0px 0px 60px 110px;
+  min-height: calc(100vh - 130px);
 }
 .displayFlex{
     display: flex;
@@ -84,6 +84,8 @@ static-card:nth-child(5){
 /* Custom tabs css start 12-Nov-2021 */
 .customTab {
     padding: 60px 0px 40px;
+    width: 100% !important;
+    float: left;
   }
   .customTab .tab-content {
     padding: 25px 0px 0px;

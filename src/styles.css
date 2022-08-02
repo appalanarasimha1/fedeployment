@@ -3122,7 +3122,7 @@ input[name=gender]:checked {
 }
 
 /*html, body { height: 100%; }*/
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0;}
 
 .custom-progress progress-bar{
   width: 100%;
@@ -3711,7 +3711,7 @@ img:not([src]) {
   z-index: 9999 !important;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; }
 
 
 /* Tree Css */
@@ -4084,6 +4084,7 @@ document-card img {
 .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
   padding-right: var(--bs-gutter-x,3.75rem);
   padding-left: var(--bs-gutter-x,3.75rem);
+  max-width: 100%;
 }
 .slick-initialized .slick-slide {
   /* opacity: 0.5; */
@@ -4231,7 +4232,7 @@ body {
 }
 @media (min-width: 1200px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl {
-    max-width: 1320px;
+    max-width: 100%;
   }
 }
 .slick-list.draggable {
@@ -4455,10 +4456,19 @@ body {
 }
 header.updateHeader .container {
   padding-left: var(--bs-gutter-x,1.75rem);
-  padding-right: var(--bs-gutter-x,2.75rem);
+  padding-right: var(--bs-gutter-x,1.75rem);
+  max-width: 96%;
 }
 ::ng-deep .modal-dialog {
   display: block;
   max-width: 400px !important;
   width: 400px;
+}
+.customTab {
+  width: calc(100% - 110px) !important;
+  float: right;
+}
+.bottomItems ul li .dropdown-item:focus, .bottomItems ul li .dropdown-item:hover {
+  background-color: transparent;
+  outline: none;
 }
