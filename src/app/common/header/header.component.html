@@ -133,6 +133,52 @@
                     </li> -->
 
                     <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="notifactionBlk">
+                          <img src="../../../assets/images/alarm-bell.svg">
+                          <div class="notifactionCount">{{notifications?.length || 0}}</div>
+                        </div>
+                      </a>
+                      <div class="dropdown-menu borderNone" aria-labelledby="notificationDropdown">
+                        <div id="customScrollBar" class="notificationDropdown">
+                          <!-- No Notifaction show block start -->
+                          <!-- <div class="no-notifaction">
+                            <img src="../../../assets/images/alarm-bell-1.svg" alt="" />
+                            <div class="no-notifactionContent">
+                              <span>You're all caught up</span>
+                              Check back later for new notifications.
+                            </div>
+                          </div> -->
+                          <!-- No Notifaction show block end -->
+                          <ul>
+                            <li *ngFor="let item of notifications | slice:0:10">
+                              <div (click)="goToNotificationLink(item)" style="cursor: pointer;">
+                                <div class="notifactionHead">
+                                  {{buildNotificationTitle(item)}}
+                                </div>
+                                <div class="notifactionImgCont">
+                                  <div class="notifactionImg">
+                                    <img src="{{buildNotificationIcon(item)}}" alt="" />
+                                  </div>
+                                  <div class="notifactionCont">
+                                    {{item.extended.title}}
+                                  </div>
+                                </div>
+                                <div class="dayWeek">
+                                  {{getNotificationSince(item)}}
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+
+                          <div class="view-all-notifaction">
+                            <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="26" height="26">
                       </a>
@@ -217,5 +263,58 @@
 
   </ng-template>
   <!-- sprint16 end -->
+
+  <ng-template #allNotifactionContent let-modal>
+    <button type="button" class="close closeNotifaction" aria-label="Close" (click)="modal.dismiss('Cross click'); closeModal()">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.0625 32.936L32.9375 1.06104" stroke="#040404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M32.9375 32.936L1.0625 1.06104" stroke="#040404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="modal-body fix-notifaction">
+      <h1>Notifications</h1>
+      <div id="customScrollBar" class="notificationModal">
+        <div *ngIf="thisWeekNoti.length > 0" class="weekHead">This week</div>
+        <div *ngIf="thisWeekNoti.length > 0" class="notifactionList">
+          <ul>
+            <li *ngFor="let item of thisWeekNoti">
+              <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;">
+                <div class="notifactionListContLeft">
+                  <p>{{buildNotificationTitle(item)}}</p>
+                  <div class="notifactionImgCont">
+                    <div class="notifactionImg"><img src="{{buildNotificationIcon(item)}}" alt=""></div>
+                    <div class="notifactionCont">{{item.extended.title}}</div>
+                  </div>
+                </div>
+                <div class="notifactionListContRight">
+                  {{getNotificationSince(item)}}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="earlierNoti.length > 0" class="weekHead mt30">Earlier</div>
+        <div *ngIf="earlierNoti.length > 0" class="notifactionList">
+          <ul>
+            <li *ngFor="let item of earlierNoti">
+              <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;">
+                <div class="notifactionListContLeft">
+                  <p>{{buildNotificationTitle(item)}}</p>
+                  <div class="notifactionImgCont">
+                    <div class="notifactionImg"><img src="{{buildNotificationIcon(item)}}" alt=""></div>
+                    <div class="notifactionCont">{{item.extended.title}}</div>
+                  </div>
+                </div>
+                <div class="notifactionListContRight">
+                  {{getNotificationSince(item)}}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 
 </header>
