@@ -1176,7 +1176,12 @@
                       </span>
                     </td>
                     <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                      <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px;object-fit: contain;">
+                      <div class="zoomImg">
+                        <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px;object-fit: contain;">
+                        <div class="zoomImgBlock">
+                          <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)">
+                        </div>
+                      </div>
                       <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left">
                         <span class="tollTipCustom">
                           {{item.title}}
