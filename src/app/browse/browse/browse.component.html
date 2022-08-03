@@ -41,7 +41,8 @@
                     fetchAllSectors(item.isExpand);
                     selectedFolder2 = item;
                     selectedFolder = item;
-                    createBreadCrumb(item.title, item.type, item.path)
+                    createBreadCrumb(item.title, item.type, item.path);
+                    initialLoad = true;
                   "
                 >
                   <div style="z-index: 9">
@@ -84,7 +85,8 @@
                         selectedFolder2 = firstChild;
                         selectedFolder = firstChild;
                         sectorSelected = firstChild;
-                        closeOtherSectore(firstChild, item.children)
+                        closeOtherSectore(firstChild, item.children);
+                        initialLoad= false
                       "
                     >
                       <!-- <div style="z-index: 9;"> -->
@@ -1056,7 +1058,7 @@
                   matSort
                   (matSortChange)="sortData($event)"
                   class="folderListview pb-5"
-                  *ngIf="searchList?.length || selectedFolder.uid !== parentId"
+                  *ngIf="!initialLoad && (searchList?.length || selectedFolder.uid !== parentId )"
                 >
                   <tr>
                     <th style="width: 3%">&nbsp;&nbsp;</th>
