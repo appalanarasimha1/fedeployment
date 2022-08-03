@@ -222,8 +222,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
-      console.log("2222222222222",result);
-      
       if (!result?.length) return;
       result.map((asset:any)=>{
         this.searchList.unshift(asset);

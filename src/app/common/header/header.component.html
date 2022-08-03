@@ -318,20 +318,20 @@
   </ng-template>
 
 </header>
-<section class="left-sidebar">
+<section class="left-sidebar" *ngIf="showFooter" >
   <ul class="sidebarList">
     <li>
-      <a class="sidebarLink active" *ngIf="!checkExternalUser(true)" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
+      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="!checkExternalUser(true)" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
         <img src="../../../assets/images/discovery-icon.svg" />
         Discovery
       </a>
-      <a class="sidebarLink active" *ngIf="checkExternalUser(true)">
+      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="checkExternalUser(true)">
         <img src="../../../assets/images/discovery-icon.svg" />
         Discovery
       </a>
     </li>
     <li>
-      <a class="sidebarLink" [routerLink]="['/workspace']">
+      <a class="sidebarLink" [ngClass]="{'active':checkWorkspaceActive()}" [routerLink]="['/workspace']">
         <img src="../../../assets/images/workspace-icon.svg" />
         Workspace
       </a>
