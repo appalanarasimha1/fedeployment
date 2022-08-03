@@ -964,7 +964,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.searchList = this.trashedList;
         this.sortedData = this.searchList.slice();
         this.isTrashView = true;
-        this.handleSelectMenu(1, this.viewType || "LIST");
+        this.handleSelectMenu(1,"LIST");
         this.showMoreButton = false;
         this.loading = false;
         // this.deletedByMeFilter();
@@ -1071,7 +1071,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       const payload = await this.sharedService.getCreateFolderPayload(
-        folderName,
+        folderName?.trim(),
         this.selectedFolder2.title,
         this.selectedFolder,
         description,
@@ -1223,7 +1223,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         input: assetUid || selectedFolder.uid,
         params: {
           properties: {
-            "dc:title": title || newTitle,
+            "dc:title": title?.trim() || newTitle?.trim(),
           },
         },
       })
@@ -1231,7 +1231,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         let msg;
         if(!title && !assetUid) {
             this.updateFolderAction();
-            this.handleTest(res);
+            
+            // this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
             msg = 'Asset name has been updated';
@@ -1542,7 +1543,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(canDelete){
       this.selectFolder($event, item, i)
     }
-    console.log("itemitemitemitemitem", item, $event);
+    
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
     //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
@@ -1578,7 +1579,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
     } else {
       //  if (!$event.target?.checked || !$event.checked) {
-      console.log("inside unchecked");
       this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
       this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
       this.copyRightItem = this.copyRightItem.filter((m) => m !== item.uid);
@@ -1842,29 +1842,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async fetchExternalUserInfo(fetchAll = false) {
-    await this.getExternalGroupUser();
-    await this.getExternalGroupUserGlobal();
+    await this.sharedService.fetchExternalUserInfo();
+    this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
+    this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal"));
     if (!this.isExternalUser()) return;
     this.isExternalView = true;
     if (fetchAll) this.fetchAllPrivateWorkspaces();
   }
 
-  async getExternalGroupUser() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
-    const users = res['entries'];
-    this.listExternalUser = users.map(user => user.id);
-    localStorage.setItem("listExternalUser", JSON.stringify(this.listExternalUser));
-  }
-
-  async getExternalGroupUserGlobal() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
-    const users = res['entries'];
-    this.listExternalUserGlobal = users.map(user => user.id);
-    localStorage.setItem("listExternalUserGlobal", JSON.stringify(this.listExternalUserGlobal));
-  }
-
   copyLink(asset: IEntry, assetType: string) {
     asset.copy = this.sharedService.copyLink(asset.uid, assetType);
+  }
+
+  editableAsset() {
+    const index = this.sortedData.findIndex(item => item.uid === this.downloadArray[0]); //NOTE: downloadArray will have only 1 item when editing asset name
+    this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
+    this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
   }
 
 }

@@ -147,7 +147,7 @@
           </div>
 
           <div *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
-            
+
             <div class="row">
               <div class="col-xl-7">
                 <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
@@ -384,6 +384,9 @@
                     <a (click)="removeAssets()"
                       ><img src="../../../assets/images/remove-icon.svg" alt=""
                     /></a>
+                  </div>
+                  <div *ngIf="!isTrashView && count === 1" class="downloadFileWorkspace">
+                    <img src="../../../assets/images/pencil-write.svg" (click)="editableAsset()" alt="" class="renameFolderImg" />
                   </div>
                   <div class="downloadFileWorkspace">
                     <a (click)="multiDownload()"
@@ -1047,12 +1050,13 @@
                   Choose a workspace on the left to begin
                 </p>
               </div>
+              
               <div class="col-xl-12 col-md-12 customTableStyle">
                 <table
                   matSort
                   (matSortChange)="sortData($event)"
                   class="folderListview pb-5"
-                  *ngIf="searchList?.length && selectedFolder.uid !== parentId"
+                  *ngIf="searchList?.length || selectedFolder.uid !== parentId"
                 >
                   <tr>
                     <th style="width: 3%">&nbsp;&nbsp;</th>
@@ -1263,7 +1267,7 @@
                     <td *ngIf="isTrashView"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     <td>
                       <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
-                      <img *ngIf="checkAssetType(item.type)" src="../../../assets/images/pencil-write.svg" (click)="item.edit = !item.edit" alt="" class="renameFolderImg" />
+                      <!-- <img *ngIf="checkAssetType(item.type)" src="../../../assets/images/pencil-write.svg" (click)="item.edit = !item.edit" alt="" class="renameFolderImg" /> -->
                     </td>
                   </tr>
                 </table>

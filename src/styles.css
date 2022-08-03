@@ -4472,3 +4472,22 @@ header.updateHeader .container {
   background-color: transparent;
   outline: none;
 }
+.custom-modal-notifaction button.close.closeNotifaction {
+  position: absolute;
+  left: 30px !important;
+  top: 25px !important;
+  height: 25px;
+  width: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+.custom-modal-notifaction .modal-content {
+  width: 880px;
+  margin: 0px auto;
+  border: 0px;
+  border-radius: 10px;
+  background: transparent;
+}
+.custom-modal-notifaction button.close.closeNotifaction svg {
+  width: 100%;
+}

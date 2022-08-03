@@ -89,7 +89,13 @@ export class NuxeoService {
     return;
   }
 
-  authenticateUser(username: string, password: string) {
+  async authenticateUser(username: string, password: string) {
+    const res = await this.checkUserLockout(username, password);
+    if (res.status === 200) {
+      const statusText = await res.text();
+      if (statusText && statusText !== 'OK') throw statusText;
+    }
+
     this.nuxeoClient = new Nuxeo({
       // baseURL: `${this.baseUrl}/nuxeo/`,
       baseURL: `${this.baseUrl}/nuxeo/`,
@@ -102,6 +108,22 @@ export class NuxeoService {
     });
 
     return this.requestToken(null, btoa(`${username}:${password}`));
+  }
+
+  checkUserLockout(username: string, password: string) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("username", username);
+    urlencoded.append("password", password);
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow'
+    };
+
+    return fetch(`${this.baseUrl}/nuxeo/site/authCheck/check`, requestOptions);
   }
 
   requestToken(token, basicToken?: string) {
