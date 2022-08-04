@@ -334,8 +334,6 @@ export class HeaderComponent implements OnInit {
   }
 
   checkHomeActive(){
-    console.log(window.location.href,window.location.origin);
-    
     if (window.location.href==`${window.location.origin}/`) {
       return true
     }
