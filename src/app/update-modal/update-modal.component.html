@@ -29,15 +29,18 @@
           </div>
        </div>
        <div class="row upload-form-input custom-date-picker mb-20">
+        <!-- <input id="txt" type="text" value="Hello World!" /> -->
           <div class="col-xl-2 col-md-2">
              <label for="date">Date</label>
           </div>
           <div class="col-xl-3 col-md-3" >
              <mat-form-field>
-                <input  matInput [matDatepicker]="picker" [(ngModel)]="associatedDate"
-                 (click)="picker.open()" [ngClass]="{'goldenText': associatedDate}">
-                <mat-datepicker-toggle  matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="associatedDate"
+                 (click)="picker.open()" [ngClass]="{'goldenText': associatedDate}" id="txt" type="text" autofocus>
+                <mat-datepicker-toggle  matSuffix [for]="picker" (click)="resizeInput()"></mat-datepicker-toggle>
+                <mat-datepicker #picker
+                (opened)="resizeInput()"
+                (closed)="resizeInput()"></mat-datepicker>
              </mat-form-field>
           </div>
        </div>
