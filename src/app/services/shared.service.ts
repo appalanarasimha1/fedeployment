@@ -4,6 +4,7 @@ import { Moment } from 'moment'; // for interface
 import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import JSEncrypt from 'JSEncrypt';
 import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars } from '../common/constant';
 import { ApiService } from './api.service';
 import { apiRoutes } from "src/app/common/config";
@@ -453,6 +454,12 @@ export class SharedService {
     const now = moment();
     const input = moment(date);
     return now.isoWeek() === input.isoWeek();
+  }
+
+  encryptText(text, key) {
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(key);
+    return encrypt.encrypt(text).toString();
   }
 
 }
