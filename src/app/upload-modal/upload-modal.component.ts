@@ -221,7 +221,9 @@ export class UploadModalComponent implements OnInit {
   filterWhitelistFiles(files: any) {
     const filteredFile = [];
     for (const file of files) {
-      if (WHITELIST_EXTENSIONS.includes(file.type)) {
+      const filenameSplit = file.name.split('.');
+      if (filenameSplit.length > 2) {}
+      else if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
