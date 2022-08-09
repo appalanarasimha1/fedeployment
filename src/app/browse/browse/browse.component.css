@@ -3881,3 +3881,37 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
   line-height: normal;
   border: 0px;
 }
+
+div#dropzone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999999999;
+  width: 100%;
+  min-height: 300px;
+  height: 100%;
+  transition: visibility 175ms, opacity 175ms;
+  display: table;
+  color: #fff;
+  background: rgba(249, 247, 242, 0.85);
+  border: 2px dashed #937206;
+  border-radius: 8px;
+}
+div#textnode {
+  display: table-cell;
+  text-align: center;
+  vertical-align: top;
+  padding: 50px;
+}
+div#textnode img {
+  margin-bottom: 20px;
+}
+div#textnode h3 {
+  color: #937206;
+  font-size: 18px;
+  padding-bottom: 10px;
+}
+div#textnode p {
+  color: #DEB31A;
+  font-size: 14px;
+}

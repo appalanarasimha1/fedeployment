@@ -250,6 +250,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
 
     this.fetchExternalUserInfo(fetchAll);
+    this.dragNDrop();
   }
 
   ngAfterViewInit(): void {
@@ -1865,6 +1866,63 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const index = this.sortedData.findIndex(item => item.uid === this.downloadArray[0]); //NOTE: downloadArray will have only 1 item when editing asset name
     this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
     this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
+  }
+
+  dragNDrop() {
+    var lastTarget = null;
+
+    function isFile(evt) {
+        var dt = evt.dataTransfer;
+
+        for (var i = 0; i < dt.types.length; i++) {
+            if (dt.types[i] === "Files") {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    window.addEventListener("dragenter", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+      // if (box != null) {
+        if (isFile(e)) {
+            lastTarget = e.target;
+            box.style.visibility = "";
+            box.style.opacity = '1';
+            box1.style.fontSize = "48px";
+        }
+      // }
+    });
+
+    window.addEventListener("dragleave", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+        e.preventDefault();
+        if (e.target === lastTarget || e.target === document) {
+            box.style.visibility = "hidden";
+            box.style.opacity = '0';
+            box1.style.fontSize = "42px";
+        }
+    });
+
+    window.addEventListener("dragover", function (e) {
+        e.preventDefault();
+    });
+
+    window.addEventListener("drop", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+        e.preventDefault();
+        box.style.visibility = "hidden";
+        box.style.opacity = '0';
+        box1.style.fontSize = "42px";
+        if(e.dataTransfer.files.length == 1)
+        {
+            document.querySelector("#text").innerHTML =
+                "<b>File selected:</b><br>" + e.dataTransfer.files[0].name;
+        }
+    });
   }
 
 }
