@@ -11,7 +11,7 @@ export const environment = {
     url: 
     // "https://groundx.the-it-cloud.net/auth/", 
     //"https://devkeycloak.the-it-cloud.net/auth",
-    "groundxkeycloak.oci.sense.neomos.online",
+    "devkeycloak.oci.sense.neomos.online",
     realm: "GroundX",
     clientId: "nuxeo-client-public",
   },
