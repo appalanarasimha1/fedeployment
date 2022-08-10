@@ -78,3 +78,17 @@ export const YEARS = [
 ];
 
 export const ACCESS_TITLE = "Access right";
+
+export const WHITELIST_EXTENSIONS = [
+  "application/pdf",
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+  "video/x-flv",
+  "video/mp4",
+  "application/x-mpegURL",
+  "video/x-m4v",
+  "video/x-msvideo",
+  "video/mpeg"
+]
