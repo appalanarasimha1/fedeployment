@@ -8,6 +8,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { TOTAL_ASSETS_LABEL } from 'src/app/common/constant';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { Departments ,Workspace} from './../../config/sector.config';
 
 @Component({
   selector: "report-main",
@@ -197,17 +198,14 @@ export class ReportMainComponent implements OnInit {
             this.userSearchCount.push(data);
           }
         });
+        this.userSearchCount.sort((a,b)=>b.count - a.count)
       });
   }
 
   fetchSectorByCount() {
-    this.apiService.get('/searchTerm/fetchSectorByCount').subscribe((response: any) => {
-      let data;
-      response?.data?.properties.buckets.map(item => {
-        if(item.key.trim() && ['null', 'undefined'].indexOf(item.key.trim()) === -1) {
-          data = {name: item.key, count: item.doc_count};
-          this.sectorCount.push(data);}
-      });
+    this.apiService.get('/searchTerm/fetchSectorByCount').subscribe(async (response: any) => {
+      // console.log("sc d kdc kd",response?.data?.properties.buckets);
+      await this.sectorMapping(response?.data?.properties.buckets)
     });
   }
 
@@ -238,6 +236,8 @@ export class ReportMainComponent implements OnInit {
       // [[10, 20, 30]];
       // ['picture', 'video', 'file'];
     });
+    this.usersByCountDownloadData.sort((a,b)=>b.count-a.count)
+
     this.downloadsByFormatData = [[pictureCount, videoCount, fileCount]];
   }
 
@@ -267,14 +267,18 @@ export class ReportMainComponent implements OnInit {
     });
   }
 
-  calculateTotalUpload(uploadAssetCount: { _id: string; countType: any[] }[]) {
+  calculateTotalUpload(uploadAssetCount: { _id: string; countType: any[];userInfo:any }[]) {
     // this.totalUploads = 0;
     let videoCount = 0;
     let fileCount = 0;
     let pictureCount = 0;
 
     uploadAssetCount.map((item) => {
-      let uploadData = { name: item._id, count: 0 };
+      let checkName = item.userInfo[0]?.firstName + " " +item.userInfo[0]?.lastName 
+      let finalName = checkName;
+      if(checkName.includes('undefined')) finalName = item._id
+      if(checkName.includes('null')) finalName = item._id
+      let uploadData = { name:finalName, count: 0 };
       item.countType.map((countItem) => {
         // this.totaluploads += countItem.count;
         if (countItem.type.toLowerCase() === "video") {
@@ -292,6 +296,37 @@ export class ReportMainComponent implements OnInit {
         this.usersByCountUploadData.push(uploadData);
       }
     });
+    // this.usersByCountUploadData=this.usersByCountUploadData.sort((a,b) => b.count - a.count);
     this.uploadByFormatData = [[pictureCount, videoCount, fileCount]];
+  }
+
+  async sectorMapping(sectorData){
+    let obj= this.toLowerKeys(Departments)
+    let newObj={}
+    sectorData.map(ob=>{
+      if(obj.hasOwnProperty(ob.key)){
+          let value = obj[ob.key]
+          if (!newObj.hasOwnProperty(value)) {
+              newObj[value]=0
+          }
+          newObj[value]=newObj[value] + ob.doc_count
+      }
+    })
+    Object.keys(newObj).map(m=>{
+      let newValue:any = {}
+
+      newValue.name = Workspace[m]
+      newValue.count = newObj[m]
+
+      this.sectorCount.push(newValue)
+    })
+    this.sectorCount.sort((a,b)=>b.count-a.count)
+  }
+
+  toLowerKeys(obj) {
+    return Object.keys(obj).reduce((accumulator, key) => {
+      accumulator[key.toLowerCase()] = obj[key];
+      return accumulator;
+    }, {});
   }
 }
