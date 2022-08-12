@@ -773,7 +773,7 @@ video{
 }
 .workspaceFoldersScrollBar {
     overflow: auto;
-    height: 245px;
+    max-height: 245px;
 }
 .search-bar::placeholder {
     color: red;
