@@ -334,7 +334,7 @@ export class HeaderComponent implements OnInit {
   }
 
   checkHomeActive(){
-    if (window.location.href==`${window.location.origin}/`) {
+    if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
       return true
     }
   }

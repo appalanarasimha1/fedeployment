@@ -317,8 +317,10 @@ export class ReportMainComponent implements OnInit {
 
       newValue.name = Workspace[m]
       newValue.count = newObj[m]
-
-      this.sectorCount.push(newValue)
+      if(this.sectorCount.length < 11){
+        this.sectorCount.push(newValue)
+      }
+      
     })
     this.sectorCount.sort((a,b)=>b.count-a.count)
   }

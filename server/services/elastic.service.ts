@@ -84,7 +84,7 @@ export class ElasticSearchService {
             terms: {
               field: "sector",
               order: { _count: "desc" },
-              size: 10
+              // size: 10
             },
           },
         },
