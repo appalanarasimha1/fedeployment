@@ -296,7 +296,7 @@ export class ReportMainComponent implements OnInit {
         this.usersByCountUploadData.push(uploadData);
       }
     });
-    // this.usersByCountUploadData=this.usersByCountUploadData.sort((a,b) => b.count - a.count);
+    this.usersByCountUploadData=this.usersByCountUploadData.sort((a,b) => b.count - a.count);
     this.uploadByFormatData = [[pictureCount, videoCount, fileCount]];
   }
 
