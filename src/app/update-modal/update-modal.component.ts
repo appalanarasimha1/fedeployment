@@ -88,6 +88,11 @@ export class UpdateModalComponent implements OnInit {
     this.associatedDate = this.selectedFolder.properties["dc:start"];
     this.description = this.selectedFolder.properties["dc:description"];
   }
+  ngAfterViewInit() {
+    setTimeout(()=>{
+      this.resizeInput();
+    }, 500);
+  }
 
   closeModal() {
     this.dialogRef.close();
@@ -456,5 +461,16 @@ export class UpdateModalComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  resizeInput(){
+    function resizable (el, factor) {
+      var int = Number(factor) || 7.7;
+      function resize() {el.style.width = ((el.value.length+1) * int) + 'px'}
+      var e = 'keyup,keypress,focus,blur,change'.split(',');
+      for (var i in e) el.addEventListener(e[i],resize,false);
+      resize();
+    }
+    resizable(document.getElementById('txt'),7);
   }
 }

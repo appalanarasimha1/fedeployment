@@ -3885,3 +3885,24 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
   line-height: normal;
   border: 0px;
 }
+.zoomImg {
+  display: inline-block;
+  position: relative;
+}
+.zoomImgBlock {
+  max-width: 200px;
+  position: absolute;
+  left: 0px;
+  bottom: 34px;
+  display: none;
+  z-index: 9;
+  background: #fff;
+  width: 250px;
+}
+.zoomImg:hover .zoomImgBlock {
+  display: block;
+}
+.zoomImgBlock img {
+  max-width: 100%;
+  width: 100%;
+}

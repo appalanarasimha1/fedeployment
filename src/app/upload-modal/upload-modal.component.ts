@@ -146,6 +146,8 @@ export class UploadModalComponent implements OnInit {
 
   loading = true;
 
+  showHideAllAsset: boolean = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -1213,5 +1215,9 @@ export class UploadModalComponent implements OnInit {
     const response = await this.apiService.delete(url).toPromise();
     console.log('deleteUploadedBatchMetaData() = ', response);
     return;
+  }
+
+  showAllAsset() {
+    this.showHideAllAsset = !this.showHideAllAsset;
   }
 }

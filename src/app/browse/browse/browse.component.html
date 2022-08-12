@@ -16,7 +16,7 @@
     </app-sub-header>
 <section style="background-color: #fff;" class="lpBAck">
   <section class="lpSecOne ">
-    <div class="container ">
+    <div class="container">
 
       <div class="row ">
         <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
@@ -798,7 +798,7 @@
                   </li>
                   <li
                     (click)="
-                      openUpdateClassModal(breadCrumb[0] ? breadCrumb[0] : null)
+                      openUpdateClassModal(breadCrumb[0] ? breadCrumb[0] : null);
                     "
                     *ngIf="!isPrivateFolder(true, true) && count < 1"
                     class="tollTipWorkspace manageFolderIcon"
@@ -1178,7 +1178,12 @@
                       </span>
                     </td>
                     <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                      <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px;object-fit: contain;">
+                      <div class="zoomImg">
+                        <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px; object-fit: contain;">
+                        <div class="zoomImgBlock">
+                          <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)">
+                        </div>
+                      </div>
                       <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left">
                         <span class="tollTipCustom">
                           {{item.title}}

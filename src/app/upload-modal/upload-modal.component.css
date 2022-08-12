@@ -1547,3 +1547,37 @@ button.btnDisable {
   border-radius: 100px !important;
   background: #fff !important;
 }
+.showAllClassifications {
+  text-align: right;
+  float: right;
+  color: #937206;
+  font-size: 15px;
+  line-height: 20px;
+  cursor: pointer;
+}
+span.showAllClassifications svg {
+  margin-left: 7px;
+  transition: all 0.3s ease;
+}
+.publish-file-preview {
+  background-color: #fff;
+}
+.updated-asset-classifications {
+  position: relative;
+  z-index: 9;
+  padding: 20px 0px;
+}
+.updated-asset-classifications::after {
+  position: absolute;
+  content: '';
+  width: 120%;
+  height: 100%;
+  left: -48px;
+  top: 0px;
+  background-color: #F6F5F2;
+  z-index: -1;
+}
+span.showAllClassifications svg.rotateArrow {
+  transform: rotate(90deg);
+  transition: all 0.3s ease;
+}
