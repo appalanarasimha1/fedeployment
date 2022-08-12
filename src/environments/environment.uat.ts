@@ -4,7 +4,7 @@ export const environment = {
     nuxeoServerUrl: 'https://uatgroundx.neom.com',
     apiVersion: '/nuxeo/api/v1',
     keycloakConfig: {
-      url: "devkeycloak.oci.sense.neomos.online", // 'https://devkeycloak.the-it-cloud.net/auth/',
+      url: "https://devkeycloak.oci.sense.neomos.online/auth/", // 'https://devkeycloak.the-it-cloud.net/auth/',
       realm: 'GroundX',
       clientId: 'nuxeo-client-public',
     }
