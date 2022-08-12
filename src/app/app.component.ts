@@ -36,12 +36,14 @@ export class AppComponent implements OnInit{
             this.showAddButton = false;
             setTimeout(()=>{
               this.showFooter = true;
+              this.dataService.showFooterInit(true)
             }, 500);
           } else if(event.url.includes('/404')){
             this.showHeader = true;
             this.showAddButton = false;
             setTimeout(()=>{
               this.showFooter = true;
+              this.dataService.showFooterInit(true)
             }, 500);
           }  else if(event.url.includes('/asset-not-accessed')){
             this.showHeader = false;
@@ -53,6 +55,7 @@ export class AppComponent implements OnInit{
             this.showHeader = true;
             setTimeout(()=>{
               this.showFooter = true;
+              this.dataService.showFooterInit(true)
             }, 500);
             this.showAddButton = true;
           }
@@ -91,5 +94,6 @@ export class AppComponent implements OnInit{
     $("body").animate({ scrollTop: 0 }, "slow");
     // window.scroll(0,0);
   }
+  
 }
 

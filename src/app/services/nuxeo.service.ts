@@ -3,6 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import Nuxeo from 'nuxeo';
 import { HttpClient } from '@angular/common/http';
+import { SharedService } from '../services/shared.service'
 import { environment } from '../../environments/environment';
 // import { CookieService } from 'ngx-cookie-service';
 @Injectable()
@@ -39,6 +40,7 @@ export class NuxeoService {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private sharedService: SharedService,
     @Inject(DOCUMENT) private document: Document,
     // private cookie: CookieService
   ) {
@@ -90,24 +92,37 @@ export class NuxeoService {
   }
 
   async authenticateUser(username: string, password: string) {
-    const res = await this.checkUserLockout(username, password);
+    let encryptedPassword = password;
+    const key = await (await this.getPrivateKey()).text();
+
+    if (key) {
+      encryptedPassword = this.sharedService.encryptText(password, key);
+    }
+
+    const res = await this.checkUserLockout(username, encryptedPassword);
     if (res.status === 200) {
       const statusText = await res.text();
       if (statusText && statusText !== 'OK') throw statusText;
     }
+    console.log(encryptedPassword);
+
 
     this.nuxeoClient = new Nuxeo({
       // baseURL: `${this.baseUrl}/nuxeo/`,
       baseURL: `${this.baseUrl}/nuxeo/`,
       auth: {
         username,
-        password,
+        password: encryptedPassword,
         method: 'basic'
       },
       headers: this.defaultHeader
     });
 
-    return this.requestToken(null, btoa(`${username}:${password}`));
+    return this.requestToken(null, btoa(`${username}:${encryptedPassword}`));
+  }
+
+  getPrivateKey() {
+    return fetch(`${this.baseUrl}/nuxeo/site/authCheck/key`);
   }
 
   checkUserLockout(username: string, password: string) {
@@ -163,7 +178,7 @@ export class NuxeoService {
     return location;
   }
 
-  createClientWithToken(token) {
+  createClientWithToken(token, redirect = true) {
     this.nuxeoClient = new Nuxeo({
       baseURL: `${this.baseUrl}/nuxeo/`,
       auth: {
@@ -172,7 +187,7 @@ export class NuxeoService {
       },
       headers: this.defaultHeader
     });
-    if(this.router.url === '/login') {
+    if(this.router.url === '/login' && redirect) {
       this.router.navigate(['/']);
     }
     return;

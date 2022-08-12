@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
           }
           localStorage.setItem('token', token);
           localStorage.setItem('username', this.username);
+          this.nuxeo.createClientWithToken(token, false);
           this.router.navigateByUrl(this.redirectURL);
         })
         .catch((err) => {

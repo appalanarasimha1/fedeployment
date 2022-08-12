@@ -3,19 +3,18 @@ const { Client } = require("@elastic/elasticsearch");
 import * as fs from "fs";
 
 export class ElasticSearchService {
-  private client = process.env.NODE_ENV !== 'prod-oci' 
-  ? new Client({ node: AppConfig.Config.elasticDbUrl })
-  : new Client({ 
-      node: AppConfig.Config.elasticDbUrl,
-      auth: {
-        username: AppConfig.Config.elsticDbUserName,
-        password: process.env.ELASTIC_DB_PASSWORD || "changeme"
-      },
-      tls: {
-        ca: fs.readFileSync(AppConfig.Config.elasticCertificatePath),
-        rejectUnauthorized: false
-      }
-    });
+  private client = new Client({ node: AppConfig.Config.elasticDbUrl });
+  // : new Client({ 
+  //     node: AppConfig.Config.elasticDbUrl,
+  //     auth: {
+  //       username: AppConfig.Config.elsticDbUserName,
+  //       password: process.env.ELASTIC_DB_PASSWORD || "changeme"
+  //     },
+  //     tls: {
+  //       ca: fs.readFileSync(AppConfig.Config.elasticCertificatePath),
+  //       rejectUnauthorized: false
+  //     }
+  //   });
   
   private indexValue = "searchindex_v4";
 
@@ -85,7 +84,7 @@ export class ElasticSearchService {
             terms: {
               field: "sector",
               order: { _count: "desc" },
-              size: 10
+              // size: 10
             },
           },
         },
