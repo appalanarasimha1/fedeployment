@@ -25,7 +25,8 @@ export class SharedService {
   constructor(
     private router: Router,
     private apiService: ApiService,
-    private _snackBar: MatSnackBar) {}
+    private _snackBar: MatSnackBar
+    ) {}
 
   setSidebarToggle(slideToggle) {
     this.sidebarToggleResize.next(slideToggle);
