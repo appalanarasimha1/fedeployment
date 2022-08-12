@@ -9,6 +9,8 @@ import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars } fr
 import { ApiService } from './api.service';
 import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { NuxeoService } from './nuxeo.service';
+import { KeycloakService } from 'keycloak-angular';
 
 
 @Injectable({
@@ -25,7 +27,9 @@ export class SharedService {
   constructor(
     private router: Router,
     private apiService: ApiService,
-    private _snackBar: MatSnackBar) {}
+    private _snackBar: MatSnackBar,
+    protected readonly keycloak: KeycloakService
+    ) {}
 
   setSidebarToggle(slideToggle) {
     this.sidebarToggleResize.next(slideToggle);
@@ -461,5 +465,14 @@ export class SharedService {
     encrypt.setPublicKey(key);
     return encrypt.encrypt(text).toString();
   }
+
+  // oneTimeTask() {
+  //   if(localStorage.getItem("logout-once-again")) {
+  //     return;
+  //   }
+  //   this.nuxeo.logout();
+  //   localStorage.setItem("logout-once-again", "true");
+  //   this.keycloak.logout(window.location.origin + '/login');
+  // }
 
 }

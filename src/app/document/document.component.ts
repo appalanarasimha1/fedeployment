@@ -410,7 +410,7 @@ export class DocumentComponent implements OnInit, OnChanges {
           const trending = result?.data?.trendingAssets || [];
           const trendingIds = trending.map(e => e._id.uid) || [];
           this.trendingIds = trendingIds
-          this.getTrendingAssetsByIds(trendingIds.slice(0, 100));
+          this.getTrendingAssetsByIds(trendingIds.slice(0, 50));
           this.loading.pop();
         })
         .catch((error) => {
