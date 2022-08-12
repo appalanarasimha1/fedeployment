@@ -104,6 +104,15 @@ export function createUploadQuery() {
       },
     },
     {
+      $lookup:
+        {
+          from: "userDirectory",
+          localField: "_id",
+          foreignField: "email",
+          as: "userInfo"
+        }
+   },
+    {
       $sort: {
         countType: -1,
       },

@@ -214,6 +214,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         await this.fetchAllSectors();
         this.loading = false;
       }
+      // console.log(`${window.location.origin}/workspace?folder=`,window.location.href );
+      if (window.location.href.includes(`${window.location.origin}/workspace?folder=`)) {
+        this.initialLoad = false
+      }
+      
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
@@ -927,7 +932,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return Object.keys(this.selectedFolderList).length > 0;
   }
 
+  
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+    this.initialLoad = false;
     this.showSearchbar = true;
     this.searchBarValue = "";
     offset || this.paginator?.firstPage();
@@ -949,7 +956,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             --this.resultCount;
             return true;
           } else {
-            return false;
+            return false; 
           }
         });
         // if (!this.myDeletedCheck) {
@@ -964,13 +971,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.searchList = this.trashedList;
         this.sortedData = this.searchList.slice();
         this.isTrashView = true;
-        this.handleSelectMenu(1, this.viewType || "LIST");
+        this.handleSelectMenu(1,"LIST");
         this.showMoreButton = false;
         this.loading = false;
         // this.deletedByMeFilter();
       });
   }
-
+  
   async deletedByMeFilter() {
     let userData = localStorage.getItem("user");
     // console.log("userData", JSON.parse(userData));
@@ -1071,7 +1078,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       const payload = await this.sharedService.getCreateFolderPayload(
-        folderName,
+        folderName?.trim(),
         this.selectedFolder2.title,
         this.selectedFolder,
         description,
@@ -1223,7 +1230,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         input: assetUid || selectedFolder.uid,
         params: {
           properties: {
-            "dc:title": title || newTitle,
+            "dc:title": title?.trim() || newTitle?.trim(),
           },
         },
       })
@@ -1231,7 +1238,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         let msg;
         if(!title && !assetUid) {
             this.updateFolderAction();
-            this.handleTest(res);
+            
+            // this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
             msg = 'Asset name has been updated';
@@ -1276,7 +1284,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     await this.fetchCurrentFolderAssets(folderUid);
     this.loading = false;
   }
-
+  initialLoad:Boolean= true
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
     this.showSearchbar = true;
     // this.loading = true;
