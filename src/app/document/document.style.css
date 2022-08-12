@@ -1954,3 +1954,9 @@ ul.downloadImgLisst li .contentListBlk {
 .hideTag {
   display: none !important;
 }
+.pl-160 {
+  padding-left: 160px !important;
+}
+.pt-5 {
+  padding-top: 1rem !important;
+}
