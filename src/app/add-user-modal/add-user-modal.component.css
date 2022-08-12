@@ -10,12 +10,13 @@
     position: relative;
     cursor: pointer;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: normal;
     padding: 0px;
     padding-left: 30px;
     border: 0px;
     margin: 0px 0px 0px;
     color: #040404;
+    width: 100%;
 }
 .makePrivate .control input {
     position: absolute;
@@ -147,8 +148,8 @@ button.upload-btn {
     cursor: not-allowed;
 }
 
-.addUserBlock h3 {
-    font-weight: 600;
+.modalContentBlock .addUserBlock h3, .addUserBlock h3 {
+    font-weight: normal;
     font-size: 15px;
     letter-spacing: 0.5px;
     color: #040404;
@@ -160,6 +161,9 @@ button.upload-btn {
 }
 .mb-20 {
     margin-bottom: 20px !important;
+}
+.mb-10 {
+    margin-bottom: 10px !important;
 }
 .pl-10 {
     padding-left: 10px;
@@ -232,10 +236,17 @@ span.makeAdminAction img {
     text-align: center;
     position: absolute;
     right: 0px;
-    cursor: pointer
+    cursor: pointer;
+    z-index: 9999;
 }
 .sendInviteBtn {
     color: #1E1B19;
+    top: 0px;
+}
+.sendInviteBtn:hover {
+    border: 1px solid #23211E;
+    background: #23211E;
+    color: #fff;
 }
 
 .makeAdminAction {
@@ -280,8 +291,52 @@ span.makeAdminAction svg {
 
 .makeAdminBlock ul::-webkit-scrollbar-thumb{
 	background-color: #E8E6DF;
-  border-radius: 10px;
+    border-radius: 10px;
+}
+.modalContentBlock .addUserBlock {
+    width: 100% !important;
+}
+::ng-deep .modal-edit-access .modal-dialog {
+    max-width: 640px !important;
+}
+.modalContentBlock {
+    padding: 20px;
+}
+.modalContentBlock .addUserBlock {
+    width: 100% !important;
+}
+.modalContentBlock ol {
+    display: block;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+.modalContentBlock ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    content: "";
+    background-image: url(../../assets/images/black-downarrow.png) !important;
+    background-position: 0px 4px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 10px !important;
+    width: 10px !important;
+}
+.modalContentBlock ::ng-deep .ng-select .ng-arrow-wrapper {
+    width: 25px;
+    padding-right: 0px;
+}
+.modalContentBlock .addUserBlock {
+    margin-bottom: 20px;
+}
+.modalContentBlock ::ng-deep .ng-dirty .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../assets/images/down-arrow-yellow.svg) !important;
+}
+h3.externalUsers {
+    color: #BAB8B2;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+    padding-bottom: 10px;
 }
 .addUserBlock {
-    width: 500px !important;
+    width: 600px !important;
 }

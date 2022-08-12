@@ -13,7 +13,8 @@
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
     <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
-      <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">What’s Trending</a>
+      <!--Remove anchore tag <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">What’s Trending</a> -->
+      <span class="commonHeading recentFont">What’s Trending</span>
       <div *ngIf="!trendingAssets.length"  style="height: 150px;">
         <h2 class="noresult pb-3 pt-4">No Trending Assets found</h2>
       </div>
@@ -24,8 +25,9 @@
             class="carousel"
             #slickModal="slick-carousel"
             [config]="slideConfig"
+            (afterChange)="afterChangeTrending($event)"
           >
-            <div ngxSlickItem *ngFor="let file of trendingAssets | slice:0:20; let i = index" class="slide">
+            <div ngxSlickItem *ngFor="let file of trendingAssets; let i = index" class="slide">
               <document-card
                 [doc]="file"
                 [viewType]="viewType"
@@ -41,7 +43,7 @@
     </div>
 
     <div id="exTab1" class="container-fluid" style="position: relative; z-index: 3;">
-      <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">Assets by Sector</a>
+      <span class="commonHeading recentFont">Assets by Sector</span>
       <ul class="nav nav-tabs" style="display: inline-block; width: 50%;">
         <li>
           <div ngbDropdown class="d-inline-block sectorsDropdown">
@@ -96,6 +98,8 @@
             class="carousel"
             #slickModal="slick-carousel"
             [config]="slideConfig"
+            (afterChange)="afterChangeSector($event)"
+
           >
             <div
               ngxSlickItem
@@ -123,13 +127,7 @@
     >
       <ul class="nav nav-tabs">
         <li>
-          <a
-            class="commonHeading recentFont"
-            style=""
-            href="#favourite"
-            data-toggle="tab"
-            >Your Favourites</a
-          >
+          <span class="commonHeading recentFont">Your Favourites</span>
         </li>
       </ul>
       <div
@@ -154,6 +152,7 @@
             class="carousel"
             #slickModal="slick-carousel"
             [config]="slideConfig"
+            (afterChange)="afterChangeFav($event)"
           >
             <div
               ngxSlickItem

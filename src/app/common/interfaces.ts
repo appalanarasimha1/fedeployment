@@ -83,6 +83,7 @@ export interface IRangeDocCount {
 }
 
  export interface IEntry {
+   "copy"?: string;
    "entity-type": string,
    "repository": string,
    "uid": string,

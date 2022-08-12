@@ -33,7 +33,7 @@
     border-radius: 8px;
     padding: 0px 15px;
     /* border: unset; */
-    font-family: myBrown;
+    font-family: 'brownregular';
     border: 1px solid;
 }
 .orText{
@@ -45,9 +45,9 @@
     background-color: #b6b6b6;
     position: absolute;
     height: 1px;
-    width: 46%;
+    width: 44%;
     left: 0px;
-    top: 0px;
+    top: 5px;
     bottom: 0px;
     margin: auto;
 }
@@ -56,9 +56,9 @@
     background-color: #b6b6b6;
     position: absolute;
     height: 1px;
-    width: 46%;
+    width: 44%;
     right: 0px;
-    top: 0px;
+    top: 5px;
     bottom: 0px;
     margin: auto;
 }
@@ -80,7 +80,7 @@ line-height: 28px;
 letter-spacing: 0.31em;
 text-transform: uppercase;
 color: #FFFFFF;
-font-weight: 600;
+font-weight: normal;
 }
 button.btn-primary:focus, button.btn-primary:hover{
     background: #13100D !important;
@@ -95,10 +95,44 @@ button.btn-primary:focus, button.btn-primary:hover{
     border-radius: 8px;
     padding: 12px 0px;
     border: 1px solid #13100D;
+    font-family: 'brownregular';
     letter-spacing: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
 }
 .loginKeycloakBtn:hover{
     background-color: #13100D;
+}
+
+.form-control{
+    border-radius: 8px;
+    padding: 0px 15px;
+    font-family: 'brownregular';
+    line-height: 45px;
+    min-height: 45px;
+    border: 1px solid #404040;
+}
+.login form.signupForm a{
+    color: #937206;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 10px;
+}
+
+.signupForm .form-control::placeholder, .signupForm .form-control:focus::placeholder {
+    color: #ACACAC !important;
+    opacity: 1;
+}
+
+.signupForm .form-control:-ms-input-placeholder, .signupForm .form-control:focus:-ms-input-placeholder {
+    color: #ACACAC !important;
+}
+
+.signupForm .form-control::-ms-input-placeholder, .signupForm .form-control:focus::-ms-input-placeholder {
+    color: #ACACAC !important;
 }
 /* mobile responsive */
 @media(max-width: 991.5px){

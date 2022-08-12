@@ -6,7 +6,7 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
-import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER } from '../constant';
+import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL } from '../constant';
 import { SharedService } from 'src/app/services/shared.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -53,6 +53,9 @@ export class HeaderComponent implements OnInit {
   videoCompleted = false;
   searched = false;
   showItemOnlyOnce = true;
+  notifications: any[];
+  thisWeekNoti: any[];
+  earlierNoti: any[];
 
   constructor(
     private nuxeo: NuxeoService,
@@ -83,7 +86,7 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        
+
       }
     });
 
@@ -117,6 +120,7 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+    this.getNotifications();
 
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
@@ -215,6 +219,17 @@ export class HeaderComponent implements OnInit {
     this.videoCompleted = true;
   }
 
+
+  checkExternalUser(excludeGlobal = false) {
+    if (excludeGlobal) {
+      if (!this.sharedService.checkExternalUser()) return false; // normal user
+      const user = JSON.parse(localStorage.getItem('user'));
+      return user?.groups.includes(EXTERNAL_GROUP_GLOBAL);
+    } else {
+      return this.sharedService.checkExternalUser();
+    }
+  }
+
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
     localStorage.setItem('videoSector', this.sectorSelected);
@@ -238,7 +253,7 @@ export class HeaderComponent implements OnInit {
           return;
         }
   }
-  
+
   showVideo() {
     const updatedUrl = `${window.location.origin}/nuxeo/api/v1${apiRoutes.FETCH_PERSONALIZED_VIDEO}/video`;
     this.defaultVideoSrc = updatedUrl + `?sector=${this.sectorSelected}&videoId=${this.videoId}&location=${this.videoLocation}`;
@@ -252,8 +267,59 @@ export class HeaderComponent implements OnInit {
   focusOnSearch() {
     this.searchPopup = true;
   }
-  
+
   blurOnSearch() {
     this.searchPopup = false;
+  }
+
+  async getNotifications() {
+    const payload = {
+      params: {},
+      context: {},
+    };
+    const res = await this.apiService.post(apiRoutes.GET_NOTIFICATIONS, payload).toPromise();
+    this.notifications = res['value'];
+    this.thisWeekNoti = [];
+    this.earlierNoti = [];
+    this.computeNotifications();
+  }
+
+  computeNotifications() {
+    let i = 0;
+    for (i; i < this.notifications.length; i++) {
+      if (!this.sharedService.isInThisWeek(this.notifications[i].eventDate)) break;
+      this.thisWeekNoti.push(this.notifications[i]);
+    }
+    this.earlierNoti = this.notifications.slice(i);
+  }
+
+  buildNotificationTitle(notification) {
+    const extended = notification.extended;
+    const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
+    return `${extended.updatedBy} renamed ${isAsset ? '' : 'folder '} "${extended.oldTitle}" to "${extended.title}"`;
+  }
+
+  getNotificationSince(notification) {
+    return this.sharedService.timeSince(new Date(notification.eventDate));
+  }
+
+  buildNotificationIcon(notification) {
+    const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
+    if (!isAsset) return '../../../assets/images/folder-delete-icon.svg';
+    return `${window.location.origin}/nuxeo/api/v1/repo/default/id/${notification.docUUID}/@rendition/thumbnail`;
+  }
+
+  goToNotificationLink(notification) {
+    const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
+    if (isAsset) this.router.navigate(['asset-view'], {queryParams : {assetId: notification.docUUID}});
+    else this.router.navigate(['workspace'], {queryParams : {folder: notification.docUUID}});
+  }
+
+  allNotifactionOpen(allNotifactionContent) {
+    this.modalOpen = true;
+    this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+    }, (reason) => {
+      this.closeModal();
+    });;
   }
 }

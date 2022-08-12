@@ -4,7 +4,10 @@ import { Moment } from 'moment'; // for interface
 import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { ASSET_TYPE, localStorageVars } from '../common/constant';
+import JSEncrypt from 'jsencrypt';
+import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars } from '../common/constant';
+import { ApiService } from './api.service';
+import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 
@@ -21,6 +24,7 @@ export class SharedService {
 
   constructor(
     private router: Router,
+    private apiService: ApiService,
     private _snackBar: MatSnackBar) {}
 
   setSidebarToggle(slideToggle) {
@@ -40,7 +44,7 @@ export class SharedService {
   }
 
   toUsCommaSystem(number: string|number): string {
-    return number.toLocaleString('en-US');
+    return number.toLocaleString('en-US'); // 'en-IN' for indian numeric system.
   }
 
   public isEmpty(value: any): boolean {
@@ -82,9 +86,6 @@ export class SharedService {
         console.log(e);
 
       });
-    // return `${this.document.location.origin}/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `https://10.101.21.63:8087/nuxeo/${url.split('/nuxeo/')[1]}`;
-    // return `${this.baseUrl}/nuxeo/${url.split('/nuxeo/')[1]}`;
   }
 
 
@@ -140,6 +141,25 @@ export class SharedService {
   getTodayIsoString(): string {
     const dateStringArr = new Date().toISOString().split('T');
     return `${dateStringArr[0]} ${dateStringArr[1].split('.')[0]}`;
+  }
+
+  async fetchExternalUserInfo() {
+    await this.getExternalGroupUser();
+    await this.getExternalGroupUserGlobal();
+  }
+
+  async getExternalGroupUser() {
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
+    const users = res['entries'];
+    const listExternalUser = users.map(user => user.id);
+    localStorage.setItem("listExternalUser", JSON.stringify(listExternalUser));
+  }
+
+  async getExternalGroupUserGlobal() {
+    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
+    const users = res['entries'];
+    const listExternalUserGlobal = users.map(user => user.id);
+    localStorage.setItem("listExternalUserGlobal", JSON.stringify(listExternalUserGlobal));
   }
 
   /**
@@ -250,6 +270,12 @@ export class SharedService {
 
   toTop(): void {
     window.scroll(0,0);
+  }
+
+  checkExternalUser() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user?.groups) return true;
+    return user?.groups.includes(EXTERNAL_USER);
   }
 
   capitaliseSelectiveTags(tag: string): string {
@@ -374,7 +400,7 @@ export class SharedService {
     );
     return [...recentlyViewed.reverse()];
   }
-  
+
   getCircularReplacer() {
     const seen = new WeakSet();
     return (key, value) => {
@@ -390,14 +416,50 @@ export class SharedService {
 
   checkMimeType(document): string {
     const mimeType = document.properties['file:content']?.['mime-type'];
-    
+
     if(mimeType?.includes('image'))
       return ASSET_TYPE.PICTURE;
     if(mimeType?.includes('video'))
       return ASSET_TYPE.VIDEO;
     if(mimeType?.includes('pdf'))
       return ASSET_TYPE.FILE;
-      
+
     return 'nopreview';
   }
+
+  copyLink(assetId: string, assetType: string): string {
+    const selBox = document.createElement("textarea");
+    selBox.style.position = "fixed";
+    selBox.style.left = "0";
+    selBox.style.top = "0";
+    selBox.style.opacity = "0";
+    if(assetType === 'folder') {
+      selBox.value = `${window.location.origin}/workspace?folder=${assetId}`;
+    } else {
+      selBox.value = `${window.location.origin}/asset-view?assetId=${assetId}`;
+    }
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand("copy");
+    document.body.removeChild(selBox);
+    return selBox.value;
+  }
+
+  timeSince(date) {
+    return moment(date).fromNow();
+  }
+
+  isInThisWeek(date) {
+    const now = moment();
+    const input = moment(date);
+    return now.isoWeek() === input.isoWeek();
+  }
+
+  encryptText(text, key) {
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(key);
+    return encrypt.encrypt(text).toString();
+  }
+
 }

@@ -43,7 +43,7 @@ footer{
     font-size: 15px;
     line-height: 24px;
     font-feature-settings: 'cpsp' on, 'kern' off;
-    font-family: myBrown !important;
+    font-family: 'brownregular' !important;
     color: #FFFFFF;
     padding-left: 20px;
     font-weight: 400;
@@ -56,7 +56,7 @@ footer{
     color: #fff !important;
     position: relative;
     display: inline-block;
-    font-family: myBrown !important;
+    font-family: 'brownregular' !important;
 }
 .mailLink:hover::after {
     content: '';

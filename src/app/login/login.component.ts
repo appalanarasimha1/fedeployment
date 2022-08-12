@@ -73,17 +73,22 @@ export class LoginComponent implements OnInit {
           this.loading = false;
           if (token.toLowerCase().includes('doctype')) {
             this.error = true;
-            this.errorMessage = 'Authentication failed, please check username/password and retry';
+            this.errorMessage = 'Incorrect credentials!';
             return;
           }
           localStorage.setItem('token', token);
           localStorage.setItem('username', this.username);
+          this.nuxeo.createClientWithToken(token, false);
           this.router.navigateByUrl(this.redirectURL);
         })
         .catch((err) => {
           this.loading = false;
           this.error = true;
-          this.errorMessage = 'Authentication failed, please check username/password and retry';
+          if (err === "ip_lockout") {
+            this.errorMessage = 'IP lockout';
+          } else if (err === "username_lockout") {
+            this.errorMessage = 'User lockout';
+          } else this.errorMessage = 'Incorrect credentials!';
           throw err;
         });
     }

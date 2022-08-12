@@ -1,0 +1,54 @@
+
+<app-loader [show]="loading"></app-loader>
+<section class="login flexible" style="justify-content: center; margin-top: -76px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-md-12">
+                <h2 class="text-center mb-4"><img src="../../assets/images/Logo_Ground_X.svg" /></h2>
+                <form autocomplete="off">
+                    <ul class="signupForm">
+                        <li>
+                            <h3>Create account</h3>
+                        </li>
+                        <li>
+                            <input disabled type="email" class="form-control" id="email" name="email" [ngModel]="email" />
+                            <!-- <div class="showError">This account already exsits</div> -->
+                        </li>
+                        <li>
+                            <input type="text" class="form-control" id="fullName" name="fullName" [(ngModel)]="fullName" placeholder="Full name" />
+                        </li>
+                        <li>
+                            <mat-form-field appearance="fill">
+                                <!-- <mat-label>Password</mat-label> -->
+                                <input matInput [type]="showPassword ? 'text' : 'password'" name="password" placeholder="Password" [(ngModel)]="newPassword" class="show-password">
+                                <mat-icon matSuffix (click)="togglePasswordVisibility()" [ngClass]="{'clickCheck': showPassword}">
+                                    visibility<!-- {{showPassword?'visibility':'visibility'}} -->
+                                </mat-icon>
+                            </mat-form-field>
+                            <!-- <input type="password" class="form-control" id="password" name="password" placeholder="Password" /> -->
+                        </li>
+                        <li>
+                            <mat-form-field appearance="fill">
+                                <!-- <mat-label>Password</mat-label> -->
+                                <input matInput [type]="showPasswordRenter ? 'text' : 'password'" name="password" [(ngModel)]="confirmNewPassword" placeholder="Comfirm password" class="show-password">
+                                <mat-icon matSuffix (click)="togglePasswordVisibilityRenter()" [ngClass]="{'clickCheck': showPasswordRenter}">
+                                    visibility<!-- {{showPasswordRenter?'visibility':'visibility'}} -->
+                                </mat-icon>
+                            </mat-form-field>
+                            <!-- <input type="password" class="form-control" id="comfirmPassword" name="comfirmPassword" placeholder="Comfirm password" /> -->
+                        </li>
+
+                        <div *ngIf="checkPassword()" class="showError">Confirm password does not match</div>
+                        <div *ngIf="!!signUpError" class="showError">signUpError</div>
+                        <li>
+                            Already have an account? <a [routerLink]="['/login']">Log in</a>
+                        </li>
+                        <li>
+                            <button [disabled]="!checkProcessSignUp()" (click)="createAccount()" type="submit" class="btn btn-primary loginBtn" disabled>Create account</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

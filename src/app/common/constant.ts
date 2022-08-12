@@ -133,3 +133,6 @@ export const specialExtensions = [ // NOTE: this is the extensions of special ro
     '.svg',
     '.eot'
   ];
+
+export const EXTERNAL_GROUP_GLOBAL = 'external_group_global';
+export const EXTERNAL_USER = 'external_user';

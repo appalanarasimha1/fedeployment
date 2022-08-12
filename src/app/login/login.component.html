@@ -5,12 +5,12 @@
         <div class="row">
             <div class="col-xl-12 col-md-12">
                 <h2 class="text-center mb-4">Ground x</h2>
-                <form>
+                <form autocomplete="off" class="signupForm">
                   <div class="text-center mb-3">
                     <img src="../../assets/images/NEOM_logo.svg" style="width: 60px;">
                   </div>
                   <div class="mb-3">
-                    <button type="submit" class="btn btn-primary loginKeycloakBtn"(click)="loginKeycloak()">Login with NEOM credentials</button>
+                    <button type="button" class="btn btn-primary loginKeycloakBtn" (click)="loginKeycloak()">Login with NEOM account</button>
                   </div>
                   <div class="text-center">
                     <p style="color: #5c5b59;" class="orText">or</p>
@@ -24,12 +24,13 @@
                       <input type="password" placeholder="Password" name="password" class="form-control" [(ngModel)]="password" id="pass"/>
                     </div>
                     <span *ngIf="error" style="color: red;background-color: #000;padding: 5px;border-radius: 8px;margin-top: 8px;display: block; text-align: center;">{{errorMessage}}</span>
-                    <div class="mb-4">
-                      <!-- <a href="">Forgot Password</a> -->
+                    <div class="mb-4" style="overflow: hidden;">
+                      <a [routerLink]="['/forgot-password']" style="float: left;">Forgot password?</a>
+                      <!-- <a [routerLink]="['/signup']" style="float: right;">Create account</a> -->
                     </div>
 
                     <button type="submit" class="btn btn-primary loginBtn"(click)="login()">Login</button>
-                    
+
                     <!-- <button type="button" class="btn btn-primary"(click)="logout()">Logout</button> -->
 
                   </form>

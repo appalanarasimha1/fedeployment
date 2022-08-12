@@ -9,6 +9,8 @@ import { AuthGuardService } from "./services/authGaurd";
 import { AuthGuard } from './auth/auth.guard';
 import { REPORT_ROLE } from "./common/constant";
 import { AssetViewComponent } from "./asset-view/asset-view.component";
+import { SignupComponent } from "./signup/signup.component";
+import { ForgotPasswordComponent } from "./forgot-password/forgot-password.component";
 
 
 
@@ -19,7 +21,9 @@ const routes: Routes = [
       import("./search/search.module").then((m) => m.SearchModule),
     canActivate: [AuthGuardService],
   },
+  { path: "signup", component: SignupComponent },
   { path: "login", component: LoginComponent },
+  { path: "forgot-password", component: ForgotPasswordComponent },
   {
     path: "workspace",
     loadChildren: () =>

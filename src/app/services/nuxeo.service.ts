@@ -3,6 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import Nuxeo from 'nuxeo';
 import { HttpClient } from '@angular/common/http';
+import { SharedService } from '../services/shared.service'
 import { environment } from '../../environments/environment';
 // import { CookieService } from 'ngx-cookie-service';
 @Injectable()
@@ -39,6 +40,7 @@ export class NuxeoService {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private sharedService: SharedService,
     @Inject(DOCUMENT) private document: Document,
     // private cookie: CookieService
   ) {
@@ -89,22 +91,57 @@ export class NuxeoService {
     return;
   }
 
-  authenticateUser(username: string, password: string) {
+  async authenticateUser(username: string, password: string) {
+    let encryptedPassword = password;
+    const key = await (await this.getPrivateKey()).text();
+
+    if (key) {
+      encryptedPassword = this.sharedService.encryptText(password, key);
+    }
+
+    const res = await this.checkUserLockout(username, encryptedPassword);
+    if (res.status === 200) {
+      const statusText = await res.text();
+      if (statusText && statusText !== 'OK') throw statusText;
+    }
+    console.log(encryptedPassword);
+
+
     this.nuxeoClient = new Nuxeo({
       // baseURL: `${this.baseUrl}/nuxeo/`,
       baseURL: `${this.baseUrl}/nuxeo/`,
       auth: {
         username,
-        password,
+        password: encryptedPassword,
         method: 'basic'
       },
       headers: this.defaultHeader
     });
 
-    return this.requestToken(null);
+    return this.requestToken(null, btoa(`${username}:${encryptedPassword}`));
   }
 
-  requestToken(token) {
+  getPrivateKey() {
+    return fetch(`${this.baseUrl}/nuxeo/site/authCheck/key`);
+  }
+
+  checkUserLockout(username: string, password: string) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("username", username);
+    urlencoded.append("password", password);
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow'
+    };
+
+    return fetch(`${this.baseUrl}/nuxeo/site/authCheck/check`, requestOptions);
+  }
+
+  requestToken(token, basicToken?: string) {
     if (!this.nuxeoClient) {
       const options = {
         baseURL: `${environment.nuxeoServerUrl || this.baseUrl}/nuxeo/`,
@@ -116,17 +153,23 @@ export class NuxeoService {
       if (token) options.headers['Authorization'] = `Bearer ${token}`;
       this.nuxeoClient = new Nuxeo(options);
     }
-    this.initNxfileRequest(token);
+    this.initNxfileRequest(token, basicToken);
     return this.nuxeoClient.requestAuthenticationToken('My App', '123', 'my-device', 'rw');
   }
 
-  initNxfileRequest(token) {
-    if (!token) return;
-    fetch(`${this.baseUrl}/nuxeo/nxfile/default`, {
-      headers: {
+  initNxfileRequest(token, basicToken?: string) {
+    if (!token && !basicToken) return;
+    const options = {};
+    if (token) {
+      options["headers"] = {
         "Authorization": `Bearer ${token}`
       }
-    });
+    } else {
+      options["headers"] = {
+        "Authorization": `Basic ${basicToken}`
+      }
+    }
+    fetch(`${this.baseUrl}/nuxeo/nxfile/default`, options);
   }
 
   getRedirectLocation() {
@@ -135,7 +178,7 @@ export class NuxeoService {
     return location;
   }
 
-  createClientWithToken(token) {
+  createClientWithToken(token, redirect = true) {
     this.nuxeoClient = new Nuxeo({
       baseURL: `${this.baseUrl}/nuxeo/`,
       auth: {
@@ -144,7 +187,7 @@ export class NuxeoService {
       },
       headers: this.defaultHeader
     });
-    if(this.router.url === '/login') {
+    if(this.router.url === '/login' && redirect) {
       this.router.navigate(['/']);
     }
     return;
