@@ -53,6 +53,7 @@ export class HeaderComponent implements OnInit {
   videoCompleted = false;
   searched = false;
   showItemOnlyOnce = true;
+  readonly adminEmail: string = "groundxfeedback@neom.com";
   notifications: any[];
   thisWeekNoti: any[];
   earlierNoti: any[];

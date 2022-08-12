@@ -1811,6 +1811,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 section.lpSecOne {
   /* min-height: 600px; */
   position: relative;
+  padding-left: 100px;
 }
 section.lpBAck:before, .lpSecOne:before {
   content: '';
