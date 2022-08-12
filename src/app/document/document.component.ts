@@ -410,7 +410,7 @@ export class DocumentComponent implements OnInit, OnChanges {
           const trending = result?.data?.trendingAssets || [];
           const trendingIds = trending.map(e => e._id.uid) || [];
           this.trendingIds = trendingIds
-          this.getTrendingAssetsByIds(trendingIds.slice(0, 100));
+          this.getTrendingAssetsByIds(trendingIds.slice(0, 50));
           this.loading.pop();
         })
         .catch((error) => {
@@ -481,15 +481,9 @@ export class DocumentComponent implements OnInit, OnChanges {
           this.assetsBySector = response.entries ? this.assetsBySector.concat(response?.entries) : [];
           if (dontResetSectors) {
             this.sectorsHomepage = [];
-            for (
-              let i = 0;
-              i < response.aggregations["sectors"]?.buckets.length;
-              i++
-            ) {
+            for (let i = 0; i < response.aggregations["sectors"]?.buckets.length; i++) {
               const sector = response.aggregations["sectors"].buckets[i];
-              if (
-                UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1
-              ) {
+              if (UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1) {
                 this.sectorsHomepage.push(sector.key);
               }
             }
@@ -552,7 +546,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   assetsBySectorSelect(value: string) {
     this.assetsBySectorSelected = value;
-    this.getAssetBySectors(value, false);
+    this.getAssetBySectors(value, true);
   }
 
   calculateNoResultScreen() {
