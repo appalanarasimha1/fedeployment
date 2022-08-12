@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
   modalOpen: boolean = true;
   hideVideo: boolean = true;
   selectArea: boolean = false;
+  showFooter: boolean = false;
 
   modalOption: NgbModalOptions = {}; // not null!
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
@@ -126,6 +127,7 @@ export class HeaderComponent implements OnInit {
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
     // this.openOnboardingModal(this.onboarding);
+    this.dataService.showFooter$.subscribe((data)=>this.showFooter= data)
     return;
   }
 
@@ -322,5 +324,18 @@ export class HeaderComponent implements OnInit {
     }, (reason) => {
       this.closeModal();
     });;
+  }
+
+  
+  checkWorkspaceActive(){
+    if (window.location.href.includes(`${window.location.origin}/workspace`)) {
+      return true
+    }
+  }
+
+  checkHomeActive(){
+    if (window.location.href==`${window.location.origin}/`) {
+      return true
+    }
   }
 }
