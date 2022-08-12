@@ -12,8 +12,8 @@ export class AppConfigOCIProduction {
         VIDEO_TABLE: 'personalizedVideoInventory',
         AUDIT_TABLE: 'audit'
       },
-      domain: 'https://groundx.oci.sense.neomos.online/',
-      elasticDbUrl: 'https://ES2.groundx.com:9200', // 'http://10.149.49.21:9200,10.149.49.22:9200,10.149.49.18:9200',
+      domain: 'https://groundx.neom.com/',
+      elasticDbUrl: 'http://localhost:9200', // 'http://10.149.49.21:9200,10.149.49.22:9200,10.149.49.18:9200',
       elsticDbUserName: 'elastic',
       elasticCertificatePath: '/home/opc/rootCA.crt'
       // elasticDbUrl: 'https://10.101.21.140:9200'
