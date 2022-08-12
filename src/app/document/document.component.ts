@@ -546,7 +546,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   assetsBySectorSelect(value: string) {
     this.assetsBySectorSelected = value;
-    this.getAssetBySectors(value, true);
+    this.getAssetBySectors(value, false);
   }
 
   calculateNoResultScreen() {
