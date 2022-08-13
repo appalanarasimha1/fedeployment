@@ -1,15 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { concat, Observable, of, Subject } from "rxjs";
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  tap,
-  map,
-  filter,
-} from "rxjs/operators";
 import { EXTERNAL_GROUP_GLOBAL, EXTERNAL_USER } from "../common/constant";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
@@ -25,35 +15,12 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class MoveCopyAssetsComponent implements OnInit {
 
-  uploadedAsset;
-  selectedFolder: any;
-  makePrivate: boolean = false;
-  userList$: Observable<any>;
-  userInput$ = new Subject<string>();
-  userLoading = false;
-  folderCollaborators = {};
-  internalCollaborators = {};
-  externalCollaborators = {};
-  selectedCollaborator: any;
-  addedCollaborators: {};
-  removedCollaborators: {};
-  updatedCollaborators: {};
-  invitedCollaborators: {};
-  selectedExternalUser: any;
-  folderId: string;
   folderUpdated: any;
-  closeResult: string;
-  userInputText = "";
-  selectedMonth;
-  month = [
-    {id: 1, name: '1 month'},
-    {id: 2, name: '2 month'},
-    {id: 3, name: '3 month'},
-    {id: 4, name: '4 month'},
-    {id: 5, name: '5 month'}
-  ];
 
   movedContentShow: boolean = false;
+  selectedList: any;
+  selectedDestination: any;
+  folderList: any;
 
   constructor(
     private apiService: ApiService,
@@ -66,6 +33,9 @@ export class MoveCopyAssetsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.selectedList = this.data.selectedList;
+    const parentId = this.data.parentId;
+    this.fetchAssets(parentId);
   }
 
   closeModal() {
@@ -78,6 +48,30 @@ export class MoveCopyAssetsComponent implements OnInit {
     } else {
       this.movedContentShow = false;
     }
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  async fetchAssets(id: string, pageSize = 100, pageIndex = 0, offset = 0) {
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 0 AND ecm:parentId = '${id}' AND ecm:mixinType = 'Folderish'`;
+    const result: any = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
+    result.entries = result.entries.sort((a, b) =>
+      this.compare(a.title, b.title, true)
+    );
+    const workspaces = result.entries.find(entry => entry.type === "WorkspaceRoot");
+    if (workspaces) {
+      this.fetchAssets(workspaces.uid);
+      return;
+    }
+    this.folderList = result.entries;
+  }
+
+  generateBreadCrumb() {
+
   }
 
 }

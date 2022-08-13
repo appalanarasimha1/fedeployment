@@ -1,5 +1,5 @@
 <div class="moveCopyBlock">
-  <h3>Who can have private access to this folder?</h3>
+  <h3>Where would you like to move the item?</h3>
   <div class="moveCopy">
     <div class="moveBreadcrumb">
       <a href="#">Marketing</a>
@@ -11,93 +11,16 @@
         <path d="M2.82832 6.99974L7.77832 11.9497L6.36432 13.3637L0.000320156 6.99974L6.36432 0.635742L7.77832 2.04974L2.82832 6.99974Z" fill="#BAB8B2"/>
       </svg> Back
     </div>
-    <div class="noFolder">No folders</div>
+    <div *ngIf="folderList == null || folderList.length === 0" class="noFolder">No folders</div>
     <div id="customScrollBar" class="moveItemList">
       <ul>
-        <li [ngClass]="{ 'active' : movedContentShow }">
+        <li *ngFor="let folder of folderList">
           <div class="control-group">
             <label class="control control--checkbox">
-              <span class="folderImgList"><img src="../../assets/images/folder-table-list.svg" /></span> 
-              2021_Traveller_Marketing_Material_03_10_2021-12_11_2021
-              <input
-                id="checkbox-1"
-                type="checkbox"
-                class="vh"
-                (change)="selectFolder($event)"
-              />
-              <div class="control__indicator"></div>
-            </label>
-          </div>
-          <span class="folderTitleArrow">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5.17168 7.00026L0.221679 2.05026L1.63568 0.636257L7.99968 7.00026L1.63568 13.3643L0.22168 11.9503L5.17168 7.00026Z" fill="#040404"/>
-            </svg>
-          </span>
-        </li>
-        <li>
-          <div class="control-group">
-            <label class="control control--checkbox">
-              <span class="folderImgList"><img src="../../assets/images/folder-table-list.svg" /></span> 
-              Documents
-              <input
-                id="checkbox-2"
-                type="checkbox"
-                class="vh"
-              />
-              <div class="control__indicator"></div>
-            </label>
-          </div>
-          <span class="folderTitleArrow">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5.17168 7.00026L0.221679 2.05026L1.63568 0.636257L7.99968 7.00026L1.63568 13.3643L0.22168 11.9503L5.17168 7.00026Z" fill="#040404"/>
-            </svg>
-          </span>
-        </li>
-        <li>
-          <div class="control-group">
-            <label class="control control--checkbox">
-              <span class="folderImgList"><img src="../../assets/images/folder-table-list.svg" /></span> 
-              Photos
-              <input
-                id="checkbox-3"
-                type="checkbox"
-                class="vh"
-              />
-              <div class="control__indicator"></div>
-            </label>
-          </div>
-          <span class="folderTitleArrow">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5.17168 7.00026L0.221679 2.05026L1.63568 0.636257L7.99968 7.00026L1.63568 13.3643L0.22168 11.9503L5.17168 7.00026Z" fill="#040404"/>
-            </svg>
-          </span>
-        </li>
-        <li>
-          <div class="control-group">
-            <label class="control control--checkbox">
-              <span class="folderImgList"><img src="../../assets/images/folder-table-list.svg" /></span> 
-              Project_2022_11_10 <span class="private">Private</span>
+              <span class="folderImgList"><img src="../../assets/images/folder-table-list.svg" /></span>
+              {{folder.title}} <span *ngIf="!!folder.properties['dc:isPrivate']" class="private">Private</span>
               <input
                 id="checkbox-4"
-                type="checkbox"
-                class="vh"
-              />
-              <div class="control__indicator"></div>
-            </label>
-          </div>
-          <span class="folderTitleArrow">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5.17168 7.00026L0.221679 2.05026L1.63568 0.636257L7.99968 7.00026L1.63568 13.3643L0.22168 11.9503L5.17168 7.00026Z" fill="#040404"/>
-            </svg>
-          </span>
-        </li>
-        <li>
-          <div class="control-group">
-            <label class="control control--checkbox">
-              <span class="folderImgList"><img src="../../assets/images/folder-table-list.svg" /></span> 
-              Videos
-              <input
-                id="checkbox-5"
                 type="checkbox"
                 class="vh"
               />
