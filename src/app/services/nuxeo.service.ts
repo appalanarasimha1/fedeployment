@@ -104,7 +104,6 @@ export class NuxeoService {
       const statusText = await res.text();
       if (statusText && statusText !== 'OK') throw statusText;
     }
-    console.log(encryptedPassword);
 
 
     this.nuxeoClient = new Nuxeo({

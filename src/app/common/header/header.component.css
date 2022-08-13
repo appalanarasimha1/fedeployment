@@ -894,3 +894,8 @@ header.updateHeader .navbar .navbar-collapse {
 .mt30 {
     margin-top: 30px !important;
 }
+.empty-notification {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

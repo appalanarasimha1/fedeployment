@@ -545,6 +545,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   assetsBySectorSelect(value: string) {
+    this.assetsBySector = [];
     this.assetsBySectorSelected = value;
     this.getAssetBySectors(value, false);
   }
@@ -1225,7 +1226,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   afterChangeSector(e){
     console.log(e);
     if(e.last){
-      this.getAssetBySectors("",  true,this.sectorOffset,16,true )
+      this.getAssetBySectors(this.sectorSelected,  true,this.sectorOffset,16,true )
 
     }
   }
