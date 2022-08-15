@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { resourceUsage } from 'process';
 
 @Component({
   selector: 'app-move-copy-assets',
@@ -19,8 +20,13 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   movedContentShow: boolean = false;
   selectedList: any;
+  selectedIdList: any;
   selectedDestination: any;
   folderList: any;
+  parentId: string;
+  prevParent: any;
+  currentFolder: any;
+  breadcrumb: any;
 
   constructor(
     private apiService: ApiService,
@@ -34,6 +40,7 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedList = this.data.selectedList;
+    this.selectedIdList = Object.keys(this.selectedList).map(key => this.selectedList[key].uid);
     const parentId = this.data.parentId;
     this.fetchAssets(parentId);
   }
@@ -41,12 +48,13 @@ export class MoveCopyAssetsComponent implements OnInit {
   closeModal() {
     this.dialogRef.close(this.folderUpdated);
   }
-  selectFolder($event){
-    console.log('event', $event.target?.checked);
+  selectFolder($event, folder){
     if($event.target?.checked) {
-      this.movedContentShow = true;
+      // this.movedContentShow = true;
+      this.selectedDestination = folder;
     } else {
-      this.movedContentShow = false;
+      // this.movedContentShow = false;
+      this.selectedDestination = null;
     }
   }
 
@@ -67,11 +75,60 @@ export class MoveCopyAssetsComponent implements OnInit {
       this.fetchAssets(workspaces.uid);
       return;
     }
-    this.folderList = result.entries;
+    this.parentId = id;
+    this.folderList = result.entries.filter(entry => !this.selectedIdList.includes(entry.uid));
+    this.selectedDestination = null;
+    this.extractBreadCrumb(this.folderList[0]);
   }
 
   generateBreadCrumb() {
 
+  }
+
+  extractBreadCrumb(folder) {
+    this.prevParent = null;
+    if (!folder) return;
+    const breadCrumb = folder.contextParameters?.breadcrumb?.entries;
+    console.log({breadCrumb});
+
+    if (!breadCrumb || breadCrumb.length === 0) return;
+    this.prevParent = breadCrumb[breadCrumb.length - 3];
+    console.log(this.prevParent);
+
+  }
+
+  goBack() {
+    if (!this.checkCanGoBack()) return;
+    this.fetchAssets(this.currentFolder?.parentRef || this.prevParent.uid);
+    this.currentFolder = null;
+  }
+
+  checkCanGoBack() {
+    if (this.prevParent) {
+      if (this.prevParent.type !== 'Domain') return true;
+    }
+    if (!this.currentFolder) return false;
+    return true;
+  }
+
+  moveAssets() {
+    if (!this.selectedDestination) return;
+    for (const key in this.selectedList) {
+      this.moveAsset(this.selectedList[key]);
+    }
+  }
+
+  async moveAsset(item) {
+    const params = {
+      src: item.uid,
+      des: this.selectedDestination.uid,
+    }
+    const body = {
+      context: {},
+      params
+    };
+    const res = await this.apiService.post(apiRoutes.MOVE_FOLDER, body).toPromise();
+    return res;
   }
 
 }

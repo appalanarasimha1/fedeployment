@@ -32,5 +32,6 @@ export const apiRoutes = {
   INVITE_USER: "/automation/Scry.InviteUser",
   UPDATE_EXTERNAL_GROUP_USER: "/automation/Scry.UpdateExternalUserGroup",
   DEFAULT_DOCUMENT_SUGGESTION: '/search/pp/DEFAULT_DOCUMENT_SUGGESTION/execute',
-  GROUP_USER_LIST: '/group/[groupName]/@users?pageSize=1000'
+  GROUP_USER_LIST: '/group/[groupName]/@users?pageSize=1000',
+  MOVE_FOLDER: "/automation/Scry.MoveFolder",
 };
