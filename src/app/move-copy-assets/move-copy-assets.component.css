@@ -506,7 +506,7 @@ span.folderImgList {
 .moveItemList .control input {
     position: absolute;
     z-index: -1;
-    opacity: 0;
+    /* opacity: 0; */
 }
 .moveItemList .control__indicator {
     position: absolute;
@@ -517,7 +517,7 @@ span.folderImgList {
     /* background: transparent !important; */
     border-radius: 20px;
     border: 1px solid #444;
-    opacity: 0;
+    /* opacity: 0; */
 }
 .moveItemList .control--radio .control__indicator {
     border-radius: 50%;

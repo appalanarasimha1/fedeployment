@@ -1289,6 +1289,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
+    console.log("getWorkspaceFolders");
+
     this.showSearchbar = true;
     // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
@@ -1856,8 +1858,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async openMoveModal() {
-    console.log(this.sectorSelected);
-
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -1871,13 +1871,20 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
-      if (result) {
-        this.saveState(result);
-      }
+      console.log("closeeeeeee");
+
+      // if (result) {
+      //   this.saveState(result);
+      // }
+      // this.getWorkspaceFolders(this.selectedFolder.uid);
+      // console.log(this.selectedFolder.uid);
+
+      // this.router.onSameUrlNavigation = 'reload';
+      window.location.reload()
     });
   }
 
   checkEnableMoveButton() {
-    return true;
+    return Object.keys(this.selectedFolderList)?.length > 0;
   }
 }

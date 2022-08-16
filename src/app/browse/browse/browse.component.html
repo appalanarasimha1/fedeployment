@@ -633,7 +633,7 @@
                       </div>
                     </div>
                   </li>
-                  <li (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && count > 0" -->
+                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && count > 0" -->
                     <div class="moveFolderImg tollTipWorkspace">
                       <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
                         <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

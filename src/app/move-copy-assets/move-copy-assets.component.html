@@ -38,7 +38,7 @@
       </ul>
     </div>
   </div>
-  <div class="movedContent" *ngIf="movedContentShow">Items that are moved to private folders will always be copied.</div>
+  <div class="movedContent" *ngIf="selectedDestination?.properties['dc:isPrivate']">Items that are moved to private folders will always be copied.</div>
 </div>
 <div class="button-groups">
   <button (click)="closeModal()" class="cancel-btn">Cancel</button>

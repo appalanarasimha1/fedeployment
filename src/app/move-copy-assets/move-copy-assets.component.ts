@@ -89,11 +89,9 @@ export class MoveCopyAssetsComponent implements OnInit {
     this.prevParent = null;
     if (!folder) return;
     const breadCrumb = folder.contextParameters?.breadcrumb?.entries;
-    console.log({breadCrumb});
 
     if (!breadCrumb || breadCrumb.length === 0) return;
     this.prevParent = breadCrumb[breadCrumb.length - 3];
-    console.log(this.prevParent);
 
   }
 
@@ -111,11 +109,14 @@ export class MoveCopyAssetsComponent implements OnInit {
     return true;
   }
 
-  moveAssets() {
+  async moveAssets() {
     if (!this.selectedDestination) return;
+    const arrayCall = [];
     for (const key in this.selectedList) {
-      this.moveAsset(this.selectedList[key]);
+      arrayCall.push(this.moveAsset(this.selectedList[key]));
     }
+    await Promise.all(arrayCall);
+    this.closeModal()
   }
 
   async moveAsset(item) {
@@ -127,8 +128,7 @@ export class MoveCopyAssetsComponent implements OnInit {
       context: {},
       params
     };
-    const res = await this.apiService.post(apiRoutes.MOVE_FOLDER, body).toPromise();
-    return res;
+    return await this.apiService.post(apiRoutes.MOVE_FOLDER, body).toPromise();
   }
 
 }
