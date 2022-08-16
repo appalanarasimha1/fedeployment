@@ -278,7 +278,7 @@ export class SharedService {
 
   checkExternalUser() {
     const user = JSON.parse(localStorage.getItem('user'));
-    if (!user?.groups) return true;
+    if (!user?.groups) return false;
     return user?.groups.includes(EXTERNAL_USER);
   }
 

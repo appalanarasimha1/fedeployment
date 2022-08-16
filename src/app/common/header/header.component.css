@@ -973,3 +973,9 @@ ul.sidebarList li .sidebarLink:hover, ul.sidebarList li .sidebarLink.active {
 .mt30 {
     margin-top: 30px !important;
 }
+
+.empty-notification {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

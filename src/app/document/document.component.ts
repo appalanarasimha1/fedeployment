@@ -488,15 +488,9 @@ export class DocumentComponent implements OnInit, OnChanges {
           this.assetsBySector = response.entries ? this.assetsBySector.concat(response?.entries) : [];
           if (dontResetSectors) {
             this.sectorsHomepage = [];
-            for (
-              let i = 0;
-              i < response.aggregations["sectors"]?.buckets.length;
-              i++
-            ) {
+            for (let i = 0; i < response.aggregations["sectors"]?.buckets.length; i++) {
               const sector = response.aggregations["sectors"].buckets[i];
-              if (
-                UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1
-              ) {
+              if (UNWANTED_WORKSPACES.indexOf(sector.key.toLowerCase()) === -1) {
                 this.sectorsHomepage.push(sector.key);
               }
             }
@@ -558,6 +552,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   assetsBySectorSelect(value: string) {
+    this.assetsBySector = [];
     this.assetsBySectorSelected = value;
     this.getAssetBySectors(value, false);
   }
@@ -1238,7 +1233,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   afterChangeSector(e){
     console.log(e);
     if(e.last){
-      this.getAssetBySectors("",  true,this.sectorOffset,16,true )
+      this.getAssetBySectors(this.sectorSelected,  true,this.sectorOffset,16,true )
 
     }
   }

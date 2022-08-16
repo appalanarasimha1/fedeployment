@@ -23,7 +23,7 @@ export class InterceptorService implements HttpInterceptor {
       req = req.clone(
         {setHeaders: { 'X-Authentication-Token': localStorage.getItem('token') }
       });
-      
+
         if(localStorage.getItem("logout-once-again")) {
           return next.handle(req);
         } else {
