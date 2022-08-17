@@ -1015,7 +1015,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkShowNoTrashItem() {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
-
+  dropFilesNew=[];
   openModal() {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -1028,6 +1028,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder["sectorId"] = this.selectedFolder2.uid;
     dialogConfig.data = this.selectedFolder;
     dialogConfig.data.isPrivate = this.isPrivateFolder();
+    dialogConfig.data.dropFilesNew = this.dropFilesNew;
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
@@ -1870,7 +1871,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   dragNDrop() {
     var lastTarget = null;
-
+    var bool = false
     function isFile(evt) {
         var dt = evt.dataTransfer;
 
@@ -1880,6 +1881,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             }
         }
         return false;
+    }
+    // this.openModal()
+    let openM=(files)=> {
+      this.dropFilesNew = files
+      this.openModal()
     }
 
     window.addEventListener("dragenter", function (e) {
@@ -1917,10 +1923,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         box.style.visibility = "hidden";
         box.style.opacity = '0';
         box1.style.fontSize = "42px";
-        if(e.dataTransfer.files.length == 1)
+        if(e.dataTransfer.files.length > 0)
         {
-            document.querySelector("#text").innerHTML =
-                "<b>File selected:</b><br>" + e.dataTransfer.files[0].name;
+           openM(e.dataTransfer.files)
+
         }
     });
   }
