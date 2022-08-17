@@ -1101,7 +1101,7 @@
                     <th style="width: 3%">&nbsp;&nbsp;</th>
                   </tr>
                   <tr *ngFor="let item of sortedData; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
-                    <td>
+                    <td style="position: relative;">
                       <div
                         class="delete-folder-action"
                         *ngIf="
@@ -1142,9 +1142,9 @@
                         </div>
                       </div>
                     </td>
-                    <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
-                      <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;">
+                    <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}">
+                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;">
+                      <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block;">
                         <span class="tollTipCustom">
                           {{item.title}}
                           <span class="tolltipContent" style="top: 28px;
@@ -1240,7 +1240,7 @@
                       </span>
                     </td>
                     <td *ngIf="!checkAssetType(item.type)">
-                      <span (click)="copyLink(item, 'folder')">
+                      <span (click)="copyLink(item, 'folder')" style="text-align: right;">
                         <div *ngIf="!item.copy; else other_content" class="copyHover">
                           <img src="../../../assets/images/Link.svg" />
                           <div class="copyHoverInfo">Copy link</div>
@@ -1253,7 +1253,7 @@
                       </span>
                     </td>
                     <td *ngIf="checkAssetType(item.type)">
-                      <span (click)="copyLink(item, 'asset')">
+                      <span (click)="copyLink(item, 'asset')" style="text-align: right;">
                         <div *ngIf="!item.copy; else other_content" class="copyHover">
                           <img src="../../../assets/images/Link.svg" />
                           <div class="copyHoverInfo">Copy link</div>
