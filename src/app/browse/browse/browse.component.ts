@@ -1863,7 +1863,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   editableAsset() {
     const index = this.sortedData.findIndex(item => item.uid === this.downloadArray[0]); //NOTE: downloadArray will have only 1 item when editing asset name
     this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
-    this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
   }
 
 }
