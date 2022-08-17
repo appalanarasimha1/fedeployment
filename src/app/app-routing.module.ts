@@ -11,6 +11,7 @@ import { REPORT_ROLE } from "./common/constant";
 import { AssetViewComponent } from "./asset-view/asset-view.component";
 import { SignupComponent } from "./signup/signup.component";
 import { ForgotPasswordComponent } from "./forgot-password/forgot-password.component";
+import { AssetCannotBeAccessedComponent } from "./asset-cannot-be-accessed/asset-cannot-be-accessed.component";
 
 
 
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: "signup", component: SignupComponent },
   { path: "login", component: LoginComponent },
   { path: "forgot-password", component: ForgotPasswordComponent },
+  { path: "asset-not-accessed", component: AssetCannotBeAccessedComponent },
   {
     path: "workspace",
     loadChildren: () =>

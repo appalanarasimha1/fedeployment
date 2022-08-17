@@ -1388,6 +1388,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
      -moz-appearance: none;
           appearance: none;
   border: none;
+  font-weight: normal;
 }
 .input-sizer span {
   padding: 0.25em;
@@ -1605,6 +1606,7 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   background: #FBF7E6;
   padding: 2px 10px 4px 10px;
   line-height: normal;
+  font-weight: normal;
 }
 .actionIcon {
   width: 30px;
@@ -1809,6 +1811,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 section.lpSecOne {
   /* min-height: 600px; */
   position: relative;
+  padding-left: 100px;
 }
 section.lpBAck:before, .lpSecOne:before {
   content: '';
@@ -3012,6 +3015,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
      -moz-appearance: none;
           appearance: none;
   border: none;
+  font-weight: normal;
 }
 .input-sizer span {
   padding: 0.25em;
@@ -3226,6 +3230,7 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   background: #FBF7E6;
   padding: 2px 10px 4px 10px;
   line-height: normal;
+  font-weight: normal;
 }
 .actionIcon {
   width: 30px;
@@ -3914,4 +3919,25 @@ div#textnode h3 {
 div#textnode p {
   color: #DEB31A;
   font-size: 14px;
+}
+.zoomImg {
+  display: inline-block;
+  position: relative;
+}
+.zoomImgBlock {
+  max-width: 200px;
+  position: absolute;
+  left: 0px;
+  bottom: 34px;
+  display: none;
+  z-index: 9;
+  background: #fff;
+  width: 250px;
+}
+.zoomImg:hover .zoomImgBlock {
+  display: block;
+}
+.zoomImgBlock img {
+  max-width: 100%;
+  width: 100%;
 }

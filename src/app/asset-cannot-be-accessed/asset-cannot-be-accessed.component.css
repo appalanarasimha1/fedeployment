@@ -1,0 +1,77 @@
+.four04{
+    height: calc(100vh - 129px);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    justify-content: center;
+}
+.four04 h1{
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-feature-settings: 'cpsp' on, 'kern' off;
+    color: #FFFFFF;
+}
+.four04 p{
+    font-size: 15px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+.white-btn{
+    font-size: 15px;
+    line-height: 24px;
+    color: #040505;
+    background: #F6F5F2;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-weight: normal;
+}
+
+
+::ng-deep .navbar{
+    margin-bottom: unset;
+    padding: unset
+}
+
+header{
+    padding: 10px 0px  6px!important;
+    top: 0px;
+    position: absolute;
+    width: 100%;
+    transition: .1s;
+}
+
+.fixedHeader{
+    background-color: #040404;
+    z-index: 999;
+}
+header img.header-logo {
+    max-width: 212px;
+    margin-left: 0px;
+}
+.searchHeading.missHeader {
+    position: fixed;
+}
+
+.brownlight {
+    font-family: 'brownlight';
+}
+.pb-4 {
+    padding-bottom: 2.5rem!important;
+}
+.pb-5 {
+    padding-bottom: 3.5rem!important;
+}
+
+
+/* mobile responsive */
+@media(max-width:991.5px){
+    .fixedHeader{
+        background-color: transparent;
+    }
+    header img.header-logo{
+        width: 100px;
+        margin: auto;
+    }
+}

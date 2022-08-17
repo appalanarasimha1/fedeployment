@@ -207,6 +207,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.saveState(folder);
         this.loading = false;
       } else {
+        this.initialLoad = true;
         fetchAll = true;
         this.selectedFolder2 = this.folderStructure[0];
         this.sectorSelected = this.folderStructure[0];
@@ -222,8 +223,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
-      console.log("2222222222222",result);
-      
       if (!result?.length) return;
       result.map((asset:any)=>{
         this.searchList.unshift(asset);

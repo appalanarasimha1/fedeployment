@@ -83,8 +83,6 @@ export class SearchComponent implements OnInit {
     this.fetchUserData();
     this.fetchFavoriteCollection();
 
-    this.oneTimeTask();
-
     if (!this.nuxeo.nuxeoClient || !localStorage.getItem("token")) {
       this.sharedService.redirectToLogin();
       return;
@@ -631,12 +629,4 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  oneTimeTask() {
-    if(localStorage.getItem("logout-once")) {
-      return;
-    }
-    this.nuxeo.logout();
-    localStorage.setItem("logout-once", "true");
-    this.keycloak.logout(window.location.origin + '/login');
-  }
 }

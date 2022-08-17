@@ -26,6 +26,7 @@ import { ACCESS,
   ALLOW_VALUE_MAP,
   SPECIFIC_USER_LABEL,
   OWNER_APPROVAL_LABEL,
+  WHITELIST_EXTENSIONS,
   YEARS,
   ACCESS_TITLE} from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
@@ -146,6 +147,8 @@ export class UploadModalComponent implements OnInit {
 
   loading = true;
 
+  showHideAllAsset: boolean = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -204,7 +207,7 @@ export class UploadModalComponent implements OnInit {
       return;
     }
     console.log("1234567", this.selectedFolder);
-    
+
     this.dialogRef.close(this.selectedFolder);
   }
 
@@ -216,8 +219,32 @@ export class UploadModalComponent implements OnInit {
     } else {
       this.showError = false;
       this.showErrorCheckbox = false;
-      this.uploadFile(event.addedFiles);
+      const files = this.filterWhitelistFiles(event.addedFiles);
+      this.uploadFile(files);
     }
+  }
+
+  filterWhitelistFiles(files: any) {
+    const filteredFile = [];
+    for (const file of files) {
+      const filenameSplit = file.name.split('.');
+      if (filenameSplit.length > 2) {}
+      else if (WHITELIST_EXTENSIONS.includes(file.type)) {
+        filteredFile.push(file);
+      } else if (file.type?.includes("image/")) {
+        filteredFile.push(file);
+      } else if (file.type?.includes("video/")) {
+        filteredFile.push(file);
+      } else if (file.type?.includes("audio/")) {
+        filteredFile.push(file);
+      } else {
+        // const blockedFile = file;
+        // blockedFile['isBlocked'] = true;
+        // filteredFile.push(blockedFile);
+      }
+    }
+
+    return filteredFile;
   }
 
   onRemove(event) {
@@ -234,11 +261,11 @@ export class UploadModalComponent implements OnInit {
         this.showErrorUpload = true;
       }
     } else {
-      this.step = 4;	
-      this.publishAssets();	
+      this.step = 4;
+      this.publishAssets();
       return;
     }
-  } 
+  }
 
   toNextStep() {
     this.stepper.next();
@@ -734,7 +761,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   onCheckDownloadApproval(event) {
-      
+
       const user = JSON.parse(localStorage.getItem('user'));
       for (let i = 0; i < this.getAssetNumber(); i++) {
         if (!event.target.checked) {
@@ -744,7 +771,7 @@ export class UploadModalComponent implements OnInit {
         }
         this.customDownloadApprovalMap[i] = this.downloadApproval;
       }
-    
+
   }
 
   openCopyright(fileIndex) {
@@ -929,7 +956,7 @@ export class UploadModalComponent implements OnInit {
     const res = await this.apiService.post(url, payload, {headers: {'X-Batch-No-Drop': 'true'}}).toPromise();
 
     console.log("111111111",res);
-    
+
     this.uploadedAsset=res;
     this.uploadedAsset1.push(res);
     return {
@@ -1066,7 +1093,7 @@ export class UploadModalComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem('user'));
     this.customDownloadApprovalUsersMap[key] = [user.username];
   }
-  
+
   checkValidation() {
     if (Object.keys(this.filesMap).length === 0 && !this.agreeTerms) {
       this.showError = true;
@@ -1217,5 +1244,9 @@ export class UploadModalComponent implements OnInit {
     const response = await this.apiService.delete(url).toPromise();
     console.log('deleteUploadedBatchMetaData() = ', response);
     return;
+  }
+
+  showAllAsset() {
+    this.showHideAllAsset = !this.showHideAllAsset;
   }
 }

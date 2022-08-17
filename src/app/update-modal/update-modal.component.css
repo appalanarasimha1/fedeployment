@@ -1080,6 +1080,7 @@ input.copyright-input {
 }
 .custom-date-picker ::ng-deep .mat-form-field-infix {
   overflow: hidden !important;
+  width: auto !important;
 }
 
 .custom-date-picker ::ng-deep .mat-form-field-label-wrapper {
@@ -1145,9 +1146,9 @@ button.btn-disable {
 .updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-wrapper {
   width: auto;
 }
-.updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-infix {
+/* .updateClassificationBlk .custom-date-picker ::ng-deep .mat-form-field-infix {
   width: 70px;
-}
+} */
 .updateClassificationBlk .upload-form-input input {
   width: 100%;
 }
