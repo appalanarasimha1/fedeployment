@@ -249,7 +249,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
 
     this.fetchExternalUserInfo(fetchAll);
-  } 
+    this.dragNDrop();
+  }
 
   ngAfterViewInit(): void {
   }
@@ -1013,7 +1014,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkShowNoTrashItem() {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
-
+  dropFilesNew=[];
   openModal() {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -1026,6 +1027,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder["sectorId"] = this.selectedFolder2.uid;
     dialogConfig.data = this.selectedFolder;
     dialogConfig.data.isPrivate = this.isPrivateFolder();
+    dialogConfig.data.dropFilesNew = this.dropFilesNew;
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
@@ -1864,6 +1866,68 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const index = this.sortedData.findIndex(item => item.uid === this.downloadArray[0]); //NOTE: downloadArray will have only 1 item when editing asset name
     this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
     this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
+  }
+
+  dragNDrop() {
+    var lastTarget = null;
+    var bool = false
+    function isFile(evt) {
+        var dt = evt.dataTransfer;
+
+        for (var i = 0; i < dt.types.length; i++) {
+            if (dt.types[i] === "Files") {
+                return true;
+            }
+        }
+        return false;
+    }
+    // this.openModal()
+    let openM=(files)=> {
+      this.dropFilesNew = files
+      this.openModal()
+    }
+
+    window.addEventListener("dragenter", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+      // if (box != null) {
+        if (isFile(e)) {
+            lastTarget = e.target;
+            box.style.visibility = "";
+            box.style.opacity = '1';
+            box1.style.fontSize = "48px";
+        }
+      // }
+    });
+
+    window.addEventListener("dragleave", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+        e.preventDefault();
+        if (e.target === lastTarget || e.target === document) {
+            box.style.visibility = "hidden";
+            box.style.opacity = '0';
+            box1.style.fontSize = "42px";
+        }
+    });
+
+    window.addEventListener("dragover", function (e) {
+        e.preventDefault();
+    });
+
+    window.addEventListener("drop", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+        e.preventDefault();
+        box.style.visibility = "hidden";
+        box.style.opacity = '0';
+        box1.style.fontSize = "42px";
+        if(e.dataTransfer.files.length > 0)
+        {
+           openM(e.dataTransfer.files)
+
+        }
+    });
   }
 
 }

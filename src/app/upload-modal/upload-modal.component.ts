@@ -160,6 +160,10 @@ export class UploadModalComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log("incoming data = ", this.data);
+    if(this.data.dropFilesNew?.length){
+      this.uploadFile(this.data.dropFilesNew)
+    }
+    
     await this.showWorkspaceList();
     if (this.data) {
       const title = this.data.path.split("/workspaces")[0].substring(1);

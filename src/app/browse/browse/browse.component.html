@@ -1054,6 +1054,14 @@
               </div>
               
               <div class="col-xl-12 col-md-12 customTableStyle">
+                <div style="visibility:hidden; opacity:0" id="dropzone">
+                  <div id="textnode">
+                    <img src="../../../assets/images/cloud-upload.png">
+                    <h3>Please drop here</h3>
+                    <p>Images, videos and PDF documents only</p>
+                  </div>
+                </div>
+                <div id="text">&nbsp;</div>
                 <table
                   matSort
                   (matSortChange)="sortData($event)"
