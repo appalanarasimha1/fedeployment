@@ -1187,7 +1187,7 @@
                     </td>
                     <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                       <div class="zoomImg">
-                        <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px; object-fit: contain;">
+                        <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 30px;margin-right: 10px; object-fit: contain;">
                         <div class="zoomImgBlock">
                           <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)">
                         </div>

@@ -3945,3 +3945,6 @@ div#textnode p {
   max-width: 100%;
   width: 100%;
 }
+img.noPreviewImg {
+  width: 20px !important;
+}
