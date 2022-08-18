@@ -1023,7 +1023,7 @@ font-weight: normal;
 }
 .delete-folder-action .control__indicator {
   position: absolute;
-  top: 6px;
+  top: 0px;
   left: 0;
   height: 24px;
   width: 24px;
@@ -2644,7 +2644,7 @@ font-weight: normal;
 }
 .delete-folder-action .control__indicator {
   position: absolute;
-  top: 6px;
+  top: 0px;
   left: 0;
   height: 24px;
   width: 24px;
@@ -2716,11 +2716,13 @@ font-weight: normal;
   display: block;
 }
 .delete-folder-action {
-  position: absolute;
+  position: static;
   left: 10px;
   top: 4px;
   opacity: 0;
   transition: transform 0.3s;
+  width: 24px;
+  height: 24px;
 }
 .groupFolder:hover .delete-folder-action {
   opacity: 1;
@@ -2907,7 +2909,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 .buttonCreate {
   padding-top: 7px;
   display: inline-block;
-  margin-right: 17px;
+  margin-right: 20px;
   vertical-align: top;
 }
 .deleteFolder{
@@ -3787,13 +3789,15 @@ ul.uploadAssetsClassifications li:hover path,
   height: 30px;
 }
 .deleteFolder {
-  margin-right: 15px;
+  margin-right: 20px;
   position: relative;
   z-index: 2;
+  line-height: normal;
 }
 .deleteFolder svg{
   width: 20px;
   height: 22px;
+  vertical-align: -5px;
 }
 
 ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
@@ -3825,7 +3829,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 .copyHoverInfo {
   display: none;
   top: 31px;
-  right: 24px;
+  right: 0px;
   background: #413E3C;
   padding: 2px 7px;
   color: #fff !important;
