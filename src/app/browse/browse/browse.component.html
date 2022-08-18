@@ -665,7 +665,7 @@
                       <!-- <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Delete</div> -->
                       <div class="workspaceInfo" style="right: 12px;padding: 10px 20px;" *ngIf="canNotDelete.length>0">
                         <div class="workspaceHeading">
-                          {{canNotDelete.length}} items you select cannot be deleted.
+                          You do not have the permission to delete {{canNotDelete.length}} of the selected assets
                         </div>
                         <div class="document-img">
                           <ul>
@@ -779,7 +779,7 @@
 
                 <ul class="uploadAssetsClassifications" *ngIf="!checkExternalUser()">
                   <li
-                    (click)="openModal()"
+                    (click)="openModal(true)"
                     class="tollTipWorkspace workspaceInfoHover"
                     *ngIf="count < 1"
                   >

@@ -100,7 +100,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   callHandClick;
   callDomain;
   callFolder;
-  viewType = "GRID";
+  viewType = "LIST";
   tableViewType = 0;
   showShadow = false;
   activeTabs = { comments: false, info: false, timeline: false };
@@ -378,8 +378,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
-    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
       return '../../../assets/images/no-preview.png';
+    }
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
+      return '../../../assets/images/no-preview-grid.svg';
     }
    return this.sharedService.getAssetUrl(event, url, type);
   }
@@ -1015,7 +1018,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
   dropFilesNew=[];
-  openModal() {
+  openModal(key?:boolean) {
+    if(key) this.dropFilesNew=[]
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
