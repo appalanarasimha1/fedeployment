@@ -79,7 +79,7 @@
                   >
                   <!-- remove class "d-flex" -->
                     <div
-                      class="set"
+                      class="workspaceLink"
                       (click)="
                         handleGotoBreadcrumb(firstChild, fIndex);
                         selectedFolder2 = firstChild;
@@ -96,12 +96,11 @@
 
                       <!-- </div> -->
                       <!-- <div class="hoverTooltip">Pin this sector</div> -->
-                      <span class="paddingLeft" style="padding-left: 10px; z-index: 9; display: block;">
+                      <span style="z-index: 9; display: block;">
                         <!-- {{ firstChild.title }} -->
                         <a
                           [routerLink]="['/workspace']"
                           [queryParams]="{ folder: firstChild.uid }"
-                          class="blackTetx"
                         >
                           {{ firstChild.title }}
                         </a>
