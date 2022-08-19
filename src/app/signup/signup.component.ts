@@ -32,7 +32,10 @@ export class SignupComponent implements OnInit {
     this.route.queryParams.subscribe(async (params) => {
       this.registrationId = params.registrationId;
       this.email = params.email;
-      if (this.email) this.checkEmail();
+      if (this.email) {
+        this.checkNeomEmail();
+        this.checkEmail();
+      }
     })
   }
 
@@ -50,6 +53,10 @@ export class SignupComponent implements OnInit {
 
   checkProcessSignUp() {
     return this.newPassword && this.confirmNewPassword && this.newPassword === this.confirmNewPassword && this.registrationId;
+  }
+
+  checkNeomEmail() {
+    if (this.email.split('@')[1] === 'neom.com') this.router.navigate(['/login']);
   }
 
   checkEmail() {
