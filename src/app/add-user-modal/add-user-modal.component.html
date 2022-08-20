@@ -19,7 +19,8 @@
       </ng-template>
     </ng-select>
     <!-- <button class="addBtn">Add</button> -->
-    <button (click)="sendInvite()" *ngIf="checkInviteExternal()" class="sendInviteBtn">Send invite</button>
+    <button (click)="sendInvite()" *ngIf="checkInviteExternal() && !checkNeomEmail()" class="sendInviteBtn">Send invite</button>
+    <button (click)="sendInvite(true)" *ngIf="checkInviteExternal() && checkNeomEmail()" class="sendInviteBtn">Add</button>
   </div>
 
   <div class="makeAdminBlock">
