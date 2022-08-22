@@ -1925,9 +1925,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         box.style.visibility = "hidden";
         box.style.opacity = '0';
         box1.style.fontSize = "42px";
-        if(e.dataTransfer.files.length > 0)
-        {
-           openM(e.dataTransfer.files)
+        if(e.dataTransfer.files.length > 0) {
+          openM(e.dataTransfer.files)
 
         }
     });

@@ -6,7 +6,7 @@
          <div>
             <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
-            <ngx-dropzone-label  class="noborder" *ngIf="!data.dropFilesNew?.length">
+            <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length">
                <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
                   <div class="upload-label">
                      <span style="margin-top: 20px;"><img src="../../assets/images/cloud-upload.png" style="width: 36px; margin-right: 10px;"> <b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
