@@ -212,6 +212,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   downloadEnable: boolean = false;
   isAware;
 
+  searchNameCLicked: string = '';
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
@@ -1245,5 +1247,16 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.getFavouriteCollection(this.favouriteUID,this.favouriteOffset,  16,true)
 
     }
+  }
+
+  activeSearchCatalogue(name) {
+    this.searchNameCLicked = name;
+  }
+
+  checkedNameClicked(name) {
+    if(this.searchNameCLicked === name ) {
+      return true;
+    }
+    return false;
   }
 }

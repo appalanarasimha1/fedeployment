@@ -9,16 +9,63 @@
         </div>
     </div>
   </div> -->
+  <div class="customTab">
+    <div class="container-fluid">
+      <ul class="catalogue-feature-blk">
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('People')" [ngClass]="{ 'activeSearch' : checkedNameClicked('People') }" style="background-image: url(../../assets/images/catalogue-feature01.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('People')" /> People</span>
+          </div>
+        </li>
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Sports')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Sports') }" style="background-image: url(../../assets/images/catalogue-feature02.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Sports')" /> Sports</span>
+          </div>
+        </li>
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Nature')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Nature') }" style="background-image: url(../../assets/images/catalogue-feature03.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Nature')" /> Nature</span>
+          </div>
+        </li>
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Leisure')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Leisure') }" style="background-image: url(../../assets/images/catalogue-feature04.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Leisure')" /> Leisure</span>
+          </div>
+        </li>
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Technology')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Technology') }" style="background-image: url(../../assets/images/catalogue-feature05.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Technology')" /> Technology</span>
+          </div>
+        </li>
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Animals')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Animals') }" style="background-image: url(../../assets/images/catalogue-feature06.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Animals')" /> Animals</span>
+          </div>
+        </li>
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Transportation')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Transportation') }" style="background-image: url(../../assets/images/catalogue-feature07.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Transportation')" /> Transportation</span>
+          </div>
+        </li>
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Places')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Places') }" style="background-image: url(../../assets/images/catalogue-feature08.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Places')" /> Places</span>
+          </div>
+        </li>
+        <li>
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Events')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Events') }" style="background-image: url(../../assets/images/catalogue-feature09.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Events')" /> Events</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 
   <div class="customTab" *ngIf="!checkShowDetailview()">
 
-    <div class="container-fluid">
-      this is dymmy text here
-    </div>
-
     <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
       <!--Remove anchore tag <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">What’s Trending</a> -->
-      <span class="commonHeading recentFont">What’s Trending</span>
+      <span class="commonHeading recentFont">What's Trending</span>
       <div *ngIf="!trendingAssets.length"  style="height: 150px;">
         <h2 class="noresult pb-3 pt-4">No Trending Assets found</h2>
       </div>
