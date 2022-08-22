@@ -711,6 +711,7 @@ section.left-sidebar {
     top: 76px;
     left: 0px;
     padding: 12px;
+    border-right: 1px solid #413E3C;
 }
 ul.sidebarList {
     text-align: center;
@@ -728,14 +729,22 @@ ul.sidebarList li .sidebarLink {
     cursor: pointer;
     font-size: 12px;
     color: #fff;
-    opacity: 0.7;
+    opacity: 0.5;
     text-decoration: none;
     display: block;
+    transition: all 0.12s ease;
 }
-ul.sidebarList li .sidebarLink:hover, ul.sidebarList li .sidebarLink.active {
+ul.sidebarList li .sidebarLink:hover {
+    color: #fff;
+    background: transparent;
+    opacity: 1;
+    transition: all 0.12s ease;
+}
+ul.sidebarList li .sidebarLink.active {
     background: linear-gradient(102.26deg, #E1BB33 27.13%, #DAAA00 68.86%);
     color: #fff;
     opacity: 1;
+    transition: all 0.12s ease;
 }
 .bottomItems {
     position: absolute;
@@ -768,6 +777,7 @@ ul.sidebarList li .sidebarLink:hover, ul.sidebarList li .sidebarLink.active {
     width: 100%;
     padding: 0px;
     margin: 0px 0px 15px;
+    transition: all 0.12s ease;
 }
 .bottomItems ul li a:last-child {
     margin-bottom: 0px;
@@ -978,4 +988,14 @@ ul.sidebarList li .sidebarLink:hover, ul.sidebarList li .sidebarLink.active {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.left-sidebar .bottomItems ul li a:hover {
+    color: #fff;
+    opacity: 1;
+    transition: all 0.12s ease;
+}
+
+.bottomItems ul li a:hover path {
+    fill: #fff;
+    transition: all 0.12s ease;
 }

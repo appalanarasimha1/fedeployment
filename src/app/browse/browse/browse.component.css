@@ -3945,3 +3945,19 @@ div#textnode p {
   max-width: 100%;
   width: 100%;
 }
+img.noPreviewImg {
+  width: 20px !important;
+}
+.workspaceLink a {
+  display: block; 
+  padding: 12px 17px;
+  color: #3c3c3c;
+  padding-left: 50px;
+}
+.workspaceLink a:hover {
+  background: transparent;
+  color: #040404;
+}
+li.hoverPin.active-tab a {
+  color: #040404 !important;
+}

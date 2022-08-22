@@ -79,7 +79,7 @@
                   >
                   <!-- remove class "d-flex" -->
                     <div
-                      class="set"
+                      class="workspaceLink"
                       (click)="
                         handleGotoBreadcrumb(firstChild, fIndex);
                         selectedFolder2 = firstChild;
@@ -96,12 +96,11 @@
 
                       <!-- </div> -->
                       <!-- <div class="hoverTooltip">Pin this sector</div> -->
-                      <span class="paddingLeft" style="padding-left: 10px; z-index: 9; display: block;">
+                      <span style="z-index: 9; display: block;">
                         <!-- {{ firstChild.title }} -->
                         <a
                           [routerLink]="['/workspace']"
                           [queryParams]="{ folder: firstChild.uid }"
-                          class="blackTetx"
                         >
                           {{ firstChild.title }}
                         </a>
@@ -1187,7 +1186,7 @@
                     </td>
                     <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
                       <div class="zoomImg">
-                        <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px; object-fit: contain;">
+                        <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 30px;margin-right: 10px; object-fit: contain;">
                         <div class="zoomImgBlock">
                           <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)">
                         </div>
