@@ -100,7 +100,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   callHandClick;
   callDomain;
   callFolder;
-  viewType = "GRID";
+  viewType = "LIST";
   tableViewType = 0;
   showShadow = false;
   activeTabs = { comments: false, info: false, timeline: false };
@@ -207,6 +207,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.saveState(folder);
         this.loading = false;
       } else {
+        this.initialLoad = true;
         fetchAll = true;
         this.selectedFolder2 = this.folderStructure[0];
         this.sectorSelected = this.folderStructure[0];
@@ -214,11 +215,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         await this.fetchAllSectors();
         this.loading = false;
       }
+      // console.log(`${window.location.origin}/workspace?folder=`,window.location.href );
+      if (window.location.href.includes(`${window.location.origin}/workspace?folder=`)) {
+        this.initialLoad = false
+      }
+      
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
-      console.log("2222222222222",result);
-      
       if (!result?.length) return;
       result.map((asset:any)=>{
         this.searchList.unshift(asset);
@@ -245,6 +249,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
 
     this.fetchExternalUserInfo(fetchAll);
+    this.dragNDrop();
   }
 
   ngAfterViewInit(): void {
@@ -373,8 +378,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
-    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
       return '../../../assets/images/no-preview.png';
+    }
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
+      return '../../../assets/images/no-preview-grid.svg';
     }
    return this.sharedService.getAssetUrl(event, url, type);
   }
@@ -506,6 +514,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    * @returns null
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    $("body").animate({ scrollTop: 0 }, "slow");
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
@@ -927,7 +936,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return Object.keys(this.selectedFolderList).length > 0;
   }
 
+  
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+    this.initialLoad = false;
     this.showSearchbar = true;
     this.searchBarValue = "";
     offset || this.paginator?.firstPage();
@@ -949,7 +960,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             --this.resultCount;
             return true;
           } else {
-            return false;
+            return false; 
           }
         });
         // if (!this.myDeletedCheck) {
@@ -964,13 +975,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.searchList = this.trashedList;
         this.sortedData = this.searchList.slice();
         this.isTrashView = true;
-        this.handleSelectMenu(1, this.viewType || "LIST");
+        this.handleSelectMenu(1,"LIST");
         this.showMoreButton = false;
         this.loading = false;
         // this.deletedByMeFilter();
       });
   }
-
+  
   async deletedByMeFilter() {
     let userData = localStorage.getItem("user");
     // console.log("userData", JSON.parse(userData));
@@ -1007,8 +1018,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkShowNoTrashItem() {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
-
-  openModal() {
+  dropFilesNew=[];
+  openModal(key?:boolean) {
+    if(key) this.dropFilesNew=[]
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -1020,6 +1032,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder["sectorId"] = this.selectedFolder2.uid;
     dialogConfig.data = this.selectedFolder;
     dialogConfig.data.isPrivate = this.isPrivateFolder();
+    dialogConfig.data.dropFilesNew = this.dropFilesNew;
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
@@ -1071,7 +1084,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       const payload = await this.sharedService.getCreateFolderPayload(
-        folderName,
+        folderName?.trim(),
         this.selectedFolder2.title,
         this.selectedFolder,
         description,
@@ -1223,7 +1236,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         input: assetUid || selectedFolder.uid,
         params: {
           properties: {
-            "dc:title": title || newTitle,
+            "dc:title": title?.trim() || newTitle?.trim(),
           },
         },
       })
@@ -1231,7 +1244,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         let msg;
         if(!title && !assetUid) {
             this.updateFolderAction();
-            this.handleTest(res);
+            
+            // this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
             msg = 'Asset name has been updated';
@@ -1276,7 +1290,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     await this.fetchCurrentFolderAssets(folderUid);
     this.loading = false;
   }
-
+  initialLoad:Boolean= true
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
     this.showSearchbar = true;
     // this.loading = true;
@@ -1856,7 +1870,68 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   editableAsset() {
     const index = this.sortedData.findIndex(item => item.uid === this.downloadArray[0]); //NOTE: downloadArray will have only 1 item when editing asset name
     this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
-    this.sortedData[index]['edit'] = !this.sortedData[index]['edit'];
+  }
+
+  dragNDrop() {
+    var lastTarget = null;
+    var bool = false
+    function isFile(evt) {
+        var dt = evt.dataTransfer;
+
+        for (var i = 0; i < dt.types.length; i++) {
+            if (dt.types[i] === "Files") {
+                return true;
+            }
+        }
+        return false;
+    }
+    // this.openModal()
+    let openM=(files)=> {
+      this.dropFilesNew = files
+      this.openModal()
+    }
+
+    window.addEventListener("dragenter", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+      // if (box != null) {
+        if (isFile(e)) {
+            lastTarget = e.target;
+            box.style.visibility = "";
+            box.style.opacity = '1';
+            box1.style.fontSize = "48px";
+        }
+      // }
+    });
+
+    window.addEventListener("dragleave", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+        e.preventDefault();
+        if (e.target === lastTarget || e.target === document) {
+            box.style.visibility = "hidden";
+            box.style.opacity = '0';
+            box1.style.fontSize = "42px";
+        }
+    });
+
+    window.addEventListener("dragover", function (e) {
+        e.preventDefault();
+    });
+
+    window.addEventListener("drop", function (e) {
+      const box = document.querySelector("#dropzone") as HTMLElement | null;
+      const box1 = document.querySelector("#textnode") as HTMLElement | null;
+        e.preventDefault();
+        box.style.visibility = "hidden";
+        box.style.opacity = '0';
+        box1.style.fontSize = "42px";
+        if(e.dataTransfer.files.length > 0)
+        {
+           openM(e.dataTransfer.files)
+
+        }
+    });
   }
 
 }

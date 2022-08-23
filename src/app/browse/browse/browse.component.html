@@ -16,7 +16,7 @@
     </app-sub-header>
 <section style="background-color: #fff;" class="lpBAck">
   <section class="lpSecOne ">
-    <div class="container ">
+    <div class="container">
 
       <div class="row ">
         <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
@@ -41,7 +41,8 @@
                     fetchAllSectors(item.isExpand);
                     selectedFolder2 = item;
                     selectedFolder = item;
-                    createBreadCrumb(item.title, item.type, item.path)
+                    createBreadCrumb(item.title, item.type, item.path);
+                    initialLoad = true;
                   "
                 >
                   <div style="z-index: 9">
@@ -78,13 +79,14 @@
                   >
                   <!-- remove class "d-flex" -->
                     <div
-                      class="set"
+                      class="workspaceLink"
                       (click)="
                         handleGotoBreadcrumb(firstChild, fIndex);
                         selectedFolder2 = firstChild;
                         selectedFolder = firstChild;
                         sectorSelected = firstChild;
-                        closeOtherSectore(firstChild, item.children)
+                        closeOtherSectore(firstChild, item.children);
+                        initialLoad= false
                       "
                     >
                       <!-- <div style="z-index: 9;"> -->
@@ -94,15 +96,14 @@
 
                       <!-- </div> -->
                       <!-- <div class="hoverTooltip">Pin this sector</div> -->
-                      <span class="paddingLeft" style="padding-left: 10px; z-index: 9; display: block;">
-                        {{ firstChild.title }}
-                        <!-- <a
+                      <span style="z-index: 9; display: block;">
+                        <!-- {{ firstChild.title }} -->
+                        <a
                           [routerLink]="['/workspace']"
                           [queryParams]="{ folder: firstChild.uid }"
-                          class="blackTetx paddingLeft"
                         >
                           {{ firstChild.title }}
-                        </a> -->
+                        </a>
                       </span>
                       <!--  class="pinIcon" -->
                     </div>
@@ -663,7 +664,7 @@
                       <!-- <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Delete</div> -->
                       <div class="workspaceInfo" style="right: 12px;padding: 10px 20px;" *ngIf="canNotDelete.length>0">
                         <div class="workspaceHeading">
-                          {{canNotDelete.length}} items you select cannot be deleted.
+                          You do not have the permission to delete {{canNotDelete.length}} of the selected assets
                         </div>
                         <div class="document-img">
                           <ul>
@@ -777,7 +778,7 @@
 
                 <ul class="uploadAssetsClassifications" *ngIf="!checkExternalUser()">
                   <li
-                    (click)="openModal()"
+                    (click)="openModal(true)"
                     class="tollTipWorkspace workspaceInfoHover"
                     *ngIf="count < 1"
                   >
@@ -796,7 +797,7 @@
                   </li>
                   <li
                     (click)="
-                      openUpdateClassModal(breadCrumb[0] ? breadCrumb[0] : null)
+                      openUpdateClassModal(breadCrumb[0] ? breadCrumb[0] : null);
                     "
                     *ngIf="!isPrivateFolder(true, true) && count < 1"
                     class="tollTipWorkspace manageFolderIcon"
@@ -992,7 +993,7 @@
                               white-space: normal;
                               width: 100%;
                               overflow: inherit;
-                              text-overflow: inherit;
+                              text-overflow: inherit;vertical-align: middle;
                             "
                           >
                             {{ sharedService.stringShortener(item.title, 16) }}
@@ -1050,12 +1051,21 @@
                   Choose a workspace on the left to begin
                 </p>
               </div>
+              
               <div class="col-xl-12 col-md-12 customTableStyle">
+                <div style="visibility:hidden; opacity:0" id="dropzone">
+                  <div id="textnode">
+                    <img src="../../../assets/images/cloud-upload.png">
+                    <h3>Please drop here</h3>
+                    <p>Images, videos and PDF documents only</p>
+                  </div>
+                </div>
+                <div id="text">&nbsp;</div>
                 <table
                   matSort
                   (matSortChange)="sortData($event)"
                   class="folderListview pb-5"
-                  *ngIf="searchList?.length && selectedFolder.uid !== parentId"
+                  *ngIf="!initialLoad && (searchList?.length || selectedFolder.uid !== parentId )"
                 >
                   <tr>
                     <th style="width: 3%">&nbsp;&nbsp;</th>
@@ -1098,7 +1108,7 @@
                     <th style="width: 3%">&nbsp;&nbsp;</th>
                   </tr>
                   <tr *ngFor="let item of sortedData; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder">
-                    <td>
+                    <td style="position: relative;">
                       <div
                         class="delete-folder-action"
                         *ngIf="
@@ -1139,9 +1149,10 @@
                         </div>
                       </div>
                     </td>
-                    <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain;">
-                      <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;">
+                    <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}">
+                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;">
+                      <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block; 
+                      vertical-align: middle;">
                         <span class="tollTipCustom">
                           {{item.title}}
                           <span class="tolltipContent" style="top: 28px;
@@ -1163,9 +1174,9 @@
                         </span>
 
                       </p>
-                      <span (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+                      <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                         <div class="publicUseBlock">
-                          <div *ngIf="item.properties['dc:isPrivate']" class="publicUseBlk">Private</div>
+                          <div class="publicUseBlk">Private</div>
                           <!-- <div class="mouseHoverInfo">
                             <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
                             <div class="manageAccessBtn">
@@ -1176,7 +1187,12 @@
                       </span>
                     </td>
                     <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex">
-                      <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 30px;margin-right: 10px;object-fit: contain;">
+                      <div class="zoomImg">
+                        <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 30px;margin-right: 10px; object-fit: contain;">
+                        <div class="zoomImgBlock">
+                          <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)">
+                        </div>
+                      </div>
                       <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left">
                         <span class="tollTipCustom">
                           {{item.title}}
@@ -1233,7 +1249,7 @@
                       </span>
                     </td>
                     <td *ngIf="!checkAssetType(item.type)">
-                      <span (click)="copyLink(item, 'folder')">
+                      <span (click)="copyLink(item, 'folder')" style="text-align: right;">
                         <div *ngIf="!item.copy; else other_content" class="copyHover">
                           <img src="../../../assets/images/Link.svg" />
                           <div class="copyHoverInfo">Copy link</div>
@@ -1246,7 +1262,7 @@
                       </span>
                     </td>
                     <td *ngIf="checkAssetType(item.type)">
-                      <span (click)="copyLink(item, 'asset')">
+                      <span (click)="copyLink(item, 'asset')" style="text-align: right;">
                         <div *ngIf="!item.copy; else other_content" class="copyHover">
                           <img src="../../../assets/images/Link.svg" />
                           <div class="copyHoverInfo">Copy link</div>

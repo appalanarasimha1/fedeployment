@@ -700,6 +700,95 @@ header.updateHeader .navbar .navbar-collapse {
     overflow: hidden;
     overflow-y: scroll;
 }
+
+/* new sidebar start */
+section.left-sidebar {
+    width: 110px;
+    background: #23211E;
+    height: calc(100% - 76px);
+    position: fixed;
+    z-index: 9;
+    top: 76px;
+    left: 0px;
+    padding: 12px;
+    border-right: 1px solid #413E3C;
+}
+ul.sidebarList {
+    text-align: center;
+}
+ul.sidebarList img {
+    display: block;
+    margin: 0px auto 10px;
+}
+ul.sidebarList li {
+    margin-bottom: 10px;
+}
+ul.sidebarList li .sidebarLink {
+    border-radius: 8px;
+    padding: 12px 8px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #fff;
+    opacity: 0.5;
+    text-decoration: none;
+    display: block;
+    transition: all 0.12s ease;
+}
+ul.sidebarList li .sidebarLink:hover {
+    color: #fff;
+    background: transparent;
+    opacity: 1;
+    transition: all 0.12s ease;
+}
+ul.sidebarList li .sidebarLink.active {
+    background: linear-gradient(102.26deg, #E1BB33 27.13%, #DAAA00 68.86%);
+    color: #fff;
+    opacity: 1;
+    transition: all 0.12s ease;
+}
+.bottomItems {
+    position: absolute;
+    bottom: 12px;
+    width: calc(100% - 24px);
+    left: 12px;
+    right: 12px;
+}
+.bottomItems img {
+    max-width: 60%;
+    width: 100%;
+}
+.text-center {
+    text-align: center !important;
+}
+.bottomItems ul li {
+    border-bottom: 1px solid #343231;;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.bottomItems ul li:last-child {
+    border: 0px;
+    padding-bottom: 0px;
+}
+.bottomItems ul li a {
+    color: #7A7873;
+    font-size: 12px;
+    text-align: left;
+    display: block;
+    width: 100%;
+    padding: 0px;
+    margin: 0px 0px 15px;
+    transition: all 0.12s ease;
+}
+.bottomItems ul li a:last-child {
+    margin-bottom: 0px;
+}
+.bottomItems ul li a:hover {
+    background: none;
+}
+.bottomItems ul li a svg {
+    margin-right: 5px;
+}
+/* new sidebar end */
 .borderNone {
     border: none !important;
 }
@@ -894,8 +983,19 @@ header.updateHeader .navbar .navbar-collapse {
 .mt30 {
     margin-top: 30px !important;
 }
+
 .empty-notification {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.left-sidebar .bottomItems ul li a:hover {
+    color: #fff;
+    opacity: 1;
+    transition: all 0.12s ease;
+}
+
+.bottomItems ul li a:hover path {
+    fill: #fff;
+    transition: all 0.12s ease;
 }

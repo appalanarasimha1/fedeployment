@@ -439,11 +439,18 @@ export class DocumentComponent implements OnInit, OnChanges {
       pageSize,
       queryParams: query,
     };
-    const res = await this.apiService
-      .get(apiRoutes.NXQL_SEARCH, { params })
-      .toPromise();
-     res["entries"].map((e:any) => this.trendingAssets.push(e));
-    this.loading.pop();
+    const res = this.apiService
+    .get(apiRoutes.NXQL_SEARCH, { params })
+    .toPromise();
+   res
+    .then((res:any)=>{
+        res["entries"].map((e:any) => this.trendingAssets.push(e));
+        this.loading.pop();
+    })
+    .catch((err:any)=>{
+      console.log(err);
+      this.loading.pop();
+    })
   }
 
   sectorOffset:number=0

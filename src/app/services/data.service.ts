@@ -17,6 +17,7 @@ export class DataService {
   private searchBarClick = new Subject<boolean>();
   private uploadedAssetData = new Subject<string>();
   private showEverything = new Subject<boolean>();
+  private showFooter = new Subject<boolean>();
   constructor() {}
 
   // Observable string streams
@@ -31,6 +32,7 @@ export class DataService {
   searchBarClick$ = this.searchBarClick.asObservable();
   uploadedAssetData$ = this.uploadedAssetData.asObservable();
   showEverything$ = this.showEverything.asObservable();
+  showFooter$ = this.showFooter.asObservable();
 
   sectorDataPush(sector) {
     this.sectorChangedSource.next(sector);
@@ -72,5 +74,8 @@ export class DataService {
   }
   showEverythingInit(data:boolean){
     this.showEverything.next(data)
+  }
+  showFooterInit(data:boolean){
+    this.showFooter.next(data)
   }
 }

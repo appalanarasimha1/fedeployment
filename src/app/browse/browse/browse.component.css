@@ -1023,7 +1023,7 @@ font-weight: normal;
 }
 .delete-folder-action .control__indicator {
   position: absolute;
-  top: 6px;
+  top: 0px;
   left: 0;
   height: 24px;
   width: 24px;
@@ -1388,6 +1388,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
      -moz-appearance: none;
           appearance: none;
   border: none;
+  font-weight: normal;
 }
 .input-sizer span {
   padding: 0.25em;
@@ -1605,6 +1606,7 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   background: #FBF7E6;
   padding: 2px 10px 4px 10px;
   line-height: normal;
+  font-weight: normal;
 }
 .actionIcon {
   width: 30px;
@@ -1809,6 +1811,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 section.lpSecOne {
   /* min-height: 600px; */
   position: relative;
+  padding-left: 100px;
 }
 section.lpBAck:before, .lpSecOne:before {
   content: '';
@@ -2433,6 +2436,7 @@ font-weight: normal;
   margin-bottom: 20px;
   /* min-height: 100vh; */
   overflow: auto;
+  height: 70vh;
 }
 ::ng-deep .all-sectors li #fileId2 {
   height: 88px !important;
@@ -2641,7 +2645,7 @@ font-weight: normal;
 }
 .delete-folder-action .control__indicator {
   position: absolute;
-  top: 6px;
+  top: 0px;
   left: 0;
   height: 24px;
   width: 24px;
@@ -2713,11 +2717,13 @@ font-weight: normal;
   display: block;
 }
 .delete-folder-action {
-  position: absolute;
+  position: static;
   left: 10px;
   top: 4px;
   opacity: 0;
   transition: transform 0.3s;
+  width: 24px;
+  height: 24px;
 }
 .groupFolder:hover .delete-folder-action {
   opacity: 1;
@@ -2904,7 +2910,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
 .buttonCreate {
   padding-top: 7px;
   display: inline-block;
-  margin-right: 17px;
+  margin-right: 20px;
   vertical-align: top;
 }
 .deleteFolder{
@@ -3012,6 +3018,7 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
      -moz-appearance: none;
           appearance: none;
   border: none;
+  font-weight: normal;
 }
 .input-sizer span {
   padding: 0.25em;
@@ -3226,6 +3233,7 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   background: #FBF7E6;
   padding: 2px 10px 4px 10px;
   line-height: normal;
+  font-weight: normal;
 }
 .actionIcon {
   width: 30px;
@@ -3782,13 +3790,15 @@ ul.uploadAssetsClassifications li:hover path,
   height: 30px;
 }
 .deleteFolder {
-  margin-right: 15px;
+  margin-right: 20px;
   position: relative;
   z-index: 2;
+  line-height: normal;
 }
 .deleteFolder svg{
   width: 20px;
   height: 22px;
+  vertical-align: -5px;
 }
 
 ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
@@ -3820,7 +3830,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 .copyHoverInfo {
   display: none;
   top: 31px;
-  right: 24px;
+  right: 0px;
   background: #413E3C;
   padding: 2px 7px;
   color: #fff !important;
@@ -3841,6 +3851,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 .deleteRecover {
   position: relative;
   z-index: 2;
+  vertical-align: -8px;
 }
 .deleteRecover::after {
   content: '';
@@ -3880,4 +3891,75 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
   padding: 2px 10px 4px 10px;
   line-height: normal;
   border: 0px;
+}
+
+div#dropzone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999999999;
+  width: 100%;
+  min-height: 300px;
+  height: 100%;
+  transition: visibility 175ms, opacity 175ms;
+  display: table;
+  color: #fff;
+  background: rgba(249, 247, 242, 0.85);
+  border: 2px dashed #937206;
+  border-radius: 8px;
+}
+div#textnode {
+  display: table-cell;
+  text-align: center;
+  vertical-align: top;
+  padding: 50px;
+}
+div#textnode img {
+  margin-bottom: 20px;
+}
+div#textnode h3 {
+  color: #937206;
+  font-size: 18px;
+  padding-bottom: 10px;
+}
+div#textnode p {
+  color: #DEB31A;
+  font-size: 14px;
+}
+.zoomImg {
+  display: inline-block;
+  position: relative;
+}
+.zoomImgBlock {
+  max-width: 200px;
+  position: absolute;
+  left: 0px;
+  bottom: 34px;
+  display: none;
+  z-index: 9;
+  background: #fff;
+  width: 250px;
+}
+.zoomImg:hover .zoomImgBlock {
+  display: block;
+}
+.zoomImgBlock img {
+  max-width: 100%;
+  width: 100%;
+}
+img.noPreviewImg {
+  width: 20px !important;
+}
+.workspaceLink a {
+  display: block; 
+  padding: 12px 17px;
+  color: #3c3c3c;
+  padding-left: 50px;
+}
+.workspaceLink a:hover {
+  background: transparent;
+  color: #040404;
+}
+li.hoverPin.active-tab a {
+  color: #040404 !important;
 }

@@ -147,6 +147,8 @@ export class UploadModalComponent implements OnInit {
 
   loading = true;
 
+  showHideAllAsset: boolean = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -158,6 +160,10 @@ export class UploadModalComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log("incoming data = ", this.data);
+    if(this.data?.dropFilesNew?.length){
+      this.uploadFile(this.data.dropFilesNew)
+    }
+    
     await this.showWorkspaceList();
     if (this.data) {
       const title = this.data.path.split("/workspaces")[0].substring(1);
@@ -196,11 +202,11 @@ export class UploadModalComponent implements OnInit {
 
   closeModal() {
     if (this.data?.sectorId) {
-    console.log("12345678", this.uploadedAsset);
-    this.dialogRef.close(this.uploadedAsset);
+    // console.log("12345678", this.uploadedAsset);
+      this.dialogRef.close(this.uploadedAsset);
       return;
     }
-    console.log("1234567", this.selectedFolder);
+    // console.log("1234567", this.selectedFolder);
 
     this.dialogRef.close(this.selectedFolder);
   }
@@ -718,33 +724,49 @@ export class UploadModalComponent implements OnInit {
   // }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
-    console.log({ fileIndex, asdfrgthgfd: this.customConfidentialityMap });
-
-    if (fileIndex == null) {
-      this.overallAccess = undefined;
-      return;
+    const len = Object.keys(this.filesMap).length;
+    for (let i = 0; i < len; i++) {
+      this.customConfidentialityMap[i] = this.overallConfidentiality;  
     }
-    // this.customConfidentialityMap[fileIndex] = confidentiality;
-    this.customAccessMap[fileIndex] = undefined;
-    this.customAllowMap[fileIndex] = undefined;
-    this.checkShowUserDropdown(fileIndex);
+
+  //  if (fileIndex == null) {
+  //     this.overallAccess = undefined;
+  //     return;
+  //   }
+  //   // this.customConfidentialityMap[fileIndex] = confidentiality;
+  //   this.customAccessMap[fileIndex] = undefined;
+    // this.customAllowMap[fileIndex] = undefined;
+  //   this.checkShowUserDropdown(fileIndex);
   }
 
   onSelectAccess(access, fileIndex?: any) {
-    console.log({ fileIndex });
-    const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
-    if (fileIndex !== null && fileIndex !== undefined) {
-      this.customAccessMap[fileIndex] = access;
-    } else {
-      for (let i = 0; i < this.getAssetNumber(); i++) {
-        // this.customAccessMap[i] = access;
-      }
-      this.access = access;
+    const len = Object.keys(this.filesMap).length;
+
+    for (let i = 0; i < len; i++) {
+      
+      this.customAccessMap[i] = this.overallAccess;
+     
     }
+    // console.log({ fileIndex });
+    const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
+    // if (fileIndex !== null && fileIndex !== undefined) {
+    //   this.customAccessMap[fileIndex] = access;
+    // } else {
+    //   for (let i = 0; i < this.getAssetNumber(); i++) {
+    //     // this.customAccessMap[i] = access;
+    //   }
+    //   this.access = access;
+    // }
     this.onSelectAllow(allow, fileIndex);
     this.checkShowUserDropdown(fileIndex);
   }
 
+  userOverall(){
+    const len = Object.keys(this.filesMap).length;
+    for (let i = 0; i < len; i++) {
+      this.customUsersMap[i] = this.overallUsers;
+    }
+  }
   onSelectAllow(allow, fileIndex?: any) {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAllowMap[fileIndex] = allow;
@@ -765,9 +787,18 @@ export class UploadModalComponent implements OnInit {
         } else {
           this.overallDownloadApprovalUsers = [user.username];
         }
-        this.customDownloadApprovalMap[i] = this.downloadApproval;
+        this.customDownloadApprovalMap[i] = this.overallDownloadApproval;
+        this.customDownloadApprovalUsersMap[i] =
+        this.overallDownloadApprovalUsers;
+        // this.customDownloadApprovalMap[i] = this.downloadApproval;
       }
 
+  }
+  dowloadUsers(){
+    for (let i = 0; i < this.getAssetNumber(); i++) {
+      this.customDownloadApprovalUsersMap[i] =
+      this.overallDownloadApprovalUsers;
+    }
   }
 
   openCopyright(fileIndex) {
@@ -1240,5 +1271,9 @@ export class UploadModalComponent implements OnInit {
     const response = await this.apiService.delete(url).toPromise();
     console.log('deleteUploadedBatchMetaData() = ', response);
     return;
+  }
+
+  showAllAsset() {
+    this.showHideAllAsset = !this.showHideAllAsset;
   }
 }
