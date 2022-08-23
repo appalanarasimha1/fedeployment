@@ -160,7 +160,7 @@ export class UploadModalComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log("incoming data = ", this.data);
-    if(this.data.dropFilesNew?.length){
+    if(this.data?.dropFilesNew?.length){
       this.uploadFile(this.data.dropFilesNew)
     }
     
@@ -722,33 +722,49 @@ export class UploadModalComponent implements OnInit {
   // }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
-    console.log({ fileIndex, asdfrgthgfd: this.customConfidentialityMap });
-
-    if (fileIndex == null) {
-      this.overallAccess = undefined;
-      return;
+    const len = Object.keys(this.filesMap).length;
+    for (let i = 0; i < len; i++) {
+      this.customConfidentialityMap[i] = this.overallConfidentiality;  
     }
-    // this.customConfidentialityMap[fileIndex] = confidentiality;
-    this.customAccessMap[fileIndex] = undefined;
-    this.customAllowMap[fileIndex] = undefined;
-    this.checkShowUserDropdown(fileIndex);
+
+  //  if (fileIndex == null) {
+  //     this.overallAccess = undefined;
+  //     return;
+  //   }
+  //   // this.customConfidentialityMap[fileIndex] = confidentiality;
+  //   this.customAccessMap[fileIndex] = undefined;
+  //   this.customAllowMap[fileIndex] = undefined;
+  //   this.checkShowUserDropdown(fileIndex);
   }
 
   onSelectAccess(access, fileIndex?: any) {
-    console.log({ fileIndex });
-    const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
-    if (fileIndex !== null && fileIndex !== undefined) {
-      this.customAccessMap[fileIndex] = access;
-    } else {
-      for (let i = 0; i < this.getAssetNumber(); i++) {
-        // this.customAccessMap[i] = access;
-      }
-      this.access = access;
+    const len = Object.keys(this.filesMap).length;
+
+    for (let i = 0; i < len; i++) {
+      
+      this.customAccessMap[i] = this.overallAccess;
+     
     }
+    // console.log({ fileIndex });
+    const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
+    // if (fileIndex !== null && fileIndex !== undefined) {
+    //   this.customAccessMap[fileIndex] = access;
+    // } else {
+    //   for (let i = 0; i < this.getAssetNumber(); i++) {
+    //     // this.customAccessMap[i] = access;
+    //   }
+    //   this.access = access;
+    // }
     this.onSelectAllow(allow, fileIndex);
     this.checkShowUserDropdown(fileIndex);
   }
 
+  userOverall(){
+    const len = Object.keys(this.filesMap).length;
+    for (let i = 0; i < len; i++) {
+      this.customUsersMap[i] = this.overallUsers;
+    }
+  }
   onSelectAllow(allow, fileIndex?: any) {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAllowMap[fileIndex] = allow;
@@ -769,9 +785,18 @@ export class UploadModalComponent implements OnInit {
         } else {
           this.overallDownloadApprovalUsers = [user.username];
         }
-        this.customDownloadApprovalMap[i] = this.downloadApproval;
+        this.customDownloadApprovalMap[i] = this.overallDownloadApproval;
+        this.customDownloadApprovalUsersMap[i] =
+        this.overallDownloadApprovalUsers;
+        // this.customDownloadApprovalMap[i] = this.downloadApproval;
       }
 
+  }
+  dowloadUsers(){
+    for (let i = 0; i < this.getAssetNumber(); i++) {
+      this.customDownloadApprovalUsersMap[i] =
+      this.overallDownloadApprovalUsers;
+    }
   }
 
   openCopyright(fileIndex) {

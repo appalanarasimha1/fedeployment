@@ -6,7 +6,7 @@
          <div>
             <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
-            <ngx-dropzone-label  class="noborder" *ngIf="!data.dropFilesNew?.length">
+            <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length">
                <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
                   <div class="upload-label">
                      <span style="margin-top: 20px;"><img src="../../assets/images/cloud-upload.png" style="width: 36px; margin-right: 10px;"> <b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
@@ -326,7 +326,7 @@
                <div class="col-xl-6 col-md-6">
                   <div class="row">
                      <div class="col-xl-4 col-md-4">
-                        <label for="confidentiality">Confidentiality</label>
+                        <label for="confidentiality">Confidentiality11</label>
                      </div>
                      <div class="col-xl-8 col-md-8 flexible">
                         <ng-select placeholder="Specify sensitivity"
@@ -374,7 +374,8 @@
                   <div class="row">
                      <div class="col-xl-12 col-md-12">
                         <label for="{{SPECIFIC_USER_LABEL}}">{{SPECIFIC_USER_LABEL}}</label>
-                        <ng-select style="height: unset !important;"
+                        <ng-select style="height: unset !important;" 
+                        (change)="userOverall()"
                         [items]="userList$ | async"
                         bindLabel="id"
                         bindValue="id"
@@ -424,6 +425,7 @@
                      <div class="col-xl-12 col-md-12">
                         <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
                         <ng-select style="height: unset !important;"
+                        (change)="dowloadUsers()"
                         [items]="userList$ | async"
                         bindLabel="id"
                         bindValue="id"
@@ -443,9 +445,9 @@
                      </div>
                   </div>
                </div>
-               <div class="col-xl-6 col-md-6" (click)=" applyToAll()">
+               <!-- <div class="col-xl-6 col-md-6" (click)=" applyToAll()">
                   <button class="cancel-btn" style="float: right;">Apply to all</button>
-               </div>
+               </div> -->
             </div>
             <div class="upload-form-input row mb-30 uploadModalBlk">
                <div class="col-xl-12 col-md-12">
@@ -548,12 +550,12 @@
                            </div>
                         </div>
    
-                        <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;"  ``>
+                        <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;">
                            <div class="col-xl-4">
                              &nbsp; <!-- <label for="user" style="text-align: right;">Please specify who can access</label> -->
                            </div>
                            <div class="col-xl-8">
-                              <p class="userText pb-3">{{SPECIFIC_USER_LABEL}} 1</p>
+                              <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
                               <ng-select style="height: unset !important;"
                               [items]="userList$ | async"
                               bindLabel="id"
