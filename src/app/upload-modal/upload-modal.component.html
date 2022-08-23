@@ -529,7 +529,7 @@
                               <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
                                  <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                                  </select> -->
-                              <ng-select placeholder="Specify sensitivity" (change)="onSelectConfidentiality($event, file.key)" [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
+                              <ng-select placeholder="Specify sensitivity"  [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
                               <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                               </ng-option>
                               </ng-select>
@@ -542,7 +542,7 @@
                               <label for="access">{{ACCESS_TITLE}}</label>
                            </div>
                            <div class="col-xl-8">
-                              <ng-select placeholder="Specify visibility" name="access" (change)="onSelectAccess($event, file.key)" [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
+                              <ng-select placeholder="Specify visibility" name="access"  [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
                                  <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
                                  </ng-option>
                               </ng-select>

@@ -733,7 +733,7 @@ export class UploadModalComponent implements OnInit {
   //   }
   //   // this.customConfidentialityMap[fileIndex] = confidentiality;
   //   this.customAccessMap[fileIndex] = undefined;
-  //   this.customAllowMap[fileIndex] = undefined;
+    // this.customAllowMap[fileIndex] = undefined;
   //   this.checkShowUserDropdown(fileIndex);
   }
 
