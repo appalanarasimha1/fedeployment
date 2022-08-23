@@ -2436,6 +2436,7 @@ font-weight: normal;
   margin-bottom: 20px;
   /* min-height: 100vh; */
   overflow: auto;
+  height: 70vh;
 }
 ::ng-deep .all-sectors li #fileId2 {
   height: 88px !important;
@@ -3850,6 +3851,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 .deleteRecover {
   position: relative;
   z-index: 2;
+  vertical-align: -8px;
 }
 .deleteRecover::after {
   content: '';

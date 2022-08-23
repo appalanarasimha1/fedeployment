@@ -294,6 +294,7 @@ html, body {
   background: #ffffff;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
+  top: 0!important;
 }
 
 /*.container-fluid {*/
