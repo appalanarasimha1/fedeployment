@@ -212,7 +212,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   downloadEnable: boolean = false;
   isAware;
 
-  searchNameCLicked: string = '';
+  searchNameCLicked = [];
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -1249,12 +1249,17 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
   }
 
-  activeSearchCatalogue(name) {
-    this.searchNameCLicked = name;
+  activeSearchCatalogue(name:string) {
+    if(this.searchNameCLicked.indexOf(name) === -1) {
+      this.searchNameCLicked.push(name);
+    } else {
+      this.searchNameCLicked = this.searchNameCLicked.filter(m => m !== name)
+    }
+    // this.searchNameCLicked = name;
   }
 
   checkedNameClicked(name) {
-    if(this.searchNameCLicked === name ) {
+    if(this.searchNameCLicked.indexOf(name) !== -1 ) {
       return true;
     }
     return false;
