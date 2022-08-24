@@ -202,11 +202,11 @@ export class UploadModalComponent implements OnInit {
 
   closeModal() {
     if (this.data?.sectorId) {
-    console.log("12345678", this.uploadedAsset);
-    this.dialogRef.close(this.uploadedAsset);
+    // console.log("12345678", this.uploadedAsset);
+      this.dialogRef.close(this.uploadedAsset);
       return;
     }
-    console.log("1234567", this.selectedFolder);
+    // console.log("1234567", this.selectedFolder);
 
     this.dialogRef.close(this.selectedFolder);
   }
@@ -230,6 +230,8 @@ export class UploadModalComponent implements OnInit {
       const filenameSplit = file.name.split('.');
       if (filenameSplit.length > 2) {}
       else if (WHITELIST_EXTENSIONS.includes(file.type)) {
+        filteredFile.push(file);
+      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[1].toLowerCase())) {
         filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
@@ -722,33 +724,49 @@ export class UploadModalComponent implements OnInit {
   // }
 
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
-    console.log({ fileIndex, asdfrgthgfd: this.customConfidentialityMap });
-
-    if (fileIndex == null) {
-      this.overallAccess = undefined;
-      return;
+    const len = Object.keys(this.filesMap).length;
+    for (let i = 0; i < len; i++) {
+      this.customConfidentialityMap[i] = this.overallConfidentiality;  
     }
-    // this.customConfidentialityMap[fileIndex] = confidentiality;
-    this.customAccessMap[fileIndex] = undefined;
-    this.customAllowMap[fileIndex] = undefined;
-    this.checkShowUserDropdown(fileIndex);
+
+  //  if (fileIndex == null) {
+  //     this.overallAccess = undefined;
+  //     return;
+  //   }
+  //   // this.customConfidentialityMap[fileIndex] = confidentiality;
+  //   this.customAccessMap[fileIndex] = undefined;
+    // this.customAllowMap[fileIndex] = undefined;
+  //   this.checkShowUserDropdown(fileIndex);
   }
 
   onSelectAccess(access, fileIndex?: any) {
-    console.log({ fileIndex });
-    const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
-    if (fileIndex !== null && fileIndex !== undefined) {
-      this.customAccessMap[fileIndex] = access;
-    } else {
-      for (let i = 0; i < this.getAssetNumber(); i++) {
-        // this.customAccessMap[i] = access;
-      }
-      this.access = access;
+    const len = Object.keys(this.filesMap).length;
+
+    for (let i = 0; i < len; i++) {
+      
+      this.customAccessMap[i] = this.overallAccess;
+     
     }
+    // console.log({ fileIndex });
+    const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
+    // if (fileIndex !== null && fileIndex !== undefined) {
+    //   this.customAccessMap[fileIndex] = access;
+    // } else {
+    //   for (let i = 0; i < this.getAssetNumber(); i++) {
+    //     // this.customAccessMap[i] = access;
+    //   }
+    //   this.access = access;
+    // }
     this.onSelectAllow(allow, fileIndex);
     this.checkShowUserDropdown(fileIndex);
   }
 
+  userOverall(){
+    const len = Object.keys(this.filesMap).length;
+    for (let i = 0; i < len; i++) {
+      this.customUsersMap[i] = this.overallUsers;
+    }
+  }
   onSelectAllow(allow, fileIndex?: any) {
     if (fileIndex !== null && fileIndex !== undefined) {
       this.customAllowMap[fileIndex] = allow;
@@ -769,9 +787,18 @@ export class UploadModalComponent implements OnInit {
         } else {
           this.overallDownloadApprovalUsers = [user.username];
         }
-        this.customDownloadApprovalMap[i] = this.downloadApproval;
+        this.customDownloadApprovalMap[i] = this.overallDownloadApproval;
+        this.customDownloadApprovalUsersMap[i] =
+        this.overallDownloadApprovalUsers;
+        // this.customDownloadApprovalMap[i] = this.downloadApproval;
       }
 
+  }
+  dowloadUsers(){
+    for (let i = 0; i < this.getAssetNumber(); i++) {
+      this.customDownloadApprovalUsersMap[i] =
+      this.overallDownloadApprovalUsers;
+    }
   }
 
   openCopyright(fileIndex) {

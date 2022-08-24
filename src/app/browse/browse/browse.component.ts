@@ -514,6 +514,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    * @returns null
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    $("body").animate({ scrollTop: 0 }, "slow");
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
