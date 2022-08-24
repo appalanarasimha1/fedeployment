@@ -1339,7 +1339,7 @@
             ></preview-popup>
           </div>
           <mat-paginator
-            *ngIf="selectedFolder?.uid !== parentId"
+            *ngIf="searchList?.length && selectedFolder?.uid !== parentId"
             #paginator
             [length]="resultCount"
             [pageSize]="defaultPageSize"
