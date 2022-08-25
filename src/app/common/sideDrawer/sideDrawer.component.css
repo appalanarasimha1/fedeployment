@@ -97,7 +97,7 @@
   border: 1px solid #EDD580 !important;
   background: #EDD580 !important;
   border-radius: 24px !important;
-  padding: 1px !important;
+  padding: 1px 20px 0px 0px !important;
   color: #000 !important
 }
 ::ng-deep .multiselect-item-checkbox input[type=checkbox] + div:after{

@@ -202,11 +202,11 @@ export class UploadModalComponent implements OnInit {
 
   closeModal() {
     if (this.data?.sectorId) {
-    console.log("12345678", this.uploadedAsset);
-    this.dialogRef.close(this.uploadedAsset);
+    // console.log("12345678", this.uploadedAsset);
+      this.dialogRef.close(this.uploadedAsset);
       return;
     }
-    console.log("1234567", this.selectedFolder);
+    // console.log("1234567", this.selectedFolder);
 
     this.dialogRef.close(this.selectedFolder);
   }
@@ -733,7 +733,7 @@ export class UploadModalComponent implements OnInit {
   //   }
   //   // this.customConfidentialityMap[fileIndex] = confidentiality;
   //   this.customAccessMap[fileIndex] = undefined;
-  //   this.customAllowMap[fileIndex] = undefined;
+    // this.customAllowMap[fileIndex] = undefined;
   //   this.checkShowUserDropdown(fileIndex);
   }
 
