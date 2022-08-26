@@ -306,6 +306,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         e.stopPropagation();
       });
     });
+    this.getAllFolders(this.selectedFolder)
   }
 
   checkAssetType(assetType: string): boolean {
@@ -350,6 +351,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async handleTest(item) {
     this.renameFolderName = false;
     this.folderNameRef = undefined;
+    this.titleExists = false
+
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
 
@@ -515,13 +518,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     $("body").animate({ scrollTop: 0 }, "slow");
-    this.folderNameRef = undefined;
+      this.titleExists = false
+      this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
     this.removeAssets()
     this.saveState(item);
     this.paginator?.firstPage();
     this.searchBarValue = "";
+    // this.getAllFolders()
     // if (!isNaN(index) || breadCrumbIndex === 1) {
     //   this.showSearchbar = true;
     // }
@@ -1050,28 +1055,21 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.showFolder = !this.showFolder;
   }
 
+  titleExists:boolean=false
   async createFolder(folderName: string, date?: string, description?: string) {
 
     if (!this.folderNameRef) {
       this.showError = true;
     } else {
-      // let checkTitle = this.CheckTitleAlreadyExits(folderName)
-      // if(checkTitle) {
-      //   this.showFolder = false
-      //   this.showMoreButton = false;
-      //   this.checkboxIsPrivate = false;
-      //   $(".dropdownCreate").hide();
-      //   $(".buttonCreate").removeClass("createNewFolderClick");
-      //     return this.sharedService.showSnackbar(
-      //       "Name already exists",
-      //       6000,
-      //       "top",
-      //       "center",
-      //       "snackBarMiddle"
-      //       // "Updated folder",
-      //       // this.getTrashedWS.bind(this)
-      //     );
-      //   }
+      let checkTitle = this.CheckTitleAlreadyExits(folderName)
+      if(checkTitle) {
+        // this.showFolder = false
+        // this.showMoreButton = false;
+        // this.checkboxIsPrivate = false;
+        // // $(".dropdownCreate").hide();
+        // $(".buttonCreate").removeClass("createNewFolderClick");
+        return this.titleExists = true
+      }
       this.createFolderLoading = true;
       const backupPath = this.selectedFolder.path;
       let url = `/path${this.selectedFolder.path}`;
@@ -1116,6 +1114,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       this.folderNameRef = undefined;
+      this.titleExists = false
       this.folderDescriptionRef = undefined;
       this.folderDateRef = undefined;
 
@@ -1218,6 +1217,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         );
 
     }else{
+      // this.fetchFolder(this.selectedFolder.uid).then((res:any)=>{
+      //   console.log("resssssss",res);
+      //   let realPath = res.path.split("/")
+      //   realPath.pop()
+      //   let path =  realPath.join("/")
+      //   console.log("path",path, realPath);
+        
+      //   this.getAllFolders({uid:res.parentRef,path})
+      // })
       this.renameFolderName = true;
     }
   }
@@ -1808,7 +1816,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   CheckTitleAlreadyExits(name){
-    let titles = this.sortedData.map(m=>m.title.toLowerCase().trim())
+    let titles = this.allFolders.map((m:any)=>m.title.toLowerCase().trim())
     if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
     return false
   }
@@ -1931,6 +1939,26 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
         }
     });
+  }
+  
+  allFolders:[]
+  async getAllFolders(folder?:any){
+    let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
+    if(currentState.length){
+      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${folder.path}'`;
+      const result: any = await this.apiService
+          .get(url, { headers: { "fetch-document": "properties" } })
+          .toPromise();
+
+     this.allFolders = result?.entries
+    }else{
+      let currentState1 = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.type == "OrderedFolder")
+      this.allFolders = currentState1
+    }
+  }
+
+  folderNameChange(){
+    return this.titleExists = false
   }
 
 }
