@@ -219,7 +219,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (window.location.href.includes(`${window.location.origin}/workspace?folder=`)) {
         this.initialLoad = false
       }
-      
+
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
@@ -227,7 +227,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       result.map((asset:any)=>{
         this.searchList.unshift(asset);
       })
-      
+
       this.sortedData = this.searchList.slice();
       this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
 
@@ -936,7 +936,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return Object.keys(this.selectedFolderList).length > 0;
   }
 
-  
+
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.initialLoad = false;
     this.showSearchbar = true;
@@ -960,7 +960,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             --this.resultCount;
             return true;
           } else {
-            return false; 
+            return false;
           }
         });
         // if (!this.myDeletedCheck) {
@@ -981,7 +981,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         // this.deletedByMeFilter();
       });
   }
-  
+
   async deletedByMeFilter() {
     let userData = localStorage.getItem("user");
     // console.log("userData", JSON.parse(userData));
@@ -1244,7 +1244,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         let msg;
         if(!title && !assetUid) {
             this.updateFolderAction();
-            
+
             // this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
@@ -1556,7 +1556,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(canDelete){
       this.selectFolder($event, item, i)
     }
-    
+
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
     //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
@@ -1711,10 +1711,18 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     dialogConfig.width = "550px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     // const folder = await this.fetchFolder(this.selectedFolder.uid);
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    dialogConfig.data = {
+      selectedFolder: selectedFolder || this.selectedFolder,
+    }
 
     const modalDialog = this.matDialog.open(ManageAccessModalComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.selectedFolder = result;
+        this.saveState(result);
+      }
       this.loading = false;
     });
   }
@@ -1932,6 +1940,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
         }
     });
+  }
+
+  checkShowManageAccessButton() {
+    if (this.selectedFolder.properties['dc:isPrivate']) return false;
+    const userData = localStorage.getItem("user");
+
+    return this.selectedFolder.properties["dc:creator"].id === JSON.parse(userData).username
+     || this.selectedFolder.properties["dc:creator"] === JSON.parse(userData).username;
   }
 
 }
