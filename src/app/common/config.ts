@@ -34,4 +34,5 @@ export const apiRoutes = {
   DEFAULT_DOCUMENT_SUGGESTION: '/search/pp/DEFAULT_DOCUMENT_SUGGESTION/execute',
   GROUP_USER_LIST: '/group/[groupName]/@users?pageSize=1000',
   GET_NOTIFICATIONS: "/automation/Scry.GetNotifications",
+  UPDATE_FOLDER_RIGHTS: "/automation/Scry.UpdateFolderRightOp",
 };
