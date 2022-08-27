@@ -77,6 +77,8 @@ export class AddUserModalComponent implements OnInit {
     this.removedCollaborators = {};
     this.updatedCollaborators = {};
     this.invitedCollaborators = {};
+    this.listExternalUser = [];
+    this.listExternalUserGlobal = [];
     this.computeCollaborators();
     this.loadUsers();
   }
@@ -507,11 +509,11 @@ export class AddUserModalComponent implements OnInit {
   }
 
   getExternalGroupUser() {
-    this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
+    this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser")) || [];
   }
 
   getExternalGlobalGroupUser() {
-    this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal"));
+    this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal")) || [];
   }
 
 }
