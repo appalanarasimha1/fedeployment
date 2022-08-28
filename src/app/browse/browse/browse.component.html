@@ -71,11 +71,7 @@
                     style="cursor: pointer"
                     class="hoverPin"
 
-                    [ngClass]="
-                        sectorSelected?.uid === firstChild.uid && !isTrashView
-                          ? 'active-tab'
-                          : ''
-                      "
+                    [ngClass]="sectorSelected?.uid === firstChild.uid && !isTrashView? 'active-tab' : ''"
                   >
                   <!-- remove class "d-flex" -->
                     <div
@@ -98,10 +94,9 @@
                       <!-- <div class="hoverTooltip">Pin this sector</div> -->
                       <span style="z-index: 9; display: block;">
                         <!-- {{ firstChild.title }} -->
-                        <a
-                          [routerLink]="['/workspace']"
-                          [queryParams]="{ folder: firstChild.uid }"
-                        >
+                        <a [routerLink]="['/workspace', firstChild.title]">
+                          <!-- routerLinkActive="active-tab" -->
+                        <!-- [queryParams]="{ folder: firstChild.uid }" -->
                           {{ firstChild.title }}
                         </a>
                       </span>

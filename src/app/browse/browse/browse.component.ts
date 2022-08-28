@@ -177,22 +177,33 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   searchInitialised: any;
 
   routeParams = {
+    sectorName: "",
     folderId: ""
   };
   breadcrrumb = `/${WORKSPACE_ROOT}`;
   showFolder = false;
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.fetchUserData();
     let fetchAll = false;
-    this.route.queryParams.subscribe(async (params) => {
+    let sectorName = this.route.snapshot.paramMap.get('sectorName');
+    let folderId = this.route.snapshot.paramMap.get('folderId');
+    console.log('sectorName = ', sectorName, folderId);
+    // this.route.queryParams.subscribe(async (params) => {
       this.loading = true;
       this.searchInitialised = null;
-      this.routeParams.folderId = params.folder;
+      this.routeParams.sectorName = sectorName;
 
-      if (params.folder && params.folder !== ROOT_ID) {
-        this.fetchAllSectors();
-        await this.fetchBreadCrumbByAssetsUId(params.folder);
+      await this.fetchAllSectors();
+      const sectorDocument = this.folderAssetsResult[ROOT_ID]?.entries?.filter(item => item.title.toLowerCase() === sectorName.toLowerCase());
+      if(!this.route.snapshot.paramMap.get('folderId')) {
+        folderId = sectorDocument[0]?.uid;
+        if(!this.routeParams?.folderId) this.routeParams.folderId = folderId;
+      }
+
+      if (sectorName && folderId && folderId !== ROOT_ID) {
+        
+        await this.fetchBreadCrumbByAssetsUId(folderId);
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
@@ -201,11 +212,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           this.loading = false;
           return;
         }
-        // this.fetchCurrentFolderAssets(params.folder);
-        this.getWorkspaceFolders(params.folder, 1);
-        const folder: any = await this.fetchFolder(params.folder);
+        // this.fetchCurrentFolderAssets(folderId);
+        this.getWorkspaceFolders(folderId, 1);
+        const folder: any = await this.fetchFolder(folderId);
         this.saveState(folder);
         this.loading = false;
+      // } else if(sectorName && !folderId ) {
+
+      //   await this.fetchAllSectors();
+      //   const sectorDocument = this.folderAssetsResult[ROOT_ID].entries.filter(item => item.title.toLowerCase() === sectorName.toLowerCase);
+        
+      //   this.selectedFolder2 = sectorDocument;
+      //   this.sectorSelected = sectorDocument;
+      //   this.selectedFolder = sectorDocument;
       } else {
         this.initialLoad = true;
         fetchAll = true;
@@ -216,11 +235,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.loading = false;
       }
       // console.log(`${window.location.origin}/workspace?folder=`,window.location.href );
-      if (window.location.href.includes(`${window.location.origin}/workspace?folder=`)) {
-        this.initialLoad = false
+      if (window.location.href.includes(`${window.location.origin}/workspace`)) {
+        this.initialLoad = false;
       }
       
-    });
+    // });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
       if (!result?.length) return;
@@ -355,7 +374,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     this.saveState(item);
     this.searchBarValue = "";
-    this.paginator.firstPage();
+    this.paginator?.firstPage();
     if (item.isTrashed) return;
     this.newTitle = item.title;
     this.showLinkCopy = true;
@@ -784,7 +803,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     selBox.style.opacity = "0";
     // const { uid, sectorName } = this.getSectorUidByName(val);
     // selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${encodeURIComponent(this.selectedFolder.title)}`;
-    selBox.value = `${window.location.origin}/workspace?folder=${this.selectedFolder.uid}`;
+    selBox.value = `${window.location.origin}/workspace/${this.sectorSelected.title}/${this.selectedFolder.uid}`;
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
@@ -1342,6 +1361,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.searchList = entries;
     this.selectedMenu = 1;
     this.createDynamicSidebarScroll();
+    return;
     // this.loading = false;
   }
 
@@ -1450,7 +1470,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(this.routeParams.folderId === uid) {
       return;
     }
-    this.router.navigate([ASSET_TYPE.WORKSPACE], { queryParams: { folder: uid } });
+
+    if(uid) this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+    else this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
   }
 
   saveState({uid, title, path, properties, sectorId, type, contextParameters}) {
