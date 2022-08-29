@@ -12,13 +12,12 @@
     </div> -->
 
     <div *ngIf="docIsPrivate" class="whenYouConvert">
-        <!-- When you convert this folder to published, it's contents will become available for all Ground X users or internal users only. They will appear in Ground X search. -->
-        When you make this folder private, it will no longer appear in search results and its contents are will be available only for the folder members.
+        When you convert this folder to published, it's contents will become available for all Ground X users or internal users only. They will appear in Ground X search.
     </div>
 
     <div *ngIf="!docIsPrivate" class="whenYouConvert">
         <!-- When you make this folder private, it's contents are available only for the folder members and they will not appear in Ground X search anymore. -->
-        Please set this as the tooltip for the i icon: “Private folders are commonly used to restrict files to specific users or receive files from external users.
+        When you make this folder private, it will no longer appear in search results and its contents are will be available only for the folder members
     </div>
 
     <div *ngIf="!docIsPrivate" class="makePrivate tollTipWorkspace">
@@ -29,7 +28,10 @@
         </label>
         <span class="showTollTip">
           <img src="../../assets/images/Info-icon.svg" alt="" class="infoIcon" />
-          <div class="customToolTipWorkspace infoHover">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</div>
+          <div class="customToolTipWorkspace infoHover">
+            <!-- You can collaborate with specified users privately. You can invite users to a private folder after you have created it. -->
+            Private folders are commonly used to restrict files to specific users or receive files from external users.
+          </div>
         </span>
     </div>
 
