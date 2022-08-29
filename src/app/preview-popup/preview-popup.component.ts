@@ -418,7 +418,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   copyLink() {
-    this.copiedString = this.sharedService.copyLink(this.doc.uid, 'asset');
+    console.log(', this.doc = ', this.doc.properties['dc:sector']);
+    this.copiedString = this.sharedService.copyLink(this.doc.uid, 'asset', this.doc?.properties?.['dc:sector']);
 
 
       // const assetId = this.doc.uid;

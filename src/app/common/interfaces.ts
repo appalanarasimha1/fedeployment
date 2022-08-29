@@ -124,6 +124,7 @@ export interface IRangeDocCount {
       "dc:description": string,
       "dc:language": string,
       "dc:start": string,
+      "dc:sector": string,
       "dc:coverage": string,
       "dc:valid": string,
       "dc:creator": string,

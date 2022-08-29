@@ -277,8 +277,8 @@
                   </ul>
                 </div>
                 <h6 class="tollTipCustom">
-                  <span *ngIf="!isExternalView"
-                    >/<a
+                  <span *ngIf="!isExternalView">/
+                    <a
                       [ngClass]="
                         breadCrumb.length !== 0
                           ? 'breadcrumb-active'
@@ -287,8 +287,8 @@
                       (click)="
                         handleGotoBreadcrumb(folderStructure[0], null, 0)
                       "
-                      >All Workspace</a
-                    ></span
+                      >All Workspace</a>
+                      </span
                   >
                   <span *ngIf="isExternalView">/<a
                       [ngClass]="
@@ -296,9 +296,7 @@
                           ? 'breadcrumb-active'
                           : 'breadcrumb-not-active'
                       "
-                      (click)="
-                      fetchAllPrivateWorkspaces()
-                      "
+                      (click)="fetchAllPrivateWorkspaces()"
                       >Shared Folders</a></span>
                   <span *ngFor="let c of breadCrumb; let i = index">
                     /<a

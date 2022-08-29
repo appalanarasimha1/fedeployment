@@ -186,16 +186,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     this.fetchUserData();
     let fetchAll = false;
+    this.route.queryParams.subscribe(async (params) => {
     let sectorName = this.route.snapshot.paramMap.get('sectorName');
     let folderId = this.route.snapshot.paramMap.get('folderId');
     console.log('sectorName = ', sectorName, folderId);
-    // this.route.queryParams.subscribe(async (params) => {
+    
       this.loading = true;
       this.searchInitialised = null;
       this.routeParams.sectorName = sectorName;
 
       await this.fetchAllSectors();
-      const sectorDocument = this.folderAssetsResult[ROOT_ID]?.entries?.filter(item => item.title.toLowerCase() === sectorName.toLowerCase());
+      const sectorDocument = this.folderAssetsResult[ROOT_ID]?.entries?.filter(item => item.title.toLowerCase() === sectorName?.toLowerCase());
       if(!this.route.snapshot.paramMap.get('folderId')) {
         folderId = sectorDocument[0]?.uid;
         if(!this.routeParams?.folderId) this.routeParams.folderId = folderId;
@@ -239,7 +240,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.initialLoad = false;
       }
       
-    // });
+    });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
       if (!result?.length) return;
@@ -538,7 +539,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
     this.removeAssets()
-    this.saveState(item);
+    this.saveState(item, index, breadCrumbIndex);
     this.paginator?.firstPage();
     this.searchBarValue = "";
     // if (!isNaN(index) || breadCrumbIndex === 1) {
@@ -1466,16 +1467,25 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.loading = false;
   }
 
-  navigateToWorkspaceFolder(uid: string) {
+  navigateToWorkspaceFolder(uid: string, index?: number, breadCrumbIndex?: number) {
     if(this.routeParams.folderId === uid) {
       return;
     }
-
-    if(uid) this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
-    else this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
+    const path = this.sectorSelected?.path.split("/");
+    // NOTE: todo, refactor if-else
+    if(breadCrumbIndex === 0) {
+      this.router.navigate([ASSET_TYPE.WORKSPACE]);
+    } else  if(breadCrumbIndex === 1) {
+      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
+    } else if(!isNaN(index)) {
+      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+    } else {
+      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+      // else this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
+    }
   }
 
-  saveState({uid, title, path, properties, sectorId, type, contextParameters}) {
+  saveState({uid, title, path, properties, sectorId, type, contextParameters}, index?: number, breadCrumbIndex?: number) {
     // let breadcrumb;
     // if(contextParameters) {
     //   ({breadcrumb} = contextParameters);
@@ -1483,7 +1493,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // }
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
-    this.navigateToWorkspaceFolder(uid);
+    this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex);
     return;
   }
 
@@ -1886,7 +1896,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   copyLink(asset: IEntry, assetType: string) {
-    asset.copy = this.sharedService.copyLink(asset.uid, assetType);
+    asset.copy = this.sharedService.copyLink(asset.uid, assetType, asset.properties['dc:sector']);
   }
 
   editableAsset() {

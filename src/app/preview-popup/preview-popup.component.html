@@ -213,7 +213,7 @@
                       <li>
                         Location <br />
                         <span style="word-break: break-all">
-                          <a href="/workspace?folder={{doc?.parentRef}}"
+                          <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}"
                           (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
                             {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                           </a>
@@ -531,7 +531,7 @@
                     <li>
                       Location <br />
                       <span style=" word-break: break-all">
-                        <a href="/workspace?folder={{doc?.parentRef}}" (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
                           {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                         </a>
                       </span>
