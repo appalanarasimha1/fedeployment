@@ -46,7 +46,7 @@ export class MoveCopyAssetsComponent implements OnInit {
   }
 
   closeModal() {
-    this.dialogRef.close(this.folderUpdated);
+    this.dialogRef.close(this.selectedDestination);
   }
   selectFolder($event, folder){
     if($event.target?.checked) {
@@ -115,8 +115,24 @@ export class MoveCopyAssetsComponent implements OnInit {
     for (const key in this.selectedList) {
       arrayCall.push(this.moveAsset(this.selectedList[key]));
     }
-    await Promise.all(arrayCall);
+    const res = await Promise.all(arrayCall);
+    res.forEach((response, index) => this.showNoti(response.value, index));
+
     this.closeModal()
+  }
+
+  showNoti(message, index) {
+    this.sharedService.showSnackbar(
+      message === 'OK' ? `Folder ${this.selectedList[index]?.title} has been moved successfully`
+      : `Cannot move ${this.selectedList[index]?.title}: ${message}`,
+      4000,
+      "top",
+      "center",
+      "snackBarMiddle",
+      null,
+      null,
+      (index + 1) * 500
+    );
   }
 
   async moveAsset(item) {

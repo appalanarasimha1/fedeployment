@@ -248,7 +248,7 @@ export class SharedService {
   toTop(): void {
     window.scroll(0,0);
   }
-  
+
   checkExternalUser() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user?.groups) return true;
@@ -333,7 +333,7 @@ export class SharedService {
     return data.replace(/\/workspaces/gi, '');
   }
 
-  showSnackbar(data: string, duration: number, verticalPosition: MatSnackBarVerticalPosition, horizontalPosition: MatSnackBarHorizontalPosition, panelClass: string, actionName?: string, action?: any): void {
+  showSnackbar(data: string, duration: number, verticalPosition: MatSnackBarVerticalPosition, horizontalPosition: MatSnackBarHorizontalPosition, panelClass: string, actionName?: string, action?: any, timeout = 500): void {
     setTimeout(()=>{
       const snackBarRef = this._snackBar.open(data, actionName || '', {
         duration: duration,
@@ -344,7 +344,7 @@ export class SharedService {
       if (actionName) {
         snackBarRef.onAction().subscribe(() => action());
       }
-    }, 500);
+    }, timeout);
   }
 
   markRecentlyViewed(data: any): any[] {

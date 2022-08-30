@@ -1871,16 +1871,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
-      console.log("closeeeeeee");
+      if (result) {
+        delete this.folderAssetsResult[result.uid];
+        delete this.folderAssetsResult[this.selectedFolder.uid];
+      }
 
-      // if (result) {
-      //   this.saveState(result);
-      // }
-      // this.getWorkspaceFolders(this.selectedFolder.uid);
-      // console.log(this.selectedFolder.uid);
-
-      // this.router.onSameUrlNavigation = 'reload';
-      window.location.reload()
+      this.loading = true;
+      setTimeout(() => {
+        this.handleClickNew(this.selectedFolder.uid);
+      }, 1000);
     });
   }
 
