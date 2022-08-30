@@ -4,7 +4,7 @@
          <ng-template matStepLabel>Select assets</ng-template>
          <!-- <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div> -->
          <div>
-            <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)">
+            <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)" id="customScrollBar" >
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
             <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length">
                <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
@@ -68,7 +68,7 @@
          </div>
          </div>
 
-         <div class="button-groups" style="padding-top: 15px;">
+         <div class="button-groups" style="padding-top: 15px; padding-right: 24px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button *ngIf="!isPrivateFolder()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
@@ -476,165 +476,167 @@
                   </div>
                </div>
             </div> -->
-            <div class="updated-asset-classifications" *ngIf="showHideAllAsset">
-               <div class="publish-file-preview-groups fix-scroll" id="customScrollBar">
-                  <div *ngFor="let file of filesMap| keyvalue" class="publish-file-preview">
-                     <div class="publish-file-preview-img">
-                        <img [src]="imageSrc[file.key] || getPreviewSrc(file.value, file.key)" alt="preview" class="preview-img"
-                           onerror="this.src='./assets/images/preview-placeholder.png';"/>
-                        <span class="tollTipCustom" >
-                           {{ sharedService.stringShortener(file.value.name, 20) }}
-                           <div class="tolltipContent">
-                              {{file.value.name}}
-                            </div>
-                           <br/><br/>
-                           <span>{{ humanFileSize(file.value.size) }}</span>
-                        </span>
-                        <div class="copyright-information">
-                           <div (click)="openCopyright(file.key)" *ngIf="!openCopyrightMap[file.key]">
-                              <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
-                           </div>
-                           <!-- <div *ngIf="openCopyrightMap[file.key]" (click)="closeCopyright(file.key)" [ngClass]="{'collapseInformationLink': openCopyrightMap[file.key]}">
-                              <img src="../../assets/images/add-circle-brown.svg" alt="Collapse optional information" class="collapse-img" /> Collapse optional information
-                           </div> -->
-                           <div *ngIf="openCopyrightMap[file.key]" class="copyright-form">
-                              <ul>
-                                 <li>
-                                    <img (click)="closeCopyright(file.key)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
-                                 </li>
-                                 <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
-                                    <div class="copyright-input-block" >
-                                       Ⓒ <input autocomplete="off" type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
-                                       bindLabel="name"
-                                       [(ngModel)]="copyrightYearMap[file.key]"
-                                       placeholder="Year" ngDefaultControl
-                                       [ngClass]="{'goldenText': copyrightYearMap[file.key] }"
-                                    >
-                                    </ng-select>
-                                 </li>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                     <div *ngIf="!isPrivateFolder()" class="publish-file-preview-access">
-                        <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customConfidentialityMap[file.key] }">
-                           <div class="col-xl-4">
-                              <label for="confidentiality">Confidentiality</label>
-                           </div>
-                           <div class="col-xl-8 ">
-                              <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
-                                 <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
-                                 </select> -->
-                              <ng-select placeholder="Specify sensitivity"  [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
-                              <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
-                              </ng-option>
-                              </ng-select>
-                              <div class="showErrorMessage" *ngIf="showErrorUpload && !customConfidentialityMap[file.key] ">Please complete all mandatory fields</div>
+            <div class="newscrollBar fix-scroll" id="customScrollBar" *ngIf="showHideAllAsset">
+               <div class="updated-asset-classifications">
+                  <div class="publish-file-preview-groups">
+                     <div *ngFor="let file of filesMap| keyvalue" class="publish-file-preview">
+                        <div class="publish-file-preview-img">
+                           <img [src]="imageSrc[file.key] || getPreviewSrc(file.value, file.key)" alt="preview" class="preview-img"
+                              onerror="this.src='./assets/images/preview-placeholder.png';"/>
+                           <span class="tollTipCustom" >
+                              {{ sharedService.stringShortener(file.value.name, 20) }}
+                              <div class="tolltipContent">
+                                 {{file.value.name}}
+                               </div>
+                              <br/><br/>
+                              <span>{{ humanFileSize(file.value.size) }}</span>
+                           </span>
+                           <div class="copyright-information">
+                              <div (click)="openCopyright(file.key)" *ngIf="!openCopyrightMap[file.key]">
+                                 <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
+                              </div>
+                              <!-- <div *ngIf="openCopyrightMap[file.key]" (click)="closeCopyright(file.key)" [ngClass]="{'collapseInformationLink': openCopyrightMap[file.key]}">
+                                 <img src="../../assets/images/add-circle-brown.svg" alt="Collapse optional information" class="collapse-img" /> Collapse optional information
+                              </div> -->
+                              <div *ngIf="openCopyrightMap[file.key]" class="copyright-form">
+                                 <ul>
+                                    <li>
+                                       <img (click)="closeCopyright(file.key)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
+                                    </li>
+                                    <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
+                                       <div class="copyright-input-block" >
+                                          Ⓒ <input autocomplete="off" type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
+                                       </div>
+                                    </li>
+                                    <li>
+                                       <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
+                                          bindLabel="name"
+                                          [(ngModel)]="copyrightYearMap[file.key]"
+                                          placeholder="Year" ngDefaultControl
+                                          [ngClass]="{'goldenText': copyrightYearMap[file.key] }"
+                                       >
+                                       </ng-select>
+                                    </li>
+                                 </ul>
+                              </div>
                            </div>
                         </div>
-   
-                        <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customAccessMap[file.key] }">
-                           <div class="col-xl-4">
-                              <label for="access">{{ACCESS_TITLE}}</label>
-                           </div>
-                           <div class="col-xl-8">
-                              <ng-select placeholder="Specify visibility" name="access"  [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
-                                 <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
+                        <div *ngIf="!isPrivateFolder()" class="publish-file-preview-access">
+                           <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customConfidentialityMap[file.key] }">
+                              <div class="col-xl-4">
+                                 <label for="confidentiality">Confidentiality</label>
+                              </div>
+                              <div class="col-xl-8 ">
+                                 <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
+                                    <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
+                                    </select> -->
+                                 <ng-select placeholder="Specify sensitivity"  [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
+                                 <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                                  </ng-option>
-                              </ng-select>
-                              <div class="showErrorMessage" *ngIf="showErrorUpload && !customAccessMap[file.key] ">Please complete all mandatory fields</div>
+                                 </ng-select>
+                                 <div class="showErrorMessage" *ngIf="showErrorUpload && !customConfidentialityMap[file.key] ">Please complete all mandatory fields</div>
+                              </div>
                            </div>
+      
+                           <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customAccessMap[file.key] }">
+                              <div class="col-xl-4">
+                                 <label for="access">{{ACCESS_TITLE}}</label>
+                              </div>
+                              <div class="col-xl-8">
+                                 <ng-select placeholder="Specify visibility" name="access"  [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
+                                    <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
+                                    </ng-option>
+                                 </ng-select>
+                                 <div class="showErrorMessage" *ngIf="showErrorUpload && !customAccessMap[file.key] ">Please complete all mandatory fields</div>
+                              </div>
+                           </div>
+      
+                           <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;">
+                              <div class="col-xl-4">
+                                &nbsp; <!-- <label for="user" style="text-align: right;">Please specify who can access</label> -->
+                              </div>
+                              <div class="col-xl-8">
+                                 <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
+                                 <ng-select style="height: unset !important;"
+                                 [items]="userList$ | async"
+                                 bindLabel="id"
+                                 bindValue="id"
+                                 [multiple]="true"
+                                 [hideSelected]="true"
+                                 [trackByFn]="trackByFn"
+                                 [minTermLength]="2"
+                                 [loading]="userLoading"
+                                 typeToSearchText="Search users"
+                                 [typeahead]="userInput$"
+                                 [(ngModel)]="customUsersMap[file.key]"
+                                 [ngClass]="{'goldenText': customUsersMap[file.key] }" >
+                                 <ng-template ng-option-tmp let-item="item">
+                                    {{item.id}} ({{item.fullname}})
+                                 </ng-template>
+                                 </ng-select>
+                              </div>
+                           </div>
+      
+                           <div class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalMap[file.key] }">
+                              <div class="col-xl-4">
+                                 <label>Usage right</label>
+                              </div>
+                              <div class="col-xl-8">
+                                 <label class="control control--checkbox" style="margin-bottom: 0px; float: left;">
+                                    Approval required before download
+                                    <input
+                                       autocomplete="off"
+                                       type="checkbox"
+                                       checked="checked"
+                                       (change)="changeDownloadTick(file.key)"
+                                       [(ngModel)]="customDownloadApprovalMap[file.key]"
+                                       [ngModelOptions]="{standalone: true}"
+                                    />
+                                    <div class="control__indicator" style="top: 4px;left: 0px;"></div>
+                                 </label>
+                                 <!-- <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalMap[file.key] ">Please complete all mandatory fields</div> -->
+                              </div>
+                           </div>
+      
+                           <!-- <div class="upload-form-input row mb-20">
+                              <div class="col-xl-4">
+                                 <label for="allow">Allow use</label>
+                              </div>
+                              <div class="col-xl-8">
+                                 <ng-select placeholder="Specify permissible usage" name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [(ngModel)]="customAllowMap[file.key]" [ngClass]="{'goldenText': customAllowMap[file.key] }" >
+                                    <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value)">{{ ALLOW_LABEL[c.value] }}
+                                    </ng-option>
+                                 </ng-select>
+                              </div>
+                           </div>-->
+                           <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalUsersMap[file.key] }" >
+                              <div class="col-xl-4">
+                                 &nbsp;
+                              </div>
+                              <div class="col-xl-8">
+                                 <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
+                                 <ng-select style="height: unset !important;"
+                                 [items]="userList$ | async"
+                                 bindLabel="id"
+                                 bindValue="id"
+                                 [multiple]="true"
+                                 [hideSelected]="true"
+                                 [trackByFn]="trackByFn"
+                                 [minTermLength]="2"
+                                 [loading]="userLoading"
+                                 typeToSearchText="Search users"
+                                 [typeahead]="userInput$"
+                                 [(ngModel)]="customDownloadApprovalUsersMap[file.key]"
+                                 [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }" >
+                                 <ng-template ng-option-tmp let-item="item">
+                                    {{item.id}} {{item.fullname ? '('+item.fullname+')' : ''}}
+                                 </ng-template>
+                                 </ng-select>
+                                 <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalUsersMap[file.key] ">Please complete all mandatory fields</div>
+                              </div>
+                           </div>
+      
                         </div>
-   
-                        <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;">
-                           <div class="col-xl-4">
-                             &nbsp; <!-- <label for="user" style="text-align: right;">Please specify who can access</label> -->
-                           </div>
-                           <div class="col-xl-8">
-                              <p class="userText pb-3">{{SPECIFIC_USER_LABEL}}</p>
-                              <ng-select style="height: unset !important;"
-                              [items]="userList$ | async"
-                              bindLabel="id"
-                              bindValue="id"
-                              [multiple]="true"
-                              [hideSelected]="true"
-                              [trackByFn]="trackByFn"
-                              [minTermLength]="2"
-                              [loading]="userLoading"
-                              typeToSearchText="Search users"
-                              [typeahead]="userInput$"
-                              [(ngModel)]="customUsersMap[file.key]"
-                              [ngClass]="{'goldenText': customUsersMap[file.key] }" >
-                              <ng-template ng-option-tmp let-item="item">
-                                 {{item.id}} ({{item.fullname}})
-                              </ng-template>
-                              </ng-select>
-                           </div>
-                        </div>
-   
-                        <div class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalMap[file.key] }">
-                           <div class="col-xl-4">
-                              <label>Usage right</label>
-                           </div>
-                           <div class="col-xl-8">
-                              <label class="control control--checkbox" style="margin-bottom: 0px; float: left;">
-                                 Approval required before download
-                                 <input
-                                    autocomplete="off"
-                                    type="checkbox"
-                                    checked="checked"
-                                    (change)="changeDownloadTick(file.key)"
-                                    [(ngModel)]="customDownloadApprovalMap[file.key]"
-                                    [ngModelOptions]="{standalone: true}"
-                                 />
-                                 <div class="control__indicator" style="top: 4px;left: 0px;"></div>
-                              </label>
-                              <!-- <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalMap[file.key] ">Please complete all mandatory fields</div> -->
-                           </div>
-                        </div>
-   
-                        <!-- <div class="upload-form-input row mb-20">
-                           <div class="col-xl-4">
-                              <label for="allow">Allow use</label>
-                           </div>
-                           <div class="col-xl-8">
-                              <ng-select placeholder="Specify permissible usage" name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [(ngModel)]="customAllowMap[file.key]" [ngClass]="{'goldenText': customAllowMap[file.key] }" >
-                                 <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value)">{{ ALLOW_LABEL[c.value] }}
-                                 </ng-option>
-                              </ng-select>
-                           </div>
-                        </div>-->
-                        <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalUsersMap[file.key] }" >
-                           <div class="col-xl-4">
-                              &nbsp;
-                           </div>
-                           <div class="col-xl-8">
-                              <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
-                              <ng-select style="height: unset !important;"
-                              [items]="userList$ | async"
-                              bindLabel="id"
-                              bindValue="id"
-                              [multiple]="true"
-                              [hideSelected]="true"
-                              [trackByFn]="trackByFn"
-                              [minTermLength]="2"
-                              [loading]="userLoading"
-                              typeToSearchText="Search users"
-                              [typeahead]="userInput$"
-                              [(ngModel)]="customDownloadApprovalUsersMap[file.key]"
-                              [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }" >
-                              <ng-template ng-option-tmp let-item="item">
-                                 {{item.id}} {{item.fullname ? '('+item.fullname+')' : ''}}
-                              </ng-template>
-                              </ng-select>
-                              <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalUsersMap[file.key] ">Please complete all mandatory fields</div>
-                           </div>
-                        </div>
-   
                      </div>
                   </div>
                </div>
