@@ -239,7 +239,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (window.location.href.includes(`${window.location.origin}/workspace`)) {
         this.initialLoad = false;
       }
-      
+
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
@@ -247,7 +247,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       result.map((asset:any)=>{
         this.searchList.unshift(asset);
       })
-      
+
       this.sortedData = this.searchList.slice();
       this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
 
@@ -326,6 +326,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         e.stopPropagation();
       });
     });
+    this.getAllFolders(this.selectedFolder)
   }
 
   checkAssetType(assetType: string): boolean {
@@ -370,6 +371,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async handleTest(item) {
     this.renameFolderName = false;
     this.folderNameRef = undefined;
+    this.titleExists = false
+
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
 
@@ -535,13 +538,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     $("body").animate({ scrollTop: 0 }, "slow");
-    this.folderNameRef = undefined;
+      this.titleExists = false
+      this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
     this.removeAssets()
     this.saveState(item, index, breadCrumbIndex);
     this.paginator?.firstPage();
     this.searchBarValue = "";
+    // this.getAllFolders()
     // if (!isNaN(index) || breadCrumbIndex === 1) {
     //   this.showSearchbar = true;
     // }
@@ -956,7 +961,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return Object.keys(this.selectedFolderList).length > 0;
   }
 
-  
+
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.initialLoad = false;
     this.showSearchbar = true;
@@ -980,7 +985,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             --this.resultCount;
             return true;
           } else {
-            return false; 
+            return false;
           }
         });
         // if (!this.myDeletedCheck) {
@@ -1001,7 +1006,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         // this.deletedByMeFilter();
       });
   }
-  
+
   async deletedByMeFilter() {
     let userData = localStorage.getItem("user");
     // console.log("userData", JSON.parse(userData));
@@ -1070,28 +1075,21 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.showFolder = !this.showFolder;
   }
 
+  titleExists:boolean=false
   async createFolder(folderName: string, date?: string, description?: string) {
 
     if (!this.folderNameRef) {
       this.showError = true;
     } else {
-      // let checkTitle = this.CheckTitleAlreadyExits(folderName)
-      // if(checkTitle) {
-      //   this.showFolder = false
-      //   this.showMoreButton = false;
-      //   this.checkboxIsPrivate = false;
-      //   $(".dropdownCreate").hide();
-      //   $(".buttonCreate").removeClass("createNewFolderClick");
-      //     return this.sharedService.showSnackbar(
-      //       "Name already exists",
-      //       6000,
-      //       "top",
-      //       "center",
-      //       "snackBarMiddle"
-      //       // "Updated folder",
-      //       // this.getTrashedWS.bind(this)
-      //     );
-      //   }
+      let checkTitle = this.CheckTitleAlreadyExits(folderName)
+      if(checkTitle) {
+        // this.showFolder = false
+        // this.showMoreButton = false;
+        // this.checkboxIsPrivate = false;
+        // // $(".dropdownCreate").hide();
+        // $(".buttonCreate").removeClass("createNewFolderClick");
+        return this.titleExists = true
+      }
       this.createFolderLoading = true;
       const backupPath = this.selectedFolder.path;
       let url = `/path${this.selectedFolder.path}`;
@@ -1136,6 +1134,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       this.folderNameRef = undefined;
+      this.titleExists = false
       this.folderDescriptionRef = undefined;
       this.folderDateRef = undefined;
 
@@ -1238,6 +1237,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         );
 
     }else{
+      // this.fetchFolder(this.selectedFolder.uid).then((res:any)=>{
+      //   console.log("resssssss",res);
+      //   let realPath = res.path.split("/")
+      //   realPath.pop()
+      //   let path =  realPath.join("/")
+      //   console.log("path",path, realPath);
+        
+      //   this.getAllFolders({uid:res.parentRef,path})
+      // })
       this.renameFolderName = true;
     }
   }
@@ -1264,7 +1272,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         let msg;
         if(!title && !assetUid) {
             this.updateFolderAction();
-            
+
             // this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
@@ -1588,7 +1596,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(canDelete){
       this.selectFolder($event, item, i)
     }
-    
+
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
     //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
@@ -1743,10 +1751,18 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     dialogConfig.width = "550px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     // const folder = await this.fetchFolder(this.selectedFolder.uid);
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    dialogConfig.data = {
+      selectedFolder: selectedFolder || this.selectedFolder,
+    }
 
     const modalDialog = this.matDialog.open(ManageAccessModalComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.selectedFolder = result;
+        this.saveState(result);
+      }
       this.loading = false;
     });
   }
@@ -1840,7 +1856,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   CheckTitleAlreadyExits(name){
-    let titles = this.sortedData.map(m=>m.title.toLowerCase().trim())
+    let titles = this.allFolders.map((m:any)=>m.title.toLowerCase().trim())
     if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
     return false
   }
@@ -1958,12 +1974,39 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         box.style.visibility = "hidden";
         box.style.opacity = '0';
         box1.style.fontSize = "42px";
-        if(e.dataTransfer.files.length > 0)
-        {
-           openM(e.dataTransfer.files)
+        if(e.dataTransfer.files.length > 0) {
+          openM(e.dataTransfer.files)
 
         }
     });
+  }
+  
+  allFolders:[]
+  async getAllFolders(folder?:any){
+    let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
+    if(currentState.length){
+      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${folder.path}'`;
+      const result: any = await this.apiService
+          .get(url, { headers: { "fetch-document": "properties" } })
+          .toPromise();
+
+     this.allFolders = result?.entries
+    }else{
+      let currentState1 = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.type == "OrderedFolder")
+      this.allFolders = currentState1
+    }
+  }
+
+  folderNameChange(){
+    return this.titleExists = false
+  }
+
+  checkShowManageAccessButton() {
+    if (this.selectedFolder.properties['dc:isPrivate']) return false;
+    const userData = localStorage.getItem("user");
+
+    return this.selectedFolder.properties["dc:creator"].id === JSON.parse(userData).username
+     || this.selectedFolder.properties["dc:creator"] === JSON.parse(userData).username;
   }
 
 }

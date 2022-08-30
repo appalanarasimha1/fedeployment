@@ -260,13 +260,13 @@
                 </span>
                 <div class="manageAccess">
                   <ul style="float: right;">
-                    <!-- <li *ngIf="isPrivateFolder()" class="tollTipWorkspace" (click)="openManageAccessModal()">
+                    <li *ngIf="checkShowManageAccessButton()" class="tollTipWorkspace" (click)="openManageAccessModal()">
                       <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#C49900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#C49900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                       <div class="customToolTipWorkspace">Manage Access</div>
-                    </li> -->
+                    </li>
                     <li *ngIf="isPrivateFolder()" class="tollTipWorkspace">
                       <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="isAdmin ? 'classificationsIcon manageUsers' : 'classificationsIcon-disabled manageUsers'" (click)="openAddUserModal()">
                         <path d="M0 21C0 18.8783 0.842855 16.8434 2.34315 15.3431C3.84344 13.8429 5.87827 13 8 13C10.1217 13 12.1566 13.8429 13.6569 15.3431C15.1571 16.8434 16 18.8783 16 21H14C14 19.4087 13.3679 17.8826 12.2426 16.7574C11.1174 15.6321 9.5913 15 8 15C6.4087 15 4.88258 15.6321 3.75736 16.7574C2.63214 17.8826 2 19.4087 2 21H0ZM8 12C4.685 12 2 9.315 2 6C2 2.685 4.685 0 8 0C11.315 0 14 2.685 14 6C14 9.315 11.315 12 8 12ZM8 10C10.21 10 12 8.21 12 6C12 3.79 10.21 2 8 2C5.79 2 4 3.79 4 6C4 8.21 5.79 10 8 10ZM16.284 13.703C17.6893 14.3359 18.882 15.3612 19.7186 16.6557C20.5552 17.9502 21.0002 19.4587 21 21H19C19.0002 19.844 18.6666 18.7125 18.0391 17.7416C17.4116 16.7707 16.5171 16.0017 15.463 15.527L16.283 13.703H16.284ZM15.596 2.413C16.6035 2.8283 17.465 3.53354 18.071 4.43923C18.6771 5.34492 19.0004 6.41024 19 7.5C19.0004 8.87233 18.4877 10.1952 17.5625 11.2088C16.6374 12.2224 15.3667 12.8535 14 12.978V10.965C14.7409 10.8589 15.4283 10.518 15.9613 9.99246C16.4943 9.4669 16.8447 8.78432 16.9612 8.04493C17.0776 7.30555 16.954 6.5483 16.6084 5.88435C16.2628 5.22041 15.7134 4.68475 15.041 4.356L15.596 2.413Z" fill="#937206"/>
@@ -697,7 +697,7 @@
                             <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
                         </div>
                         <div class="col-xl-12">
-                          <input [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name" autocomplete="off">
+                          <input [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name" autocomplete="off" (change)="folderNameChange()">
                           <!-- <input *ngIf="showError" [ngClass]="{'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name"> -->
                         </div>
                       </div>
@@ -756,7 +756,10 @@
                           <div *ngIf="showError" class="errorMessage">
                             Please complete all mandatory fields
                           </div>
-                          <button *ngIf="!createFolderLoading" class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef, folderDescriptionRef)" style="pointer-events: auto;" [ngClass]="{'disableBtn': !folderNameRef}">
+                          <div *ngIf="titleExists" class="errorMessage">
+                           This folder name already exists
+                          </div>
+                          <button *ngIf="!createFolderLoading" class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef, folderDescriptionRef)" style="pointer-events: auto;" [ngClass]="{'disableBtn': !folderNameRef || titleExists}">
                             Create folder
                           </button>
                           <button *ngIf="createFolderLoading" class="createBtn btn tollTipCustom" style="pointer-events: auto;" [ngClass]="{'disableBtn': true}">
@@ -1044,7 +1047,7 @@
                   Choose a workspace on the left to begin
                 </p>
               </div>
-              
+
               <div class="col-xl-12 col-md-12 customTableStyle">
                 <div style="visibility:hidden; opacity:0" id="dropzone">
                   <div id="textnode">
@@ -1144,7 +1147,7 @@
                     </td>
                     <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}">
                       <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;">
-                      <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block; 
+                      <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block;
                       vertical-align: middle;">
                         <span class="tollTipCustom">
                           {{item.title}}
@@ -1165,6 +1168,7 @@
                             {{removeWorkspacesFromString(item.path, item.title)}}
                           </span>
                         </span>
+
                       </p>
                       <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                         <div class="publicUseBlock">
@@ -1331,7 +1335,7 @@
             ></preview-popup>
           </div>
           <mat-paginator
-            *ngIf="searchList?.length > 20 && selectedFolder?.uid !== parentId"
+            *ngIf="searchList?.length && selectedFolder?.uid !== parentId"
             #paginator
             [length]="resultCount"
             [pageSize]="defaultPageSize"
