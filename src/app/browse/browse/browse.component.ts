@@ -189,7 +189,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe(async (params) => {
     let sectorName = this.route.snapshot.paramMap.get('sectorName');
     let folderId = this.route.snapshot.paramMap.get('folderId');
-    console.log('sectorName = ', sectorName, folderId);
     
       this.loading = true;
       this.searchInitialised = null;
@@ -235,7 +234,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         await this.fetchAllSectors();
         this.loading = false;
       }
-      // console.log(`${window.location.origin}/workspace?folder=`,window.location.href );
       if (window.location.href.includes(`${window.location.origin}/workspace`)) {
         this.initialLoad = false;
       }
@@ -387,6 +385,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder = item;
     this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
+    
     this.loading = true;
     const { entries, numberOfPages, resultsCount } = await this.fetchAssets(item.uid, true);
     this.searchList = entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
@@ -394,7 +393,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
     this.handleSelectMenu(1, "LIST");
-    // this.loading = false;
+    this.loading = false;
     this.sharedService.toTop();
     this.createDynamicSidebarScroll();
     // this.selectedFolder = item;
@@ -561,6 +560,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
+
       const listView = 1;
       this.loading = true;
       await this.getWorkspaceFolders(item.uid, listView);
@@ -1396,7 +1396,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   createDynamicSidebarScroll() {
     setTimeout(() => {
       var storeHeight = $(".main-content").outerHeight();
-      // console.log('storeHeight', storeHeight);
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
     }, 0);
   }
@@ -1406,7 +1405,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let checkAvailabity = Departments.hasOwnProperty(this.userSector);
     if (checkAvailabity) {
       let ID = Departments[this.userSector];
-      // console.log(Workspace[ID]);
       user = Workspace[ID];
     }
 
@@ -1527,13 +1525,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   multiDownload() {
-    console.log(
-      this.downloadArray.length,
-      this.copyRightItem.length,
-      !this.sizeExeeded,
-      this.forInternalUse.length
-    );
-
     if (
       this.downloadArray.length > 0 &&
       this.copyRightItem.length < 1 &&
@@ -1679,7 +1670,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     } else {
       if (this.downloadArray.length > 0) {
         $(".multiDownloadBlock").hide();
-        console.log("comming");
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
         let uid: any;
