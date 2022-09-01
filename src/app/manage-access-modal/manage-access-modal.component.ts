@@ -24,6 +24,7 @@ export class ManageAccessModalComponent implements OnInit {
     public dialogRef: MatDialogRef<ManageAccessModalComponent>,
     private router: Router,
     public sharedService: SharedService,
+    public dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -43,6 +44,7 @@ export class ManageAccessModalComponent implements OnInit {
 
   async updateRights() {
     if (!this.makePrivate) return;
+    this.dataService.folderPermissionInit(true)
     const params = {
       isPrivate: !this.docIsPrivate
     };

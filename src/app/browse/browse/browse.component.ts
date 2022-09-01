@@ -158,6 +158,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUser: string[] = [];
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
+  permissionChange:boolean=false
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -560,12 +561,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
-
+      console.log("inside if");
+      
       const listView = 1;
       this.loading = true;
       await this.getWorkspaceFolders(item.uid, listView);
       this.loading = false;
     } else {
+      console.log("inside else");
       // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
@@ -585,9 +588,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async fetchAssets(id: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.currentPageCount = 0;
     this.showMoreButton = true;
-    if (checkCache && this.folderAssetsResult[id]) {
+    this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
+    if (checkCache && this.folderAssetsResult[id] && !this.permissionChange) {
+      console.log("comming");
+      
       return this.folderAssetsResult[id];
     }
+    this.dataService.folderPermissionInit(false)
     let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
     const result: any = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
@@ -1734,7 +1741,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
 
   async openManageAccessModal() {
-    this.loading = true;
+    // this.loading = true;
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -1753,7 +1760,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.selectedFolder = result;
         this.saveState(result);
       }
-      this.loading = false;
+      // this.loading = false;
     });
   }
 
