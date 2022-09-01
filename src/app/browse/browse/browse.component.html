@@ -752,6 +752,62 @@
                             <div class="customToolTipWorkspace infoHover">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</div>
                           </span>
                         </div>
+
+                        <div class="col-xl-12">
+                          <div class="folderType">
+                            <label>Folder type</label>
+
+                            <div class="row">
+                              <div class="col-xl-12 mb-10">
+                                <label class="control control--checkbox" (change)="handleChange($event, 'published')" style="margin-bottom: 0px; display: inline-block;">
+                                  Published
+                                  <input type="radio" id="Published" name="publishedPrivate" checked/>
+                                  <div class="control__indicator" for="Published" style="top: 4px;left: 0px; border-radius: 100px;"></div>
+                                </label>
+                              </div>
+                              <div class="col-xl-12 mb-10">
+                                <label class="control control--checkbox" (change)="handleChange($event, 'private')" style="margin-bottom: 0px; display: inline-block;">
+                                  Private fileshare
+                                  <input type="radio" id="Private" name="publishedPrivate"/>
+                                  <div class="control__indicator" for="Private" style="top: 4px;left: 0px;border-radius: 100px;"></div>
+                                </label>
+                              </div>
+                              <div class="col-xl-12 mb-10">
+                                <div class="publishingAssets" *ngIf="publishingAssets">
+                                  <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
+                                  <ul>
+                                    <li>
+                                      <span class="leftCont">Discoverable from search:</span> <span class="rightCont">Yes</span>
+                                    </li>
+                                    <li>
+                                      <span class="leftCont">Access and Usage:</span> <span class="rightCont">Set per asset ("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</span>
+                                    </li>
+                                    <li>
+                                      <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">No</span>
+                                    </li>
+                                  </ul>
+                                </div>
+
+                                <div class="publishingAssets" *ngIf="publishingPrivateAssets">
+                                  <p>Used for restricting files to specific users or receiving files from external users</p>
+                                  <ul>
+                                    <li>
+                                      <span class="leftCont">Discoverable from search:</span> <span class="rightCont">No</span>
+                                    </li>
+                                    <li>
+                                      <span class="leftCont">Access and Usage:</span> <span class="rightCont">Folder members only</span>
+                                    </li>
+                                    <li>
+                                      <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">Yes (if folder member)</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
                         <div class="col-xl-12 mt-15">
                           <div *ngIf="showError" class="errorMessage">
                             Please complete all mandatory fields

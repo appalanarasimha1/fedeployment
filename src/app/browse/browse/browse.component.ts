@@ -183,6 +183,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   breadcrrumb = `/${WORKSPACE_ROOT}`;
   showFolder = false;
 
+  publishingAssets: boolean = true;
+  publishingPrivateAssets: boolean = false;
+
   async ngOnInit() {
     this.fetchUserData();
     let fetchAll = false;
@@ -1997,6 +2000,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     return this.selectedFolder.properties["dc:creator"].id === JSON.parse(userData).username
      || this.selectedFolder.properties["dc:creator"] === JSON.parse(userData).username;
+  }
+
+  handleChange(event, name: string) {
+    if (event.checked || event.target?.checked) {
+      if(name == 'published') {
+        this.publishingAssets = true;
+        this.publishingPrivateAssets = false;
+      }
+      if(name == 'private') {
+        this.publishingAssets = false;
+        this.publishingPrivateAssets = true;
+      }
+    }
   }
 
 }
