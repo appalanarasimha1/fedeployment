@@ -18,6 +18,7 @@ export class DataService {
   private uploadedAssetData = new Subject<string>();
   private showEverything = new Subject<boolean>();
   private showFooter = new Subject<boolean>();
+  private folderPermission = new Subject<boolean>();
   constructor() {}
 
   // Observable string streams
@@ -33,6 +34,7 @@ export class DataService {
   uploadedAssetData$ = this.uploadedAssetData.asObservable();
   showEverything$ = this.showEverything.asObservable();
   showFooter$ = this.showFooter.asObservable();
+  folderPermission$ = this.folderPermission.asObservable();
 
   sectorDataPush(sector) {
     this.sectorChangedSource.next(sector);
@@ -77,5 +79,8 @@ export class DataService {
   }
   showFooterInit(data:boolean){
     this.showFooter.next(data)
+  }
+  folderPermissionInit(data:boolean){
+    this.folderPermission.next(data)
   }
 }
