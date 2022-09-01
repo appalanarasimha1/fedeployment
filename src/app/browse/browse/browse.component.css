@@ -3772,7 +3772,6 @@ a.addMarginRight {
 }
 .classificationsIcon-disabled.manageUsers path {
   fill: #bab8b1;
-  stroke: #bab8b1;
 }
 ul.uploadAssetsClassifications li:hover path,
 .buttonCreate:hover path {
