@@ -1518,6 +1518,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.showError = true;
     } else {
       this.showError = false;
+      this.titleExists = false
     }
   }
 
@@ -1998,6 +1999,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   folderNameChange(){
+    console.log("this.titleExists",this.titleExists);
+    
     return this.titleExists = false
   }
 

@@ -704,7 +704,7 @@
                             <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
                         </div>
                         <div class="col-xl-12">
-                          <input [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name" autocomplete="off" (change)="folderNameChange()">
+                          <input  [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name" autocomplete="off" >
                           <!-- <input *ngIf="showError" [ngClass]="{'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name"> -->
                         </div>
                       </div>
