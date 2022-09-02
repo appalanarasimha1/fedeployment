@@ -2014,10 +2014,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if(name == 'published') {
         this.publishingAssets = true;
         this.publishingPrivateAssets = false;
+        this.checkboxIsPrivate = false
       }
       if(name == 'private') {
         this.publishingAssets = false;
         this.publishingPrivateAssets = true;
+        this.checkboxIsPrivate = true
+
       }
     }
   }
