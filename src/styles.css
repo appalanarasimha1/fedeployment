@@ -4233,8 +4233,8 @@ body {
 }
 @media (min-width: 1200px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl {
-    /* max-width: 100%; */
-    max-width: 1280px;
+    max-width: 100%;
+    /* max-width: 1280px; */
   }
 }
 .slick-list.draggable {
@@ -4459,8 +4459,8 @@ body {
 header.updateHeader .container {
   padding-left: var(--bs-gutter-x,1.75rem);
   padding-right: var(--bs-gutter-x,1.75rem);
-  /* max-width: 96%; */
-  max-width: 1280px;
+  max-width: 96%;
+  /* max-width: 1280px; */
 }
 ::ng-deep .modal-dialog {
   display: block;
