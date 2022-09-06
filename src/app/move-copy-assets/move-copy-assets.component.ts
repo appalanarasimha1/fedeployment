@@ -1,15 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { concat, Observable, of, Subject } from "rxjs";
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  tap,
-  map,
-  filter,
-} from "rxjs/operators";
 import { EXTERNAL_GROUP_GLOBAL, EXTERNAL_USER } from "../common/constant";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
@@ -17,6 +7,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { resourceUsage } from 'process';
 
 @Component({
   selector: 'app-move-copy-assets',
@@ -25,35 +16,17 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class MoveCopyAssetsComponent implements OnInit {
 
-  uploadedAsset;
-  selectedFolder: any;
-  makePrivate: boolean = false;
-  userList$: Observable<any>;
-  userInput$ = new Subject<string>();
-  userLoading = false;
-  folderCollaborators = {};
-  internalCollaborators = {};
-  externalCollaborators = {};
-  selectedCollaborator: any;
-  addedCollaborators: {};
-  removedCollaborators: {};
-  updatedCollaborators: {};
-  invitedCollaborators: {};
-  selectedExternalUser: any;
-  folderId: string;
   folderUpdated: any;
-  closeResult: string;
-  userInputText = "";
-  selectedMonth;
-  month = [
-    {id: 1, name: '1 month'},
-    {id: 2, name: '2 month'},
-    {id: 3, name: '3 month'},
-    {id: 4, name: '4 month'},
-    {id: 5, name: '5 month'}
-  ];
 
   movedContentShow: boolean = false;
+  selectedList: any;
+  selectedIdList: any;
+  selectedDestination: any;
+  folderList: any;
+  parentId: string;
+  prevParent: any;
+  currentFolder: any;
+  breadcrumb: any;
 
   constructor(
     private apiService: ApiService,
@@ -66,18 +39,112 @@ export class MoveCopyAssetsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.selectedList = this.data.selectedList;
+    this.selectedIdList = Object.keys(this.selectedList).map(key => this.selectedList[key].uid);
+    const parentId = this.data.parentId;
+    this.fetchAssets(parentId);
   }
 
   closeModal() {
-    this.dialogRef.close(this.folderUpdated);
+    this.dialogRef.close(this.selectedDestination);
   }
-  selectFolder($event){
-    console.log('event', $event.target?.checked);
+  selectFolder($event, folder){
     if($event.target?.checked) {
-      this.movedContentShow = true;
+      // this.movedContentShow = true;
+      this.selectedDestination = folder;
     } else {
-      this.movedContentShow = false;
+      // this.movedContentShow = false;
+      this.selectedDestination = null;
     }
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  async fetchAssets(id: string, pageSize = 100, pageIndex = 0, offset = 0) {
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 0 AND ecm:parentId = '${id}' AND ecm:mixinType = 'Folderish'`;
+    const result: any = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
+    result.entries = result.entries.sort((a, b) =>
+      this.compare(a.title, b.title, true)
+    );
+    const workspaces = result.entries.find(entry => entry.type === "WorkspaceRoot");
+    if (workspaces) {
+      this.fetchAssets(workspaces.uid);
+      return;
+    }
+    this.parentId = id;
+    this.folderList = result.entries.filter(entry => !this.selectedIdList.includes(entry.uid));
+    this.selectedDestination = null;
+    this.extractBreadCrumb(this.folderList[0]);
+  }
+
+  generateBreadCrumb() {
+
+  }
+
+  extractBreadCrumb(folder) {
+    this.prevParent = null;
+    if (!folder) return;
+    const breadCrumb = folder.contextParameters?.breadcrumb?.entries;
+
+    if (!breadCrumb || breadCrumb.length === 0) return;
+    this.prevParent = breadCrumb[breadCrumb.length - 3];
+
+  }
+
+  goBack() {
+    if (!this.checkCanGoBack()) return;
+    this.fetchAssets(this.currentFolder?.parentRef || this.prevParent.uid);
+    this.currentFolder = null;
+  }
+
+  checkCanGoBack() {
+    if (this.prevParent) {
+      if (this.prevParent.type !== 'Domain') return true;
+    }
+    if (!this.currentFolder) return false;
+    return true;
+  }
+
+  async moveAssets() {
+    if (!this.selectedDestination) return;
+    const arrayCall = [];
+    for (const key in this.selectedList) {
+      arrayCall.push(this.moveAsset(this.selectedList[key]));
+    }
+    const res = await Promise.all(arrayCall);
+    res.forEach((response, index) => this.showNoti(response.value, index));
+
+    this.closeModal()
+  }
+
+  showNoti(message, index) {
+    this.sharedService.showSnackbar(
+      message === 'OK' ? `Folder ${this.selectedList[index]?.title} has been moved successfully`
+      : `Cannot move ${this.selectedList[index]?.title}: ${message}`,
+      4000,
+      "top",
+      "center",
+      "snackBarMiddle",
+      null,
+      null,
+      (index + 1) * 500
+    );
+  }
+
+  async moveAsset(item) {
+    const params = {
+      src: item.uid,
+      des: this.selectedDestination.uid,
+    }
+    const body = {
+      context: {},
+      params
+    };
+    return await this.apiService.post(apiRoutes.MOVE_FOLDER, body).toPromise();
   }
 
 }

@@ -880,10 +880,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     );
   }
 
-  selectFolder($event, item, i) {
+  selectFolder($event, item, i, updateCount = true) {
     if ((!$event.target?.checked && this.selectedFolderList[i])||(!$event.checked && this.selectedFolderList[i])) {
+      if (updateCount) this.count = this.count - 1;
       delete this.selectedFolderList[i];
     } else if ($event.target?.checked || $event.checked) {
+      if (updateCount) this.count = this.count + 1;
       this.selectedFolderList[i] = item;
     }
   }
@@ -892,7 +894,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
 
-    const listDocs = Object.entries(this.selectedFolderList).map(function (
+    const listDocs = Object.entries(this.selectedFolderList)
+    .filter(([key, item]) => this.checkCanDelete(item)).map(function (
       [key, item],
       index
     ) {
@@ -1286,6 +1289,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
+    console.log("getWorkspaceFolders");
+
     this.showSearchbar = true;
     // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
@@ -1546,9 +1551,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   selectAsset($event, item, i) {
     let canDelete = this.checkCanDelete(item)
     if(canDelete){
-      this.selectFolder($event, item, i)
+      this.selectFolder($event, item, i, false);
     }
-    console.log("itemitemitemitemitem", item, $event);
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
     //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
@@ -1859,13 +1863,27 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     dialogConfig.id = "modal-component";
     dialogConfig.width = "660px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+    dialogConfig.data = {
+      selectedList: this.selectedFolderList,
+      parentId: this.sectorSelected.uid
+    }
 
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.saveState(result);
+        delete this.folderAssetsResult[result.uid];
+        delete this.folderAssetsResult[this.selectedFolder.uid];
       }
+
+      this.loading = true;
+      setTimeout(() => {
+        this.handleClickNew(this.selectedFolder.uid);
+      }, 1000);
     });
+  }
+
+  checkEnableMoveButton() {
+    return Object.keys(this.selectedFolderList)?.length > 0;
   }
 }

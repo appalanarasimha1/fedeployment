@@ -384,7 +384,7 @@ h3.externalUsers {
     color: #24221f;
 }
 .backArrow {
-    color: #BAB8B2;
+    color: #070605;
     line-height: 20px;
     font-size: 14px;
     vertical-align: middle;
@@ -506,7 +506,7 @@ span.folderImgList {
 .moveItemList .control input {
     position: absolute;
     z-index: -1;
-    opacity: 0;
+    /* opacity: 0; */
 }
 .moveItemList .control__indicator {
     position: absolute;
@@ -514,10 +514,10 @@ span.folderImgList {
     left: 0;
     height: 20px;
     width: 20px;
-    background: transparent !important;
+    /* background: transparent !important; */
     border-radius: 20px;
     border: 1px solid #444;
-    opacity: 0;
+    /* opacity: 0; */
 }
 .moveItemList .control--radio .control__indicator {
     border-radius: 50%;

@@ -144,7 +144,7 @@
 
           <div
             *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
-            
+
             <div class="row">
               <div class="col-xl-7">
                 <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
@@ -202,7 +202,7 @@
                         {{selectedFolder?.title}}
                       </div>
                     </span>
-                    <svg *ngIf="showLinkCopy && !checkGeneralFolder(selectedFolder) && !checkExternalUser()" class="renameFolderImg" (click)="renameFolderAction()" 
+                    <svg *ngIf="showLinkCopy && !checkGeneralFolder(selectedFolder) && !checkExternalUser()" class="renameFolderImg" (click)="renameFolderAction()"
                       width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -451,7 +451,7 @@
                             </a>
                           </div>
                         </div>
-  
+
                         <div
                           class="internal-use"
                           *ngIf="
@@ -460,12 +460,12 @@
                           "
                         >
                           <p *ngIf="copyRightItem.length>0">Always credit copyright owners.</p>
-  
+
                           <p class="pt-15" *ngIf="sizeExeeded" [ngClass]="{'removeMarginTop' : copyRightItem.length < 1  }">
                             Your download exceeds 1 GB. This will likely take some
                             time.
                           </p>
-  
+
                           <div class="control-group"
                             [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : copyRightItem.length < 1  }"
                           >
@@ -531,7 +531,7 @@
                             </a>
                           </div>
                         </div>
-  
+
                         <div
                           class="internal-use"
                           *ngIf="needPermissionToDownload.length > 0"
@@ -541,14 +541,14 @@
                             Your download exceeds 1 GB. This will likely take some
                             time.
                           </p>
-  
-  
+
+
                             <p class="pt-15"  [ngClass]="{ 'removeMarginTop' : copyRightItem.length < 1 }">
                             {{ needPermissionToDownload.length }} asset{{ needPermissionToDownload.length>1?'s':'' }} you
                             selected require download permission, please reach out
                             owner(s) via email:
                           </p>
-  
+
                           <ul class="downloadImgLisst">
                             <li *ngFor="let item of needPermissionToDownload">
                               <div class="imgListBlk">
@@ -563,7 +563,7 @@
                               </div>
                             </li>
                           </ul>
-  
+
                           <div
                             class="control-group"
                             [ngClass]="{'error-disabled' : downloadErrorShow && !isAware }"
@@ -633,7 +633,7 @@
                       </div>
                     </div>
                   </li>
-                  <li (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && count > 0" -->
+                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && count > 0" -->
                     <div class="moveFolderImg tollTipWorkspace">
                       <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
                         <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -751,7 +751,7 @@
                               Creating folder...
                             </button>
                           </div>
-  
+
                         </div>
                       </form>
                     </div>
@@ -904,7 +904,7 @@
                 *ngIf="searchList && searchList.length"
               >
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
-                
+
                 <ul
                   class="all-sectors"
                   *ngIf="selectedFolder.uid !== parentId || isTrashView"
@@ -940,7 +940,6 @@
                         *ngIf="
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
-                          checkCanDelete(item) &&
                           !checkGeneralFolder(item)
                         "
                       >
@@ -1084,7 +1083,6 @@
                         *ngIf="
                           !checkAssetType(item.type) &&
                           checkWSType(item.type) &&
-                          checkCanDelete(item)&&
                           !checkGeneralFolder(item)
                         "
                       >
