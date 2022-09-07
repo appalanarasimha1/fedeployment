@@ -173,7 +173,7 @@
 
 
   <ng-template #mymodal let-modal>
-    <div class="modalContentBlock">
+    <div class="modalContentBlock" style="position: relative;">
       <div class="addUserBlock">
         <h3>Edit access</h3>
         <ul class="mb-20">
@@ -217,6 +217,15 @@
             </div>
             <div class="col-md-9">
               <span style="width: calc(100% - 31px);display: inline-block;">
+                <!-- <input type="date" id="birthday" name="birthday"> -->
+                <!-- <mat-form-field appearance="fill">
+                  <input matInput  [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                  [(ngModel)]="selectedMonth" (click)="picker.open()"  [ngClass]="{'goldenText': selectedMonth}">
+                  <!-- [disabled]="disableDateInput" -/->
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field> -->
+
                 <ng-select [items]="month"
                   bindLabel="name"
                   bindValue="id"
