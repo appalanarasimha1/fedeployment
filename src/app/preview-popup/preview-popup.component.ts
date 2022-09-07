@@ -192,15 +192,18 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   saveComment(comment: string): void {
-    if (!comment.trim()) {
+    console.log({comment,inside:this.commentText});
+    
+    if (!this.commentText.trim()) {
       return;
     }
-    let error;
+    let commentTosend = this.commentText.trim()
+    this.commentText = ""
     const route = apiRoutes.SAVE_COMMENT.replace("[assetId]", this.doc.uid);
     const postData = {
       "entity-type": "comment",
       parentId: this.doc.uid,
-      text: comment,
+      text: commentTosend,
     };
     try {
       this.apiService.post(route, postData).subscribe((doc) => {
