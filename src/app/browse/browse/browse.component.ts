@@ -1282,6 +1282,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async handleClickNew(folderUid: string) {
+    this.selectedFolderList = {};
+    this.count = 0;
     this.loading = true;
     this.isTrashView = false;
     await this.fetchCurrentFolderAssets(folderUid);
@@ -1874,12 +1876,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (result) {
         delete this.folderAssetsResult[result.uid];
         delete this.folderAssetsResult[this.selectedFolder.uid];
-      }
 
-      this.loading = true;
-      setTimeout(() => {
-        this.handleClickNew(this.selectedFolder.uid);
-      }, 1000);
+        this.loading = true;
+        setTimeout(() => {
+          this.handleClickNew(this.selectedFolder.uid);
+        }, 1000);
+      }
     });
   }
 
