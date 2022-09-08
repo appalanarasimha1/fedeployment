@@ -18,6 +18,9 @@ import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { EditAccessComponent } from '../edit-access/edit-access.component';
+
 @Component({
   selector: 'app-add-user-modal',
   templateUrl: './add-user-modal.component.html',
@@ -64,6 +67,7 @@ export class AddUserModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dataService: DataService,
     private modalService: NgbModal,
+    public matDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -514,6 +518,20 @@ export class AddUserModalComponent implements OnInit {
 
   getExternalGlobalGroupUser() {
     this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal")) || [];
+  }
+
+  async openEditAccessModal(content, item) {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component1";
+    dialogConfig.width = "640px";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+
+    const modalDialog = this.matDialog.open(EditAccessComponent, dialogConfig);
+
+    modalDialog.afterClosed().subscribe((result) => {
+      
+    });
   }
 
 }

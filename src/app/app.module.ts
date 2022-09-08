@@ -45,6 +45,7 @@ import { AssetCannotBeAccessedComponent } from './asset-cannot-be-accessed/asset
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EditAccessComponent } from './edit-access/edit-access.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     SignupComponent,
     ForgotPasswordComponent,
     AssetCannotBeAccessedComponent,
+    EditAccessComponent,
     // AssetViewComponent,
   ],
   imports: [
