@@ -198,7 +198,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       return;
     }
     let commentTosend = this.commentText.trim()
-    // this.commentText = ""
+    this.commentText = ""
     const route = apiRoutes.SAVE_COMMENT.replace("[assetId]", this.doc.uid);
     const postData = {
       "entity-type": "comment",

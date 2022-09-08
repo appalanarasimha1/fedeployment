@@ -284,10 +284,9 @@
                   </ul>
                 </div>
                 <h6 class="tollTipCustom">
-                  <span *ngIf="!isExternalView">/
-                    <a
-                      [ngClass]="
-                        breadCrumb.length !== 0
+                  <span *ngIf="!isExternalView">/<a
+                        [ngClass]="
+                          breadCrumb.length !== 0
                           ? 'breadcrumb-active'
                           : 'breadcrumb-not-active'
                       "
@@ -296,8 +295,7 @@
                       "
                       >All Workspace</a>
                       </span
-                  >
-                  <span *ngIf="isExternalView">/<a
+                  ><span *ngIf="isExternalView">/<a
                       [ngClass]="
                         breadCrumb.length !== 0
                           ? 'breadcrumb-active'
@@ -305,8 +303,7 @@
                       "
                       (click)="fetchAllPrivateWorkspaces()"
                       >Shared Folders</a></span>
-                  <span *ngFor="let c of breadCrumb; let i = index">
-                    /<a
+                  <span *ngFor="let c of breadCrumb; let i = index">/<a
                       [ngClass]="
                         i !== breadCrumb.length - 1
                           ? 'breadcrumb-active'
@@ -760,7 +757,7 @@
                           </span>
                         </div> -->
 
-                        <div class="col-xl-12">
+                        <div class="col-xl-12" *ngIf="!isPrivateFolder() && !permissionChange">
                           <div class="folderType">
                             <label>Folder type</label>
 
