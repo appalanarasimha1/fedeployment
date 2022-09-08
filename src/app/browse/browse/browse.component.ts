@@ -501,6 +501,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    * @returns null
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
+    console.log("handleGotoBreadcrumb", item, index);
+
     this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
@@ -1879,7 +1881,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
         this.loading = true;
         setTimeout(() => {
-          this.handleClickNew(this.selectedFolder.uid);
+          if (this.selectedFolder.type === 'Domain') window.location.reload();
+          else this.handleClickNew(this.selectedFolder.uid);
         }, 1000);
       }
     });

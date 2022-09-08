@@ -112,19 +112,23 @@ export class MoveCopyAssetsComponent implements OnInit {
   async moveAssets() {
     if (!this.selectedDestination) return;
     const arrayCall = [];
+    const arrayIndex = [];
     for (const key in this.selectedList) {
       arrayCall.push(this.moveAsset(this.selectedList[key]));
+      arrayIndex.push(key)
     }
     const res = await Promise.all(arrayCall);
-    res.forEach((response, index) => this.showNoti(response.value, index));
+    res.forEach((response, index) => this.showNoti(response.value, arrayIndex[index], index));
 
     this.closeModal()
   }
 
-  showNoti(message, index) {
+  showNoti(message, key, index) {
+    const isFolder = this.selectedList[key]?.type.includes('Folder') || this.selectedList[key]?.type.includes('Workspace');
+
     this.sharedService.showSnackbar(
-      message === 'OK' ? `Folder ${this.selectedList[index]?.title} has been moved successfully`
-      : `Cannot move ${this.selectedList[index]?.title}: ${message}`,
+      message === 'OK' ? `${isFolder ? 'Folder' : 'Asset'} ${this.selectedList[key]?.title} has been moved successfully`
+      : `Cannot move ${this.selectedList[key]?.title}: ${message}`,
       4000,
       "top",
       "center",
