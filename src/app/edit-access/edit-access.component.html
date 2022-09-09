@@ -10,8 +10,10 @@
       <h3>Edit access</h3>
       <ul class="mb-20">
         <li>
-          {{selectedExternalUser.user.id}}
-          <span class="disableColor pl-10"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Expiry date {{getEndDate(selectedExternalUser.end)}}</span>
+          <!-- {{selectedExternalUser.user.id}}
+          <span class="disableColor pl-10"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Expiry date {{getEndDate(selectedExternalUser.end)}}</span> -->
+
+          <span class="disableColor pl-10"><span>Pending - </span>Expiry date </span>
         </li>
       </ul>
       <div class="makePrivate tollTipWorkspace">
@@ -75,7 +77,9 @@
     </div>
 
     <div class="button-groups">
-      <button (click)="modal.close('cancel')" class="cancel-btn">Cancel</button>
-      <button (click)="modal.close('done')" class="upload-btn">Done</button>
+      <!-- <button (click)="modal.close('cancel')" class="cancel-btn">Cancel</button>
+      <button (click)="modal.close('done')" class="upload-btn">Done</button> -->
+      <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+      <button (click)="closeModal()" class="upload-btn">Done</button>
     </div>
   </div>
