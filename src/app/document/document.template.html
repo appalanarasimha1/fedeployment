@@ -12,49 +12,9 @@
   <div class="customTab">
     <div class="container-fluid">
       <ul class="catalogue-feature-blk">
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('People')" [ngClass]="{ 'activeSearch' : checkedNameClicked('People') }" style="background-image: url(../../assets/images/catalogue-feature01.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('People')" /> People</span>
-          </div>
-        </li>
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Sports')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Sports') }" style="background-image: url(../../assets/images/catalogue-feature02.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Sports')" /> Sports</span>
-          </div>
-        </li>
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Nature')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Nature') }" style="background-image: url(../../assets/images/catalogue-feature03.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Nature')" /> Nature</span>
-          </div>
-        </li>
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Leisure')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Leisure') }" style="background-image: url(../../assets/images/catalogue-feature04.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Leisure')" /> Leisure</span>
-          </div>
-        </li>
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Technology')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Technology') }" style="background-image: url(../../assets/images/catalogue-feature05.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Technology')" /> Technology</span>
-          </div>
-        </li>
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Animals')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Animals') }" style="background-image: url(../../assets/images/catalogue-feature06.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Animals')" /> Animals</span>
-          </div>
-        </li>
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Transportation')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Transportation') }" style="background-image: url(../../assets/images/catalogue-feature07.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Transportation')" /> Transportation</span>
-          </div>
-        </li>
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Places')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Places') }" style="background-image: url(../../assets/images/catalogue-feature08.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Places')" /> Places</span>
-          </div>
-        </li>
-        <li>
-          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue('Events')" [ngClass]="{ 'activeSearch' : checkedNameClicked('Events') }" style="background-image: url(../../assets/images/catalogue-feature09.jpg);">
-            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked('Events')" /> Events</span>
+        <li *ngFor="let item of categoryArray">
+          <div class="catalogue-feature-cont" (click)="activeSearchCatalogue(item)" [ngClass]="{ 'activeSearch' : checkedNameClicked(item) }" style="background-image: url(../../assets/images/catalogue-feature01.jpg);">
+            <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked(item)" /> {{item}}</span>
           </div>
         </li>
       </ul>

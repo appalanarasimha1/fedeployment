@@ -65,6 +65,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   selectedFile: any; // TODO: add interface, search result entires
   selectedFileUrl: string;
   // favourite: boolean;
+
+  categoryArray = ["People","Sports","Nature", "Leisure","Technology","Animals","Transportation","Places","Events"];
   active = 1;
   showShadow = false;
   selectedTab;
