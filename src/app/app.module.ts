@@ -42,6 +42,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AssetCannotBeAccessedComponent } from './asset-cannot-be-accessed/asset-cannot-be-accessed.component';
 
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,6 +79,9 @@ import { AssetCannotBeAccessedComponent } from './asset-cannot-be-accessed/asset
     SlickCarouselModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatTooltipModule,
+    MatNativeDateModule,
   ],
   providers: [
     // CookieService,

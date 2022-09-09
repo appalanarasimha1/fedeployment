@@ -693,7 +693,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.showListView = false;
     this.viewType = "GRID";
   }
+  open1(file, fileType?: string,i?:number){
 
+  }
   // added for modal
   open(file, fileType?: string): void {
     this.showShadow = false;

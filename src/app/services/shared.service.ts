@@ -431,14 +431,14 @@ export class SharedService {
     return 'nopreview';
   }
 
-  copyLink(assetId: string, assetType: string): string {
+  copyLink(assetId: string, assetType: string, sectorName: string): string {
     const selBox = document.createElement("textarea");
     selBox.style.position = "fixed";
     selBox.style.left = "0";
     selBox.style.top = "0";
     selBox.style.opacity = "0";
     if(assetType === 'folder') {
-      selBox.value = `${window.location.origin}/workspace?folder=${assetId}`;
+      selBox.value = `${window.location.origin}/workspace/${sectorName}/${assetId}`;
     } else {
       selBox.value = `${window.location.origin}/asset-view?assetId=${assetId}`;
     }

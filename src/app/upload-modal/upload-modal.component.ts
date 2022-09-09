@@ -231,6 +231,8 @@ export class UploadModalComponent implements OnInit {
       if (filenameSplit.length > 2) {}
       else if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
+      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[1].toLowerCase())) {
+        filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
       } else if (file.type?.includes("video/")) {

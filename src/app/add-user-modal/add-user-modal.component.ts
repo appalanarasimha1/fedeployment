@@ -77,6 +77,8 @@ export class AddUserModalComponent implements OnInit {
     this.removedCollaborators = {};
     this.updatedCollaborators = {};
     this.invitedCollaborators = {};
+    this.listExternalUser = [];
+    this.listExternalUserGlobal = [];
     this.computeCollaborators();
     this.loadUsers();
   }
@@ -89,8 +91,8 @@ export class AddUserModalComponent implements OnInit {
     this.externalCollaborators = {};
     this.internalCollaborators = {};
     Object.keys(this.folderCollaborators).forEach(key => {
-      if (this.folderCollaborators[key].externalUser
-        || this.listExternalUser.includes(key)) {
+      if ((this.folderCollaborators[key].externalUser
+        || this.listExternalUser.includes(key)) && !this.checkTransientNeomEmail(key)) {
         this.externalCollaborators[key] = this.folderCollaborators[key];
       } else {
         this.internalCollaborators[key] = this.folderCollaborators[key];
@@ -233,8 +235,12 @@ export class AddUserModalComponent implements OnInit {
     const params = {
       permission: item.permission,
       comment: "",
-      users: [item.user.id]
     };
+    if (item.user.notExisted) {
+      params["email"] = item.user.id
+    } else {
+      params["users"] = [item.user.id]
+    }
     if (item.end) params['end'] = item.end;
     const payload = {
       params,
@@ -319,7 +325,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   getUsername(item) {
-    const name = item.user?.properties?.firstName + " " + item.user?.properties?.lastName;
+    const name = item.user?.properties?.firstName + " " + (item.user?.properties?.lastName || "");
     return item.user?.properties?.firstName ? name : item.user?.id;
   }
 
@@ -435,15 +441,38 @@ export class AddUserModalComponent implements OnInit {
     }
   }
 
-  checkInviteExternal() {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.userInputText) && !this.selectedCollaborator) return true;
+  checkInviteExternal(email = "") {
+    if (!email) email = this.userInputText;
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && !this.selectedCollaborator) return true;
   }
 
-  sendInvite() {
+  checkNeomEmail(email = "") {
+    if (!email) email = this.userInputText;
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && email.split('@')[1] === "neom.com";
+  }
+
+  checkTransientNeomEmail(email) {
+    if (email.includes('transient/')) return this.checkNeomEmail(email.split('/')[1]);
+    return this.checkNeomEmail(email);
+  }
+
+  sendInvite(isNeom = false) {
     const invitedEmail = this.userInputText;
     this.userInputText = "";
     const end = new Date();
     end.setMonth(new Date().getMonth() + 1);
+    if (isNeom) {
+      end.setMonth(new Date().getMonth() + 100);
+      this.addedCollaborators[invitedEmail] = {
+        user: {
+          id: invitedEmail,
+          notExisted: true
+        },
+        permission: "Read",
+        end
+      }
+      return;
+    }
     this.invitedCollaborators[invitedEmail] = {
       end,
       user: {
@@ -480,11 +509,11 @@ export class AddUserModalComponent implements OnInit {
   }
 
   getExternalGroupUser() {
-    this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
+    this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser")) || [];
   }
 
   getExternalGlobalGroupUser() {
-    this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal"));
+    this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal")) || [];
   }
 
 }

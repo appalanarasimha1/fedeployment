@@ -69,6 +69,8 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.nuxeo.authenticateUser(this.username, this.password)
         .then((token) => {
+          // console.log({token});
+
           // this.nuxeo.createClientWithToken(token);
           this.loading = false;
           if (token.toLowerCase().includes('doctype')) {

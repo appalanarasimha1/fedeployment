@@ -158,6 +158,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUser: string[] = [];
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
+  permissionChange:boolean=false
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -177,22 +178,36 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   searchInitialised: any;
 
   routeParams = {
+    sectorName: "",
     folderId: ""
   };
   breadcrrumb = `/${WORKSPACE_ROOT}`;
   showFolder = false;
 
-  ngOnInit(): void {
+  publishingAssets: boolean = true;
+  publishingPrivateAssets: boolean = false;
+
+  async ngOnInit() {
     this.fetchUserData();
     let fetchAll = false;
     this.route.queryParams.subscribe(async (params) => {
+    let sectorName = this.route.snapshot.paramMap.get('sectorName');
+    let folderId = this.route.snapshot.paramMap.get('folderId');
+    
       this.loading = true;
       this.searchInitialised = null;
-      this.routeParams.folderId = params.folder;
+      this.routeParams.sectorName = sectorName;
 
-      if (params.folder && params.folder !== ROOT_ID) {
-        this.fetchAllSectors();
-        await this.fetchBreadCrumbByAssetsUId(params.folder);
+      await this.fetchAllSectors();
+      const sectorDocument = this.folderAssetsResult[ROOT_ID]?.entries?.filter(item => item.title.toLowerCase() === sectorName?.toLowerCase());
+      if(!this.route.snapshot.paramMap.get('folderId')) {
+        folderId = sectorDocument[0]?.uid;
+        if(!this.routeParams?.folderId) this.routeParams.folderId = folderId;
+      }
+
+      if (sectorName && folderId && folderId !== ROOT_ID) {
+        
+        await this.fetchBreadCrumbByAssetsUId(folderId);
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
@@ -201,11 +216,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           this.loading = false;
           return;
         }
-        // this.fetchCurrentFolderAssets(params.folder);
-        this.getWorkspaceFolders(params.folder, 1);
-        const folder: any = await this.fetchFolder(params.folder);
+        // this.fetchCurrentFolderAssets(folderId);
+        this.getWorkspaceFolders(folderId, 1);
+        const folder: any = await this.fetchFolder(folderId);
         this.saveState(folder);
         this.loading = false;
+      // } else if(sectorName && !folderId ) {
+
+      //   await this.fetchAllSectors();
+      //   const sectorDocument = this.folderAssetsResult[ROOT_ID].entries.filter(item => item.title.toLowerCase() === sectorName.toLowerCase);
+        
+      //   this.selectedFolder2 = sectorDocument;
+      //   this.sectorSelected = sectorDocument;
+      //   this.selectedFolder = sectorDocument;
       } else {
         this.initialLoad = true;
         fetchAll = true;
@@ -215,11 +238,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         await this.fetchAllSectors();
         this.loading = false;
       }
-      // console.log(`${window.location.origin}/workspace?folder=`,window.location.href );
-      if (window.location.href.includes(`${window.location.origin}/workspace?folder=`)) {
-        this.initialLoad = false
+      if (window.location.href.includes(`${window.location.origin}/workspace`)) {
+        this.initialLoad = false;
       }
-      
+
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
@@ -227,7 +249,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       result.map((asset:any)=>{
         this.searchList.unshift(asset);
       })
-      
+
       this.sortedData = this.searchList.slice();
       this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
 
@@ -306,6 +328,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         e.stopPropagation();
       });
     });
+    this.getAllFolders(this.selectedFolder)
   }
 
   checkAssetType(assetType: string): boolean {
@@ -350,12 +373,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async handleTest(item) {
     this.renameFolderName = false;
     this.folderNameRef = undefined;
+    this.titleExists = false
+
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
 
     this.saveState(item);
     this.searchBarValue = "";
-    this.paginator.firstPage();
+    this.paginator?.firstPage();
     if (item.isTrashed) return;
     this.newTitle = item.title;
     this.showLinkCopy = true;
@@ -364,6 +389,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder = item;
     this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
+    
     this.loading = true;
     const { entries, numberOfPages, resultsCount } = await this.fetchAssets(item.uid, true);
     this.searchList = entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
@@ -371,7 +397,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.numberOfPages = numberOfPages;
     this.resultCount = resultsCount;
     this.handleSelectMenu(1, "LIST");
-    // this.loading = false;
+    this.loading = false;
     this.sharedService.toTop();
     this.createDynamicSidebarScroll();
     // this.selectedFolder = item;
@@ -515,13 +541,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     $("body").animate({ scrollTop: 0 }, "slow");
-    this.folderNameRef = undefined;
+      this.titleExists = false
+      this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
     this.removeAssets()
-    this.saveState(item);
+    this.saveState(item, index, breadCrumbIndex);
     this.paginator?.firstPage();
     this.searchBarValue = "";
+    // this.getAllFolders()
     // if (!isNaN(index) || breadCrumbIndex === 1) {
     //   this.showSearchbar = true;
     // }
@@ -536,11 +564,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
+      console.log("inside if");
+      
       const listView = 1;
       this.loading = true;
       await this.getWorkspaceFolders(item.uid, listView);
       this.loading = false;
     } else {
+      console.log("inside else");
       // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
@@ -560,9 +591,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async fetchAssets(id: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.currentPageCount = 0;
     this.showMoreButton = true;
-    if (checkCache && this.folderAssetsResult[id]) {
+    this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
+    if (checkCache && this.folderAssetsResult[id] && !this.permissionChange) {
+      console.log("comming");
+      
       return this.folderAssetsResult[id];
     }
+    this.dataService.folderPermissionInit(false)
     let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
     const result: any = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
@@ -784,7 +819,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     selBox.style.opacity = "0";
     // const { uid, sectorName } = this.getSectorUidByName(val);
     // selBox.value = `${window.location.origin}/workspace?sector=${uid}&folder=${encodeURIComponent(this.selectedFolder.title)}`;
-    selBox.value = `${window.location.origin}/workspace?folder=${this.selectedFolder.uid}`;
+    selBox.value = `${window.location.origin}/workspace/${this.sectorSelected.title}/${this.selectedFolder.uid}`;
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
@@ -936,7 +971,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return Object.keys(this.selectedFolderList).length > 0;
   }
 
-  
+
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.initialLoad = false;
     this.showSearchbar = true;
@@ -960,7 +995,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             --this.resultCount;
             return true;
           } else {
-            return false; 
+            return false;
           }
         });
         // if (!this.myDeletedCheck) {
@@ -981,7 +1016,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         // this.deletedByMeFilter();
       });
   }
-  
+
   async deletedByMeFilter() {
     let userData = localStorage.getItem("user");
     // console.log("userData", JSON.parse(userData));
@@ -1050,28 +1085,21 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.showFolder = !this.showFolder;
   }
 
+  titleExists:boolean=false
   async createFolder(folderName: string, date?: string, description?: string) {
 
     if (!this.folderNameRef) {
       this.showError = true;
     } else {
-      // let checkTitle = this.CheckTitleAlreadyExits(folderName)
-      // if(checkTitle) {
-      //   this.showFolder = false
-      //   this.showMoreButton = false;
-      //   this.checkboxIsPrivate = false;
-      //   $(".dropdownCreate").hide();
-      //   $(".buttonCreate").removeClass("createNewFolderClick");
-      //     return this.sharedService.showSnackbar(
-      //       "Name already exists",
-      //       6000,
-      //       "top",
-      //       "center",
-      //       "snackBarMiddle"
-      //       // "Updated folder",
-      //       // this.getTrashedWS.bind(this)
-      //     );
-      //   }
+      let checkTitle = this.CheckTitleAlreadyExits(folderName)
+      if(checkTitle) {
+        // this.showFolder = false
+        // this.showMoreButton = false;
+        // this.checkboxIsPrivate = false;
+        // // $(".dropdownCreate").hide();
+        // $(".buttonCreate").removeClass("createNewFolderClick");
+        return this.titleExists = true
+      }
       this.createFolderLoading = true;
       const backupPath = this.selectedFolder.path;
       let url = `/path${this.selectedFolder.path}`;
@@ -1116,6 +1144,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       this.folderNameRef = undefined;
+      this.titleExists = false
       this.folderDescriptionRef = undefined;
       this.folderDateRef = undefined;
 
@@ -1218,6 +1247,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         );
 
     }else{
+      // this.fetchFolder(this.selectedFolder.uid).then((res:any)=>{
+      //   console.log("resssssss",res);
+      //   let realPath = res.path.split("/")
+      //   realPath.pop()
+      //   let path =  realPath.join("/")
+      //   console.log("path",path, realPath);
+        
+      //   this.getAllFolders({uid:res.parentRef,path})
+      // })
       this.renameFolderName = true;
     }
   }
@@ -1244,7 +1282,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         let msg;
         if(!title && !assetUid) {
             this.updateFolderAction();
-            
+
             // this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
@@ -1342,6 +1380,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.searchList = entries;
     this.selectedMenu = 1;
     this.createDynamicSidebarScroll();
+    return;
     // this.loading = false;
   }
 
@@ -1367,7 +1406,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   createDynamicSidebarScroll() {
     setTimeout(() => {
       var storeHeight = $(".main-content").outerHeight();
-      // console.log('storeHeight', storeHeight);
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
     }, 0);
   }
@@ -1377,7 +1415,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let checkAvailabity = Departments.hasOwnProperty(this.userSector);
     if (checkAvailabity) {
       let ID = Departments[this.userSector];
-      // console.log(Workspace[ID]);
       user = Workspace[ID];
     }
 
@@ -1446,14 +1483,25 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.loading = false;
   }
 
-  navigateToWorkspaceFolder(uid: string) {
+  navigateToWorkspaceFolder(uid: string, index?: number, breadCrumbIndex?: number) {
     if(this.routeParams.folderId === uid) {
       return;
     }
-    this.router.navigate([ASSET_TYPE.WORKSPACE], { queryParams: { folder: uid } });
+    const path = this.sectorSelected?.path.split("/");
+    // NOTE: todo, refactor if-else
+    if(breadCrumbIndex === 0) {
+      this.router.navigate([ASSET_TYPE.WORKSPACE]);
+    } else  if(breadCrumbIndex === 1) {
+      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
+    } else if(!isNaN(index)) {
+      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+    } else {
+      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+      // else this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
+    }
   }
 
-  saveState({uid, title, path, properties, sectorId, type, contextParameters}) {
+  saveState({uid, title, path, properties, sectorId, type, contextParameters}, index?: number, breadCrumbIndex?: number) {
     // let breadcrumb;
     // if(contextParameters) {
     //   ({breadcrumb} = contextParameters);
@@ -1461,7 +1509,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // }
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
-    this.navigateToWorkspaceFolder(uid);
+    this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex);
     return;
   }
 
@@ -1470,6 +1518,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.showError = true;
     } else {
       this.showError = false;
+      this.titleExists = false
     }
   }
 
@@ -1487,13 +1536,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   multiDownload() {
-    console.log(
-      this.downloadArray.length,
-      this.copyRightItem.length,
-      !this.sizeExeeded,
-      this.forInternalUse.length
-    );
-
     if (
       this.downloadArray.length > 0 &&
       this.copyRightItem.length < 1 &&
@@ -1556,7 +1598,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(canDelete){
       this.selectFolder($event, item, i)
     }
-    
+
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
     //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
@@ -1639,7 +1681,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     } else {
       if (this.downloadArray.length > 0) {
         $(".multiDownloadBlock").hide();
-        console.log("comming");
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
         let uid: any;
@@ -1704,18 +1745,26 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
 
   async openManageAccessModal() {
-    this.loading = true;
+    // this.loading = true;
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.width = "550px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     // const folder = await this.fetchFolder(this.selectedFolder.uid);
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    dialogConfig.data = {
+      selectedFolder: selectedFolder || this.selectedFolder,
+    }
 
     const modalDialog = this.matDialog.open(ManageAccessModalComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
-      this.loading = false;
+      if (result) {
+        this.selectedFolder = result;
+        this.saveState(result);
+      }
+      // this.loading = false;
     });
   }
 
@@ -1808,7 +1857,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   CheckTitleAlreadyExits(name){
-    let titles = this.sortedData.map(m=>m.title.toLowerCase().trim())
+    let titles = this.allFolders.map((m:any)=>m.title.toLowerCase().trim())
     if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
     return false
   }
@@ -1864,7 +1913,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   copyLink(asset: IEntry, assetType: string) {
-    asset.copy = this.sharedService.copyLink(asset.uid, assetType);
+    asset.copy = this.sharedService.copyLink(asset.uid, assetType, asset.properties['dc:sector']);
   }
 
   editableAsset() {
@@ -1926,12 +1975,57 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         box.style.visibility = "hidden";
         box.style.opacity = '0';
         box1.style.fontSize = "42px";
-        if(e.dataTransfer.files.length > 0)
-        {
-           openM(e.dataTransfer.files)
+        if(e.dataTransfer.files.length > 0) {
+          openM(e.dataTransfer.files)
 
         }
     });
+  }
+  
+  allFolders:[]
+  async getAllFolders(folder?:any){
+    let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
+    if(currentState.length){
+      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${folder.path}'`;
+      const result: any = await this.apiService
+          .get(url, { headers: { "fetch-document": "properties" } })
+          .toPromise();
+
+     this.allFolders = result?.entries
+    }else{
+      let currentState1 = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.type == "OrderedFolder")
+      this.allFolders = currentState1
+    }
+  }
+
+  folderNameChange(){
+    console.log("this.titleExists",this.titleExists);
+    
+    return this.titleExists = false
+  }
+
+  checkShowManageAccessButton() {
+    if (this.selectedFolder.properties['dc:isPrivate']) return false;
+    const userData = localStorage.getItem("user");
+
+    return this.selectedFolder.properties["dc:creator"].id === JSON.parse(userData).username
+     || this.selectedFolder.properties["dc:creator"] === JSON.parse(userData).username;
+  }
+
+  handleChange(event, name: string) {
+    if (event.checked || event.target?.checked) {
+      if(name == 'published') {
+        this.publishingAssets = true;
+        this.publishingPrivateAssets = false;
+        this.checkboxIsPrivate = false
+      }
+      if(name == 'private') {
+        this.publishingAssets = false;
+        this.publishingPrivateAssets = true;
+        this.checkboxIsPrivate = true
+
+      }
+    }
   }
 
 }

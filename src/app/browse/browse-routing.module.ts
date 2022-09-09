@@ -4,7 +4,9 @@ import { BrowseComponent } from './browse/browse.component';
 
 
 const routes: Routes = [
-  {path: '', component: BrowseComponent}
+  {path: '', component: BrowseComponent},
+  {path: ':sectorName/:folderId', component: BrowseComponent},
+  {path: ':sectorName', component: BrowseComponent}
 ];
 
 @NgModule({

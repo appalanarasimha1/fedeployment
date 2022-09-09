@@ -161,14 +161,14 @@
                 </ul>
               </div>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
               <div class="comment-content">
                 <ul>
                   <li *ngFor="let comment of comments" class="flexible" style="align-items: unset">
                     <div>
                       <img src=".../../assets/images/black-user.png" />
                     </div>
-                    <div>
+                    <div class="commentTextBlk">
                       <p>
                         {{ comment.author }}
                         <span>{{ getTime(comment.creationDate, false) }} ago</span>
@@ -213,7 +213,7 @@
                       <li>
                         Location <br />
                         <span style="word-break: break-all">
-                          <a href="/workspace?folder={{doc?.parentRef}}"
+                          <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}"
                           (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
                             {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                           </a>
@@ -338,7 +338,22 @@
                 (click)="openInfo('timeline')" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
                 role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
             </li>
-            
+            <li class="nav-item customtooltip" role="presentation" *ngIf="hasPrivateAccess()">
+              <a
+                class="nav-link"
+                id="profile-tab"
+                data-bs-toggle="tab"
+                placement="bottom"
+                ngbTooltip="Comments"
+                (click)="openInfo('comments')"
+                [ngClass]="{ active: activeTabs['comments'] }"
+                href="#profile"
+                role="tab"
+                aria-controls="profile"
+                aria-selected="false"
+                ><img src="../../assets/images/Comments.svg"
+              /></a>
+            </li>
             <li class="nav-item customtooltip" role="presentation">
               <a class="nav-link" id="contact-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
                 (click)="openInfo('info')" [ngClass]="{ active: activeTabs['info'] }" href="#contact" role="tab"
@@ -531,7 +546,7 @@
                     <li>
                       Location <br />
                       <span style=" word-break: break-all">
-                        <a href="/workspace?folder={{doc?.parentRef}}" (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
                           {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                         </a>
                       </span>

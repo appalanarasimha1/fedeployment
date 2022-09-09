@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from "../services/api.service";
+import { apiRoutes } from "../common/config";
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
@@ -15,23 +16,47 @@ export class ManageAccessModalComponent implements OnInit {
   uploadedAsset;
   selectedFolder: any;
   makePrivate: boolean = false;
+  docIsPrivate: boolean = false;
+  error: string;
 
   constructor(
+    private apiService: ApiService,
     public dialogRef: MatDialogRef<ManageAccessModalComponent>,
     private router: Router,
     public sharedService: SharedService,
+    public dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
+    this.selectedFolder = this.data.selectedFolder;
+    this.docIsPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
   }
 
-  closeModal() {
-    if(this.data?.sectorId) {
-      this.dialogRef.close(this.uploadedAsset);
+  closeModal(isUpdated = false) {
+    if (isUpdated) {
+      this.selectedFolder.properties['dc:isPrivate'] = !this.docIsPrivate;
+      this.dialogRef.close(this.selectedFolder);
       return;
     }
-    this.dialogRef.close(this.selectedFolder);
+    this.dialogRef.close();
+  }
+
+  async updateRights() {
+    if (!this.makePrivate) return;
+    this.dataService.folderPermissionInit(true)
+    const params = {
+      isPrivate: !this.docIsPrivate
+    };
+    const payload = {
+      params,
+      context: {},
+      input: this.selectedFolder.uid,
+    };
+    const res = await this.apiService.post(apiRoutes.UPDATE_FOLDER_RIGHTS, payload).toPromise();
+    if (res['value'] !== 'OK') {
+      this.error = res['value'];
+    } else this.closeModal(true);
   }
 
   getCheckAction(event) {

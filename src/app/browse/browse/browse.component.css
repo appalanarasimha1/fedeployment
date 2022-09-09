@@ -3596,11 +3596,11 @@ ul.downloadImgLisst li .contentListBlk {
 }
 
 .header-content .customWidth {
-  width: calc(100% - 65px);
+  width: calc(100% - 67px);
   display: inline-block;
 }
 .manageAccess {
-  width: 65px;
+  width: 67px;
   display: inline-block;
   text-align: right;
 }
@@ -3612,13 +3612,14 @@ ul.downloadImgLisst li .contentListBlk {
 .header-content .manageAccess li {
   float: left;
   position: relative;
+  margin-left: 20px;
 }
 .header-content .manageAccess li:first-child {
-  margin-right: 10px;
+  margin-left: 0px;
 }
-.header-content .manageAccess li:last-child {
+/* .header-content .manageAccess li:last-child {
   margin-left: 10px;
-}
+} */
 .header-content .manageAccess li .customToolTipWorkspace {
   right: 0px;
   left: auto;
@@ -3962,4 +3963,87 @@ img.noPreviewImg {
 }
 li.hoverPin.active-tab a {
   color: #040404 !important;
+}
+.folderType {
+  padding-top: 20px;
+}
+.folderType label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.dropdownCreate .folderType .control input:checked ~ .control__indicator::after {
+  color: transparent;
+  border: solid transparent;
+}
+.dropdownCreate .folderType .control input:checked ~ .control__indicator::before {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  border: 2px solid white;
+  border-radius: 100px;
+  background: #DAAA00;
+}
+.dropdownCreate .folderType .control input:checked ~ .control__indicator {
+  background: #DAAA00;
+  border: 1px solid #DAAA00;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+.publishingAssets {
+  background: #E6F2FF;
+  border-radius: 8px;
+  padding: 8px 15px;
+  color: #0072A2;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'brownlight';
+}
+.publishingAssets::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.publishingAssets p {
+  color: #0072A2;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'brownlight';
+  padding-bottom: 10px;
+}
+.publishingAssets p strong {
+  font-family: 'brownregular';
+  font-weight: normal;
+}
+.publishingAssets ul li {
+  display: block;
+  width: 100%;
+  clear: left;
+  padding-bottom: 10px;
+  overflow: hidden;
+}
+.publishingAssets ul li span.leftCont {
+  float: left;
+  font-family: 'brownlight';
+  width: 50%;
+}
+.publishingAssets ul li span.rightCont {
+  width: 50%;
+  font-family: 'brownregular';
+  vertical-align: top;
+  float: right;
+}
+.publishingAssets ul li:last-child {
+  padding-bottom: 0px;
+}
+
+.createBtn ::ng-deep app-loader-small .text-center {
+  top: 0px !important;
+  left: 0px !important;
+  border-radius: 100px !important;
+  background: #fff !important;
 }

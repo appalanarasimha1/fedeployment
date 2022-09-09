@@ -3,19 +3,24 @@
     <h3>Manage access</h3>
     <div class="manageAccessHeader">
         <div class="imgBlock"><img src="../../assets/images/folder-table-list.svg" /></div>
-        <div class="nameBlock">Photoshoot-2022-02-10</div>
-        <div class="tagBlock">Private</div>
+        <div class="nameBlock">{{selectedFolder.title}}</div>
+        <div *ngIf="docIsPrivate" class="tagBlock">Private</div>
     </div>
 
-    <div class="breadcrumbBlock">
+    <!-- <div class="breadcrumbBlock">
         / <a href="#" class="active">Marketing</a> <span class="active">/ Photoshoot-2022-02-10</span>
-    </div>
+    </div> -->
 
-    <div class="whenYouConvert">
+    <div *ngIf="docIsPrivate" class="whenYouConvert">
         When you convert this folder to published, it's contents will become available for all Ground X users or internal users only. They will appear in Ground X search.
     </div>
 
-    <div class="makePrivate tollTipWorkspace">
+    <div *ngIf="!docIsPrivate" class="whenYouConvert">
+        <!-- When you make this folder private, it's contents are available only for the folder members and they will not appear in Ground X search anymore. -->
+        When you make this folder private, it will no longer appear in search results and its contents are will be available only for the folder members
+    </div>
+
+    <div *ngIf="!docIsPrivate" class="makePrivate tollTipWorkspace">
         <label class="control control--checkbox">
           Make this folder private
           <input type="checkbox" (click)="getCheckAction($event)" />
@@ -23,12 +28,28 @@
         </label>
         <span class="showTollTip">
           <img src="../../assets/images/Info-icon.svg" alt="" class="infoIcon" />
-          <div class="customToolTipWorkspace infoHover">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</div>
+          <div class="customToolTipWorkspace infoHover">
+            <!-- You can collaborate with specified users privately. You can invite users to a private folder after you have created it. -->
+            Private folders are commonly used to restrict files to specific users or receive files from external users.
+          </div>
         </span>
     </div>
+
+    <div *ngIf="docIsPrivate" class="makePrivate tollTipWorkspace">
+        <label class="control control--checkbox">
+          Publish this folder
+          <input type="checkbox" (click)="getCheckAction($event)" />
+          <div class="control__indicator"></div>
+        </label>
+        <!-- <span class="showTollTip">
+          <img src="../../assets/images/Info-icon.svg" alt="" class="infoIcon" />
+          <div class="customToolTipWorkspace infoHover">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</div>
+        </span> -->
+    </div>
 </div>
+<div *ngIf="!!error" style="color: red;">{{error}}</div>
 
 <div class="button-groups">
     <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-    <button class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Publish</button>
+    <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Make private</button>
 </div>

@@ -238,6 +238,7 @@ header.updateHeader {
     position: fixed;
     width: 100%;
     height: auto;
+    min-height: 76px;
     left: 0px;
     top: 0px;
     background-color: #040404;

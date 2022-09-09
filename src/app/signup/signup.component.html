@@ -39,7 +39,7 @@
                         </li>
 
                         <div *ngIf="checkPassword()" class="showError">Confirm password does not match</div>
-                        <div *ngIf="!!signUpError" class="showError">signUpError</div>
+                        <div *ngIf="!!signUpError" class="showError">{{signUpError}}</div>
                         <li>
                             Already have an account? <a [routerLink]="['/login']">Log in</a>
                         </li>

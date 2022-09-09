@@ -11,7 +11,7 @@
   /* overflow: auto;  */
 }
 .upload-form{
-  margin: 0px 2px;
+  margin: 0px  2px 20px 0px;
   height: 60vh;
   overflow-y: scroll;
   width: 100%;
@@ -237,7 +237,7 @@ text-align: center;
 color: #FFFFFF;
 }
 .upload-form {
-  margin: 0px  2px 20px;
+  margin: 0px  2px 20px 0px;
 }
 .mb-10{
   margin-bottom: 10px;
@@ -479,7 +479,7 @@ border-radius: 8px;
 .publish-file-preview {
   display: flex;
   background-color: #F8F8F5;
-  margin: 10px 0;
+  margin: 0px 0;
   padding:20px 15px;
   border-radius: 8px;
 }
@@ -586,6 +586,7 @@ font-weight: normal;
     font-size: 15px;
     height: 320px !important;
     overflow-x: auto;
+    margin-right: 24px;
 }
 .tooltip1 {
   position: relative;
@@ -1580,4 +1581,22 @@ span.showAllClassifications svg {
 span.showAllClassifications svg.rotateArrow {
   transform: rotate(90deg);
   transition: all 0.3s ease;
+}
+
+::ng-deep .mat-horizontal-content-container {
+  padding: 0 0px 24px 24px !important;
+  padding-bottom: 0px !important;
+}
+.updateClassification, .upload-form-input.row.mb-30.uploadModalBlk, .publish-assets {
+  padding-right: 20px;
+}
+.updated-asset-classifications::after {
+  width: 107%;
+}
+.newscrollBar {
+  margin: 0px 0px 0px -37px;
+  padding: 0px 30px 0px 30px;
+}
+.publish-assets {
+  padding-right: 10px;
 }

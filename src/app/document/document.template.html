@@ -744,8 +744,7 @@
             Your download exceeds 1 GB. This will likely take some time.
           </p>
           <p class="pt-15" *ngIf="needPermissionToDownload.length >0">
-            {{ needPermissionToDownload.length }} asset{{ needPermissionToDownload.length>1 ?'s':'' }} you selected require
-            download permission, please reach out owner(s) via email:
+            {{ needPermissionToDownload.length }} asset{{ needPermissionToDownload.length>1 ?'s':'' }} in your selection require download permission. Contact approver(s) via email:
           </p>
 
           <ul class="downloadImgLisst" *ngIf="needPermissionToDownload.length > 0">
