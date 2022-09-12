@@ -1832,7 +1832,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   hasInheritAcl() {
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
-    if (selectedFolder?.properties['isPrivateUpdated']) return true;
+    if (selectedFolder?.properties && selectedFolder?.properties['isPrivateUpdated']) return true;
     if (!selectedFolder?.contextParameters?.acls) return false;
     const inheritAcl = selectedFolder.contextParameters.acls.find(acl => acl.name === 'local');
     if (!inheritAcl?.aces) return false;
