@@ -82,7 +82,7 @@
           {{getExternalName(c.value)}}
           <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
           <span class="makeAdminAction">
-            <span  (click)="openEditAccessModal(mymodal, c.value)">Edit Access</span><!-- open(mymodal, c.value) -->
+            <span  (click)="open(mymodal, c.value)">Edit Access</span><!-- open(mymodal, c.value) -->
             <span (click)="removeUser(c.key, 'invited')" class="removeIcon">
               <svg
                 width="20"

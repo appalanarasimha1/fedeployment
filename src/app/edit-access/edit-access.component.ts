@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from "@angular/material/dialog";
 
@@ -17,19 +17,25 @@ export class EditAccessComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     public matDialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<EditAccessComponent>,
   ) { }
 
   ngOnInit(): void {
+    this.selectedMonth = this.data.selectedMonth
+    this.isGlobal = this.data.isGlobal;
   }
-  
+
   onFullAccessCheckboxChange(e, checkedGlobal = true) {
-    this.selectedExternalUser.isGlobal = e.target.checked && checkedGlobal;
+    // this.selectedExternalUser.isGlobal = e.target.checked && checkedGlobal;
     this.isGlobal = e.target.checked && checkedGlobal;
   }
-  
+  cancel() {
+    this.dialogRef.close();
+  }
+
   closeModal() {
-    this.dialogRef.close(this.folderUpdated);
+    this.dialogRef.close({selectedMonth: this.selectedMonth, isGlobal: this.isGlobal});
   }
 
 }

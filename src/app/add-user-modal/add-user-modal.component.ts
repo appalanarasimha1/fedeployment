@@ -386,36 +386,43 @@ export class AddUserModalComponent implements OnInit {
 
 
   open(content, item) {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component1";
+    dialogConfig.width = "640px";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+
     this.selectedExternalUser = item;
-    if (this.selectedExternalUser.duration) {
-      this.selectedMonth = this.selectedExternalUser.duration;
-    } else if (this.selectedExternalUser.end) {
-      const endDate = new Date(this.selectedExternalUser.end);
-      const now = new Date();
-      const duration = endDate.getMonth() - now.getMonth() + (12 * (endDate.getFullYear() - now.getFullYear()));
-      this.selectedMonth = duration === 0 ? 1 : duration;
+    if (this.selectedExternalUser.end) {
+      this.selectedMonth = this.selectedExternalUser.end;
     } else {
-      this.selectedMonth = 1;
+      this.selectedMonth = new Date();
     }
-    this.selectDuration(this.selectedMonth);
     if (this.listExternalUserGlobal.includes(this.selectedExternalUser.user?.id)) {
       this.isGlobal = true;
     }
+    dialogConfig.data = {
+      isGlobal: this.isGlobal,
+      selectedMonth: this.selectedMonth
+    }
 
+    const modalDialog = this.matDialog.open(EditAccessComponent, dialogConfig);
 
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'modal-edit-access'}).result.then((result) => {
-      if (result === 'done') this.updateExternalUserAccess();
+    modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.selectedMonth = result.selectedMonth;
+        this.selectedExternalUser.isGlobal = result.isGlobal;
+        this.updateExternalUserAccess();
+      }
       this.selectedMonth = undefined;
       this.isGlobal = undefined;
 
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
 
   updateExternalUserAccess() {
-    const end = new Date();
-    end.setMonth(new Date().getMonth() + this.selectedExternalUser.duration);
+    const end = new Date(this.selectedMonth);
+    // end.setMonth(new Date().getMonth() + this.selectedExternalUser.duration);
     if (this.externalCollaborators[this.selectedExternalUser.user.id]) {
       if (!this.updatedCollaborators[this.selectedExternalUser.user.id])
         this.updatedCollaborators[this.selectedExternalUser.user.id] = this.externalCollaborators[this.selectedExternalUser.user.id];
@@ -520,18 +527,18 @@ export class AddUserModalComponent implements OnInit {
     this.listExternalUserGlobal = JSON.parse(localStorage.getItem("listExternalUserGlobal")) || [];
   }
 
-  async openEditAccessModal(content, item) {
-    const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
-    dialogConfig.id = "modal-component1";
-    dialogConfig.width = "640px";
-    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+  // async openEditAccessModal(content, item) {
+  //   const dialogConfig = new MatDialogConfig();
+  //   // The user can't close the dialog by clicking outside its body
+  //   dialogConfig.id = "modal-component1";
+  //   dialogConfig.width = "640px";
+  //   dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
 
-    const modalDialog = this.matDialog.open(EditAccessComponent, dialogConfig);
+  //   const modalDialog = this.matDialog.open(EditAccessComponent, dialogConfig);
 
-    modalDialog.afterClosed().subscribe((result) => {
-      
-    });
-  }
+  //   modalDialog.afterClosed().subscribe((result) => {
+
+  //   });
+  // }
 
 }
