@@ -14,4 +14,3 @@ export const environment = {
         clientId: 'nuxeo-client-public',
     }
   };
-  

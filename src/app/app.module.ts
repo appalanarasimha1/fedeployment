@@ -40,6 +40,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MoveCopyAssetsComponent } from './move-copy-assets/move-copy-assets.component';
 import { AssetCannotBeAccessedComponent } from './asset-cannot-be-accessed/asset-cannot-be-accessed.component';
 
 import { MatDatepickerModule } from "@angular/material/datepicker";
@@ -59,6 +60,7 @@ import { EditAccessComponent } from './edit-access/edit-access.component';
     AddUserModalComponent,
     SignupComponent,
     ForgotPasswordComponent,
+    MoveCopyAssetsComponent,
     AssetCannotBeAccessedComponent,
     EditAccessComponent,
     // AssetViewComponent,

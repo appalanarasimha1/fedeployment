@@ -35,4 +35,5 @@ export const apiRoutes = {
   GROUP_USER_LIST: '/group/[groupName]/@users?pageSize=1000',
   GET_NOTIFICATIONS: "/automation/Scry.GetNotifications",
   UPDATE_FOLDER_RIGHTS: "/automation/Scry.UpdateFolderRightOp",
+  MOVE_FOLDER: "/automation/Scry.MoveFolder",
 };
