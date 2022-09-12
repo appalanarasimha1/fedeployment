@@ -193,7 +193,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe(async (params) => {
     let sectorName = this.route.snapshot.paramMap.get('sectorName');
     let folderId = this.route.snapshot.paramMap.get('folderId');
-    
+
       this.loading = true;
       this.searchInitialised = null;
       this.routeParams.sectorName = sectorName;
@@ -206,7 +206,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       if (sectorName && folderId && folderId !== ROOT_ID) {
-        
+
         await this.fetchBreadCrumbByAssetsUId(folderId);
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
@@ -225,7 +225,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       //   await this.fetchAllSectors();
       //   const sectorDocument = this.folderAssetsResult[ROOT_ID].entries.filter(item => item.title.toLowerCase() === sectorName.toLowerCase);
-        
+
       //   this.selectedFolder2 = sectorDocument;
       //   this.sectorSelected = sectorDocument;
       //   this.selectedFolder = sectorDocument;
@@ -389,7 +389,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder = item;
     this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
-    
+
     this.loading = true;
     const { entries, numberOfPages, resultsCount } = await this.fetchAssets(item.uid, true);
     this.searchList = entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
@@ -565,7 +565,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
       console.log("inside if");
-      
+
       const listView = 1;
       this.loading = true;
       await this.getWorkspaceFolders(item.uid, listView);
@@ -594,7 +594,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
     if (checkCache && this.folderAssetsResult[id] && !this.permissionChange) {
       console.log("comming");
-      
+
       return this.folderAssetsResult[id];
     }
     this.dataService.folderPermissionInit(false)
@@ -1253,7 +1253,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       //   realPath.pop()
       //   let path =  realPath.join("/")
       //   console.log("path",path, realPath);
-        
+
       //   this.getAllFolders({uid:res.parentRef,path})
       // })
       this.renameFolderName = true;
@@ -1762,6 +1762,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
         this.selectedFolder = result;
+        if (result?.properties && result?.properties["dc:isPrivate"]) result.properties['isPrivateUpdated'] = true;
         this.saveState(result);
       }
       // this.loading = false;
@@ -1824,6 +1825,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   hasInheritAcl() {
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (selectedFolder?.properties['isPrivateUpdated']) return true;
     if (!selectedFolder?.contextParameters?.acls) return false;
     const inheritAcl = selectedFolder.contextParameters.acls.find(acl => acl.name === 'local');
     if (!inheritAcl?.aces) return false;
@@ -1981,7 +1983,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         }
     });
   }
-  
+
   allFolders:[]
   async getAllFolders(folder?:any){
     let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
@@ -2000,7 +2002,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   folderNameChange(){
     console.log("this.titleExists",this.titleExists);
-    
+
     return this.titleExists = false
   }
 
