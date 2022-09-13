@@ -605,7 +605,8 @@ export class UploadModalComponent implements OnInit {
       },
       (err) => {
         console.log("Upload Error:", err);
-        delete this.filesMap[index];
+        this.filesMap[index]['isVirus'] = true;
+        // delete this.filesMap[index];
       },
       () => {
         this.setUploadProgressBar(index, 100);
