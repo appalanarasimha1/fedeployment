@@ -38,6 +38,7 @@ import { fromEvent } from "rxjs";
 import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators";
 import { Departments, Workspace } from "./../../config/sector.config";
 import { IEntry, ISearchResponse } from "src/app/common/interfaces";
+import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
 
 @Component({
   selector: "app-browse",
@@ -193,7 +194,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe(async (params) => {
     let sectorName = this.route.snapshot.paramMap.get('sectorName');
     let folderId = this.route.snapshot.paramMap.get('folderId');
-    
+
       this.loading = true;
       this.searchInitialised = null;
       this.routeParams.sectorName = sectorName;
@@ -206,7 +207,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       if (sectorName && folderId && folderId !== ROOT_ID) {
-        
+
         await this.fetchBreadCrumbByAssetsUId(folderId);
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
@@ -225,7 +226,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       //   await this.fetchAllSectors();
       //   const sectorDocument = this.folderAssetsResult[ROOT_ID].entries.filter(item => item.title.toLowerCase() === sectorName.toLowerCase);
-        
+
       //   this.selectedFolder2 = sectorDocument;
       //   this.sectorSelected = sectorDocument;
       //   this.selectedFolder = sectorDocument;
@@ -389,7 +390,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder = item;
     this.extractBreadcrumb();
     this.createBreadCrumb(item.title, item.type, item.path);
-    
+
     this.loading = true;
     const { entries, numberOfPages, resultsCount } = await this.fetchAssets(item.uid, true);
     this.searchList = entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
@@ -565,7 +566,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
       console.log("inside if");
-      
+
       const listView = 1;
       this.loading = true;
       await this.getWorkspaceFolders(item.uid, listView);
@@ -594,7 +595,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
     if (checkCache && this.folderAssetsResult[id] && !this.permissionChange) {
       console.log("comming");
-      
+
       return this.folderAssetsResult[id];
     }
     this.dataService.folderPermissionInit(false)
@@ -923,10 +924,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     );
   }
 
-  selectFolder($event, item, i) {
+  selectFolder($event, item, i, updateCount = true) {
     if ((!$event.target?.checked && this.selectedFolderList[i])||(!$event.checked && this.selectedFolderList[i])) {
+      if (updateCount) this.count = this.count - 1;
       delete this.selectedFolderList[i];
     } else if ($event.target?.checked || $event.checked) {
+      if (updateCount) this.count = this.count + 1;
       this.selectedFolderList[i] = item;
     }
   }
@@ -935,7 +938,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
 
-    const listDocs = Object.entries(this.selectedFolderList).map(function (
+    const listDocs = Object.entries(this.selectedFolderList)
+    .filter(([key, item]) => this.checkCanDelete(item)).map(function (
       [key, item],
       index
     ) {
@@ -1253,7 +1257,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       //   realPath.pop()
       //   let path =  realPath.join("/")
       //   console.log("path",path, realPath);
-        
+
       //   this.getAllFolders({uid:res.parentRef,path})
       // })
       this.renameFolderName = true;
@@ -1323,6 +1327,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async handleClickNew(folderUid: string) {
+    this.selectedFolderList = {};
+    this.count = 0;
     this.loading = true;
     this.isTrashView = false;
     await this.fetchCurrentFolderAssets(folderUid);
@@ -1330,6 +1336,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
   initialLoad:Boolean= true
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
+    console.log("getWorkspaceFolders");
+
     this.showSearchbar = true;
     // this.loading = true;
     let { entries, numberOfPages, resultsCount } = await this.fetchAssets(sectorUid);
@@ -1596,9 +1604,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   selectAsset($event, item, i) {
     let canDelete = this.checkCanDelete(item)
     if(canDelete){
-      this.selectFolder($event, item, i)
+      this.selectFolder($event, item, i, false);
     }
-
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
     //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
@@ -1762,6 +1769,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
         this.selectedFolder = result;
+        if (result?.properties && result?.properties["dc:isPrivate"]) result.properties['isPrivateUpdated'] = true;
         this.saveState(result);
       }
       // this.loading = false;
@@ -1816,6 +1824,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   hasAdminPermission(currentCollaborators) {
     if (this.user === "Administrator") return true;
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (selectedFolder?.properties && selectedFolder?.properties['isPrivateUpdated']) return true;
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return false;
     const ace = currentCollaborators[this.user];
     if (!ace) return false;
@@ -1824,6 +1834,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   hasInheritAcl() {
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (selectedFolder?.properties && selectedFolder?.properties['isPrivateUpdated']) return true;
     if (!selectedFolder?.contextParameters?.acls) return false;
     const inheritAcl = selectedFolder.contextParameters.acls.find(acl => acl.name === 'local');
     if (!inheritAcl?.aces) return false;
@@ -1981,7 +1992,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         }
     });
   }
-  
+
   allFolders:[]
   async getAllFolders(folder?:any){
     let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
@@ -2000,7 +2011,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   folderNameChange(){
     console.log("this.titleExists",this.titleExists);
-    
+
     return this.titleExists = false
   }
 
@@ -2028,4 +2039,34 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
+  async openMoveModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.width = "660px";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+    dialogConfig.data = {
+      selectedList: this.selectedFolderList,
+      parentId: this.sectorSelected.uid
+    }
+
+    const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
+
+    modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        delete this.folderAssetsResult[result.uid];
+        delete this.folderAssetsResult[this.selectedFolder.uid];
+
+        this.loading = true;
+        setTimeout(() => {
+          if (this.selectedFolder.type === 'Domain') window.location.reload();
+          else this.handleClickNew(this.selectedFolder.uid);
+        }, 1000);
+      }
+    });
+  }
+
+  checkEnableMoveButton() {
+    return Object.keys(this.selectedFolderList)?.length > 0;
+  }
 }

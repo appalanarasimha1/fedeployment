@@ -40,11 +40,13 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MoveCopyAssetsComponent } from './move-copy-assets/move-copy-assets.component';
 import { AssetCannotBeAccessedComponent } from './asset-cannot-be-accessed/asset-cannot-be-accessed.component';
 
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EditAccessComponent } from './edit-access/edit-access.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AddUserModalComponent,
     SignupComponent,
     ForgotPasswordComponent,
+    MoveCopyAssetsComponent,
     AssetCannotBeAccessedComponent,
+    EditAccessComponent,
     // AssetViewComponent,
   ],
   imports: [
