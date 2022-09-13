@@ -344,6 +344,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.searchTem = searchTerm;
+      // this.searchNameCLicked.push(this.sharedService.toStartCase(searchTerm));
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
       this.dummyPlaceholderTags = true;
@@ -367,7 +368,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.searchTerm = { ecm_fulltext: "" };
     this.dataService.showRecentInit(false);
     this.dataService.tagsMetaRealInit([]);
-
+    this.searchNameCLicked=[]
     // this.clearFilter();
     // this.resetView();
     this.selectTab("recentlyViewed");
@@ -1256,14 +1257,17 @@ export class DocumentComponent implements OnInit, OnChanges {
   activeSearchCatalogue(name:string) {
     if(this.searchNameCLicked.indexOf(name) === -1) {
       this.searchNameCLicked.push(name);
+     
     } else {
       this.searchNameCLicked = this.searchNameCLicked.filter(m => m !== name)
     }
+    let term = this.searchNameCLicked.join(" or ")
+    this.dataService.termSearchInit(term)
     // this.searchNameCLicked = name;
   }
 
-  checkedNameClicked(name) {
-    if(this.searchNameCLicked.indexOf(name) !== -1 ) {
+  checkedNameClicked(name:string) {
+    if(this.searchNameCLicked.indexOf(this.sharedService.toStartCase(name)) !== -1 ) {
       return true;
     }
     return false;

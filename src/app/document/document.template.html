@@ -287,7 +287,7 @@
   </div>
 
   <section class="search-subpage">
-    <div [ngClass]="{'hideTag': !checkShowDetailview()}"
+    <!-- <div [ngClass]="{'hideTag': !checkShowDetailview()}"
       class="customTagBar"
       *ngIf="searchBarClicked && tagsMetaRealdata.length<1"
     >
@@ -311,9 +311,9 @@
           </div>
         </li>
       </ul>
-    </div>
+    </div> -->
 
-    <div class="customTagBar" *ngIf="tagsMetaRealdata.length>0">
+    <!-- <div class="customTagBar" *ngIf="tagsMetaRealdata.length>0">
       <ul>
         <li>
           <div class="relatedTagHeading">Related Tags</div>
@@ -334,7 +334,7 @@
           </div>
         </li>
       </ul>
-    </div>
+    </div> -->
 
     <div
       *ngIf="!checkShowRecent() || checkShowDetailview()"
