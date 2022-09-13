@@ -1824,6 +1824,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   hasAdminPermission(currentCollaborators) {
     if (this.user === "Administrator") return true;
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (selectedFolder?.properties && selectedFolder?.properties['isPrivateUpdated']) return true;
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return false;
     const ace = currentCollaborators[this.user];
     if (!ace) return false;
