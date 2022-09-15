@@ -241,7 +241,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.getAssetBySectors();
     this.selectTab("recentlyViewed");
     this.showRecentlyViewed = true;
-
+    this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
+      this.searchNameCLicked =[]
+      this.searchNameCLicked.push(this.sharedService.toStartCase(searchTerm));
+    });
     this.dataService.showHideLoader$.subscribe((value) => {
       // if(value) this.loading.push(value);
       // else this.loading.pop();
@@ -1261,7 +1264,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     } else {
       this.searchNameCLicked = this.searchNameCLicked.filter(m => m !== name)
     }
-    let term = this.searchNameCLicked.join(" or ")
+    let term = this.searchNameCLicked.join(" and ")
     this.dataService.termSearchInit(term)
     // this.searchNameCLicked = name;
   }
