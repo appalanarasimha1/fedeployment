@@ -1038,7 +1038,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkCanDelete(item) {
-    return this.user === item.properties["dc:creator"]?.id;
+    return this.user === item.properties["dc:creator"]?.id || this.user === item.properties["dc:creator"];
   }
 
   async fetchUserData() {
