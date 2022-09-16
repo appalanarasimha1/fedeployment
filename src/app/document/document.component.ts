@@ -212,6 +212,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   downloadErrorShow: boolean = false;
   downloadEnable: boolean = false;
+  hasSearchData: boolean = false;
   isAware;
 
   searchNameCLicked = [];
@@ -242,7 +243,12 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.selectTab("recentlyViewed");
     this.showRecentlyViewed = true;
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
+      this.hasSearchData = true
+      if (!searchTerm) {
+        this.hasSearchData = false
+      }
       this.searchNameCLicked =[]
+      this.countOfTheme = 0
       this.searchNameCLicked.push(this.sharedService.toStartCase(searchTerm));
     });
     this.dataService.showHideLoader$.subscribe((value) => {
@@ -347,6 +353,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.searchTem = searchTerm;
+      
       // this.searchNameCLicked.push(this.sharedService.toStartCase(searchTerm));
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
@@ -372,6 +379,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.dataService.showRecentInit(false);
     this.dataService.tagsMetaRealInit([]);
     this.searchNameCLicked=[]
+    this.countOfTheme =0
     // this.clearFilter();
     // this.resetView();
     this.selectTab("recentlyViewed");
@@ -1256,17 +1264,39 @@ export class DocumentComponent implements OnInit, OnChanges {
 
     }
   }
-
+    termFinal:string =""
+    countOfTheme:number = 0
+    selectTheme:boolean=false
   activeSearchCatalogue(name:string) {
     if(this.searchNameCLicked.indexOf(name) === -1) {
       this.searchNameCLicked.push(name);
+      this.countOfTheme += 1 
+      this.selectTheme = true
      
     } else {
       this.searchNameCLicked = this.searchNameCLicked.filter(m => m !== name)
+      this.selectTheme = false
+      if (this.countOfTheme >2) {
+        let termArray = this.termFinal.split(" or ")
+        termArray.pop()
+        this.termFinal = termArray.join(" or ")
+      }
+      this.countOfTheme -= 1 
     }
-    let term = this.searchNameCLicked.join(" and ")
-    this.dataService.termSearchInit(term)
-    // this.searchNameCLicked = name;
+    if (!this.hasSearchData) {
+      this.termFinal = this.searchNameCLicked.join(" or ")
+    }else{
+      if (this.countOfTheme ==1) {
+        this.termFinal = this.searchNameCLicked.join(" and ")
+      }if (this.countOfTheme >1 && this.selectTheme) {
+        this.termFinal = this.termFinal +" or "+this.sharedService.toStartCase(this.searchTem) +" and " + this.searchNameCLicked[this.searchNameCLicked.length-1]
+      }
+
+      if (this.countOfTheme ==0) {
+        this.termFinal = this.sharedService.toStartCase(this.searchTem)
+      }
+    }
+    this.dataService.termSearchInit(this.termFinal)
   }
 
   checkedNameClicked(name:string) {
