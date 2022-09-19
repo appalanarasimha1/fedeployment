@@ -160,6 +160,7 @@ export class UploadModalComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log("incoming data = ", this.data);
+    this.description = this.data.properties['dc:description'];
     if(this.data?.dropFilesNew?.length){
       this.uploadFile(this.data.dropFilesNew)
     }

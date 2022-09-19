@@ -13,17 +13,13 @@ import { environment } from "../../../environments/environment";
 import {
   ASSET_TYPE,
   constants,
-  localStorageVars,
   PAGE_SIZE_200,
   PAGE_SIZE_1000,
-  PAGE_SIZE_40,
   PAGE_SIZE_20,
   WORKSPACE_ROOT,
   ROOT_ID,
   ORDERED_FOLDER,
-  FOLDER_TYPE_WORKSPACE,
-  EXTERNAL_GROUP_GLOBAL,
-  EXTERNAL_USER,
+  FOLDER_TYPE_WORKSPACE
 } from "src/app/common/constant";
 import { apiRoutes } from "src/app/common/config";
 import { NuxeoService } from "src/app/services/nuxeo.service";
@@ -603,12 +599,20 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const result: any = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .toPromise();
+    // result.entries = result.entries.sort((a, b) =>
+    //   this.compare(a.title, b.title, true)
+    // );
+    // result.entries = result.entries.sort((a, b) =>
+    //   this.assetTypeCompare(a.type, b.type)
+    // );
+
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, true)
     );
-    result.entries = result.entries.sort((a, b) =>
-      this.assetTypeCompare(a.type, b.type)
-    );
+    const folders = result.entries.filter(entry => [ASSET_TYPE.WORKSPACE_ROOT, ASSET_TYPE.DOMAIN, ASSET_TYPE.FOLDER, ASSET_TYPE.ORDERED_FOLDER, ASSET_TYPE.WORKSPACE].indexOf(entry.type.toLowerCase()) > -1);
+    const assets = result.entries.filter(entry => [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(entry.type) > -1);
+    result.entries = folders.concat(assets);
+
     this.numberOfPages = result.numberOfPages;
     this.resultCount = result.resultsCount;
     const res = JSON.stringify(result);
@@ -1197,10 +1201,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           return this.compare(a.title, b.title, isAsc);
         case "dc:creator":
           return this.compare(
-            a.properties["dc:creator"].properties?.firstName ||
-              a.properties["dc:creator"].id,
-            b.properties["dc:creator"].properties?.firstName ||
-              b.properties["dc:creator"].id,
+            a.properties["dc:creator"].properties?.firstName || a.properties["dc:creator"].id,
+            b.properties["dc:creator"].properties?.firstName || b.properties["dc:creator"].id,
             isAsc
           );
         case "dc:created":
@@ -1490,14 +1492,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       .get(apiRoutes.NXQL_SEARCH, {
         params,
         headers: { "fetch-document": "properties" },
-      })
-      .toPromise();
+      }).toPromise();
+    
     result.entries = result.entries.sort((a, b) =>
-      this.compare(a.title, b.title, true)
+      this.compare(a.title, b.title, false)
     );
-    result.entries = result.entries.sort((a, b) =>
-      this.assetTypeCompare(a.type, b.type)
-    );
+    const folders = result.entries.filter(entry => 
+      [ASSET_TYPE.WORKSPACE_ROOT, 
+        ASSET_TYPE.DOMAIN, ASSET_TYPE.FOLDER, 
+        ASSET_TYPE.ORDERED_FOLDER, 
+        ASSET_TYPE.WORKSPACE].indexOf(entry.type.toLowerCase()) > -1
+        );
+    const assets = result.entries.filter(entry => [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(entry.type.toLowerCase()) > -1);
+    result.entries = folders.concat(assets);
+    // result.entries = result.entries.sort((a, b) =>
+    //   this.assetTypeCompare(a.type, b.type)
+    // );
     this.numberOfPages = result.numberOfPages;
     this.resultCount = result.resultsCount;
     this.sortedData = result.entries;

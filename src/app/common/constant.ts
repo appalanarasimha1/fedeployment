@@ -76,6 +76,7 @@ export const ASSET_TYPE = {
     FOLDER: 'folder',
     FILE: 'file',
     VIDEO: 'video',
+    WORKSPACE_ROOT: 'workspaceroot'
 };
 export const TAG_ATTRIBUTES = {
     ACTIVITY_DETECTION: 'nxtag:activityDetectionTag',
