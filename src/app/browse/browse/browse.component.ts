@@ -903,6 +903,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
+  deleteModalFailed() {
+    this.sharedService.showSnackbar(
+      "You can't delete a folder contains assets uploaded by other users",
+      6000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
+  }
+
   recoverModal(listDocs) {
     let recoveredFolders = this.trashedList.filter((item) =>
       listDocs.includes(item["uid"])
@@ -953,9 +963,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}` })
       .subscribe((docs: any) => {
         this.loading = false;
-      });
-    this.deleteModal(listDocs);
-    this.removeAssets()
+        this.deleteModal(listDocs);
+        this.removeAssets()
+      }, (err => {
+        this.loading = false;
+        this.deleteModalFailed();
+      }));
   }
 
   async unTrashFolders() {
