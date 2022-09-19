@@ -1287,7 +1287,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         if(!title && !assetUid) {
             this.updateFolderAction();
 
-            // this.handleTest(res);
+            this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
             msg = 'Asset name has been updated';
