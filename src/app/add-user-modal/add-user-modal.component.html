@@ -1,5 +1,6 @@
 <div class="addUserBlock">
   <h3>Who can have private access to this folder?</h3>
+  <!-- <div (click)="openEditAccessModal()">test modal</div> -->
   <div class="addUsers" style="margin-bottom: 30px">
     <ng-select
       style="height: unset !important"
@@ -81,7 +82,7 @@
           {{getExternalName(c.value)}}
           <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
           <span class="makeAdminAction">
-            <span (click)="open(mymodal, c.value)">Edit Access</span>
+            <span  (click)="open(mymodal, c.value)">Edit Access</span><!-- open(mymodal, c.value) -->
             <span (click)="removeUser(c.key, 'invited')" class="removeIcon">
               <svg
                 width="20"
@@ -173,7 +174,7 @@
 
 
   <ng-template #mymodal let-modal>
-    <div class="modalContentBlock">
+    <div class="modalContentBlock" style="position: relative;">
       <div class="addUserBlock">
         <h3>Edit access</h3>
         <ul class="mb-20">
@@ -217,13 +218,21 @@
             </div>
             <div class="col-md-9">
               <span style="width: calc(100% - 31px);display: inline-block;">
-                <ng-select [items]="month"
+                <!-- <input type="date" id="birthday" name="birthday"> -->
+                <mat-form-field appearance="fill">
+                  <input matInput  [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                  [(ngModel)]="selectedMonth" (click)="picker.open()"  [ngClass]="{'goldenText': selectedMonth}">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <!-- <ng-select [items]="month"
                   bindLabel="name"
                   bindValue="id"
                   placeholder="Select month"
                   [(ngModel)]="selectedMonth"
                   (change)="selectDuration(selectedMonth)">
-                </ng-select>
+                </ng-select> -->
               </span>
               <span class="removeIcon" style="position: relative;">
                 <img src="../../assets/images/Info-icon.svg" />

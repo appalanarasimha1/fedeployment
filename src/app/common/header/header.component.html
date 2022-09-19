@@ -136,7 +136,7 @@
                       <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="notifactionBlk">
                           <img src="../../../assets/images/alarm-bell.svg">
-                          <div class="notifactionCount">{{notifications?.length || 0}}</div>
+                          <div *ngIf="notifications?.length > 0" class="notifactionCount">{{notifications?.length}}</div>
                         </div>
                       </a>
                       <div class="dropdown-menu borderNone" aria-labelledby="notificationDropdown">

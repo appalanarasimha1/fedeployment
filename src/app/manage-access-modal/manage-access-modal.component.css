@@ -216,3 +216,6 @@ button.upload-btn {
     color: #fff;
     border: 1px solid #ccc;
 }
+.manageAccessBlock {
+    width: 510px !important;
+}

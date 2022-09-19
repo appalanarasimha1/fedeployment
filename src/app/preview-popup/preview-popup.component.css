@@ -548,9 +548,9 @@ height: 100%;
   position: relative;
 }
 .comment-content ul li p{
-  font-size: 18px;
-line-height: 22px;
-color: #FFFFFF;
+  font-size: 15px;
+  line-height: 22px;
+  color: #FFFFFF;
 }
 .comment-content ul li img{
   height: 30px !important;
@@ -1901,4 +1901,7 @@ ol.publicUse li:hover .mouseHoverInfo {
 
 .internal-use .removeMarginTop .control, .removeMarginTop .sub-dropdown-block {
   margin-top: 0px !important;
+}
+.commentTextBlk {
+  width: calc(100% - 40px);
 }

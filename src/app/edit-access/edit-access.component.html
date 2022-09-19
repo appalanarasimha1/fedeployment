@@ -1,0 +1,85 @@
+<!-- <mat-form-field appearance="fill">
+    <input matInput  [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+    [(ngModel)]="selectedMonth" (click)="picker.open()"  [ngClass]="{'goldenText': selectedMonth}">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+</mat-form-field> -->
+
+<div class="modalContentBlock" style="position: relative;">
+    <div class="addUserBlock">
+      <h3>Edit access</h3>
+      <ul class="mb-20">
+        <li>
+          <!-- {{selectedExternalUser.user.id}}
+          <span class="disableColor pl-10"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Expiry date {{getEndDate(selectedExternalUser.end)}}</span> -->
+
+          <span class="disableColor pl-10"><span>Pending - </span>Expiry date </span>
+        </li>
+      </ul>
+      <div class="makePrivate tollTipWorkspace">
+        <div class="row mb-20">
+          <div class="col-md-3">
+            Access scope
+          </div>
+          <div class="col-md-9">
+            <ol>
+              <li>
+                <label class="control control--checkbox mb-10" style="width: calc(100% - 31px);">
+                  This folder
+                  <input type="radio" [checked]="!isGlobal" (change)="onFullAccessCheckboxChange($event, false)"/>
+                  <div class="control__indicator"></div>
+                </label>
+                <!-- <span class="removeIcon" style="position: relative;">
+                  <img src="../../assets/images/Info-icon.svg" />
+                  <div class="removeInfo" style="bottom: -30px;">Remove user</div>
+                </span> -->
+              </li>
+              <li>
+                <label class="control control--checkbox">
+                  Full site access to all public assets
+                  <input type="radio" [checked]="isGlobal" (change)="onFullAccessCheckboxChange($event)"/>
+                  <div class="control__indicator"></div>
+                </label>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            Access duration
+          </div>
+          <div class="col-md-9">
+            <span style="width: calc(100% - 31px);display: inline-block;">
+              <!-- <input type="date" id="birthday" name="birthday"> -->
+              <mat-form-field appearance="fill">
+                <input matInput  [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                [(ngModel)]="selectedMonth" (click)="picker.open()"  [ngClass]="{'goldenText': selectedMonth}">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
+              <!-- <ng-select [items]="month"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Select month"
+                [(ngModel)]="selectedMonth"
+                (change)="selectDuration(selectedMonth)">
+              </ng-select> -->
+            </span>
+            <!-- <span class="removeIcon" style="position: relative;">
+              <img src="../../assets/images/Info-icon.svg" />
+              <div class="removeInfo" style="bottom: -30px;">Remove user</div>
+            </span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-groups">
+      <!-- <button (click)="modal.close('cancel')" class="cancel-btn">Cancel</button>
+      <button (click)="modal.close('done')" class="upload-btn">Done</button> -->
+      <button (click)="cancel()" class="cancel-btn">Cancel</button>
+      <button (click)="closeModal()" class="upload-btn">Done</button>
+    </div>
+  </div>

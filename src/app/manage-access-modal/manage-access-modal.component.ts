@@ -33,13 +33,19 @@ export class ManageAccessModalComponent implements OnInit {
     this.docIsPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
   }
 
-  closeModal(isUpdated = false) {
+  async closeModal(isUpdated = false) {
     if (isUpdated) {
-      this.selectedFolder.properties['dc:isPrivate'] = !this.docIsPrivate;
+      this.selectedFolder = await this.fetchFolder(this.selectedFolder.uid);
       this.dialogRef.close(this.selectedFolder);
       return;
     }
     this.dialogRef.close();
+  }
+
+  async fetchFolder(id) {
+    const result = await this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
+      {headers: { "fetch-document": "properties"}}).toPromise();
+    return result;
   }
 
   async updateRights() {
