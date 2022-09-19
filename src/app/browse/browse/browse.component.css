@@ -1169,12 +1169,6 @@ ul.uploadAssetsClassifications li:nth-child(2) .customToolTipWorkspace {
   left: auto;
   right: 0px;
 }
-ul.uploadAssetsClassifications li img {
-  display: inline-block;
-  margin: 0px;
-  padding: 0px;
-  vertical-align: 0;
-}
 ul.uploadAssetsClassifications li ul.subDropdownMenu {
   position: absolute;
   width: 250px;
@@ -1872,7 +1866,7 @@ section.lpBAck:before, .lpSecOne:before {
   color: #C49900;
 }
 .folder-structure{
-  height: 129px;
+  height: 139px;
   /* background: url(~/../../../assets/images/yellow-background.svg); */
   background: url(~/../../../assets/images/folder-workspace.svg) no-repeat left top / cover;
   display: flex;
@@ -2754,7 +2748,7 @@ font-weight: normal;
   text-align: center;
   padding: 70px 0;
   color: #BAB8B2;
-  font-size: 24px;
+  font-size: 19px;
   line-height: 36px;
   font-weight: 500;
 }
@@ -2788,7 +2782,8 @@ ul.uploadAssetsClassifications li img {
   display: inline-block;
   margin: 0px;
   padding: 0px;
-  vertical-align: middle;
+  vertical-align: 0px;
+  line-height: normal;
 }
 ul.uploadAssetsClassifications li ul.subDropdownMenu {
   position: absolute;
@@ -2899,9 +2894,9 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   text-align: left;
 }
 .buttonCreate {
-  padding-top: 7px;
+  padding-top: 3px;
   display: inline-block;
-  margin-right: 20px;
+  margin-right: 0px;
   vertical-align: top;
 }
 .deleteFolder{
@@ -3777,7 +3772,7 @@ ul.uploadAssetsClassifications li:hover path,
   height: 30px;
 }
 .deleteFolder {
-  margin-right: 20px;
+  margin-right: 0px;
   position: relative;
   z-index: 2;
   line-height: normal;
@@ -3838,7 +3833,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 .deleteRecover {
   position: relative;
   z-index: 2;
-  vertical-align: -8px;
+  vertical-align: -5px;
 }
 .deleteRecover::after {
   content: '';
@@ -4039,6 +4034,7 @@ li.hoverPin.active-tab a {
   display: inline-block;
   margin: 0px;
   cursor: pointer;
+  vertical-align: middle;
 }
 ul.uploadAssetsClassifications li:hover .moveIcon path,
 .moveFolderImg .moveIcon:hover path,
@@ -4056,4 +4052,22 @@ ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess.downloadDisbable pa
 ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess path,
 ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
   fill: transparent !important;
+}
+
+.all-sectors .delete-folder-action {
+  position: absolute;
+}
+
+
+.input-sizer.customRenameBlock input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #000 !important;
+  opacity: 1; /* Firefox */
+}
+
+.input-sizer.customRenameBlock input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #000 !important;
+}
+
+.input-sizer.customRenameBlock input::-ms-input-placeholder { /* Microsoft Edge */
+  color: #000 !important;
 }

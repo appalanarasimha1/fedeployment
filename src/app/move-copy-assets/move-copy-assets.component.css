@@ -594,3 +594,7 @@ span.folderImgList {
 .moveItemList li.active .control__indicator {
     opacity: 1;
 }
+
+.moveCopyBlock {
+    width: 620px !important;
+}

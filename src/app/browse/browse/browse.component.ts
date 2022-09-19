@@ -1273,6 +1273,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       //   this.getAllFolders({uid:res.parentRef,path})
       // })
+      this.newTitle =this.selectedFolder.title;
       this.renameFolderName = true;
     }
   }
@@ -1300,7 +1301,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         if(!title && !assetUid) {
             this.updateFolderAction();
 
-            // this.handleTest(res);
+            this.handleTest(res);
             msg = 'Folder name has been updated';
         } else {
             msg = 'Asset name has been updated';
