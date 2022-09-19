@@ -1169,12 +1169,6 @@ ul.uploadAssetsClassifications li:nth-child(2) .customToolTipWorkspace {
   left: auto;
   right: 0px;
 }
-ul.uploadAssetsClassifications li img {
-  display: inline-block;
-  margin: 0px;
-  padding: 0px;
-  vertical-align: 0;
-}
 ul.uploadAssetsClassifications li ul.subDropdownMenu {
   position: absolute;
   width: 250px;
@@ -2788,7 +2782,8 @@ ul.uploadAssetsClassifications li img {
   display: inline-block;
   margin: 0px;
   padding: 0px;
-  vertical-align: middle;
+  vertical-align: 0px;
+  line-height: normal;
 }
 ul.uploadAssetsClassifications li ul.subDropdownMenu {
   position: absolute;
@@ -2899,9 +2894,9 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   text-align: left;
 }
 .buttonCreate {
-  padding-top: 7px;
+  padding-top: 3px;
   display: inline-block;
-  margin-right: 20px;
+  margin-right: 0px;
   vertical-align: top;
 }
 .deleteFolder{
@@ -3777,7 +3772,7 @@ ul.uploadAssetsClassifications li:hover path,
   height: 30px;
 }
 .deleteFolder {
-  margin-right: 20px;
+  margin-right: 0px;
   position: relative;
   z-index: 2;
   line-height: normal;
@@ -3838,7 +3833,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 .deleteRecover {
   position: relative;
   z-index: 2;
-  vertical-align: -8px;
+  vertical-align: -5px;
 }
 .deleteRecover::after {
   content: '';
@@ -4039,6 +4034,7 @@ li.hoverPin.active-tab a {
   display: inline-block;
   margin: 0px;
   cursor: pointer;
+  vertical-align: middle;
 }
 ul.uploadAssetsClassifications li:hover .moveIcon path,
 .moveFolderImg .moveIcon:hover path,

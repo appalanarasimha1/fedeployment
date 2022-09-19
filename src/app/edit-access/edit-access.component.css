@@ -358,3 +358,7 @@ h3.externalUsers {
 ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-ripple {
     display: none;
 }
+
+::ng-deep .mat-calendar-body-selected {
+    background-color: #DEB31A !important;
+}
