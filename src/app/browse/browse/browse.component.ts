@@ -1273,6 +1273,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       //   this.getAllFolders({uid:res.parentRef,path})
       // })
+      this.newTitle =this.selectedFolder.title;
       this.renameFolderName = true;
     }
   }
