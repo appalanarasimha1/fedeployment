@@ -610,7 +610,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.compare(a.title, b.title, true)
     );
     const folders = result.entries.filter(entry => [ASSET_TYPE.WORKSPACE_ROOT, ASSET_TYPE.DOMAIN, ASSET_TYPE.FOLDER, ASSET_TYPE.ORDERED_FOLDER, ASSET_TYPE.WORKSPACE].indexOf(entry.type.toLowerCase()) > -1);
-    const assets = result.entries.filter(entry => [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(entry.type) > -1);
+    const assets = result.entries.filter(entry => [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(entry.type.toLowerCase()) > -1);
     result.entries = folders.concat(assets);
 
     this.numberOfPages = result.numberOfPages;
@@ -1493,14 +1493,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         params,
         headers: { "fetch-document": "properties" },
       }).toPromise();
-    
+
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, false)
     );
-    const folders = result.entries.filter(entry => 
-      [ASSET_TYPE.WORKSPACE_ROOT, 
-        ASSET_TYPE.DOMAIN, ASSET_TYPE.FOLDER, 
-        ASSET_TYPE.ORDERED_FOLDER, 
+    const folders = result.entries.filter(entry =>
+      [ASSET_TYPE.WORKSPACE_ROOT,
+        ASSET_TYPE.DOMAIN, ASSET_TYPE.FOLDER,
+        ASSET_TYPE.ORDERED_FOLDER,
         ASSET_TYPE.WORKSPACE].indexOf(entry.type.toLowerCase()) > -1
         );
     const assets = result.entries.filter(entry => [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(entry.type.toLowerCase()) > -1);
