@@ -325,6 +325,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         e.stopPropagation();
       });
     });
+
+    $(".closeIcon").on("click", function (e) {
+      $(".dropdownCreate").hide();
+      e.stopPropagation();
+    });
     this.getAllFolders(this.selectedFolder)
   }
 
