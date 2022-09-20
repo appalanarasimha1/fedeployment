@@ -118,7 +118,7 @@
                   "with": "src/environments/environment.oci-uat.ts"
                 }
               ]
-            },
+            }
           }
         },
         "serve": {
