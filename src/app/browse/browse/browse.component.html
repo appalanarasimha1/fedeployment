@@ -703,7 +703,7 @@
                           </div>
                           <div class="col-xl-12">
 
-                            <input [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name" autocomplete="off" autofocus>
+                            <input id="autoFocusElement" [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name" autocomplete="off" autofocus />
 
                             <!-- <input *ngIf="showError" [ngClass]="{'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name"> -->
                           </div>
