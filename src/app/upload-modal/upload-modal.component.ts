@@ -578,6 +578,8 @@ export class UploadModalComponent implements OnInit {
   }
 
   uploadFileIndex(index, file) {
+    $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+    
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
     const options = {
@@ -612,6 +614,7 @@ export class UploadModalComponent implements OnInit {
       () => {
         this.setUploadProgressBar(index, 100);
         this.filesUploadDone[index] = true;
+        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
         console.log("Upload done");
       }
     );

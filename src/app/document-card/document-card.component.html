@@ -4,17 +4,29 @@
   <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" /> -->
     <!-- <button (click)="copyLinkOfAsset()">copy link</button> -->
-    <div style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
-      <img *ngIf="checkMimeType(doc) === 'nopreview'"
+    <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6;">
+      <img 
         id="fileId" 
         src="../../assets/images/no-preview.png" 
         alt=""
         (click)="openPreview()"
         (load)="showLock = true"
         crossorigin="use-credentials"
-        loading="lazy" style="object-fit: none !important; background: #FBF7E6;" />
+        loading="lazy" style="object-fit: none !important; background: #fbf7e6; width: 120px;
+        margin: 0px auto;" />
 
-      <img *ngIf="checkMimeType(doc) === 'picture'" 
+        <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
+          <img id="fileId" 
+          [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+          alt=""
+          (click)="openPreview()"
+          crossorigin="use-credentials" />
+        </div>
+      <span style="width: 1px;height: 1px;"></span>
+    </div>
+
+    <div *ngIf="checkMimeType(doc) === 'picture'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
+      <img 
         id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
         alt=""
@@ -30,8 +42,7 @@
           (click)="openPreview()"
           crossorigin="use-credentials" />
         </div>
-      <span style="width: 1px;
-    height: 1px;"></span>
+      <span style="width: 1px;height: 1px;"></span>
     </div>
     
 

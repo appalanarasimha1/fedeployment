@@ -30,8 +30,7 @@
             </ngx-dropzone-label>
             <ul class="flexible upload-prevoew">
                <li *ngFor="let f of filesMap | keyvalue">
-                  <ngx-dropzone-preview class="upload-file-preview upload-progress-bar-{{f.key}}" [ngClass]="{'fillbar': filesUploadDone[f.key]}" [removable]="true" (removed)="onRemove(f)">
-                     
+                  <ngx-dropzone-preview *ngIf="!f?.value['isVirus']" class="upload-file-preview upload-progress-bar-{{f.key}}" [ngClass]="{'fillbar': filesUploadDone[f.key]}" [removable]="true" (removed)="onRemove(f)">
                      <ngx-dropzone-label class="flexible" style="margin: unset;">
                         <div *ngIf="!f?.value['isVirus']" style="width: 80%;text-align: left;margin-top: 0px;">
                            <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
@@ -41,16 +40,23 @@
                         <div *ngIf="filesUploadDone[f.key] && !f?.value['isVirus']" style="width: 20%; text-align: center;">
                            <img src="../../assets/images/BtnTickbox.png" style="float: right;">
                         </div>
+                     </ngx-dropzone-label>
+                  </ngx-dropzone-preview>
 
-                        <!-- below div for virus containing files -->
-                        <div *ngIf="f?.value['isVirus']" style="width: 80%;text-align: left;margin-top: 0px;">
+                  <!-- below div for virus containing files -->
+                  <ngx-dropzone-preview *ngIf="f?.value['isVirus']" class="upload-file-preview errorNewUi upload-progress-bar-{{f.key}}" [ngClass]="{'fillbar': filesUploadDone[f.key]}" [removable]="true" (removed)="onRemove(f)">
+                     <ngx-dropzone-label class="flexible" style="margin: unset;">
+                        <div  style="width: 80%;text-align: left;margin-top: 0px;">
                            <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
-                           <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
-                           <span class="upload-loading">Failed</span>
+                           <!-- <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span> -->
+                           <span class="upload-loading">
+                              <span class="malware">File removed due to malware detection</span>
+                              <img src="../../assets/images/btn-tickbox.svg" class="tickboxImg" />
+                           </span>
                         </div>
-                        <div *ngIf="f?.value['isVirus']" style="width: 20%; text-align: center;">
+                        <!-- <div *ngIf="f?.value['isVirus']" style="width: 20%; text-align: center;">
                            <img src="../../assets/images/circle-close-gray.png" style="float: right;">
-                        </div>
+                        </div> -->
                      </ngx-dropzone-label>
                   </ngx-dropzone-preview>
                </li>

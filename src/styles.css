@@ -3711,7 +3711,7 @@ img:not([src]) {
 .modal-backdrop {
   z-index: 9999 !important;
 }
-html, body { min-height: 100%; }
+html, body { max-height: 100%; }
 body { margin: 0; }
 
 

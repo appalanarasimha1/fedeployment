@@ -121,6 +121,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   panelOpenState = false;
   breadCrumb = [];
   selectedFolderList: any = {};
+  selectedMoveList: any = {};
   trashedList = null;
   deletedByMe: any;
   myDeletedCheck: boolean = true;
@@ -297,10 +298,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   datePickerDefaultAction() {
+    $( ".createNew.flexible" ).focus(() => {
+      // alert( "Handler for .focus() called." );
+      setTimeout(() => {
+        $('#autoFocusElement').focus();
+      }, 500);
+    });
     $(".buttonCreate").on("click", function (e) {
       // $(".dropdownCreate").toggle();
       $(".dropdownCreate").show();
       $(".buttonCreate").addClass("createNewFolderClick");
+      setTimeout(() => {
+        $('#autoFocusElement').focus();
+      }, 500);
       e.stopPropagation();
     });
     $(".buttonCreate.createNewFolderClick").on("click", function (e) {
@@ -944,12 +954,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i, updateCount = true) {
-    if ((!$event.target?.checked && this.selectedFolderList[i])||(!$event.checked && this.selectedFolderList[i])) {
-      if (updateCount) this.count = this.count - 1;
-      delete this.selectedFolderList[i];
-    } else if ($event.target?.checked || $event.checked) {
+    if ($event.target?.checked || $event.checked) {
       if (updateCount) this.count = this.count + 1;
       this.selectedFolderList[i] = item;
+      this.selectedMoveList[i] = item;
+    } else {
+      if (updateCount) this.count = this.count - 1;
+      delete this.selectedFolderList[i];
+      delete this.selectedMoveList[i];
     }
   }
 
@@ -1650,6 +1662,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // else
     if ($event.target?.checked || $event.checked) {
       this.count = this.count + 1;
+      this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
       }
@@ -1682,6 +1695,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.canNotDelete = this.canNotDelete.filter(
         (m) => m.uid !== item.uid
       );
+      delete this.selectedMoveList[i];
       this.count = this.count - 1;
       //  }
     }
@@ -2075,7 +2089,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     dialogConfig.width = "660px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     dialogConfig.data = {
-      selectedList: this.selectedFolderList,
+      selectedList: this.selectedMoveList,
       parentId: this.sectorSelected.uid
     }
 
@@ -2096,6 +2110,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkEnableMoveButton() {
-    return Object.keys(this.selectedFolderList)?.length > 0;
+    return Object.keys(this.selectedMoveList)?.length > 0;
   }
 }
