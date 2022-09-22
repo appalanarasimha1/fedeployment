@@ -2085,7 +2085,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     dialogConfig.data = {
       selectedList: this.selectedMoveList,
-      parentId: this.sectorSelected.uid
+      parentId: this.sectorSelected.uid,
+      sectorList: this.folderStructure[0]?.children || [],
     }
 
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
