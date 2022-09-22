@@ -298,10 +298,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   datePickerDefaultAction() {
+    $( ".createNew.flexible" ).focus(() => {
+      // alert( "Handler for .focus() called." );
+      setTimeout(() => {
+        $('#autoFocusElement').focus();
+      }, 500);
+    });
     $(".buttonCreate").on("click", function (e) {
       // $(".dropdownCreate").toggle();
       $(".dropdownCreate").show();
       $(".buttonCreate").addClass("createNewFolderClick");
+      setTimeout(() => {
+        $('#autoFocusElement').focus();
+      }, 500);
       e.stopPropagation();
     });
     $(".buttonCreate.createNewFolderClick").on("click", function (e) {
