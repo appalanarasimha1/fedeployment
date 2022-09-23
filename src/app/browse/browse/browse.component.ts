@@ -2112,4 +2112,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkEnableMoveButton() {
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
+
+  markIsPrivate(data: IEntry) {
+    this.sortedData.forEach(item => {
+      if(item.uid === data.uid) {
+        item.properties['dc:isPrivate'] = data.properties['dc:isPrivate'];
+      }
+    });
+
+  }
 }

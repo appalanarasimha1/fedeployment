@@ -10,7 +10,7 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { faBars, faList, faBorderAll, faFolder, faImage, faDownload, faStar, faPlusCircle, faCheckCircle, faAngleDown, faAngleRight, faFolderOpen, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -21,7 +21,7 @@ import { ManageAccessModalComponent } from '../manage-access-modal/manage-access
 @NgModule({
   declarations: [
     BrowseComponent,
-    // ManageAccessModalComponent,
+    ManageAccessModalComponent,
   ],
   imports: [
     SharedModule,
@@ -49,6 +49,7 @@ import { ManageAccessModalComponent } from '../manage-access-modal/manage-access
       provide: MatDialogRef,
       useValue: {}
     },
+    { provide: MAT_DIALOG_DATA, useValue: {} },
    ],
 })
 export class BrowseModule {

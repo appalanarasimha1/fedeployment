@@ -15,15 +15,15 @@ import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [UpdateModalComponent],
   imports: [
-    CommonModule,
-    FormsModule,
+    // CommonModule,
+    // FormsModule,
+    SharedModule,
     NgxDropzoneModule,
     MatIconModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
     NgSelectModule,
-    SharedModule,
     MatSnackBarModule,
     MatInputModule
   ],

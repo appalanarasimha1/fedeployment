@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
@@ -13,6 +13,8 @@ import { DataService } from "../services/data.service";
 })
 export class ManageAccessModalComponent implements OnInit {
 
+  @Input() input_data: any;
+  @Output() markIsPrivate: EventEmitter<any> = new EventEmitter();
   uploadedAsset;
   selectedFolder: any;
   makePrivate: boolean = false;
@@ -29,7 +31,7 @@ export class ManageAccessModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.selectedFolder = this.data.selectedFolder;
+    this.selectedFolder = this.input_data || this.data.selectedFolder;
     this.docIsPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
   }
 
@@ -62,7 +64,13 @@ export class ManageAccessModalComponent implements OnInit {
     const res = await this.apiService.post(apiRoutes.UPDATE_FOLDER_RIGHTS, payload).toPromise();
     if (res['value'] !== 'OK') {
       this.error = res['value'];
-    } else this.closeModal(true);
+    } else  {
+      if(this.input_data) {
+        this.input_data.properties['dc:isPrivate'] = true;``
+        this.markIsPrivate.emit(this.input_data);
+      } else 
+        this.closeModal(true);
+    }
   }
 
   getCheckAction(event) {
