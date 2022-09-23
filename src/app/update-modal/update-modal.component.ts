@@ -108,7 +108,7 @@ export class UpdateModalComponent implements OnInit {
     this.customAllowMap[index] = doc.properties['sa:allow'];
     this.customDownloadApprovalMap[index] = this.checkOwnerDropdownByValue(doc.properties['sa:downloadApproval']);
     this.copyrightUserMap[index] = doc.properties['sa:copyrightName'];
-    this.openCopyrightMap[index] = true;
+    this.openCopyrightMap[index] = doc.properties['sa:copyrightName'] ? true : false;
     this.copyrightYearMap[index] = doc.properties['sa:copyrightYear'];
     if (doc.properties['sa:confidentiality']) {
       this.customConfidentialityMap[index] = doc.properties['sa:confidentiality'];
