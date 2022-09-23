@@ -56,7 +56,7 @@ import { EditAccessComponent } from './edit-access/edit-access.component';
     LandingPageComponent,
     FooterComponent,
     LoaderYellowComponent,
-    // ManageAccessModalComponent,
+    ManageAccessModalComponent,
     AddUserModalComponent,
     SignupComponent,
     ForgotPasswordComponent,

@@ -21,7 +21,7 @@ import { ManageAccessModalComponent } from '../manage-access-modal/manage-access
 @NgModule({
   declarations: [
     BrowseComponent,
-    ManageAccessModalComponent,
+    // ManageAccessModalComponent,
   ],
   imports: [
     SharedModule,
