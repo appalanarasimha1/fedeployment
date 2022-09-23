@@ -362,8 +362,9 @@ export class UpdateModalComponent implements OnInit {
       .enrichers({document: ["acls"]})
       .execute();
       // .then((result) => {
-      if (result.entries[0]) 
+      if (result.entries[0]) {
         this.updatedDocs[index] = result.entries[0];
+      }
     //     resolve(null);
     //   });
     // });
