@@ -64,7 +64,7 @@
       <div class="container-fluid">
         <ul class="catalogue-feature-blk">
           <li *ngFor="let item of categoryArray">
-            <div class="catalogue-feature-cont" (click)="activeSearchCatalogue(item)" [ngClass]="{ 'activeSearch' : checkedNameClicked(item) }" style="background-image: url(../../assets/images/catalogue-feature01.jpg);">
+            <div class="catalogue-feature-cont" (click)="activeSearchCatalogue(item)" [ngClass]="{ 'activeSearch' : checkedNameClicked(item) }">
               <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked(item)" /> {{item}}</span>
             </div>
           </li>
