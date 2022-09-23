@@ -28,6 +28,7 @@ export class MoveCopyAssetsComponent implements OnInit {
   currentFolder: any;
   breadcrumb: any;
   sectorList: any;
+  currentSector: string;
 
   constructor(
     private apiService: ApiService,
@@ -41,12 +42,13 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedList = this.data.selectedList;
+    this.currentSector = this.getSectorFromPath(Object.values(this.selectedList)[0])
     this.sectorList = this.data.sectorList;
     this.selectedIdList = Object.keys(this.selectedList).map(key => this.selectedList[key].uid);
     const parentId = this.data.parentId;
-    // this.fetchAssets(parentId);
-    this.folderList = this.sectorList || [];
-    if (this.folderList.length === 0) this.fetchAssets(parentId);
+    this.fetchAssets(parentId);
+    // this.folderList = this.sectorList || [];
+    // if (this.folderList.length === 0) this.fetchAssets(parentId);
   }
 
   closeModal() {
@@ -172,6 +174,17 @@ export class MoveCopyAssetsComponent implements OnInit {
       params
     };
     return await this.apiService.post(apiRoutes.MOVE_FOLDER, body).toPromise();
+  }
+
+  getSectorFromPath(item) {
+    const split = item.path.split("/");
+    return split[1];
+  }
+
+  checkEnableCheckbox(item) {
+    if (item.type === 'Domain') return false;
+    if (this.getSectorFromPath(item) !== this.currentSector && !item.properties['dc:isPrivate']) return false;
+    return true;
   }
 
 }

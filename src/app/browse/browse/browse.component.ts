@@ -2106,6 +2106,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkEnableMoveButton() {
+    if (Object.keys(this.selectedMoveList)?.length > 0) {
+      if (this.selectedFolder.properties["dc:isPrivate"]) return false;
+    }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
 }
