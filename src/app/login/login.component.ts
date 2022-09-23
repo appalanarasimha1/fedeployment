@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   keycloakLoading = false;
   redirectURL: string;
+  externalPartnerShow: boolean = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -111,6 +112,10 @@ export class LoginComponent implements OnInit {
   logout() {
     this.nuxeo.logout();
     this.keycloak.logout(window.location.origin + '/login');
+  }
+
+  externalPartner() {
+    this.externalPartnerShow = !this.externalPartnerShow;
   }
 
 }

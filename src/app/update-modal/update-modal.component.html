@@ -216,7 +216,7 @@
                 <div (click)="openCopyright(i)" *ngIf="!openCopyrightMap[i]">
                  <img src="../../assets/images/add-copyright-golden.svg" alt="Add copyright information" /> Add copyright information
                 </div>
-                <div *ngIf="openCopyrightMap[i] || this.copyrightUserMap[i]" class="copyright-form">
+                <div *ngIf="openCopyrightMap[i]" class="copyright-form">
                    <ul>
                       <li>
                          <img (click)="closeCopyright(i)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />

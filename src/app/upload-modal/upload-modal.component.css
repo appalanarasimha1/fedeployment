@@ -1600,3 +1600,36 @@ span.showAllClassifications svg.rotateArrow {
 .publish-assets {
   padding-right: 10px;
 }
+
+.upload-file-preview.errorNewUi {
+  background: #FDEDED !important;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px !important;
+  font-size: 14px;
+  min-height: 80px !important;
+  height: 90px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+  padding: 15px!important;
+  min-width: 100% !important;
+  border: 2px solid #C6342A;
+  background-image: linear-gradient(to right, #FDEDED 100%,#FDEDED 100%) !important;
+}
+.upload-file-preview.errorNewUi .upload-loading {
+  color: #C6342A !important;
+}
+.upload-file-preview.errorNewUi .imgLabel {
+  color: #B1AAA1;
+}
+.upload-loading span.malware {
+  width: 70%;
+  float: left;
+  line-height: 18px;
+  font-size: 13px;
+}
+.upload-loading img.tickboxImg {
+  margin-top: -10px;
+  float: right;
+  margin-right: 14px;
+}

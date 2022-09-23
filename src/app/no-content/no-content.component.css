@@ -1,9 +1,10 @@
 .four04{
-    height: calc(100vh - 129px);
+    height: calc(100vh - 76px);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     justify-content: center;
+    padding-left: 100px;
 }
 .four04 h1{
     font-size: 28px;
