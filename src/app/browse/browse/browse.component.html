@@ -10,9 +10,7 @@
     </div>
   </div>
 </section> -->
-<app-sub-header
-      >
-    </app-sub-header>
+<app-sub-header></app-sub-header>
 <section style="background-color: #fff;" class="lpBAck">
   <section class="lpSecOne ">
     <div class="container">
@@ -1273,6 +1271,17 @@
                               Manage access
                             </div>
                           </div> -->
+                        </div>
+                      </span>
+
+                      <span *ngIf="!item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+                        <div class="publicUseBlock publishedBlock">
+                          <div class="publicUseBlk published">Published <img src="../../../assets/images/published-arrow.svg" /></div>
+                          <div class="mouseHoverInfo">
+                            hi
+                            <!-- <app-loader-small [show]="true"></app-loader-small> -->
+                            <!-- <app-manage-access-modal></app-manage-access-modal> -->
+                          </div>
                         </div>
                       </span>
                     </td>

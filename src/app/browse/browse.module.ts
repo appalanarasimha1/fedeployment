@@ -17,9 +17,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { UploadModalModule } from '../upload-modal/upload-modal.module';
 import { SearchModule } from '../search/search.module';
+import { ManageAccessModalComponent } from '../manage-access-modal/manage-access-modal.component';
 @NgModule({
   declarations: [
     BrowseComponent,
+    ManageAccessModalComponent,
   ],
   imports: [
     SharedModule,
@@ -38,7 +40,7 @@ import { SearchModule } from '../search/search.module';
     MatExpansionModule,
     MatDatepickerModule,
     UploadModalModule,
-    SearchModule
+    SearchModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
