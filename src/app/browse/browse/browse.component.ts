@@ -736,14 +736,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (!this.selectedFolder.properties) {
         this.selectedFolder["properties"] = {};
       }
-      this.selectedFolder.properties["dc:description"] =
-        updatedFolder.description;
+      this.selectedFolder.properties["dc:description"] = updatedFolder.description;
       this.selectedFolder.properties["dc:start"] = updatedFolder.associatedDate;
       Object.keys(updatedDocs).forEach((key) => {
-        this.searchList[key].contextParameters.acls =
-          updatedDocs[key].contextParameters.acls;
-        this.sortedData[key].contextParameters.acls =
-          updatedDocs[key].contextParameters.acls;
+        this.searchList[key].contextParameters.acls = updatedDocs[key].contextParameters.acls;
+        this.sortedData[key].contextParameters.acls = updatedDocs[key].contextParameters.acls;
         this.searchList[key].properties = {
           ...this.searchList[key].properties,
           ...updatedDocs[key].properties,
@@ -2106,6 +2103,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkEnableMoveButton() {
+    if (Object.keys(this.selectedMoveList)?.length > 0) {
+      if (this.selectedFolder.properties["dc:isPrivate"]) return false;
+    }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
 }
