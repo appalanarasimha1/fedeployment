@@ -10,9 +10,7 @@
     </div>
   </div>
 </section> -->
-<app-sub-header
-      >
-    </app-sub-header>
+<app-sub-header></app-sub-header>
 <section style="background-color: #fff;" class="lpBAck">
   <section class="lpSecOne ">
     <div class="container">
@@ -696,6 +694,7 @@
                       <div class="customToolTipWorkspace" style="right: 5px; left: auto; top: 32px">Create new folder</div>
                     </div>
                     <div class='dropdownCreate createFolder'>
+                      <img src="../../../assets/images/cross-icon-createfolder.svg" class="closeIcon" />
                       <form>
                         <div class="row">
                           <div class="col-xl-12">
@@ -984,15 +983,19 @@
 
             <!-- Start adding collaborators to this private folder -->
             <div *ngIf="isPrivateFolder(false) && checkShowNoTrashItem()" class="addignCollaborators" style="padding-top: 40px;">
-              <h2>Start adding collaborators to this private folder</h2>
+              <img src="../../../assets/images/adding-collaborators-icon.svg" class="collaboratorsIcon" />
+              <!-- <h2>Start adding collaborators to this private folder</h2> -->
+              <h2>Start adding collaborators:</h2>
               <div class="addUsers">
                 <div [ngClass]="isAdmin ? 'addUserBtn' : 'addUserBtn-disabled'" (click)="openAddUserModal()">Add users</div>
               </div>
-              <!-- <div class="privateFileshare">Private fileshare folder Photoshoot-2022-02-10 created.</div> -->
+              <div class="privateFileshare">Private fileshare folder Photoshoot-2022-02-10 created.</div>
             </div>
 
             <div *ngIf="checkShowNoTrashItem() && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
-              <h2>Start adding assets to this private folder</h2>
+              <img src="../../../assets/images/private-fileshare-icon.svg" class="collaboratorsIcon" />
+              <!-- <h2>Start adding assets to this private folder</h2> -->
+              <h2>Start adding assets to this private fileshare folder:</h2>
               <div class="addUsers">
                 <div class="addUserBtn" (click)="openModal()">Upload</div>
               </div>
@@ -1268,6 +1271,15 @@
                               Manage access
                             </div>
                           </div> -->
+                        </div>
+                      </span>
+
+                      <span *ngIf="!item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+                        <div class="publicUseBlock publishedBlock">
+                          <div class="publicUseBlk published">Published <img src="../../../assets/images/published-arrow.svg" /></div>
+                          <div class="mouseHoverInfo">
+                            <app-manage-access-modal [input_data]="item" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
+                          </div>
                         </div>
                       </span>
                     </td>

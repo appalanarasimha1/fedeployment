@@ -25,9 +25,15 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../common/snackbar/snackbar.component';
 import { AssetViewComponent } from '../asset-view/asset-view.component';
+import { ManageAccessModalComponent } from '../manage-access-modal/manage-access-modal.component';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @NgModule({
   providers: [
+    // {
+    //   provide: MatDialogRef,
+    //   useValue: {}
+    // },
   ],
   declarations: [
     LoaderComponent,
@@ -38,19 +44,20 @@ import { AssetViewComponent } from '../asset-view/asset-view.component';
     ReversePipe,
     SearchPipe,
     SnackbarComponent,
-    
     AssetViewComponent,
+    // ManageAccessModalComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    MatDialogModule,
     NgbModule,
     PdfViewerModule,
     MatStepperModule,
     ChartsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
     // UploadModalModule,
     // NgxMasonryModule
   ],
@@ -60,6 +67,8 @@ import { AssetViewComponent } from '../asset-view/asset-view.component';
     PdfViewerModule,
     ReactiveFormsModule,
     NgbModule,
+    
+    // MatDialogModule,
     LoaderComponent,
     LoaderSmallComponent,
     DocumentCardComponent,
@@ -73,8 +82,8 @@ import { AssetViewComponent } from '../asset-view/asset-view.component';
     MatSortModule,
     MatSnackBarModule,
     SnackbarComponent,
-    
     AssetViewComponent,
+    // ManageAccessModalComponent
   ]
 })
 export class SharedModule { }

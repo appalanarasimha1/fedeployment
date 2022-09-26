@@ -335,6 +335,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         e.stopPropagation();
       });
     });
+
+    $(".closeIcon").on("click", function (e) {
+      $(".dropdownCreate").hide();
+      e.stopPropagation();
+    });
     this.getAllFolders(this.selectedFolder)
   }
 
@@ -2107,5 +2112,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (this.selectedFolder.properties["dc:isPrivate"]) return false;
     }
     return Object.keys(this.selectedMoveList)?.length > 0;
+  }
+
+  markIsPrivate(data: IEntry) {
+    this.sortedData.forEach(item => {
+      if(item.uid === data.uid) {
+        item.properties['dc:isPrivate'] = data.properties['dc:isPrivate'];
+      }
+    });
+
   }
 }

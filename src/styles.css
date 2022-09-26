@@ -4494,3 +4494,10 @@ header.updateHeader .container {
 .custom-modal-notifaction button.close.closeNotifaction svg {
   width: 100%;
 }
+
+.publicUseBlock.publishedBlock .manageAccessBlock {
+  width: 100% !important;
+}
+.publicUseBlock.publishedBlock .button-groups button.cancel-btn {
+  display: none !important;
+}
