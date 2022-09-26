@@ -19,7 +19,7 @@
             <label class="control control--checkbox">
               <span class="folderImgList"><img src="../../assets/images/folder-table-list.svg" /></span>
               {{folder.title}} <span *ngIf="!!folder.properties['dc:isPrivate']" class="private">Private</span>
-              <input
+              <input *ngIf="checkEnableCheckbox(folder)"
                 id="checkbox-4"
                 type="checkbox"
                 class="vh"

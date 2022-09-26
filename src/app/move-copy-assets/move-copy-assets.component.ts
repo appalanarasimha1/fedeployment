@@ -27,6 +27,8 @@ export class MoveCopyAssetsComponent implements OnInit {
   prevParent: any;
   currentFolder: any;
   breadcrumb: any;
+  sectorList: any;
+  currentSector: string;
 
   constructor(
     private apiService: ApiService,
@@ -40,9 +42,13 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedList = this.data.selectedList;
+    this.currentSector = this.getSectorFromPath(Object.values(this.selectedList)[0])
+    this.sectorList = this.data.sectorList;
     this.selectedIdList = Object.keys(this.selectedList).map(key => this.selectedList[key].uid);
     const parentId = this.data.parentId;
     this.fetchAssets(parentId);
+    // this.folderList = this.sectorList || [];
+    // if (this.folderList.length === 0) this.fetchAssets(parentId);
   }
 
   closeModal() {
@@ -81,6 +87,18 @@ export class MoveCopyAssetsComponent implements OnInit {
     this.extractBreadCrumb(this.folderList[0]);
   }
 
+  async getSectorWs(id: string) {
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 0 AND ecm:parentId = '${id}' AND ecm:mixinType = 'Folderish'`;
+    const result: any = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
+    result.entries = result.entries.sort((a, b) =>
+      this.compare(a.title, b.title, true)
+    );
+    const workspace = result.entries.find(entry => entry.type === "WorkspaceRoot");
+    return workspace;
+  }
+
   generateBreadCrumb() {
 
   }
@@ -97,20 +115,27 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   goBack() {
     if (!this.checkCanGoBack()) return;
-    this.fetchAssets(this.currentFolder?.parentRef || this.prevParent.uid);
+    if (this.prevParent?.type === 'Domain') {
+      this.folderList = this.sectorList || [];
+    } else {
+      this.fetchAssets(this.currentFolder?.parentRef || this.prevParent.uid);
+    }
     this.currentFolder = null;
   }
 
   checkCanGoBack() {
     if (this.prevParent) {
-      if (this.prevParent.type !== 'Domain') return true;
+      if (this.prevParent.type !== 'Root') return true;
     }
-    if (!this.currentFolder) return false;
+    if (!this.currentFolder || this.currentFolder.type === 'Domain') return false;
     return true;
   }
 
   async moveAssets() {
     if (!this.selectedDestination) return;
+    if (this.selectedDestination.type === 'Domain') {
+      this.selectedDestination = await this.getSectorWs(this.selectedDestination.uid)
+    }
     const arrayCall = [];
     const arrayIndex = [];
     for (const key in this.selectedList) {
@@ -149,6 +174,17 @@ export class MoveCopyAssetsComponent implements OnInit {
       params
     };
     return await this.apiService.post(apiRoutes.MOVE_FOLDER, body).toPromise();
+  }
+
+  getSectorFromPath(item) {
+    const split = item.path.split("/");
+    return split[1];
+  }
+
+  checkEnableCheckbox(item) {
+    if (item.type === 'Domain') return false;
+    if (this.getSectorFromPath(item) !== this.currentSector && !item.properties['dc:isPrivate']) return false;
+    return true;
   }
 
 }
