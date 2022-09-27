@@ -8,9 +8,9 @@ export const environment = {
   apiServiceBaseUrl: 'https://uatgroundx.oci.sense.neomos.online',
   apiVersion: '/nuxeo/api/v1',
   keycloakConfig: {
-    url: 'https://groundxkeycloak.oci.sense.neomos.online/auth/',
-      realm: 'GroundX',
-      clientId: 'nuxeo-client-public',
+    url:  "https://devkeycloak.oci.sense.neomos.online/auth/", // 'https://groundxkeycloak.oci.sense.neomos.online/auth/',
+    realm: 'GroundX',
+    clientId: 'nuxeo-client-public',
   }
 };
 import 'zone.js/dist/zone-error';  // Included with Angular CLI.
