@@ -2051,3 +2051,12 @@ ul.catalogue-feature-blk li {
 .catalogue-feature-blk li:nth-child(9) .catalogue-feature-cont {
   background-image: url(../../assets/images/catalogue-feature09.jpg);
 }
+.pb-10{
+  padding-bottom: 10px !important;
+}
+.pt-0{
+  padding-top: 0px !important;
+}
+.pt-30{
+  padding-top: 30px !important;
+}

@@ -260,6 +260,7 @@ section.lpBAck:before, .lpSecOne:before {
 }
 .folder-structure{
   height: 129px;
+  width: 197px;
   /* background: url(~/../../../assets/images/yellow-background.svg); */
   background: url(~/../../../assets/images/folder-workspace.svg) no-repeat left top / cover;
   display: flex;
@@ -322,7 +323,7 @@ section.lpBAck:before, .lpSecOne:before {
   flex-wrap: wrap;
 }
 .all-sectors li {
-  width: calc(25% - 10px);
+  width: auto;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
@@ -801,15 +802,15 @@ font-weight: normal;
 }
 
 .all-sectors li {
-  width: calc(25% - 8px);
+  width: auto;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
 }
 
-.all-sectors li:nth-child(4n+4) {
+/* .all-sectors li:nth-child(4n+4) {
   margin-right: 0px !important;
-}
+} */
 .insideScroll{
   padding: 0px;
   margin-bottom: 20px;
@@ -1874,6 +1875,7 @@ section.lpBAck:before, .lpSecOne:before {
   padding: 10px;
   transition: 0.4s;
   border-radius: 10px;
+  width: 197px;
 }
 .folderTitle{
   font-size: 15px;
@@ -1911,17 +1913,6 @@ section.lpBAck:before, .lpSecOne:before {
   width: 100%;
   display: inline-block;
 }
-/* .folder-structure {
-   width: 300px;
-  max-width: 184.7px;
-}
-.folder-structure img{
- border-top-left-radius: 8px;
- border-top-right-radius: 8px;
- max-width:100%;
- width: 100%;
-} */
-
 
 /* sprint16-v1 start */
 .all-sectors{
@@ -1929,7 +1920,7 @@ section.lpBAck:before, .lpSecOne:before {
   flex-wrap: wrap;
 }
 .all-sectors li {
-  width: calc(25% - 10px);
+  width: auto;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
@@ -2408,15 +2399,16 @@ font-weight: normal;
 }
 
 .all-sectors li {
-  width: calc(25% - 8px);
+  /* width: calc(25% - 8px); */
+  width: auto;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
 }
 
-.all-sectors li:nth-child(4n+4) {
+/* .all-sectors li:nth-child(4n+4) {
   margin-right: 0px !important;
-}
+} */
 .insideScroll{
   padding: 0px;
   margin-bottom: 20px;
@@ -4073,8 +4065,9 @@ ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
 }
 
 img.closeIcon {
-  width: 20px !important;
+  width: 14px !important;
   float: right;
+  opacity: 1 !important;
 }
 .dropdownCreate.createFolder form {
   clear: left;

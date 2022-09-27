@@ -60,7 +60,7 @@
       </ul>
     </div>
 
-    <div class="customTab">
+    <div class="customTab pb-10" *ngIf="countOfTheme == 0">
       <div class="container-fluid">
         <ul class="catalogue-feature-blk">
           <li *ngFor="let item of categoryArray">
@@ -72,7 +72,7 @@
       </div>
     </div>
   
-    <div class="customTab" *ngIf="!checkShowDetailview()">
+    <div class="customTab pt-0" *ngIf="!checkShowDetailview()">
   
       <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
         <!--Remove anchore tag <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">What’s Trending</a> -->
@@ -339,7 +339,7 @@
 
     <div
       *ngIf="!checkShowRecent() || checkShowDetailview()"
-      class="container pl-160 "
+      class="container pl-160 pt-30"
       [ngClass]="{'animate__animated animate__fadeIn' : !checkShowRecent() || checkShowDetailview()}"
     >
       <div class="row" style="justify-content: space-between">
@@ -348,7 +348,7 @@
             ><img src="../../assets/images/back-arrow.svg" /> Back</span
           >
         </div>
-        <div class="view-title">
+        <div class="view-title" *ngIf="!searchTerm.ecm_fulltext">
           <span style="padding-left: 11px">{{getDetailViewTitle()}}</span>
         </div>
         <div
@@ -577,6 +577,16 @@
             >
           </div>
         </div>
+      </div>
+
+      <div class="row pt-30" *ngIf="countOfTheme > 0">
+        <ul class="catalogue-feature-blk">
+          <li *ngFor="let item of categoryArray">
+            <div class="catalogue-feature-cont" (click)="activeSearchCatalogue(item)" [ngClass]="{ 'activeSearch' : checkedNameClicked(item) }">
+              <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked(item)" /> {{item}}</span>
+            </div>
+          </li>
+        </ul>
       </div>
 
       <div class="row">
