@@ -65,6 +65,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   selectedFile: any; // TODO: add interface, search result entires
   selectedFileUrl: string;
   // favourite: boolean;
+
+  categoryArray = ["People","Sports","Nature", "Leisure","Technology","Animals","Transportation","Places","Events"];
   active = 1;
   showShadow = false;
   selectedTab;
@@ -210,7 +212,10 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   downloadErrorShow: boolean = false;
   downloadEnable: boolean = false;
+  hasSearchData: boolean = false;
   isAware;
+
+  searchNameCLicked = [];
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -237,7 +242,15 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.getAssetBySectors();
     this.selectTab("recentlyViewed");
     this.showRecentlyViewed = true;
-
+    this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
+      this.hasSearchData = true
+      if (!searchTerm) {
+        this.hasSearchData = false
+      }
+      this.searchNameCLicked =[]
+      this.countOfTheme = 0
+      this.searchNameCLicked.push(this.sharedService.toStartCase(searchTerm));
+    });
     this.dataService.showHideLoader$.subscribe((value) => {
       // if(value) this.loading.push(value);
       // else this.loading.pop();
@@ -340,6 +353,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.searchTem = searchTerm;
+      
+      // this.searchNameCLicked.push(this.sharedService.toStartCase(searchTerm));
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
       this.dummyPlaceholderTags = true;
@@ -363,7 +378,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.searchTerm = { ecm_fulltext: "" };
     this.dataService.showRecentInit(false);
     this.dataService.tagsMetaRealInit([]);
-
+    this.searchNameCLicked=[]
+    this.countOfTheme =0
     // this.clearFilter();
     // this.resetView();
     this.selectTab("recentlyViewed");
@@ -1247,5 +1263,46 @@ export class DocumentComponent implements OnInit, OnChanges {
       this.getFavouriteCollection(this.favouriteUID,this.favouriteOffset,  16,true)
 
     }
+  }
+    termFinal:string =""
+    countOfTheme:number = 0
+    selectTheme:boolean=false
+  activeSearchCatalogue(name:string) {
+    if(this.searchNameCLicked.indexOf(name) === -1) {
+      this.searchNameCLicked.push(name);
+      this.countOfTheme += 1 
+      this.selectTheme = true
+     
+    } else {
+      this.searchNameCLicked = this.searchNameCLicked.filter(m => m !== name)
+      this.selectTheme = false
+      if (this.countOfTheme >2) {
+        let termArray = this.termFinal.split(" or ")
+        termArray.pop()
+        this.termFinal = termArray.join(" or ")
+      }
+      this.countOfTheme -= 1 
+    }
+    if (!this.hasSearchData) {
+      this.termFinal = this.searchNameCLicked.join(" or ")
+    }else{
+      if (this.countOfTheme ==1) {
+        this.termFinal = this.searchNameCLicked.join(" and ")
+      }if (this.countOfTheme >1 && this.selectTheme) {
+        this.termFinal = this.termFinal +" or "+this.sharedService.toStartCase(this.searchTem) +" and " + this.searchNameCLicked[this.searchNameCLicked.length-1]
+      }
+
+      if (this.countOfTheme ==0) {
+        this.termFinal = this.sharedService.toStartCase(this.searchTem)
+      }
+    }
+    this.dataService.termSearchInit(this.termFinal)
+  }
+
+  checkedNameClicked(name:string) {
+    if(this.searchNameCLicked.indexOf(this.sharedService.toStartCase(name)) !== -1 ) {
+      return true;
+    }
+    return false;
   }
 }

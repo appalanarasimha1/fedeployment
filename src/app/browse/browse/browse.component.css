@@ -3612,18 +3612,18 @@ ul.downloadImgLisst li .contentListBlk {
   left: auto;
 }
 .addignCollaborators h2{
-  color: #BAB8B2;
+  color: #040404;
   text-align: center;
   padding-bottom: 40px;
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 22px;
+  font-family: 'brownlight';
 }
 .addUsers {
   text-align: center;
 }
 .addUserBtn {
   display: inline-block;
-  background: #23211E;
+  background: #937206;
   border-radius: 80px;
   padding: 9px 38px;
   cursor: pointer;
@@ -3634,7 +3634,7 @@ ul.downloadImgLisst li .contentListBlk {
 }
 .addUserBtn-disabled {
   display: inline-block;
-  background: #23211E;
+  background: #937206;
   border-radius: 80px;
   padding: 9px 38px;
   cursor: not-allowed;
@@ -4071,13 +4071,46 @@ ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
 .input-sizer.customRenameBlock input::-ms-input-placeholder { /* Microsoft Edge */
   color: #000 !important;
 }
+
+img.closeIcon {
+  width: 20px !important;
+  float: right;
+}
+.dropdownCreate.createFolder form {
+  clear: left;
+  width: 100%;
+  float: left;
+  padding-top: 10px;
+}
 .privateFileshare {
   background: #E5F0EC;
   border-radius: 8px;
-  padding: 8px 15px;
+  padding: 4px 15px;
   color: #006845;
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
+  display: inline-block;
+  margin-top: 100px;
   /* font-family: 'brownlight'; */
+}
+.addignCollaborators img.collaboratorsIcon {
+  display: block;
+  margin: 0px auto 40px;
+  max-width: 70px;
+}
+.publicUseBlk.published {
+  background-color: #E9E0C1;
+}
+.publicUseBlk.published img{
+  width: 10px;
+}
+.publicUseBlock.publishedBlock .mouseHoverInfo {
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  color: #040404;
+  width: 450px;
+  right: 0px;
+  left: auto;
+  padding: 12px 15px;
 }
