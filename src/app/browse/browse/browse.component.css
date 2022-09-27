@@ -1441,7 +1441,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
   position: absolute;
   top: 28px;
   left: 0px;
-  z-index: 9;
+  z-index: 99;
   border-radius: 4px;
   padding: 6px 12px;
   background: #413E3C;
@@ -3068,7 +3068,7 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
   position: absolute;
   top: 28px;
   left: 0px;
-  z-index: 9;
+  z-index: 99;
   border-radius: 4px;
   padding: 6px 12px;
   background: #413E3C;
@@ -4070,4 +4070,14 @@ ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
 
 .input-sizer.customRenameBlock input::-ms-input-placeholder { /* Microsoft Edge */
   color: #000 !important;
+}
+.privateFileshare {
+  background: #E5F0EC;
+  border-radius: 8px;
+  padding: 8px 15px;
+  color: #006845;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  /* font-family: 'brownlight'; */
 }
