@@ -1905,3 +1905,8 @@ ol.publicUse li:hover .mouseHoverInfo {
 .commentTextBlk {
   width: calc(100% - 40px);
 }
+.eyeIcon {
+  display: inline-block;
+  width: 16px;
+  vertical-align: 0px;
+}

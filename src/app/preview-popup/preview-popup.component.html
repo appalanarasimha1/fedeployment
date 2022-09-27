@@ -13,14 +13,14 @@
             <ol class="publicUse" >
               <li>
                 <div class="publicUseBlock" *ngIf="hasNoRestriction() && !hasPrivateAccess()">
-                  <div class="publicUseBlk" >Public use</div>
+                  <div class="publicUseBlk" >ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
                     Can be used in the public domain, e.g. on social media.
                   </div>
                 </div>
 
                 <div class="internalUseBlock" *ngIf="internalUse() && !hasPrivateAccess()">
-                  <div class="publicUseBlk">Internal use</div>
+                  <div class="publicUseBlk">NEOM EMAIL HOLDERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
                     Cannot be used in the public domain. i.e. only for use in internal documents or media.
                   </div>
