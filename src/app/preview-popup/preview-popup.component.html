@@ -9,20 +9,20 @@
     <div class="modal-body">
       <div class="modalHead">
         <div class="row flexible" style="justify-content: space-between">
-          <div class="col-xl-6 col-md-6">
+          <div class="col-xl-7 col-md-7">
             <ol class="publicUse" >
               <li>
                 <div class="publicUseBlock" *ngIf="hasNoRestriction() && !hasPrivateAccess()">
-                  <div class="publicUseBlk" >ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
+                  <div class="publicUseBlk">ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
-                    Can be used in the public domain, e.g. on social media.
+                    This asset is visible to all NEOM users and their external collaborators
                   </div>
                 </div>
 
                 <div class="internalUseBlock" *ngIf="internalUse() && !hasPrivateAccess()">
                   <div class="publicUseBlk">NEOM EMAIL HOLDERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
-                    Cannot be used in the public domain. i.e. only for use in internal documents or media.
+                    This asset is visible to users with NEOM emails only
                   </div>
                 </div>
 
@@ -33,7 +33,7 @@
                   </div>
                 </div>
               </li>
-              <li *ngIf="!hasPrivateAccess()">
+              <li *ngIf="!hasPrivateAccess() && getApprovalUsers1()">
                 <div class="usagePermission">Usage permission{{!getApprovalUsers1() ? ' not':''}} required</div>
                 <div class="mouseHoverInfo w219">
                   {{!getApprovalUsers1()? 'Does not requires approval before use':'Requires approval before use'}}.
@@ -51,7 +51,7 @@
               </li>
             </ol>
           </div>
-          <div class="col-xl-6 col-md-6">
+          <div class="col-xl-5 col-md-5">
             <ul class="flexible">
               <li class="customtooltip">
                 <a placement="bottom" ngbTooltip="Favourite">
