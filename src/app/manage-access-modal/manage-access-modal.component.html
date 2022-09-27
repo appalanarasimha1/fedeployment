@@ -7,9 +7,9 @@
         <div *ngIf="docIsPrivate" class="tagBlock">Private</div>
     </div>
 
-    <!-- <div class="breadcrumbBlock">
-        / <a href="#" class="active">Marketing</a> <span class="active">/ Photoshoot-2022-02-10</span>
-    </div> -->
+    <div class="breadcrumbBlock">
+        <span  *ngFor="let c of folderStructure; let i = index">/<span [ngClass]="i === folderStructure.length - 1? 'active': ''"> {{c.title}}</span> </span> 
+    </div>
 
     <div *ngIf="docIsPrivate" class="whenYouConvert">
         When you convert this folder to published, it's contents will become available for all Ground X users or internal users only. They will appear in Ground X search.

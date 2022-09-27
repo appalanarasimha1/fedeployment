@@ -1278,7 +1278,7 @@
                         <div class="publicUseBlock publishedBlock">
                           <div class="publicUseBlk published">Published <img src="../../../assets/images/published-arrow.svg" /></div>
                           <div class="mouseHoverInfo">
-                            <app-manage-access-modal [input_data]="item" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
+                            <app-manage-access-modal [input_data]="item" [input_folder_structure]="breadCrumb" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
                           </div>
                         </div>
                       </span>

@@ -14,12 +14,14 @@ import { DataService } from "../services/data.service";
 export class ManageAccessModalComponent implements OnInit {
 
   @Input() input_data: any;
+  @Input() input_folder_structure: any;
   @Output() markIsPrivate: EventEmitter<any> = new EventEmitter();
   uploadedAsset;
   selectedFolder: any;
   makePrivate: boolean = false;
   docIsPrivate: boolean = false;
   error: string;
+  folderStructure:any =[]
 
   constructor(
     private apiService: ApiService,
@@ -33,6 +35,8 @@ export class ManageAccessModalComponent implements OnInit {
   ngOnInit(): void {
     this.selectedFolder = this.input_data || this.data.selectedFolder;
     this.docIsPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
+    this.folderStructure = this.input_folder_structure
+    console.log("sdfg",this.input_folder_structure);
   }
 
   async closeModal(isUpdated = false) {
