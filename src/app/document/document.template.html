@@ -354,6 +354,7 @@
         <div
           class="main-headingSearch flexible pb-4 col-xl-8"
           style="align-items: baseline"
+          *ngIf="this.searchTem"
         >
           <span
             *ngIf="searchTerm.ecm_fulltext"
@@ -361,7 +362,7 @@
             class="commonHeading"
             style="font-size: 28px; text-transform: capitalize; cursor: pointer"
           >
-            {{searchTerm.ecm_fulltext}}
+            {{searchTerm.ecm_fulltext.split(" and ")[0]}}
             <img
               src="../assets/images/circle-close.png"
               style="width: 14px; margin-left: 3px"
@@ -375,10 +376,9 @@
           <li [ngClass]="detailView === 'recentUpload' ? 'active' : ''"><a (click)="showAll('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
           <li [ngClass]="detailView === 'recentView' ? 'active' : ''"><a (click)="showAll('recentView')" data-toggle="tab">Recently Viewed</a></li>
         </ul> -->
-
         <div class="col-xl-4" *ngIf="!detailView">
           <!-- detailView !== 'recentView' -->
-          <div class="row" style="">
+          <div class="row" style="" *ngIf="this.searchTem">
             <div class="col-xl-8" [ngClass]="!showGridListSwitcher() ? 'fludeSortBy' : '' ">
               <span><b>Sort by:</b> </span>
               <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">

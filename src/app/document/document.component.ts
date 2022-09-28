@@ -29,6 +29,7 @@ import { NgxMasonryComponent } from "ngx-masonry";
 import { DataService } from "../services/data.service";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { UNWANTED_WORKSPACES } from "../upload-modal/constant";
+import { AITHEME } from "../config/search.config";
 @Component({
   selector: "app-content",
   // Our list of styles in our component. We may add more to compose many styles together
@@ -384,6 +385,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     // this.resetView();
     this.selectTab("recentlyViewed");
     this.dataService.searchBarClickInit(false);
+    this.dataService.termSearchForHideInit("")
   }
 
   getRecentlyViewed() {
@@ -1296,7 +1298,10 @@ export class DocumentComponent implements OnInit, OnChanges {
         this.termFinal = this.sharedService.toStartCase(this.searchTem)
       }
     }
-    this.dataService.termSearchInit(this.termFinal)
+    // let mappedData = AITHEME[name.toLowerCase()].join(" or ")
+    // console.log(mappedData)
+    this.dataService.termSearchForThemeInit(this.termFinal)
+    // this.dataService.termSearchForThemeInit(mappedData)
   }
 
   checkedNameClicked(name:string) {
