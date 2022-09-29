@@ -3683,9 +3683,9 @@ svg.classificationsIcon.disablePermission path {
   z-index: 9;
   display: none;
 }
-.publicUseBlock:hover .mouseHoverInfo {
+/* .publicUseBlock:hover .mouseHoverInfo {
   display: block;
-}
+} */
 
 .manageAccessBtn {
   float: right;
@@ -4097,6 +4097,8 @@ img.closeIcon {
 }
 .publicUseBlk.published img{
   width: 10px;
+  display: inline-block;
+  height: 23px;
 }
 .publicUseBlock.publishedBlock .mouseHoverInfo {
   background: #FFFFFF;
@@ -4106,4 +4108,26 @@ img.closeIcon {
   right: 0px;
   left: auto;
   padding: 12px 15px;
+  cursor: auto;
+}
+.publicUseBlk.published::after {
+  z-index: -1;
+}
+
+
+
+
+.collapse{
+  cursor: pointer;
+  display: block;
+  background: #cdf;
+}
+.collapse + input{
+  display: none; /* hide the checkboxes */
+}
+.collapse + input + div{
+  display:none;
+}
+.collapse + input:checked + div{
+  display:block;
 }
