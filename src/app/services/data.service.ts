@@ -12,6 +12,7 @@ export class DataService {
   private resetFilter = new Subject<string>();
   private termSearch = new Subject<string>();
   private termSearchForHide = new Subject<string>();
+  private termSearchForTheme = new Subject<string>();
   private showRecent = new Subject<boolean>();
   private tagsMetaReal = new Subject<boolean>();
   private searchBarClick = new Subject<boolean>();
@@ -28,6 +29,7 @@ export class DataService {
   resetFilter$ = this.resetFilter.asObservable();
   termSearch$ = this.termSearch.asObservable();
   termSearchForHide$ = this.termSearchForHide.asObservable();
+  termSearchForTheme$ = this.termSearchForTheme.asObservable();
   showRecent$ = this.showRecent.asObservable();
   tagsMetaReal$ = this.tagsMetaReal.asObservable();
   searchBarClick$ = this.searchBarClick.asObservable();
@@ -60,6 +62,9 @@ export class DataService {
     this.termSearchForHide.next(term);
   }
 
+  termSearchForThemeInit(term: string) {
+    this.termSearchForTheme.next(term);
+  }
   showRecentInit(show: boolean) {
     this.showRecent.next(show);
   }

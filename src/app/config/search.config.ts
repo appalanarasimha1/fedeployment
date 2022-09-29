@@ -1,0 +1,3 @@
+export const AITHEME = {
+    "people":["people","andrew mcevoy","wayne borg","vishal wanchoo","roger nickells","crown prince mohammed bin salman al saud","peter terium","paul marshall","nadhmi alnasr","king salman bin abdulaziz al saud","justin mynar","juan carlos","jan paterson","christopher tompkins","neom ceo","sector head","managing director","executive director","sector head","prince","chief environment officer","king","woman","person","man","boy","girl","disgust","angry","stressful","neutral","sad","happy","fear","jacket","scarf","shorts","tie","clothing","suit","trousers","cloth","coat","swimwear","shirt","hat","footwear","goggles","fashion accessory","handbag","tying bow tie","sunglasses"]
+  };
