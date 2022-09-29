@@ -185,6 +185,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   publishingAssets: boolean = true;
   publishingPrivateAssets: boolean = false;
 
+  currentIndexPublished: any;
+
   async ngOnInit() {
     this.fetchUserData();
     let fetchAll = false;
@@ -238,6 +240,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
       if (window.location.href.includes(`${window.location.origin}/workspace`)) {
         this.initialLoad = false;
+        setTimeout(() => {
+          console.log('afterContent');
+          this.manageAccessPublished();
+        }, 500);
       }
 
     });
@@ -2121,5 +2127,35 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
     });
 
+  }
+
+  manageAccessPublished() {
+    $(".publishedOpen").on("click", function (e) {
+      $(".manageAccessPopup").show();
+      $(".publishedOpen").addClass("publishedClick");
+      e.stopPropagation();
+    });
+    $(".publishedOpen.publishedClick").on("click", function (e) {
+      $(".manageAccessPopup").hide();
+      $(".publishedOpen").removeClass("publishedClick");
+      e.stopPropagation();
+    });
+
+    $(".mouseHoverInfo.manageAccessPopup").click(function (e) {
+      e.stopPropagation();
+      $(".manageAccessPopup").show();
+      $(".publishedOpen").removeClass("publishedClick");
+    });
+
+    // if ($(".mouseHoverInfo.manageAccessPopup")[0]){
+    //   // Do something if class exists
+    // } else {
+    //     // Do something if class does not exist
+    // }
+
+    // $(document).click(function () {
+    //   $(".manageAccessPopup").hide();
+    //   $(".publishedOpen").removeClass("publishedClick");
+    // });
   }
 }
