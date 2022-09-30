@@ -1212,6 +1212,8 @@
                               id="checkbox-{{ i }}"
                               type="checkbox"
                               (change)="selectFolder($event, item, i)"
+                              [checked]="item.isSelected"
+                              [(ngModel)]="item.isSelected"
                             />
                             <div class="control__indicator"></div>
                           </label>
