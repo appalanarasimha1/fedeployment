@@ -568,19 +568,20 @@ height: 100%;
 .comment-content input{
   font-size: 15px;
   line-height: 22px;
-  color: #FFFFFF;
-  border-radius: 4px;
-  border: 1px solid #fff;
-  width: calc(100% - 220px);
+  color: #413E3C;
+  border-radius: 8px;
+  border: 0px solid #fff;
   margin: auto;
+  width: 100%;
+  background: #F6F5F2;
+  padding: 15px;
+  text-align: left;
+  margin-bottom: 10px;
+  /* width: calc(100% - 220px);
   position: absolute;
   bottom: -80px;
-  text-align: center;
-  background: transparent;
-  padding: 15px;
   left: 0;
-  text-align: left;
-  right: 0;
+  right: 0; */
 }
 .info-content ul{
   list-style: none;
@@ -1221,7 +1222,7 @@ color: #C4C4C4;
   margin-left: unset;
 }
 input::placeholder {
-  color: #fff !important;
+  color: #C0BEBB !important;
 }
 .numberFiles{
   font-size: 14px;
@@ -1909,4 +1910,63 @@ ol.publicUse li:hover .mouseHoverInfo {
   display: inline-block;
   width: 16px;
   vertical-align: 0px;
+}
+.wd100 {
+  width: 100% !important;
+}
+.comment-content ul li .commentTextBlk p.nameContent {
+  color: #DEB31A;
+}
+.comment-content ul li .commentTextBlk p.bodyContent {
+  color: #040404;
+  font-family: 'brownlight';
+}
+.comment-content ul li .commentTextBlk p.bodyContent span {
+  color: #DEB31A;
+  opacity: 1;
+  font-family: 'brownregular';
+}
+.comment-content ul {
+  height: auto;
+  padding-top: 0px;
+}
+.comment-content ul li.allComments {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.comment-content ul li.allComments span {
+  color: #BAB8B2;
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 10px;
+}
+.comment-content ul li.allComments span:hover {
+  background: #F6F5F2;
+  line-height: normal;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: #a19f98;
+}
+.comment-content ul li.allComments {
+  min-height: 61px;
+  margin-bottom: 10px;
+}
+form.commentTextForm {
+  position: relative;
+}
+.commentBtn {
+  appearance: none;
+  border: 0px;
+  border-radius: 0px;
+  color: #D1CFC9;
+  /* letter-spacing: -0.02em; */
+  position: absolute;
+  right: 16px;
+  top: 15px;
+  background: transparent;
+  padding: 0px;
+}
+.commentBtn.activeBtn {
+  color: #DEB31A;
 }

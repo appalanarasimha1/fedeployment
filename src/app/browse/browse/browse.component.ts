@@ -241,7 +241,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (window.location.href.includes(`${window.location.origin}/workspace`)) {
         this.initialLoad = false;
         setTimeout(() => {
-          console.log('afterContent');
           this.manageAccessPublished();
         }, 500);
       }
