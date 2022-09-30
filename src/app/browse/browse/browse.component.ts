@@ -2161,15 +2161,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       $(".publishedOpen").removeClass("publishedClick");
     });
 
-    // if ($(".mouseHoverInfo.manageAccessPopup")[0]){
-    //   // Do something if class exists
-    // } else {
-    //     // Do something if class does not exist
-    // }
-
-    // $(document).click(function () {
-    //   $(".manageAccessPopup").hide();
-    //   $(".publishedOpen").removeClass("publishedClick");
-    // });
+    $(document).click(function (e) {
+      if (!$(e.target).hasClass("publishedOpen") && $(e.target).parents(".manageAccessPopup").length === 0) {
+        $(".manageAccessPopup").hide();
+        $(".publishedOpen").removeClass("publishedClick");
+      }
+    });
   }
 }
