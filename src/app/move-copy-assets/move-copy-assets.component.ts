@@ -136,6 +136,9 @@ export class MoveCopyAssetsComponent implements OnInit {
   checkCanDelete(item) {
     return this.user === item.properties["dc:creator"]?.id || this.user === item.properties["dc:creator"];
   }
+  checkCanMove(m){
+    return  ["workspace", "folder", "orderedfolder"].indexOf(m.type.toLowerCase()) !== -1
+}
 
   async moveAssets() {
     if (!this.selectedDestination) return;
@@ -145,7 +148,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     const arrayCall = [];
     const arrayIndex = [];
     for (const key in this.selectedList) {
-      if(this.checkCanDelete(this.selectedList[key])){
+      if(this.checkCanDelete(this.selectedList[key]) || this.checkCanMove(this.selectedList[key])){
         arrayCall.push(this.moveAsset(this.selectedList[key]));
         arrayIndex.push(key)
       }

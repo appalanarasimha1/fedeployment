@@ -932,7 +932,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   moveModalFailed() {
     this.sharedService.showSnackbar(
-      "You can't move/copy a folder created by other user",
+      "You can't move/copy a asset created by other user",
       6000,
       "top",
       "center",
@@ -2095,9 +2095,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
+  checkCanMove(m){
+      return  ["workspace", "folder", "orderedfolder"].indexOf(m.type.toLowerCase()) !== -1
+  }
+
   async openMoveModal() {
     const listDocs = Object.values(this.selectedMoveList)
-    .filter( item => this.checkCanDelete(item))
+    .filter( item => this.checkCanMove(item) || this.checkCanDelete(item))
+   console.log("listDocslistDocs",listDocs);
+    
     if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
