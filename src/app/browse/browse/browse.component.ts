@@ -930,6 +930,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     );
   }
 
+  moveModalFailed() {
+    this.sharedService.showSnackbar(
+      "You can't move/copy a folder created by other user",
+      6000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
+  }
+
   recoverModal(listDocs) {
     let recoveredFolders = this.trashedList.filter((item) =>
       listDocs.includes(item["uid"])
@@ -1779,6 +1789,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.copyRightItem = []
     this.canNotDelete=[]
     this.selectedFolderList={}
+    this.selectedMoveList={}
     // this.isAware=false
     // $(".vh").prop("checked", false);
     this.sortedData.forEach((e) => (e.isSelected = false));
@@ -2085,6 +2096,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async openMoveModal() {
+    const listDocs = Object.values(this.selectedMoveList)
+    .filter( item => this.checkCanDelete(item))
+    if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -2094,6 +2108,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       selectedList: this.selectedMoveList,
       parentId: this.sectorSelected.uid,
       sectorList: this.folderStructure[0]?.children || [],
+      user:this.user
     }
 
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);

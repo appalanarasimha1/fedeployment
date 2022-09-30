@@ -60,7 +60,7 @@
       </ul>
     </div>
 
-    <div class="customTab pb-10" *ngIf="countOfTheme == 0">
+    <div class="customTab pb-10" *ngIf="countOfTheme == 0 && !(!checkShowRecent() || checkShowDetailview())">
       <div class="container-fluid">
         <ul class="catalogue-feature-blk">
           <li *ngFor="let item of categoryArray">
@@ -579,7 +579,7 @@
         </div>
       </div>
 
-      <div class="row pt-30" *ngIf="countOfTheme > 0">
+      <div class="row pt-30" *ngIf="countOfTheme > 0 || (!checkShowRecent() || checkShowDetailview())">
         <ul class="catalogue-feature-blk">
           <li *ngFor="let item of categoryArray">
             <div class="catalogue-feature-cont" (click)="activeSearchCatalogue(item)" [ngClass]="{ 'activeSearch' : checkedNameClicked(item) }">
