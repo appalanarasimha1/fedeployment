@@ -2060,3 +2060,6 @@ ul.catalogue-feature-blk li {
 .pt-30{
   padding-top: 30px !important;
 }
+.sectorsDropdown .dropdown-menu {
+  z-index: 9 !important;
+}
