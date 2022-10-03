@@ -2063,3 +2063,6 @@ ul.catalogue-feature-blk li {
 .sectorsDropdown .dropdown-menu {
   z-index: 9 !important;
 }
+.sectorsDropdown .d-inline-block.dropdown{
+  z-index: 99 !important;
+}
