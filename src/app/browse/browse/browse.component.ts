@@ -186,6 +186,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   publishingPrivateAssets: boolean = false;
 
   currentIndexPublished: any;
+  currentIndexRightClick: any;
 
   async ngOnInit() {
     this.fetchUserData();
@@ -2174,4 +2175,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  onRightClick() {
+    $(document).click(function (e) {
+      console.log('row click');
+      if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0) {
+        $(".availableActions").hide();
+      } else {
+        $(".availableActions").show();
+      }
+    });
+    return false;
+  }
+
 }
