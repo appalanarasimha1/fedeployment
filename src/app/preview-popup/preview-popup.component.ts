@@ -489,6 +489,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return permissions.includes("CanDownload");
   }
 
+  checkRejected() {
+    const permissions = this.doc?.contextParameters.permissions || [];
+    return permissions.includes("DownloadRequestRejected");
+  }
+
   hasRequestPending() {
     const permissions = this.doc?.contextParameters.permissions || [];
     return this.requestSent || permissions.includes("DownloadRequestPending");

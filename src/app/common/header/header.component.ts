@@ -59,7 +59,9 @@ export class HeaderComponent implements OnInit {
   thisWeekNoti: any[];
   earlierNoti: any[];
   rejectComment = "";
-  showRejectForm = false;
+  showRejectForm = {};
+  requestSent = {};
+  isApproved = {};
 
   constructor(
     private nuxeo: NuxeoService,
@@ -125,6 +127,9 @@ export class HeaderComponent implements OnInit {
       }
     });
     this.getNotifications();
+    this.showRejectForm = {};
+    this.requestSent = {};
+    this.isApproved = {};
 
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
@@ -286,11 +291,20 @@ export class HeaderComponent implements OnInit {
     this.notifications = res['value'];
     this.thisWeekNoti = [];
     this.earlierNoti = [];
+    this.computeDuplicateRequestDownloadNoti();
     this.computeNotifications();
   }
 
-  computeRequestDownloadNoti() {
-
+  computeDuplicateRequestDownloadNoti() {
+    this.notifications = this.notifications.sort((a, b) => {
+      if (a.id > b.id) return -1;
+      else return 1;
+    });
+    this.notifications = this.notifications.filter((value, index, self) =>
+      index === self.findIndex((t) => (
+        t.docUUID === value.docUUID && t.eventDate === value.eventDate
+      ))
+    );
   }
 
   computeNotifications() {
@@ -311,6 +325,12 @@ export class HeaderComponent implements OnInit {
   buildRequestDownloadNotificationTitle(notification) {
     const extended = notification.extended;
     return `${extended.requestedBy} requests to download an asset.`;
+  }
+
+  buildRequestDownloadResponseNotificationTitle(notification) {
+    const extended = notification.extended;
+    return extended.isApproved ? `${extended.processedBy} has approved your download request.`
+      : `${extended.processedBy} has rejected your download request.`
   }
 
   getNotificationSince(notification) {
@@ -340,7 +360,8 @@ export class HeaderComponent implements OnInit {
       },
     };
     await this.apiService.post(apiRoutes.PROCESS_REQUEST_DOWNLOAD, body).toPromise();
-    // this.requestSent = true;
+    this.requestSent[notification.id] = true;
+    this.isApproved[notification.id] = isApproved;
   }
 
   allNotifactionOpen(allNotifactionContent) {
