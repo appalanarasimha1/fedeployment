@@ -97,7 +97,7 @@ export class LandingPageComponent implements OnInit {
 
   getFavouriteCollection(favouriteUid: string) {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, queryParams: favouriteUid };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags', "permissions"], 'fetch.document': 'properties', properties: '*' };
     this.nuxeo.nuxeoClient.request(apiRoutes.GET_FAVOURITE_COLLECTION, { queryParams, headers}).get()
       .then((response) => {
         if(response) this.favourites = response?.entries;
@@ -118,7 +118,7 @@ export class LandingPageComponent implements OnInit {
 
   getTasks() {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 16, userId: 'Administrator' };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch-task': 'targetDocumentIds,actors', properties: 'dublincore,common,file,uid' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags', "permissions"], 'fetch-task': 'targetDocumentIds,actors', properties: 'dublincore,common,file,uid' };
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_TASKS, { queryParams, headers }).get()
       .then((response) => {
         this.tasks = response.entries;
@@ -139,7 +139,7 @@ export class LandingPageComponent implements OnInit {
 
   getCollections() {
     const queryParams = { currentPageIndex: 0, offset: 0, pageSize: 40, sortBy: 'dc:modified', sortOrder: 'desc', searchTerm: '%', user: '%currentUser' };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites'], 'fetch-task': 'targetDocumentIds,actors', properties: 'dublincore,common,file,uid' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', "permissions"], 'fetch-task': 'targetDocumentIds,actors', properties: 'dublincore,common,file,uid' };
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_COLLECTIONS, { queryParams, headers }).get()
       .then((response) => {
         this.collections = response.entries;
@@ -160,7 +160,7 @@ export class LandingPageComponent implements OnInit {
 
   getEdited() {
     const queryParams = { currentPageIndex: 0, offset: 10, pageSize: 16, queryParams: '/', system_primaryType_agg: `["Picture"]` };
-    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags'], 'fetch.document': 'properties', properties: '*', 'fetch-task': 'actors' };
+    const headers = { 'enrichers-document': ['thumbnail', 'renditions', 'favorites', 'tags', "permissions"], 'fetch.document': 'properties', properties: '*', 'fetch-task': 'actors' };
     this.nuxeo.nuxeoClient.request(apiRoutes.FETCH_RECENT_EDITED, { queryParams, headers }).get()
       .then((response) => {
         this.recentEdited = response.entries.filter(entry => entry.type.toLowerCase() === constants.PICTURE_SMALL_CASE);

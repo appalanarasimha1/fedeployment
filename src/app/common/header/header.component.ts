@@ -58,6 +58,8 @@ export class HeaderComponent implements OnInit {
   notifications: any[];
   thisWeekNoti: any[];
   earlierNoti: any[];
+  rejectComment = "";
+  showRejectForm = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -287,6 +289,10 @@ export class HeaderComponent implements OnInit {
     this.computeNotifications();
   }
 
+  computeRequestDownloadNoti() {
+
+  }
+
   computeNotifications() {
     let i = 0;
     for (i; i < this.notifications.length; i++) {
@@ -296,10 +302,15 @@ export class HeaderComponent implements OnInit {
     this.earlierNoti = this.notifications.slice(i);
   }
 
-  buildNotificationTitle(notification) {
+  buildRenameNotificationTitle(notification) {
     const extended = notification.extended;
     const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
     return `${extended.updatedBy} renamed ${isAsset ? '' : 'folder '} "${extended.oldTitle}" to "${extended.title}"`;
+  }
+
+  buildRequestDownloadNotificationTitle(notification) {
+    const extended = notification.extended;
+    return `${extended.requestedBy} requests to download an asset.`;
   }
 
   getNotificationSince(notification) {
@@ -318,6 +329,20 @@ export class HeaderComponent implements OnInit {
     else this.router.navigate(['workspace'], {queryParams : {folder: notification.docUUID}});
   }
 
+  async processDownloadRequest(notification, isApproved) {
+    const body = {
+      context: {},
+      input: notification.docUUID,
+      params: {
+        rejectComment: this.rejectComment,
+        requestedBy: notification.extended.requestedBy,
+        isApproved,
+      },
+    };
+    await this.apiService.post(apiRoutes.PROCESS_REQUEST_DOWNLOAD, body).toPromise();
+    // this.requestSent = true;
+  }
+
   allNotifactionOpen(allNotifactionContent) {
     this.modalOpen = true;
     this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
@@ -326,7 +351,7 @@ export class HeaderComponent implements OnInit {
     });;
   }
 
-  
+
   checkWorkspaceActive(){
     if (window.location.href.includes(`${window.location.origin}/workspace`)) {
       return true

@@ -1905,3 +1905,6 @@ ol.publicUse li:hover .mouseHoverInfo {
 .commentTextBlk {
   width: calc(100% - 40px);
 }
+.requesInput {
+  color: #000;
+}

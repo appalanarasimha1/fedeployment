@@ -223,6 +223,7 @@ export class SearchComponent implements OnInit {
         "audit",
         "renditions",
         "preview",
+        "permissions",
       ],
       "fetch.document": "properties",
       properties: "*",

@@ -158,9 +158,13 @@
                           <ul>
                             <li *ngFor="let item of notifications | slice:0:10">
                               <div (click)="goToNotificationLink(item)" style="cursor: pointer;">
-                                <div class="notifactionHead">
-                                  {{buildNotificationTitle(item)}}
+                                <div *ngIf="item.extended.type === 'rename'" class="notifactionHead">
+                                  {{buildRenameNotificationTitle(item)}}
                                 </div>
+                                <div *ngIf="item.extended.type === 'requestDownload'" class="notifactionHead">
+                                  {{buildRequestDownloadNotificationTitle(item)}}
+                                </div>
+
                                 <div class="notifactionImgCont">
                                   <div class="notifactionImg">
                                     <img src="{{buildNotificationIcon(item)}}" alt="" />
@@ -284,9 +288,25 @@
         <div *ngIf="thisWeekNoti.length > 0" class="notifactionList">
           <ul>
             <li *ngFor="let item of thisWeekNoti">
-              <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;">
+              <!-- <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;"> -->
+              <div>
                 <div class="notifactionListContLeft">
-                  <p>{{buildNotificationTitle(item)}}</p>
+                  <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" *ngIf="item.extended.type === 'rename'" style="cursor: pointer;" class="">
+                    {{buildRenameNotificationTitle(item)}}
+                  </div>
+                  <div *ngIf="item.extended.type === 'requestDownload'" class="">
+                    {{buildRequestDownloadNotificationTitle(item)}}
+                    <div *ngIf="!showRejectForm" class="request-download-btn-group">
+                      <button (click)="showRejectForm = true">Reject</button>
+                      <button (click)="processDownloadRequest(item, true)">Approve</button>
+                    </div>
+                    <div *ngIf="showRejectForm" class="download-request-reject-form">
+                      <input type="text" [(ngModel)]="rejectComment" class="requesInput" name="rejectComment"
+                        placeholder="Write a comment here" />
+                      <button (click)="processDownloadRequest(item, false)">Submit</button>
+                      <button (click)="showRejectForm = false">Cancel</button>
+                    </div>
+                  </div>
                   <div class="notifactionImgCont">
                     <div class="notifactionImg"><img src="{{buildNotificationIcon(item)}}" alt=""></div>
                     <div class="notifactionCont">{{item.extended.title}}</div>
@@ -306,7 +326,7 @@
             <li *ngFor="let item of earlierNoti">
               <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;">
                 <div class="notifactionListContLeft">
-                  <p>{{buildNotificationTitle(item)}}</p>
+                  <p>{{buildRenameNotificationTitle(item)}}</p>
                   <div class="notifactionImgCont">
                     <div class="notifactionImg"><img src="{{buildNotificationIcon(item)}}" alt=""></div>
                     <div class="notifactionCont">{{item.extended.title}}</div>
