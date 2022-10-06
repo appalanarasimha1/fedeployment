@@ -4494,3 +4494,16 @@ header.updateHeader .container {
 .custom-modal-notifaction button.close.closeNotifaction svg {
   width: 100%;
 }
+
+input.requesInput::placeholder {
+  color: #040404 !important;
+  opacity: 1; /* Firefox */
+}
+
+input.requesInput:-ms-input-placeholder {
+  color: #040404 !important;
+}
+
+input.requesInput::-ms-input-placeholder {
+  color: #040404 !important;
+}

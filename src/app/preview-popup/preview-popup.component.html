@@ -85,19 +85,21 @@
                     </div>
 
                     <div *ngIf="getApprovalUsers().length>0" class="permission-required">
-                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
+                      <p *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
                       <div *ngIf="!checkCanDownload() && !hasRequestPending() && !checkRejected()">
-                        <p>To download this asset please send <a href="mailto:{{getCreatorEmail()}}">{{getCreator()}}</a> a message</p>
-                        <input type="text" [(ngModel)]="requestComment" class="requesInput" name="requestComment"
+                        <p>To download this asset, please send <a href="mailto:{{getCreatorEmail()}}">{{getCreator()}}</a> a message below.</p>
+                        <input type="text" [(ngModel)]="requestComment" class="requesInput" [ngClass]="{'goldenText': requestComment }" name="requestComment"
                           placeholder="Write a comment here" />
-                          <button (click)="sendRequestDownload()">Submit</button>
+                          <button (click)="sendRequestDownload()" class="btn submitBtn" [disabled]="!requestComment">Submit</button>
                       </div>
-                      <div *ngIf="!checkCanDownload() && hasRequestPending()">
-                        <p>Request submitted</p>
+                      <div class="requestSubmitted" *ngIf="!checkCanDownload() && hasRequestPending()">
+                        <img src="../../assets/images/mail-send-icon.svg" alt="" class="mailSendIcon" />
+                        <h3>Request submitted</h3>
                         <p>You will be notified when the request has been approved.</p>
                       </div>
-                      <div *ngIf="!checkCanDownload() && checkRejected()">
-                        <p>{{getCreator()}} has rejected your download request.</p>
+                      <div class="rejectedRequest" *ngIf="!checkCanDownload() && checkRejected()">
+                        <p><span>{{getCreator()}}</span> has rejected your download request:</p>
+                        <p>"Unfortunately this version will be expired in 3 days. Will upload a new version."</p>
                       </div>
                     </div>
 
