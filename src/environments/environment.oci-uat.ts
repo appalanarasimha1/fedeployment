@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  nuxeoServerUrl: 'https://uatgroundx.oci.sense.neomos.online',
-  apiServiceBaseUrl: 'https://uatgroundx.oci.sense.neomos.online',
+  nuxeoServerUrl: 'https://uatgroundx.neom.com',
+  apiServiceBaseUrl: 'https://uatgroundx.neom.com',
   apiVersion: '/nuxeo/api/v1',
   keycloakConfig: {
-    url: 'https://groundxkeycloak.oci.sense.neomos.online/auth/',
-      realm: 'GroundX',
-      clientId: 'nuxeo-client-public',
+    url:  "https://devkeycloak.oci.sense.neomos.online/auth/", // 'https://groundxkeycloak.oci.sense.neomos.online/auth/',
+    realm: 'GroundX',
+    clientId: 'nuxeo-client-public',
   }
 };
 import 'zone.js/dist/zone-error';  // Included with Angular CLI.

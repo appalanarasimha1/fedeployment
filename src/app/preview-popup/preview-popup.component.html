@@ -9,20 +9,20 @@
     <div class="modal-body">
       <div class="modalHead">
         <div class="row flexible" style="justify-content: space-between">
-          <div class="col-xl-6 col-md-6">
+          <div class="col-xl-7 col-md-7">
             <ol class="publicUse" >
               <li>
                 <div class="publicUseBlock" *ngIf="hasNoRestriction() && !hasPrivateAccess()">
-                  <div class="publicUseBlk" >Public use</div>
+                  <div class="publicUseBlk">ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
-                    Can be used in the public domain, e.g. on social media.
+                    This asset is visible to all NEOM users and their external collaborators
                   </div>
                 </div>
 
                 <div class="internalUseBlock" *ngIf="internalUse() && !hasPrivateAccess()">
-                  <div class="publicUseBlk">Internal use</div>
+                  <div class="publicUseBlk">NEOM EMAIL HOLDERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
-                    Cannot be used in the public domain. i.e. only for use in internal documents or media.
+                    This asset is visible to users with NEOM emails only
                   </div>
                 </div>
 
@@ -33,7 +33,7 @@
                   </div>
                 </div>
               </li>
-              <li *ngIf="!hasPrivateAccess()">
+              <li *ngIf="!hasPrivateAccess() && getApprovalUsers1()">
                 <div class="usagePermission">Usage permission{{!getApprovalUsers1() ? ' not':''}} required</div>
                 <div class="mouseHoverInfo w219">
                   {{!getApprovalUsers1()? 'Does not requires approval before use':'Requires approval before use'}}.
@@ -51,7 +51,7 @@
               </li>
             </ol>
           </div>
-          <div class="col-xl-6 col-md-6">
+          <div class="col-xl-5 col-md-5">
             <ul class="flexible">
               <li class="customtooltip">
                 <a placement="bottom" ngbTooltip="Favourite">
@@ -85,19 +85,21 @@
                     </div>
 
                     <div *ngIf="getApprovalUsers().length>0" class="permission-required">
-                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
+                      <p *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
                       <div *ngIf="!checkCanDownload() && !hasRequestPending() && !checkRejected()">
-                        <p>To download this asset please send <a href="mailto:{{getCreatorEmail()}}">{{getCreator()}}</a> a message</p>
-                        <input type="text" [(ngModel)]="requestComment" class="requesInput" name="requestComment"
+                        <p>To download this asset, please send <a href="mailto:{{getCreatorEmail()}}">{{getCreator()}}</a> a message below.</p>
+                        <input type="text" [(ngModel)]="requestComment" class="requesInput" [ngClass]="{'goldenText': requestComment }" name="requestComment"
                           placeholder="Write a comment here" />
-                          <button (click)="sendRequestDownload()">Submit</button>
+                          <button (click)="sendRequestDownload()" class="btn submitBtn" [disabled]="!requestComment">Submit</button>
                       </div>
-                      <div *ngIf="!checkCanDownload() && hasRequestPending()">
-                        <p>Request submitted</p>
+                      <div class="requestSubmitted" *ngIf="!checkCanDownload() && hasRequestPending()">
+                        <img src="../../assets/images/mail-send-icon.svg" alt="" class="mailSendIcon" />
+                        <h3>Request submitted</h3>
                         <p>You will be notified when the request has been approved.</p>
                       </div>
-                      <div *ngIf="!checkCanDownload() && checkRejected()">
-                        <p>{{getCreator()}} has rejected your download request.</p>
+                      <div class="rejectedRequest" *ngIf="!checkCanDownload() && checkRejected()">
+                        <p><span>{{getCreator()}}</span> has rejected your download request:</p>
+                        <p>"Unfortunately this version will be expired in 3 days. Will upload a new version."</p>
                       </div>
                     </div>
 

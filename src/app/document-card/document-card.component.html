@@ -15,13 +15,13 @@
         loading="lazy" style="object-fit: none !important; background: #fbf7e6; width: 120px;
         margin: 0px auto;" />
 
-        <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
+        <!-- <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
           <img id="fileId" 
           [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
           alt=""
           (click)="openPreview()"
           crossorigin="use-credentials" />
-        </div>
+        </div> -->
       <span style="width: 1px;height: 1px;"></span>
     </div>
 
@@ -35,13 +35,33 @@
         crossorigin="use-credentials"
         loading="lazy" />
 
-        <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
+        <!-- <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
           <img id="fileId" 
           [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
           alt=""
           (click)="openPreview()"
           crossorigin="use-credentials" />
-        </div>
+        </div> -->
+      <span style="width: 1px;height: 1px;"></span>
+    </div>
+
+    <div *ngIf="checkMimeType(doc) === 'video'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
+      <!-- <img 
+        id="fileId" 
+        [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+        alt=""
+        (click)="openPreview()"
+        (load)="showLock = true"
+        crossorigin="use-credentials"
+        loading="lazy" /> -->
+
+        <!-- <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn"> -->
+          <img id="fileId" 
+          [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+          alt=""
+          (click)="openPreview()"
+          crossorigin="use-credentials" />
+        <!-- </div> -->
       <span style="width: 1px;height: 1px;"></span>
     </div>
     

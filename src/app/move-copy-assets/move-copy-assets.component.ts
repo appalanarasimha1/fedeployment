@@ -29,6 +29,7 @@ export class MoveCopyAssetsComponent implements OnInit {
   breadcrumb: any;
   sectorList: any;
   currentSector: string;
+  user:string;
 
   constructor(
     private apiService: ApiService,
@@ -41,6 +42,7 @@ export class MoveCopyAssetsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.user = this.data.user
     this.selectedList = this.data.selectedList;
     this.currentSector = this.getSectorFromPath(Object.values(this.selectedList)[0])
     this.sectorList = this.data.sectorList;
@@ -131,6 +133,13 @@ export class MoveCopyAssetsComponent implements OnInit {
     return true;
   }
 
+  checkCanDelete(item) {
+    return this.user === item.properties["dc:creator"]?.id || this.user === item.properties["dc:creator"];
+  }
+  checkCanMove(m){
+    return  ["workspace", "folder", "orderedfolder"].indexOf(m.type.toLowerCase()) !== -1
+}
+
   async moveAssets() {
     if (!this.selectedDestination) return;
     if (this.selectedDestination.type === 'Domain') {
@@ -139,8 +148,11 @@ export class MoveCopyAssetsComponent implements OnInit {
     const arrayCall = [];
     const arrayIndex = [];
     for (const key in this.selectedList) {
-      arrayCall.push(this.moveAsset(this.selectedList[key]));
-      arrayIndex.push(key)
+      if(this.checkCanDelete(this.selectedList[key]) || this.checkCanMove(this.selectedList[key])){
+        arrayCall.push(this.moveAsset(this.selectedList[key]));
+        arrayIndex.push(key)
+      }
+      
     }
     const res = await Promise.all(arrayCall);
     res.forEach((response, index) => this.showNoti(response.value, arrayIndex[index], index));

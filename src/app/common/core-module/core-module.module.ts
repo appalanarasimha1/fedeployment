@@ -6,6 +6,7 @@ import { DataService } from '../../services/data.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../services/http-interceptor.service';
 import { NuxeoService } from '../../services/nuxeo.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 
@@ -19,6 +20,12 @@ import { NuxeoService } from '../../services/nuxeo.service';
     SharedService,
     DataService,
     NuxeoService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }]
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    // {
+    //   provide: MatDialogRef,
+    //   useValue: {}
+    // },
+  ],
+    
 })
 export class CoreModuleModule { }
