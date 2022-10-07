@@ -108,7 +108,7 @@ export class UpdateModalComponent implements OnInit {
     this.customAllowMap[index] = doc.properties['sa:allow'];
     this.customDownloadApprovalMap[index] = this.checkOwnerDropdownByValue(doc.properties['sa:downloadApproval']);
     this.copyrightUserMap[index] = doc.properties['sa:copyrightName'];
-    this.openCopyrightMap[index] = true;
+    this.openCopyrightMap[index] = doc.properties['sa:copyrightName'] ? true : false;
     this.copyrightYearMap[index] = doc.properties['sa:copyrightYear'];
     if (doc.properties['sa:confidentiality']) {
       this.customConfidentialityMap[index] = doc.properties['sa:confidentiality'];
@@ -362,8 +362,9 @@ export class UpdateModalComponent implements OnInit {
       .enrichers({document: ["acls"]})
       .execute();
       // .then((result) => {
-      if (result.entries[0]) 
+      if (result.entries[0]) {
         this.updatedDocs[index] = result.entries[0];
+      }
     //     resolve(null);
     //   });
     // });

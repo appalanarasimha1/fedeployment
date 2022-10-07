@@ -260,6 +260,7 @@ section.lpBAck:before, .lpSecOne:before {
 }
 .folder-structure{
   height: 129px;
+  width: 197px;
   /* background: url(~/../../../assets/images/yellow-background.svg); */
   background: url(~/../../../assets/images/folder-workspace.svg) no-repeat left top / cover;
   display: flex;
@@ -322,7 +323,7 @@ section.lpBAck:before, .lpSecOne:before {
   flex-wrap: wrap;
 }
 .all-sectors li {
-  width: calc(25% - 10px);
+  width: auto;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
@@ -801,15 +802,15 @@ font-weight: normal;
 }
 
 .all-sectors li {
-  width: calc(25% - 8px);
+  width: auto;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
 }
 
-.all-sectors li:nth-child(4n+4) {
+/* .all-sectors li:nth-child(4n+4) {
   margin-right: 0px !important;
-}
+} */
 .insideScroll{
   padding: 0px;
   margin-bottom: 20px;
@@ -1862,6 +1863,7 @@ section.lpBAck:before, .lpSecOne:before {
   padding: 10px;
   transition: 0.4s;
   border-radius: 10px;
+  width: 197px;
 }
 .folderTitle{
   font-size: 15px;
@@ -1899,17 +1901,6 @@ section.lpBAck:before, .lpSecOne:before {
   width: 100%;
   display: inline-block;
 }
-/* .folder-structure {
-   width: 300px;
-  max-width: 184.7px;
-}
-.folder-structure img{
- border-top-left-radius: 8px;
- border-top-right-radius: 8px;
- max-width:100%;
- width: 100%;
-} */
-
 
 /* sprint16-v1 start */
 .all-sectors{
@@ -1917,7 +1908,7 @@ section.lpBAck:before, .lpSecOne:before {
   flex-wrap: wrap;
 }
 .all-sectors li {
-  width: calc(25% - 10px);
+  width: auto;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
@@ -2396,15 +2387,16 @@ font-weight: normal;
 }
 
 .all-sectors li {
-  width: calc(25% - 8px);
+  /* width: calc(25% - 8px); */
+  width: auto;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
 }
 
-.all-sectors li:nth-child(4n+4) {
+/* .all-sectors li:nth-child(4n+4) {
   margin-right: 0px !important;
-}
+} */
 .insideScroll{
   padding: 0px;
   margin-bottom: 20px;
@@ -3600,18 +3592,18 @@ ul.downloadImgLisst li .contentListBlk {
   left: auto;
 }
 .addignCollaborators h2{
-  color: #BAB8B2;
+  color: #040404;
   text-align: center;
   padding-bottom: 40px;
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 22px;
+  font-family: 'brownlight';
 }
 .addUsers {
   text-align: center;
 }
 .addUserBtn {
   display: inline-block;
-  background: #23211E;
+  background: #937206;
   border-radius: 80px;
   padding: 9px 38px;
   cursor: pointer;
@@ -3622,7 +3614,7 @@ ul.downloadImgLisst li .contentListBlk {
 }
 .addUserBtn-disabled {
   display: inline-block;
-  background: #23211E;
+  background: #937206;
   border-radius: 80px;
   padding: 9px 38px;
   cursor: not-allowed;
@@ -3679,9 +3671,9 @@ svg.classificationsIcon.disablePermission path {
   z-index: 9;
   display: none;
 }
-.publicUseBlock:hover .mouseHoverInfo {
+/* .publicUseBlock:hover .mouseHoverInfo {
   display: block;
-}
+} */
 
 .manageAccessBtn {
   float: right;
@@ -4059,13 +4051,71 @@ ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
 .input-sizer.customRenameBlock input::-ms-input-placeholder { /* Microsoft Edge */
   color: #000 !important;
 }
+
+img.closeIcon {
+  width: 14px !important;
+  float: right;
+  opacity: 1 !important;
+}
+.dropdownCreate.createFolder form {
+  clear: left;
+  width: 100%;
+  float: left;
+  padding-top: 10px;
+}
 .privateFileshare {
   background: #E5F0EC;
   border-radius: 8px;
-  padding: 8px 15px;
+  padding: 4px 15px;
   color: #006845;
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
+  display: inline-block;
+  margin-top: 100px;
   /* font-family: 'brownlight'; */
+}
+.addignCollaborators img.collaboratorsIcon {
+  display: block;
+  margin: 0px auto 40px;
+  max-width: 70px;
+}
+.publicUseBlk.published {
+  background-color: #E9E0C1;
+}
+.publicUseBlk.published img{
+  width: 10px;
+  display: inline-block;
+  height: 23px;
+}
+.publicUseBlock.publishedBlock .mouseHoverInfo {
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  color: #040404;
+  width: 450px;
+  right: 0px;
+  left: auto;
+  padding: 12px 15px;
+  cursor: auto;
+}
+.publicUseBlk.published::after {
+  z-index: -1;
+}
+
+
+
+
+.collapse{
+  cursor: pointer;
+  display: block;
+  background: #cdf;
+}
+.collapse + input{
+  display: none; /* hide the checkboxes */
+}
+.collapse + input + div{
+  display:none;
+}
+.collapse + input:checked + div{
+  display:block;
 }

@@ -4507,3 +4507,9 @@ input.requesInput:-ms-input-placeholder {
 input.requesInput::-ms-input-placeholder {
   color: #040404 !important;
 }
+.publicUseBlock.publishedBlock .manageAccessBlock {
+  width: 100% !important;
+}
+.publicUseBlock.publishedBlock .button-groups button.cancel-btn {
+  display: none !important;
+}

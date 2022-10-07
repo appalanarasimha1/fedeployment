@@ -185,6 +185,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   publishingAssets: boolean = true;
   publishingPrivateAssets: boolean = false;
 
+  currentIndexPublished: any;
+
   async ngOnInit() {
     this.fetchUserData();
     let fetchAll = false;
@@ -238,6 +240,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
       if (window.location.href.includes(`${window.location.origin}/workspace`)) {
         this.initialLoad = false;
+        setTimeout(() => {
+          this.manageAccessPublished();
+        }, 500);
       }
 
     });
@@ -334,6 +339,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         $(".buttonCreate").removeClass("createNewFolderClick");
         e.stopPropagation();
       });
+    });
+
+    $(".closeIcon").on("click", function (e) {
+      $(".dropdownCreate").hide();
+      e.stopPropagation();
     });
     this.getAllFolders(this.selectedFolder)
   }
@@ -736,14 +746,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (!this.selectedFolder.properties) {
         this.selectedFolder["properties"] = {};
       }
-      this.selectedFolder.properties["dc:description"] =
-        updatedFolder.description;
+      this.selectedFolder.properties["dc:description"] = updatedFolder.description;
       this.selectedFolder.properties["dc:start"] = updatedFolder.associatedDate;
       Object.keys(updatedDocs).forEach((key) => {
-        this.searchList[key].contextParameters.acls =
-          updatedDocs[key].contextParameters.acls;
-        this.sortedData[key].contextParameters.acls =
-          updatedDocs[key].contextParameters.acls;
+        this.searchList[key].contextParameters.acls = updatedDocs[key].contextParameters.acls;
+        this.sortedData[key].contextParameters.acls = updatedDocs[key].contextParameters.acls;
         this.searchList[key].properties = {
           ...this.searchList[key].properties,
           ...updatedDocs[key].properties,
@@ -916,6 +923,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   deleteModalFailed() {
     this.sharedService.showSnackbar(
       "You can't delete a folder contains assets uploaded by other users",
+      6000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
+  }
+
+  moveModalFailed() {
+    this.sharedService.showSnackbar(
+      "You can't move/copy a asset created by other user",
       6000,
       "top",
       "center",
@@ -1772,6 +1789,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.copyRightItem = []
     this.canNotDelete=[]
     this.selectedFolderList={}
+    this.selectedMoveList={}
     // this.isAware=false
     // $(".vh").prop("checked", false);
     this.sortedData.forEach((e) => (e.isSelected = false));
@@ -2077,7 +2095,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
+  checkCanMove(m){
+      return  ["workspace", "folder", "orderedfolder"].indexOf(m.type.toLowerCase()) !== -1
+  }
+
   async openMoveModal() {
+    const listDocs = Object.values(this.selectedMoveList)
+    .filter( item => this.checkCanMove(item) || this.checkCanDelete(item))
+   console.log("listDocslistDocs",listDocs);
+    
+    if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -2087,6 +2114,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       selectedList: this.selectedMoveList,
       parentId: this.sectorSelected.uid,
       sectorList: this.folderStructure[0]?.children || [],
+      user:this.user
     }
 
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
@@ -2110,5 +2138,40 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (this.selectedFolder.properties["dc:isPrivate"]) return false;
     }
     return Object.keys(this.selectedMoveList)?.length > 0;
+  }
+
+  markIsPrivate(data: IEntry) {
+    this.sortedData.forEach(item => {
+      if(item.uid === data.uid) {
+        item.properties['dc:isPrivate'] = data.properties['dc:isPrivate'];
+      }
+    });
+
+  }
+
+  manageAccessPublished() {
+    $(".publishedOpen").on("click", function (e) {
+      $(".manageAccessPopup").show();
+      $(".publishedOpen").addClass("publishedClick");
+      e.stopPropagation();
+    });
+    $(".publishedOpen.publishedClick").on("click", function (e) {
+      $(".manageAccessPopup").hide();
+      $(".publishedOpen").removeClass("publishedClick");
+      e.stopPropagation();
+    });
+
+    $(".mouseHoverInfo.manageAccessPopup").click(function (e) {
+      e.stopPropagation();
+      $(".manageAccessPopup").show();
+      $(".publishedOpen").removeClass("publishedClick");
+    });
+
+    $(document).click(function (e) {
+      if (!$(e.target).hasClass("publishedOpen") && $(e.target).parents(".manageAccessPopup").length === 0) {
+        $(".manageAccessPopup").hide();
+        $(".publishedOpen").removeClass("publishedClick");
+      }
+    });
   }
 }

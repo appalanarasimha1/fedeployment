@@ -1906,7 +1906,6 @@ ol.publicUse li:hover .mouseHoverInfo {
   width: calc(100% - 40px);
 }
 
-
 .requesInput {
   border: 0px solid;
   -webkit-appearance: none;
@@ -1979,4 +1978,9 @@ input.requesInput::-ms-input-placeholder {
 }
 .rejectedRequest p:last-child {
   margin-bottom: 0px;
+}
+.eyeIcon {
+  display: inline-block;
+  width: 16px;
+  vertical-align: 0px;
 }

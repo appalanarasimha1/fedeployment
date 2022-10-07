@@ -10,271 +10,6 @@
     </div>
   </div> -->
 
-  <div class="customTab" *ngIf="!checkShowDetailview()">
-
-    <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
-      <!--Remove anchore tag <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">What’s Trending</a> -->
-      <span class="commonHeading recentFont">What’s Trending</span>
-      <div *ngIf="!trendingAssets.length"  style="height: 150px;">
-        <h2 class="noresult pb-3 pt-4">No Trending Assets found</h2>
-      </div>
-      <div *ngIf="trendingAssets.length" class="tab-content" [ngClass]="{'animate__animated animate__fadeIn animate__delay-1s' : trendingAssets.length}">
-        <div class="tab-pane active" id="favourite">
-          <div (click)="showAll('trendingPage')" class="show-all">Show all</div>
-          <ngx-slick-carousel
-            class="carousel"
-            #slickModal="slick-carousel"
-            [config]="slideConfig"
-            (afterChange)="afterChangeTrending($event)"
-          >
-            <div ngxSlickItem *ngFor="let file of trendingAssets; let i = index" class="slide">
-              <document-card
-                [doc]="file"
-                [viewType]="viewType"
-                (onOpenPreview)="open(file, file.type)"
-                (onSelect)="selectImage($event, file, i)"
-                (onMarkFavourite)="markFavourite(file, 'recent')"
-                >
-              </document-card>
-            </div>
-          </ngx-slick-carousel>
-        </div>
-      </div>
-    </div>
-
-    <div id="exTab1" class="container-fluid" style="position: relative; z-index: 3;">
-      <span class="commonHeading recentFont">Assets by Sector</span>
-      <ul class="nav nav-tabs" style="display: inline-block; width: 50%;">
-        <li>
-          <div ngbDropdown class="d-inline-block sectorsDropdown">
-            <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-              <button
-                class="sectorrBtn mr-2"
-                id="dropdownManual"
-                ngbDropdownAnchor
-                ngbDropdownToggle
-              >
-                {{assetsBySectorSelected || 'All sectors'}}
-              </button>
-              <div
-                ngbDropdownMenu
-                aria-labelledby="dropdownManual"
-                class="sectorDropMain"
-                style="z-index: 1; top: -3px"
-              >
-                <button
-                  ngbDropdownItem
-                  class="sectorDropBtn"
-                  (click)="assetsBySectorSelect(null)"
-                >
-                  All sectors
-                </button>
-                <button
-                  *ngFor="let sector of sectorsHomepage.sort()"
-                  ngbDropdownItem
-                  class="sectorDropBtn"
-                  (click)="assetsBySectorSelect(sector)"
-                >
-                  {{sector}}
-                </button>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div *ngIf="!assetsBySector.length" style="height: 150px">
-        <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-        <h2 class="noresult pb-3 pt-4">No assets by sector found</h2>
-        <p class="searchcontent">Please select another sector.</p>
-      </div>
-      <div
-        *ngIf="assetsBySector.length"
-        class="tab-content"
-        [ngClass]="{'animate__animated animate__fadeIn animate__delay-1s' : assetsBySector.length}"
-      >
-        <div class="tab-pane active" id="favourite">
-          <div (click)="showAll('sectorPage')" class="show-all">Show all</div>
-          <ngx-slick-carousel
-            class="carousel"
-            #slickModal="slick-carousel"
-            [config]="slideConfig"
-            (afterChange)="afterChangeSector($event)"
-
-          >
-            <div
-              ngxSlickItem
-              *ngFor="let file of assetsBySector; let i = index"
-              class="slide"
-            >
-              <document-card
-                [doc]="file"
-                [viewType]="viewType"
-                (onOpenPreview)="open(file, file.type)"
-                (onSelect)="selectImage($event, file, i)"
-                (onMarkFavourite)="markFavourite(file, 'recent')"
-              >
-              </document-card>
-            </div>
-          </ngx-slick-carousel>
-        </div>
-      </div>
-    </div>
-    
-    <div
-      id="favorites"
-      class="container-fluid pt-50 pb-50"
-      style="position: relative; z-index: 1"
-    >
-      <ul class="nav nav-tabs">
-        <li>
-          <span class="commonHeading recentFont">Your Favourites</span>
-        </li>
-      </ul>
-      <div
-        *ngIf="!favourites.length"
-        style="height: 150px"
-        [ngClass]="{'animate__animated animate__fadeIn' : !favourites.length}"
-      >
-        <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-        <h2 class="noresult pb-3 pt-4">
-          You have not marked any asset as favourite
-        </h2>
-        <p class="searchcontent">Your favourite assets will show up here.</p>
-      </div>
-      <div
-        *ngIf="favourites.length"
-        class="tab-content"
-        [ngClass]="{'animate__animated animate__fadeIn' : favourites.length}"
-      >
-        <div class="tab-pane active" id="favourite">
-          <div (click)="showAll('favourite')" class="show-all">Show all</div>
-          <ngx-slick-carousel
-            class="carousel"
-            #slickModal="slick-carousel"
-            [config]="slideConfig"
-            (afterChange)="afterChangeFav($event)"
-          >
-            <div
-              ngxSlickItem
-              *ngFor="let file of favourites; let i = index"
-              class="slide"
-            >
-              <document-card
-                [doc]="file"
-                [viewType]="viewType"
-                (onOpenPreview)="open(file, file.type)"
-                (onSelect)="selectImage($event, file, i)"
-                (onMarkFavourite)="markFavourite(file, 'recent')"
-              >
-              </document-card>
-            </div>
-          </ngx-slick-carousel>
-        </div>
-      </div>
-    </div>
-
-    <div
-      id="exTab2"
-      class="container-fluid pb-50"
-      style="position: relative; z-index: 2"
-    >
-      <h2 class="commonHeading recentFont" style="display: inline-block">
-        Your Activity
-      </h2>
-      <ul class="nav nav-tabs" style="display: inline-block">
-        <li class="active pointer">
-          <a (click)="selectTab('recentView')" data-toggle="tab"
-            >Recently Viewed</a
-          >
-        </li>
-        <li class="pointer">
-          <a (click)="selectTab('recentUpload')" data-toggle="tab"
-            >Recently Uploaded</a
-          >
-        </li>
-      </ul>
-
-      <div class="tab-content">
-
-        <div class="tab-pane active animate__animated animate__fadeIn animate__delay-3s" id="recentlyViewed">
-          <div (click)="showAll('recentView')" class="show-all">Show all</div>
-          <ngx-slick-carousel
-            class="carousel"
-            #slickModal="slick-carousel"
-            [config]="slideConfig"
-          >
-            <div
-              ngxSlickItem
-              *ngFor="let file of recentDataShow; let i = index"
-              class="slide"
-            >
-              <!-- <div class="slide-inner"> -->
-              <document-card
-                [doc]="file"
-                [viewType]="viewType"
-                (onOpenPreview)="open(file, file.type)"
-                (onSelect)="selectImage($event, file, i)"
-                (onMarkFavourite)="markFavourite(file, 'recent')"
-              >
-              </document-card>
-              <!-- </div> -->
-            </div>
-          </ngx-slick-carousel>
-
-          <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12">
-            <div class="text-center" style="height: 150px">
-              <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-              <h2 class="noresult pb-3">
-                You have not recently viewed any asset
-              </h2>
-              <p class="searchcontent">
-                Your recently viewed assets will show up here.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane" id="recentlyUploaded">
-          <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
-          <ngx-slick-carousel
-            class="carousel"
-            #slickModal="slick-carousel"
-            [config]="slideConfig"
-          >
-            <div
-              ngxSlickItem
-              *ngFor="let file of recentDataShow ; let i = index"
-              class="slide"
-            >
-              <document-card
-                [doc]="file"
-                [viewType]="viewType"
-                (onOpenPreview)="open(file, file.type)"
-                (onSelect)="selectImage($event, file, i)"
-                (onMarkFavourite)="markFavourite(file, 'recent')"
-              >
-              </document-card>
-            </div>
-          </ngx-slick-carousel>
-          <div
-            *ngIf="!recentDataShow?.length"
-            class="col-xl-12 col-md-12"
-            [ngClass]="{'animate__animated animate__fadeIn' : !recentDataShow?.length}"
-          >
-            <div class="text-center" style="height: 150px">
-              <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
-              <h2 class="noresult pb-3">You have not uploaded any assets</h2>
-              <p class="searchcontent">
-                Your recently uploaded assets will show up here.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
   <section class="search-subpage">
     <div [ngClass]="{'hideTag': !checkShowDetailview()}"
       class="customTagBar"
@@ -325,9 +60,286 @@
       </ul>
     </div>
 
+    <div class="customTab pb-10" *ngIf="countOfTheme == 0 && !(!checkShowRecent() || checkShowDetailview())">
+      <div class="container-fluid">
+        <ul class="catalogue-feature-blk">
+          <li *ngFor="let item of categoryArray">
+            <div class="catalogue-feature-cont" (click)="activeSearchCatalogue(item)" [ngClass]="{ 'activeSearch' : checkedNameClicked(item) }">
+              <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked(item)" /> {{item}}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="customTab pt-0" *ngIf="!checkShowDetailview()">
+  
+      <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
+        <!--Remove anchore tag <a class="commonHeading recentFont" style=""  href="#sectors" data-toggle="tab">What’s Trending</a> -->
+        <span class="commonHeading recentFont">What's Trending</span>
+        <div *ngIf="!trendingAssets.length"  style="height: 150px;">
+          <h2 class="noresult pb-3 pt-4">No Trending Assets found</h2>
+        </div>
+        <div *ngIf="trendingAssets.length" class="tab-content" [ngClass]="{'animate__animated animate__fadeIn animate__delay-1s' : trendingAssets.length}">
+          <div class="tab-pane active" id="favourite">
+            <div (click)="showAll('trendingPage')" class="show-all">Show all</div>
+            <ngx-slick-carousel
+              class="carousel"
+              #slickModal="slick-carousel"
+              [config]="slideConfig"
+              (afterChange)="afterChangeTrending($event)"
+            >
+              <div ngxSlickItem *ngFor="let file of trendingAssets; let i = index" class="slide">
+                <document-card
+                  [doc]="file"
+                  [viewType]="viewType"
+                  (onOpenPreview)="open(file, file.type)"
+                  (onSelect)="selectImage($event, file, i)"
+                  (onMarkFavourite)="markFavourite(file, 'recent')"
+                  >
+                </document-card>
+              </div>
+            </ngx-slick-carousel>
+          </div>
+        </div>
+      </div>
+  
+      <div id="exTab1" class="container-fluid" style="position: relative; z-index: 3;">
+        <span class="commonHeading recentFont">Assets by Sector</span>
+        <ul class="nav nav-tabs" style="display: inline-block; width: 50%;">
+          <li>
+            <div ngbDropdown class="d-inline-block sectorsDropdown">
+              <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+                <button
+                  class="sectorrBtn mr-2"
+                  id="dropdownManual"
+                  ngbDropdownAnchor
+                  ngbDropdownToggle
+                >
+                  {{assetsBySectorSelected || 'All sectors'}}
+                </button>
+                <div
+                  ngbDropdownMenu
+                  aria-labelledby="dropdownManual"
+                  class="sectorDropMain"
+                  style="z-index: 1; top: -3px"
+                >
+                  <button
+                    ngbDropdownItem
+                    class="sectorDropBtn"
+                    (click)="assetsBySectorSelect(null)"
+                  >
+                    All sectors
+                  </button>
+                  <button
+                    *ngFor="let sector of sectorsHomepage.sort()"
+                    ngbDropdownItem
+                    class="sectorDropBtn"
+                    (click)="assetsBySectorSelect(sector)"
+                  >
+                    {{sector}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div *ngIf="!assetsBySector.length" style="height: 150px">
+          <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
+          <h2 class="noresult pb-3 pt-4">No assets by sector found</h2>
+          <p class="searchcontent">Please select another sector.</p>
+        </div>
+        <div
+          *ngIf="assetsBySector.length"
+          class="tab-content"
+          [ngClass]="{'animate__animated animate__fadeIn animate__delay-1s' : assetsBySector.length}"
+        >
+          <div class="tab-pane active" id="favourite">
+            <div (click)="showAll('sectorPage')" class="show-all">Show all</div>
+            <ngx-slick-carousel
+              class="carousel"
+              #slickModal="slick-carousel"
+              [config]="slideConfig"
+              (afterChange)="afterChangeSector($event)"
+  
+            >
+              <div
+                ngxSlickItem
+                *ngFor="let file of assetsBySector; let i = index"
+                class="slide"
+              >
+                <document-card
+                  [doc]="file"
+                  [viewType]="viewType"
+                  (onOpenPreview)="open(file, file.type)"
+                  (onSelect)="selectImage($event, file, i)"
+                  (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+                </document-card>
+              </div>
+            </ngx-slick-carousel>
+          </div>
+        </div>
+      </div>
+      
+      <div
+        id="favorites"
+        class="container-fluid pt-50 pb-50"
+        style="position: relative; z-index: 1"
+      >
+        <ul class="nav nav-tabs">
+          <li>
+            <span class="commonHeading recentFont">Your Favourites</span>
+          </li>
+        </ul>
+        <div
+          *ngIf="!favourites.length"
+          style="height: 150px"
+          [ngClass]="{'animate__animated animate__fadeIn' : !favourites.length}"
+        >
+          <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
+          <h2 class="noresult pb-3 pt-4">
+            You have not marked any asset as favourite
+          </h2>
+          <p class="searchcontent">Your favourite assets will show up here.</p>
+        </div>
+        <div
+          *ngIf="favourites.length"
+          class="tab-content"
+          [ngClass]="{'animate__animated animate__fadeIn' : favourites.length}"
+        >
+          <div class="tab-pane active" id="favourite">
+            <div (click)="showAll('favourite')" class="show-all">Show all</div>
+            <ngx-slick-carousel
+              class="carousel"
+              #slickModal="slick-carousel"
+              [config]="slideConfig"
+              (afterChange)="afterChangeFav($event)"
+            >
+              <div
+                ngxSlickItem
+                *ngFor="let file of favourites; let i = index"
+                class="slide"
+              >
+                <document-card
+                  [doc]="file"
+                  [viewType]="viewType"
+                  (onOpenPreview)="open(file, file.type)"
+                  (onSelect)="selectImage($event, file, i)"
+                  (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+                </document-card>
+              </div>
+            </ngx-slick-carousel>
+          </div>
+        </div>
+      </div>
+  
+      <div
+        id="exTab2"
+        class="container-fluid pb-50"
+        style="position: relative; z-index: 2"
+      >
+        <h2 class="commonHeading recentFont" style="display: inline-block">
+          Your Activity
+        </h2>
+        <ul class="nav nav-tabs" style="display: inline-block">
+          <li class="active pointer">
+            <a (click)="selectTab('recentView')" data-toggle="tab"
+              >Recently Viewed</a
+            >
+          </li>
+          <li class="pointer">
+            <a (click)="selectTab('recentUpload')" data-toggle="tab"
+              >Recently Uploaded</a
+            >
+          </li>
+        </ul>
+  
+        <div class="tab-content">
+  
+          <div class="tab-pane active animate__animated animate__fadeIn animate__delay-3s" id="recentlyViewed">
+            <div (click)="showAll('recentView')" class="show-all">Show all</div>
+            <ngx-slick-carousel
+              class="carousel"
+              #slickModal="slick-carousel"
+              [config]="slideConfig"
+            >
+              <div
+                ngxSlickItem
+                *ngFor="let file of recentDataShow; let i = index"
+                class="slide"
+              >
+                <!-- <div class="slide-inner"> -->
+                <document-card
+                  [doc]="file"
+                  [viewType]="viewType"
+                  (onOpenPreview)="open(file, file.type)"
+                  (onSelect)="selectImage($event, file, i)"
+                  (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+                </document-card>
+                <!-- </div> -->
+              </div>
+            </ngx-slick-carousel>
+  
+            <div *ngIf="!recentDataShow?.length" class="col-xl-12 col-md-12">
+              <div class="text-center" style="height: 150px">
+                <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
+                <h2 class="noresult pb-3">
+                  You have not recently viewed any asset
+                </h2>
+                <p class="searchcontent">
+                  Your recently viewed assets will show up here.
+                </p>
+              </div>
+            </div>
+          </div>
+  
+          <div class="tab-pane" id="recentlyUploaded">
+            <div (click)="showAll('recentUpload')" class="show-all">Show all</div>
+            <ngx-slick-carousel
+              class="carousel"
+              #slickModal="slick-carousel"
+              [config]="slideConfig"
+            >
+              <div
+                ngxSlickItem
+                *ngFor="let file of recentDataShow ; let i = index"
+                class="slide"
+              >
+                <document-card
+                  [doc]="file"
+                  [viewType]="viewType"
+                  (onOpenPreview)="open(file, file.type)"
+                  (onSelect)="selectImage($event, file, i)"
+                  (onMarkFavourite)="markFavourite(file, 'recent')"
+                >
+                </document-card>
+              </div>
+            </ngx-slick-carousel>
+            <div
+              *ngIf="!recentDataShow?.length"
+              class="col-xl-12 col-md-12"
+              [ngClass]="{'animate__animated animate__fadeIn' : !recentDataShow?.length}"
+            >
+              <div class="text-center" style="height: 150px">
+                <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
+                <h2 class="noresult pb-3">You have not uploaded any assets</h2>
+                <p class="searchcontent">
+                  Your recently uploaded assets will show up here.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+
     <div
       *ngIf="!checkShowRecent() || checkShowDetailview()"
-      class="container pl-160 "
+      class="container pl-160 pt-30"
       [ngClass]="{'animate__animated animate__fadeIn' : !checkShowRecent() || checkShowDetailview()}"
     >
       <div class="row" style="justify-content: space-between">
@@ -336,12 +348,13 @@
             ><img src="../../assets/images/back-arrow.svg" /> Back</span
           >
         </div>
-        <div class="view-title">
+        <div class="view-title" *ngIf="!searchTerm.ecm_fulltext">
           <span style="padding-left: 11px">{{getDetailViewTitle()}}</span>
         </div>
         <div
           class="main-headingSearch flexible pb-4 col-xl-8"
           style="align-items: baseline"
+          *ngIf="this.searchTem"
         >
           <span
             *ngIf="searchTerm.ecm_fulltext"
@@ -349,7 +362,7 @@
             class="commonHeading"
             style="font-size: 28px; text-transform: capitalize; cursor: pointer"
           >
-            {{searchTerm.ecm_fulltext}}
+            {{searchTerm.ecm_fulltext.split(" and ")[0]}}
             <img
               src="../assets/images/circle-close.png"
               style="width: 14px; margin-left: 3px"
@@ -363,10 +376,9 @@
           <li [ngClass]="detailView === 'recentUpload' ? 'active' : ''"><a (click)="showAll('recentUpload')" data-toggle="tab">Recently Uploaded</a></li>
           <li [ngClass]="detailView === 'recentView' ? 'active' : ''"><a (click)="showAll('recentView')" data-toggle="tab">Recently Viewed</a></li>
         </ul> -->
-
         <div class="col-xl-4" *ngIf="!detailView">
           <!-- detailView !== 'recentView' -->
-          <div class="row" style="">
+          <div class="row" style="" *ngIf="this.searchTem">
             <div class="col-xl-8" [ngClass]="!showGridListSwitcher() ? 'fludeSortBy' : '' ">
               <span><b>Sort by:</b> </span>
               <div ngbDropdown class="d-inline-block mb-4 assetsDropdown">
@@ -565,6 +577,16 @@
             >
           </div>
         </div>
+      </div>
+
+      <div class="row pt-30" *ngIf="countOfTheme > 0 || (!checkShowRecent() || checkShowDetailview())">
+        <ul class="catalogue-feature-blk">
+          <li *ngFor="let item of categoryArray">
+            <div class="catalogue-feature-cont" (click)="activeSearchCatalogue(item)" [ngClass]="{ 'activeSearch' : checkedNameClicked(item) }">
+              <span><img src="../../assets/images/Selected.svg" *ngIf="checkedNameClicked(item)" /> {{item}}</span>
+            </div>
+          </li>
+        </ul>
       </div>
 
       <div class="row">

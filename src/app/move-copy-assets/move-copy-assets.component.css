@@ -343,7 +343,7 @@ h3.externalUsers {
     border: 1px solid #E8E6DF;
     border-radius: 9px;
     padding: 10px 15px;
-    /* height: 350px; */
+    height: 327px;
     position: relative;
 }
 .moveBreadcrumb, .moveBreadcrumb a {
@@ -585,7 +585,7 @@ span.folderImgList {
     background: #E6F2FF;
     border-radius: 8px;
     color: #0072A2;
-    margin: 15px 0px;
+    /* margin: 15px 0px; */
     display: inline-block;
 }
 .moveItemList li.active {
@@ -597,4 +597,8 @@ span.folderImgList {
 
 .moveCopyBlock {
     width: 620px !important;
+}
+.fixheight {
+    height: 53px;
+    padding: 15px 0px;
 }

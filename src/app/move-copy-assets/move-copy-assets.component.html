@@ -38,9 +38,19 @@
       </ul>
     </div>
   </div>
-  <div class="movedContent" *ngIf="selectedDestination?.properties['dc:isPrivate']">Items that are moved to private folders will always be copied.</div>
+  <div class="fixheight">
+    <div *ngIf="selectedDestination">
+      <div class="movedContent" *ngIf="selectedDestination?.properties['dc:isPrivate']">
+        Items that are moved to private folders will always be copied.
+      </div>
+      <div class="movedContent" *ngIf="!selectedDestination?.properties['dc:isPrivate']">
+        Items will be moved to this folder. The owner will be notified.
+      </div>
+    </div>
+  </div>
 </div>
 <div class="button-groups">
   <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-  <button [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">Move here</button>
+  <button *ngIf="selectedDestination?.properties['dc:isPrivate']" [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">Copy here</button>
+  <button *ngIf="!selectedDestination?.properties['dc:isPrivate']" [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">Move here</button>
 </div>
