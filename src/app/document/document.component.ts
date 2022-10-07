@@ -486,7 +486,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     };
 
     const headers = {
-      "enrichers-document": ["thumbnail", "renditions", "favorites", "tags"],
+      "enrichers-document": ["thumbnail", "renditions", "favorites", "tags", "permissions"],
       "fetch.document": "properties",
       properties: "*",
     };
@@ -537,7 +537,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       queryParams: favouriteUid,
     };
     const headers = {
-      "enrichers-document": ["thumbnail", "renditions", "favorites", "tags"],
+      "enrichers-document": ["thumbnail", "renditions", "favorites", "tags", "permissions"],
       "fetch.document": "properties",
       properties: "*",
     };

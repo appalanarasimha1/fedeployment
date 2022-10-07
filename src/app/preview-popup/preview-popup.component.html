@@ -85,22 +85,25 @@
                     </div>
 
                     <div *ngIf="getApprovalUsers().length>0" class="permission-required">
-                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
-                       <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
-                      <ul class="emailList">
-                        <li *ngFor="let userName of getApprovalUsers()">
-                          <div class="nameBlk">{{userName}}</div>
-                          <div class="emailIconBlk">
-                            <a href="mailto:{{userName}}">
-                            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M1.42171 1H18.5783C18.8115 1 19 1.18265 19 1.40826V12.5917C19 12.8175 18.8113 13 18.5783 13H1.42171C1.18853 13 1 12.8174 1 12.5917V1.40826C1 1.18252 1.18866 1 1.42171 1ZM18.1567 2.22922L10.2544 8.04031C10.0985 8.15476 9.88611 8.14767 9.73921 8.03486L1.84432 2.22929V12.1833H18.1569L18.1567 2.22922ZM2.67189 1.81717L10.0003 7.20578L17.3288 1.81717H2.67155H2.67189Z" fill="#EDD580" stroke="#EDD580" stroke-width="0.5"/>
-                            </svg></a>
-                          </div>
-                        </li>
-                      </ul>
+                      <p *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
+                      <div *ngIf="!checkCanDownload() && !hasRequestPending() && !checkRejected()">
+                        <p>To download this asset, please send <a href="mailto:{{getCreatorEmail()}}">{{getCreator()}}</a> a message below.</p>
+                        <input type="text" [(ngModel)]="requestComment" class="requesInput" [ngClass]="{'goldenText': requestComment }" name="requestComment"
+                          placeholder="Write a comment here" />
+                          <button (click)="sendRequestDownload()" class="btn submitBtn" [disabled]="!requestComment">Submit</button>
+                      </div>
+                      <div class="requestSubmitted" *ngIf="!checkCanDownload() && hasRequestPending()">
+                        <img src="../../assets/images/mail-send-icon.svg" alt="" class="mailSendIcon" />
+                        <h3>Request submitted</h3>
+                        <p>You will be notified when the request has been approved.</p>
+                      </div>
+                      <div class="rejectedRequest" *ngIf="!checkCanDownload() && checkRejected()">
+                        <p><span>{{getCreator()}}</span> has rejected your download request:</p>
+                        <p>"Unfortunately this version will be expired in 3 days. Will upload a new version."</p>
+                      </div>
                     </div>
 
-                    <div *ngIf="showDownloadDropdown()" class="sub-dropdown-block">
+                    <div *ngIf="showDownloadDropdown() || checkCanDownload()" class="sub-dropdown-block">
                       <div class="downloadIcon"></div> Download
                       <div class="down-arrow-icon"></div>
                       <div class="sub-dropdown-menu">
@@ -132,7 +135,7 @@
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
           <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
-          
+
           <img *ngIf="checkMimeType(doc) === 'nopreview'" src="../../../assets/images/no-preview.png" style="width: 100%;height: 100px;margin: 80px 0px;" />
         </div>
 
@@ -197,19 +200,19 @@
                         <br />
                         <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
                       </li>
-  
+
                       <li>
                         Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
                           }}</span>
                       </li>
-  
+
                       <li>
                         Name <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.title
                           }}</span>
                       </li>
-  
+
                       <li>
                         Location <br />
                         <span style="word-break: break-all">
@@ -219,36 +222,36 @@
                           </a>
                         </span>
                       </li>
-  
+
                       <li>
                         Description <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties["dc:description"] ||
                           doc?.properties["imd:image_description"]
                           }}</span>
                       </li>
-  
+
                       <li>
                         Format <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties && doc?.properties["picture:info"]?.format
                           }}</span>
                       </li>
-                      
+
                     </ul>
                   </div>
                   <div class="col-xl-6 col-md-6">
                     <ul>
-  
+
                       <li>
                         Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x
                           {{ doc?.properties["picture:info"]?.height }}</span>
                       </li>
-                      
+
                       <li>
                         Size <br /><span style="opacity: 0.7; word-break: break-all">{{
                           getDownloadFileEstimation()
                           }}</span>
                       </li>
-  
+
                       <li>
                         Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties && doc?.properties["picture:info"]?.colorSpace
@@ -258,7 +261,7 @@
                         Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
                           }}</span>
                       </li>
-  
+
                       <li>
                         EXIF
                         <br />
@@ -304,7 +307,7 @@
       <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
         <div class="mb-4" style="width: 78%">
           <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
-          
+
           <div class="weight-size-block">
             <ul>
               <li>
@@ -313,7 +316,7 @@
               <li>
                 <img src="../../assets/images/briefcase.svg" alt="Folder" /> {{getParentFolderName()}}
               </li>
-              
+
               <!-- <li *ngIf="getUsageAllowed()">
                 <span class="yellowBtn">{{getUsageAllowed()}}</span>
               </li> -->
@@ -558,7 +561,7 @@
                     <li>
                       Created
                       {{ toDateString(doc?.properties) }}
-                      by 
+                      by
                       <br />
                       <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
                     </li>
@@ -595,7 +598,7 @@
                         doc?.properties && doc?.properties["picture:info"]?.format
                         }}</span>
                     </li>
-                    
+
                   </ul>
                 </div>
                 <div class="col-xl-6 col-md-6">
@@ -604,7 +607,7 @@
                     <li>
                       Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ getImageDimensions() }}</span>
                     </li>
-                    
+
                     <li>
                       Size <br /><span style="opacity: 0.7; word-break: break-all">{{
                         getDownloadFileEstimation()

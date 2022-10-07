@@ -1906,6 +1906,80 @@ ol.publicUse li:hover .mouseHoverInfo {
 .commentTextBlk {
   width: calc(100% - 50px);
 }
+
+.requesInput {
+  border: 0px solid;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-bottom: 1px solid #D1CFC9;
+  background: transparent;
+  line-height: 34px;
+  margin-top: 20px;
+  width: 100%;
+  vertical-align: top;
+}
+.requesInput.goldenText {
+  border-bottom: 1px solid #EDD580;
+  color: #EDD580;
+}
+.submitBtn {
+  background: #EDD580;
+  color: #040404;
+  border-radius: 100px;
+  padding: 0px 20px;
+  line-height: 35px;
+  letter-spacing: 1px;
+  border: 1px solid transparent;
+  outline: none;
+  float: right;
+  clear: both;
+  margin-top: 18px;
+}
+
+.permission-required button:disabled,
+.permission-required button[disabled]{
+  border: 1px solid transparent;
+  background-color: #EFEEE9;
+  color: #BAB8B2;
+  opacity: 1;
+}
+input.requesInput::placeholder {
+  color: #D1CFC9 !important;
+  opacity: 1; /* Firefox */
+}
+input.requesInput:-ms-input-placeholder {
+  color: #D1CFC9 !important;
+}
+input.requesInput::-ms-input-placeholder {
+  color: #D1CFC9 !important;
+}
+.requestSubmitted {
+  text-align: center;
+}
+.requestSubmitted img.mailSendIcon {
+  margin: 0px auto;
+  width: auto !important;
+}
+.requestSubmitted h3 {
+  color: #fff;
+  padding-bottom: 20px;
+  font-size: 15px;
+  padding-top: 20px;
+}
+.requestSubmitted p {
+  font-family: 'brownlight';
+  color: #fff;
+}
+.rejectedRequest p span {
+  color: #DEB31A;
+}
+.rejectedRequest p {
+  margin-bottom: 20px;
+}
+.rejectedRequest p:last-child {
+  margin-bottom: 0px;
+}
 .eyeIcon {
   display: inline-block;
   width: 16px;

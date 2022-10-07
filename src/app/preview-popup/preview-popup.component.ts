@@ -34,7 +34,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   copiedString;
-  formControlValue = '';
+  user = null;
+  requestComment = "";
+  requestSent = false;
 
   constructor(
     private router: Router,
@@ -58,6 +60,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.getTags();
       this.getComments();
     }
+    this.checkCanDownload();
   }
 
   open(): void {
@@ -356,7 +359,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   internalUse(){
     return this.doc.properties["sa:allow"] === ALLOW.internal;
   }
-  
+
   showDownloadDropdown() {
     return (
       this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware)
@@ -365,6 +368,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   getCreator() {
     return this.doc?.properties?.['dc:creator']?.id || this.doc?.properties?.['dc:creator'];
+  }
+
+  getCreatorEmail() {
+    return this.doc?.properties?.['dc:creator']?.properties?.email || this.doc?.properties?.['dc:creator'];
   }
 
   getApprovalUsers(): string[] {
@@ -425,7 +432,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
 
       // const assetId = this.doc.uid;
-      
+
       // const selBox = document.createElement("textarea");
       // selBox.style.position = "fixed";
       // selBox.style.left = "0";
@@ -453,7 +460,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   getImageDimensions(): string {
     return `${this.doc?.properties?.["picture:info"]?.width} x ${this.doc?.properties?.["picture:info"]?.height}`;
   }
-  
+
   checkCopyRight() {
     let m = this.doc;
     if (
@@ -487,5 +494,44 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
   getChoiceLabel(choice: string) {
     return `@${choice} `;
+  }
+  checkCanDownload() {
+    if (this.user === this.getCreator()) return true;
+    const permissions = this.doc?.contextParameters.permissions || [];
+    return permissions.includes("CanDownload");
+  }
+
+  checkRejected() {
+    const permissions = this.doc?.contextParameters.permissions || [];
+    return permissions.includes("DownloadRequestRejected");
+  }
+
+  hasRequestPending() {
+    const permissions = this.doc?.contextParameters.permissions || [];
+    return this.requestSent || permissions.includes("DownloadRequestPending");
+  }
+
+  async fetchUserData() {
+    if (localStorage.getItem("user")) {
+      this.user = JSON.parse(localStorage.getItem("user"))["username"];
+      if (this.user) return;
+    }
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.connect();
+      this.user = res.user.id;
+      localStorage.setItem("user", JSON.stringify(res.user.properties));
+    }
+  }
+
+  async sendRequestDownload() {
+    const body = {
+      context: {},
+      input: this.doc.uid,
+      params: {
+        comment: this.requestComment
+      },
+    };
+    await this.apiService.post(apiRoutes.REQUEST_DOWNLOAD, body).toPromise();
+    this.requestSent = true;
   }
 }

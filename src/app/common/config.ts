@@ -36,4 +36,6 @@ export const apiRoutes = {
   GET_NOTIFICATIONS: "/automation/Scry.GetNotifications",
   UPDATE_FOLDER_RIGHTS: "/automation/Scry.UpdateFolderRightOp",
   MOVE_FOLDER: "/automation/Scry.MoveFolder",
+  REQUEST_DOWNLOAD: "/automation/Scry.RequestDownload",
+  PROCESS_REQUEST_DOWNLOAD: "/automation/Scry.ProcessRequestDownload",
 };
