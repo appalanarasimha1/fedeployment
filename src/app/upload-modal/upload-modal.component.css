@@ -1,15 +1,15 @@
 ::ng-deep .cdk-global-overlay-wrapper{
   right: 0px;
 }
-::ng-deep .cdk-overlay-pane {
+/* ::ng-deep .cdk-overlay-pane {
   /* min-width: auto !important;
-  max-width: 1000px !important; */
+  max-width: 1000px !important; /
   width: auto !important;
   min-height: 60px !important;
   max-height: 100%!important;
   height: auto !important;
-  /* overflow: auto;  */
-}
+  /* overflow: auto;  /
+} */
 .upload-form{
   margin: 0px  2px 20px 0px;
   height: 60vh;
@@ -34,9 +34,9 @@ padding: unset;
 }
 
 .upload-modal {
-  height: 100%;
-  /* width: 100%; */
-  width: 1000px;
+  /* height: 100%;
+  width: 100%; */
+  /* width: 1000px; */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -1458,9 +1458,9 @@ button.upload-btn.tollTipCustom.disableBtn, button.upload-btn.tollTipCustom.disa
   overflow: auto !important;
   pointer-events: auto !important;
 }
-::ng-deep .mat-dialog-container {
+/* ::ng-deep .mat-dialog-container {
   margin-top: 30px !important;
-}
+} */
 
 /* .updateClassificationBlk ::ng-deep .mat-form-field-flex {
   width: 100%;

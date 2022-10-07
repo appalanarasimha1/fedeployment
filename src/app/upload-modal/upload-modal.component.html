@@ -1,4 +1,7 @@
 <div class="upload-modal">
+   <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()">
+      <img src="../../assets/images/close-modal.svg" />
+   </button>
    <mat-horizontal-stepper *ngIf="step !== 4" [linear]="true" #stepper>
       <mat-step [completed]="!checkUploadStep()">
          <ng-template matStepLabel>Select assets</ng-template>
