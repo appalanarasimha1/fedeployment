@@ -836,18 +836,6 @@ font-weight: normal;
 .pb-5 {
   padding-bottom: 30px !important;
 }
-.createFolder{
-  position: absolute;
-  background: #FFFFFF;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 20px;
-  width: 420px;
-  right: 0px;
-  top: 50px;
-  /* left: auto; */
-  z-index: 9;
-}
 .createNew{
   font-size: 15px;
   line-height: 24px;
@@ -2450,7 +2438,7 @@ font-weight: normal;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   padding: 20px;
-  width: 420px;
+  width: 500px;
   right: 0px;
   top: 50px;
   /* left: auto; */
