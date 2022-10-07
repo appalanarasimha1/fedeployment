@@ -192,8 +192,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   saveComment(comment: string): void {
-    console.log({comment,inside:this.commentText});
-    
     if (!this.commentText.trim()) {
       return;
     }
@@ -473,5 +471,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   checkMimeType(document): string {
     return this.sharedService.checkMimeType(document);
+  }
+
+  getAuthor(comment){
+    let user = JSON.parse(localStorage.getItem("user"))["username"];
+    if (user == comment.author) return "You"
+    return comment.author
   }
 }
