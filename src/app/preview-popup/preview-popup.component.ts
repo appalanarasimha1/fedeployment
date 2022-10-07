@@ -34,6 +34,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   copiedString;
+  formControlValue = '';
 
   constructor(
     private router: Router,
@@ -477,5 +478,14 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     let user = JSON.parse(localStorage.getItem("user"))["username"];
     if (user == comment.author) return "You"
     return comment.author
+  }
+
+  findChoices(searchText: string) {
+    return ['John', 'Jane', 'Jonny'].filter(item =>
+      item.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }
+  getChoiceLabel(choice: string) {
+    return `@${choice} `;
   }
 }
