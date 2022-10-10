@@ -1458,9 +1458,11 @@ button.upload-btn.tollTipCustom.disableBtn, button.upload-btn.tollTipCustom.disa
   overflow: auto !important;
   pointer-events: auto !important;
 }
-/* ::ng-deep .mat-dialog-container {
-  margin-top: 30px !important;
-} */
+::ng-deep .mat-dialog-container {
+  border-radius: 8px !important;
+  /* margin-top: 30px !important; */
+  /* overflow: hidden !important; */
+}
 
 /* .updateClassificationBlk ::ng-deep .mat-form-field-flex {
   width: 100%;
@@ -1584,7 +1586,7 @@ span.showAllClassifications svg.rotateArrow {
 }
 
 ::ng-deep .mat-horizontal-content-container {
-  padding: 0 0px 24px 24px !important;
+  padding: 0 0px 24px 14px !important;
   padding-bottom: 0px !important;
 }
 .updateClassification, .upload-form-input.row.mb-30.uploadModalBlk, .publish-assets {

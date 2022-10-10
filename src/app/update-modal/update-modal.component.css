@@ -1104,7 +1104,9 @@ input.copyright-input {
   overflow-y: scroll;
 } */
 ::ng-deep .mat-dialog-container {
-  margin-top: 30px !important;
+  border-radius: 8px !important;
+  /* margin-top: 30px !important; */
+  /* overflow: hidden !important; */
 }
 ::ng-deep .cdk-global-overlay-wrapper{
   overflow: auto !important;

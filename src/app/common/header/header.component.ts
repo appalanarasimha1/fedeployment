@@ -176,8 +176,8 @@ export class HeaderComponent implements OnInit {
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.minHeight = "350px";
-    dialogConfig.height = "700px";
-    dialogConfig.maxHeight = "90vh"
+    dialogConfig.height = "100%";
+    dialogConfig.maxHeight = "92vh"
     dialogConfig.width = "80vw";
     dialogConfig.disableClose = true;
     const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
@@ -323,7 +323,7 @@ export class HeaderComponent implements OnInit {
     this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
     }, (reason) => {
       this.closeModal();
-    });;
+    });
   }
 
   

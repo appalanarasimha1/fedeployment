@@ -65,7 +65,7 @@
                </li>
             </ul>
             </ngx-dropzone>
-            <div class="row pt-2" style="display: flex; align-items: baseline;">
+            <div class="row pt-2" style="display: flex; align-items: baseline; min-height: 77px;">
                <div class="col-xl-3">
                   <div *ngIf="getAssetNumber()" class="flexible pt-3 pointer" style="align-items: end;" (click)="drop.showFileSelector()">
                   <a>
@@ -296,7 +296,7 @@
             </div>
          </div>
 
-         <div class="button-groups" style="padding-top: 15px;">
+         <div class="button-groups" style="padding-top: 0px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn" (click)="backBtn()">Back</button>
@@ -663,7 +663,7 @@
             </div>
          </div>
 
-         <div class="button-groups" style="padding-top: 15px;">
+         <div class="button-groups" style="padding-top: 0px;">
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>

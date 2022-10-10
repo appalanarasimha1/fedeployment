@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, Input, ViewChild, TemplateRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
 import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions } from "../common/constant";
@@ -34,6 +35,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   copiedString;
+  modalOpen: boolean = true;
 
   constructor(
     private router: Router,
@@ -43,6 +45,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     public dataService: DataService,
     public sharedService: SharedService,
     private route: ActivatedRoute,
+    public matDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +69,19 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.activeTabs.info = false;
     this.isAware = false;
     this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
+
+    // const dialogConfig = new MatDialogConfig();
+    // // The user can't close the dialog by clicking outside its body
+    // dialogConfig.id = "modal-component";
+    // dialogConfig.minHeight = "350px";
+    // dialogConfig.height = "100%";
+    // dialogConfig.maxHeight = "92vh"
+    // dialogConfig.width = "80vw";
+    // dialogConfig.disableClose = true;
+    // const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
+    // // https://material.angular.io/components/dialog/overview
+    // // const modalDialog = this.matDialog.open(this.modalTemp, dialogConfig);
+
     this.modalService
       .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
       .result.then(
@@ -473,5 +489,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   checkMimeType(document): string {
     return this.sharedService.checkMimeType(document);
+  }
+
+  closeModal() {
+    console.log('hi');
+    this.modalOpen = false;
+    this.modalLoading = false;
   }
 }

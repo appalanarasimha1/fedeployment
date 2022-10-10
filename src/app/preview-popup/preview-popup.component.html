@@ -1,11 +1,11 @@
 <div *ngIf="openInModal">
   <ng-template #preview let-modal class="imgPopUpTab">
-    <div class="modal-header">
+    <!-- <div class="modal-header">
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = ''">
-        <!-- <span aria-hidden="true">&times;</span> -->
+        <!-- <span aria-hidden="true">&times;</span> -/->
         <span aria-hidden="true"><img src="../../assets/images/modalclose.svg" /></span>
       </button>
-    </div>
+    </div> -->
     <div class="modal-body">
       <div class="modalHead">
         <div class="row flexible" style="justify-content: space-between">
@@ -86,7 +86,7 @@
 
                     <div *ngIf="getApprovalUsers().length>0" class="permission-required">
                       <p  *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
-                       <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
+                      <p> {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
                       <ul class="emailList">
                         <li *ngFor="let userName of getApprovalUsers()">
                           <div class="nameBlk">{{userName}}</div>
@@ -124,285 +124,292 @@
                 </div>
 
               </li>
+              <li>
+                <button type="button" class="close-modal-icon" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = ''"><!-- (click)="modal.dismiss('Cross click'); copiedString = ''"-->
+                  <img src="../../assets/images/close-modal.svg" />
+                </button>
+              </li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="popupTabSec">
-        <app-loader-small [show]="modalLoading"></app-loader-small>
-        <div class="copyright-caption">
-          <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
-          
-          <img *ngIf="checkMimeType(doc) === 'nopreview'" src="../../../assets/images/no-preview.png" style="width: 100%;height: 100px;margin: 80px 0px;" />
-        </div>
+      <div class="fixHeight" id="customScrollBar">
+        <div class="popupTabSec">
+          <app-loader-small [show]="modalLoading"></app-loader-small>
+          <div class="copyright-caption">
+            <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
+            
+            <img *ngIf="checkMimeType(doc) === 'nopreview'" src="../../../assets/images/no-preview.png" style="width: 100%;height: 100px;margin: 80px 0px;" />
+          </div>
 
-        <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
-        <div *ngIf="checkMimeType(doc) === 'video'" style="height: 600; position: relative">
-          <video controls style="width: 100%; height: 600px" [src]="getAssetUrl(null, docUrl)"
-            crossorigin="use-credentials"></video>
-        </div>
-        <div *ngIf="checkMimeType(doc) === 'file'">
-          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
-            style="display: block; width: 100%; height: 600px" [original-size]="false" [autoresize]="true"
-            [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
-        </div>
-        <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
-          <div class="tab-content myTabContent" id="myTabContent">
-            <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
-              <div class="timeline-content">
-                <ul>
-                  <li *ngFor="let log of doc.contextParameters.audit">
-                    <p>
-                      <span>{{ log.principalName }}</span>
-                      {{ getEventString(log.eventId) }}
-                      {{ getTime(log.eventDate, false) }} ago
-                    </p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              <!-- <div class="comment-content 1">
-                <ul>
-                  <li *ngFor="let comment of comments" class="flexible" style="align-items: unset">
-                    <div>
-                      <img src=".../../assets/images/black-user.png" />
-                    </div>
-                    <div class="commentTextBlk">
+          <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
+          <div *ngIf="checkMimeType(doc) === 'video'" style="height: 600; position: relative">
+            <video controls style="width: 100%; height: 600px" [src]="getAssetUrl(null, docUrl)"
+              crossorigin="use-credentials"></video>
+          </div>
+          <div *ngIf="checkMimeType(doc) === 'file'">
+            <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
+              style="display: block; width: 100%; height: 600px" [original-size]="false" [autoresize]="true"
+              [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
+          </div>
+          <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
+            <div class="tab-content myTabContent" id="myTabContent">
+              <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
+                <div class="timeline-content">
+                  <ul>
+                    <li *ngFor="let log of doc.contextParameters.audit">
                       <p>
-                        {{ comment.author }}
-                        <span>{{ getTime(comment.creationDate, false) }} ago</span>
+                        <span>{{ log.principalName }}</span>
+                        {{ getEventString(log.eventId) }}
+                        {{ getTime(log.eventDate, false) }} ago
                       </p>
-                      <p>{{ comment.text }}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <!-- <div class="comment-content 1">
+                  <ul>
+                    <li *ngFor="let comment of comments" class="flexible" style="align-items: unset">
+                      <div>
+                        <img src=".../../assets/images/black-user.png" />
+                      </div>
+                      <div class="commentTextBlk">
+                        <p>
+                          {{ comment.author }}
+                          <span>{{ getTime(comment.creationDate, false) }} ago</span>
+                        </p>
+                        <p>{{ comment.text }}</p>
+                      </div>
+                    </li>
+                  </ul>
+                  <form (submit)="saveComment(commentText)">
+                    <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
+                      placeholder="Write a comment here" />
+                    <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
+                      class="enterComment" style="cursor: pointer" />
+                  </form>
+                </div> -->
+              </div>
+              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="info-content">
+                  <div class="row">
+                    <div class="col-xl-6 col-md-6">
+                      <ul>
+                        <li>
+                          Created
+                          {{ toDateString(doc?.properties) }}
+                          by
+                          <br />
+                          <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
+                        </li>
+    
+                        <li>
+                          Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
+                            doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
+                            }}</span>
+                        </li>
+    
+                        <li>
+                          Name <br /><span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.title
+                            }}</span>
+                        </li>
+    
+                        <li>
+                          Location <br />
+                          <span style="word-break: break-all">
+                            <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}"
+                            (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                              {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
+                            </a>
+                          </span>
+                        </li>
+    
+                        <li>
+                          Description <br /><span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties["dc:description"] ||
+                            doc?.properties["imd:image_description"]
+                            }}</span>
+                        </li>
+    
+                        <li>
+                          Format <br /><span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties && doc?.properties["picture:info"]?.format
+                            }}</span>
+                        </li>
+                        
+                      </ul>
                     </div>
-                  </li>
-                </ul>
-                <form (submit)="saveComment(commentText)">
-                  <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
-                    placeholder="Write a comment here" />
-                  <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
-                    class="enterComment" style="cursor: pointer" />
-                </form>
-              </div> -->
-            </div>
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-              <div class="info-content">
-                <div class="row">
-                  <div class="col-xl-6 col-md-6">
-                    <ul>
-                      <li>
-                        Created
-                        {{ toDateString(doc?.properties) }}
-                        by
-                        <br />
-                        <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
-                      </li>
-  
-                      <li>
-                        Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
-                          }}</span>
-                      </li>
-  
-                      <li>
-                        Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.title
-                          }}</span>
-                      </li>
-  
-                      <li>
-                        Location <br />
-                        <span style="word-break: break-all">
-                          <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}"
-                          (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
-                            {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
-                          </a>
-                        </span>
-                      </li>
-  
-                      <li>
-                        Description <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties["dc:description"] ||
-                          doc?.properties["imd:image_description"]
-                          }}</span>
-                      </li>
-  
-                      <li>
-                        Format <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties && doc?.properties["picture:info"]?.format
-                          }}</span>
-                      </li>
-                      
-                    </ul>
-                  </div>
-                  <div class="col-xl-6 col-md-6">
-                    <ul>
-  
-                      <li>
-                        Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x
-                          {{ doc?.properties["picture:info"]?.height }}</span>
-                      </li>
-                      
-                      <li>
-                        Size <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          getDownloadFileEstimation()
-                          }}</span>
-                      </li>
-  
-                      <li>
-                        Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties && doc?.properties["picture:info"]?.colorSpace
-                          }}</span>
-                      </li>
-                      <li>
-                        Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
-                          }}</span>
-                      </li>
-  
-                      <li>
-                        EXIF
-                        <br />
-                        Date
-                        <span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties || doc?.properties["dc:created"]
-                          }}</span>
-                        <br />
-                        Orientation
-                        <span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties["imd:orientation"]
-                          }}</span>
-                        <br />
-                        Aperture
-                        <span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties["imd:fnumber"]
-                          }}</span>
-                        <br />
-                        Exposure
-                        <span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties["imd:exposure_time"]
-                          }}</span>
-                        <br />
-                        ISO
-                        <span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties["imd:iso_speed_ratings"]
-                          }}</span>
-                        <br />
-                        Focal Length
-                        <span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties["imd:focalLength"]
-                          }}</span>
-                      </li>
-                    </ul>
+                    <div class="col-xl-6 col-md-6">
+                      <ul>
+    
+                        <li>
+                          Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x
+                            {{ doc?.properties["picture:info"]?.height }}</span>
+                        </li>
+                        
+                        <li>
+                          Size <br /><span style="opacity: 0.7; word-break: break-all">{{
+                            getDownloadFileEstimation()
+                            }}</span>
+                        </li>
+    
+                        <li>
+                          Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties && doc?.properties["picture:info"]?.colorSpace
+                            }}</span>
+                        </li>
+                        <li>
+                          Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
+                            }}</span>
+                        </li>
+    
+                        <li>
+                          EXIF
+                          <br />
+                          Date
+                          <span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties || doc?.properties["dc:created"]
+                            }}</span>
+                          <br />
+                          Orientation
+                          <span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties["imd:orientation"]
+                            }}</span>
+                          <br />
+                          Aperture
+                          <span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties["imd:fnumber"]
+                            }}</span>
+                          <br />
+                          Exposure
+                          <span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties["imd:exposure_time"]
+                            }}</span>
+                          <br />
+                          ISO
+                          <span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties["imd:iso_speed_ratings"]
+                            }}</span>
+                          <br />
+                          Focal Length
+                          <span style="opacity: 0.7; word-break: break-all">{{
+                            doc?.properties["imd:focalLength"]
+                            }}</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
-        <div class="mb-4" style="width: 78%">
-          <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
-          
-          <div class="weight-size-block">
-            <ul>
-              <li>
-                {{ getDownloadFileEstimation() }}
+        <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
+          <div class="mb-4" style="width: 78%">
+            <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
+            
+            <div class="weight-size-block">
+              <ul>
+                <li>
+                  {{ getDownloadFileEstimation() }}
+                </li>
+                <li>
+                  <img src="../../assets/images/briefcase.svg" alt="Folder" /> {{getParentFolderName()}}
+                </li>
+                
+                <!-- <li *ngIf="getUsageAllowed()">
+                  <span class="yellowBtn">{{getUsageAllowed()}}</span>
+                </li> -->
+                <!-- <li>
+                  <span class="copy-section" >
+                    <a class="flexible">
+                      <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 0px;">
+                      <span class="copy-link pointer" (click)="copyLink()">
+                        {{!copiedString ? 'Copy link' : 'Link copied!'}}
+                      </span>
+                    </a>
+                  </span>
+                </li> -->
+              </ul>
+            </div>
+          </div>
+
+          <div class="flexible" style="align-items: unset; justify-content: end; width: 20%">
+            <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
+              <li class="nav-item customtooltip" role="presentation">
+                <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
+                  (click)="openInfo('timeline')" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
+                  role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
               </li>
-              <li>
-                <img src="../../assets/images/briefcase.svg" alt="Folder" /> {{getParentFolderName()}}
+              <!-- <li class="nav-item customtooltip" role="presentation" *ngIf="hasPrivateAccess()">
+                <a
+                  class="nav-link"
+                  id="profile-tab"
+                  data-bs-toggle="tab"
+                  placement="bottom"
+                  ngbTooltip="Comments"
+                  (click)="openInfo('comments')"
+                  [ngClass]="{ active: activeTabs['comments'] }"
+                  href="#profile"
+                  role="tab"
+                  aria-controls="profile"
+                  aria-selected="false"
+                  ><img src="../../assets/images/Comments.svg"
+                /></a>
+              </li> -->
+              <li class="nav-item customtooltip" role="presentation">
+                <a class="nav-link" id="contact-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
+                  (click)="openInfo('info')" [ngClass]="{ active: activeTabs['info'] }" href="#contact" role="tab"
+                  aria-controls="contact" aria-selected="false">
+                  <img src="../../assets/images/Info.svg" /></a>
               </li>
-              
-              <!-- <li *ngIf="getUsageAllowed()">
-                <span class="yellowBtn">{{getUsageAllowed()}}</span>
-              </li> -->
-              <!-- <li>
-                <span class="copy-section" >
-                  <a class="flexible">
-                    <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 0px;">
-                    <span class="copy-link pointer" (click)="copyLink()">
-                      {{!copiedString ? 'Copy link' : 'Link copied!'}}
-                    </span>
-                  </a>
-                </span>
-              </li> -->
             </ul>
           </div>
-        </div>
 
-        <div class="flexible" style="align-items: unset; justify-content: end; width: 20%">
-          <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
-            <li class="nav-item customtooltip" role="presentation">
-              <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
-                (click)="openInfo('timeline')" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
-                role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
-            </li>
-            <!-- <li class="nav-item customtooltip" role="presentation" *ngIf="hasPrivateAccess()">
-              <a
-                class="nav-link"
-                id="profile-tab"
-                data-bs-toggle="tab"
-                placement="bottom"
-                ngbTooltip="Comments"
-                (click)="openInfo('comments')"
-                [ngClass]="{ active: activeTabs['comments'] }"
-                href="#profile"
-                role="tab"
-                aria-controls="profile"
-                aria-selected="false"
-                ><img src="../../assets/images/Comments.svg"
-              /></a>
-            </li> -->
-            <li class="nav-item customtooltip" role="presentation">
-              <a class="nav-link" id="contact-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
-                (click)="openInfo('info')" [ngClass]="{ active: activeTabs['info'] }" href="#contact" role="tab"
-                aria-controls="contact" aria-selected="false">
-                <img src="../../assets/images/Info.svg" /></a>
-            </li>
-          </ul>
-        </div>
+          <div class="search-tags">
+            <ul class="flexible">
+              <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
+                <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
+                  sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
+              </li>
+              <li *ngIf="tags.length > currentTagLength">
+                <button class="btn default" (click)="showMoreTags()">show more</button>
+              </li>
+              <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
+                <button class="btn default" (click)="showLessTags()">show less</button>
+              </li>
 
-        <div class="search-tags">
-          <ul class="flexible">
-            <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
-              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
-                sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
-            </li>
-            <li *ngIf="tags.length > currentTagLength">
-              <button class="btn default" (click)="showMoreTags()">show more</button>
-            </li>
-            <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
-              <button class="btn default" (click)="showLessTags()">show less</button>
-            </li>
+            </ul>
+          </div>
 
-          </ul>
-        </div>
-
-        <div class="comment-content wd100" *ngIf="hasPrivateAccess()">
-          <ul>
-            <li *ngFor="let comment of comments" class="flexible" style="align-items: unset">
-              <div style="align-self: center;">
-                <!-- <img src=".../../assets/images/black-user.png" /> -->
-                <div class="userName">UB</div>
-              </div>
-              <div class="commentTextBlk">
-                <p class="nameContent">
-                  {{ comment.author }}
-                  <!-- <span>{{ getTime(comment.creationDate, false) }} ago</span> -->
-                </p>
-                <p class="bodyContent">{{ comment.text }} <span>@Amit Raad</span> ?</p>
-              </div>
-            </li>
-            <li class="allComments"><span>View all comments</span></li>
-          </ul>
-          <form (submit)="saveComment(commentText)" class="commentTextForm">
-            <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
-              placeholder="Write a comment here" />
-            <button class="commentBtn" (click)="saveComment(commentText)" autocomplete="off" [disabled]="!commentText" [ngClass]="{'activeBtn' : commentText}">Send</button>
-            <!-- <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
-              class="enterComment" style="cursor: pointer" /> -->
-          </form>
+          <div class="comment-content wd100" *ngIf="hasPrivateAccess()">
+            <ul>
+              <li *ngFor="let comment of comments" class="flexible" style="align-items: unset">
+                <div style="align-self: center;">
+                  <!-- <img src=".../../assets/images/black-user.png" /> -->
+                  <div class="userName">UB</div>
+                </div>
+                <div class="commentTextBlk">
+                  <p class="nameContent">
+                    {{ comment.author }}
+                    <!-- <span>{{ getTime(comment.creationDate, false) }} ago</span> -->
+                  </p>
+                  <p class="bodyContent">{{ comment.text }} <span>@Amit Raad</span> ?</p>
+                </div>
+              </li>
+              <li class="allComments"><span>View all comments</span></li>
+            </ul>
+            <form (submit)="saveComment(commentText)" class="commentTextForm">
+              <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
+                placeholder="Write a comment here" />
+              <button class="commentBtn" (click)="saveComment(commentText)" autocomplete="off" [disabled]="!commentText" [ngClass]="{'activeBtn' : commentText}">Send</button>
+              <!-- <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
+                class="enterComment" style="cursor: pointer" /> -->
+            </form>
+          </div>
         </div>
       </div>
     </div>
