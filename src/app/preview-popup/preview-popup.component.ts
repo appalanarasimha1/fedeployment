@@ -126,20 +126,25 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return this.doc.properties["dc:sector"];
   }
 
+  showAllComments:Boolean=false
+  totalComments:number;
   getComments() {
     const queryParams = { pageSize: 10, currentPageIndex: 0 };
     const route = apiRoutes.FETCH_COMMENTS.replace("[assetId]", this.doc.uid);
     this.nuxeo.nuxeoClient
       .request(route, {
-        queryParams,
+        queryParams:this.showAllComments?{}:queryParams,
         headers: { "enrichers.user": "userprofile" },
       })
       .get()
       .then((docs) => {
         this.comments = docs.entries;
+        this.totalComments = docs.totalSize
+        this.showAllComments = false
       })
       .catch((err) => {
         console.log("get comment error", err);
+        this.showAllComments = false
       });
   }
 
@@ -533,5 +538,12 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     };
     await this.apiService.post(apiRoutes.REQUEST_DOWNLOAD, body).toPromise();
     this.requestSent = true;
+  }
+  loading:boolean=false
+  showAllcommentClick(){
+    this.loading = true
+    this.showAllComments = true
+    this.getComments()
+    this.loading = false
   }
 }

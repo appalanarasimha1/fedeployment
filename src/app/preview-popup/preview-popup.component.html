@@ -1,7 +1,7 @@
 <div *ngIf="openInModal">
   <ng-template #preview let-modal class="imgPopUpTab">
     <div class="modal-header">
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = ''">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = '';showAllComments=false">
         <!-- <span aria-hidden="true">&times;</span> -->
         <span aria-hidden="true"><img src="../../assets/images/modalclose.svg" /></span>
       </button>
@@ -394,20 +394,27 @@
                   {{ getAuthor(comment) }}
                   <!-- <span>{{ getTime(comment.creationDate, false) }} ago</span> -->
                 </p>
-                <p class="bodyContent">{{ comment.text }} <span>@Amit Raad</span> ?</p>
+                <p class="bodyContent">{{ comment.text }} 
+                  <!-- <span>@Amit Raad</span> ? -->
+                </p>
               </div>
             </li>
-            <li class="allComments"><span>View all comments</span></li>
+            <li class="allComments" (click)="showAllcommentClick()" *ngIf="totalComments>comments.length"><span>View all comments</span></li>
+            <!-- <li class="allComments" *ngIf="loading"><span><app-loader-small [show]="loading"></app-loader-small>View all comments</span></li> -->
+
           </ul>
           <form (submit)="saveComment(commentText)" class="commentTextForm">
-            <mwl-text-input-autocomplete-container>
-              <input 
-                mwlTextInputAutocomplete
+            <!-- <mwl-text-input-autocomplete-container> -->
+                <!-- mwlTextInputAutocomplete
                 [findChoices]="findChoices"
-                [getChoiceLabel]="getChoiceLabel"
-                type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
+                [getChoiceLabel]="getChoiceLabel" -->
+              <input 
+                type="text"
+                [(ngModel)]="commentText" 
+                class="commentInput"
+                name="comment"
                 placeholder="Write a comment here" />
-            </mwl-text-input-autocomplete-container>
+            <!-- </mwl-text-input-autocomplete-container>  -->
             <button class="commentBtn" (click)="saveComment(commentText)" autocomplete="off" [disabled]="!commentText" [ngClass]="{'activeBtn' : commentText}">Send</button>
             <!-- <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
               class="enterComment" style="cursor: pointer" /> -->
