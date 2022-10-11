@@ -4230,6 +4230,7 @@ ngx-masonry document-card .lock-icon img {
 .row:before, .row:after {display: none !important;}
 body {
   padding-top: 76px;
+  /* padding-bottom: 76px; */
 }
 @media (min-width: 1200px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl {

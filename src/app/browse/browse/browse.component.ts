@@ -221,6 +221,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         const folder: any = await this.fetchFolder(folderId);
         this.saveState(folder);
         this.loading = false;
+        this.createDynamicSidebarScroll();
       // } else if(sectorName && !folderId ) {
 
       //   await this.fetchAllSectors();
