@@ -30,6 +30,7 @@ export const apiRoutes = {
   UN_TRASH_DOC: "/automation/Document.Untrash",
   DOCUMENT_UPDATE: "/automation/Document.Update",
   INVITE_USER: "/automation/Scry.InviteUser",
+  INVITE_INTERNAL: "/automation/Scry.InviteInternal",
   UPDATE_EXTERNAL_GROUP_USER: "/automation/Scry.UpdateExternalUserGroup",
   DEFAULT_DOCUMENT_SUGGESTION: '/search/pp/DEFAULT_DOCUMENT_SUGGESTION/execute',
   GROUP_USER_LIST: '/group/[groupName]/@users?pageSize=1000',
