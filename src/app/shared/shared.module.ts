@@ -27,7 +27,9 @@ import { SnackbarComponent } from '../common/snackbar/snackbar.component';
 import { AssetViewComponent } from '../asset-view/asset-view.component';
 import { ManageAccessModalComponent } from '../manage-access-modal/manage-access-modal.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-
+import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill';
+import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
+keyboardEventKeyPolyfill();
 @NgModule({
   providers: [
     // {
@@ -59,7 +61,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
     ChartsModule,
     MatSnackBarModule,
     // UploadModalModule,
-    // NgxMasonryModule
+    // NgxMasonryModule,
+    TextInputAutocompleteModule,
   ],
   exports: [
     CommonModule,

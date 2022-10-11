@@ -34,6 +34,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   copiedString;
+  user = null;
+  requestComment = "";
+  requestSent = false;
 
   constructor(
     private router: Router,
@@ -57,6 +60,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.getTags();
       this.getComments();
     }
+    this.checkCanDownload();
   }
 
   open(): void {
@@ -122,20 +126,25 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return this.doc.properties["dc:sector"];
   }
 
+  showAllComments:Boolean=false
+  totalComments:number;
   getComments() {
     const queryParams = { pageSize: 10, currentPageIndex: 0 };
     const route = apiRoutes.FETCH_COMMENTS.replace("[assetId]", this.doc.uid);
     this.nuxeo.nuxeoClient
       .request(route, {
-        queryParams,
+        queryParams:this.showAllComments?{}:queryParams,
         headers: { "enrichers.user": "userprofile" },
       })
       .get()
       .then((docs) => {
         this.comments = docs.entries;
+        this.totalComments = docs.totalSize
+        this.showAllComments = false
       })
       .catch((err) => {
         console.log("get comment error", err);
+        this.showAllComments = false
       });
   }
 
@@ -192,8 +201,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   saveComment(comment: string): void {
-    console.log({comment,inside:this.commentText});
-    
     if (!this.commentText.trim()) {
       return;
     }
@@ -357,7 +364,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   internalUse(){
     return this.doc.properties["sa:allow"] === ALLOW.internal;
   }
-  
+
   showDownloadDropdown() {
     return (
       this.hasNoRestriction() || (this.hasInternalRestriction() && this.isAware)
@@ -366,6 +373,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   getCreator() {
     return this.doc?.properties?.['dc:creator']?.id || this.doc?.properties?.['dc:creator'];
+  }
+
+  getCreatorEmail() {
+    return this.doc?.properties?.['dc:creator']?.properties?.email || this.doc?.properties?.['dc:creator'];
   }
 
   getApprovalUsers(): string[] {
@@ -426,7 +437,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
 
       // const assetId = this.doc.uid;
-      
+
       // const selBox = document.createElement("textarea");
       // selBox.style.position = "fixed";
       // selBox.style.left = "0";
@@ -454,7 +465,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   getImageDimensions(): string {
     return `${this.doc?.properties?.["picture:info"]?.width} x ${this.doc?.properties?.["picture:info"]?.height}`;
   }
-  
+
   checkCopyRight() {
     let m = this.doc;
     if (
@@ -473,5 +484,66 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   checkMimeType(document): string {
     return this.sharedService.checkMimeType(document);
+  }
+
+  getAuthor(comment){
+    let user = JSON.parse(localStorage.getItem("user"))["username"];
+    if (user == comment.author) return "You"
+    return comment.author
+  }
+
+  findChoices(searchText: string) {
+    return ['John', 'Jane', 'Jonny'].filter(item =>
+      item.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }
+  getChoiceLabel(choice: string) {
+    return `@${choice} `;
+  }
+  checkCanDownload() {
+    if (this.user === this.getCreator()) return true;
+    const permissions = this.doc?.contextParameters.permissions || [];
+    return permissions.includes("CanDownload");
+  }
+
+  checkRejected() {
+    const permissions = this.doc?.contextParameters.permissions || [];
+    return permissions.includes("DownloadRequestRejected");
+  }
+
+  hasRequestPending() {
+    const permissions = this.doc?.contextParameters.permissions || [];
+    return this.requestSent || permissions.includes("DownloadRequestPending");
+  }
+
+  async fetchUserData() {
+    if (localStorage.getItem("user")) {
+      this.user = JSON.parse(localStorage.getItem("user"))["username"];
+      if (this.user) return;
+    }
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.connect();
+      this.user = res.user.id;
+      localStorage.setItem("user", JSON.stringify(res.user.properties));
+    }
+  }
+
+  async sendRequestDownload() {
+    const body = {
+      context: {},
+      input: this.doc.uid,
+      params: {
+        comment: this.requestComment
+      },
+    };
+    await this.apiService.post(apiRoutes.REQUEST_DOWNLOAD, body).toPromise();
+    this.requestSent = true;
+  }
+  loading:boolean=false
+  showAllcommentClick(){
+    this.loading = true
+    this.showAllComments = true
+    this.getComments()
+    this.loading = false
   }
 }
