@@ -1,7 +1,7 @@
 <div *ngIf="openInModal">
   <ng-template #preview let-modal class="imgPopUpTab">
     <div class="modal-header">
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = ''">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = '';showAllComments=false">
         <!-- <span aria-hidden="true">&times;</span> -->
         <span aria-hidden="true"><img src="../../assets/images/modalclose.svg" /></span>
       </button>
@@ -165,7 +165,7 @@
               </div>
             </div>
             <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              <div class="comment-content">
+              <!-- <div class="comment-content 1">
                 <ul>
                   <li *ngFor="let comment of comments" class="flexible" style="align-items: unset">
                     <div>
@@ -186,7 +186,7 @@
                   <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
                     class="enterComment" style="cursor: pointer" />
                 </form>
-              </div>
+              </div> -->
             </div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
               <div class="info-content">
@@ -341,7 +341,7 @@
                 (click)="openInfo('timeline')" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
                 role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
             </li>
-            <li class="nav-item customtooltip" role="presentation" *ngIf="hasPrivateAccess()">
+            <!-- <li class="nav-item customtooltip" role="presentation" *ngIf="hasPrivateAccess()">
               <a
                 class="nav-link"
                 id="profile-tab"
@@ -356,7 +356,7 @@
                 aria-selected="false"
                 ><img src="../../assets/images/Comments.svg"
               /></a>
-            </li>
+            </li> -->
             <li class="nav-item customtooltip" role="presentation">
               <a class="nav-link" id="contact-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
                 (click)="openInfo('info')" [ngClass]="{ active: activeTabs['info'] }" href="#contact" role="tab"
@@ -366,7 +366,7 @@
           </ul>
         </div>
 
-        <div class="search-tags pb-5">
+        <div class="search-tags">
           <ul class="flexible">
             <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
               <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
@@ -380,6 +380,45 @@
             </li>
 
           </ul>
+        </div>
+
+        <div class="comment-content wd100" *ngIf="hasPrivateAccess()">
+          <ul>
+            <li *ngFor="let comment of comments" class="flexible" style="align-items: unset">
+              <div style="align-self: center;">
+                <!-- <img src=".../../assets/images/black-user.png" /> -->
+                <div class="userName">{{creatUserName(comment.author)}}</div>
+              </div>
+              <div class="commentTextBlk">
+                <p class="nameContent">
+                  {{ getAuthor(comment) }}
+                  <!-- <span>{{ getTime(comment.creationDate, false) }} ago</span> -->
+                </p>
+                <p class="bodyContent">{{ comment.text }} 
+                  <!-- <span>@Amit Raad</span> ? -->
+                </p>
+              </div>
+            </li>
+            <li class="allComments" (click)="showAllcommentClick()" *ngIf="totalComments>comments.length"><span>View all comments</span></li>
+            <!-- <li class="allComments" *ngIf="loading"><span><app-loader-small [show]="loading"></app-loader-small>View all comments</span></li> -->
+
+          </ul>
+          <form (submit)="saveComment(commentText)" class="commentTextForm">
+            <!-- <mwl-text-input-autocomplete-container> -->
+                <!-- mwlTextInputAutocomplete
+                [findChoices]="findChoices"
+                [getChoiceLabel]="getChoiceLabel" -->
+              <input 
+                type="text"
+                [(ngModel)]="commentText" 
+                class="commentInput"
+                name="comment"
+                placeholder="Write a comment here" />
+            <!-- </mwl-text-input-autocomplete-container>  -->
+            <button class="commentBtn" (click)="saveComment(commentText)" autocomplete="off" [disabled]="!commentText" [ngClass]="{'activeBtn' : commentText}">Send</button>
+            <!-- <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
+              class="enterComment" style="cursor: pointer" /> -->
+          </form>
         </div>
       </div>
     </div>

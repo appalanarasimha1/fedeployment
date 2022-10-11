@@ -128,20 +128,25 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return this.doc.properties["dc:sector"];
   }
 
+  showAllComments:Boolean=false
+  totalComments:number;
   getComments() {
-    const queryParams = { pageSize: 10, currentPageIndex: 0 };
+    const queryParams = { pageSize: 4, currentPageIndex: 0 };
     const route = apiRoutes.FETCH_COMMENTS.replace("[assetId]", this.doc.uid);
     this.nuxeo.nuxeoClient
       .request(route, {
-        queryParams,
+        queryParams:this.showAllComments?{}:queryParams,
         headers: { "enrichers.user": "userprofile" },
       })
       .get()
       .then((docs) => {
         this.comments = docs.entries;
+        this.totalComments = docs.totalSize
+        this.showAllComments = false
       })
       .catch((err) => {
         console.log("get comment error", err);
+        this.showAllComments = false
       });
   }
 
@@ -198,8 +203,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   saveComment(comment: string): void {
-    console.log({comment,inside:this.commentText});
-
     if (!this.commentText.trim()) {
       return;
     }
@@ -485,6 +488,20 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return this.sharedService.checkMimeType(document);
   }
 
+  getAuthor(comment){
+    let user = JSON.parse(localStorage.getItem("user"))["username"];
+    if (user == comment.author) return "You"
+    return comment.author
+  }
+
+  findChoices(searchText: string) {
+    return ['John', 'Jane', 'Jonny'].filter(item =>
+      item.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }
+  getChoiceLabel(choice: string) {
+    return `@${choice} `;
+  }
   checkCanDownload() {
     if (this.user === this.getCreator()) return true;
     const permissions = this.doc?.contextParameters.permissions || [];
@@ -531,5 +548,18 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     };
     await this.apiService.post(apiRoutes.REQUEST_DOWNLOAD, body).toPromise();
     this.requestSent = true;
+  }
+  loading:boolean=false
+  showAllcommentClick(){
+    this.loading = true
+    this.showAllComments = true
+    this.getComments()
+    this.loading = false
+  }
+
+  creatUserName(name){
+    let data = name.split(".")
+    let newName = data[0][0] + data[1][0]
+    return newName.toUpperCase()
   }
 }
