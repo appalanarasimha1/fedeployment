@@ -293,6 +293,7 @@ export class HeaderComponent implements OnInit {
     this.earlierNoti = [];
     this.computeDuplicateRequestDownloadNoti();
     this.computeNotifications();
+    this.storeRequestDownloadNotification();
   }
 
   computeDuplicateRequestDownloadNoti() {
@@ -314,6 +315,11 @@ export class HeaderComponent implements OnInit {
       this.thisWeekNoti.push(this.notifications[i]);
     }
     this.earlierNoti = this.notifications.slice(i);
+  }
+
+  storeRequestDownloadNotification() {
+    const processedDownloadRequest = this.notifications.filter(noti => noti.extended.type === 'requestDownloadResponse');
+    localStorage.setItem("processedDownloadRequest", JSON.stringify(processedDownloadRequest));
   }
 
   buildRenameNotificationTitle(notification) {
