@@ -1674,7 +1674,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // }
     // else
     if ($event.target?.checked || $event.checked) {
-      this.count = this.count + 1;
+      if ($event.from !== "rightClick") {
+        this.count = this.count + 1;
+      }
+      
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
@@ -2176,9 +2179,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onRightClick() {
+  rightClickedItem:any =null;
+  rightClickedIndex:number;
+  onRightClick(item?:any,i?:number) {
+    console.log("asdfgthyju",item);
+    
+    this.rightClickedItem = item ? item : this.rightClickedItem
+    this.rightClickedIndex = i
+
     $(document).click(function (e) {
-      console.log('row click');
       if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0) {
         $(".availableActions").hide();
       } else {
@@ -2188,4 +2197,24 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return false;
   }
 
+  rightClickDownload(){
+    if (this.count >0) return this.multiDownload();
+    this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.multiDownload();
+    return $(".availableActions").hide();
+  }
+
+  rightClickMove(){
+    if (this.count >0) return this.openMoveModal();
+    this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.openMoveModal();
+    return $(".availableActions").hide();
+    }
+
+  rightClickDelete(){
+     if (this.count >0) return this.deleteFolders();
+    this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.deleteFolders();
+    return $(".availableActions").hide();
+  }
 }

@@ -4166,3 +4166,10 @@ img.closeIcon {
   width: 80%;
   height: 100%;
 }
+
+.availableActions ul li a {
+   color: #212529;
+   text-decoration: none;
+  }
+  
+  
