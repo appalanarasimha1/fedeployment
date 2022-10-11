@@ -387,7 +387,7 @@
             <li *ngFor="let comment of comments" class="flexible" style="align-items: unset">
               <div style="align-self: center;">
                 <!-- <img src=".../../assets/images/black-user.png" /> -->
-                <div class="userName">UB</div>
+                <div class="userName">{{creatUserName(comment.author)}}</div>
               </div>
               <div class="commentTextBlk">
                 <p class="nameContent">

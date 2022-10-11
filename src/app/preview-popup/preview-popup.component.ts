@@ -129,7 +129,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   showAllComments:Boolean=false
   totalComments:number;
   getComments() {
-    const queryParams = { pageSize: 10, currentPageIndex: 0 };
+    const queryParams = { pageSize: 4, currentPageIndex: 0 };
     const route = apiRoutes.FETCH_COMMENTS.replace("[assetId]", this.doc.uid);
     this.nuxeo.nuxeoClient
       .request(route, {
@@ -545,5 +545,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.showAllComments = true
     this.getComments()
     this.loading = false
+  }
+
+  creatUserName(name){
+    let data = name.split(".")
+    let newName = data[0][0] + data[1][0]
+    return newName.toUpperCase()
   }
 }

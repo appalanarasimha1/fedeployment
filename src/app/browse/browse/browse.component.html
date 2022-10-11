@@ -1238,9 +1238,9 @@
                           </label>
                         </div>
                       </div>
-                      <div class="availableActions" *ngIf="currentIndexRightClick == i">
+                      <div class="availableActions" *ngIf="currentIndexRightClick == i && !checkGeneralFolder(item)">
                         <ul>
-                          <li *ngIf="!isTrashView">
+                          <li *ngIf="!isTrashView && !checkCanMove(item)">
                            
                               <a href="javascript:void(0);" (click)="rightClickDownload()"> <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-download-icon" >
                               <path d="M11.9727 19.6958V12.9458" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1248,8 +1248,8 @@
                               <path d="M15.9374 14.8125H16.7812C18.3554 14.8152 19.7546 13.8099 20.2544 12.3172C20.7543 10.8244 20.2425 9.17928 18.9841 8.23348C17.7256 7.28768 16.0031 7.25355 14.7082 8.14877C14.1862 5.36953 11.682 3.40988 8.85877 3.5713C6.03554 3.73272 3.77104 5.96503 3.5692 8.78565C3.36737 11.6063 5.29096 14.1383 8.06244 14.7" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
                               </svg></span> Download</a>
                           </li>
-                          <li  *ngIf="checkEnableMoveButton()">
-                            <a href="javascript:void(0);" (click)="rightClickMove()">
+                          <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove()">
+                            <a href="javascript:void(0);">
                             <span><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
                               <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                               <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1263,7 +1263,7 @@
                               <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg></span> Rename</a>
                           </li> -->
-                          <li *ngIf="!isTrashView && checkEnableDeleteBtn()">
+                          <li *ngIf="!isTrashView && checkEnableDeleteBtn() &&  !checkGeneralFolder(item)">
                             <a href="javascript:void(0);" (click)="rightClickDelete()">
                               <span><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
                               <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

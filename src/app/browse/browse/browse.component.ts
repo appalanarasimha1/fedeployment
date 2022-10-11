@@ -2181,12 +2181,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   rightClickedItem:any =null;
   rightClickedIndex:number;
+  rightDownload:boolean=false;
   onRightClick(item?:any,i?:number) {
-    console.log("asdfgthyju",item);
-    
     this.rightClickedItem = item ? item : this.rightClickedItem
     this.rightClickedIndex = i
 
+   
     $(document).click(function (e) {
       if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0) {
         $(".availableActions").hide();
@@ -2194,26 +2194,30 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         $(".availableActions").show();
       }
     });
+    if(this.count == 0){
+      this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    }
     return false;
   }
 
+
   rightClickDownload(){
     if (this.count >0) return this.multiDownload();
-    this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
     this.multiDownload();
     return $(".availableActions").hide();
   }
 
   rightClickMove(){
     if (this.count >0) return this.openMoveModal();
-    this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
-    this.openMoveModal();
+    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+     this.openMoveModal();
     return $(".availableActions").hide();
     }
 
   rightClickDelete(){
      if (this.count >0) return this.deleteFolders();
-    this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
     this.deleteFolders();
     return $(".availableActions").hide();
   }
