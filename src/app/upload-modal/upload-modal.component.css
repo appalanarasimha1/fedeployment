@@ -12,7 +12,8 @@
 } */
 .upload-form{
   margin: 0px  2px 20px 0px;
-  height: 60vh;
+  /* height: 60vh; */
+  height: calc(92vh - 200px);
   overflow-y: scroll;
   width: 100%;
   overflow-x: hidden;
@@ -40,6 +41,7 @@ padding: unset;
   display: flex;
   flex-direction: column;
   position: relative;
+  height: calc(92vh - 50px);
   /* min-height: 400px; */
 }
 .upload-modal-step {
@@ -584,7 +586,8 @@ font-weight: normal;
     cursor: pointer;
     display: block;
     font-size: 15px;
-    height: 320px !important;
+    /* height: 320px !important; */
+    height: calc(92vh - 270px) !important;
     overflow-x: auto;
     margin-right: 24px;
 }
@@ -668,7 +671,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 } */
 
 .fix-scroll{
-  height: 50vh;
+  height: 24vh;
   overflow: hidden;
   overflow-y: scroll;
 }
@@ -1586,7 +1589,7 @@ span.showAllClassifications svg.rotateArrow {
 }
 
 ::ng-deep .mat-horizontal-content-container {
-  padding: 0 0px 24px 14px !important;
+  padding: 0 0px 24px 0px !important;
   padding-bottom: 0px !important;
 }
 .updateClassification, .upload-form-input.row.mb-30.uploadModalBlk, .publish-assets {
@@ -1596,7 +1599,7 @@ span.showAllClassifications svg.rotateArrow {
   width: 107%;
 }
 .newscrollBar {
-  margin: 0px 0px 0px -37px;
+  margin: 0px 0px 17px -8px;
   padding: 0px 30px 0px 30px;
 }
 .publish-assets {
@@ -1634,4 +1637,33 @@ span.showAllClassifications svg.rotateArrow {
   margin-top: -10px;
   float: right;
   margin-right: 14px;
+}
+.acknowledgeBlock {
+  display: flex; 
+  align-items: baseline; 
+  min-height: 14vh;
+}
+@media  screen and (min-width: 1440px) {
+  .acknowledgeBlock {
+    min-height: 12vh;
+  }
+  .fix-scroll{
+    height: 30vh;
+  }
+}
+@media  screen and (min-width: 1680px) {
+  .acknowledgeBlock {
+    min-height: 10vh;
+  }
+  .fix-scroll{
+    height: 37vh;
+  }
+}
+@media  screen and (min-width: 1920px) {
+  .acknowledgeBlock {
+    min-height: 9vh;
+  }
+  .fix-scroll{
+    height: 46vh;
+  }
 }

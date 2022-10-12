@@ -10,7 +10,7 @@
             <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)" id="customScrollBar" >
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
             <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length">
-               <div class="flexible" style="height: 250px;justify-content: center;position: relative;">
+               <div class="flexible" style="height: calc(92vh - 273px);justify-content: center;position: relative;">
                   <div class="upload-label">
                      <span style="margin-top: 20px;"><img src="../../assets/images/cloud-upload.png" style="width: 36px; margin-right: 10px;"> <b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
                      <div *ngIf="data" class="uploadAssetsBlock">
@@ -65,44 +65,44 @@
                </li>
             </ul>
             </ngx-dropzone>
-            <div class="row pt-2" style="display: flex; align-items: baseline; min-height: 77px;">
-               <div class="col-xl-3">
-                  <div *ngIf="getAssetNumber()" class="flexible pt-3 pointer" style="align-items: end;" (click)="drop.showFileSelector()">
-                  <a>
-                  <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
-                  </a>
-                  <span class="goldenText">
-                  Add more assets
-                  </span>
+            <div class="row pt-2 acknowledgeBlock">
+               <div class="col-xl-3" *ngIf="getAssetNumber()" >
+                  <div class="flexible pt-3 pointer" style="align-items: end;" (click)="drop.showFileSelector()">
+                     <a>
+                     <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
+                     </a>
+                     <span class="goldenText">
+                     Add more assets
+                     </span>
+                  </div>
+               </div>
+               <div class="col-xl-9 flexible" *ngIf="getAssetNumber()">
+                  <label class="control control--checkbox" style="margin-bottom: 0px;">
+                     Where any of the assets being uploaded contains a photo/video of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo/video and make accessible to other users across NEOM. I also acknowledge that I have a clear business justification for storing this asset
+                     <input type="checkbox" checked="checked"
+                     [(ngModel)]="agreeTerms"
+                     [ngModelOptions]="{standalone: true}"/>
+                     <div class="control__indicator"></div>
+                  </label>
                </div>
             </div>
-            <div class="col-xl-9 flexible">
-               <label class="control control--checkbox" *ngIf="getAssetNumber()" style="margin-bottom: 0px;">
-                  Where any of the assets being uploaded contains a photo/video of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo/video and make accessible to other users across NEOM. I also acknowledge that I have a clear business justification for storing this asset
-                  <input type="checkbox" checked="checked"
-                  [(ngModel)]="agreeTerms"
-                  [ngModelOptions]="{standalone: true}"/>
-                  <div class="control__indicator"></div>
-               </label>
-            </div>
-         </div>
-         </div>
 
-         <div class="button-groups" style="padding-top: 15px; padding-right: 24px;">
-            <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-            <div class="progress-btns">
-               <button *ngIf="!isPrivateFolder()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
-                  Next
-                  <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
-                     Please complete all mandatory fields to proceed
-                   </div>
-               </button>
-               <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
-                  Upload
-                  <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
-                     Please complete all mandatory fields to proceed
-                   </div>
-               </button>
+            <div class="button-groups" style="padding-top: 0px; padding-right: 0px;">
+               <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+               <div class="progress-btns">
+                  <button *ngIf="!isPrivateFolder()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                     Next
+                     <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
+                        Please complete all mandatory fields to proceed
+                      </div>
+                  </button>
+                  <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                     Upload
+                     <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
+                        Please complete all mandatory fields to proceed
+                      </div>
+                  </button>
+               </div>
             </div>
          </div>
       </mat-step>
@@ -469,7 +469,7 @@
                   <button class="cancel-btn" style="float: right;">Apply to all</button>
                </div> -->
             </div>
-            <div class="upload-form-input row mb-30 uploadModalBlk">
+            <div class="upload-form-input row uploadModalBlk" style="margin-bottom: 20px; margin-right: 3px">
                <div class="col-xl-12 col-md-12">
                   <span class="showAllClassifications" (click)="showAllAsset()">Show all asset classifications 
                      <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotateArrow' : showHideAllAsset}">
@@ -496,8 +496,8 @@
                   </div>
                </div>
             </div> -->
-            <div class="newscrollBar fix-scroll" id="customScrollBar" *ngIf="showHideAllAsset">
-               <div class="updated-asset-classifications">
+            <div class="newscrollBar fix-scroll" id="customScrollBar">
+               <div class="updated-asset-classifications" *ngIf="showHideAllAsset">
                   <div class="publish-file-preview-groups">
                      <div *ngFor="let file of filesMap| keyvalue" class="publish-file-preview">
                         <div class="publish-file-preview-img">
