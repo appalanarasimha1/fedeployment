@@ -4101,10 +4101,6 @@ img.closeIcon {
 .publicUseBlk.published::after {
   z-index: -1;
 }
-
-
-
-
 .collapse{
   cursor: pointer;
   display: block;
@@ -4119,3 +4115,49 @@ img.closeIcon {
 .collapse + input:checked + div{
   display:block;
 }
+
+.availableActions {
+  position: absolute;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 12px 14px;
+  width: 304px;
+  left: 40px;
+  top: 45px;
+  z-index: 9;
+}
+.availableActions ul li {
+  margin-bottom: 10px;
+}
+
+.availableActions ul:last-child {
+  border-top: 1px solid #f0efea;
+  margin-top: 15px;
+  padding-top: 15px;
+}
+.availableActions ul:last-child li:last-child {
+  margin-bottom: 0px;
+}
+
+.availableActions ul li span {
+  width: 25px;
+  display: inline-block;
+  height: 25px;
+  margin-right: 10px;
+}
+.availableActions ul li span svg.action-rename-icon {
+  width: 84%;
+  height: 75%;
+}
+.availableActions ul li span svg.action-file-share-icon {
+  width: 80%;
+  height: 100%;
+}
+
+.availableActions ul li a {
+   color: #212529;
+   text-decoration: none;
+  }
+  
+  

@@ -5,8 +5,8 @@ export class AppConfigOCIUat {
     private static config: any = {
       port: 4001,
       socketPort: 4010,
-      mongoDbUrl: `mongodb://${encodeURIComponent(this.userName)}:${encodeURIComponent(this.password)}@10.149.49.34:27017/?authSource=admin`,
-      dbName: 'prodgx',
+      mongoDbUrl: `mongodb://${encodeURIComponent(this.userName)}:${encodeURIComponent(this.password)}@mongodb-1.groundxuat.com:27017,mongodb-2.groundxuat.com:27017,mongodb-3.groundxuat.com:27017/?authSource=admin&replicaSet=rs-2&readPreference=nearest&ssl=false`,
+      dbName: 'uat_cluster',
       mongodbTables: {
         USER_TABLE: 'userDirectory',
         VIDEO_TABLE: 'personalizedVideoInventory',
