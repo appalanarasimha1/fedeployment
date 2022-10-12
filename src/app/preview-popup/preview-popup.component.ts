@@ -70,30 +70,31 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.isAware = false;
     this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
 
-    // const dialogConfig = new MatDialogConfig();
-    // // The user can't close the dialog by clicking outside its body
-    // dialogConfig.id = "modal-component";
-    // dialogConfig.minHeight = "350px";
-    // dialogConfig.height = "100%";
-    // dialogConfig.maxHeight = "92vh"
-    // dialogConfig.width = "80vw";
-    // dialogConfig.disableClose = true;
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "100%";
+    dialogConfig.maxHeight = "94vh"
+    dialogConfig.width = "80vw";
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-modalbox';
     // const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
-    // // https://material.angular.io/components/dialog/overview
-    // // const modalDialog = this.matDialog.open(this.modalTemp, dialogConfig);
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(this.modalTemp, dialogConfig);
 
-    this.modalService
-      .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
-      .result.then(
-        (result) => {
-          this.modalLoading = false;
-        },
-        (reason) => {
-          this.showTagInput = false;
-          this.modalLoading = false;
-          this.copiedString = "";
-        }
-      );
+    // this.modalService
+    //   .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
+    //   .result.then(
+    //     (result) => {
+    //       this.modalLoading = false;
+    //     },
+    //     (reason) => {
+    //       this.showTagInput = false;
+    //       this.modalLoading = false;
+    //       this.copiedString = "";
+    //     }
+    //   );
   }
 
   getTags() {
@@ -495,5 +496,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     console.log('hi');
     this.modalOpen = false;
     this.modalLoading = false;
+    this.matDialog.closeAll()
   }
+  
 }

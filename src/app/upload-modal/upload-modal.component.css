@@ -1480,7 +1480,7 @@ button.upload-btn.tollTipCustom.disableBtn, button.upload-btn.tollTipCustom.disa
   width: 100%;
 } */
 
-.updateClassificationBlk {margin-bottom: 20px; border-bottom: 0px solid #D1CFC9; padding-bottom: 10px;}
+.updateClassificationBlk {margin-bottom: 10px; border-bottom: 0px solid #D1CFC9; padding-bottom: 0px;}
 .updateClassification {display: block;width: 100%;overflow: hidden;}
 
 .updateClassification .updateClassiNameblock {float: left;}

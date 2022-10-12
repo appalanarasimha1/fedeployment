@@ -4518,3 +4518,17 @@ header.updateHeader .container {
   border-radius: 8px !important;
   border: 0px !important;
 }
+
+::-webkit-scrollbar-track{
+	background-color: transparent;
+}
+
+::-webkit-scrollbar{
+	width: 6px;
+	background-color:transparent;
+}
+
+::-webkit-scrollbar-thumb{
+	background-color: #E8E6DF;
+  border-radius: 10px;
+}

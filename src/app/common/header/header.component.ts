@@ -179,6 +179,7 @@ export class HeaderComponent implements OnInit {
     dialogConfig.height = "100%";
     dialogConfig.maxHeight = "92vh"
     dialogConfig.width = "80vw";
+    // dialogConfig.maxWidth = "80vw";
     dialogConfig.disableClose = true;
     const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
     if(workspaceState) {

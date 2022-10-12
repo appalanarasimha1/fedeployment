@@ -289,7 +289,7 @@ color: #000000;
 }
 /* modal css */
 .modalHead{
-  padding: 20px;
+  padding: 0px 0px 20px;
   background-color: #fff;
   border: unset;
   border-radius: 8px 8px 0px 0px;
@@ -426,10 +426,11 @@ color: #000000;
 .popupTabSec{
   /* height: 600px; */
   position: relative;
+  background-color: #F6F5F2;
 }
 .popupTabSec img{
   /* height: 670px; */
-  height: 70vh;
+  height: 45vh;
   object-fit: contain;
   object-position: contain;
 }
@@ -536,14 +537,18 @@ height: 100%;
 .hide {
   display: none;
 }
+.comment-content {
+  padding: 15px;
+}
 .comment-content ul{
   list-style: none;
   padding: 0px;
   width: 100%;
   margin: auto;
   padding-top: 40px;
-  height: 478px;
+  height: 278px;
   overflow: scroll;
+  padding: 15px;
 }
 .comment-content ul li{
   padding: 15px 0px;
@@ -1193,10 +1198,10 @@ color: #C4C4C4;
 }
 .modal-header{
   border-bottom: unset;
-  padding: unset;
+  /* padding: unset; */
   /* display: none; */
-  height: 0px;
-  margin: unset;
+  /* height: 0px; */
+  /* margin: unset; */
 }
 
 .nav-link::before{
@@ -1929,7 +1934,7 @@ ol.publicUse li:hover .mouseHoverInfo {
   font-family: 'brownregular';
 }
 .comment-content ul {
-  height: auto;
+  /* height: auto; */
   padding-top: 0px;
 }
 .comment-content ul li.allComments {
@@ -2008,4 +2013,11 @@ form.commentTextForm {
 #customScrollBar::-webkit-scrollbar-thumb{
 	background-color: #E8E6DF !important;
   border-radius: 10px !important;
+}
+::ng-deep .custom-modalbox .mat-dialog-container {
+  padding: 0px !important;
+  min-height: auto !important;
+  max-height: 100% !important;
+  border-radius: 8px !important;
+  /* overflow: hidden !important; */
 }
