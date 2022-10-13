@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  nuxeoServerUrl: "https://uatgroundx.oci.sense.neomos.online", // 'https://uatgroundx.neom.com',
+  nuxeoServerUrl: "https://uatgroundx.neom.com", // 'https://uatgroundx.neom.com',
   apiServiceBaseUrl: "https://uatgroundx.oci.sense.neomos.online", // 'https://uatgroundx.neom.com',
   apiVersion: '/nuxeo/api/v1',
   keycloakConfig: {
