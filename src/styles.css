@@ -4495,6 +4495,18 @@ header.updateHeader .container {
   width: 100%;
 }
 
+input.requesInput::placeholder {
+  color: #040404 !important;
+  opacity: 1; /* Firefox */
+}
+
+input.requesInput:-ms-input-placeholder {
+  color: #040404 !important;
+}
+
+input.requesInput::-ms-input-placeholder {
+  color: #040404 !important;
+}
 .publicUseBlock.publishedBlock .manageAccessBlock {
   width: 100% !important;
 }

@@ -289,10 +289,9 @@ color: #000000;
 }
 /* modal css */
 .modalHead{
-  padding: 0px 0px 20px;
+  padding: 10px 15px 15px 15px;
   background-color: #fff;
-  border: unset;
-  border-radius: 8px 8px 0px 0px;
+  border: unset
 }
 .modalHead ul, .iconsList{
   list-style: none;
@@ -426,11 +425,9 @@ color: #000000;
 .popupTabSec{
   /* height: 600px; */
   position: relative;
-  background-color: #F6F5F2;
 }
 .popupTabSec img{
-  /* height: 670px; */
-  height: 45vh;
+  height: 38vh;
   object-fit: contain;
   object-position: contain;
 }
@@ -443,10 +440,10 @@ color: #000000;
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.7);
 }
 .myTabContent{
-  width: 100%;
+  width: 98%;
   position: relative;
-overflow: scroll;
-height: 100%;
+  overflow: scroll;
+  height: 108%;
 }
 .myTabContentMain{
   position: absolute;
@@ -488,13 +485,14 @@ height: 100%;
   width: calc(100% - 500px);
   margin: auto;
   position: relative;
-  padding-top: 60px;
+  padding-top: 30px;
+  padding-bottom: 10px;
   margin: auto;
 
 }
 
 .timeline-content ul li{
-  padding-bottom: 70px;
+  padding-bottom: 30px;
   position: relative;
 }
 .timeline-content ul li::before{
@@ -521,8 +519,8 @@ height: 100%;
   display: none;
 }
 .timeline-content ul li p{
-  font-size: 18px;
-  line-height: 14px;
+  font-size: 15px;
+  line-height: 10px;
   color: #FFFFFF;
   padding-left: 30px;
   margin-bottom: unset;
@@ -530,15 +528,12 @@ height: 100%;
 .timeline-content ul li p span{
   color: #EBC03F;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 .hide {
   display: none;
-}
-.comment-content {
-  padding: 15px;
 }
 .comment-content ul{
   list-style: none;
@@ -546,12 +541,11 @@ height: 100%;
   width: 100%;
   margin: auto;
   padding-top: 40px;
-  height: 278px;
+  height: 478px;
   overflow: scroll;
-  padding: 15px;
 }
 .comment-content ul li{
-  padding: 15px 0px;
+  padding: 10px 0px;
   position: relative;
 }
 .comment-content ul li p{
@@ -583,8 +577,8 @@ height: 100%;
   background: #F6F5F2;
   padding: 15px;
   text-align: left;
-  margin-bottom: 10px;
-  /* width: calc(100% - 220px);
+  /* margin-bottom: 10px;
+  width: calc(100% - 220px);
   position: absolute;
   bottom: -80px;
   left: 0;
@@ -593,13 +587,13 @@ height: 100%;
 .info-content ul{
   list-style: none;
   padding: 0px;
-  padding-top: 50px;
+  padding-top: 18px;
 }
 .info-content ul li{
-  font-size: 18px;
-line-height: 22px;
-color: #FFFFFF;
-padding: 15px 0px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #FFFFFF;
+  padding: 0px 0px 18px;
 }
 /* for loader */
 @keyframes rotate{
@@ -1198,10 +1192,10 @@ color: #C4C4C4;
 }
 .modal-header{
   border-bottom: unset;
-  /* padding: unset; */
+  padding: unset;
   /* display: none; */
-  /* height: 0px; */
-  /* margin: unset; */
+  height: 0px;
+  margin: unset;
 }
 
 .nav-link::before{
@@ -1913,6 +1907,80 @@ ol.publicUse li:hover .mouseHoverInfo {
 .commentTextBlk {
   width: calc(100% - 50px);
 }
+
+.requesInput {
+  border: 0px solid;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-bottom: 1px solid #D1CFC9;
+  background: transparent;
+  line-height: 34px;
+  margin-top: 20px;
+  width: 100%;
+  vertical-align: top;
+}
+.requesInput.goldenText {
+  border-bottom: 1px solid #EDD580;
+  color: #EDD580;
+}
+.submitBtn {
+  background: #EDD580;
+  color: #040404;
+  border-radius: 100px;
+  padding: 0px 20px;
+  line-height: 35px;
+  letter-spacing: 1px;
+  border: 1px solid transparent;
+  outline: none;
+  float: right;
+  clear: both;
+  margin-top: 18px;
+}
+
+.permission-required button:disabled,
+.permission-required button[disabled]{
+  border: 1px solid transparent;
+  background-color: #EFEEE9;
+  color: #BAB8B2;
+  opacity: 1;
+}
+input.requesInput::placeholder {
+  color: #D1CFC9 !important;
+  opacity: 1; /* Firefox */
+}
+input.requesInput:-ms-input-placeholder {
+  color: #D1CFC9 !important;
+}
+input.requesInput::-ms-input-placeholder {
+  color: #D1CFC9 !important;
+}
+.requestSubmitted {
+  text-align: center;
+}
+.requestSubmitted img.mailSendIcon {
+  margin: 0px auto;
+  width: auto !important;
+}
+.requestSubmitted h3 {
+  color: #fff;
+  padding-bottom: 20px;
+  font-size: 15px;
+  padding-top: 20px;
+}
+.requestSubmitted p {
+  font-family: 'brownlight';
+  color: #fff;
+}
+.rejectedRequest p span {
+  color: #DEB31A;
+}
+.rejectedRequest p {
+  margin-bottom: 20px;
+}
+.rejectedRequest p:last-child {
+  margin-bottom: 0px;
+}
 .eyeIcon {
   display: inline-block;
   width: 16px;
@@ -1934,20 +2002,23 @@ ol.publicUse li:hover .mouseHoverInfo {
   font-family: 'brownregular';
 }
 .comment-content ul {
-  /* height: auto; */
+  height: calc(100vh - 74vh);
   padding-top: 0px;
 }
-.comment-content ul li.allComments {
+.comment-content ul li.allComments,
+.comment-content .allComments {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
-.comment-content ul li.allComments span {
+.comment-content ul li.allComments span,
+.comment-content .allComments span {
   color: #BAB8B2;
   cursor: pointer;
   display: inline-block;
   padding: 5px 10px;
 }
-.comment-content ul li.allComments span:hover {
+.comment-content ul li.allComments span:hover,
+.comment-content .allComments span:hover {
   background: #F6F5F2;
   line-height: normal;
   display: inline-block;
@@ -1955,9 +2026,10 @@ ol.publicUse li:hover .mouseHoverInfo {
   border-radius: 4px;
   color: #a19f98;
 }
-.comment-content ul li.allComments {
+.comment-content ul li.allComments,
+.comment-content .allComments {
   min-height: 61px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 form.commentTextForm {
   position: relative;
@@ -1996,28 +2068,28 @@ form.commentTextForm {
 .close-modal-icon img {
   max-width: 22px;
 }
-
-.fixHeight {
-  padding: 0px;
-  margin-bottom: 0px;
-  overflow: auto;
-  height: 80vh;
-}
-#customScrollBar::-webkit-scrollbar-track{
-	background-color: transparent !important;
-}
-#customScrollBar::-webkit-scrollbar{
-	width: 6px !important;
-	background-color:transparent !important;
-}
-#customScrollBar::-webkit-scrollbar-thumb{
-	background-color: #E8E6DF !important;
-  border-radius: 10px !important;
-}
 ::ng-deep .custom-modalbox .mat-dialog-container {
   padding: 0px !important;
   min-height: auto !important;
   max-height: 100% !important;
   border-radius: 8px !important;
-  /* overflow: hidden !important; */
+}
+.popupTabSec.notPrivateAccess img {
+  height: calc(100vh - 250px) !important;
+}
+
+@media  screen and (min-width: 1440px) {
+  .comment-content ul {
+    height: calc(100vh - 71vh);
+  }
+}
+@media  screen and (min-width: 1680px) {
+  .comment-content ul {
+    height: calc(100vh - 67vh);
+  }
+}
+@media  screen and (min-width: 1920px) {
+  .comment-content ul {
+    height: calc(100vh - 64vh);
+  }
 }

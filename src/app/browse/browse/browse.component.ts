@@ -276,6 +276,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     this.fetchExternalUserInfo(fetchAll);
     this.dragNDrop();
+    // this.removeAssets()
   }
 
   ngAfterViewInit(): void {
@@ -1002,6 +1003,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async unTrashFolders() {
+    console.log("selectedFolderList",this.selectedFolderList);
+    
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
 
@@ -1674,7 +1677,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // }
     // else
     if ($event.target?.checked || $event.checked) {
-      this.count = this.count + 1;
+      if ($event.from !== "rightClick") {
+        this.count = this.count + 1;
+      }
+      
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
@@ -2134,13 +2140,29 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
+  checkDownloadPermission(item){
+    if (item.properties["sa:downloadApprovalUsers"]?.length >0 || item.properties["dc:isPrivate"]) return true;
+    return false
+  }
+
   checkEnableMoveButton() {
+    let processAble = []
+    if (Object.keys(this.selectedMoveList).length) {
+       for (const key in this.selectedMoveList) {
+        if(!this.checkDownloadPermission(this.selectedMoveList[key])){
+          processAble.push(true)
+        }
+      }
+    }
+    return processAble.length>0 
+  }
+
+  checkEnableMoveButton1() {
     if (Object.keys(this.selectedMoveList)?.length > 0) {
       if (this.selectedFolder.properties["dc:isPrivate"]) return false;
     }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
-
   markIsPrivate(data: IEntry) {
     this.sortedData.forEach(item => {
       if(item.uid === data.uid) {
@@ -2176,16 +2198,46 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onRightClick() {
+  rightClickedItem:any =null;
+  rightClickedIndex:number;
+  rightDownload:boolean=false;
+  onRightClick(item?:any,i?:number) {
+    this.rightClickedItem = item ? item : this.rightClickedItem
+    this.rightClickedIndex = i
+
+   
     $(document).click(function (e) {
-      console.log('row click');
       if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0) {
         $(".availableActions").hide();
       } else {
         $(".availableActions").show();
       }
     });
+    if(this.count == 0){
+      this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    }
     return false;
   }
 
+
+  rightClickDownload(){
+    if (this.count >0) return this.multiDownload();
+    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.multiDownload();
+    return $(".availableActions").hide();
+  }
+
+  rightClickMove(){
+    if (this.count >0) return this.openMoveModal();
+    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+     this.openMoveModal();
+    return $(".availableActions").hide();
+    }
+
+  rightClickDelete(){
+     if (this.count >0) return this.deleteFolders();
+    // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.deleteFolders();
+    return $(".availableActions").hide();
+  }
 }
