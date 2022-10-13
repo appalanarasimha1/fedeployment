@@ -138,7 +138,12 @@ export class MoveCopyAssetsComponent implements OnInit {
   }
   checkCanMove(m){
     return  ["workspace", "folder", "orderedfolder"].indexOf(m.type.toLowerCase()) !== -1
-}
+  }
+
+  checkDownloadPermission(item){
+    if (item.properties["sa:downloadApprovalUsers"]?.length >0 || item.properties["dc:isPrivate"]) return true;
+    return false
+  }
 
   async moveAssets() {
     if (!this.selectedDestination) return;
@@ -148,7 +153,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     const arrayCall = [];
     const arrayIndex = [];
     for (const key in this.selectedList) {
-      if(this.checkCanDelete(this.selectedList[key]) || this.checkCanMove(this.selectedList[key])){
+      if(!this.checkDownloadPermission(this.selectedList[key])){
         arrayCall.push(this.moveAsset(this.selectedList[key]));
         arrayIndex.push(key)
       }

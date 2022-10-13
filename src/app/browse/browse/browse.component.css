@@ -1138,6 +1138,8 @@ font-weight: normal;
 .recoverFolder {
   padding-bottom: 5px;
   margin-right: 10px;
+  position: relative;
+  z-index: 2;
 }
 ul.uploadAssetsClassifications {
   display: inline-block;
