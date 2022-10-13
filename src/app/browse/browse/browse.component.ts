@@ -276,6 +276,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     this.fetchExternalUserInfo(fetchAll);
     this.dragNDrop();
+    // this.removeAssets()
   }
 
   ngAfterViewInit(): void {
@@ -1002,6 +1003,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async unTrashFolders() {
+    console.log("selectedFolderList",this.selectedFolderList);
+    
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
 
@@ -2137,13 +2140,29 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
+  checkDownloadPermission(item){
+    if (item.properties["sa:downloadApprovalUsers"]?.length >0 || item.properties["dc:isPrivate"]) return true;
+    return false
+  }
+
   checkEnableMoveButton() {
+    let processAble = []
+    if (Object.keys(this.selectedMoveList).length) {
+       for (const key in this.selectedMoveList) {
+        if(!this.checkDownloadPermission(this.selectedMoveList[key])){
+          processAble.push(true)
+        }
+      }
+    }
+    return processAble.length>0 
+  }
+
+  checkEnableMoveButton1() {
     if (Object.keys(this.selectedMoveList)?.length > 0) {
       if (this.selectedFolder.properties["dc:isPrivate"]) return false;
     }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
-
   markIsPrivate(data: IEntry) {
     this.sortedData.forEach(item => {
       if(item.uid === data.uid) {
