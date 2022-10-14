@@ -34,6 +34,9 @@ export function createTopDownloadAndViewQuery() {
       $match: {
         eventId: "download",
         docType: { $in: ["Video", "Picture", "File"] },
+        eventDate: {
+          $gte: new Date((new Date().getTime() - (7 * 24 * 60 * 60 * 1000)))
+        }
       },
     },
     {

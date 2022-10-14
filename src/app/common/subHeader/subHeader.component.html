@@ -85,8 +85,7 @@
                     >
                       <li
                         *ngFor="let typeAheadItem of searchedAdeadData"
-                        [routerLink]="['/workspace']"
-                        [queryParams]="{ folder: typeAheadItem.uid }"
+                        [routerLink]="['/workspace', typeAheadItem.path.split('/')[1], typeAheadItem.uid]"
                       >
                           <img
                             src="../../../assets/images/icon_folder_gray.svg"
@@ -100,8 +99,8 @@
                               highlightStr(str) ? 'highLightColor' : ''
                             "
                           >
-                            {{ str }}&nbsp;</span
-                          >
+                            {{ str }}&nbsp;
+                          </span>
 
                           <span class="workspace-folders">/{{typeAheadItem.path.split('/')[1]}}</span>
                       </li>

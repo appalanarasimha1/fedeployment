@@ -1141,7 +1141,7 @@
                 </p>
               </div>
 
-              <div class="col-xl-12 col-md-12 customTableStyle">
+              <div class="col-xl-12 col-md-12 customTableStyle" *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )">
                 <div style="visibility:hidden; opacity:0" id="dropzone">
                   <div id="textnode">
                     <img src="../../../assets/images/cloud-upload.png">
@@ -1154,8 +1154,7 @@
                   matSort
                   (matSortChange)="sortData($event)"
                   class="folderListview pb-5"
-                  *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )"
-                >
+                > <!--*ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )"-->
                   <tr>
                     <th style="width: 3%">&nbsp;&nbsp;</th>
                     <th
