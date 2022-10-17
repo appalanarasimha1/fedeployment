@@ -70,6 +70,11 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.nuxeo.authenticateUser(this.username, this.password)
         .then((token) => {
+          try {
+            fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, {
+              headers: { "X-Authentication-Token": token },
+            });
+          } catch (err) {}
           // console.log({token});
 
           // this.nuxeo.createClientWithToken(token);
