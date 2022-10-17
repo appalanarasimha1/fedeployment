@@ -837,18 +837,6 @@ font-weight: normal;
 .pb-5 {
   padding-bottom: 30px !important;
 }
-.createFolder{
-  position: absolute;
-  background: #FFFFFF;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 20px;
-  width: 420px;
-  right: 0px;
-  top: 50px;
-  /* left: auto; */
-  z-index: 9;
-}
 .createNew{
   font-size: 15px;
   line-height: 24px;
@@ -1150,6 +1138,8 @@ font-weight: normal;
 .recoverFolder {
   padding-bottom: 5px;
   margin-right: 10px;
+  position: relative;
+  z-index: 2;
 }
 ul.uploadAssetsClassifications {
   display: inline-block;
@@ -2442,7 +2432,7 @@ font-weight: normal;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   padding: 20px;
-  width: 420px;
+  width: 500px;
   right: 0px;
   top: 50px;
   /* left: auto; */
@@ -4113,10 +4103,6 @@ img.closeIcon {
 .publicUseBlk.published::after {
   z-index: -1;
 }
-
-
-
-
 .collapse{
   cursor: pointer;
   display: block;
@@ -4130,4 +4116,57 @@ img.closeIcon {
 }
 .collapse + input:checked + div{
   display:block;
+}
+
+.availableActions {
+  /* position: absolute; */
+  /* background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 12px 14px; */
+  /* width: 304px;
+  left: 40px;
+  top: 45px;
+  z-index: 9; */
+}
+.availableActions ul li {
+  margin-bottom: 10px;
+}
+
+/* .availableActions ul:last-child {
+  border-top: 1px solid #f0efea;
+  margin-top: 15px;
+  padding-top: 15px;
+} */
+.availableActions ul:last-child li:last-child {
+  margin-bottom: 0px;
+}
+
+.availableActions ul li span {
+  width: 25px;
+  display: inline-block;
+  height: 25px;
+  margin-right: 10px;
+}
+.availableActions ul li span svg.action-rename-icon {
+  width: 84%;
+  height: 75%;
+}
+.availableActions ul li span svg.action-file-share-icon {
+  width: 80%;
+  height: 100%;
+}
+
+.availableActions ul li a {
+   color: #212529;
+   text-decoration: none;
+  }
+  
+  
+::ng-deep .mat-menu-panel {
+  width: 304px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%) !important;
+  border-radius: 8px !important;
+  padding: 12px 14px !important;
 }

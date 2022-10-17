@@ -184,7 +184,8 @@ export class AddUserModalComponent implements OnInit {
       await this.updatePermission(this.updatedCollaborators[key])
     }
     for (const key in this.addedCollaborators) {
-      await this.addPermission(this.addedCollaborators[key])
+      await this.addPermission(this.addedCollaborators[key]);
+      await this.sendInviteInternal(this.addedCollaborators[key]);
     }
     for (const key in this.addedExternalUsers) {
       await this.addPermission(this.addedExternalUsers[key])
@@ -286,6 +287,19 @@ export class AddUserModalComponent implements OnInit {
     const result = await this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
       {headers: { "fetch-document": "properties"}}).toPromise();
     return result;
+  }
+
+  async sendInviteInternal (item) {
+    const params = {
+      groundXUrl: location.protocol + '//' + location.host,
+      email: item.user.id,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: this.folderId,
+    };
+    await this.apiService.post(apiRoutes.INVITE_INTERNAL, payload).toPromise();
   }
 
   async inviteUser(item) {

@@ -201,15 +201,15 @@ padding-right: 10px;
 } */
 .imgGallery{}
 .imgGallery  img {
-	margin-top: 8px;
-	vertical-align: middle;
+    margin-top: 8px;
+    vertical-align: middle;
 }
 
 /* Grid */
 .imgGallery a{
-	flex: 25%;
-	max-width: 25%;
-	padding: 0 4px;
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
 }
 /* .big {
   grid-column: span 2;
@@ -568,19 +568,20 @@ height: 100%;
 .comment-content input{
   font-size: 15px;
   line-height: 22px;
-  color: #FFFFFF;
-  border-radius: 4px;
-  border: 1px solid #fff;
-  width: calc(100% - 220px);
+  color: #413E3C;
+  border-radius: 8px;
+  border: 0px solid #fff;
   margin: auto;
+  width: 100%;
+  background: #F6F5F2;
+  padding: 15px;
+  text-align: left;
+  margin-bottom: 10px;
+  /* width: calc(100% - 220px);
   position: absolute;
   bottom: -80px;
-  text-align: center;
-  background: transparent;
-  padding: 15px;
   left: 0;
-  text-align: left;
-  right: 0;
+  right: 0; */
 }
 .info-content ul{
   list-style: none;
@@ -1221,7 +1222,7 @@ color: #C4C4C4;
   margin-left: unset;
 }
 input::placeholder {
-  color: #fff !important;
+  color: #C0BEBB !important;
 }
 .numberFiles{
   font-size: 14px;
@@ -1903,10 +1904,156 @@ ol.publicUse li:hover .mouseHoverInfo {
   margin-top: 0px !important;
 }
 .commentTextBlk {
-  width: calc(100% - 40px);
+  width: calc(100% - 50px);
+}
+
+.requesInput {
+  border: 0px solid;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-bottom: 1px solid #D1CFC9;
+  background: transparent;
+  line-height: 34px;
+  margin-top: 20px;
+  width: 100%;
+  vertical-align: top;
+}
+.requesInput.goldenText {
+  border-bottom: 1px solid #EDD580;
+  color: #EDD580;
+}
+.submitBtn {
+  background: #EDD580;
+  color: #040404;
+  border-radius: 100px;
+  padding: 0px 20px;
+  line-height: 35px;
+  letter-spacing: 1px;
+  border: 1px solid transparent;
+  outline: none;
+  float: right;
+  clear: both;
+  margin-top: 18px;
+}
+
+.permission-required button:disabled,
+.permission-required button[disabled]{
+  border: 1px solid transparent;
+  background-color: #EFEEE9;
+  color: #BAB8B2;
+  opacity: 1;
+}
+input.requesInput::placeholder {
+  color: #D1CFC9 !important;
+  opacity: 1; /* Firefox */
+}
+input.requesInput:-ms-input-placeholder {
+  color: #D1CFC9 !important;
+}
+input.requesInput::-ms-input-placeholder {
+  color: #D1CFC9 !important;
+}
+.requestSubmitted {
+  text-align: center;
+}
+.requestSubmitted img.mailSendIcon {
+  margin: 0px auto;
+  width: auto !important;
+}
+.requestSubmitted h3 {
+  color: #fff;
+  padding-bottom: 20px;
+  font-size: 15px;
+  padding-top: 20px;
+}
+.requestSubmitted p {
+  font-family: 'brownlight';
+  color: #fff;
+}
+.rejectedRequest p span {
+  color: #DEB31A;
+}
+.rejectedRequest p {
+  margin-bottom: 20px;
+}
+.rejectedRequest p:last-child {
+  margin-bottom: 0px;
 }
 .eyeIcon {
   display: inline-block;
   width: 16px;
   vertical-align: 0px;
+}
+.wd100 {
+  width: 100% !important;
+}
+.comment-content ul li .commentTextBlk p.nameContent {
+  color: #DEB31A;
+}
+.comment-content ul li .commentTextBlk p.bodyContent {
+  color: #040404;
+  font-family: 'brownlight';
+}
+.comment-content ul li .commentTextBlk p.bodyContent span {
+  color: #DEB31A;
+  opacity: 1;
+  font-family: 'brownregular';
+}
+.comment-content ul {
+  height: auto;
+  padding-top: 0px;
+}
+.comment-content ul li.allComments {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.comment-content ul li.allComments span {
+  color: #BAB8B2;
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 10px;
+}
+.comment-content ul li.allComments span:hover {
+  background: #F6F5F2;
+  line-height: normal;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: #a19f98;
+}
+.comment-content ul li.allComments {
+  min-height: 61px;
+  margin-bottom: 10px;
+}
+form.commentTextForm {
+  position: relative;
+}
+.commentBtn {
+  appearance: none;
+  border: 0px;
+  border-radius: 0px;
+  color: #D1CFC9;
+  /* letter-spacing: -0.02em; */
+  position: absolute;
+  right: 16px;
+  top: 15px;
+  background: transparent;
+  padding: 0px;
+}
+.commentBtn.activeBtn {
+  color: #DEB31A;
+}
+.userName {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  background: #DEB31A;
+  border-radius: 100px;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-family: 'brownlight';
+  line-height: 40px;
+  margin-right: 10px;
 }

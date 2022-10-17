@@ -158,9 +158,16 @@
                           <ul>
                             <li *ngFor="let item of notifications | slice:0:10">
                               <div (click)="goToNotificationLink(item)" style="cursor: pointer;">
-                                <div class="notifactionHead">
-                                  {{buildNotificationTitle(item)}}
+                                <div *ngIf="item.extended.type === 'rename'" class="notifactionHead">
+                                  {{buildRenameNotificationTitle(item)}}
                                 </div>
+                                <div *ngIf="item.extended.type === 'requestDownload'" class="notifactionHead">
+                                  {{buildRequestDownloadNotificationTitle(item)}}
+                                </div>
+                                <div *ngIf="item.extended.type === 'requestDownloadResponse'" class="notifactionHead">
+                                  {{buildRequestDownloadResponseNotificationTitle(item)}}
+                                </div>
+
                                 <div class="notifactionImgCont">
                                   <div class="notifactionImg">
                                     <img src="{{buildNotificationIcon(item)}}" alt="" />
@@ -284,9 +291,40 @@
         <div *ngIf="thisWeekNoti.length > 0" class="notifactionList">
           <ul>
             <li *ngFor="let item of thisWeekNoti">
-              <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;">
+              <!-- <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;"> -->
+              <div>
                 <div class="notifactionListContLeft">
-                  <p>{{buildNotificationTitle(item)}}</p>
+                  <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" *ngIf="item.extended.type === 'rename'" style="cursor: pointer;" class="">
+                    {{buildRenameNotificationTitle(item)}}
+                  </div>
+                  <div *ngIf="item.extended.type === 'requestDownload'" class="">
+                    {{buildRequestDownloadNotificationTitle(item)}}
+                    <div *ngIf="!item.extended.processed">
+                      <p>{{item.extended.comment}}</p>
+                      <!-- <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group">
+                        <button (click)="showRejectForm[item.id] = true">Reject</button>
+                        <button (click)="processDownloadRequest(item, true)">Approve</button>
+                      </div>
+                      <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
+                        <input type="text" [(ngModel)]="rejectComment" class="requesInput" name="rejectComment"
+                          placeholder="Write a comment here" />
+                        <button (click)="processDownloadRequest(item, false)">Submit</button>
+                        <button (click)="showRejectForm[item.id] = false">Cancel</button>
+                      </div>
+                      <div *ngIf="requestSent[item.id]" class="request-download-btn-group">
+                        <p *ngIf="!isApproved[item.id]">Rejection submitted.</p>
+                        <p *ngIf="isApproved[item.id]">Approval submitted.</p>
+                      </div> -->
+                    </div>
+                    <!-- <div *ngIf="item.extended.processed">
+                      <p *ngIf="!item.extended.isApproved">You rejected this request.</p>
+                      <p *ngIf="item.extended.isApproved">You approved this request.</p>
+                    </div> -->
+                  </div>
+                  <div *ngIf="item.extended.type === 'requestDownloadResponse'" class="">
+                    {{buildRequestDownloadResponseNotificationTitle(item)}}
+                    <p>{{item.extended.rejectComment}}</p>
+                  </div>
                   <div class="notifactionImgCont">
                     <div class="notifactionImg"><img src="{{buildNotificationIcon(item)}}" alt=""></div>
                     <div class="notifactionCont">{{item.extended.title}}</div>
@@ -294,6 +332,29 @@
                 </div>
                 <div class="notifactionListContRight">
                   {{getNotificationSince(item)}}
+                </div>
+
+                <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
+                  <div *ngIf="!item.extended.processed">
+                    <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group buttonGroup">
+                      <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
+                      <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
+                    </div>
+                    <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
+                      <input type="text" [(ngModel)]="rejectComment" class="requesInput" [ngClass]="{'goldenText': rejectComment }" name="rejectComment"
+                        placeholder="Please describe the rejection reason" />
+                      <button class="btn submitBtn mr10" [disabled]="!rejectComment" (click)="processDownloadRequest(item, false)">Submit</button>
+                      <button class="btn cancelBtn" (click)="showRejectForm[item.id] = false">Cancel</button>
+                    </div>
+                    <div class="request-download-btn-group" *ngIf="requestSent[item.id]">
+                      <p *ngIf="!isApproved[item.id]" class="rejected">You rejected this request.</p>
+                      <p *ngIf="isApproved[item.id]" class="approved">You approved this request.</p>
+                    </div>
+                  </div>
+                  <div *ngIf="item.extended.processed">
+                    <p *ngIf="!item.extended.isApproved" class="rejection">Rejection submitted.</p>
+                    <p *ngIf="item.extended.isApproved" class="approved">You approved this request.</p>
+                  </div>
                 </div>
               </div>
             </li>
@@ -304,9 +365,21 @@
         <div *ngIf="earlierNoti.length > 0" class="notifactionList">
           <ul>
             <li *ngFor="let item of earlierNoti">
-              <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" style="cursor: pointer;">
+              <div>
                 <div class="notifactionListContLeft">
-                  <p>{{buildNotificationTitle(item)}}</p>
+                  <div (click)="modal.dismiss('Cross click'); closeModal(); goToNotificationLink(item)" *ngIf="item.extended.type === 'rename'" style="cursor: pointer;" class="">
+                    {{buildRenameNotificationTitle(item)}}
+                  </div>
+                  <div *ngIf="item.extended.type === 'requestDownload'" class="">
+                    {{buildRequestDownloadNotificationTitle(item)}}
+                    <div *ngIf="!item.extended.processed">
+                      <p>{{item.extended.comment}}</p>
+                    </div>
+                  </div>
+                  <div *ngIf="item.extended.type === 'requestDownloadResponse'" class="">
+                    {{buildRequestDownloadResponseNotificationTitle(item)}}
+                    <p>{{item.extended.rejectComment}}</p>
+                  </div>
                   <div class="notifactionImgCont">
                     <div class="notifactionImg"><img src="{{buildNotificationIcon(item)}}" alt=""></div>
                     <div class="notifactionCont">{{item.extended.title}}</div>
@@ -314,6 +387,28 @@
                 </div>
                 <div class="notifactionListContRight">
                   {{getNotificationSince(item)}}
+                </div>
+                <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
+                  <div *ngIf="!item.extended.processed">
+                    <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group buttonGroup">
+                      <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
+                      <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
+                    </div>
+                    <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
+                      <input type="text" [(ngModel)]="rejectComment" class="requesInput" [ngClass]="{'goldenText': rejectComment }" name="rejectComment"
+                        placeholder="Please describe the rejection reason" />
+                      <button class="btn submitBtn mr10" [disabled]="!rejectComment" (click)="processDownloadRequest(item, false)">Submit</button>
+                      <button class="btn cancelBtn" (click)="showRejectForm[item.id] = false">Cancel</button>
+                    </div>
+                    <div class="request-download-btn-group" *ngIf="requestSent[item.id]">
+                      <p *ngIf="!isApproved[item.id]" class="rejected">You rejected this request.</p>
+                      <p *ngIf="isApproved[item.id]" class="approved">You approved this request.</p>
+                    </div>
+                  </div>
+                  <div *ngIf="item.extended.processed">
+                    <p *ngIf="!item.extended.isApproved" class="rejection">Rejection submitted.</p>
+                    <p *ngIf="item.extended.isApproved" class="approved">You approved this request.</p>
+                  </div>
                 </div>
               </div>
             </li>

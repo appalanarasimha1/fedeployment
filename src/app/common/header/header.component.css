@@ -935,6 +935,11 @@ ul.sidebarList li .sidebarLink.active {
     border-radius: 8px;
     padding: 20px;
 }
+.notifactionList ul li::after {
+    content: '';
+    clear: both;
+    display: block;
+}
 .notifactionList {
     padding-top: 20px;
 }
@@ -999,4 +1004,83 @@ ul.sidebarList li .sidebarLink.active {
 .bottomItems ul li a:hover path {
     fill: #fff;
     transition: all 0.12s ease;
+}
+
+.rejectApproveBlk .buttonGroup {
+    float: right;
+}
+.reject {
+    background: #B02D24;
+    color: #fff;
+    border-radius: 100px;
+    padding: 0px 20px;
+    line-height: 35px;
+    letter-spacing: 1px;
+    border: 1px solid transparent;
+    outline: none;
+}
+.approve {
+    background: #0E7A53;
+    color: #fff;
+    border-radius: 100px;
+    padding: 0px 20px;
+    line-height: 35px;
+    letter-spacing: 1px;
+    border: 1px solid transparent;
+    outline: none;
+}
+.cancelBtn {
+    background: transparent;
+    color: #2D2926;
+    border-radius: 100px;
+    padding: 0px 20px;
+    line-height: 35px;
+    letter-spacing: 1px;
+    border: 1px solid #2D2926;
+    outline: none;
+}
+.submitBtn {
+    background: #C49900;
+    color: #fff;
+    border-radius: 100px;
+    padding: 0px 20px;
+    line-height: 35px;
+    letter-spacing: 1px;
+    border: 1px solid #C49900;
+    outline: none;
+}
+.mr10 {
+    margin-right: 10px !important;
+}
+.requesInput {
+    border: 0px solid;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-bottom: 1px solid #2D2926;
+    background: transparent;
+    line-height: 34px;
+    margin-right: 20px;
+    width: calc(100% - 219px);
+    vertical-align: top;
+}
+.requesInput.goldenText {
+    border-bottom: 1px solid #C49900;
+    color: #C49900;
+}
+
+.download-request-reject-form button:disabled,
+.download-request-reject-form button[disabled]{
+  border: 1px solid #EFEEE9;
+  background-color: #EFEEE9;
+  color: #BAB8B2;
+}
+p.approved {
+    color: #0E7A53;
+}
+p.rejected {
+    color: #C6342A;
+}
+p.rejection {
+    color: #937206;
 }

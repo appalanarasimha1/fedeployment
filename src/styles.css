@@ -4230,6 +4230,7 @@ ngx-masonry document-card .lock-icon img {
 .row:before, .row:after {display: none !important;}
 body {
   padding-top: 76px;
+  /* padding-bottom: 76px; */
 }
 @media (min-width: 1200px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl {
@@ -4495,6 +4496,18 @@ header.updateHeader .container {
   width: 100%;
 }
 
+input.requesInput::placeholder {
+  color: #040404 !important;
+  opacity: 1; /* Firefox */
+}
+
+input.requesInput:-ms-input-placeholder {
+  color: #040404 !important;
+}
+
+input.requesInput::-ms-input-placeholder {
+  color: #040404 !important;
+}
 .publicUseBlock.publishedBlock .manageAccessBlock {
   width: 100% !important;
 }

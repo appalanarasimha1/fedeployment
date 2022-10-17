@@ -36,6 +36,8 @@ import { Departments, Workspace } from "./../../config/sector.config";
 import { IEntry, ISearchResponse } from "src/app/common/interfaces";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
 
+import { MatMenuTrigger } from '@angular/material/menu';
+
 @Component({
   selector: "app-browse",
   // directives: [Search],
@@ -49,6 +51,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild("paginator") paginator: MatPaginator;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
+  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+
 
   constructor(
     private modalService: NgbModal,
@@ -58,7 +62,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     public sharedService: SharedService,
     private route: ActivatedRoute,
     public nuxeo: NuxeoService,
-    public dataService: DataService
+    public dataService: DataService,
   ) {}
 
   faCoffee = faCoffee;
@@ -186,6 +190,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   publishingPrivateAssets: boolean = false;
 
   currentIndexPublished: any;
+  currentIndexRightClick: any;
 
   async ngOnInit() {
     this.fetchUserData();
@@ -221,6 +226,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         const folder: any = await this.fetchFolder(folderId);
         this.saveState(folder);
         this.loading = false;
+        this.createDynamicSidebarScroll();
       // } else if(sectorName && !folderId ) {
 
       //   await this.fetchAllSectors();
@@ -275,6 +281,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     this.fetchExternalUserInfo(fetchAll);
     this.dragNDrop();
+    // this.removeAssets()
   }
 
   ngAfterViewInit(): void {
@@ -932,7 +939,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   moveModalFailed() {
     this.sharedService.showSnackbar(
-      "You can't move/copy a asset created by other user",
+      "You can't move/copy this asset",
       6000,
       "top",
       "center",
@@ -1001,6 +1008,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async unTrashFolders() {
+    console.log("selectedFolderList",this.selectedFolderList);
+    
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
 
@@ -1660,21 +1669,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(canDelete){
       this.selectFolder($event, item, i, false);
     }
-    // if (!$event.target?.checked || !$event.checked) {
-    //   console.log("inside unchecked");
-    //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
-    //   this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
-    //   this.downloadFullItem = this.downloadFullItem.filter(
-    //     (m) => m.uid !== item.uid
-    //   );
-    //   this.needPermissionToDownload = this.needPermissionToDownload.filter(
-    //     (m) => m.uid !== item.uid
-    //   );
-    //   this.count = this.count - 1;
-    // }
-    // else
     if ($event.target?.checked || $event.checked) {
-      this.count = this.count + 1;
+      if ($event.from !== "rightClick") {
+        this.count = this.count + 1;
+      }
+      
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
@@ -2103,7 +2102,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   async openMoveModal() {
     const listDocs = Object.values(this.selectedMoveList)
-    .filter( item => this.checkCanMove(item) || this.checkCanDelete(item))
+    .filter( item => !this.checkDownloadPermission(item))
    console.log("listDocslistDocs",listDocs);
 
     if (!listDocs.length) return this.moveModalFailed()
@@ -2135,13 +2134,29 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
+  checkDownloadPermission(item){
+    if (item.properties["sa:downloadApprovalUsers"]?.length >0 || item.properties["dc:isPrivate"]) return true;
+    return false
+  }
+
   checkEnableMoveButton() {
+    let processAble = []
+    if (Object.keys(this.selectedMoveList).length) {
+       for (const key in this.selectedMoveList) {
+        if(!this.checkDownloadPermission(this.selectedMoveList[key])){
+          processAble.push(true)
+        }
+      }
+    }
+    return processAble.length>0 
+  }
+
+  checkEnableMoveButton1() {
     if (Object.keys(this.selectedMoveList)?.length > 0) {
       if (this.selectedFolder.properties["dc:isPrivate"]) return false;
     }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
-
   markIsPrivate(data: IEntry) {
     this.sortedData.forEach(item => {
       if(item.uid === data.uid) {
@@ -2175,5 +2190,88 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         $(".publishedOpen").removeClass("publishedClick");
       }
     });
+  }
+
+  rightClickedItem:any =null;
+  rightClickedIndex:number;
+  rightDownload:boolean=false;
+  onRightClick(item?:any,i?:number) {
+    this.rightClickedItem = item ? item : this.rightClickedItem
+    this.rightClickedIndex = i
+
+   
+    $(document).click(function (e) {
+      if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0) {
+        $(".availableActions").hide();
+      } else {
+        $(".availableActions").show();
+      }
+    });
+    if(this.count == 0){
+      this.removeAssets()
+      this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    }
+    return false;
+  }
+
+
+  rightClickDownload(){
+    if (this.count >0) return this.multiDownload();
+    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.multiDownload();
+    this.removeAssets()
+    this.contextMenu.closeMenu();
+    return $(".availableActions").hide();
+  }
+
+  rightClickMove(){
+    if (this.count >0) return this.openMoveModal();
+    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+     this.openMoveModal();
+    this.removeAssets()
+    this.contextMenu.closeMenu();
+    return $(".availableActions").hide();
+    }
+
+  rightClickDelete(){
+     if (this.count >0) return this.deleteFolders();
+    // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.deleteFolders();
+    this.removeAssets()
+    this.contextMenu.closeMenu();
+    return $(".availableActions").hide();
+  }
+  rightClickRename(item){
+    if (this.count == 0) {
+      return item.edit =!item.edit
+    }
+    
+  }
+
+  contextMenuPosition = { x: '0px', y: '0px' };
+
+  onContextMenu(event: MouseEvent, item: any) {
+    if(!this.checkGeneralFolder(item)) {
+      console.log('contextMenu', item);
+      event.preventDefault();
+      this.contextMenuPosition.x = event.clientX + 'px';
+      this.contextMenuPosition.y = event.clientY + 'px';
+      this.contextMenu.menuData = { 'item': item };
+      this.contextMenu.menu.focusFirstItem('mouse');
+      this.contextMenu.openMenu();
+
+      $(document).click( (e)=> {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0) {
+          // $(".availableActions").hide();
+          this.removeAssets()
+        }
+      });
+
+      this.rightClickedItem = item ? item : this.rightClickedItem
+      if(this.count == 0){
+        this.removeAssets()
+        this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem, '')
+      }
+    }
   }
 }

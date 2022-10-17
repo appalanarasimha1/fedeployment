@@ -58,6 +58,10 @@ export class HeaderComponent implements OnInit {
   notifications: any[];
   thisWeekNoti: any[];
   earlierNoti: any[];
+  rejectComment = "";
+  showRejectForm = {};
+  requestSent = {};
+  isApproved = {};
 
   constructor(
     private nuxeo: NuxeoService,
@@ -123,6 +127,9 @@ export class HeaderComponent implements OnInit {
       }
     });
     this.getNotifications();
+    this.showRejectForm = {};
+    this.requestSent = {};
+    this.isApproved = {};
 
     this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
@@ -284,7 +291,21 @@ export class HeaderComponent implements OnInit {
     this.notifications = res['value'];
     this.thisWeekNoti = [];
     this.earlierNoti = [];
+    this.computeDuplicateRequestDownloadNoti();
     this.computeNotifications();
+    this.storeRequestDownloadNotification();
+  }
+
+  computeDuplicateRequestDownloadNoti() {
+    this.notifications = this.notifications.sort((a, b) => {
+      if (a.id > b.id) return -1;
+      else return 1;
+    });
+    this.notifications = this.notifications.filter((value, index, self) =>
+      index === self.findIndex((t) => (
+        t.docUUID === value.docUUID && t.eventDate === value.eventDate
+      ))
+    );
   }
 
   computeNotifications() {
@@ -296,10 +317,26 @@ export class HeaderComponent implements OnInit {
     this.earlierNoti = this.notifications.slice(i);
   }
 
-  buildNotificationTitle(notification) {
+  storeRequestDownloadNotification() {
+    const processedDownloadRequest = this.notifications.filter(noti => noti.extended.type === 'requestDownloadResponse');
+    localStorage.setItem("processedDownloadRequest", JSON.stringify(processedDownloadRequest));
+  }
+
+  buildRenameNotificationTitle(notification) {
     const extended = notification.extended;
     const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
     return `${extended.updatedBy} renamed ${isAsset ? '' : 'folder '} "${extended.oldTitle}" to "${extended.title}"`;
+  }
+
+  buildRequestDownloadNotificationTitle(notification) {
+    const extended = notification.extended;
+    return `${extended.requestedBy} requests to download an asset.`;
+  }
+
+  buildRequestDownloadResponseNotificationTitle(notification) {
+    const extended = notification.extended;
+    return extended.isApproved ? `${extended.processedBy} has approved your download request.`
+      : `${extended.processedBy} has rejected your download request.`
   }
 
   getNotificationSince(notification) {
@@ -318,6 +355,21 @@ export class HeaderComponent implements OnInit {
     else this.router.navigate(['workspace'], {queryParams : {folder: notification.docUUID}});
   }
 
+  async processDownloadRequest(notification, isApproved) {
+    const body = {
+      context: {},
+      input: notification.docUUID,
+      params: {
+        rejectComment: this.rejectComment,
+        requestedBy: notification.extended.requestedBy,
+        isApproved,
+      },
+    };
+    await this.apiService.post(apiRoutes.PROCESS_REQUEST_DOWNLOAD, body).toPromise();
+    this.requestSent[notification.id] = true;
+    this.isApproved[notification.id] = isApproved;
+  }
+
   allNotifactionOpen(allNotifactionContent) {
     this.modalOpen = true;
     this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
@@ -326,7 +378,7 @@ export class HeaderComponent implements OnInit {
     });;
   }
 
-  
+
   checkWorkspaceActive(){
     if (window.location.href.includes(`${window.location.origin}/workspace`)) {
       return true

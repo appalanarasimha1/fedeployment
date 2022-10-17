@@ -4,10 +4,7 @@ const PROXY_CONFIG = [
             "/nuxeo/",
             "/sockjs-node/",
         ],
-        "target":
-        // "https://groundx.neom.com",
-        //  "http://localhost:8080",
-        "https://groundx.neom.com", //"https://34.219.179.33:5050",  'https://uatgroundx.neom.com',///
+        "target":"https://uatgroundx.oci.sense.neomos.online", // 'https://uatgroundx.neom.com', 
         "secure": false,
         "changeOrigin": true
     }];
