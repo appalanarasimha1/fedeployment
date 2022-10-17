@@ -1165,9 +1165,9 @@
                       Name
                       <!-- {{ !showLinkCopy ? "name" : "name" }} -->
                     </th>
-                    <th *ngIf="!isTrashView" width="10%">
+                    <!-- <th *ngIf="!isTrashView" width="10%">
                       &nbsp;&nbsp;
-                    </th>
+                    </th> -->
                     <th width="10%"> &nbsp;&nbsp; </th>
                     <th mat-sort-header="dc:creator" width="20%">Created by</th>
                     <!-- <th width="20%">Last Updated by</th> -->
@@ -1239,7 +1239,7 @@
                         </div>
                       </div>
                       <div class="availableActions" *ngIf="currentIndexRightClick == i && !checkGeneralFolder(item)">
-                        <ul>
+                        <ul style="display:inline-block;padding:0;">
                           <li *ngIf="!isTrashView && !checkCanMove(item)">
                            
                               <a href="javascript:void(0);" (click)="rightClickDownload()"> <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-download-icon" >
@@ -1275,7 +1275,7 @@
                           </li>
                         </ul>
 
-                        <ul>
+                        <!-- <ul> -->
                           <!-- <li>
                             <a href="javascript:void(0);" (click)="openUpdateClassModal(rightClickedItem)">
                               <span><svg  width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-managefolder-icon">
@@ -1293,7 +1293,7 @@
                               <app-manage-access-modal [input_data]="item" [input_folder_structure]="breadCrumb" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
                             </div></a>
                             </li> -->
-                        </ul>
+                        <!-- </ul> -->
                       </div>
                     </td>
                     <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="currentIndexRightClick = i; i == currentIndexRightClick ? onRightClick(item,i): ''" class="positionRelative">
