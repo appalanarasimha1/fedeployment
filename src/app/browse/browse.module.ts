@@ -18,6 +18,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { UploadModalModule } from '../upload-modal/upload-modal.module';
 import { SearchModule } from '../search/search.module';
 import { ManageAccessModalComponent } from '../manage-access-modal/manage-access-modal.component';
+
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [
     BrowseComponent,
@@ -41,6 +43,10 @@ import { ManageAccessModalComponent } from '../manage-access-modal/manage-access
     MatDatepickerModule,
     UploadModalModule,
     SearchModule,
+    MatMenuModule,
+  ],
+  exports: [
+    MatMenuModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

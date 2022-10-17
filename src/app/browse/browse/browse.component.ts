@@ -36,6 +36,8 @@ import { Departments, Workspace } from "./../../config/sector.config";
 import { IEntry, ISearchResponse } from "src/app/common/interfaces";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
 
+import { MatMenuTrigger } from '@angular/material/menu';
+
 @Component({
   selector: "app-browse",
   // directives: [Search],
@@ -49,6 +51,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild("paginator") paginator: MatPaginator;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
+  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+
 
   constructor(
     private modalService: NgbModal,
@@ -58,7 +62,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     public sharedService: SharedService,
     private route: ActivatedRoute,
     public nuxeo: NuxeoService,
-    public dataService: DataService
+    public dataService: DataService,
   ) {}
 
   faCoffee = faCoffee;
@@ -1664,6 +1668,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(canDelete){
       this.selectFolder($event, item, i, false);
     }
+    // item.edit = !item.edit;
     // if (!$event.target?.checked || !$event.checked) {
     //   console.log("inside unchecked");
     //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
@@ -2240,5 +2245,25 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
     this.deleteFolders();
     return $(".availableActions").hide();
+  }
+
+
+  contextMenuPosition = { x: '0px', y: '0px' };
+
+  onContextMenu(event: MouseEvent, item: any) {
+    if(!this.checkGeneralFolder(item)) {
+      console.log('contextMenu', item);
+      event.preventDefault();
+      this.contextMenuPosition.x = event.clientX + 'px';
+      this.contextMenuPosition.y = event.clientY + 'px';
+      this.contextMenu.menuData = { 'item': item };
+      this.contextMenu.menu.focusFirstItem('mouse');
+      this.contextMenu.openMenu();
+
+      this.rightClickedItem = item ? item : this.rightClickedItem
+      if(this.count == 0){
+        this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem, '')
+      }
+    }
   }
 }
