@@ -410,13 +410,18 @@ export class UploadModalComponent implements OnInit {
     //   this.closeModal();
     //   return;
     // }
-    this.dialogRef.close();
-    if (this.data?.uid === this.selectedFolder?.uid) {
-      this.dataService.uploadedAssetDataInit(this.uploadedAsset1);
+    try {
+      this.dialogRef.close();
+      if (this.data?.uid === this.selectedFolder?.uid) {
+        this.dataService.uploadedAssetDataInit(this.uploadedAsset1);
+        return;
+      }
+      const sectorOfFolder = this.selectedFolder.path.split('/')[1];
+      this.router.navigate(["workspace", sectorOfFolder, this.selectedFolder.uid]);
+    } catch (err) {
+      console.error('An error has occured in upload-modal.component, method = openBrowseRoute()', err);
       return;
     }
-    const folderUid = this.selectedFolder?.uid; //  this.data?.uid || this.selectedFolder?.uid;
-    this.router.navigate(["workspace"], { queryParams: { folder: folderUid } });
   }
 
   async getWsList() {
