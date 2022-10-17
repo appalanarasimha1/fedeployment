@@ -939,7 +939,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   moveModalFailed() {
     this.sharedService.showSnackbar(
-      "You can't move/copy a asset created by other user",
+      "You can't move/copy this asset",
       6000,
       "top",
       "center",
@@ -2100,7 +2100,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   async openMoveModal() {
     const listDocs = Object.values(this.selectedMoveList)
-    .filter( item => this.checkCanMove(item) || this.checkCanDelete(item))
+    .filter( item => !this.checkDownloadPermission(item))
    console.log("listDocslistDocs",listDocs);
     
     if (!listDocs.length) return this.moveModalFailed()
