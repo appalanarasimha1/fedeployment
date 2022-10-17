@@ -1668,20 +1668,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(canDelete){
       this.selectFolder($event, item, i, false);
     }
-    // item.edit = !item.edit;
-    // if (!$event.target?.checked || !$event.checked) {
-    //   console.log("inside unchecked");
-    //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
-    //   this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
-    //   this.downloadFullItem = this.downloadFullItem.filter(
-    //     (m) => m.uid !== item.uid
-    //   );
-    //   this.needPermissionToDownload = this.needPermissionToDownload.filter(
-    //     (m) => m.uid !== item.uid
-    //   );
-    //   this.count = this.count - 1;
-    // }
-    // else
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
@@ -2231,6 +2217,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (this.count >0) return this.multiDownload();
     // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
     this.multiDownload();
+    this.removeAssets()
+    this.contextMenu.closeMenu();
     return $(".availableActions").hide();
   }
 
@@ -2238,6 +2226,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (this.count >0) return this.openMoveModal();
     // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
      this.openMoveModal();
+    this.removeAssets()
+    this.contextMenu.closeMenu();
     return $(".availableActions").hide();
     }
 
@@ -2245,9 +2235,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
      if (this.count >0) return this.deleteFolders();
     // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
     this.deleteFolders();
+    this.removeAssets()
+    this.contextMenu.closeMenu();
     return $(".availableActions").hide();
   }
-
+  rightClickRename(item){
+    if (this.count == 0) {
+      return item.edit =!item.edit
+    }
+    
+  }
 
   contextMenuPosition = { x: '0px', y: '0px' };
 
@@ -2261,8 +2258,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.contextMenu.menu.focusFirstItem('mouse');
       this.contextMenu.openMenu();
 
+      $(document).click( (e)=> {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0) {
+          // $(".availableActions").hide();
+          this.removeAssets()
+        }
+      });
+
       this.rightClickedItem = item ? item : this.rightClickedItem
       if(this.count == 0){
+        this.removeAssets()
         this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem, '')
       }
     }

@@ -1453,7 +1453,7 @@
                     <ng-template matMenuContent let-item="item">
                       <!-- {{item.title}} -->
                       <div class="availableActions">
-                        <ul>
+                        <ul *ngIf="!isTrashView">
                           <li *ngIf="!isTrashView && !checkCanMove(item)">
                             
                               <a href="javascript:void(0);" (click)="rightClickDownload()"> <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-download-icon" >
@@ -1469,14 +1469,14 @@
                               <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg></span> Move</a>
                           </li>
-                          <!-- <li >
-                            <a href="javascript:void(0);" (click)="rightClickDelete()">
+                          <li *ngIf="!checkCanMove(item)">
+                            <a href="javascript:void(0);" (click)="rightClickRename(item)">
                             <span><svg
                               width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-rename-icon">
                               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                               <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg></span> Rename</a>
-                          </li> -->
+                          </li>
                           <li *ngIf="!isTrashView && checkEnableDeleteBtn() &&  !checkGeneralFolder(item)">
                             <a href="javascript:void(0);" (click)="rightClickDelete()">
                               <span><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
