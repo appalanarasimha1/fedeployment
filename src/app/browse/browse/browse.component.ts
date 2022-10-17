@@ -2215,6 +2215,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
     });
     if(this.count == 0){
+      this.removeAssets()
       this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
     }
     return false;
