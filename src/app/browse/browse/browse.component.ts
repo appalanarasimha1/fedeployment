@@ -1758,20 +1758,40 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             let splittedLocation = res.headers.get("location").split("/");
             let newUID = splittedLocation[splittedLocation.length - 2];
             uid = newUID;
-            this.apiService
-              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-              .subscribe((resp: any) => {
-                let locationForDownload = resp.headers.get("location");
-              });
+            // setTimeout(() => {
+            //   window.open(
+            //     environment.apiServiceBaseUrl +
+            //       "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+            //       uid
+            //   );
+            //   this.removeAssets();
+            // }, 10000);
+            let counter = 0
+            let checkZipCompleted=(newUID) =>{
+                  this.loading = true
+                  this.apiService
+                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+                .toPromise().then((resp: any) => {
+                }).catch(e=>{
+                  console.error("2222222222222",e)
+                  counter += 1
 
-            setTimeout(() => {
-              window.open(
-                environment.apiServiceBaseUrl +
-                  "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-                  uid
-              );
-              this.removeAssets();
-            }, 1000);
+                  if (e.status ==404) {
+                     checkZipCompleted(newUID)
+                  }else{
+                    this.loading = false
+                    window.open(
+                      environment.apiServiceBaseUrl +
+                        "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                        uid
+                    );
+                    this.removeAssets();
+                  }
+                 
+                });
+              
+            }
+            checkZipCompleted(uid)
           });
       }
     }
