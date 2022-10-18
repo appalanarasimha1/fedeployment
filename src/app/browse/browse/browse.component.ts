@@ -2294,4 +2294,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
     }
   }
+  checkFolderContains(){
+    return Object.values(this.selectedFolderList).length <1
+  }
 }

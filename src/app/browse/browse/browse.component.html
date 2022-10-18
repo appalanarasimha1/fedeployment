@@ -386,7 +386,7 @@
                       <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Move</div>
                     </div>
                   </li>
-                  <li *ngIf="!isTrashView && downloadArray.length > 0">
+                  <li *ngIf="!isTrashView && downloadArray.length > 0 && checkFolderContains()">
                     <div class="downloadFileWorkspace">
                       <a (click)="multiDownload()"
                         href="javascript:void(0)"
