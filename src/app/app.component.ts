@@ -24,9 +24,11 @@ export class AppComponent implements OnInit{
     private dataService: DataService,
     private nuxeoService: NuxeoService) {
       try {
-        fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, {
+        const options = {
           headers: { "X-Authentication-Token": localStorage.getItem("token") },
-        });
+        };
+        fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, options);
+        fetch(`/nuxeo/nxfile/default`, options);
       } catch (err) {}
 
       router.events.forEach((event: any) => {
