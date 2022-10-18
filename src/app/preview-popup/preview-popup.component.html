@@ -1,11 +1,11 @@
 <div *ngIf="openInModal">
   <ng-template #preview let-modal class="imgPopUpTab">
-    <div class="modal-header">
+    <!-- <div class="modal-header">
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = '';showAllComments=false">
-        <!-- <span aria-hidden="true">&times;</span> -->
+        <!-- <span aria-hidden="true">&times;</span> -/->
         <span aria-hidden="true"><img src="../../assets/images/modalclose.svg" /></span>
       </button>
-    </div>
+    </div> -->
     <div class="modal-body">
       <div class="modalHead">
         <div class="row flexible" style="justify-content: space-between">
@@ -125,13 +125,17 @@
                     </div>
                   </div>
                 </div>
-
+              </li>
+              <li>
+                <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal(); copiedString = ''"><!-- (click)="modal.dismiss('Cross click'); copiedString = ''"-->
+                  <img src="../../assets/images/close-modal.svg" />
+                </button>
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="popupTabSec">
+      <div class="popupTabSec" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess()}">
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
           <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
@@ -216,7 +220,7 @@
                       <li>
                         Location <br />
                         <span style="word-break: break-all">
-                          <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}"
+                          <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
                           (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
                             {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                           </a>
@@ -401,8 +405,8 @@
             </li>
             <li class="allComments" (click)="showAllcommentClick()" *ngIf="totalComments>comments.length"><span>View all comments</span></li>
             <!-- <li class="allComments" *ngIf="loading"><span><app-loader-small [show]="loading"></app-loader-small>View all comments</span></li> -->
-
           </ul>
+          <!-- <div class="allComments" (click)="showAllcommentClick()" *ngIf="totalComments>comments.length"><span>View all comments</span></div> -->
           <form (submit)="saveComment(commentText)" class="commentTextForm">
             <!-- <mwl-text-input-autocomplete-container> -->
                 <!-- mwlTextInputAutocomplete
@@ -588,7 +592,7 @@
                     <li>
                       Location <br />
                       <span style=" word-break: break-all">
-                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank" (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
                           {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                         </a>
                       </span>

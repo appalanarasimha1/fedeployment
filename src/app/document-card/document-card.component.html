@@ -4,7 +4,7 @@
   <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" /> -->
     <!-- <button (click)="copyLinkOfAsset()">copy link</button> -->
-    <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6;">
+    <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6; border-radius: 8px; overflow: hidden;">
       <img 
         id="fileId" 
         src="../../assets/images/no-preview.png" 
@@ -25,7 +25,7 @@
       <span style="width: 1px;height: 1px;"></span>
     </div>
 
-    <div *ngIf="checkMimeType(doc) === 'picture'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
+    <div *ngIf="checkMimeType(doc) === 'picture'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3; border-radius: 8px; overflow: hidden;">
       <img 
         id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
@@ -45,7 +45,7 @@
       <span style="width: 1px;height: 1px;"></span>
     </div>
 
-    <div *ngIf="checkMimeType(doc) === 'video'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
+    <div *ngIf="checkMimeType(doc) === 'video'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3; border-radius: 8px; overflow: hidden;">
       <!-- <img 
         id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
