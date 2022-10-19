@@ -169,6 +169,7 @@ export class NuxeoService {
       }
     }
     fetch(`${this.baseUrl}/nuxeo/nxfile/default`, options);
+    fetch(`/nuxeo/nxfile/default`, options);
   }
 
   getRedirectLocation() {
