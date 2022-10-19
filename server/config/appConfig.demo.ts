@@ -14,6 +14,7 @@ export class AppConfigDemo {
     },
     domain: 'https://uatgroundx.neom.com/',
     elasticDbUrl: 'http://10.101.21.63:9700',
+    elasticSearchIndex: "searchindex_v4"
     // elasticDbUrl: 'http://localhost:9700'
   };
 

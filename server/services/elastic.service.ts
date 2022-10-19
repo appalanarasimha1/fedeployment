@@ -16,7 +16,7 @@ export class ElasticSearchService {
   //     }
   //   });
   
-  private indexValue = "searchindex_v4";
+  private indexValue = AppConfig.Config.elasticSearchIndex;
 
   constructor() {
   }

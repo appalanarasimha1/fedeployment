@@ -13,7 +13,8 @@ export class AppConfigLocal {
         AUDIT_TABLE: 'audit'
       },
       domain: 'https://uatgroundx.neom.com/',
-      elasticDbUrl: 'http://localhost:9200'
+      elasticDbUrl: 'http://localhost:9200',
+      elasticSearchIndex: "searchindex_v4"
     };
   
     public static get Config(): any {

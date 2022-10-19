@@ -15,7 +15,8 @@ export class AppConfigOCIUat {
       domain: 'https://uatgroundx.neom.com/',
       elasticDbUrl: 'http://localhost:9200', // 'http://10.149.49.21:9200,10.149.49.22:9200,10.149.49.18:9200',
       elsticDbUserName: 'elastic',
-      elasticCertificatePath: '/home/opc/rootCA.crt'
+      elasticCertificatePath: '/home/opc/rootCA.crt',
+      elasticSearchIndex: "searchindex_v5"
       // elasticDbUrl: 'https://10.101.21.140:9200'
     };
   
