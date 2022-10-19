@@ -1119,9 +1119,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.minHeight = "350px";
-    dialogConfig.height = "700px";
-    dialogConfig.maxHeight = "900px";
-    dialogConfig.width = "650px";
+    dialogConfig.height = "100%";
+    dialogConfig.maxHeight = "92vh"
+    dialogConfig.width = "80vw";
     dialogConfig.disableClose = true;
     this.selectedFolder["sectorId"] = this.selectedFolder2.uid;
     dialogConfig.data = this.selectedFolder;
@@ -2260,7 +2260,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return $(".availableActions").hide();
   }
   rightClickRename(item){
-    if (this.count == 0) {
+    if (this.count < 2) {
       return item.edit =!item.edit
     }
     
@@ -2269,7 +2269,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   contextMenuPosition = { x: '0px', y: '0px' };
 
   onContextMenu(event: MouseEvent, item: any) {
-    if(!this.checkGeneralFolder(item)) {
+    if(!this.checkGeneralFolder(item) && !this.isTrashView) {
       console.log('contextMenu', item);
       event.preventDefault();
       this.contextMenuPosition.x = event.clientX + 'px';
