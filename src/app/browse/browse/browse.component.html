@@ -1141,7 +1141,7 @@
                 </p>
               </div>
 
-              <div class="col-xl-12 col-md-12 customTableStyle" *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )">
+              <div class="col-xl-12 col-md-12 customTableStyle" *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId || isTrashView ) ">
                 <div style="visibility:hidden; opacity:0" id="dropzone">
                   <div id="textnode">
                     <img src="../../../assets/images/cloud-upload.png">
@@ -1565,7 +1565,7 @@
             ></preview-popup>
           </div>
           <mat-paginator
-            *ngIf="searchList?.length && selectedFolder?.uid !== parentId"
+            *ngIf="searchList?.length && selectedFolder?.uid !== parentId || isTrashView"
             #paginator
             [length]="resultCount"
             [pageSize]="defaultPageSize"
