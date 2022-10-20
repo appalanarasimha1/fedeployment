@@ -8,6 +8,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
 import { DataService } from "../services/data.service";
 import { SharedService } from "../services/shared.service";
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: "preview-popup",
@@ -38,6 +39,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   requestComment = "";
   requestSent = false;
   rejectComment = "";
+  modalOpen: boolean = true;
 
   constructor(
     private router: Router,
@@ -47,6 +49,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     public dataService: DataService,
     public sharedService: SharedService,
     private route: ActivatedRoute,
+    public matDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -65,25 +68,44 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.getRejectComment();
   }
 
-  open(): void {
-    this.showShadow = false;
-    this.activeTabs.comments = false;
-    this.activeTabs.timeline = false;
-    this.activeTabs.info = false;
-    this.isAware = false;
-    this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
-    this.modalService
-      .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
-      .result.then(
-        (result) => {
-          this.modalLoading = false;
-        },
-        (reason) => {
-          this.showTagInput = false;
-          this.modalLoading = false;
-          this.copiedString = "";
-        }
-      );
+  // open(): void {
+  //   this.showShadow = false;
+  //   this.activeTabs.comments = false;
+  //   this.activeTabs.timeline = false;
+  //   this.activeTabs.info = false;
+  //   this.isAware = false;
+  //   this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
+  //   this.modalService
+  //     .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
+  //     .result.then(
+  //       (result) => {
+  //         this.modalLoading = false;
+  //       },
+  //       (reason) => {
+  //         this.showTagInput = false;
+  //         this.modalLoading = false;
+  //         this.copiedString = "";
+  //       }
+  //     );
+  // }
+
+  open() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "100%";
+    dialogConfig.maxHeight = "94vh"
+    dialogConfig.width = "80vw";
+    // dialogConfig.maxWidth = "80vw";
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-modalbox';
+    // const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
+    // if(workspaceState) {
+    //   dialogConfig.data = workspaceState;
+    // }
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(this.modalTemp, dialogConfig);
   }
 
   getTags() {
@@ -561,5 +583,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     let data = name.split(".")
     let newName = data[0][0] + data[1][0]
     return newName.toUpperCase()
+  }
+  closeModal() {
+    console.log('hi');
+    this.modalOpen = false;
+    this.modalLoading = false;
+    this.matDialog.closeAll()
   }
 }
