@@ -51,6 +51,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild("paginator") paginator: MatPaginator;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
+  // moved to data-table
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
 
@@ -160,7 +161,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUser: string[] = [];
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
-  permissionChange:boolean=false
+  permissionChange:boolean=false;
+  forInternalUse: any = [];
+  downloadArray: any = [];
+  sizeExeeded: boolean = false;
+  forInternaCheck: boolean = false;
+  downloadFullItem: any = [];
+  needPermissionToDownload: any = [];
+  count: number = 0;
+  copyRightItem: any = [];
+  canNotDelete: any = [];
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -898,79 +908,79 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return this.selectedFolder.uid === ROOT_ID;
   }
 
-  deleteModal(listDocs) {
-    let deletedFolders = this.searchList.filter((item) =>
-      listDocs.includes(item["uid"])
-    );
-    this.sharedService.showSnackbar(
-      "The deleted items will be retained for 180 days in",
-      6000,
-      "top",
-      "center",
-      "snackBarMiddle",
-      "Deleted items",
-      this.getTrashedWS.bind(this)
-    );
-    this.searchList = this.searchList.filter(
-      (item) => !listDocs.includes(item["uid"])
-    );
-    this.sortedData = this.searchList.slice();
-    this.hasUpdatedChildren.push(this.selectedFolder.uid);
-    this.selectedFolderList = {};
-    deletedFolders.forEach((item) => {
-      if (this.folderAssetsResult[item.parentRef]) {
-        const index = this.folderAssetsResult[item.parentRef].entries.findIndex(
-          (entry) => entry.uid === item.uid
-        );
-        this.folderAssetsResult[item.parentRef].entries.splice(index, 1);
-      }
-    });
-  }
+  // deleteModal(listDocs) {
+  //   let deletedFolders = this.searchList.filter((item) =>
+  //     listDocs.includes(item["uid"])
+  //   );
+  //   this.sharedService.showSnackbar(
+  //     "The deleted items will be retained for 180 days in",
+  //     6000,
+  //     "top",
+  //     "center",
+  //     "snackBarMiddle",
+  //     "Deleted items",
+  //     this.getTrashedWS.bind(this)
+  //   );
+  //   this.searchList = this.searchList.filter(
+  //     (item) => !listDocs.includes(item["uid"])
+  //   );
+  //   this.sortedData = this.searchList.slice();
+  //   this.hasUpdatedChildren.push(this.selectedFolder.uid);
+  //   this.selectedFolderList = {};
+  //   deletedFolders.forEach((item) => {
+  //     if (this.folderAssetsResult[item.parentRef]) {
+  //       const index = this.folderAssetsResult[item.parentRef].entries.findIndex(
+  //         (entry) => entry.uid === item.uid
+  //       );
+  //       this.folderAssetsResult[item.parentRef].entries.splice(index, 1);
+  //     }
+  //   });
+  // }
 
-  deleteModalFailed() {
-    this.sharedService.showSnackbar(
-      "You can't delete a folder contains assets uploaded by other users",
-      6000,
-      "top",
-      "center",
-      "snackBarMiddle",
-    );
-  }
+  // deleteModalFailed() {
+  //   this.sharedService.showSnackbar(
+  //     "You can't delete a folder contains assets uploaded by other users",
+  //     6000,
+  //     "top",
+  //     "center",
+  //     "snackBarMiddle",
+  //   );
+  // }
 
-  moveModalFailed() {
-    this.sharedService.showSnackbar(
-      "You can't move/copy this asset",
-      6000,
-      "top",
-      "center",
-      "snackBarMiddle",
-    );
-  }
+  // moveModalFailed() {
+  //   this.sharedService.showSnackbar(
+  //     "You can't move/copy this asset",
+  //     6000,
+  //     "top",
+  //     "center",
+  //     "snackBarMiddle",
+  //   );
+  // }
 
-  recoverModal(listDocs) {
-    let recoveredFolders = this.trashedList.filter((item) =>
-      listDocs.includes(item["uid"])
-    );
-    this.sharedService.showSnackbar(
-      "Successfully recovered.",
-      3000,
-      "top",
-      "center",
-      "snackBarMiddleRecover"
-    );
-    this.trashedList = this.trashedList.filter(
-      (item) => !listDocs.includes(item["uid"])
-    );
-    this.searchList = this.trashedList;
-    this.sortedData = this.searchList.slice();
-    // this.hasUpdatedChildren.push(this.selectedFolder.uid);
-    this.selectedFolderList = {};
-    recoveredFolders.forEach(
-      (item) =>
-        this.folderAssetsResult[item.parentRef] &&
-        this.folderAssetsResult[item.parentRef].entries.push(item)
-    );
-  }
+  // recoverModal(listDocs) {
+  //   let recoveredFolders = this.trashedList.filter((item) =>
+  //     listDocs.includes(item["uid"])
+  //   );
+  //   this.sharedService.showSnackbar(
+  //     "Successfully recovered.",
+  //     3000,
+  //     "top",
+  //     "center",
+  //     "snackBarMiddleRecover"
+  //   );
+  //   this.trashedList = this.trashedList.filter(
+  //     (item) => !listDocs.includes(item["uid"])
+  //   );
+  //   this.searchList = this.trashedList;
+  //   this.sortedData = this.searchList.slice();
+  //   // this.hasUpdatedChildren.push(this.selectedFolder.uid);
+  //   this.selectedFolderList = {};
+  //   recoveredFolders.forEach(
+  //     (item) =>
+  //       this.folderAssetsResult[item.parentRef] &&
+  //       this.folderAssetsResult[item.parentRef].entries.push(item)
+  //   );
+  // }
 
   selectFolder($event, item, i, updateCount = true) {
     if ($event.target?.checked || $event.checked) {
@@ -984,6 +994,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // moved to data-table
   async deleteFolders() {
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
@@ -1091,7 +1102,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // this.searchList = this.deletedByMe;
 
   }
-
+//  moved to data-table
   checkCanDelete(item) {
     return this.user === item.properties["dc:creator"]?.id || this.user === item.properties["dc:creator"];
   }
@@ -1653,16 +1664,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
-  forInternalUse: any = [];
-  downloadArray: any = [];
-  sizeExeeded: boolean = false;
-  forInternaCheck: boolean = false;
-  downloadFullItem: any = [];
-  needPermissionToDownload: any = [];
-  count: number = 0;
-  copyRightItem: any = [];
-  canNotDelete: any = [];
-
   selectAsset($event, item, i) {
     let canDelete = this.checkCanDelete(item)
     if(canDelete){
@@ -2098,6 +2099,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return  ["workspace", "folder", "orderedfolder"].indexOf(m.type.toLowerCase()) !== -1
   }
 
+  // moved to sector-detail
   async openMoveModal() {
     const listDocs = Object.values(this.selectedMoveList)
     .filter( item => !this.checkDownloadPermission(item))
@@ -2222,29 +2224,29 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return $(".availableActions").hide();
   }
 
-  rightClickMove(){
-    if (this.count >0) return this.openMoveModal();
-    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
-     this.openMoveModal();
-    this.removeAssets()
-    this.contextMenu.closeMenu();
-    return $(".availableActions").hide();
-    }
+  // rightClickMove(){
+  //   if (this.count >0) return this.openMoveModal();
+  //   // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+  //    this.openMoveModal();
+  //   this.removeAssets()
+  //   this.contextMenu.closeMenu();
+  //   return $(".availableActions").hide();
+  //   }
 
-  rightClickDelete(){
-     if (this.count >0) return this.deleteFolders();
-    // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
-    this.deleteFolders();
-    this.removeAssets()
-    this.contextMenu.closeMenu();
-    return $(".availableActions").hide();
-  }
-  rightClickRename(item){
-    if (this.count == 0) {
-      return item.edit =!item.edit
-    }
+  // rightClickDelete(){
+  //    if (this.count >0) return this.deleteFolders();
+  //   // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+  //   this.deleteFolders();
+  //   this.removeAssets()
+  //   this.contextMenu.closeMenu();
+  //   return $(".availableActions").hide();
+  // }
+  // rightClickRename(item){
+  //   if (this.count == 0) {
+  //     return item.edit =!item.edit
+  //   }
     
-  }
+  // }
 
   contextMenuPosition = { x: '0px', y: '0px' };
 

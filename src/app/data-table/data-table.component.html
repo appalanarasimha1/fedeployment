@@ -1,0 +1,287 @@
+<p>data-table works!</p>
+<div class="row justify-content-between pt-25" style="width: 100%; --bs-gutter-x: 0px">
+   
+
+    <div class="col-xl-12 col-md-12 customTableStyle" *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )">
+      <div style="visibility:hidden; opacity:0" id="dropzone">
+        <div id="textnode">
+          <img src="../../../assets/images/cloud-upload.png">
+          <h3>Please drop here</h3>
+          <p>Images, videos and PDF documents only</p>
+        </div>
+      </div>
+      <div id="text">&nbsp;</div>
+      <table
+        matSort
+        (matSortChange)="sortData($event)"
+        class="folderListview pb-5"
+        >
+        <tr>
+          <th style="width: 3%">&nbsp;&nbsp;</th>
+          <th
+            mat-sort-header="title"
+            width="40%"
+            style="padding-left: 35px"
+          >
+            Name
+          </th>
+          <th width="10%"> &nbsp;&nbsp; </th>
+          <th mat-sort-header="dc:creator" width="20%">Created by</th>
+          <th
+            *ngIf="!isTrashView"
+            mat-sort-header="dc:created"
+            width="15%"
+          >
+            Created on
+          </th>
+          <th
+            *ngIf="isTrashView"
+            mat-sort-header="dc:modified"
+            width="15%"
+          >
+            Deleted on
+          </th>
+          <th
+            mat-sort-header="dc:sector"
+            *ngIf="isTrashView"
+            width="20%"
+          >
+            Workspace
+          </th>
+          <th style="width: 3%">&nbsp;&nbsp;</th>
+        </tr>
+        <tr *ngFor="let item of sortedData; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder positionRelative">
+          <td style="position: relative;" (contextmenu)="onContextMenu($event, item)">
+            <div
+              class="delete-folder-action"
+              *ngIf="
+                !checkAssetType(item.type) &&
+                checkWSType(item.type) &&
+                !checkGeneralFolder(item)
+              "
+            >
+              <div class="control-group">
+                <label class="control control--checkbox">
+                  <input
+                    id="checkbox-{{ i }}"
+                    type="checkbox"
+                    (change)="selectFolder($event, item, i)"
+                    [checked]="item.isSelected"
+                    [(ngModel)]="item.isSelected"
+                  />
+                  <div class="control__indicator"></div>
+                </label>
+              </div>
+            </div>
+            <div
+              class="delete-folder-action"
+              *ngIf="checkAssetType(item.type)"
+              [ngClass]="{ activeHover: item.isSelected }"
+            >
+              <div class="control-group">
+                <label class="control control--checkbox">
+                  <input
+                    id="checkbox-{{ i }}"
+                    type="checkbox"
+                    class="vh"
+                    (change)="selectAsset($event, item, i)"
+                    [checked]="item.isSelected"
+                    [(ngModel)]="item.isSelected"
+                  />
+                  <div class="control__indicator"></div>
+                </label>
+              </div>
+            </div>
+          </td>
+          <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative">
+            <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;">
+            <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block;
+            vertical-align: middle;">
+              <span class="tollTipCustom">
+                {{item.title}}
+                <span class="tolltipContent" style="top: 28px;
+                height: auto;
+                white-space: break-spaces;
+                text-align: left;
+                padding: 5px 10px;">
+                  {{item.title}}
+                </span>
+              </span>
+              <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
+                <span class="tolltipContent" style="width: 100%;
+                height: auto;
+                white-space: break-spaces;
+                text-align: left;
+                padding: 5px 10px;">
+                  {{removeWorkspacesFromString(item.path, item.title)}}333
+                </span>
+              </span>
+
+            </p>
+            <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+              <div class="publicUseBlock">
+                <div class="publicUseBlk">Private</div>
+              </div>
+            </span>
+
+            <span *ngIf="!item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+              <div class="publicUseBlock publishedBlock">
+                <div class="publicUseBlk published">Published <a href="javascript:void(0)" *ngIf="!checkGeneralFolder(item) && checkCanDelete(item)"><img src="../../../assets/images/published-arrow.svg" (click)="currentIndexPublished = i; i == currentIndexPublished ? manageAccessPublished(): ''" class="publishedOpen" /></a></div>
+                <div class="mouseHoverInfo manageAccessPopup" *ngIf="currentIndexPublished == i">
+                  <app-manage-access-modal [input_data]="item" [input_folder_structure]="breadCrumb" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
+                </div>
+              </div>
+            </span>
+          </td>
+          <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex" (contextmenu)="onContextMenu($event, item)">
+            <div class="zoomImg">
+              <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 30px;margin-right: 10px; object-fit: contain;">
+              <div class="zoomImgBlock">
+                <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)">
+              </div>
+            </div>
+            <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left">
+              <span class="tollTipCustom">
+                {{item.title}}
+                <span class="tolltipContent" style="top: 28px;
+                height: auto;
+                white-space: break-spaces;
+                text-align: left;
+                padding: 5px 10px;">
+                  {{item.title}}
+                </span>
+              </span>
+              <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
+                <span class="tolltipContent" style="width: 100%;
+                  height: auto;
+                  white-space: break-spaces;
+                  text-align: left;
+                  padding: 5px 10px;">
+                  {{sharedService.removeWorkspacesFromString(item.path)}}
+                </span>
+              </span>
+            </p>
+            <span *ngIf="item.edit" style="display: flex;">
+              <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
+              <div class="actionIcon" style="margin-top: 0px;">
+                <svg
+                  width="18"
+                  height="13"
+                  viewBox="0 0 18 13"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  (click)="renameFolder(item.title, item.uid); item.edit = false"
+                >
+                  <path
+                    d="M6.99974 10.172L16.1917 0.979004L17.6067 2.393L6.99974 13L0.635742 6.636L2.04974 5.222L6.99974 10.172Z"
+                    fill="#DAAA00"
+                  />
+                </svg>
+              </div>
+              <div class="actionIcon" style="margin-top: 0px;">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  (click)="item.edit = false"
+                >
+                  <path
+                    d="M6.99974 5.58623L11.9497 0.63623L13.3637 2.05023L8.41374 7.00023L13.3637 11.9502L11.9497 13.3642L6.99974 8.41423L2.04974 13.3642L0.635742 11.9502L5.58574 7.00023L0.635742 2.05023L2.04974 0.63623L6.99974 5.58623Z"
+                    fill="#DAAA00"
+                  />
+                </svg>
+              </div>
+            </span>
+          </td>
+          <td *ngIf="!checkAssetType(item.type)" (contextmenu)="onContextMenu($event, item)">
+            <span (click)="copyLink(item, 'folder')" style="text-align: right;">
+              <div *ngIf="!item.copy; else other_content" class="copyHover">
+                <img src="../../../assets/images/Link.svg" />
+                <div class="copyHoverInfo">Copy link</div>
+              </div>
+              <ng-template #other_content>
+                <div class="copyedBlock">
+                  <img src="../../../assets/images/Tick-box.svg" /> Copied!
+                </div>
+              </ng-template>
+            </span>
+          </td>
+          <td *ngIf="checkAssetType(item.type)" (contextmenu)="onContextMenu($event, item)">
+            <span (click)="copyLink(item, 'asset')" style="text-align: right;">
+              <div *ngIf="!item.copy; else other_content" class="copyHover">
+                <img src="../../../assets/images/Link.svg" />
+                <div class="copyHoverInfo">Copy link</div>
+              </div>
+              <ng-template #other_content>
+                <div class="copyedBlock">
+                  <img src="../../../assets/images/Tick-box.svg" /> Copied!
+                </div>
+              </ng-template>
+            </span>
+          </td>
+          <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">
+            <p>{{getCreatorName(item)}}</p>
+            <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
+          </td>
+          <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
+          <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
+          <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{item.properties['dc:sector'] || ''}}</p></td>
+          <td>
+            <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
+            
+          </td>
+        </tr>
+      </table>
+        <div
+          style="visibility: hidden; position: fixed"
+          [style.left]="contextMenuPosition.x"
+          [style.top]="contextMenuPosition.y"
+          [matMenuTriggerFor]="contextMenu"
+        ></div>
+        <mat-menu #contextMenu="matMenu">
+          <ng-template matMenuContent let-item="item">
+            <!-- {{item.title}} -->
+            <div class="availableActions">
+              <ul *ngIf="!isTrashView">
+                <li *ngIf="!isTrashView && !checkCanMove(item)">
+                  
+                    <a href="javascript:void(0);" (click)="rightClickDownload()"> <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-download-icon" >
+                    <path d="M11.9727 19.6958V12.9458" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14.7852 17.2095L11.9727 20.022L9.16016 17.2095" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M15.9374 14.8125H16.7812C18.3554 14.8152 19.7546 13.8099 20.2544 12.3172C20.7543 10.8244 20.2425 9.17928 18.9841 8.23348C17.7256 7.28768 16.0031 7.25355 14.7082 8.14877C14.1862 5.36953 11.682 3.40988 8.85877 3.5713C6.03554 3.73272 3.77104 5.96503 3.5692 8.78565C3.36737 11.6063 5.29096 14.1383 8.06244 14.7" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg></span> Download</a>
+                </li>
+                <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove()">
+                  <a href="javascript:void(0);">
+                  <span><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
+                    <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg></span> Move</a>
+                </li>
+                <li *ngIf="!checkCanMove(item)">
+                  <a href="javascript:void(0);" (click)="rightClickRename(item)">
+                  <span><svg
+                    width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-rename-icon">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg></span> Rename</a>
+                </li>
+                <li *ngIf="!isTrashView && checkEnableDeleteBtn() &&  !checkGeneralFolder(item)">
+                  <a href="javascript:void(0);" (click)="rightClickDelete()">
+                    <span><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg></span> Delete</a>
+                </li>
+              </ul>
+
+            </div>
+          </ng-template>
+        </mat-menu>
+    </div>
+  </div>

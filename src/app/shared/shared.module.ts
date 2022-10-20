@@ -29,6 +29,8 @@ import { ManageAccessModalComponent } from '../manage-access-modal/manage-access
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill';
 import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
+import { DataTableComponent } from '../data-table/data-table.component';
+import { MatMenuModule } from '@angular/material/menu';
 keyboardEventKeyPolyfill();
 @NgModule({
   providers: [
@@ -47,7 +49,8 @@ keyboardEventKeyPolyfill();
     SearchPipe,
     SnackbarComponent,
     AssetViewComponent,
-    // ManageAccessModalComponent
+    ManageAccessModalComponent,
+    DataTableComponent,
   ],
   imports: [
     CommonModule,
@@ -63,6 +66,7 @@ keyboardEventKeyPolyfill();
     // UploadModalModule,
     // NgxMasonryModule,
     TextInputAutocompleteModule,
+    MatMenuModule,
   ],
   exports: [
     CommonModule,
@@ -86,7 +90,9 @@ keyboardEventKeyPolyfill();
     MatSnackBarModule,
     SnackbarComponent,
     AssetViewComponent,
-    // ManageAccessModalComponent
+    MatMenuModule,
+    DataTableComponent,
+    ManageAccessModalComponent,
   ]
 })
 export class SharedModule { }

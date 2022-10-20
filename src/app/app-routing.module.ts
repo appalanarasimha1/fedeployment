@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import { Routes, RouterModule, PreloadAllModules } from "@angular/router";
 import { TermsOfUseComponent } from "./common/terms-of-use/terms-of-use.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LoginComponent } from "./login/login.component";
@@ -18,8 +18,7 @@ import { AssetCannotBeAccessedComponent } from "./asset-cannot-be-accessed/asset
 const routes: Routes = [
   {
     path: "",
-    loadChildren: () =>
-      import("./search/search.module").then((m) => m.SearchModule),
+    loadChildren: () => import("./search/search.module").then((m) => m.SearchModule),
     canActivate: [AuthGuardService],
   },
   { path: "signup", component: SignupComponent },
@@ -28,21 +27,16 @@ const routes: Routes = [
   { path: "asset-not-accessed", component: AssetCannotBeAccessedComponent },
   {
     path: "workspace",
-    loadChildren: () =>
-      import("./browse/browse.module").then((m) => m.BrowseModule),
+    loadChildren: () => import("./browse/browse.module").then((m) => m.BrowseModule),
     canActivate: [AuthGuard, AuthGuardService],
   },
   {
     path: "common",
-    loadChildren: () =>
-      import("./common/common-module/common.module").then(
-        (m) => m.CommonModule
-      ),
+    loadChildren: () => import("./common/common-module/common.module").then((m) => m.CommonModule),
   },
   {
     path: "report",
-    loadChildren: () =>
-      import("./report/report.module").then((m) => m.ReportModule),
+    loadChildren: () => import("./report/report.module").then((m) => m.ReportModule),
     canActivate: [RoleGuardService, AuthGuardService],
     data: {
       expectedRole: REPORT_ROLE,
@@ -62,6 +56,7 @@ const routes: Routes = [
       anchorScrolling: "enabled",
       onSameUrlNavigation: "reload",
       scrollPositionRestoration: "enabled",
+      preloadingStrategy: PreloadAllModules
     }),
   ],
   exports: [RouterModule],

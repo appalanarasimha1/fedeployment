@@ -1,0 +1,72 @@
+.customToggle {
+    padding: 0px;
+  }
+  
+  .header-content .main-title{
+    font-size: 24px;
+    line-height: 22px;
+    color: #000000;
+    font-weight: normal;
+    margin-bottom: 9px !important;
+    display: block;
+    /* display: contents; */
+}
+
+.active-tab {
+    color: #000;
+    font-weight: normal;
+    font-size: 15px;
+    position: relative;
+    background: #E1BB33;
+  }
+  
+  .active-tab:before {
+    content: "";
+    position: absolute;
+    left: -100%;
+    background: #e1bb40;
+    height: 100%;
+    z-index: 9;
+    width: 100%;
+    top: 0px;
+  }
+
+  .active-tab {
+    color: #000;
+    font-weight: normal;
+    font-size: 15px;
+    position: relative;
+    background: #E1BB33;
+  }
+
+  .active-tab:before {
+    content: "";
+    position: absolute;
+    left: -100%;
+    background: #e1bb40;
+    height: 100%;
+    z-index: 9;
+    width: 100%;
+    top: 0px;
+  } 
+
+  li.hoverPin.active-tab a {
+    color: #040404 !important;
+  }
+
+  .insideScroll{
+    padding: 0px;
+    margin-bottom: 20px;
+    /* min-height: 100vh; */
+    overflow: auto;
+    height: 70vh;
+  }
+
+  .leftPanel{
+    padding: 0px;
+  }
+  .leftPanel li span{
+    font-size: 15px !important;
+    word-break: break-word;
+    font-weight: normal;
+  }

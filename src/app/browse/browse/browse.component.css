@@ -127,8 +127,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   text-overflow: ellipsis;
 }
 
-.active-tab {
-  /* background: #48caf0; */
+/* .active-tab {
   color: #000;
   font-weight: normal;
   font-size: 15px;
@@ -144,7 +143,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   z-index: 9;
   width: 100%;
   top: 0px;
-}
+} */
 .set{
   padding: 12px 17px;
   /* width: max-content; */
@@ -220,15 +219,7 @@ section.lpBAck:before, .lpSecOne:before {
 .paddingLeft1{
   padding-left: 60px;
 }
-.header-content .main-title{
-    font-size: 24px;
-    line-height: 22px;
-    color: #000000;
-    font-weight: normal;
-    margin-bottom: 9px !important;
-    display: block;
-    /* display: contents; */
-}
+
 .header-content h6{
   font-size: 15px;
   line-height: 24px;
@@ -1724,8 +1715,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   text-overflow: ellipsis;
 }
 
-.active-tab {
-  /* background: #48caf0; */
+/* .active-tab {
   color: #000;
   font-weight: normal;
   font-size: 15px;
@@ -1741,7 +1731,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   z-index: 9;
   width: 100%;
   top: 0px;
-}
+} */
 .set{
   padding: 12px 17px;
   /* width: max-content; */
@@ -1777,14 +1767,14 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 .views img.active{
   opacity: 1;
 }
-.leftPanel{
+/* .leftPanel{
   padding: 0px;
 }
 .leftPanel li span{
   font-size: 15px !important;
   word-break: break-word;
   font-weight: normal;
-}
+} */
 section.lpSecOne {
   /* min-height: 600px; */
   position: relative;
@@ -1818,15 +1808,14 @@ section.lpBAck:before, .lpSecOne:before {
 .paddingLeft1{
   padding-left: 60px;
 }
-.header-content .main-title{
+/* .header-content .main-title{
     font-size: 24px;
     line-height: 22px;
     color: #000000;
     font-weight: normal;
     margin-bottom: 9px !important;
     display: block;
-    /* display: contents; */
-}
+} */
 .header-content h6{
   font-size: 15px;
   line-height: 24px;
@@ -3924,9 +3913,9 @@ img.noPreviewImg {
   background: transparent;
   color: #040404;
 }
-li.hoverPin.active-tab a {
+/* li.hoverPin.active-tab a {
   color: #040404 !important;
-}
+} */
 .folderType {
   padding-top: 20px;
 }

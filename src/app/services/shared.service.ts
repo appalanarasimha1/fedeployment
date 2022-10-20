@@ -153,17 +153,25 @@ export class SharedService {
   }
 
   async getExternalGroupUser() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
-    const users = res['entries'];
-    const listExternalUser = users.map(user => user.id);
-    localStorage.setItem("listExternalUser", JSON.stringify(listExternalUser));
+    try {
+      const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
+      const users = res?.['entries'];
+      const listExternalUser = users?.map(user => user.id);
+      localStorage.setItem("listExternalUser", JSON.stringify(listExternalUser));
+    } catch(e) {
+      console.error('error while fetching external users');
+    }
   }
 
   async getExternalGroupUserGlobal() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
-    const users = res['entries'];
-    const listExternalUserGlobal = users.map(user => user.id);
-    localStorage.setItem("listExternalUserGlobal", JSON.stringify(listExternalUserGlobal));
+    try {
+      const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
+      const users = res?.['entries'];
+      const listExternalUserGlobal = users?.map(user => user.id);
+      localStorage.setItem("listExternalUserGlobal", JSON.stringify(listExternalUserGlobal));
+    } catch (e) {
+      console.error('error while fetching external global users');
+    }
   }
 
   /**
