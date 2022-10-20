@@ -432,7 +432,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return '../../../assets/images/no-preview.png';
     }
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
-      return '../../../assets/images/no-preview-grid.svg';
+      // return '../../../assets/images/no-preview-grid.svg';
+      return this.getNoPreview(document);
     }
    return this.sharedService.getAssetUrl(event, url, type);
   }
@@ -2271,5 +2272,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem, '')
       }
     }
+  }
+
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData[splitedData?.length - 1];
+    const lowercaseMime = mimeType.toLowerCase();
+
+    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      return '../../../assets/images/doc-preveiw.svg';
+    } 
+    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      return '../../../assets/images/ppt-preveiw.svg';
+    } 
+    return '../../../assets/images/no-preview-grid.svg';
   }
 }
