@@ -398,8 +398,7 @@ export class HeaderComponent implements OnInit {
   getImageName(){
     let {userData} = this
     let splittedUser = userData?.email.split(".")
-
     let name = splittedUser?.[0]?.[0] + splittedUser?.[1]?.[0]
-    return isNaN(name) ? "":name?.toUpperCase()
+    return isNaN(name) && !splittedUser.length ? "":name?.toUpperCase()
   }
 }
