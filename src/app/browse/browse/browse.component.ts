@@ -1519,8 +1519,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       const path = this.sectorSelected.uid === this.selectedFolder.uid ?
       `/${this.sectorSelected.title}/workspaces/` :
       `${this.selectedFolder.path}/`;
-      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path.replace(/(["'])/g, "\\$1")}' AND dc:title ILIKE '%${searchString}%'`;
     }
+    query = encodeURIComponent(query);
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -1758,20 +1759,40 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             let splittedLocation = res.headers.get("location").split("/");
             let newUID = splittedLocation[splittedLocation.length - 2];
             uid = newUID;
-            this.apiService
-              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-              .subscribe((resp: any) => {
-                let locationForDownload = resp.headers.get("location");
-              });
+            // setTimeout(() => {
+            //   window.open(
+            //     environment.apiServiceBaseUrl +
+            //       "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+            //       uid
+            //   );
+            //   this.removeAssets();
+            // }, 10000);
+            let counter = 0
+            let checkZipCompleted=(newUID) =>{
+                  this.loading = true
+                  this.apiService
+                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+                .toPromise().then((resp: any) => {
+                }).catch(e=>{
+                  console.error("2222222222222",e)
+                  counter += 1
 
-            setTimeout(() => {
-              window.open(
-                environment.apiServiceBaseUrl +
-                  "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-                  uid
-              );
-              this.removeAssets();
-            }, 1000);
+                  if (e.status ==404) {
+                     checkZipCompleted(newUID)
+                  }else{
+                    this.loading = false
+                    window.open(
+                      environment.apiServiceBaseUrl +
+                        "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                        uid
+                    );
+                    this.removeAssets();
+                  }
+                 
+                });
+              
+            }
+            checkZipCompleted(uid)
           });
       }
     }
@@ -2053,7 +2074,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async getAllFolders(folder?:any){
     let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
     if(currentState.length){
-      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${folder.path}'`;
+      const path = folder.path?.replace(/(["'])/g, "\\$1");
+      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${encodeURIComponent(path)}'`;
       const result: any = await this.apiService
           .get(url, { headers: { "fetch-document": "properties" } })
           .toPromise();
@@ -2103,7 +2125,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const listDocs = Object.values(this.selectedMoveList)
     .filter( item => !this.checkDownloadPermission(item))
    console.log("listDocslistDocs",listDocs);
-    
+
     if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -2123,7 +2145,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (result) {
         delete this.folderAssetsResult[result.uid];
         delete this.folderAssetsResult[this.selectedFolder.uid];
-
+        this.removeAssets();
         this.loading = true;
         setTimeout(() => {
           if (this.selectedFolder.type === 'Domain') window.location.reload();
@@ -2241,7 +2263,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return $(".availableActions").hide();
   }
   rightClickRename(item){
-    if (this.count == 0) {
+    if (this.count < 2) {
       return item.edit =!item.edit
     }
     
@@ -2250,7 +2272,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   contextMenuPosition = { x: '0px', y: '0px' };
 
   onContextMenu(event: MouseEvent, item: any) {
-    if(!this.checkGeneralFolder(item)) {
+    if(!this.checkGeneralFolder(item) && !this.isTrashView) {
       console.log('contextMenu', item);
       event.preventDefault();
       this.contextMenuPosition.x = event.clientX + 'px';
@@ -2286,5 +2308,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return '../../../assets/images/ppt-preveiw.svg';
     } 
     return '../../../assets/images/no-preview-grid.svg';
+  }
+  
+  checkFolderContains(){
+    return Object.values(this.selectedFolderList).length <1
   }
 }

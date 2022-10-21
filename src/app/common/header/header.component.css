@@ -1092,9 +1092,11 @@ span.userName {
     width: calc(100% - 14px);
     height: 100%;
     background: rgb(0 0 0 / 33%);
-    line-height: 25px;
+    line-height: 28px;
     text-align: center;
-    font-size: 11px;
+    font-size: 12px;
     border-radius: 100px;
     border: 1px solid #fff;
+    height: 30px;
+    width: 30px;
 }

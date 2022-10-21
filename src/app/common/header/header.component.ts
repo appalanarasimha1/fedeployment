@@ -135,6 +135,8 @@ export class HeaderComponent implements OnInit {
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
     // this.openOnboardingModal(this.onboarding);
     this.dataService.showFooter$.subscribe((data)=>this.showFooter= data)
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.userData = user
     return;
   }
 
@@ -230,11 +232,12 @@ export class HeaderComponent implements OnInit {
     this.videoCompleted = true;
   }
 
-
+  userData:any;
   checkExternalUser(excludeGlobal = false) {
     if (excludeGlobal) {
       if (!this.sharedService.checkExternalUser()) return false; // normal user
       const user = JSON.parse(localStorage.getItem('user'));
+      this.userData = user
       return user?.groups.includes(EXTERNAL_GROUP_GLOBAL);
     } else {
       return this.sharedService.checkExternalUser();
@@ -384,5 +387,12 @@ export class HeaderComponent implements OnInit {
     if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
       return true
     }
+  }
+
+  getImageName(){
+    let {userData} = this
+    let splittedUser = userData?.email.split(".")
+    let name = splittedUser?.[0]?.[0] + splittedUser?.[1]?.[0]
+    return isNaN(name) && !splittedUser.length ? "":name?.toUpperCase()
   }
 }

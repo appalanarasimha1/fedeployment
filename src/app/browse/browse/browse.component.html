@@ -1150,7 +1150,7 @@
                 </p>
               </div>
 
-              <div class="col-xl-12 col-md-12 customTableStyle" *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )">
+              <div class="col-xl-12 col-md-12 customTableStyle" *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId || isTrashView ) ">
                 <div style="visibility:hidden; opacity:0" id="dropzone">
                   <div id="textnode">
                     <img src="../../../assets/images/cloud-upload.png">
@@ -1310,12 +1310,12 @@
                       <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block;
                       vertical-align: middle;">
                         <span class="tollTipCustom">
-                          {{item.title}}
+                          {{sharedService.stringShortener(item?.title, 15)}}
                           <span class="tolltipContent" style="top: 28px;
                           height: auto;
                           white-space: break-spaces;
                           text-align: left;
-                          padding: 5px 10px;">
+                          padding: 5px 10px; max-width: 100vh;">
                             {{item.title}}
                           </span>
                         </span>
@@ -1488,7 +1488,7 @@
                               <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg></span> Move</a>
                           </li>
-                          <li *ngIf="!checkCanMove(item)">
+                          <li *ngIf="!checkCanMove(item) && count < 2">
                             <a href="javascript:void(0);" (click)="rightClickRename(item)">
                             <span><svg
                               width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-rename-icon">
@@ -1496,7 +1496,7 @@
                               <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg></span> Rename</a>
                           </li>
-                          <li *ngIf="!isTrashView && checkEnableDeleteBtn() &&  !checkGeneralFolder(item)">
+                          <li *ngIf="!isTrashView && !checkGeneralFolder(item)">
                             <a href="javascript:void(0);" (click)="rightClickDelete()">
                               <span><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
                               <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1584,7 +1584,7 @@
             ></preview-popup>
           </div>
           <mat-paginator
-            *ngIf="searchList?.length && selectedFolder?.uid !== parentId"
+            *ngIf="searchList?.length && selectedFolder?.uid !== parentId || isTrashView"
             #paginator
             [length]="resultCount"
             [pageSize]="defaultPageSize"

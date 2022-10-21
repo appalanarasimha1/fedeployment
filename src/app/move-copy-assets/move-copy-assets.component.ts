@@ -169,7 +169,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     const isFolder = this.selectedList[key]?.type.includes('Folder') || this.selectedList[key]?.type.includes('Workspace');
 
     this.sharedService.showSnackbar(
-      message === 'OK' ? `${isFolder ? 'Folder' : 'Asset'} ${this.selectedList[key]?.title} has been moved successfully`
+      message === 'OK' ? `${isFolder ? 'Folder' : 'Asset'} ${this.selectedList[key]?.title} has been ${this.selectedDestination?.properties['dc:isPrivate']?"copied":"moved"} successfully`
       : `Cannot move ${this.selectedList[key]?.title}: ${message}`,
       4000,
       "top",
