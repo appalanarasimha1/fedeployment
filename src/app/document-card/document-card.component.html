@@ -4,11 +4,10 @@
   <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" /> -->
     <!-- <button (click)="copyLinkOfAsset()">copy link</button> -->
-    <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6; border-radius: 8px; overflow: hidden;">
-      <!-- src="../../assets/images/no-preview.png" -->
+    <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6;">
       <img 
-        id="fileId"  
-        [src]="getNoPreview(doc)"
+        id="fileId" 
+        src="../../assets/images/no-preview.png" 
         alt=""
         (click)="openPreview()"
         (load)="showLock = true"
@@ -26,7 +25,7 @@
       <span style="width: 1px;height: 1px;"></span>
     </div>
 
-    <div *ngIf="checkMimeType(doc) === 'picture'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3; border-radius: 8px; overflow: hidden;">
+    <div *ngIf="checkMimeType(doc) === 'picture'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
       <img 
         id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
@@ -46,25 +45,36 @@
       <span style="width: 1px;height: 1px;"></span>
     </div>
 
-    <div *ngIf="checkMimeType(doc) === 'video'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3; border-radius: 8px; overflow: hidden;">
-      <div class="videoIconn">
-        <img id="fileId" 
+    <div *ngIf="checkMimeType(doc) === 'video'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
+      <!-- <img 
+        id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
         alt=""
         (click)="openPreview()"
-        crossorigin="use-credentials" />
-      </div>
+        (load)="showLock = true"
+        crossorigin="use-credentials"
+        loading="lazy" /> -->
+
+        <!-- <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn"> -->
+          <img id="fileId" 
+          [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+          alt=""
+          (click)="openPreview()"
+          crossorigin="use-credentials" />
+        <!-- </div> -->
       <span style="width: 1px;height: 1px;"></span>
     </div>
     
 
 
-  <img *ngIf="checkMimeType(doc) === 'file'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" style="border-radius: 8px 8px 0px 0px;" />
+  <img *ngIf="checkMimeType(doc) === 'file'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
   <div *ngIf="checkMimeType(doc) === 'file'" class="pdfWhiteBlock">
     <div class="flexible pb-2" style="justify-content: space-between ;">
       <p>{{doc.title}}</p>
-      <div style="display: inline-grid; text-align: center;">
-        <img src="../../assets/images/Read.svg" style="width: 26px;margin: auto;">
+      <div style="display: inline-grid;
+      text-align: center;">
+        <img src="../../assets/images/Read.svg" style="    width: 26px;
+        margin: auto;">
         <!-- <span>3 mins</span> -->
       </div>
 
