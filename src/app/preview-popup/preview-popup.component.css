@@ -2066,7 +2066,7 @@ form.commentTextForm {
   padding-bottom: 0px;
 }
 .close-modal-icon img {
-  max-width: 22px;
+  max-width: 14px;
 }
 ::ng-deep .custom-modalbox .mat-dialog-container {
   padding: 0px !important;

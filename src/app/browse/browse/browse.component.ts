@@ -2142,7 +2142,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (result) {
         delete this.folderAssetsResult[result.uid];
         delete this.folderAssetsResult[this.selectedFolder.uid];
-
+        this.removeAssets();
         this.loading = true;
         setTimeout(() => {
           if (this.selectedFolder.type === 'Domain') window.location.reload();
