@@ -3343,6 +3343,11 @@ button.createBtn.btn.tollTipCustom.disableBtn {background: #E8E6DF;color: #BAB8B
 ul.downloadImgLisst {
   margin-top: 15px;
 }
+ul.downloadImgLisst::after {
+  content: '';
+  display: block;
+  clear: both;
+}
 ul.downloadImgLisst li {
   padding-bottom: 10px;
 }

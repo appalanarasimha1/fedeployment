@@ -60,6 +60,9 @@ export class AddUserModalComponent implements OnInit {
   listExternalUserGlobal: string[] = [];
   isGlobal = false;
 
+  doneLoading:boolean = false;
+  loading = true;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<AddUserModalComponent>,
@@ -90,6 +93,7 @@ export class AddUserModalComponent implements OnInit {
 
   closeModal() {
     this.dialogRef.close(this.folderUpdated);
+    this.doneLoading = false;
   }
 
   computeCollaborators() {
@@ -176,6 +180,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   async updateCollaborators() {
+    this.doneLoading = true;
     if (!this.canSave()) return;
     for (const key in this.removedCollaborators) {
       await this.removePermission(this.removedCollaborators[key])
@@ -195,7 +200,7 @@ export class AddUserModalComponent implements OnInit {
     }
     this.folderUpdated = await this.fetchFolder(this.folderId);
     this.closeModal();
-
+    this.doneLoading = false;
     this.sharedService.showSnackbar(
       "Collaborators updated",
       4000,
@@ -230,6 +235,8 @@ export class AddUserModalComponent implements OnInit {
   }
 
   addPermission(item) {
+    this.doneLoading = true;
+    console.log('this.doneLoading = true;', this.doneLoading)
     if (this.listExternalUser.includes(item.user.id) && !item.end) {
       const end = new Date();
       end.setMonth(new Date().getMonth() + 1);
@@ -290,6 +297,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   async sendInviteInternal (item) {
+    this.doneLoading = true;
     const params = {
       groundXUrl: location.protocol + '//' + location.host,
       email: item.user.id,
