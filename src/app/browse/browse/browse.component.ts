@@ -986,16 +986,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async deleteFolders() {
-    if (Object.keys(this.selectedFolderList).length == 0) return;
+    // if (Object.keys(this.selectedFolderList).length == 0 ) return;
     this.loading = true;
-
-    const listDocs = Object.entries(this.selectedFolderList)
-    .filter(([key, item]) => this.checkCanDelete(item)).map(function (
-      [key, item],
-      index
-    ) {
-      return item["uid"];
-    });
+    let data = Object.values(this.selectedFolderList)
+    let dataToParse =  data.concat(this.assetCanDelete)
+    const listDocs = dataToParse
+    .filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
     await this.apiService
       .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}` })
       .subscribe((docs: any) => {
@@ -1664,6 +1660,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   count: number = 0;
   copyRightItem: any = [];
   canNotDelete: any = [];
+  assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
     let canDelete = this.checkCanDelete(item)
@@ -1678,6 +1675,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
+      }else{
+        this.assetCanDelete.push(item)
       }
        if (
          item.properties['sa:copyrightName'] !== null &&
