@@ -988,7 +988,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // if (Object.keys(this.selectedFolderList).length == 0 ) return;
     this.loading = true;
     let data = Object.values(this.selectedFolderList)
-    let dataToParse = data.length >0 ? data.concat(this.assetCanDelete) :this.assetCanDelete
+    let dataToParse =  data.concat(this.assetCanDelete)
     const listDocs = dataToParse
     .filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
     await this.apiService
