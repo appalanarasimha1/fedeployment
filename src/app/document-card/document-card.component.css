@@ -906,7 +906,7 @@ background-color:#EBC03F !important;
   height: 100%;
   width: 100%;
   opacity: 0;
-  /* border-radius: 8px; */
+  border-radius: 8px;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -918,6 +918,7 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  border-radius: 8px;
 }
 
 .activeHover .mouse-hover-bg, .activeHover .form-group-custom, .activeHover .hover-icon-group {
@@ -1131,7 +1132,7 @@ img.footer-icons {
   position: absolute;
   top: 0px;
   left: 0px;
-  /* border-radius: 8px; */
+  border-radius: 8px;
   background: rgba(0, 0, 0, 0.3);
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
@@ -1622,6 +1623,7 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
   display: block !important;
   min-height: 100px !important;
   height: 100% !important;
+  border-radius: 8px;
 }
 document-card img {
   display: block !important;

@@ -932,6 +932,7 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  border-radius: 8px;
 }
 .cardBlock:hover .mouse-hover-bg, .activeHover .mouse-hover-bg{
   opacity: 1;
@@ -939,6 +940,7 @@ background-color:#EBC03F !important;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  border-radius: 8px;
 }
 
 .activeHover .mouse-hover-bg, .activeHover .form-group-custom, .activeHover .hover-icon-group {
@@ -1107,6 +1109,7 @@ img.footer-icons {
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  border-radius: 8px;
 }
 
 /* yello footer css */
@@ -1402,7 +1405,10 @@ color: #ACACAC;
     color: black;
     display: inline-block;
     font-size: 14px;
-    line-height: 22px;
+    line-height: 20px;
+    min-width: 24px;
+    text-align: center;
+    min-height: 24px;
 }
 .viewSelected .itemCount{
   border: 1px solid #EBC03F;
@@ -1576,6 +1582,7 @@ color: #ACACAC;
   display: block !important;
   min-height: 100px;
   height: 100%;
+  border-radius: 8px;
 }
 
 /* mobile responsive */
