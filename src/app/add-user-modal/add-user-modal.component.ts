@@ -31,6 +31,7 @@ export class AddUserModalComponent implements OnInit {
   selectedFolder: any;
   makePrivate: boolean = false;
   userList$: Observable<any>;
+  userList = [];
   userInput$ = new Subject<string>();
   userLoading = false;
   folderCollaborators = {};
@@ -363,12 +364,14 @@ export class AddUserModalComponent implements OnInit {
     };
     return this.apiService.get(apiRoutes.SEARCH_USER, {params}).pipe(
       map((resp) => {
-        return resp["entries"].map((entry) => ({
+        const entries = resp["entries"].map((entry) => ({
           id: entry.id,
           fullname: `${entry.properties.firstName || ""} ${
             entry.properties.lastName || ""
           }`.trim(),
         }));
+        this.userList = entries;
+        return entries;
       })
     );
   }
@@ -481,8 +484,23 @@ export class AddUserModalComponent implements OnInit {
     return this.checkNeomEmail(email);
   }
 
+  getEmailInUserList(email) {
+    try {
+      if (!this.userList) return null;
+      const res = this.userList.find(user => user.id === email);
+      return res;
+    } catch (err) {
+      return null;
+    }
+  }
+
   sendInvite(isNeom = false) {
     const invitedEmail = this.userInputText;
+    const existedUser = this.getEmailInUserList(invitedEmail);
+    if (existedUser) {
+      this.selectChange(existedUser);
+      return;
+    }
     this.userInputText = "";
     const end = new Date();
     end.setMonth(new Date().getMonth() + 1);

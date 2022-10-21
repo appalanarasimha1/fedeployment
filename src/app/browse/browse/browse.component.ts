@@ -1518,8 +1518,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       const path = this.sectorSelected.uid === this.selectedFolder.uid ?
       `/${this.sectorSelected.title}/workspaces/` :
       `${this.selectedFolder.path}/`;
-      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path.replace(/(["'])/g, "\\$1")}' AND dc:title ILIKE '%${searchString}%'`;
     }
+    query = encodeURIComponent(query);
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -2072,7 +2073,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async getAllFolders(folder?:any){
     let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
     if(currentState.length){
-      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${folder.path}'`;
+      const path = folder.path?.replace(/(["'])/g, "\\$1");
+      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${encodeURIComponent(path)}'`;
       const result: any = await this.apiService
           .get(url, { headers: { "fetch-document": "properties" } })
           .toPromise();
@@ -2122,7 +2124,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const listDocs = Object.values(this.selectedMoveList)
     .filter( item => !this.checkDownloadPermission(item))
    console.log("listDocslistDocs",listDocs);
-    
+
     if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -2291,5 +2293,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem, '')
       }
     }
+  }
+  checkFolderContains(){
+    return Object.values(this.selectedFolderList).length <1
   }
 }
