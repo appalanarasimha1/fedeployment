@@ -99,7 +99,7 @@
                       </div>
                       <div class="rejectedRequest" *ngIf="!checkCanDownload() && checkRejected()">
                         <p><span>{{getCreator()}}</span> has rejected your download request:</p>
-                        <p>"Unfortunately this version will be expired in 3 days. Will upload a new version."</p>
+                        <p>{{rejectComment}}</p>
                       </div>
                     </div>
 

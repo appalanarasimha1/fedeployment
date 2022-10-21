@@ -23,6 +23,13 @@ export class AppComponent implements OnInit{
     public matDialog: MatDialog,
     private dataService: DataService,
     private nuxeoService: NuxeoService) {
+      try {
+        const options = {
+          headers: { "X-Authentication-Token": localStorage.getItem("token") },
+        };
+        fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, options);
+        fetch(`/nuxeo/nxfile/default`, options);
+      } catch (err) {}
 
       router.events.forEach((event: any) => {
         // if(event.urlAfterRedirects === '/login') {
@@ -94,6 +101,6 @@ export class AppComponent implements OnInit{
     $("body").animate({ scrollTop: 0 }, "slow");
     // window.scroll(0,0);
   }
-  
+
 }
 

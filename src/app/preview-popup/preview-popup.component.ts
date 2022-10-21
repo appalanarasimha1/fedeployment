@@ -38,6 +38,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   user = null;
   requestComment = "";
   requestSent = false;
+  rejectComment = "";
   modalOpen: boolean = true;
 
   constructor(
@@ -64,6 +65,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.getComments();
     }
     this.checkCanDownload();
+    this.getRejectComment();
   }
 
   // open(): void {
@@ -531,6 +533,14 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   checkRejected() {
     const permissions = this.doc?.contextParameters.permissions || [];
     return permissions.includes("DownloadRequestRejected");
+  }
+
+  getRejectComment() {
+    if (!this.checkRejected()) return;
+    const processedDownloadRequest = JSON.parse(localStorage.getItem("processedDownloadRequest")) || [];
+    const noti = processedDownloadRequest.find(entry => entry.docUUID === this.doc.uid);
+    if (!noti) return;
+    this.rejectComment = noti.extended?.rejectComment || "";
   }
 
   hasRequestPending() {

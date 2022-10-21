@@ -336,19 +336,21 @@
                 </div>
 
                 <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
-                  <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group buttonGroup">
-                    <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
-                    <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
-                  </div>
-                  <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
-                    <input type="text" [(ngModel)]="rejectComment" class="requesInput" [ngClass]="{'goldenText': rejectComment }" name="rejectComment"
-                      placeholder="Please describe the rejection reason" />
-                    <button class="btn submitBtn mr10" [disabled]="!rejectComment" (click)="processDownloadRequest(item, false)">Submit</button>
-                    <button class="btn cancelBtn" (click)="showRejectForm[item.id] = false">Cancel</button>
-                  </div>
-                  <div class="request-download-btn-group" *ngIf="requestSent[item.id]">
-                    <p *ngIf="!isApproved[item.id]" class="rejected">You rejected this request.</p>
-                    <p *ngIf="isApproved[item.id]" class="approved">You approved this request.</p>
+                  <div *ngIf="!item.extended.processed">
+                    <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group buttonGroup">
+                      <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
+                      <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
+                    </div>
+                    <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
+                      <input type="text" [(ngModel)]="rejectComment" class="requesInput" [ngClass]="{'goldenText': rejectComment }" name="rejectComment"
+                        placeholder="Please describe the rejection reason" />
+                      <button class="btn submitBtn mr10" [disabled]="!rejectComment" (click)="processDownloadRequest(item, false)">Submit</button>
+                      <button class="btn cancelBtn" (click)="showRejectForm[item.id] = false">Cancel</button>
+                    </div>
+                    <div class="request-download-btn-group" *ngIf="requestSent[item.id]">
+                      <p *ngIf="!isApproved[item.id]" class="rejected">You rejected this request.</p>
+                      <p *ngIf="isApproved[item.id]" class="approved">You approved this request.</p>
+                    </div>
                   </div>
                   <div *ngIf="item.extended.processed">
                     <p *ngIf="!item.extended.isApproved" class="rejection">Rejection submitted.</p>
@@ -388,19 +390,21 @@
                   {{getNotificationSince(item)}}
                 </div>
                 <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
-                  <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group buttonGroup">
-                    <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
-                    <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
-                  </div>
-                  <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
-                    <input type="text" [(ngModel)]="rejectComment" class="requesInput" [ngClass]="{'goldenText': rejectComment }" name="rejectComment"
-                      placeholder="Please describe the rejection reason" />
-                    <button class="btn submitBtn mr10" [disabled]="!rejectComment" (click)="processDownloadRequest(item, false)">Submit</button>
-                    <button class="btn cancelBtn" (click)="showRejectForm[item.id] = false">Cancel</button>
-                  </div>
-                  <div class="request-download-btn-group" *ngIf="requestSent[item.id]">
-                    <p *ngIf="!isApproved[item.id]" class="rejected">You rejected this request.</p>
-                    <p *ngIf="isApproved[item.id]" class="approved">You approved this request.</p>
+                  <div *ngIf="!item.extended.processed">
+                    <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group buttonGroup">
+                      <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
+                      <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
+                    </div>
+                    <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
+                      <input type="text" [(ngModel)]="rejectComment" class="requesInput" [ngClass]="{'goldenText': rejectComment }" name="rejectComment"
+                        placeholder="Please describe the rejection reason" />
+                      <button class="btn submitBtn mr10" [disabled]="!rejectComment" (click)="processDownloadRequest(item, false)">Submit</button>
+                      <button class="btn cancelBtn" (click)="showRejectForm[item.id] = false">Cancel</button>
+                    </div>
+                    <div class="request-download-btn-group" *ngIf="requestSent[item.id]">
+                      <p *ngIf="!isApproved[item.id]" class="rejected">You rejected this request.</p>
+                      <p *ngIf="isApproved[item.id]" class="approved">You approved this request.</p>
+                    </div>
                   </div>
                   <div *ngIf="item.extended.processed">
                     <p *ngIf="!item.extended.isApproved" class="rejection">Rejection submitted.</p>

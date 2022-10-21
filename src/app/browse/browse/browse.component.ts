@@ -1028,7 +1028,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkEnableDeleteBtn() {
-    return Object.keys(this.selectedFolderList).length > 0;
+    return Object.keys(this.selectedFolderList).length > 0  || Object.keys(this.selectedMoveList).length >this.canNotDelete.length;
   }
 
 
@@ -1667,9 +1667,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   selectAsset($event, item, i) {
     let canDelete = this.checkCanDelete(item)
-    if(canDelete){
-      this.selectFolder($event, item, i, false);
-    }
+    // if(canDelete){
+    //   this.selectFolder($event, item, i, false);
+    // }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
@@ -2311,6 +2311,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
   
   checkFolderContains(){
-    return Object.values(this.selectedFolderList).length <1
+    return Object.keys(this.selectedFolderList).length <1
   }
 }
