@@ -162,7 +162,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       .then((docs) => {
         this.comments = docs.entries;
         this.totalComments = docs.totalSize
-        this.showAllComments = false
       })
       .catch((err) => {
         console.log("get comment error", err);
@@ -238,7 +237,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.apiService.post(route, postData).subscribe((doc) => {
         this.modalLoading = false;
         this.commentText = "";
-        this.comments.unshift(doc);
+        // this.comments.unshift(doc);
+        this.getComments()
       });
     } catch (err) {
       this.modalLoading = false;
@@ -578,6 +578,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     console.log('hi');
     this.modalOpen = false;
     this.modalLoading = false;
+    this.showAllComments= false
     this.matDialog.closeAll()
   }
 }
