@@ -144,13 +144,13 @@
         </div>
 
         <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
-        <div *ngIf="checkMimeType(doc) === 'video'" style="height: 600; position: relative">
-          <video controls style="width: 100%; height: 600px" [src]="getAssetUrl(null, docUrl)"
+        <div *ngIf="checkMimeType(doc) === 'video'" style="height: calc(100vh - 250px)!important; position: relative">
+          <video controls style="width: 100%; height: 100%" [src]="getAssetUrl(null, docUrl)"
             crossorigin="use-credentials"></video>
         </div>
         <div *ngIf="checkMimeType(doc) === 'file'">
           <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
-            style="display: block; width: 100%; height: 600px" [original-size]="false" [autoresize]="true"
+            style="display: block; width: 100%; height: calc(100vh - 250px)!important" [original-size]="false" [autoresize]="true"
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>
         <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
