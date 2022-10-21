@@ -55,13 +55,13 @@
         crossorigin="use-credentials"
         loading="lazy" /> -->
 
-        <!-- <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn"> -->
+        <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
           <img id="fileId" 
           [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
           alt=""
           (click)="openPreview()"
           crossorigin="use-credentials" />
-        <!-- </div> -->
+        </div>
       <span style="width: 1px;height: 1px;"></span>
     </div>
     
