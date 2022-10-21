@@ -1084,3 +1084,19 @@ p.rejected {
 p.rejection {
     color: #937206;
 }
+.positionRelative{
+    position: relative;
+}
+span.userName {
+    position: absolute;
+    width: calc(100% - 14px);
+    height: 100%;
+    background: rgb(0 0 0 / 33%);
+    line-height: 28px;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 100px;
+    border: 1px solid #fff;
+    height: 30px;
+    width: 30px;
+}
