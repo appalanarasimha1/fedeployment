@@ -13,14 +13,16 @@
             <ol class="publicUse" >
               <li>
                 <div class="publicUseBlock" *ngIf="hasNoRestriction() && !hasPrivateAccess()">
-                  <div class="publicUseBlk">ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
+                  <!-- <div class="publicUseBlk">ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div> -->
+                  <div class="publicUseBlk">Public <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
                     This asset is visible to all NEOM users and their external collaborators
                   </div>
                 </div>
 
                 <div class="internalUseBlock" *ngIf="internalUse() && !hasPrivateAccess()">
-                  <div class="publicUseBlk">NEOM EMAIL HOLDERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
+                  <!-- <div class="publicUseBlk">NEOM EMAIL HOLDERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div> -->
+                  <div class="publicUseBlk">Internal <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
                     This asset is visible to users with NEOM emails only
                   </div>
