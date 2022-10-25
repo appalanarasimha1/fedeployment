@@ -7,7 +7,7 @@
     <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6;">
       <img 
         id="fileId" 
-        src="../../assets/images/no-preview.png" 
+        [src]="getNoPreview(doc)" 
         alt=""
         (click)="openPreview()"
         (load)="showLock = true"
