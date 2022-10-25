@@ -223,13 +223,16 @@ export class DocumentCardComponent implements OnChanges {
     const splitedData = item?.title?.split('.');
     const mimeType = splitedData[splitedData?.length - 1];
     const lowercaseMime = mimeType.toLowerCase();
+    console.log('lowercaseMime', lowercaseMime);
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      console.log('Entrying Doc');
       return '../../../assets/images/word.png';
     } 
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      console.log('Entrying PPt');
       return '../../../assets/images/ppt.png';
-    } 
+    }
     return '../../../assets/images/no-preview.png';
 
   }

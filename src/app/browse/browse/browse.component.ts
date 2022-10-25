@@ -431,6 +431,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
       return '../../../assets/images/no-preview.png';
     }
+
+    const mimeType = document.properties['file:content']?.['mime-type'];
+    if(mimeType?.includes('pdf') && this.viewType ==="LIST")
+      return '../../../assets/images/pdf.png';
+
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
       // return '../../../assets/images/no-preview-grid.svg';
       return this.getNoPreview(document);
