@@ -2423,4 +2423,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
          }
       })
   }
+  selectAllToggle(e) {
+    if(e.target.checked) {
+      this.rightClickSelectAll();
+      this.selectAllClicked = true;
+    } else {
+      this.removeAssets();
+      this.selectAllClicked = false;
+    }
+  }
 }
