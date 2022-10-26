@@ -337,7 +337,8 @@ section.lpBAck:before, .lpSecOne:before {
 ::ng-deep .all-sectors li .pdfWhiteBlock {
   background-color: #fff;
   padding: 10px;
-  width: 178px;
+  /* width: 178px; */
+  width: 100%;
   font-size: 13px;
 }
 .list-container:after {
@@ -1924,8 +1925,10 @@ section.lpBAck:before, .lpSecOne:before {
 ::ng-deep .all-sectors li .pdfWhiteBlock {
   background-color: #fff;
   padding: 10px;
-  width: 178px;
+  /* width: 178px; */
+  width: 100%;
   font-size: 13px;
+  border-radius: 0px 0px 8px 8px;
 }
 .list-container:after {
   content: '';
@@ -2407,7 +2410,8 @@ font-weight: normal;
   height: 70vh;
 }
 ::ng-deep .all-sectors li #fileId2 {
-  height: 88px !important;
+  height: 89.5px !important;
+  border-radius: 8px 8px 0px 0px;
 }
 .pb-50 {
   padding-bottom: 50px !important;
@@ -2608,8 +2612,12 @@ font-weight: normal;
 }
 .delete-folder-action .control input {
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   opacity: 0;
+  height: 24px;
+  width: 24px;
+  left: 0px;
+  top: -4px;
 }
 .delete-folder-action .control__indicator {
   position: absolute;

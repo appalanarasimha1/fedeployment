@@ -432,7 +432,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return '../../../assets/images/no-preview.png';
     }
 
-    const mimeType = document.properties['file:content']?.['mime-type'];
+    const mimeType = document?.properties['file:content']?.['mime-type'];
     if(mimeType?.includes('pdf') && this.viewType ==="LIST")
       return '../../../assets/images/pdf.png';
 
@@ -979,6 +979,26 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i, updateCount = true) {
+    var $chkboxes = $('.chkbox');
+    var lastChecked = null;
+
+    $chkboxes.click(function(e) {
+      console.log('shift', e.shiftKey);
+        if (!lastChecked) {
+            lastChecked = this;
+            return;
+        }
+
+        if (e.shiftKey) {
+            var start = $chkboxes.index(this);
+            var end = $chkboxes.index(lastChecked);
+            $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastChecked.checked);
+        }
+
+        lastChecked = this;
+    });
+
+
     if ($event.target?.checked || $event.checked) {
       if (updateCount) this.count = this.count + 1;
       this.selectedFolderList[i] = item;

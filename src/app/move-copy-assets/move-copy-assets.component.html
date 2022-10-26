@@ -22,7 +22,7 @@
           <div class="control-group">
             <label class="control control--checkbox">
               <span class="folderImgList"><img src="../../assets/images/folder-table-list.svg" /></span>
-              {{sharedService.stringShortener(folder?.title, 60)}} <span *ngIf="!!folder.properties['dc:isPrivate']" class="private">Private</span>
+              {{sharedService.stringShortener(folder?.title, 55)}} <span *ngIf="!!folder.properties['dc:isPrivate']" class="private">Private</span>
               <input *ngIf="checkEnableCheckbox(folder)"
                 id="checkbox-4"
                 type="checkbox"

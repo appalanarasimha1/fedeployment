@@ -1384,7 +1384,8 @@ color: #ACACAC;
 .pdfWhiteBlock{
   background-color: #fff;
   padding: 20px;
-  width: 255px;
+  width: 214px;
+  border-radius: 0 0 8px 8px;
 }
 
 
