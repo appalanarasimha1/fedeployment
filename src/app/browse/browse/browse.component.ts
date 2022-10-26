@@ -979,6 +979,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i, updateCount = true) {
+    if(this.selectAllClicked) updateCount = true
+    
     if ($event.target?.checked || $event.checked) {
       if (updateCount) this.count = this.count + 1;
       this.selectedFolderList[i] = item;
@@ -988,6 +990,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
     }
+    console.log("this.selectedFolderList",this.selectedFolderList);
+    
   }
 
   async deleteFolders() {
@@ -998,7 +1002,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const listDocs = dataToParse
     .filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
     await this.apiService
-      .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}` })
+      .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}`})
       .subscribe((docs: any) => {
         this.loading = false;
         this.deleteModal(listDocs);
@@ -1669,9 +1673,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   selectAsset($event, item, i) {
     let canDelete = this.checkCanDelete(item)
-    // if(canDelete){
-    //   this.selectFolder($event, item, i, false);
-    // }
+    if(this.checkCanMove(item)){
+      return this.selectFolder($event, item, i, false);
+    }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
@@ -1689,7 +1693,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
        ) {
          this.copyRightItem.push(item.uid);
        }
-      if (item.properties["sa:downloadApprovalUsers"].length > 0) {
+      if (item.properties["sa:downloadApprovalUsers"]?.length > 0) {
         this.needPermissionToDownload.push(item);
       } else {
         if (item.properties["sa:access"] === "Internal access only") {
@@ -1713,7 +1717,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         (m) => m.uid !== item.uid
       );
       delete this.selectedMoveList[i];
-      this.count = this.count - 1;
+      if ($event.from !== "rightClick") {
+        this.count = this.count - 1;
+      }
       //  }
     }
     this.getdownloadAssetsSize();
@@ -2272,6 +2278,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     
   }
+  selectAllClicked:boolean
+  rightClickSelectAll(){
+    this.removeAssets()
+    this.sortedData.forEach((e,i) => {
+      if(!this.checkGeneralFolder(e)){
+         e.isSelected = true
+        this.selectAllClicked = true
+         this.selectAsset({checked:true , from:"rightClick"}, e, i)
+      }
+    }); 
+  }
 
   contextMenuPosition = { x: '0px', y: '0px' };
 
@@ -2286,7 +2303,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.contextMenu.openMenu();
 
       $(document).click( (e)=> {
-        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0) {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0 && this.selectAllClicked) {
           // $(".availableActions").hide();
           this.removeAssets()
         }
@@ -2316,5 +2333,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   
   checkFolderContains(){
     return Object.keys(this.selectedFolderList).length <1
+  }
+  shiftkey(e){
+    console.log("e",e);
+    
   }
 }
