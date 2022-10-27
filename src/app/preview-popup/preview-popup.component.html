@@ -141,8 +141,8 @@
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
           <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
-
-          <img *ngIf="checkMimeType(doc) === 'nopreview'" src="../../../assets/images/no-preview.png" style="width: 100%;height: 190px;margin: 2vh 0px;" />
+          <!-- ../../../assets/images/no-preview.png -->
+          <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;" />
         </div>
 
         <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
@@ -151,7 +151,8 @@
             crossorigin="use-credentials"></video>
         </div>
         <div *ngIf="checkMimeType(doc) === 'file'">
-          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
+          <!-- <img [src]="docUrl" alt="" /> -->
+          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="umesh"
             style="display: block; width: 100%; height: calc(100vh - 68vh)!important" [original-size]="false" [autoresize]="true"
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>
@@ -223,9 +224,10 @@
                         Location <br />
                         <span style="word-break: break-all">
                           <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
-                          (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                           class="pointer" style="color: #ebc03f;">
                             {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                           </a>
+                          <!-- remove click event (click)="navigateTo(doc?.parentRef)" -->
                         </span>
                       </li>
 
@@ -514,7 +516,8 @@
       <app-loader-small [show]="modalLoading"></app-loader-small>
       <div class="copyright-caption">
         <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
-        <img *ngIf="checkMimeType(doc) === 'nopreview'" src="../../../assets/images/no-preview.png" style="width: 100%;height: 190px;margin: 2vh 0px;" />
+        <!-- ../../../assets/images/no-preview.png -->
+        <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;" />
       </div>
 
       <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
@@ -523,7 +526,7 @@
           crossorigin="use-credentials"></video>
       </div>
       <div *ngIf="checkMimeType(doc) === 'file'">
-        <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
+        <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="nitin"
           style="display: block; width: 100%; height: calc(100vh - 68vh)!important" [original-size]="false" [autoresize]="true"
           [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
       </div>
@@ -594,9 +597,10 @@
                     <li>
                       Location <br />
                       <span style=" word-break: break-all">
-                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank" (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank" class="pointer" style="color: #ebc03f;">
                           {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                         </a>
+                        <!-- remove click event (click)="navigateTo(doc?.parentRef)" -->
                       </span>
                     </li>
 

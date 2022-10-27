@@ -429,11 +429,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
-      return '../../../assets/images/no-preview.png';
+      // return '../../../assets/images/no-preview.png';
+      return this.getNoPreview(document);
     }
 
     const mimeType = document?.properties['file:content']?.['mime-type'];
-    if(mimeType?.includes('pdf') && this.viewType ==="LIST")
+    if(mimeType?.includes('pdf') && this.viewType ==="LIST" && !document?.update)
       return '../../../assets/images/pdf.png';
 
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
@@ -477,9 +478,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // fileRenditionUrl = url;
     }
     this.selectedFileUrl =
-      fileType === "image"
-        ? this.getAssetUrl(null, fileRenditionUrl)
-        : fileRenditionUrl;
+      // fileType === "image"?
+        this.getAssetUrl(null, fileRenditionUrl, {...file, update:true } )
+        // : fileRenditionUrl;
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
@@ -2386,7 +2387,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     } 
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt-preveiw.svg';
-    } 
+    }
+    if(item.update) {
+      return '../../../assets/images/no-preview.png';
+    }
+
     return '../../../assets/images/no-preview-grid.svg';
   }
   
