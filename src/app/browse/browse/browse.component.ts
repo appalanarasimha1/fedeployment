@@ -2328,7 +2328,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     
   }
-  selectAllClicked:boolean
+  selectAllClicked:boolean=false
   rightClickSelectAll(){
     this.removeAssets()
     this.sortedData.forEach((e,i) => {
@@ -2362,9 +2362,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.contextMenu.menuData = { 'item': item };
       this.contextMenu.menu.focusFirstItem('mouse');
       this.contextMenu.openMenu();
-
+      
       $(document).click( (e)=> {
-        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0 && this.selectAllClicked) {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0 && !this.selectAllClicked) {
           // $(".availableActions").hide();
           this.removeAssets()
         }
