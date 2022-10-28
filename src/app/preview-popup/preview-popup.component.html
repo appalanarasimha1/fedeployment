@@ -412,17 +412,18 @@
           </ul>
           <!-- <div class="allComments" (click)="showAllcommentClick()" *ngIf="totalComments>comments.length"><span>View all comments</span></div> -->
           <form (submit)="saveComment(commentText)" class="commentTextForm">
-            <!-- <mwl-text-input-autocomplete-container> -->
-                <!-- mwlTextInputAutocomplete
-                [findChoices]="findChoices"
-                [getChoiceLabel]="getChoiceLabel" -->
+            <mwl-text-input-autocomplete-container>
+                
               <input 
                 type="text"
                 [(ngModel)]="commentText" 
                 class="commentInput"
                 name="comment"
-                placeholder="Write a comment here" />
-            <!-- </mwl-text-input-autocomplete-container>  -->
+                placeholder="Write a comment here" 
+                mwlTextInputAutocomplete
+                [findChoices]="findChoices"
+                [getChoiceLabel]="getChoiceLabel"/>
+            </mwl-text-input-autocomplete-container> 
             <button class="commentBtn" (click)="saveComment(commentText)" autocomplete="off" [disabled]="!commentText" [ngClass]="{'activeBtn' : commentText}">Send</button>
             <!-- <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
               class="enterComment" style="cursor: pointer" /> -->
