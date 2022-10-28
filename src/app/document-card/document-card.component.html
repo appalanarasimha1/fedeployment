@@ -8,34 +8,20 @@ border-radius: 8px;">
     <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6; overflow: hidden;
     border-radius: 8px;">
       <img 
-        id="fileId" 
+        id="fileId2" 
         [src]="getNoPreview(doc)" 
         alt=""
         (click)="openPreview()"
         (load)="showLock = true"
         crossorigin="use-credentials"
-        loading="lazy" style="object-fit: none !important; background: #fbf7e6; width: 120px;
-        margin: 0px auto;" />
+        loading="lazy" [ngClass]="getNoPreview(doc) !== '../../../assets/images/no-preview.png' ? '' : 'noPreviewItem' " />
 
-        <!-- <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
-          <img id="fileId" 
-          [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
-          alt=""
-          (click)="openPreview()"
-          crossorigin="use-credentials" />
-        </div> -->
-
-        <!-- <div class="pdfWhiteBlock" style="width: 100%;">
+        <div class="pdfWhiteBlock" style="width: 100%;" *ngIf="getNoPreview(doc) !== '../../../assets/images/no-preview.png' ">
           <div class="flexible pb-2" style="justify-content: space-between ;">
             <p style="width: 100%;">{{doc.title}}</p>
-            <!-- <div style="display: inline-grid;
-            text-align: center;">
-              <img src="../../assets/images/Read.svg" style="width: 26px;margin: auto;">
-              <!-- <span>3 mins</span> -/->
-            </div> -/->
           </div>
           <span>{{doc['dc:description']}}</span>
-        </div> -->
+        </div>
       <span style="width: 1px;height: 1px;"></span>
     </div>
 

@@ -1418,8 +1418,10 @@ color: #ACACAC;
 ::ng-deep .slide  #fileId {
   height: 170px;
 }
-::ng-deep .slide  #fileId2 {
+::ng-deep .slide #fileId2 {
   height: 103px;
+  border-radius: 8px 8px 0 0;
+  max-width: 214px;
 }
 /* Custom tabs css start 12-Nov-2021 */
 .customTab {

@@ -80,7 +80,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.fetchMostSearchedTags();
-    this.fetchUserData();
+    // this.fetchUserData();
     this.fetchFavoriteCollection();
 
     if (!this.nuxeo.nuxeoClient || !localStorage.getItem("token")) {
@@ -613,22 +613,22 @@ export class SearchComponent implements OnInit {
     this.resetFilter();
   }
 
-  async fetchUserData() {
-    if (this.nuxeo.nuxeoClient) {
-      const res = await this.nuxeo.nuxeoClient.connect();
-      this.user = res.user.id;
-      this.sector = res.user.properties.sector;
-      localStorage.setItem("user", JSON.stringify(res.user.properties));
-      const groups = res.user.properties.groups;
-      if (!groups) return;
-      if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
-      if (groups.includes(EXTERNAL_USER)) {
-        this.router.navigate(['workspace']);
-        return;
-      }
+  // async fetchUserData() {
+  //   if (this.nuxeo.nuxeoClient) {
+  //     const res = await this.nuxeo.nuxeoClient.connect();
+  //     this.user = res.user.id;
+  //     this.sector = res.user.properties.sector;
+  //     localStorage.setItem("user", JSON.stringify(res.user.properties));
+  //     const groups = res.user.properties.groups;
+  //     if (!groups) return;
+  //     if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
+  //     if (groups.includes(EXTERNAL_USER)) {
+  //       this.router.navigate(['workspace']);
+  //       return;
+  //     }
 
-    }
-  }
+  //   }
+  // }
 
   async fetchFavoriteCollection() {
     if (this.nuxeo.nuxeoClient) {
