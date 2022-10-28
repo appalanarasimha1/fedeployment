@@ -576,7 +576,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-    this.removeAssets()
+    this.removeAssets();
     this.saveState(item, index, breadCrumbIndex);
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -977,7 +977,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i, updateCount = true) {
-   
+    console.log('updatecount', updateCount);
 
     if(this.selectAllClicked) updateCount = true
     
@@ -1708,7 +1708,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
-      return this.selectFolder($event, item, i, $event.update);
+      console.log('update', $event.update);
+      return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
     }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
