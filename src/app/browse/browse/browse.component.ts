@@ -429,11 +429,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
-      return '../../../assets/images/no-preview.png';
+      // return '../../../assets/images/no-preview.png';
+      return this.getNoPreview(document);
     }
 
     const mimeType = document?.properties['file:content']?.['mime-type'];
-    if(mimeType?.includes('pdf') && this.viewType ==="LIST")
+    if(mimeType?.includes('pdf') && this.viewType ==="LIST" && !document?.update)
       return '../../../assets/images/pdf.png';
 
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
@@ -477,9 +478,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // fileRenditionUrl = url;
     }
     this.selectedFileUrl =
-      fileType === "image"
-        ? this.getAssetUrl(null, fileRenditionUrl)
-        : fileRenditionUrl;
+      // fileType === "image"?
+        this.getAssetUrl(null, fileRenditionUrl, {...file, update:true } )
+        // : fileRenditionUrl;
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
@@ -575,7 +576,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-    this.removeAssets()
+    this.removeAssets();
     this.saveState(item, index, breadCrumbIndex);
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -976,7 +977,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i, updateCount = true) {
-   
+    console.log('updatecount', updateCount);
 
     if(this.selectAllClicked) updateCount = true
     
@@ -1707,7 +1708,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
-      return this.selectFolder($event, item, i, $event.update);
+      console.log('update', $event.update);
+      return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
     }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
@@ -2326,7 +2328,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     
   }
-  selectAllClicked:boolean
+  selectAllClicked:boolean=false
   rightClickSelectAll(){
     this.removeAssets()
     this.sortedData.forEach((e,i) => {
@@ -2360,9 +2362,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.contextMenu.menuData = { 'item': item };
       this.contextMenu.menu.focusFirstItem('mouse');
       this.contextMenu.openMenu();
-
+      
       $(document).click( (e)=> {
-        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0 && this.selectAllClicked) {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0 && !this.selectAllClicked) {
           // $(".availableActions").hide();
           this.removeAssets()
         }
@@ -2386,7 +2388,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     } 
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt-preveiw.svg';
-    } 
+    }
+    if(item.update) {
+      return '../../../assets/images/no-preview.png';
+    }
+
     return '../../../assets/images/no-preview-grid.svg';
   }
   

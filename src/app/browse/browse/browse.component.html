@@ -1170,7 +1170,7 @@
                 > <!--*ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )"-->
                   <tr>
                     <th style="width: 3%" class="checkAll positionRelative">
-                      <div class="control-group tollTipCustom">
+                      <!-- <div class="control-group tollTipCustom">
                         <label class="control control--checkbox">
                           <input class="chkbox"
                             id="checkbox-selectAll"
@@ -1186,7 +1186,7 @@
                           padding: 5px 10px; max-width: 100vh;">
                           {{selectAllClicked ? 'Unselect all': 'Select all'}}
                         </span>
-                      </div>
+                      </div> -->&nbsp;&nbsp;
                     </th>
                     <th
                       mat-sort-header="title"
@@ -1245,9 +1245,9 @@
                               (change)="selectFolder($event, item, i)"
                               [checked]="item.isSelected"
                               [(ngModel)]="item.isSelected"
-                              (keydown.shift)="shiftkeyDown($event,item,i)"
-                              (keyup.shift)="shiftkeyUp($event,item,i)"
                             />
+                            <!-- (keydown.shift)="shiftkeyDown($event,item,i)"
+                              (keyup.shift)="shiftkeyUp($event,item,i)" -->
                             <div class="control__indicator"></div>
                           </label>
                         </div>
@@ -1534,7 +1534,7 @@
                           </li>
                         </ul>
 
-                        <ul>
+                        <!-- <ul>
                           <li *ngIf="!isTrashView && !checkGeneralFolder(item) && !unSelectEnable()">
                             <a href="javascript:void(0);" (click)="rightClickSelectAll()">
                               <span><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
@@ -1555,7 +1555,7 @@
                               <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg></span> Unselect All</a>
                           </li>
-                        </ul>
+                        </ul> -->
 
                         <!-- <ul>
                           <li>

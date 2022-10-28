@@ -330,9 +330,9 @@ section.lpBAck:before, .lpSecOne:before {
 }
 ::ng-deep .all-sectors li #fileId,
 ::ng-deep .all-sectors li #fileId2{
-  height: 135px !important;
-  width: 100% !important;
-  object-fit: cover !important;
+  height: 135px;
+  width: 100%;
+  object-fit: cover;
 }
 ::ng-deep .all-sectors li .pdfWhiteBlock {
   background-color: #fff;
@@ -819,7 +819,7 @@ font-weight: normal;
   overflow: auto;
 }
 ::ng-deep .all-sectors li #fileId2 {
-  height: 88px !important;
+  height: 88px;
 }
 .pb-50 {
   padding-bottom: 50px !important;
@@ -1918,9 +1918,9 @@ section.lpBAck:before, .lpSecOne:before {
 }
 ::ng-deep .all-sectors li #fileId,
 ::ng-deep .all-sectors li #fileId2{
-  height: 135px !important;
-  width: 100% !important;
-  object-fit: cover !important;
+  height: 135px;
+  width: 100%;
+  object-fit: cover;
 }
 ::ng-deep .all-sectors li .pdfWhiteBlock {
   background-color: #fff;
@@ -2410,7 +2410,7 @@ font-weight: normal;
   height: 70vh;
 }
 ::ng-deep .all-sectors li #fileId2 {
-  height: 89.5px !important;
+  height: 89.5px;
   border-radius: 8px 8px 0px 0px;
 }
 .pb-50 {
@@ -4172,11 +4172,11 @@ img.closeIcon {
   margin-bottom: 10px;
 }
 
-.availableActions ul:last-child {
+/* .availableActions ul:last-child {
   border-top: 1px solid #f0efea;
   margin-top: 15px;
   padding-top: 15px;
-}
+} */
 .availableActions ul:last-child li:last-child {
   margin-bottom: 0px;
 }

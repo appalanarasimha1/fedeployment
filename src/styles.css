@@ -4546,3 +4546,14 @@ input.requesInput::-ms-input-placeholder {
 	background-color: #E8E6DF;
   border-radius: 10px;
 }
+
+.slide img.noPreviewItem {
+  height: 175px !important;
+  object-fit: none !important;
+  width: 160px !important;
+}
+ul.all-sectors img.noPreviewItem {
+  height: 135px !important;
+  object-fit: none !important;
+  width: 160px !important;
+}

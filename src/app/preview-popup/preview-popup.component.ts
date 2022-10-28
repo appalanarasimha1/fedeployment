@@ -526,12 +526,12 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
   checkCanDownload() {
     if (this.user === this.getCreator()) return true;
-    const permissions = this.doc?.contextParameters.permissions || [];
+    const permissions = this.doc?.contextParameters?.permissions || [];
     return permissions.includes("CanDownload");
   }
 
   checkRejected() {
-    const permissions = this.doc?.contextParameters.permissions || [];
+    const permissions = this.doc?.contextParameters?.permissions || [];
     return permissions.includes("DownloadRequestRejected");
   }
 
@@ -544,7 +544,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   hasRequestPending() {
-    const permissions = this.doc?.contextParameters.permissions || [];
+    const permissions = this.doc?.contextParameters?.permissions || [];
     return this.requestSent || permissions.includes("DownloadRequestPending");
   }
 
