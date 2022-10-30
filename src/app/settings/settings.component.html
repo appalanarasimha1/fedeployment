@@ -1,0 +1,131 @@
+<app-sub-header></app-sub-header>
+<section style="background-color: #fff;" class="lpBAck">
+  <section class="lpSecOne ">
+    <div class="container">
+
+      <div class="row ">
+        <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
+          <div class="pb-5 pl-12">
+            <h2 class="commonHeading main-title" style="font-weight: normal">
+              Settings
+            </h2>
+          </div>
+          <div class="tree">
+            <ul style="list-style: none" class="leftPanel">
+              <li
+                style="cursor: pointer"
+                class="d-flex set"
+                (click)="fetchManagedExternalUsers()"
+              >
+                <span>Manage external users</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"
+          style="min-height: 100vh"
+        >
+          <app-loader [show]="loading"></app-loader>
+          <div *ngIf="showUserSettingPage">
+            <p style="font-size: 30px;">Manage external users</p>
+            <p>Hover over a user to edit their access.</p>
+            <div>This is search box</div>
+            <div style="margin-top: 30px;" class="external-user-list">
+              <div *ngFor="let user of managedUsers; let i = index" class="user-item">
+                <span>{{user}}</span>
+                <div class="user-action">
+                  <a style="margin-right: 10px;" (click)="openEditUserAccess(user)">Edit access</a>
+                  <a (click)="removeAllAccess(user)">X</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="showUserAccessPage">
+            <div style="cursor: pointer;" (click)="backToUserList()">&#60; Back</div>
+            <p>Edit access</p>
+            <p>{{currentEditingUser}}</p>
+            <p>Private folder access</p>
+            <p>This user has access to these folders. Here you can edit permission and access of this user.</p>
+            <table
+                  class="folderListview pb-5"
+                >
+                  <tr>
+                    <th style="width: 3%" class="checkAll positionRelative">
+                      &nbsp;&nbsp;
+                    </th>
+                    <th
+                      width="40%"
+                      style="padding-left: 35px"
+                    >
+                      Folder name
+                    </th>
+                    <th width="20%">Asset expiry</th>
+                    <th style="width: 3%">&nbsp;&nbsp;</th>
+                  </tr>
+                  <tr *ngFor="let item of currentUserFolderList; let i = index" class="groupFolder positionRelative">
+                    <td style="position: relative;">
+                      <div
+                        class="delete-folder-action"
+                      >
+                        <div class="control-group">
+                          <label class="control control--checkbox">
+                            <input class="chkbox"
+                              id="checkbox-{{ i }}"
+                              type="checkbox"
+                            />
+                            <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="positionRelative pointerCursor">
+                      <img src="../../assets/images/folder-table-list.svg" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;">
+                      <p style="text-align: left; word-break: break-all;display: inline-block;
+                      vertical-align: middle;">
+                        <span class="tollTipCustom">
+                          {{sharedService.stringShortener(item?.title, 25)}}
+                          <span class="tolltipContent" style="top: 28px;
+                          height: auto;
+                          white-space: break-spaces;
+                          text-align: left;
+                          padding: 5px 10px; max-width: 100vh;">
+                            {{item.title}}
+                          </span>
+                        </span>
+
+                      </p>
+                      <span style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+                        <div class="publicUseBlock">
+                          <div class="tollTipCustom">
+                            <img src="../../assets/images/private-icon.svg" class="private-icon" />
+                            <div class="tolltipContent" style="top: 28px;
+                            height: auto;
+                            white-space: break-spaces;
+                            text-align: left;
+                            padding: 5px 10px;">
+                              This is a private folder
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>
+                      <!-- <p>{{item.end}}</p> -->
+
+                      <mat-form-field appearance="fill">
+                        <input matInput [formControl]="calculateEndDate(item.end)" (dateChange)="onEndDateChange($event.value, item, i)" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                        <mat-datepicker [startAt]="calculateEndDate(item.end)" #picker></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <img src="../../assets/images/delete-icon.svg" (click)="removePermission(item, i)" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
+                    </td>
+                  </tr>
+                </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

@@ -33,6 +33,12 @@ const routes: Routes = [
     canActivate: [AuthGuard, AuthGuardService],
   },
   {
+    path: "settings",
+    loadChildren: () =>
+      import("./settings/settings.module").then((m) => m.SettingsModule),
+    canActivate: [AuthGuard, AuthGuardService],
+  },
+  {
     path: "common",
     loadChildren: () =>
       import("./common/common-module/common.module").then(
