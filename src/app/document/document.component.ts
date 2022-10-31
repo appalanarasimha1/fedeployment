@@ -421,20 +421,20 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   getTrendingAssets() {
     try {
-      this.loading.push(true);
-      this.nuxeo.nuxeoClient.request(apiRoutes.TRENDING_FETCH)
-        .get()
-        .then(result => {
-          const trending = result?.data?.trendingAssets || [];
-          const trendingIds = trending.map(e => e._id.uid) || [];
-          this.trendingIds = trendingIds
-          this.getTrendingAssetsByIds(trendingIds.slice(0, 50));
-          this.loading.pop();
-        })
-        .catch((error) => {
-          console.log("fetch trending assets error = ", error);
-          this.loading.pop();
-        });
+      // this.loading.push(true);
+      // this.nuxeo.nuxeoClient.request(apiRoutes.TRENDING_FETCH)
+      //   .get()
+      //   .then(result => {
+      //     const trending = result?.data?.trendingAssets || [];
+      //     const trendingIds = trending.map(e => e._id.uid) || [];
+      //     this.trendingIds = trendingIds
+      //     this.getTrendingAssetsByIds(trendingIds.slice(0, 50));
+      //     this.loading.pop();
+      //   })
+      //   .catch((error) => {
+      //     console.log("fetch trending assets error = ", error);
+      //     this.loading.pop();
+      //   });
     } catch (error) {
       this.loading.pop();
       if (error && error.message) {
