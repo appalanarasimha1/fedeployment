@@ -1,7 +1,7 @@
 
 <!-- <app-loader-small [show]="modalLoading"></app-loader-small> -->
 <div *ngIf="viewType === 'GRID'" style="position: relative; filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.25));
-border-radius: 8px;">
+border-radius: 8px; max-width: 214px">
   <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" /> -->
     <!-- <button (click)="copyLinkOfAsset()">copy link</button> -->
@@ -72,13 +72,13 @@ border-radius: 8px;">
   <img *ngIf="checkMimeType(doc) === 'file'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
   <div *ngIf="checkMimeType(doc) === 'file'" class="pdfWhiteBlock">
     <div class="flexible pb-2" style="justify-content: space-between ;">
-      <p>{{doc.title}}</p>
-      <div style="display: inline-grid;
+      <p style="width: 100%;">{{doc.title}}</p>
+      <!-- <div style="display: inline-grid;
       text-align: center;">
         <img src="../../assets/images/Read.svg" style="    width: 26px;
         margin: auto;">
-         <!-- <span>3 mins</span> -->
-      </div>
+         <!-- <span>3 mins</span> -/->
+      </div> -->
 
     </div>
     <span>{{doc['dc:description']}}</span>
