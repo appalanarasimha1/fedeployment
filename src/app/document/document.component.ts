@@ -912,9 +912,11 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.selectedView = tab;
     if (tab === "recentUpload") {
       this.recentDataShow = [...this.recentUpdated];
+      console.log('recentDataShow1', this.recentDataShow)
     } else {
       this.getRecentlyViewed();
       this.recentDataShow = [...this.recentlyViewed];
+      console.log('recentDataShow2', this.recentDataShow)
     }
   }
 
