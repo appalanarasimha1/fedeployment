@@ -411,7 +411,7 @@
             <!-- <li class="allComments" *ngIf="loading"><span><app-loader-small [show]="loading"></app-loader-small>View all comments</span></li> -->
           </ul>
           <!-- <div class="allComments" (click)="showAllcommentClick()" *ngIf="totalComments>comments.length"><span>View all comments</span></div> -->
-          <form (submit)="saveComment(commentText)" class="commentTextForm">
+          <form (submit)="saveComment(commentText)" class="commentTextForm" >
             <mwl-text-input-autocomplete-container>
                 
               <input 
@@ -422,7 +422,9 @@
                 placeholder="Write a comment here" 
                 mwlTextInputAutocomplete
                 [findChoices]="findChoices"
-                [getChoiceLabel]="getChoiceLabel"/>
+                [getChoiceLabel]="getChoiceLabel"
+                autocomplete="off"
+                />
             </mwl-text-input-autocomplete-container> 
             <button class="commentBtn" (click)="saveComment(commentText)" autocomplete="off" [disabled]="!commentText" [ngClass]="{'activeBtn' : commentText}">Send</button>
             <!-- <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
