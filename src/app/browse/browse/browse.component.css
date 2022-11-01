@@ -1866,7 +1866,7 @@ section.lpBAck:before, .lpSecOne:before {
   padding: 10px;
   transition: 0.4s;
   border-radius: 10px;
-  width: 197px;
+  width: 214px;
 }
 .folderTitle{
   font-size: 15px;
@@ -2412,6 +2412,7 @@ font-weight: normal;
 ::ng-deep .all-sectors li #fileId2 {
   height: 89.5px;
   border-radius: 8px 8px 0px 0px;
+  margin: 0px auto;
 }
 .pb-50 {
   padding-bottom: 50px !important;

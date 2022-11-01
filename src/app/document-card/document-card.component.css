@@ -942,7 +942,7 @@ background-color:#EBC03F !important;
   width: 29px;
   padding: 10px;
   margin-bottom: 15px;
-  margin-right: 8px;
+  margin-right: 3px;
   -webkit-transition: .5s ease all;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
@@ -1384,7 +1384,7 @@ color: #ACACAC;
 .pdfWhiteBlock{
   background-color: #fff;
   padding: 20px;
-  width: 214px;
+  /* min-width: 214px; */
   border-radius: 0 0 8px 8px;
 }
 
@@ -1531,7 +1531,7 @@ color: #ACACAC;
 .caption-mousehover {
   position: absolute;
   bottom: 6px;
-  left: 15px;
+  left: 10px;
   color: #fff;
   z-index: 8;
   width: fit-content;
@@ -1541,6 +1541,7 @@ color: #ACACAC;
   -moz-transition: .5s ease all;
   -o-transition: .5s ease all;
   transition: .5s ease all;
+  max-width: 90%;
 }
 .lock-icon {
   position: absolute;
@@ -1570,6 +1571,7 @@ color: #ACACAC;
   display: inline-block;
   width: 100%;
   padding-top: 5px;
+  overflow: hidden;
 }
 .weight-size-block ul {
   display: block;
@@ -1718,7 +1720,7 @@ document-card .lock-icon img {
   line-height: 16px;
   font-family: 'brownregular';
   padding-bottom: 5px;
-  width: 92%;
+  width: 100%;
 }
 .form-group-custom {
   width: fit-content;

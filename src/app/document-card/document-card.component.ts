@@ -25,7 +25,7 @@ export class DocumentCardComponent implements OnChanges {
 
   constructor(
     private router: Router,
-    private sharedService: SharedService
+    public sharedService: SharedService
     ) {}
 
   ngOnChanges() {}
