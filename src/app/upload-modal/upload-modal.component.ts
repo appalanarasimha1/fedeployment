@@ -36,6 +36,7 @@ import {SharedService} from "../services/shared.service";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatHorizontalStepper, MatStep, MatVerticalStepper } from '@angular/material/stepper';
 import { ORDERED_FOLDER, PAGE_SIZE_200, ROOT_ID, WORKSPACE_ROOT } from "../common/constant";
+import { environment } from '../../environments/environment';
 import { DataService } from "../services/data.service";
 interface FileByIndex {
   [index: string]: File;
@@ -52,6 +53,9 @@ const BUTTON_LABEL = {
   2: "Review",
   3: "Publish",
 };
+
+const MAX_CHUNK_SIZE = 100 * 1000 * 1000;
+const apiVersion1 = environment.apiVersion;
 
 @Component({
   selector: "app-upload-modal",
@@ -164,7 +168,7 @@ export class UploadModalComponent implements OnInit {
     if(this.data?.dropFilesNew?.length){
       this.uploadFile(this.data.dropFilesNew)
     }
-    
+
     await this.showWorkspaceList();
     if (this.data) {
       const title = this.data.path.split("/workspaces")[0].substring(1);
@@ -574,47 +578,97 @@ export class UploadModalComponent implements OnInit {
     element.setAttribute("style", attr + background);
   }
 
-  uploadFileIndex(index, file) {
-    $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-    
-    const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
-    const blob = new Nuxeo.Blob({ content: file });
+  async uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType) {
+    const blob = new Nuxeo.Blob({ content: chunkedBlob });fileType
+    const headers = {
+      "Cache-Control": "no-cache",
+      "X-Upload-Chunk-Index": chunkIndex,
+      "X-Upload-Chunk-Count": chunkCount,
+      "X-File-Name": fileName,
+      "X-File-Size": fileSize,
+      "X-File-Type": fileType,
+      "X-Upload-Type": "chunked",
+      "Content-Length": blob.size,
+      "X-Authentication-Token": localStorage.getItem("token"),
+    }
+
     const options = {
       reportProgress: true,
       observe: "events",
-      headers: {
-        "Cache-Control": "no-cache",
-        "X-File-Name": encodeURIComponent(blob.name),
-        "X-File-Size": blob.size,
-        "X-File-Type": blob.mimeType,
-        "Content-Length": blob.size,
-        "X-Authentication-Token": localStorage.getItem("token"),
-      },
+      headers,
+      method: 'POST',
+      body: blob.content
     };
+
+    const res = await fetch(apiVersion1 + uploadUrl, options);
+    if (res.status === 201) {
+      this.setUploadProgressBar(index, 100);
+      $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+      console.log("Upload done");
+    } else {
+      const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
+      console.log(`File is ${percentDone}% loaded.`);
+      this.setUploadProgressBar(index, percentDone);
+    }
+  }
+
+  async uploadFileIndex(index, file) {
+    $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+
+    const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
+    const blob = new Nuxeo.Blob({ content: file });
+    const totalSize = blob.size;
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
-    this.apiService.post(uploadUrl, blob.content, options).subscribe(
-      (event) => {
-        if (event.type == HttpEventType.UploadProgress) {
-          const percentDone = Math.round((100 * event.loaded) / event.total);
-          console.log(`File is ${percentDone}% loaded.`);
-          this.setUploadProgressBar(index, percentDone);
-        } else if (event instanceof HttpResponse) {
-          console.log("File is completely loaded!");
+    if (totalSize > 500 * 1000 * 1000) {
+      // upload file in chunk
+      const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
+      try {
+        for (let i = 0; i < totalChunk; i++) {
+          const chunkedBlob = file.slice(i * MAX_CHUNK_SIZE, (i + 1) * MAX_CHUNK_SIZE);
+          await this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType);
         }
-      },
-      (err) => {
+        this.filesUploadDone[index] = true;
+      } catch (err) {
         console.log("Upload Error:", err);
         this.filesMap[index]['isVirus'] = true;
-        // delete this.filesMap[index];
-      },
-      () => {
-        this.setUploadProgressBar(index, 100);
-        this.filesUploadDone[index] = true;
-        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-        console.log("Upload done");
       }
-    );
+    } else {
+      const options = {
+        reportProgress: true,
+        observe: "events",
+        headers: {
+          "Cache-Control": "no-cache",
+          "X-File-Name": encodeURIComponent(blob.name),
+          "X-File-Size": blob.size,
+          "X-File-Type": blob.mimeType,
+          "Content-Length": blob.size,
+          "X-Authentication-Token": localStorage.getItem("token"),
+        },
+      };
+      this.apiService.post(uploadUrl, blob.content, options).subscribe(
+        (event) => {
+          if (event.type == HttpEventType.UploadProgress) {
+            const percentDone = Math.round((100 * event.loaded) / event.total);
+            console.log(`File is ${percentDone}% loaded.`);
+            this.setUploadProgressBar(index, percentDone);
+          } else if (event instanceof HttpResponse) {
+            console.log("File is completely loaded!");
+          }
+        },
+        (err) => {
+          console.log("Upload Error:", err);
+          this.filesMap[index]['isVirus'] = true;
+          // delete this.filesMap[index];
+        },
+        () => {
+          this.setUploadProgressBar(index, 100);
+          this.filesUploadDone[index] = true;
+          $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+          console.log("Upload done");
+        }
+      );
+    }
   }
 
   removeFileIndex(index) {
@@ -728,7 +782,7 @@ export class UploadModalComponent implements OnInit {
   onSelectConfidentiality(confidentiality, fileIndex?: any) {
     const len = Object.keys(this.filesMap).length;
     for (let i = 0; i < len; i++) {
-      this.customConfidentialityMap[i] = this.overallConfidentiality;  
+      this.customConfidentialityMap[i] = this.overallConfidentiality;
     }
 
   //  if (fileIndex == null) {
@@ -745,9 +799,9 @@ export class UploadModalComponent implements OnInit {
     const len = Object.keys(this.filesMap).length;
 
     for (let i = 0; i < len; i++) {
-      
+
       this.customAccessMap[i] = this.overallAccess;
-     
+
     }
     // console.log({ fileIndex });
     const allow = access === ACCESS.all ? ALLOW.any : ALLOW.internal;
