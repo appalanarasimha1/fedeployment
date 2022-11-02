@@ -608,4 +608,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.showAllComments= false
     this.matDialog.closeAll()
   }
+
+  getCommentStr(str){
+    return str.replaceAll("&#64;","@")
+  }
 }
