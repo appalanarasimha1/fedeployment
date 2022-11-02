@@ -16,6 +16,7 @@
                 style="cursor: pointer"
                 class="d-flex set"
                 (click)="fetchManagedExternalUsers()"
+                [ngClass]="{'active-tab': showUserSettingPage || showUserAccessPage}"
               >
                 <span>Manage external users</span>
               </li>
@@ -27,26 +28,53 @@
           style="min-height: 100vh"
         >
           <app-loader [show]="loading"></app-loader>
-          <div *ngIf="showUserSettingPage">
-            <p style="font-size: 30px;">Manage external users</p>
-            <p>Hover over a user to edit their access.</p>
-            <div>This is search box</div>
-            <div style="margin-top: 30px;" class="external-user-list">
-              <div *ngFor="let user of managedUsers; let i = index" class="user-item">
-                <span>{{user}}</span>
-                <div class="user-action">
-                  <a style="margin-right: 10px;" (click)="openEditUserAccess(user)">Edit access</a>
-                  <a (click)="removeAllAccess(user)">X</a>
-                </div>
-              </div>
+          <div *ngIf="showUserSettingPage" class="externalUser">
+            <h2>Manage external users</h2>
+            <p class="externalEditAccess">Hover over a user to edit their access.</p>
+            <div class="searchBlock">
+              <button class="primary search-btn">
+                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M14.5404 18.8025C18.6351 17.0622 20.5438 12.332 18.8036 8.23728C17.0634 4.14253 12.3332 2.2338 8.23843 3.97403C4.14367 5.71426 2.23495 10.4445 3.97518 14.5392C5.71541 18.634 10.4456 20.5427 14.5404 18.8025Z" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M17.0854 17.084L23.3334 23.3329" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <input
+                type="text"
+                placeholder="Search users by their name or email address"
+                class="search-bar"
+              />
+            </div>
+            <div class="makeAdminBlock">
+              <ul>
+                <li *ngFor="let user of managedUsers; let i = index">
+                  {{user}}
+                  <span class="makeAdminAction">
+                    <span (click)="openEditUserAccess(user)" >Edit access</span>
+                    <span (click)="removeAllAccess(user)" class="removeIcon">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10C20 15.523 15.523 20 10 20ZM10 18C12.1217 18 14.1566 17.1571 15.6569 15.6569C17.1571 14.1566 18 12.1217 18 10C18 7.87827 17.1571 5.84344 15.6569 4.34315C14.1566 2.84285 12.1217 2 10 2C7.87827 2 5.84344 2.84285 4.34315 4.34315C2.84285 5.84344 2 7.87827 2 10C2 12.1217 2.84285 14.1566 4.34315 15.6569C5.84344 17.1571 7.87827 18 10 18ZM10 8.586L12.828 5.757L14.243 7.172L11.414 10L14.243 12.828L12.828 14.243L10 11.414L7.172 14.243L5.757 12.828L8.586 10L5.757 7.172L7.172 5.757L10 8.586Z"
+                          fill="#937206"
+                        />
+                      </svg>
+                      <div class="removeInfo">Remove user from all of my private folders</div>
+                    </span>
+                  </span>
+                </li>
+              </ul>
             </div>
           </div>
-          <div *ngIf="showUserAccessPage">
-            <div style="cursor: pointer;" (click)="backToUserList()">&#60; Back</div>
-            <p>Edit access</p>
-            <p>{{currentEditingUser}}</p>
-            <p>Private folder access</p>
-            <p>This user has access to these folders. Here you can edit permission and access of this user.</p>
+          <div *ngIf="showUserAccessPage" class="showUserAccess">
+            <div class="backBtn">
+              <span (click)="backToUserList();">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2.828 7.00072L7.778 11.9507L6.364 13.3647L0 7.00072L6.364 0.636719L7.778 2.05072L2.828 7.00072Z" fill="#BAB8B2"/>
+                </svg> Back</span>
+            </div>
+            <h3>Edit access</h3>
+            <h2>{{currentEditingUser}}</h2>
+            <h3><img src="../../assets/images/private-icon.svg" class="private-icon" /> Private folder access <span class="addUserPrivate">Add user to a new private folder</span></h3>
+            <p class="externalEditAccess">This user has access to these folders. Here you can edit permission and access of this user.</p>
             <table
                   class="folderListview pb-5"
                 >
@@ -119,7 +147,7 @@
                       </mat-form-field>
                     </td>
                     <td>
-                      <img src="../../assets/images/delete-icon.svg" (click)="removePermission(item, i)" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
+                      <img src="../../assets/images/delete-icon.svg" (click)="removePermission(item, i)" style="cursor: pointer;" />
                     </td>
                   </tr>
                 </table>
