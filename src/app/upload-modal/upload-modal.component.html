@@ -229,15 +229,72 @@
                </div>
             </div>
             <div class="update-form-input row mb-20">
-               <div class="col-xl-4 col-md-4"></div>
-               <div  class="col-xl-8 col-md-8">
+               <!-- <div class="col-xl-4 col-md-4"></div> -->
+               <div  class="col-xl-12 col-md-12">
                   <!-- [ngClass]="{'disableDiv': data}" -->
 
                   <div class="upload-form-input row mb-20">
-                     <div class="col-xl-5 col-md-5">
+                     <div class="col-xl-4 col-md-4">
+                        <label for="title">Folder type</label>
+                     </div>
+                     <div class="col-xl-8 col-md-8 folderType"  [ngClass]="{'grayField': descriptionFilled}" >
+                        <div class="row">
+                           <div class="col-xl-3 col-md-3">
+                              <div class="row">
+                                 <div class="col-xl-12 mb-10">
+                                    <label class="control control--checkbox" (change)="handleChange($event, 'published')" style="margin-bottom: 0px; display: inline-block;">
+                                      Published
+                                      <input type="radio" id="Published" name="publishedPrivate" checked/>
+                                      <div class="control__indicator" for="Published" style="top: 4px;left: 0px; border-radius: 100px;"></div>
+                                    </label>
+                                  </div>
+                                  <div class="col-xl-12 mb-10">
+                                    <label class="control control--checkbox" (change)="handleChange($event, 'private')" style="margin-bottom: 0px; display: inline-block;">
+                                      Private
+                                      <input type="radio" id="Private" name="publishedPrivate"/>
+                                      <div class="control__indicator" for="Private" style="top: 4px;left: 0px;border-radius: 100px;"></div>
+                                    </label>
+                                  </div>
+                              </div>
+                           </div>
+                           <div class="col-xl-9 col-md-9">
+                              <div class="row">
+                                 <div class="col-xl-12 mb-10">
+                                    <div class="publishingAssets" *ngIf="publishingAssets">
+                                      <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
+                                      <ul>
+                                        <li>
+                                          <span class="leftCont">Access and Usage:</span> <span class="rightCont">Set per asset ("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</span>
+                                        </li>
+                                        <li>
+                                          <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">No</span>
+                                        </li>
+                                      </ul>
+                                    </div>
+       
+                                    <div class="publishingAssets" *ngIf="publishingPrivateAssets">
+                                      <p>Used for restricting files to specific users or receiving files from external users</p>
+                                      <ul>
+                                        <li>
+                                          <span class="leftCont">Access and Usage:</span> <span class="rightCont">Folder members only</span>
+                                        </li>
+                                        <li>
+                                          <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">Yes (if folder member)</span>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                              </div>
+                           </div>
+                         </div>
+                     </div>
+                  </div>
+
+                  <div class="upload-form-input row mb-20">
+                     <div class="col-xl-4 col-md-4">
                         <label for="title">Description <br><span style="font-size: 12px">Project or event description (optional)</span></label>
                      </div>
-                     <div class="col-xl-7 col-md-7"  [ngClass]="{'grayField': descriptionFilled}" >
+                     <div class="col-xl-8 col-md-8"  [ngClass]="{'grayField': descriptionFilled}" >
                         <!-- [ngClass]="{'grayField': descriptionFilled}" -->
                         <input type="text" [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }" style="width: 95%; margin-top: 26px;" />
                         <!-- <textarea  [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea> -->
@@ -245,10 +302,10 @@
                      </div>
                   </div>
                   <div class="row upload-form-input custom-date-picker mb-20">
-                     <div class="col-xl-5 col-md-5">
+                     <div class="col-xl-4 col-md-4">
                         <label for="date">Associated Date <br><span style="font-size: 12px">Project or event date (optional)</span></label>
                      </div>
-                     <div class="col-xl-7 col-md-7 flexible" [ngClass]="{'grayField': descriptionFilled}" >
+                     <div class="col-xl-8 col-md-8 flexible" [ngClass]="{'grayField': descriptionFilled}" >
                         <!-- [ngClass]="{'grayField': disableDateInput}" -->
                         <!-- placeholder="Choose a date"  -->
                         <mat-form-field appearance="fill">
