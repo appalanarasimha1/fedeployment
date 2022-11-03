@@ -97,11 +97,14 @@
                         Please complete all mandatory fields to proceed
                       </div>
                   </button>
-                  <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                  <button *ngIf="isPrivateFolder() && !publishing" (click)="publish()" mat-button class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
                      Upload
                      <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                         Please complete all mandatory fields to proceed
                       </div>
+                  </button>
+                  <button *ngIf="isPrivateFolder() && publishing" mat-button class="upload-btn" style="position: relative" >
+                     {{!isPrivateFolder()?'Publish':'Upload'}} <app-loader-small [show]="loading"></app-loader-small>
                   </button>
                </div>
             </div>
