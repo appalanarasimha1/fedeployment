@@ -8,6 +8,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
 import { DataService } from "../services/data.service";
 import { SharedService } from "../services/shared.service";
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: "preview-popup",
@@ -38,6 +39,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   requestComment = "";
   requestSent = false;
   rejectComment = "";
+  modalOpen: boolean = true;
 
   constructor(
     private router: Router,
@@ -47,6 +49,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     public dataService: DataService,
     public sharedService: SharedService,
     private route: ActivatedRoute,
+    public matDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -65,25 +68,44 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.getRejectComment();
   }
 
-  open(): void {
-    this.showShadow = false;
-    this.activeTabs.comments = false;
-    this.activeTabs.timeline = false;
-    this.activeTabs.info = false;
-    this.isAware = false;
-    this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
-    this.modalService
-      .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
-      .result.then(
-        (result) => {
-          this.modalLoading = false;
-        },
-        (reason) => {
-          this.showTagInput = false;
-          this.modalLoading = false;
-          this.copiedString = "";
-        }
-      );
+  // open(): void {
+  //   this.showShadow = false;
+  //   this.activeTabs.comments = false;
+  //   this.activeTabs.timeline = false;
+  //   this.activeTabs.info = false;
+  //   this.isAware = false;
+  //   this.currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
+  //   this.modalService
+  //     .open(this.modalTemp, { ariaLabelledBy: "modal-basic-title" })
+  //     .result.then(
+  //       (result) => {
+  //         this.modalLoading = false;
+  //       },
+  //       (reason) => {
+  //         this.showTagInput = false;
+  //         this.modalLoading = false;
+  //         this.copiedString = "";
+  //       }
+  //     );
+  // }
+
+  open() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.minHeight = "350px";
+    dialogConfig.height = "100%";
+    dialogConfig.maxHeight = "94vh"
+    dialogConfig.width = "80vw";
+    // dialogConfig.maxWidth = "80vw";
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-modalbox';
+    // const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
+    // if(workspaceState) {
+    //   dialogConfig.data = workspaceState;
+    // }
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(this.modalTemp, dialogConfig);
   }
 
   getTags() {
@@ -142,7 +164,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       .then((docs) => {
         this.comments = docs.entries;
         this.totalComments = docs.totalSize
-        this.showAllComments = false
       })
       .catch((err) => {
         console.log("get comment error", err);
@@ -218,7 +239,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.apiService.post(route, postData).subscribe((doc) => {
         this.modalLoading = false;
         this.commentText = "";
-        this.comments.unshift(doc);
+        // this.comments.unshift(doc);
+        this.getComments()
       });
     } catch (err) {
       this.modalLoading = false;
@@ -504,12 +526,12 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
   checkCanDownload() {
     if (this.user === this.getCreator()) return true;
-    const permissions = this.doc?.contextParameters.permissions || [];
+    const permissions = this.doc?.contextParameters?.permissions || [];
     return permissions.includes("CanDownload");
   }
 
   checkRejected() {
-    const permissions = this.doc?.contextParameters.permissions || [];
+    const permissions = this.doc?.contextParameters?.permissions || [];
     return permissions.includes("DownloadRequestRejected");
   }
 
@@ -522,7 +544,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   hasRequestPending() {
-    const permissions = this.doc?.contextParameters.permissions || [];
+    const permissions = this.doc?.contextParameters?.permissions || [];
     return this.requestSent || permissions.includes("DownloadRequestPending");
   }
 
@@ -561,5 +583,12 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     let data = name.split(".")
     let newName = data[0][0] + data[1][0]
     return newName.toUpperCase()
+  }
+  closeModal() {
+    console.log('hi');
+    this.modalOpen = false;
+    this.modalLoading = false;
+    this.showAllComments= false
+    this.matDialog.closeAll()
   }
 }

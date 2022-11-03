@@ -1,31 +1,32 @@
 
 <!-- <app-loader-small [show]="modalLoading"></app-loader-small> -->
-<div *ngIf="viewType === 'GRID'" style="position: relative;">
+<div *ngIf="viewType === 'GRID'" style="position: relative; filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.25));
+border-radius: 8px; width: 100%;">
   <!-- <img *ngIf="doc.type === 'Picture'" id="fileId" src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
     (click)="openPreview()" /> -->
     <!-- <button (click)="copyLinkOfAsset()">copy link</button> -->
-    <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6;">
+    <div *ngIf="checkMimeType(doc) === 'nopreview'" style="min-width: 113px; max-width: 100%; background-color: #fbf7e6; overflow: hidden;
+    border-radius: 8px;">
       <img 
-        id="fileId" 
-        src="../../assets/images/no-preview.png" 
+        id="fileId2" 
+        [src]="getNoPreview(doc)" 
         alt=""
         (click)="openPreview()"
         (load)="showLock = true"
         crossorigin="use-credentials"
-        loading="lazy" style="object-fit: none !important; background: #fbf7e6; width: 120px;
-        margin: 0px auto;" />
+        loading="lazy" [ngClass]="getNoPreview(doc) !== '../../../assets/images/no-preview.png' ? '' : 'noPreviewItem' " />
 
-        <!-- <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
-          <img id="fileId" 
-          [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
-          alt=""
-          (click)="openPreview()"
-          crossorigin="use-credentials" />
-        </div> -->
+        <div class="pdfWhiteBlock" style="width: 100%;" *ngIf="getNoPreview(doc) !== '../../../assets/images/no-preview.png' ">
+          <div class="flexible pb-2" style="justify-content: space-between ;">
+            <p style="width: 100%;">{{sharedService.stringShortener(doc?.title, 15)}}</p>
+          </div>
+          <span>{{doc['dc:description']}}</span>
+        </div>
       <span style="width: 1px;height: 1px;"></span>
     </div>
 
-    <div *ngIf="checkMimeType(doc) === 'picture'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
+    <div *ngIf="checkMimeType(doc) === 'picture'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;overflow: hidden;
+    border-radius: 8px;">
       <img 
         id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
@@ -45,7 +46,8 @@
       <span style="width: 1px;height: 1px;"></span>
     </div>
 
-    <div *ngIf="checkMimeType(doc) === 'video'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;">
+    <div *ngIf="checkMimeType(doc) === 'video'" style="min-width: 113px; max-width: 100%; background-color: #f3f3f3;overflow: hidden;
+    border-radius: 8px;">
       <!-- <img 
         id="fileId" 
         [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
@@ -55,13 +57,13 @@
         crossorigin="use-credentials"
         loading="lazy" /> -->
 
-        <!-- <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn"> -->
+        <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
           <img id="fileId" 
           [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
           alt=""
           (click)="openPreview()"
           crossorigin="use-credentials" />
-        <!-- </div> -->
+        </div>
       <span style="width: 1px;height: 1px;"></span>
     </div>
     
@@ -70,13 +72,13 @@
   <img *ngIf="checkMimeType(doc) === 'file'" id="fileId2" src="../../assets/images/pdf.png" (click)="openPreview()" />
   <div *ngIf="checkMimeType(doc) === 'file'" class="pdfWhiteBlock">
     <div class="flexible pb-2" style="justify-content: space-between ;">
-      <p>{{doc.title}}</p>
-      <div style="display: inline-grid;
+      <p style="width: 100%;">{{sharedService.stringShortener(doc?.title, 15)}}</p>
+      <!-- <div style="display: inline-grid;
       text-align: center;">
         <img src="../../assets/images/Read.svg" style="    width: 26px;
         margin: auto;">
-        <!-- <span>3 mins</span> -->
-      </div>
+         <!-- <span>3 mins</span> -/->
+      </div> -->
 
     </div>
     <span>{{doc['dc:description']}}</span>
@@ -187,7 +189,8 @@
 <div *ngIf="viewType === 'LIST'" class="cardBlock" style="border-radius: 8px;">
   <div class="cardBlockContent">
     <div class="row">
-      <div class="col-xl-6 col-md-6" style="position: relative;">
+      <div class="col-xl-6 col-md-6" style="position: relative; filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.25));
+      border-radius: 8px;">
         <p>{{doc.properties['dc:title']}}</p>
         <div class="username">
           <span>
@@ -197,7 +200,7 @@
         </div>
       </div>
       <div (click)="openPreview()" class="col-xl-6 col-md-6">
-        <!-- <img src="../../assets/images/pdf.png"> -->
+        <img src="../../assets/images/pdf.png">
         <img src (error)="getAssetUrl($event, doc.contextParameters.thumbnail.url)" alt=""
           class="w-100 shadow-1-strong rounded listViewImg"
           style="width: 100%;border-radius: 8px !important;" alt="" />

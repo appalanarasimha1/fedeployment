@@ -135,6 +135,7 @@ export class HeaderComponent implements OnInit {
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
     // this.openOnboardingModal(this.onboarding);
     this.dataService.showFooter$.subscribe((data)=>this.showFooter= data)
+    this.fetchUserData();
     return;
   }
 
@@ -183,9 +184,10 @@ export class HeaderComponent implements OnInit {
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.minHeight = "350px";
-    dialogConfig.height = "700px";
-    dialogConfig.maxHeight = "900px"
-    dialogConfig.width = "650px";
+    dialogConfig.height = "100%";
+    dialogConfig.maxHeight = "92vh"
+    dialogConfig.width = "80vw";
+    // dialogConfig.maxWidth = "80vw";
     dialogConfig.disableClose = true;
     const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
     if(workspaceState) {
@@ -229,11 +231,12 @@ export class HeaderComponent implements OnInit {
     this.videoCompleted = true;
   }
 
-
+  userData:any;
   checkExternalUser(excludeGlobal = false) {
     if (excludeGlobal) {
       if (!this.sharedService.checkExternalUser()) return false; // normal user
       const user = JSON.parse(localStorage.getItem('user'));
+      this.userData = user
       return user?.groups.includes(EXTERNAL_GROUP_GLOBAL);
     } else {
       return this.sharedService.checkExternalUser();
@@ -375,7 +378,7 @@ export class HeaderComponent implements OnInit {
     this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
     }, (reason) => {
       this.closeModal();
-    });;
+    });
   }
 
 
@@ -388,6 +391,22 @@ export class HeaderComponent implements OnInit {
   checkHomeActive(){
     if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
       return true
+    }
+  }
+
+  getImageName(){
+    let {userData} = this
+    let splittedUser = userData?.email.split(".")
+    let name = splittedUser?.[0]?.[0] + splittedUser?.[1]?.[0]
+    return isNaN(name) && !splittedUser?.length ? "":name?.toUpperCase()
+  }
+
+  async fetchUserData() {
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.connect();
+      localStorage.setItem("user", JSON.stringify(res.user.properties));
+      // const user = JSON.parse(localStorage.getItem('user'));
+      this.userData = res.user.properties;
     }
   }
 }

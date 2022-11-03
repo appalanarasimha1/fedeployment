@@ -31,6 +31,7 @@ export class AddUserModalComponent implements OnInit {
   selectedFolder: any;
   makePrivate: boolean = false;
   userList$: Observable<any>;
+  userList = [];
   userInput$ = new Subject<string>();
   userLoading = false;
   folderCollaborators = {};
@@ -58,6 +59,9 @@ export class AddUserModalComponent implements OnInit {
   listExternalUser: string[] = [];
   listExternalUserGlobal: string[] = [];
   isGlobal = false;
+
+  doneLoading:boolean = false;
+  loading = true;
 
   constructor(
     private apiService: ApiService,
@@ -89,6 +93,7 @@ export class AddUserModalComponent implements OnInit {
 
   closeModal() {
     this.dialogRef.close(this.folderUpdated);
+    this.doneLoading = false;
   }
 
   computeCollaborators() {
@@ -175,6 +180,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   async updateCollaborators() {
+    this.doneLoading = true;
     if (!this.canSave()) return;
     for (const key in this.removedCollaborators) {
       await this.removePermission(this.removedCollaborators[key])
@@ -194,7 +200,7 @@ export class AddUserModalComponent implements OnInit {
     }
     this.folderUpdated = await this.fetchFolder(this.folderId);
     this.closeModal();
-
+    this.doneLoading = false;
     this.sharedService.showSnackbar(
       "Collaborators updated",
       4000,
@@ -229,6 +235,8 @@ export class AddUserModalComponent implements OnInit {
   }
 
   addPermission(item) {
+    this.doneLoading = true;
+    console.log('this.doneLoading = true;', this.doneLoading)
     if (this.listExternalUser.includes(item.user.id) && !item.end) {
       const end = new Date();
       end.setMonth(new Date().getMonth() + 1);
@@ -289,6 +297,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   async sendInviteInternal (item) {
+    this.doneLoading = true;
     const params = {
       groundXUrl: location.protocol + '//' + location.host,
       email: item.user.id,
@@ -363,12 +372,14 @@ export class AddUserModalComponent implements OnInit {
     };
     return this.apiService.get(apiRoutes.SEARCH_USER, {params}).pipe(
       map((resp) => {
-        return resp["entries"].map((entry) => ({
+        const entries = resp["entries"].map((entry) => ({
           id: entry.id,
           fullname: `${entry.properties.firstName || ""} ${
             entry.properties.lastName || ""
           }`.trim(),
         }));
+        this.userList = entries;
+        return entries;
       })
     );
   }
@@ -481,8 +492,23 @@ export class AddUserModalComponent implements OnInit {
     return this.checkNeomEmail(email);
   }
 
+  getEmailInUserList(email) {
+    try {
+      if (!this.userList) return null;
+      const res = this.userList.find(user => user.id === email);
+      return res;
+    } catch (err) {
+      return null;
+    }
+  }
+
   sendInvite(isNeom = false) {
     const invitedEmail = this.userInputText;
+    const existedUser = this.getEmailInUserList(invitedEmail);
+    if (existedUser) {
+      this.selectChange(existedUser);
+      return;
+    }
     this.userInputText = "";
     const end = new Date();
     end.setMonth(new Date().getMonth() + 1);

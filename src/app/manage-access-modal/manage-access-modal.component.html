@@ -1,6 +1,10 @@
 <div class="manageAccessBlock">
 
-    <h3>Manage access</h3>
+    <h3>Manage access
+      <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+        <img src="../../assets/images/close-modal.svg" style="width: 20px" />
+     </button>
+    </h3>
     <div class="manageAccessHeader">
         <div class="imgBlock"><img src="../../assets/images/folder-table-list.svg" /></div>
         <div class="nameBlock">{{selectedFolder.title}}</div>

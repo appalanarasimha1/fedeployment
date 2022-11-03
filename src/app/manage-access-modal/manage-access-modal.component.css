@@ -1,5 +1,6 @@
 ::ng-deep .mat-dialog-container {
     padding: 20px !important;
+    border-radius: 8px !important;
 }
 /* Custom checkbox start */
 .makePrivate .control-group {

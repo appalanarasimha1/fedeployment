@@ -330,14 +330,15 @@ section.lpBAck:before, .lpSecOne:before {
 }
 ::ng-deep .all-sectors li #fileId,
 ::ng-deep .all-sectors li #fileId2{
-  height: 135px !important;
-  width: 100% !important;
-  object-fit: cover !important;
+  height: 135px;
+  width: 100%;
+  object-fit: cover;
 }
 ::ng-deep .all-sectors li .pdfWhiteBlock {
   background-color: #fff;
   padding: 10px;
-  width: 178px;
+  /* width: 178px; */
+  width: 100%;
   font-size: 13px;
 }
 .list-container:after {
@@ -818,7 +819,7 @@ font-weight: normal;
   overflow: auto;
 }
 ::ng-deep .all-sectors li #fileId2 {
-  height: 88px !important;
+  height: 88px;
 }
 .pb-50 {
   padding-bottom: 50px !important;
@@ -1865,7 +1866,7 @@ section.lpBAck:before, .lpSecOne:before {
   padding: 10px;
   transition: 0.4s;
   border-radius: 10px;
-  width: 197px;
+  width: 214px;
 }
 .folderTitle{
   font-size: 15px;
@@ -1917,15 +1918,17 @@ section.lpBAck:before, .lpSecOne:before {
 }
 ::ng-deep .all-sectors li #fileId,
 ::ng-deep .all-sectors li #fileId2{
-  height: 135px !important;
-  width: 100% !important;
-  object-fit: cover !important;
+  height: 135px;
+  width: 100%;
+  object-fit: cover;
 }
 ::ng-deep .all-sectors li .pdfWhiteBlock {
   background-color: #fff;
   padding: 10px;
-  width: 178px;
+  /* width: 178px; */
+  width: 100%;
   font-size: 13px;
+  border-radius: 0px 0px 8px 8px;
 }
 .list-container:after {
   content: '';
@@ -2407,7 +2410,9 @@ font-weight: normal;
   height: 70vh;
 }
 ::ng-deep .all-sectors li #fileId2 {
-  height: 88px !important;
+  height: 89.5px;
+  border-radius: 8px 8px 0px 0px;
+  margin: 0px auto;
 }
 .pb-50 {
   padding-bottom: 50px !important;
@@ -2591,10 +2596,12 @@ font-weight: normal;
 }
 
 
-.delete-folder-action .control-group {
+.delete-folder-action .control-group,
+.checkAll .control-group {
   display: block;
 }
-.delete-folder-action .control {
+.delete-folder-action .control,
+.checkAll .control {
   display: block;
   position: relative;
   margin-bottom: 0px;
@@ -2606,12 +2613,18 @@ font-weight: normal;
   border: 0px;
   margin: 0px 0px 0px;
 }
-.delete-folder-action .control input {
+.delete-folder-action .control input,
+.checkAll .control input {
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   opacity: 0;
+  height: 24px;
+  width: 24px;
+  left: 0px;
+  top: -4px;
 }
-.delete-folder-action .control__indicator {
+.delete-folder-action .control__indicator,
+.checkAll .control__indicator {
   position: absolute;
   top: 0px;
   left: 0;
@@ -2620,37 +2633,55 @@ font-weight: normal;
   background: #ffffff;
   border-radius: 20px;
 }
-.delete-folder-action .control--radio .control__indicator {
+.delete-folder-action .control--radio .control__indicator,
+.checkAll .control--radio .control__indicator {
   border-radius: 50%;
 }
 .delete-folder-action .control:hover input ~ .control__indicator,
-.delete-folder-action .control input:focus ~ .control__indicator {
+.delete-folder-action .control input:focus ~ .control__indicator,
+
+.checkAll .control:hover input ~ .control__indicator,
+.checkAll .control input:focus ~ .control__indicator {
   background: #fff;
 }
-.delete-folder-action .control input:checked ~ .control__indicator {
+.delete-folder-action .control input:checked ~ .control__indicator,
+.checkAll .control input:checked ~ .control__indicator {
   background: #C49900;
 }
 .delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
-.delete-folder-action .control input:checked:focus ~ .control__indicator {
+.delete-folder-action .control input:checked:focus ~ .control__indicator,
+
+.checkAll .control:hover input:not([disabled]):checked ~ .control__indicator,
+.checkAll .control input:checked:focus ~ .control__indicator {
   background: #C49900;
 }
-.delete-folder-action .control input:disabled ~ .control__indicator {
+.delete-folder-action .control input:disabled ~ .control__indicator,
+.checkAll .control input:disabled ~ .control__indicator{
   background: #C49900;
   opacity: 0.6;
   pointer-events: none;
 }
 .delete-folder-action .control__indicator:after,
-.delete-folder-action .control__indicator:before {
+.delete-folder-action .control__indicator:before,
+
+.checkAll .control__indicator:after,
+.checkAll .control__indicator:before{
   content: '';
   position: absolute;
   display: none;
 }
 .delete-folder-action .control input:checked ~ .control__indicator:after,
-.delete-folder-action .control input ~ .control__indicator:before {
+.delete-folder-action .control input ~ .control__indicator:before,
+
+.checkAll .control input:checked ~ .control__indicator:after,
+.checkAll .control input ~ .control__indicator:before{
   display: block;
 }
 .delete-folder-action .control--checkbox .control__indicator:after,
-.delete-folder-action .control--checkbox .control__indicator:before {
+.delete-folder-action .control--checkbox .control__indicator:before,
+
+.checkAll .control--checkbox .control__indicator:after,
+.checkAll .control--checkbox .control__indicator:before {
   left: 10px;
   top: 6px;
   width: 5px;
@@ -2659,13 +2690,16 @@ font-weight: normal;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-.delete-folder-action .control--checkbox .control__indicator:before{
+.delete-folder-action .control--checkbox .control__indicator:before,
+.checkAll .control--checkbox .control__indicator:before {
   border-color: #BAB8B2;
 }
-.delete-folder-action .control--checkbox input:disabled ~ .control__indicator:after {
+.delete-folder-action .control--checkbox input:disabled ~ .control__indicator:after,
+.checkAll .control--checkbox input:disabled ~ .control__indicator:after {
   border-color: #7b7b7b;
 }
-.delete-folder-action .control--radio .control__indicator:after {
+.delete-folder-action .control--radio .control__indicator:after,
+.checkAll .control--radio .control__indicator:after {
   left: 7px;
   top: 7px;
   height: 6px;
@@ -2673,7 +2707,8 @@ font-weight: normal;
   border-radius: 50%;
   background: #fff;
 }
-.delete-folder-action .control--radio input:disabled ~ .control__indicator:after {
+.delete-folder-action .control--radio input:disabled ~ .control__indicator:after,
+.checkAll .control--radio input:disabled ~ .control__indicator:after {
   background: #7b7b7b;
 }
 .groupFolder {
@@ -3342,6 +3377,11 @@ button.createBtn.btn.tollTipCustom.disableBtn {background: #E8E6DF;color: #BAB8B
 
 ul.downloadImgLisst {
   margin-top: 15px;
+}
+ul.downloadImgLisst::after {
+  content: '';
+  display: block;
+  clear: both;
 }
 ul.downloadImgLisst li {
   padding-bottom: 10px;
@@ -4169,4 +4209,34 @@ img.closeIcon {
   box-shadow: 0px 2px 8px rgb(0 0 0 / 15%) !important;
   border-radius: 8px !important;
   padding: 12px 14px !important;
+}
+.checkAll .control {
+  padding-left: 0px;
+}
+.checkAll input[type=checkbox] {
+  margin-top: 0px;
+}
+.checkAll .control__indicator {
+  position: relative;
+  border: 1px solid #040404;
+  height: 20px;
+  width: 20px;
+}
+.checkAll .control--checkbox .control__indicator:after,
+.checkAll .control--checkbox .control__indicator:before {
+  left: 6px;
+  top: 3px;
+  width: 6px;
+  height: 10px;
+} 
+.checkAll .control input:checked ~ .control__indicator {
+  background: #C49900;
+  border: 1px solid #C49900;
+}
+.checkAll .control-group {
+  display: block;
+  opacity: 0;
+}
+.checkAll:hover .control-group {
+  opacity: 1;
 }
