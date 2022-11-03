@@ -2084,7 +2084,10 @@ form.commentTextForm {
   height: calc(100vh - 255px) !important;
   background-color: #F6F5F2;
 }
-
+.popupTabSec.notPrivateAccess pdf-viewer {
+  height: calc(100vh - 255px) !important;
+  background-color: #F6F5F2;
+}
 @media  screen and (min-width: 1440px) {
   .comment-content ul {
     height: calc(100vh - 71vh);

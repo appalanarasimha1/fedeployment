@@ -543,7 +543,7 @@ font-weight: normal;
     cursor: pointer;
     display: unset;
     font-size: 15px;
-    height: 237px !important;
+    height: calc(92vh - 270px) !important;
     overflow-x: auto;
 }
 .tooltip1 {

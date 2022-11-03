@@ -4551,6 +4551,7 @@ input.requesInput::-ms-input-placeholder {
   height: 175px !important;
   object-fit: none !important;
   width: 160px !important;
+  margin: 0px auto;
 }
 ul.all-sectors img.noPreviewItem {
   height: 135px !important;

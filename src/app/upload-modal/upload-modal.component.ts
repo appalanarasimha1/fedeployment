@@ -149,6 +149,10 @@ export class UploadModalComponent implements OnInit {
 
   showHideAllAsset: boolean = false;
 
+  publishingAssets: boolean = true;
+  publishingPrivateAssets: boolean = false;
+  checkboxIsPrivate: boolean = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -1277,5 +1281,21 @@ export class UploadModalComponent implements OnInit {
 
   showAllAsset() {
     this.showHideAllAsset = !this.showHideAllAsset;
+  }
+
+  handleChange(event, name: string) {
+    if (event.checked || event.target?.checked) {
+      if(name == 'published') {
+        this.publishingAssets = true;
+        this.publishingPrivateAssets = false;
+        this.checkboxIsPrivate = false
+      }
+      if(name == 'private') {
+        this.publishingAssets = false;
+        this.publishingPrivateAssets = true;
+        this.checkboxIsPrivate = true
+
+      }
+    }
   }
 }

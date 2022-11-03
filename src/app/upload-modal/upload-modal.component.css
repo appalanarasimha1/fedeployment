@@ -577,19 +577,18 @@ font-weight: normal;
   cursor: pointer;
 }
 .drag-drop{
-
   align-items: center;
-    background: #F9F7F2 !important;
-    border: 1px dashed #937206 !important;
-    border-radius: 5px;
-    color: #000;
-    cursor: pointer;
-    display: block;
-    font-size: 15px;
-    /* height: 320px !important; */
-    height: calc(92vh - 270px) !important;
-    overflow-x: auto;
-    margin-right: 24px;
+  background: #F9F7F2 !important;
+  border: 1px dashed #937206 !important;
+  border-radius: 5px;
+  color: #000;
+  cursor: pointer;
+  display: block;
+  font-size: 15px;
+  /* height: 320px !important; */
+  height: calc(92vh - 270px) !important;
+  overflow-x: auto;
+  margin-right: 24px;
 }
 .tooltip1 {
   position: relative;
@@ -1661,9 +1660,76 @@ span.showAllClassifications svg.rotateArrow {
 }
 @media  screen and (min-width: 1920px) {
   .acknowledgeBlock {
-    min-height: 9vh;
+    min-height: 90px;
   }
   .fix-scroll{
     height: 46vh;
   }
+  
+}
+
+.folderType .control input:checked ~ .control__indicator::after {
+  color: transparent;
+  border: solid transparent;
+}
+.folderType .control input:checked ~ .control__indicator::before {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  border: 2px solid white;
+  border-radius: 100px;
+  background: #DAAA00;
+}
+.folderType .control input:checked ~ .control__indicator {
+  background: #DAAA00;
+  border: 1px solid #DAAA00;
+}
+.publishingAssets {
+  background: #E6F2FF;
+  border-radius: 8px;
+  padding: 8px 15px;
+  color: #0072A2;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'brownlight';
+}
+.publishingAssets::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.publishingAssets p {
+  color: #0072A2;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'brownlight';
+  padding-bottom: 10px;
+}
+.publishingAssets p strong {
+  font-family: 'brownregular';
+  font-weight: normal;
+}
+.publishingAssets ul li {
+  display: block;
+  width: 100%;
+  clear: left;
+  padding-bottom: 10px;
+  overflow: hidden;
+}
+.publishingAssets ul li span.leftCont {
+  float: left;
+  font-family: 'brownlight';
+  width: 50%;
+}
+.publishingAssets ul li span.rightCont {
+  width: 50%;
+  font-family: 'brownregular';
+  vertical-align: top;
+  float: right;
+}
+.publishingAssets ul li:last-child {
+  padding-bottom: 0px;
 }
