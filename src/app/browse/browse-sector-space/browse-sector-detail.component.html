@@ -1,2 +1,56 @@
 <p>browse-sector-space works!</p>
-<app-data-table></app-data-table>
+
+
+
+<div [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+  <div class="row">
+    <div class="col-xl-7">
+      <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
+        <div style="position: relative;">
+          <form autocomplete="off" style="position: relative;">
+            <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
+            <input #workspaceSearch [(ngModel)]="searchBarValue" name="searchBar" (focus)="initWorkspaceSearch()" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar" autocomplete="off"> <!--[(ngModel)]="searchBarValue" (ngModelChange)="searchFolders($event)"-->
+            <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; getAssets(currentWorkspace.uid);" src="../assets/images/circle-close.png" class="placeholder-search"> <!-- searchFolders(currentWorkspace.uid, 1) -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-5">
+      <div style="float: right; position: relative">
+        <div class="deleted-by-me" *ngIf="isTrashView">
+          <label
+            class="control control--checkbox"
+            style="margin-bottom: 0px; float: left"
+          >
+            Only show items removed by me
+            <input
+              type="checkbox"
+              checked="checked"
+              (click)="myDeleted($event)"
+            />
+            <div
+              class="control__indicator"
+              style="top: 0px; left: 0px"
+            ></div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div style="visibility:hidden; opacity:0" id="dropzone">
+    <div id="textnode">
+      <img src="../../../assets/images/cloud-upload.png">
+      <h3>Please drop here</h3>
+      <p>Images, videos and PDF documents only</p>
+    </div>
+  </div>
+  <div id="text">&nbsp;</div>
+<app-data-table 
+    [searchList]="assetList"
+    [isTrashView]="isTrashView"
+></app-data-table>

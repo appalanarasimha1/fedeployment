@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       {path: '', component: BrowseHomeComponent},
       {path: ':sectorName', component: BrowseSectorDetailComponent},
-      {path: ':sectorName/:folderId', component: BrowseSectorFolderComponent}
+      {path: ':sectorName/:folderId', component: BrowseSectorDetailComponent}
     ]
   },
   

@@ -9,7 +9,6 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UpdateModalComponent } from "../../update-modal/update-modal.component";
 import { SharedService } from "src/app/services/shared.service";
 import { environment } from "../../../environments/environment";
-
 import {
   ASSET_TYPE,
   constants,
@@ -49,7 +48,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
   // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
   @ViewChild("paginator") paginator: MatPaginator;
-  @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
   // moved to data-table
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
@@ -171,6 +169,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   count: number = 0;
   copyRightItem: any = [];
   canNotDelete: any = [];
+  rightClickedItem:any =null;
+  rightClickedIndex:number;
+  rightDownload:boolean=false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -187,7 +188,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       path: "",
     },
   ];
-  searchInitialised: any;
 
   routeParams = {
     sectorName: "",
@@ -210,7 +210,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let folderId = this.route.snapshot.paramMap.get('folderId');
 
       this.loading = true;
-      this.searchInitialised = null;
+      // this.searchInitialised = null;
       this.routeParams.sectorName = sectorName;
 
       await this.fetchAllSectors();
@@ -297,27 +297,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  initWorkspaceSearch(initialiseViews?: boolean): void {
-    if(!this.searchInitialised) {
-      this.searchInitialised = fromEvent(this.workspaceSearch.nativeElement,'keyup')
-        .pipe(
-            filter(Boolean),
-            debounceTime(250),
-            distinctUntilChanged(),
-            tap(async (text: Event) => {
-              if(!this.workspaceSearch.nativeElement.value) {
-                this.loading = true;
-                await this.getWorkspaceFolders(this.selectedFolder.uid, 1);
-                this.handleSelectMenu(1, "LIST");
-                this.loading = false;
-                return;
-              }
-              this.searchFolders(this.workspaceSearch.nativeElement.value);
-              this.handleSelectMenu(1, "LIST");
-            })
-        ).subscribe();
-    }
-  }
+  
 
   datePickerDefaultAction() {
     $( ".createNew.flexible" ).focus(() => {
@@ -735,6 +715,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return (this.searchList?.length > 0 && this.selectedFolder?.type.toLowerCase() === ASSET_TYPE.WORKSPACE);
   }
 
+  navigationBarEvent(data: any) {
+    // TODO: handle sidebar/navigation event
+    return;
+  }
+
   async openUpdateClassModal(breadCrumb: any) {
     // NOTE: uncomment below code
     if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
@@ -878,13 +863,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.isShowDivIf = !this.isShowDivIf;
   }
 
-  getSearchPlaceholder(): string {
-    if (this.isTrashView) {
-      return `Search for folder in trash`;
-    }
-    return `Search in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)}`;
-  }
-
   getDateInFormat(date: string): string {
     return new Date(date).toDateString();
   }
@@ -908,79 +886,79 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return this.selectedFolder.uid === ROOT_ID;
   }
 
-  // deleteModal(listDocs) {
-  //   let deletedFolders = this.searchList.filter((item) =>
-  //     listDocs.includes(item["uid"])
-  //   );
-  //   this.sharedService.showSnackbar(
-  //     "The deleted items will be retained for 180 days in",
-  //     6000,
-  //     "top",
-  //     "center",
-  //     "snackBarMiddle",
-  //     "Deleted items",
-  //     this.getTrashedWS.bind(this)
-  //   );
-  //   this.searchList = this.searchList.filter(
-  //     (item) => !listDocs.includes(item["uid"])
-  //   );
-  //   this.sortedData = this.searchList.slice();
-  //   this.hasUpdatedChildren.push(this.selectedFolder.uid);
-  //   this.selectedFolderList = {};
-  //   deletedFolders.forEach((item) => {
-  //     if (this.folderAssetsResult[item.parentRef]) {
-  //       const index = this.folderAssetsResult[item.parentRef].entries.findIndex(
-  //         (entry) => entry.uid === item.uid
-  //       );
-  //       this.folderAssetsResult[item.parentRef].entries.splice(index, 1);
-  //     }
-  //   });
-  // }
+  deleteModal(listDocs) {
+    let deletedFolders = this.searchList.filter((item) =>
+      listDocs.includes(item["uid"])
+    );
+    this.sharedService.showSnackbar(
+      "The deleted items will be retained for 180 days in",
+      6000,
+      "top",
+      "center",
+      "snackBarMiddle",
+      "Deleted items",
+      this.getTrashedWS.bind(this)
+    );
+    this.searchList = this.searchList.filter(
+      (item) => !listDocs.includes(item["uid"])
+    );
+    this.sortedData = this.searchList.slice();
+    this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    this.selectedFolderList = {};
+    deletedFolders.forEach((item) => {
+      if (this.folderAssetsResult[item.parentRef]) {
+        const index = this.folderAssetsResult[item.parentRef].entries.findIndex(
+          (entry) => entry.uid === item.uid
+        );
+        this.folderAssetsResult[item.parentRef].entries.splice(index, 1);
+      }
+    });
+  }
 
-  // deleteModalFailed() {
-  //   this.sharedService.showSnackbar(
-  //     "You can't delete a folder contains assets uploaded by other users",
-  //     6000,
-  //     "top",
-  //     "center",
-  //     "snackBarMiddle",
-  //   );
-  // }
+  deleteModalFailed() {
+    this.sharedService.showSnackbar(
+      "You can't delete a folder contains assets uploaded by other users",
+      6000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
+  }
 
-  // moveModalFailed() {
-  //   this.sharedService.showSnackbar(
-  //     "You can't move/copy this asset",
-  //     6000,
-  //     "top",
-  //     "center",
-  //     "snackBarMiddle",
-  //   );
-  // }
+  moveModalFailed() {
+    this.sharedService.showSnackbar(
+      "You can't move/copy this asset",
+      6000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
+  }
 
-  // recoverModal(listDocs) {
-  //   let recoveredFolders = this.trashedList.filter((item) =>
-  //     listDocs.includes(item["uid"])
-  //   );
-  //   this.sharedService.showSnackbar(
-  //     "Successfully recovered.",
-  //     3000,
-  //     "top",
-  //     "center",
-  //     "snackBarMiddleRecover"
-  //   );
-  //   this.trashedList = this.trashedList.filter(
-  //     (item) => !listDocs.includes(item["uid"])
-  //   );
-  //   this.searchList = this.trashedList;
-  //   this.sortedData = this.searchList.slice();
-  //   // this.hasUpdatedChildren.push(this.selectedFolder.uid);
-  //   this.selectedFolderList = {};
-  //   recoveredFolders.forEach(
-  //     (item) =>
-  //       this.folderAssetsResult[item.parentRef] &&
-  //       this.folderAssetsResult[item.parentRef].entries.push(item)
-  //   );
-  // }
+  recoverModal(listDocs) {
+    let recoveredFolders = this.trashedList.filter((item) =>
+      listDocs.includes(item["uid"])
+    );
+    this.sharedService.showSnackbar(
+      "Successfully recovered.",
+      3000,
+      "top",
+      "center",
+      "snackBarMiddleRecover"
+    );
+    this.trashedList = this.trashedList.filter(
+      (item) => !listDocs.includes(item["uid"])
+    );
+    this.searchList = this.trashedList;
+    this.sortedData = this.searchList.slice();
+    // this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    this.selectedFolderList = {};
+    recoveredFolders.forEach(
+      (item) =>
+        this.folderAssetsResult[item.parentRef] &&
+        this.folderAssetsResult[item.parentRef].entries.push(item)
+    );
+  }
 
   selectFolder($event, item, i, updateCount = true) {
     if ($event.target?.checked || $event.checked) {
@@ -1399,6 +1377,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     await this.fetchCurrentFolderAssets(folderUid);
     this.loading = false;
   }
+  
   initialLoad:Boolean= true
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
     console.log("getWorkspaceFolders");
@@ -1450,6 +1429,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const { entries } = await this.fetchAssets(ROOT_ID, true, PAGE_SIZE_200);
     this.folderStructure[0]["children"] = entries;
     this.folderStructure[0].isExpand = !isExpand;
+    this.folderStructure = this.folderStructure.slice(); // NOTE: to make change detection in child component
     this.searchList = entries;
     this.selectedMenu = 1;
     this.createDynamicSidebarScroll();
@@ -1520,49 +1500,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async searchFolders(searchString: string) {
-    // this.loading = true;
-    let query;
-    if (this.isExternalView && !this.selectedFolder.uid && !this.selectedFolder.path) {
-      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
-    } else {
-      const path = this.sectorSelected.uid === this.selectedFolder.uid ?
-      `/${this.sectorSelected.title}/workspaces/` :
-      `${this.selectedFolder.path}/`;
-      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
-    }
-    const params = {
-      currentPageIndex: 0,
-      offset: 0,
-      pageSize: 20,
-      queryParams: query,
-    };
-    const result: any = await this.apiService
-      .get(apiRoutes.NXQL_SEARCH, {
-        params,
-        headers: { "fetch-document": "properties" },
-      }).toPromise();
-
-    result.entries = result.entries.sort((a, b) =>
-      this.compare(a.title, b.title, false)
-    );
-    const folders = result.entries.filter(entry =>
-      [ASSET_TYPE.WORKSPACE_ROOT,
-        ASSET_TYPE.DOMAIN, ASSET_TYPE.FOLDER,
-        ASSET_TYPE.ORDERED_FOLDER,
-        ASSET_TYPE.WORKSPACE].indexOf(entry.type.toLowerCase()) > -1
-        );
-    const assets = result.entries.filter(entry => [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(entry.type.toLowerCase()) > -1);
-    result.entries = folders.concat(assets);
-    // result.entries = result.entries.sort((a, b) =>
-    //   this.assetTypeCompare(a.type, b.type)
-    // );
-    this.numberOfPages = result.numberOfPages;
-    this.resultCount = result.resultsCount;
-    this.sortedData = result.entries;
-    this.searchList = result.entries;
-    // this.loading = false;
-  }
+  
 
   navigateToWorkspaceFolder(uid: string, index?: number, breadCrumbIndex?: number) {
     if(this.routeParams.folderId === uid) {
@@ -2157,6 +2095,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
+  
   markIsPrivate(data: IEntry) {
     this.sortedData.forEach(item => {
       if(item.uid === data.uid) {
@@ -2192,9 +2131,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
-  rightClickedItem:any =null;
-  rightClickedIndex:number;
-  rightDownload:boolean=false;
   onRightClick(item?:any,i?:number) {
     this.rightClickedItem = item ? item : this.rightClickedItem
     this.rightClickedIndex = i
@@ -2224,29 +2160,29 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return $(".availableActions").hide();
   }
 
-  // rightClickMove(){
-  //   if (this.count >0) return this.openMoveModal();
-  //   // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
-  //    this.openMoveModal();
-  //   this.removeAssets()
-  //   this.contextMenu.closeMenu();
-  //   return $(".availableActions").hide();
-  //   }
+  rightClickMove(){
+    if (this.count >0) return this.openMoveModal();
+    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+     this.openMoveModal();
+    this.removeAssets()
+    this.contextMenu.closeMenu();
+    return $(".availableActions").hide();
+    }
 
-  // rightClickDelete(){
-  //    if (this.count >0) return this.deleteFolders();
-  //   // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
-  //   this.deleteFolders();
-  //   this.removeAssets()
-  //   this.contextMenu.closeMenu();
-  //   return $(".availableActions").hide();
-  // }
-  // rightClickRename(item){
-  //   if (this.count == 0) {
-  //     return item.edit =!item.edit
-  //   }
+  rightClickDelete(){
+     if (this.count >0) return this.deleteFolders();
+    // this.selectFolder({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.deleteFolders();
+    this.removeAssets()
+    this.contextMenu.closeMenu();
+    return $(".availableActions").hide();
+  }
+  rightClickRename(item){
+    if (this.count == 0) {
+      return item.edit =!item.edit
+    }
     
-  // }
+  }
 
   contextMenuPosition = { x: '0px', y: '0px' };
 

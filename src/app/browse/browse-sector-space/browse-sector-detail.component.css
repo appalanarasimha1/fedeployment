@@ -1,0 +1,15 @@
+div#dropzone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999999999;
+    width: 100%;
+    min-height: 300px;
+    height: 100%;
+    transition: visibility 175ms, opacity 175ms;
+    display: table;
+    color: #fff;
+    background: rgba(249, 247, 242, 0.85);
+    border: 2px dashed #937206;
+    border-radius: 8px;
+  }

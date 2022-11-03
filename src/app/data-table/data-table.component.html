@@ -2,15 +2,9 @@
 <div class="row justify-content-between pt-25" style="width: 100%; --bs-gutter-x: 0px">
    
 
-    <div class="col-xl-12 col-md-12 customTableStyle" *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )">
-      <div style="visibility:hidden; opacity:0" id="dropzone">
-        <div id="textnode">
-          <img src="../../../assets/images/cloud-upload.png">
-          <h3>Please drop here</h3>
-          <p>Images, videos and PDF documents only</p>
-        </div>
-      </div>
-      <div id="text">&nbsp;</div>
+    <div class="col-xl-12 col-md-12 customTableStyle">
+        <!-- *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )"  -->
+      
       <table
         matSort
         (matSortChange)="sortData($event)"
@@ -94,8 +88,9 @@
             </div>
           </td>
           <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative">
-            <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;">
-            <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block;
+            <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;"> <!-- (click)="handleTest(item);selectedFolder=item;" -->
+            <!-- this is for <p> tag below (click)="handleTest(item);selectedFolder=item;" -->
+            <p style="text-align: left; word-break: break-all;display: inline-block;
             vertical-align: middle;">
               <span class="tollTipCustom">
                 {{item.title}}
@@ -113,12 +108,12 @@
                 white-space: break-spaces;
                 text-align: left;
                 padding: 5px 10px;">
-                  {{removeWorkspacesFromString(item.path, item.title)}}333
+                  {{removeWorkspacesFromString(item.path, item.title)}}
                 </span>
               </span>
 
             </p>
-            <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+            <span *ngIf="item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;"> <!-- (click)="clickHandle(item);selectedFolder=item;" -->
               <div class="publicUseBlock">
                 <div class="publicUseBlk">Private</div>
               </div>
@@ -126,7 +121,7 @@
 
             <span *ngIf="!item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
               <div class="publicUseBlock publishedBlock">
-                <div class="publicUseBlk published">Published <a href="javascript:void(0)" *ngIf="!checkGeneralFolder(item) && checkCanDelete(item)"><img src="../../../assets/images/published-arrow.svg" (click)="currentIndexPublished = i; i == currentIndexPublished ? manageAccessPublished(): ''" class="publishedOpen" /></a></div>
+                <div class="publicUseBlk published">Published <a href="javascript:void(0)" *ngIf="!checkGeneralFolder(item) && checkCanDelete(item)"><img src="../../../assets/images/published-arrow.svg" (click)="currentIndexPublished = i; manageAccessPublished()" class="publishedOpen" /></a></div>
                 <div class="mouseHoverInfo manageAccessPopup" *ngIf="currentIndexPublished == i">
                   <app-manage-access-modal [input_data]="item" [input_folder_structure]="breadCrumb" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
                 </div>
@@ -229,7 +224,12 @@
           <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
           <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{item.properties['dc:sector'] || ''}}</p></td>
           <td>
-            <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
+            <img 
+              (click)="openFolder(item);"
+              *ngIf="!checkAssetType(item.type)" 
+              src="../../../assets/images/back-arrow.svg" 
+              style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" 
+            /> <!--   -->
             
           </td>
         </tr>
@@ -283,5 +283,22 @@
             </div>
           </ng-template>
         </mat-menu>
+        <preview-popup
+          #previewModal
+          [doc]="fileToPreview"
+          [docUrl]="fileToPreviewUrl"
+        ></preview-popup>
+
+        <!-- <mat-paginator
+            *ngIf="searchList?.length && selectedFolder?.uid !== parentId"
+            #paginator
+            [length]="resultCount"
+            [pageSize]="defaultPageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="paginatorEvent($event)"
+            aria-label="Select page"
+          >
+          </mat-paginator> -->
+
     </div>
   </div>

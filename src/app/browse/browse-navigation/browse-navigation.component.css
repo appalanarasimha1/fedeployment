@@ -70,3 +70,49 @@
     word-break: break-word;
     font-weight: normal;
   }
+  
+.tree{
+  /* max-height: 100vh; */
+  overflow: auto;
+}
+
+.set{
+  padding: 12px 17px;
+  /* width: max-content; */
+/* max-width: 100%; */
+}
+
+#customScrollBar::-webkit-scrollbar-track{
+	background-color: transparent;
+}
+
+#customScrollBar::-webkit-scrollbar{
+	width: 6px;
+	background-color:transparent;
+}
+
+#customScrollBar::-webkit-scrollbar-thumb{
+	background-color: #E8E6DF;
+  border-radius: 10px;
+}
+
+.hoverPin{
+  transition: .4s;
+  position: relative;
+}
+
+.hoverPin:hover .pinIcon::before, .hoverPin:hover .hoverTooltip{
+  display: block;
+}
+
+.workspaceLink a {
+  display: block;
+  padding: 12px 17px;
+  color: #3c3c3c;
+  padding-left: 50px;
+}
+
+.workspaceLink a:hover {
+  background: transparent;
+  color: #040404;
+}

@@ -79,36 +79,37 @@ export interface IRangeDocCount {
 }
 
  export interface IEntry {
-   "copy"?: string;
-   "entity-type": string,
-   "repository": string,
-   "uid": string,
-   "path": string,
-   "type": string,
-   "state": string,
-   "parentRef": string,
-   "isCheckedOut": boolean;
-   "isRecord": boolean;
-   "retainUntil": string,
-   "hasLegalHold": boolean;
-   "isUnderRetentionOrLegalHold": boolean;
-   "isVersion": boolean;
-   "isProxy": boolean;
-   "changeToken": string,
-   "isTrashed": boolean;
-   "title": string,
-   "lastModified": string,
-   "properties": IEntryProperties,
-   "facets": string[],
-   "schemas":[
+   "isSelected"?: boolean,
+   "copy"?: string,
+   "entity-type"?: string,
+   "repository"?: string,
+   "uid"?: string,
+   "path"?: string,
+   "type"?: string,
+   "state"?: string,
+   "parentRef"?: string,
+   "isCheckedOut"?: boolean;
+   "isRecord"?: boolean;
+   "retainUntil"?: string,
+   "hasLegalHold"?: boolean;
+   "isUnderRetentionOrLegalHold"?: boolean;
+   "isVersion"?: boolean;
+   "isProxy"?: boolean;
+   "changeToken"?: string,
+   "isTrashed"?: boolean;
+   "title"?: string,
+   "lastModified"?: string,
+   "properties"?: IEntryProperties,
+   "facets"?: string[],
+   "schemas"?:[
       {
          "name":string,
          "prefix":string
       }
    ],
-   "contextParameters":{
-      "permissions":[],
-      "preview":{
+   "contextParameters"?:{
+      "permissions"?:[],
+      "preview"?:{
          "url": string
       },
       "thumbnail":{
@@ -131,8 +132,8 @@ export interface IRangeDocCount {
    "dc:start": string,
    "dc:coverage": string,
    "dc:valid": string,
-   "dc:creator": string,
-   "dc:modified": Date,
+   "dc:creator": IDcCreator,
+   "dc:modified": string,
    "dc:lastContributor": string,
    "dc:workspace": string,
    "dc:rights": string,
@@ -140,7 +141,7 @@ export interface IRangeDocCount {
    "dc:format": string,
    "dc:end": string,
    "dc:folderType": string,
-   "dc:created": Date,
+   "dc:created": string,
    "dc:title": string,
    "dc:issued": string,
    "dc:recurrence": string,
@@ -168,6 +169,26 @@ export interface IRangeDocCount {
    "picture:views":IPictureView[],
    "picture:info":IPictureInfo,
    "nxtag:tags":INxTag[]
+}
+
+export interface IDcCreator {
+   "entity-type": string,
+   extendedGroups: string[],
+   id: string,
+   isAdministrator: boolean,
+   isAnonymous: boolean,
+   isPartial: boolean,
+   properties: {
+      assetSeen: string,
+      company: string,
+      email: string,
+      firstName: string,
+      groups: string[],
+      lastName: string,
+      sector: string,
+      tenantId: string,
+      username: string
+   }
 }
  export interface INxTag {
    "label":string,
