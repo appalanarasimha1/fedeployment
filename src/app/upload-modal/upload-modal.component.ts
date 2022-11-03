@@ -268,7 +268,6 @@ export class UploadModalComponent implements OnInit {
         this.showErrorUpload = true;
       }
     } else {
-      this.step = 4;
       this.publishAssets();
       return;
     }
