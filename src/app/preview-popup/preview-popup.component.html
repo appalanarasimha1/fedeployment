@@ -402,8 +402,7 @@
                   {{ getAuthor(comment) }}
                   <!-- <span>{{ getTime(comment.creationDate, false) }} ago</span> -->
                 </p>
-                <p class="bodyContent">{{getCommentStr(comment.text)  }} 
-                  <!-- <span>@Amit Raad</span> ? -->
+                <p class="bodyContent" [innerHTML]="getCommentStr(comment.text) | safe: 'htmlText'">
                 </p>
               </div>
             </li>

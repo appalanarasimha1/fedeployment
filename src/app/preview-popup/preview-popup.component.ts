@@ -539,7 +539,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     
   }
   getChoiceLabel(choice: string) {
-    return `@${choice} `;
+    return `{{${choice}}} `;
   }
   checkCanDownload() {
     if (this.user === this.getCreator()) return true;
@@ -598,11 +598,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   creatUserName(name){
     let data = name.split(".")
-    let newName = data[0][0] + data[1][0]
+    let newName = data[0][0];
     return newName.toUpperCase()
   }
   closeModal() {
-    console.log('hi');
     this.modalOpen = false;
     this.modalLoading = false;
     this.showAllComments= false
@@ -610,6 +609,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getCommentStr(str){
-    return str.replaceAll("&#64;","@")
+    let temp = str.replaceAll("&#64;","@");
+    temp = temp.replace('{<!-- -->{', "<span style='color: #DEB31A !important;'>");
+    return temp.replace("}}", "</span>");
+
   }
 }

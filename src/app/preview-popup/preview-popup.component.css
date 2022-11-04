@@ -2003,7 +2003,7 @@ input.requesInput::-ms-input-placeholder {
   font-family: 'brownlight';
 }
 .comment-content ul li .commentTextBlk p.bodyContent span {
-  color: #DEB31A;
+  color: #DEB31A !important;
   opacity: 1;
   font-family: 'brownregular';
 }
