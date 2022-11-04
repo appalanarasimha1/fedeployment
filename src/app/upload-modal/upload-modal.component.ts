@@ -403,6 +403,9 @@ export class UploadModalComponent implements OnInit {
     // }
     try {
       this.dialogRef.close();
+      if(this.step !== 4) {
+        return;
+      }
       if (this.data?.uid === this.selectedFolder?.uid) {
         this.dataService.uploadedAssetDataInit(this.uploadedAsset1);
         return;
