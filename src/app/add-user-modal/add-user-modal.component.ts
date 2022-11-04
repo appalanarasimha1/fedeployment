@@ -89,6 +89,10 @@ export class AddUserModalComponent implements OnInit {
     this.listExternalUserGlobal = [];
     this.computeCollaborators();
     this.loadUsers();
+    this.sharedService.fetchExternalUserInfo();
+    this.getExternalGroupUser();
+    this.sharedService.fetchExternalUserInfo();
+    this.getExternalGroupUser();
   }
 
   closeModal() {
@@ -101,7 +105,7 @@ export class AddUserModalComponent implements OnInit {
     this.internalCollaborators = {};
     Object.keys(this.folderCollaborators).forEach(key => {
       if ((this.folderCollaborators[key].externalUser
-        || this.listExternalUser.includes(key)) && !this.checkTransientNeomEmail(key)) {
+        || this.listExternalUser.includes(key)) || !this.checkTransientNeomEmail(key)) {
         this.externalCollaborators[key] = this.folderCollaborators[key];
       } else {
         this.internalCollaborators[key] = this.folderCollaborators[key];
