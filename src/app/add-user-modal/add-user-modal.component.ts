@@ -89,6 +89,10 @@ export class AddUserModalComponent implements OnInit {
     this.listExternalUserGlobal = [];
     this.computeCollaborators();
     this.loadUsers();
+    this.sharedService.fetchExternalUserInfo();
+    this.getExternalGroupUser();
+    this.sharedService.fetchExternalUserInfo();
+    this.getExternalGroupUser();
   }
 
   closeModal() {
