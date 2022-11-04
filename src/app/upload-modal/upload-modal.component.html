@@ -1,5 +1,5 @@
 <div class="upload-modal">
-   <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()">
+   <button type="button" class="close-modal-icon" aria-label="Close" (click)="openBrowseRoute()">
       <img src="../../assets/images/close-modal.svg" style="width: 20px" />
    </button>
    <mat-horizontal-stepper *ngIf="step !== 4" [linear]="true" #stepper>
@@ -97,11 +97,14 @@
                         Please complete all mandatory fields to proceed
                       </div>
                   </button>
-                  <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                  <button *ngIf="isPrivateFolder() && !publishing" (click)="publish()" mat-button class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
                      Upload
                      <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                         Please complete all mandatory fields to proceed
                       </div>
+                  </button>
+                  <button *ngIf="isPrivateFolder() && publishing" mat-button class="upload-btn" style="position: relative" >
+                     {{!isPrivateFolder()?'Publish':'Upload'}} <app-loader-small [show]="loading"></app-loader-small>
                   </button>
                </div>
             </div>
@@ -306,11 +309,14 @@
                      Please complete all mandatory fields to proceed
                    </div>
                </button>
-               <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+               <button *ngIf="isPrivateFolder() && !publishing" (click)="publish()" mat-button class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
                   Upload
                   <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                      Please complete all mandatory fields to proceed
                    </div>
+               </button>
+               <button *ngIf="isPrivateFolder() && publishing" mat-button class="upload-btn" style="position: relative" >
+                  {{!isPrivateFolder()?'Publish':'Upload'}} <app-loader-small [show]="loading"></app-loader-small>
                </button>
             </div>
          </div>
@@ -700,17 +706,10 @@
             <p class="numberAssets">{{ getAssetNumber() }} assets</p>
          </div>
       </div>
-      <div (click)="closeModal()" class="close-modal">
+      <div (click)="openBrowseRoute()" class="close-modal">
          <!-- <mat-icon>close</mat-icon> -->
          Close
       </div>
    </div>
 </div>
-<!-- <div class="button-groups" *ngIf="step !== 4">
-   <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-   <div class="progress-btns">
-      <button class="cancel-btn" *ngIf="step > 1" (click)="toPreviousStep()">Back</button>
-      <button class="upload-btn" [disabled]="checkButtonDisabled()" (click)="toNextStep()">{{ buttonLabel }}</button>
-   </div>
-</div> -->
 </div>

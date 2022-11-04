@@ -12,7 +12,7 @@ export class AppConfigOCIUat {
         VIDEO_TABLE: 'personalizedVideoInventory',
         AUDIT_TABLE: 'audit'
       },
-      domain: 'https://uatgroundx.oci.sense.neomos.online/',
+      domain: 'https://uatgroundx.neom.com/',
       elasticDbUrl: 'http://localhost:9200', // 'http://10.149.49.21:9200,10.149.49.22:9200,10.149.49.18:9200',
       elsticDbUserName: 'elastic',
       elasticCertificatePath: '/home/opc/rootCA.crt'
