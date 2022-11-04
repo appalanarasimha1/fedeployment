@@ -1146,6 +1146,7 @@ ul.uploadAssetsClassifications {
   display: inline-block;
   margin-bottom: 0px;
   margin-right: 20px;
+  min-height: 34px;
 }
 ul.uploadAssetsClassifications li {
   float: left;
@@ -2618,8 +2619,8 @@ font-weight: normal;
   position: absolute;
   z-index: 1;
   opacity: 0;
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
   left: 0px;
   top: -4px;
 }
@@ -2628,8 +2629,8 @@ font-weight: normal;
   position: absolute;
   top: 0px;
   left: 0;
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
   background: #ffffff;
   border-radius: 20px;
 }
@@ -2682,8 +2683,8 @@ font-weight: normal;
 
 .checkAll .control--checkbox .control__indicator:after,
 .checkAll .control--checkbox .control__indicator:before {
-  left: 10px;
-  top: 6px;
+  left: 8px;
+  top: 4px;
   width: 5px;
   height: 10px;
   border: solid #fff;
@@ -4173,11 +4174,11 @@ img.closeIcon {
   margin-bottom: 10px;
 }
 
-/* .availableActions ul:last-child {
+.availableActions ul:last-child {
   border-top: 1px solid #f0efea;
   margin-top: 15px;
   padding-top: 15px;
-} */
+}
 .availableActions ul:last-child li:last-child {
   margin-bottom: 0px;
 }
@@ -4217,7 +4218,6 @@ img.closeIcon {
   margin-top: 0px;
 }
 .checkAll .control__indicator {
-  position: relative;
   border: 1px solid #040404;
   height: 20px;
   width: 20px;
@@ -4238,5 +4238,8 @@ img.closeIcon {
   opacity: 0;
 }
 .checkAll:hover .control-group {
+  opacity: 1;
+}
+th.checkAll.positionRelative.showChecked .control-group {
   opacity: 1;
 }
