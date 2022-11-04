@@ -14,7 +14,8 @@ export class AppConfigUat {
         DEFAULT:'default'
       },
       domain: 'https://uatgroundx.neom.com/',
-      elasticDbUrl: 'http://10.101.21.63:9700'
+      elasticDbUrl: 'http://10.101.21.63:9700',
+      elasticSearchIndex: "searchindex_v4"
     };
   
     public static get Config(): any {
