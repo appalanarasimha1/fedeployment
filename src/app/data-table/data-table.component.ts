@@ -24,6 +24,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Input() isTrashView: boolean = false;
   @Input() trashedList: IEntry[] = [];
   @Input() searchBarValue;
+  @Input() showAssetPath: boolean = false;
 
   @Input() sectorSelected: IEntry = null;
   @Input() folderStructure: IBrowseSidebar[] = [];

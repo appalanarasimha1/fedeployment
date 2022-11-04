@@ -1,6 +1,3 @@
-<p>browse-sector-space works!</p>
-
-
 
 <div [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
   <div class="row">
@@ -53,4 +50,5 @@
 <app-data-table 
     [searchList]="assetList"
     [isTrashView]="isTrashView"
+    [showAssetPath]="showAssetPath"
 ></app-data-table>

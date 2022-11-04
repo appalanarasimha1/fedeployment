@@ -34,6 +34,7 @@ export class BrowseSectorDetailComponent implements OnInit {
   searchBarValue: string;
   showSearchbar: boolean = true;
   folderNotFound: boolean = false;
+  showAssetPath: boolean = false;
 
   @ViewChild("DataTableComponent") dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -60,7 +61,7 @@ export class BrowseSectorDetailComponent implements OnInit {
         this.fetchWorkspaceByName(this.sectorName);
       } else {
         this.getAssets(this.folderId);
-        this.currentWorkspace = await this.fetchFolderById(this.folderId);
+        await this.fetchFolderById(this.folderId);
       }
     });
   }
@@ -75,7 +76,7 @@ export class BrowseSectorDetailComponent implements OnInit {
   }
 
   async fetchFolderById(id) {
-    this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
+    this.apiService.get(`/id/${id}`,
       {headers: { "fetch-document": "properties"}}).subscribe((workspace: any) => {
         this.currentWorkspace = workspace;
     });
@@ -84,6 +85,7 @@ export class BrowseSectorDetailComponent implements OnInit {
   getAssets(folderUid: string, index?: number, selected?: IEntry, childIndex?: number): void {
     // this.selectedFile = [];
     // this.selectedFolder = { ...selected, uid: selected.id };
+    this.showAssetPath = false;
     let pageIndex = 1;
     let offset = 0;
     let pageSize = 0;
@@ -135,15 +137,16 @@ export class BrowseSectorDetailComponent implements OnInit {
   }
 
   async searchFolders(searchString: string) {
+    this.showAssetPath = true;
     // this.loading = true;
     let query;
-    if (!this.folderId) {
-      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
-    } 
-    else {
-      const path = this.currentWorkspace.path; //this.folderId ? `${this.currentWorkspace.path}/` : `${this.currentWorkspace.path}/workspaces/`;
-      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path}' AND dc:title ILIKE '%${searchString}%'`;
-    }
+    // if (!this.folderId) {
+    //   query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
+    // } 
+    // else {
+      // const path = this.currentWorkspace.path; //this.folderId ? `${this.currentWorkspace.path}/` : `${this.currentWorkspace.path}/workspaces/`;
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${this.currentWorkspace.path}' AND dc:title ILIKE '%${searchString}%'`;
+    // }
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -325,3 +328,7 @@ export class BrowseSectorDetailComponent implements OnInit {
   // }
 
 }
+
+// SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTS WITH '/Ground X/workspaces/' AND dc:title ILIKE '%25test%25'
+
+// SELECT * FROM Document WHERE ecm:isProxy %3D 0 AND ecm:isVersion %3D 0 AND ecm:isTrashed %3D 0  AND ecm:path STARTSWITH '/Ground X/workspaces/testByMudit/' AND dc:title ILIKE '"test"'
