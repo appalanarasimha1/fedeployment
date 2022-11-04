@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "src/app/services/shared.service";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { AddUserPrivateFolderModalComponent } from '../add-user-private-folder-modal/add-user-private-folder-modal.component';
 
 @Component({
   selector: 'app-settings',
@@ -13,7 +15,9 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    public sharedService: SharedService,)
+    public sharedService: SharedService,
+    public matDialog: MatDialog,
+    )
   { }
 
   managedUsers = [];
@@ -126,6 +130,26 @@ export class SettingsComponent implements OnInit {
       input: folder.id,
     };
     return this.apiService.post(apiRoutes.REMOVE_PERMISSION, payload).toPromise();
+  }
+
+  async openAddUserPrivateFolderModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.width = "640px";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+    // dialogConfig.data = {
+    //   selectedFolder: this.selectedFolder,
+    //   folderId: this.selectedFolder.uid,
+    // }
+
+    const modalDialog = this.matDialog.open(AddUserPrivateFolderModalComponent, dialogConfig);
+
+    modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        
+      }
+    });
   }
 
 }
