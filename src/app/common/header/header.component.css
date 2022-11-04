@@ -788,6 +788,7 @@ ul.sidebarList li .sidebarLink.active {
 }
 .bottomItems ul li a svg {
     margin-right: 5px;
+    vertical-align: -2px;
 }
 /* new sidebar end */
 .borderNone {

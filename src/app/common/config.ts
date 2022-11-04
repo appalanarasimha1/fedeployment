@@ -39,4 +39,6 @@ export const apiRoutes = {
   MOVE_FOLDER: "/automation/Scry.MoveFolder",
   REQUEST_DOWNLOAD: "/automation/Scry.RequestDownload",
   PROCESS_REQUEST_DOWNLOAD: "/automation/Scry.ProcessRequestDownload",
+  GET_MANAGED_EXT_USERS: "/automation/Scry.GetManagedExternalUsers",
+  GET_PRIVATE_FOLDERS: "/automation/Scry.GetAllPrivateFolders",
 };
