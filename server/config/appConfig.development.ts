@@ -13,7 +13,8 @@ export class AppConfigDevelopment {
       AUDIT_TABLE: 'audit'
     },
     domain: 'https://dev2groundx.neom.com/',
-    elasticDbUrl: 'http://10.101.21.31:9700'
+    elasticDbUrl: 'http://10.101.21.31:9700',
+    elasticSearchIndex: "searchindex_v4"
   };
 
   public static get Config(): any {
