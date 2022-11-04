@@ -1237,7 +1237,7 @@
                       >
                         <div class="control-group">
                           <label class="control control--checkbox">
-                            <input class="chkbox"
+                            <input class="chkbox width1600"
                               id="checkbox-{{ i }}"
                               type="checkbox"
                               (change)="selectFolder($event, item, i)"
@@ -1257,10 +1257,10 @@
                       >
                         <div class="control-group">
                           <label class="control control--checkbox">
-                            <input class="chkbox"
+                            <input
                               id="checkbox-{{ i }}"
                               type="checkbox"
-                              class="vh"
+                              class="chkbox vh width1600"
                               (change)="selectAsset($event, item, i)"
                               [checked]="item.isSelected"
                               [(ngModel)]="item.isSelected"
@@ -1383,14 +1383,14 @@
                         </div>
                       </span> -->
                     </td>
-                    <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex" (contextmenu)="onContextMenu($event, item)">
-                      <div class="zoomImg">
+                    <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
+                      <div class="zoomImg" style="display: inline-block;">
                         <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain;">
                         <div class="zoomImgBlock">
                           <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)">
                         </div>
                       </div>
-                      <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left">
+                      <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; max-width: calc(100% - 30px); vertical-align: middle;">
                         <span class="tollTipCustom">
                           {{item.title}}
                           <span class="tolltipContent" style="top: 28px;
