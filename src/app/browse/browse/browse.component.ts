@@ -251,6 +251,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         }, 500);
       }
 
+      this.fetchExternalUserInfo(fetchAll);
+
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
@@ -278,8 +280,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         parent.addClass("is-open");
       }
     });
-
-    this.fetchExternalUserInfo(fetchAll);
     this.dragNDrop();
     // this.removeAssets()
   }
@@ -980,7 +980,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     console.log('updatecount', updateCount);
 
     if(this.selectAllClicked) updateCount = true
-    
+
     // var $chkboxes = $('.chkbox');
     // var lastChecked = null;
 
@@ -1005,7 +1005,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (this.lastIndexClicked ==undefined) {
         this.currentIndexClicked = i
         this.lastIndexClicked = i
-  
+
       }else{
         this.lastIndexClicked = this.currentIndexClicked
         this.currentIndexClicked = i
@@ -1025,7 +1025,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           this.currentIndexClicked = undefined
         }
     }
-    
+
   }
 
   async deleteFolders() {
@@ -1048,7 +1048,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async unTrashFolders() {
-    
+
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
 
@@ -1592,20 +1592,24 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.loading = false;
   }
 
-  navigateToWorkspaceFolder(uid: string, index?: number, breadCrumbIndex?: number) {
+  navigateToWorkspaceFolder(uid: string, index?: number, breadCrumbIndex?: number, sectorId?: any) {
     if(this.routeParams.folderId === uid) {
       return;
     }
-    const path = this.sectorSelected?.path.split("/");
     // NOTE: todo, refactor if-else
+    let sectorTitle = this.sectorSelected?.title;
+    if (this.isExternalView) sectorTitle = sectorId;
+    console.log(this.isExternalView);
+
+
     if(breadCrumbIndex === 0) {
       this.router.navigate([ASSET_TYPE.WORKSPACE]);
     } else  if(breadCrumbIndex === 1) {
-      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
+      this.router.navigate([ASSET_TYPE.WORKSPACE, sectorTitle]);
     } else if(!isNaN(index)) {
-      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+      this.router.navigate([ASSET_TYPE.WORKSPACE, sectorTitle, uid]);
     } else {
-      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+      this.router.navigate([ASSET_TYPE.WORKSPACE, sectorTitle, uid]);
       // else this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
     }
   }
@@ -1618,7 +1622,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // }
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
-    this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex);
+    const sector = (path) ? path.split('/')[1] : '';
+    this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex, sector);
     return;
   }
 
@@ -1704,7 +1709,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
-   
+
 
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
@@ -1722,7 +1727,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.lastIndexClicked = this.currentIndexClicked
         this.currentIndexClicked = i
       }
-    
+
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
@@ -1760,11 +1765,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       );
       delete this.selectedMoveList[i];
 
-    
+
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
       }
-      
+
       if (this.count==0) {
         this.currentIndexClicked = undefined
         this.lastIndexClicked = undefined
@@ -1850,9 +1855,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
                     );
                     this.removeAssets();
                   }
-                 
+
                 });
-              
+
             }
             checkZipCompleted(uid)
           });
@@ -2155,6 +2160,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkShowManageAccessButton() {
+    if (!this.selectedFolder?.properties) return false;
     if (this.selectedFolder.properties['dc:isPrivate']) return false;
     const userData = localStorage.getItem("user");
 
@@ -2229,7 +2235,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    return processAble.length>0 
+    return processAble.length>0
   }
 
   checkEnableMoveButton1() {
@@ -2280,7 +2286,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.rightClickedItem = item ? item : this.rightClickedItem
     this.rightClickedIndex = i
 
-   
+
     $(document).click(function (e) {
       if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0) {
         $(".availableActions").hide();
@@ -2326,7 +2332,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (this.count < 2) {
       return item.edit =!item.edit
     }
-    
+
   }
   selectAllClicked:boolean=false
   rightClickSelectAll(){
@@ -2337,7 +2343,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.selectAllClicked = true
          this.selectAsset({checked:true , update:true}, e, i)
       }
-    }); 
+    });
   }
 
   unSelectEnable(){
@@ -2347,7 +2353,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         checkGen=true
         break;
       }
-    } 
+    }
 
     if (checkGen) return this.count ==this.sortedData.length-1
     return this.count ==this.sortedData.length
@@ -2362,7 +2368,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.contextMenu.menuData = { 'item': item };
       this.contextMenu.menu.focusFirstItem('mouse');
       this.contextMenu.openMenu();
-      
+
       $(document).click( (e)=> {
         if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0 && !this.selectAllClicked) {
           // $(".availableActions").hide();
@@ -2385,7 +2391,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
       return '../../../assets/images/doc-preveiw.svg';
-    } 
+    }
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt-preveiw.svg';
     }
@@ -2395,14 +2401,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     return '../../../assets/images/no-preview-grid.svg';
   }
-  
+
   checkFolderContains(){
     return Object.keys(this.selectedFolderList).length <1
   }
 
   lastIndexClicked:number
   currentIndexClicked:number
-  
+
   shiftkeyDown(e,item,i){
     // console.log("e",this.lastIndexClicked,this.currentIndexClicked,this.sortedData);
     // let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
@@ -2416,13 +2422,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         //  }
         // })
       // })
-    
+
   }
   shiftkeyUp($event,item,i){
     let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
     this.sortedData.forEach((ele:any,i)=>{
          if (i >=sortedNumber[0] && i <=sortedNumber[1] && !this.checkGeneralFolder(ele)) {
-          if( !ele.isSelected) {       
+          if( !ele.isSelected) {
             ele.isSelected = true
             this.selectAsset({checked:true,update:true}, ele, i)
           }
