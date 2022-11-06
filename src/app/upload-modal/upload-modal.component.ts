@@ -381,6 +381,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async selectWorkspace(ws, incomingParam?: boolean) {
+    if (!ws) return;
     this.extractBreadcrumb(ws.contextParameters);
     this.showWsList = false;
     this.folderNameParam = "";
