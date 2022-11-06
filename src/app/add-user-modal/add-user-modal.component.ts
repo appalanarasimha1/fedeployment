@@ -127,7 +127,7 @@ export class AddUserModalComponent implements OnInit {
           id: item.id,
           fullname: item.fullname
         },
-        permission: "Read",
+        permission: "ReadWrite",
         duration: 1,
       }
     } else {
@@ -316,7 +316,7 @@ export class AddUserModalComponent implements OnInit {
 
   async inviteUser(item) {
     const params = {
-      permission: 'Read',
+      permission: 'ReadWrite',
       email: item.user.id,
       end: item.end,
     };
@@ -523,7 +523,7 @@ export class AddUserModalComponent implements OnInit {
           id: invitedEmail,
           notExisted: true
         },
-        permission: "Read",
+        permission: "ReadWrite",
         end
       }
       return;
