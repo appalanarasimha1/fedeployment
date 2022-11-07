@@ -1328,9 +1328,9 @@
                       </div> -->
                     </td>
                     <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative">
-                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;">
+                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px; position: relative; z-index: 99;">
                       <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block;
-                      vertical-align: middle;">
+                      vertical-align: middle;  position: relative; z-index: 99;">
                         <span class="tollTipCustom">
                           {{sharedService.stringShortener(item?.title, 25)}}
                           <span class="tolltipContent" style="top: 28px;
@@ -1355,7 +1355,7 @@
                       <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                         <div class="publicUseBlock">
                           <div class="tollTipCustom">
-                            <img src="../../../assets/images/private-icon.svg" class="private-icon" />
+                            <img src="../../../assets/images/private-icon.svg" class="private-icon" style="position: relative; z-index: 9;" />
                             <div class="tolltipContent" style="top: 28px;
                             height: auto;
                             white-space: break-spaces;
