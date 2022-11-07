@@ -205,11 +205,19 @@
                         {{ toDateString(doc?.properties) }}
                         by
                         <br />
+<<<<<<< HEAD
                         <span style="color: #DEB31A; word-break: break-all; font-family: 'brownregular';">{{getCreator()}}</span>
                       </li>
 
                       <li>
                         Usage approver <br /><span style="color: #DEB31A; word-break: break-all; font-family: 'brownregular';">{{
+=======
+                        <span style="color: #DEB31A; word-break: break-all">{{getCreator()}}</span>
+                      </li>
+
+                      <li>
+                        Usage approver <br /><span style="color: #DEB31A; word-break: break-all">{{
+>>>>>>> 5be8ff61 (fix comment ui issues)
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
                           }}</span>
                       </li>
@@ -224,7 +232,11 @@
                         Location <br />
                         <span style="word-break: break-all">
                           <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
+<<<<<<< HEAD
                            class="pointer" style="color: #DEB31A; font-family: 'brownregular';">
+=======
+                           class="pointer" style="color: #DEB31A;">
+>>>>>>> 5be8ff61 (fix comment ui issues)
                             {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                           </a>
                           <!-- remove click event (click)="navigateTo(doc?.parentRef)" -->
