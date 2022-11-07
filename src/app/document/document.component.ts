@@ -239,7 +239,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
     this.getRecentlyViewed();
     this.getFavorites();
-    this.getTrendingAssets();
+    // this.getTrendingAssets();
     this.getAssetBySectors();
     this.selectTab("recentlyViewed");
     this.showRecentlyViewed = true;
