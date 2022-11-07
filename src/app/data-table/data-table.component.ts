@@ -723,30 +723,6 @@ export class DataTableComponent implements OnInit, OnChanges {
       return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
     }
 
-    // async handleClickNew(folderUid: string) {
-    //   this.selectedFolderList = {};
-    //   this.count = 0;
-    //   this.loading = true;
-    //   this.isTrashView = false;
-    //   await this.fetchCurrentFolderAssets(folderUid);
-    //   this.loading = false;
-    // }
-
-    // async fetchCurrentFolderAssets(sectorUid: string, showLinkCopy = true, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
-    //   this.loading = true;
-    //   const { entries, numberOfPages, resultsCount } = await this.fetchAssets.emit({sectorUid, checkCache, pageSize, pageIndex, offset});
-    //   this.sortedData = entries;
-    //   this.searchList = entries;
-    //   this.numberOfPages = numberOfPages;
-    //   this.resultCount = resultsCount;
-    //   // this.extractBreadcrumb();
-    //   this.showLinkCopy = showLinkCopy;
-    //   // this.showSearchbar = true;
-    //   this.loading = false;
-    // }
-
-    
-
     clickHandleChild(item) {
       this.clickHandle.emit(item);
     }
@@ -800,7 +776,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     }
 
     openFolder(item: IEntry) {
-      this.router.navigate([window.location.pathname, item.uid]);
+      this.router.navigate([window.location.pathname.split('/').splice(1,2).join('/'), item.uid]);
     }
 
 }

@@ -35,12 +35,13 @@ export class BrowseSectorDetailComponent implements OnInit {
   showSearchbar: boolean = true;
   folderNotFound: boolean = false;
   showAssetPath: boolean = false;
+  breadCrumb = [];
 
   @ViewChild("DataTableComponent") dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
   constructor(
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private router: Router,
     private dataService: DataService,
     private apiService: ApiService,
@@ -71,6 +72,7 @@ export class BrowseSectorDetailComponent implements OnInit {
     this.apiService.get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((workspace: any) => {
         this.currentWorkspace = workspace;
+        this.extractBreadcrumb();
         this.getAssets(workspace.uid);
       });
   }
@@ -79,6 +81,7 @@ export class BrowseSectorDetailComponent implements OnInit {
     this.apiService.get(`/id/${id}`,
       {headers: { "fetch-document": "properties"}}).subscribe((workspace: any) => {
         this.currentWorkspace = workspace;
+        this.extractBreadcrumb();
     });
   }
 
@@ -199,6 +202,31 @@ export class BrowseSectorDetailComponent implements OnInit {
       // this.getTrashedWS();
 
   }
+
+  extractBreadcrumb() {
+      this.breadCrumb = this.currentWorkspace.contextParameters?.breadcrumb.entries.filter(
+        (entry) => {
+          return entry.type !== "WorkspaceRoot";
+        }
+      );
+  }
+
+  /**
+   * This functions gets called from bread crumbs and sidebar
+   * @param item
+   * @param index
+   * @param breadCrumbIndex
+   * @returns null
+   */
+   async handleGotoBreadcrumb(item: IEntry, index: Number) {
+    $("body").animate({ scrollTop: 0 }, "slow");
+    const sectorName = item.path.split("/")[1];
+    let url = `workspace/${sectorName}`;
+    if(index) {
+      url = `${url}/${item.uid}`;
+    }
+    this.router.navigateByUrl(url);
+   }
 
   // async handleTest(item) {
   //   this.renameFolderName = false;

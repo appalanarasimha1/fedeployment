@@ -108,10 +108,14 @@ export interface IRangeDocCount {
       }
    ],
    "contextParameters"?:{
-      "permissions"?:[],
+      "permissions"?:[];
+      "breadcrumb"?: {
+         "entity-type":string,
+         "entries": IEntry[]
+      };
       "preview"?:{
          "url": string
-      },
+      };
       "thumbnail":{
          "url": string
       }

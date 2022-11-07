@@ -2388,22 +2388,6 @@ font-weight: normal;
   padding: 4px;
   display: none;
 }
-.breadcrumb-active {
-  cursor: pointer;
-  text-decoration: none;
-  color: rgba(35, 33, 30, 0.6);
-}
-.breadcrumb-active:hover {
-  text-decoration: underline;
-  color: rgba(35, 33, 30, 0.6);
-}
-
-.breadcrumb-not-active {
-  cursor: default;
-  text-decoration: none;
-  /* color: rgba(35, 33, 30, 0.6); */
-  color: #24221f;
-}
 .header-content h6.tollTipCustom span{
   color: rgba(35, 33, 30, 0.6);
 }

@@ -34,6 +34,20 @@
       </div>
     </div>
   </div>
+  
+  <div>
+    <span *ngFor="let c of breadCrumb; let i = index">
+      /<a
+        [ngClass]="
+          i !== breadCrumb.length - 1
+            ? 'breadcrumb-active'
+            : 'breadcrumb-not-active'
+        "
+        (click)="handleGotoBreadcrumb(c, i)"
+        >{{ sharedService.stringShortener(c.title, 40) }}</a
+      >
+    </span>
+  </div>
 </div>
 
 
