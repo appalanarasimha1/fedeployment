@@ -3934,6 +3934,8 @@ div#textnode p {
 .zoomImg {
   display: inline-block;
   position: relative;
+  vertical-align: middle;
+  z-index: 9;
 }
 .zoomImgBlock {
   max-width: 200px;
@@ -4239,6 +4241,12 @@ img.closeIcon {
 }
 .checkAll:hover .control-group {
   opacity: 1;
+}
+.width1600 {
+  /* width: 1600px !important; */
+  z-index: 1 !important;
+  top: -25px !important;
+  height: 68px !important;
 }
 th.checkAll.positionRelative.showChecked .control-group {
   opacity: 1;
