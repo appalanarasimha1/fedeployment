@@ -2005,7 +2005,7 @@ input.requesInput::-ms-input-placeholder {
 .comment-content ul li .commentTextBlk p.bodyContent span {
   color: #DEB31A !important;
   opacity: 1;
-  font-family: 'brownregular';
+  font-family: 'brownregular' !important;
 }
 .comment-content ul {
   height: calc(100vh - 79vh);
@@ -2105,11 +2105,13 @@ form.commentTextForm {
 }
 
 .commentTextForm ::ng-deep .dropdown-menu {
-  bottom: 53px !important;
+  bottom: 60px !important;
   top: auto !important;
   background: #F6F5F2;
   border: 0px;
-  padding: 10px 6px;
+  padding: 10px 8px;
+  box-shadow: none;
+  border-radius: 8px;
 }
 .commentTextForm ::ng-deep .dropdown-menu>.active>a, 
 .commentTextForm ::ng-deep .dropdown-menu>.active>a:hover, 
