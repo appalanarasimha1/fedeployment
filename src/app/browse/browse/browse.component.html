@@ -1471,7 +1471,7 @@
                         </ng-template>
                       </span>
                     </td>
-                    <td *ngIf="checkAssetType(item.type)" (contextmenu)="onContextMenu($event, item)">
+                    <td *ngIf="checkAssetType(item.type)"class="getWidth3" (contextmenu)="onContextMenu($event, item)">
                       <span (click)="copyLink(item, 'asset')" style="text-align: right;">
                         <div *ngIf="!item.copy; else other_content" class="copyHover">
                           <img src="../../../assets/images/Link.svg" />
