@@ -1020,6 +1020,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         if (this.count==0) {
           this.currentIndexClicked = undefined
           this.lastIndexClicked = undefined
+          this.selectAllClicked = false
+
         }else{
           this.lastIndexClicked = this.currentIndexClicked
           this.currentIndexClicked = undefined
@@ -1768,6 +1770,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (this.count==0) {
         this.currentIndexClicked = undefined
         this.lastIndexClicked = undefined
+        this.selectAllClicked = false
       }else{
         this.lastIndexClicked = this.currentIndexClicked
         this.currentIndexClicked = undefined
@@ -1804,7 +1807,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length > 0) {
+      if (this.downloadArray.length == 1) {
+        window.location.href =this.getFileContent(this.downloadFullItem[0])
+        this.removeAssets()
+      }
+      if (this.downloadArray.length > 1) {
         $(".multiDownloadBlock").hide();
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
@@ -1875,6 +1882,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedMoveList={}
     // this.isAware=false
     // $(".vh").prop("checked", false);
+    this.selectAllClicked = false
+    this.currentIndexClicked = undefined
+    this.lastIndexClicked = undefined
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
 
@@ -2437,5 +2447,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.removeAssets();
       this.selectAllClicked = false;
     }
+  }
+
+  getFileContent(doc) {
+    return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
 }

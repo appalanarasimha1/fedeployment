@@ -516,13 +516,30 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return comment.author
   }
 
-  findChoices(searchText: string) {
-    return ['John', 'Jane', 'Jonny'].filter(item =>
-      item.toLowerCase().includes(searchText.toLowerCase())
-    );
+ async findChoices(searchText: string) {
+    const params = {
+      "q": searchText.toLowerCase(),
+      "currentPageIndex": "0",
+    };
+    
+        const response:any = await fetch("/nuxeo/api/v1/"+apiRoutes.SEARCH_USER + "?" +new URLSearchParams(params), {
+            method: 'Get', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'include', // include, *same-origin, omit
+            headers: {
+              'Content-Type': 'application/json'
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          }).then( response => response.json() )
+          
+          return await response?.entries.map(data=>data.id)
+    
   }
   getChoiceLabel(choice: string) {
-    return `@${choice} `;
+    return `{{${choice}}} `;
   }
   checkCanDownload() {
     if (this.user === this.getCreator()) return true;
@@ -581,14 +598,20 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   creatUserName(name){
     let data = name.split(".")
-    let newName = data[0][0] + data[1][0]
+    let newName = data[0][0];
     return newName.toUpperCase()
   }
   closeModal() {
-    console.log('hi');
     this.modalOpen = false;
     this.modalLoading = false;
     this.showAllComments= false
     this.matDialog.closeAll()
+  }
+
+  getCommentStr(str){
+    let temp = str.replaceAll("&#64;","@");
+    temp = temp.replace('{<!-- -->{', "<span style='color: #DEB31A !important;'>");
+    return temp.replace("}}", "</span>");
+
   }
 }
