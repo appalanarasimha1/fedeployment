@@ -13,14 +13,16 @@
             <ol class="publicUse" >
               <li>
                 <div class="publicUseBlock" *ngIf="hasNoRestriction() && !hasPrivateAccess()">
-                  <div class="publicUseBlk">ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
+                  <!-- <div class="publicUseBlk">ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div> -->
+                  <div class="publicUseBlk">Public <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
                     This asset is visible to all NEOM users and their external collaborators
                   </div>
                 </div>
 
                 <div class="internalUseBlock" *ngIf="internalUse() && !hasPrivateAccess()">
-                  <div class="publicUseBlk">NEOM EMAIL HOLDERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
+                  <!-- <div class="publicUseBlk">NEOM EMAIL HOLDERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div> -->
+                  <div class="publicUseBlk">Internal <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
                   <div class="mouseHoverInfo">
                     This asset is visible to users with NEOM emails only
                   </div>
@@ -139,18 +141,19 @@
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
           <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
-
-          <img *ngIf="checkMimeType(doc) === 'nopreview'" src="../../../assets/images/no-preview.png" style="width: 100%;height: 100px;margin: 80px 0px;" />
+          <!-- ../../../assets/images/no-preview.png -->
+          <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;" />
         </div>
 
         <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
-        <div *ngIf="checkMimeType(doc) === 'video'" style="height: 600; position: relative">
-          <video controls style="width: 100%; height: 600px" [src]="getAssetUrl(null, docUrl)"
+        <div *ngIf="checkMimeType(doc) === 'video'" style="height: calc(100vh - 250px)!important; position: relative">
+          <video controls style="width: 100%; height: 100%" [src]="getAssetUrl(null, docUrl)"
             crossorigin="use-credentials"></video>
         </div>
         <div *ngIf="checkMimeType(doc) === 'file'">
-          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
-            style="display: block; width: 100%; height: 600px" [original-size]="false" [autoresize]="true"
+          <!-- <img [src]="docUrl" alt="" /> -->
+          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="umesh"
+            style="display: block; width: 100%; height: calc(100vh - 68vh)" [original-size]="false" [autoresize]="true"
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>
         <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
@@ -202,11 +205,11 @@
                         {{ toDateString(doc?.properties) }}
                         by
                         <br />
-                        <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
+                        <span style="color: #DEB31A; word-break: break-all; font-family: 'brownregular';">{{getCreator()}}</span>
                       </li>
 
                       <li>
-                        Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
+                        Usage approver <br /><span style="color: #DEB31A; word-break: break-all; font-family: 'brownregular';">{{
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
                           }}</span>
                       </li>
@@ -220,10 +223,11 @@
                       <li>
                         Location <br />
                         <span style="word-break: break-all">
-                          <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}"
-                          (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                          <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
+                           class="pointer" style="color: #DEB31A; font-family: 'brownregular';">
                             {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                           </a>
+                          <!-- remove click event (click)="navigateTo(doc?.parentRef)" -->
                         </span>
                       </li>
 
@@ -309,7 +313,7 @@
       </div>
 
       <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
-        <div class="mb-4" style="width: 78%">
+        <div class="mb-4" style="width: 80%">
           <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
 
           <div class="weight-size-block">
@@ -398,8 +402,7 @@
                   {{ getAuthor(comment) }}
                   <!-- <span>{{ getTime(comment.creationDate, false) }} ago</span> -->
                 </p>
-                <p class="bodyContent">{{ comment.text }} 
-                  <!-- <span>@Amit Raad</span> ? -->
+                <p class="bodyContent" [innerHTML]="getCommentStr(comment.text) | safe: 'htmlText'">
                 </p>
               </div>
             </li>
@@ -407,18 +410,21 @@
             <!-- <li class="allComments" *ngIf="loading"><span><app-loader-small [show]="loading"></app-loader-small>View all comments</span></li> -->
           </ul>
           <!-- <div class="allComments" (click)="showAllcommentClick()" *ngIf="totalComments>comments.length"><span>View all comments</span></div> -->
-          <form (submit)="saveComment(commentText)" class="commentTextForm">
-            <!-- <mwl-text-input-autocomplete-container> -->
-                <!-- mwlTextInputAutocomplete
-                [findChoices]="findChoices"
-                [getChoiceLabel]="getChoiceLabel" -->
+          <form (submit)="saveComment(commentText)" class="commentTextForm" >
+            <mwl-text-input-autocomplete-container>
+                
               <input 
                 type="text"
                 [(ngModel)]="commentText" 
                 class="commentInput"
                 name="comment"
-                placeholder="Write a comment here" />
-            <!-- </mwl-text-input-autocomplete-container>  -->
+                placeholder="Write a comment here" 
+                mwlTextInputAutocomplete
+                [findChoices]="findChoices"
+                [getChoiceLabel]="getChoiceLabel"
+                autocomplete="off"
+                />
+            </mwl-text-input-autocomplete-container> 
             <button class="commentBtn" (click)="saveComment(commentText)" autocomplete="off" [disabled]="!commentText" [ngClass]="{'activeBtn' : commentText}">Send</button>
             <!-- <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
               class="enterComment" style="cursor: pointer" /> -->
@@ -512,7 +518,8 @@
       <app-loader-small [show]="modalLoading"></app-loader-small>
       <div class="copyright-caption">
         <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
-        <img *ngIf="checkMimeType(doc) === 'nopreview'" src="../../../assets/images/no-preview.png" style="width: 100%;height: 100px;margin: 80px 0px;" />
+        <!-- ../../../assets/images/no-preview.png -->
+        <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;" />
       </div>
 
       <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
@@ -521,8 +528,8 @@
           crossorigin="use-credentials"></video>
       </div>
       <div *ngIf="checkMimeType(doc) === 'file'">
-        <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
-          style="display: block; width: 100%; height: 600px" [original-size]="false" [autoresize]="true"
+        <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="nitin"
+          style="display: block; width: 100%; height: calc(100vh - 68vh)" [original-size]="false" [autoresize]="true"
           [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
       </div>
       <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
@@ -592,9 +599,10 @@
                     <li>
                       Location <br />
                       <span style=" word-break: break-all">
-                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" (click)="navigateTo(doc?.parentRef)" class="pointer" style="color: #ebc03f;">
+                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank" class="pointer" style="color: #ebc03f;">
                           {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                         </a>
+                        <!-- remove click event (click)="navigateTo(doc?.parentRef)" -->
                       </span>
                     </li>
 
@@ -676,7 +684,7 @@
     </div>
 
     <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
-      <div class="mb-4" style="width: 78%">
+      <div class="mb-4" style="width: 80%">
         <span *ngIf="doc?.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
         <div class="weight-size-block">
           <ul>

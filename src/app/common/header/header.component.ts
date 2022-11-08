@@ -135,8 +135,7 @@ export class HeaderComponent implements OnInit {
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
     // this.openOnboardingModal(this.onboarding);
     this.dataService.showFooter$.subscribe((data)=>this.showFooter= data)
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.userData = user
+    this.fetchUserData();
     return;
   }
 
@@ -399,6 +398,15 @@ export class HeaderComponent implements OnInit {
     let {userData} = this
     let splittedUser = userData?.email.split(".")
     let name = splittedUser?.[0]?.[0] + splittedUser?.[1]?.[0]
-    return isNaN(name) && !splittedUser.length ? "":name?.toUpperCase()
+    return isNaN(name) && !splittedUser?.length ? "":name?.toUpperCase()
+  }
+
+  async fetchUserData() {
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.connect();
+      localStorage.setItem("user", JSON.stringify(res.user.properties));
+      // const user = JSON.parse(localStorage.getItem('user'));
+      this.userData = res.user.properties;
+    }
   }
 }

@@ -47,6 +47,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditAccessComponent } from './edit-access/edit-access.component';
+import { AddUserPrivateFolderModalComponent } from './add-user-private-folder-modal/add-user-private-folder-modal.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { EditAccessComponent } from './edit-access/edit-access.component';
     MoveCopyAssetsComponent,
     AssetCannotBeAccessedComponent,
     EditAccessComponent,
+    AddUserPrivateFolderModalComponent,
     // AssetViewComponent,
   ],
   imports: [

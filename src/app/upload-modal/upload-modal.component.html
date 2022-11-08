@@ -1,6 +1,6 @@
 <div class="upload-modal">
-   <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()">
-      <img src="../../assets/images/close-modal.svg" />
+   <button type="button" class="close-modal-icon" aria-label="Close" (click)="openBrowseRoute()">
+      <img src="../../assets/images/close-modal.svg" style="width: 20px" />
    </button>
    <mat-horizontal-stepper *ngIf="step !== 4" [linear]="true" #stepper>
       <mat-step [completed]="!checkUploadStep()">
@@ -12,7 +12,8 @@
             <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length">
                <div class="flexible" style="height: calc(92vh - 273px);justify-content: center;position: relative;">
                   <div class="upload-label">
-                     <span style="margin-top: 20px;"><img src="../../assets/images/cloud-upload.png" style="width: 36px; margin-right: 10px;"> <b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
+                     <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
+                     <span style="margin-top: 20px; color: #040404; padding-bottom: 10px;"><b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
                      <div *ngIf="data" class="uploadAssetsBlock">
                         <div class="folder-img">
                            <img src="../../assets/images/folder-icon.svg" style="width: 60px;margin: 0 14px 0 0;">
@@ -24,7 +25,7 @@
                            </div>
                         </div>
                      </div>
-                     <span>{{ !data ? 'or click to select files to upload' : 'or click to select assets to upload'}}</span>
+                     <span style="font-family: 'brownlight'; color: #040404;">{{ !data ? 'or click to select files to upload' : 'or click to select assets to upload'}}</span>
                   </div>
                   <!-- <div class="errortext">
                      <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
@@ -87,20 +88,23 @@
                </div>
             </div>
 
-            <div class="button-groups" style="padding-top: 0px; padding-right: 0px;">
+            <div class="button-groups" style="padding-top: 0px; padding-right: 0px; position: relative; bottom: 0px;">
                <button (click)="closeModal()" class="cancel-btn">Cancel</button>
                <div class="progress-btns">
-                  <button *ngIf="!isPrivateFolder()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                  <button *ngIf="!isPrivateFolder() && !checkboxIsPrivate" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
                      Next
                      <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                         Please complete all mandatory fields to proceed
                       </div>
                   </button>
-                  <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+                  <button *ngIf="(isPrivateFolder() || checkboxIsPrivate)&& !publishing" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
                      Upload
                      <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                         Please complete all mandatory fields to proceed
                       </div>
+                  </button>
+                  <button *ngIf="isPrivateFolder() && publishing" mat-button class="upload-btn" style="position: relative" >
+                     {{!isPrivateFolder()?'Publish':'Upload'}} <app-loader-small [show]="loading"></app-loader-small>
                   </button>
                </div>
             </div>
@@ -228,15 +232,72 @@
                </div>
             </div>
             <div class="update-form-input row mb-20">
-               <div class="col-xl-4 col-md-4"></div>
-               <div  class="col-xl-8 col-md-8">
+               <!-- <div class="col-xl-4 col-md-4"></div> -->
+               <div  class="col-xl-12 col-md-12">
                   <!-- [ngClass]="{'disableDiv': data}" -->
 
+                  <div class="upload-form-input row mb-20" *ngIf="enableFolderType">
+                     <div class="col-xl-4 col-md-4">
+                        <label for="title">Folder type</label>
+                     </div>
+                     <div class="col-xl-8 col-md-8 folderType"  [ngClass]="{'grayField': descriptionFilled}" >
+                        <div class="row">
+                           <div class="col-xl-3 col-md-3">
+                              <div class="row">
+                                 <div class="col-xl-12 mb-10">
+                                    <label class="control control--checkbox" (change)="handleChange($event, 'published')" style="margin-bottom: 0px; display: inline-block;">
+                                      Published
+                                      <input type="radio" id="Published" name="publishedPrivate" checked/>
+                                      <div class="control__indicator" for="Published" style="top: 4px;left: 0px; border-radius: 100px;"></div>
+                                    </label>
+                                  </div>
+                                  <div class="col-xl-12 mb-10">
+                                    <label class="control control--checkbox" (change)="handleChange($event, 'private')" style="margin-bottom: 0px; display: inline-block;">
+                                      Private
+                                      <input type="radio" id="Private" name="publishedPrivate"/>
+                                      <div class="control__indicator" for="Private" style="top: 4px;left: 0px;border-radius: 100px;"></div>
+                                    </label>
+                                  </div>
+                              </div>
+                           </div>
+                           <div class="col-xl-9 col-md-9" >
+                              <div class="row">
+                                 <div class="col-xl-12 mb-10">
+                                    <div class="publishingAssets" *ngIf="publishingAssets">
+                                      <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
+                                      <ul>
+                                        <li>
+                                          <span class="leftCont">Access and Usage:</span> <span class="rightCont">Set per asset ("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</span>
+                                        </li>
+                                        <li>
+                                          <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">No</span>
+                                        </li>
+                                      </ul>
+                                    </div>
+       
+                                    <div class="publishingAssets" *ngIf="publishingPrivateAssets">
+                                      <p>Used for restricting files to specific users or receiving files from external users</p>
+                                      <ul>
+                                        <li>
+                                          <span class="leftCont">Access and Usage:</span> <span class="rightCont">Folder members only</span>
+                                        </li>
+                                        <li>
+                                          <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">Yes (if folder member)</span>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                              </div>
+                           </div>
+                         </div>
+                     </div>
+                  </div>
+
                   <div class="upload-form-input row mb-20">
-                     <div class="col-xl-5 col-md-5">
+                     <div class="col-xl-4 col-md-4">
                         <label for="title">Description <br><span style="font-size: 12px">Project or event description (optional)</span></label>
                      </div>
-                     <div class="col-xl-7 col-md-7"  [ngClass]="{'grayField': descriptionFilled}" >
+                     <div class="col-xl-8 col-md-8"  [ngClass]="{'grayField': descriptionFilled}" >
                         <!-- [ngClass]="{'grayField': descriptionFilled}" -->
                         <input type="text" [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }" style="width: 95%; margin-top: 26px;" />
                         <!-- <textarea  [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea> -->
@@ -244,10 +305,10 @@
                      </div>
                   </div>
                   <div class="row upload-form-input custom-date-picker mb-20">
-                     <div class="col-xl-5 col-md-5">
+                     <div class="col-xl-4 col-md-4">
                         <label for="date">Associated Date <br><span style="font-size: 12px">Project or event date (optional)</span></label>
                      </div>
-                     <div class="col-xl-7 col-md-7 flexible" [ngClass]="{'grayField': descriptionFilled}" >
+                     <div class="col-xl-8 col-md-8 flexible" [ngClass]="{'grayField': descriptionFilled}" >
                         <!-- [ngClass]="{'grayField': disableDateInput}" -->
                         <!-- placeholder="Choose a date"  -->
                         <mat-form-field appearance="fill">
@@ -300,16 +361,19 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn" (click)="backBtn()">Back</button>
-               <button *ngIf="!isPrivateFolder()" mat-button matStepperNext class="upload-btn tollTipCustom" (click)="copyUserMap()" [disabled]="checkUploadFormStep()">Review
+               <button *ngIf="!isPrivateFolder() &&!checkboxIsPrivate" mat-button matStepperNext class="upload-btn tollTipCustom" (click)="copyUserMap()" [disabled]="checkUploadFormStep()">Review
                   <div *ngIf="checkUploadFormStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                      Please complete all mandatory fields to proceed
                    </div>
                </button>
-               <button *ngIf="isPrivateFolder()" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
+               <button *ngIf="(isPrivateFolder() || checkboxIsPrivate)&& !publishing" (click)="publish()" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
                   Upload
                   <div *ngIf="checkUploadStep()" class="tolltipContent" style="top: -30px; right: 0px; left: auto;">
                      Please complete all mandatory fields to proceed
                    </div>
+               </button>
+               <button *ngIf="isPrivateFolder() && publishing" mat-button class="upload-btn" style="position: relative" >
+                  {{!isPrivateFolder()?'Publish':'Upload'}} <app-loader-small [show]="loading"></app-loader-small>
                </button>
             </div>
          </div>
@@ -541,7 +605,7 @@
                               </div>
                            </div>
                         </div>
-                        <div *ngIf="!isPrivateFolder()" class="publish-file-preview-access">
+                        <div *ngIf="!isPrivateFolder() && !checkboxIsPrivate" class="publish-file-preview-access">
                            <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customConfidentialityMap[file.key] }">
                               <div class="col-xl-4">
                                  <label for="confidentiality">Confidentiality</label>
@@ -667,9 +731,9 @@
             <button (click)="closeModal()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
-               <button *ngIf="!publishing" [ngClass]="{'btnDisable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">{{!isPrivateFolder()?'Publish':'Upload'}}</button>
+               <button *ngIf="!publishing" [ngClass]="{'btnDisable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">{{(!isPrivateFolder()&& !checkboxIsPrivate)?'Publish':'Upload'}}</button>
                <button *ngIf="publishing" mat-button class="upload-btn" style="position: relative" >
-                  {{!isPrivateFolder()?'Publish':'Upload'}} <app-loader-small [show]="loading"></app-loader-small>
+                  {{(!isPrivateFolder() && !checkboxIsPrivate)?'Publish':'Upload'}} <app-loader-small [show]="loading"></app-loader-small>
                </button>
             </div>
          </div>
@@ -699,17 +763,10 @@
             <p class="numberAssets">{{ getAssetNumber() }} assets</p>
          </div>
       </div>
-      <div (click)="closeModal()" class="close-modal">
+      <div (click)="openBrowseRoute()" class="close-modal">
          <!-- <mat-icon>close</mat-icon> -->
          Close
       </div>
    </div>
 </div>
-<!-- <div class="button-groups" *ngIf="step !== 4">
-   <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-   <div class="progress-btns">
-      <button class="cancel-btn" *ngIf="step > 1" (click)="toPreviousStep()">Back</button>
-      <button class="upload-btn" [disabled]="checkButtonDisabled()" (click)="toNextStep()">{{ buttonLabel }}</button>
-   </div>
-</div> -->
 </div>

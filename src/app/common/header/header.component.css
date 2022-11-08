@@ -788,6 +788,7 @@ ul.sidebarList li .sidebarLink.active {
 }
 .bottomItems ul li a svg {
     margin-right: 5px;
+    vertical-align: -2px;
 }
 /* new sidebar end */
 .borderNone {
@@ -1091,10 +1092,13 @@ span.userName {
     position: absolute;
     width: calc(100% - 14px);
     height: 100%;
-    background: rgb(0 0 0 / 33%);
-    line-height: 25px;
+    /* background: rgb(0 0 0 / 33%); */
+    background-color: #DEB31A;
+    line-height: 28px;
     text-align: center;
-    font-size: 11px;
+    font-size: 12px;
     border-radius: 100px;
-    border: 1px solid #fff;
+    border: 1px solid #DEB31A;
+    height: 30px;
+    width: 30px;
 }

@@ -429,10 +429,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
-      return '../../../assets/images/no-preview.png';
+      // return '../../../assets/images/no-preview.png';
+      return this.getNoPreview(document);
     }
+
+    const mimeType = document?.properties['file:content']?.['mime-type'];
+    if(mimeType?.includes('pdf') && this.viewType ==="LIST" && !document?.update)
+      return '../../../assets/images/pdf.png';
+
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
-      return '../../../assets/images/no-preview-grid.svg';
+      // return '../../../assets/images/no-preview-grid.svg';
+      return this.getNoPreview(document);
     }
    return this.sharedService.getAssetUrl(event, url, type);
   }
@@ -471,9 +478,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // fileRenditionUrl = url;
     }
     this.selectedFileUrl =
-      fileType === "image"
-        ? this.getAssetUrl(null, fileRenditionUrl)
-        : fileRenditionUrl;
+      // fileType === "image"?
+        this.getAssetUrl(null, fileRenditionUrl, {...file, update:true } )
+        // : fileRenditionUrl;
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
@@ -569,7 +576,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-    this.removeAssets()
+    this.removeAssets();
     this.saveState(item, index, breadCrumbIndex);
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -588,14 +595,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
-      console.log("inside if");
 
       const listView = 1;
       this.loading = true;
       await this.getWorkspaceFolders(item.uid, listView);
       this.loading = false;
     } else {
-      console.log("inside else");
       // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
@@ -617,7 +622,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.showMoreButton = true;
     this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
     if (checkCache && this.folderAssetsResult[id] && !this.permissionChange) {
-      console.log("comming");
 
       return this.folderAssetsResult[id];
     }
@@ -973,7 +977,39 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i, updateCount = true) {
+    console.log('updatecount', updateCount);
+
+    if(this.selectAllClicked) updateCount = true
+    
+    // var $chkboxes = $('.chkbox');
+    // var lastChecked = null;
+
+    // $chkboxes.click(function(e) {
+    //   console.log('shift', e.shiftKey);
+    //     if (!lastChecked) {
+    //         lastChecked = this;
+    //         // return;
+    //     }
+
+    //     if (e.shiftKey) {
+    //         var start = $chkboxes.index(this);
+    //         var end = $chkboxes.index(lastChecked);
+    //         $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastChecked.checked);
+    //     }
+
+    //     lastChecked = this;
+    // });
+
+
     if ($event.target?.checked || $event.checked) {
+      if (this.lastIndexClicked ==undefined) {
+        this.currentIndexClicked = i
+        this.lastIndexClicked = i
+  
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = i
+      }
       if (updateCount) this.count = this.count + 1;
       this.selectedFolderList[i] = item;
       this.selectedMoveList[i] = item;
@@ -981,22 +1017,28 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (updateCount) this.count = this.count - 1;
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
+        if (this.count==0) {
+          this.currentIndexClicked = undefined
+          this.lastIndexClicked = undefined
+          this.selectAllClicked = false
+
+        }else{
+          this.lastIndexClicked = this.currentIndexClicked
+          this.currentIndexClicked = undefined
+        }
     }
+    
   }
 
   async deleteFolders() {
-    if (Object.keys(this.selectedFolderList).length == 0) return;
+    // if (Object.keys(this.selectedFolderList).length == 0 ) return;
     this.loading = true;
-
-    const listDocs = Object.entries(this.selectedFolderList)
-    .filter(([key, item]) => this.checkCanDelete(item)).map(function (
-      [key, item],
-      index
-    ) {
-      return item["uid"];
-    });
+    let data = Object.values(this.selectedFolderList)
+    let dataToParse =  data.concat(this.assetCanDelete)
+    const listDocs = dataToParse
+    .filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
     await this.apiService
-      .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}` })
+      .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}`})
       .subscribe((docs: any) => {
         this.loading = false;
         this.deleteModal(listDocs);
@@ -1008,7 +1050,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async unTrashFolders() {
-    console.log("selectedFolderList",this.selectedFolderList);
     
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
@@ -1027,7 +1068,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkEnableDeleteBtn() {
-    return Object.keys(this.selectedFolderList).length > 0;
+    return Object.keys(this.selectedFolderList).length > 0  || Object.keys(this.selectedMoveList).length >this.canNotDelete.length;
   }
 
 
@@ -1390,7 +1431,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
   initialLoad:Boolean= true
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
-    console.log("getWorkspaceFolders");
 
     this.showSearchbar = true;
     // this.loading = true;
@@ -1663,20 +1703,33 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   count: number = 0;
   copyRightItem: any = [];
   canNotDelete: any = [];
+  assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
+   
+
     let canDelete = this.checkCanDelete(item)
-    if(canDelete){
-      this.selectFolder($event, item, i, false);
+    if(this.checkCanMove(item)){
+      console.log('update', $event.update);
+      return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
     }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
       }
-      
+      if (this.lastIndexClicked ==undefined) {
+        this.currentIndexClicked = i
+        this.lastIndexClicked = i
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = i
+      }
+    
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
+      }else{
+        this.assetCanDelete.push(item)
       }
        if (
          item.properties['sa:copyrightName'] !== null &&
@@ -1684,7 +1737,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
        ) {
          this.copyRightItem.push(item.uid);
        }
-      if (item.properties["sa:downloadApprovalUsers"].length > 0) {
+      if (item.properties["sa:downloadApprovalUsers"]?.length > 0) {
         this.needPermissionToDownload.push(item);
       } else {
         if (item.properties["sa:access"] === "Internal access only") {
@@ -1708,7 +1761,20 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         (m) => m.uid !== item.uid
       );
       delete this.selectedMoveList[i];
-      this.count = this.count - 1;
+
+    
+      if ($event.from !== "rightClick") {
+        this.count = this.count - 1;
+      }
+      
+      if (this.count==0) {
+        this.currentIndexClicked = undefined
+        this.lastIndexClicked = undefined
+        this.selectAllClicked = false
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = undefined
+      }
       //  }
     }
     this.getdownloadAssetsSize();
@@ -1741,7 +1807,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length > 0) {
+      if (this.downloadArray.length == 1) {
+        window.location.href =this.getFileContent(this.downloadFullItem[0])
+        this.removeAssets()
+      }
+      if (this.downloadArray.length > 1) {
         $(".multiDownloadBlock").hide();
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
@@ -1812,6 +1882,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedMoveList={}
     // this.isAware=false
     // $(".vh").prop("checked", false);
+    this.selectAllClicked = false
+    this.currentIndexClicked = undefined
+    this.lastIndexClicked = undefined
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
 
@@ -2087,7 +2160,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   folderNameChange(){
-    console.log("this.titleExists",this.titleExists);
 
     return this.titleExists = false
   }
@@ -2123,7 +2195,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async openMoveModal() {
     const listDocs = Object.values(this.selectedMoveList)
     .filter( item => !this.checkDownloadPermission(item))
-   console.log("listDocslistDocs",listDocs);
 
     if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
@@ -2144,7 +2215,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (result) {
         delete this.folderAssetsResult[result.uid];
         delete this.folderAssetsResult[this.selectedFolder.uid];
-
+        this.removeAssets();
         this.loading = true;
         setTimeout(() => {
           if (this.selectedFolder.type === 'Domain') window.location.reload();
@@ -2267,21 +2338,43 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     
   }
+  selectAllClicked:boolean=false
+  rightClickSelectAll(){
+    this.removeAssets()
+    this.sortedData.forEach((e,i) => {
+      if(!this.checkGeneralFolder(e)){
+         e.isSelected = true
+        this.selectAllClicked = true
+         this.selectAsset({checked:true , update:true}, e, i)
+      }
+    }); 
+  }
 
+  unSelectEnable(){
+    let checkGen = false
+    for (let i = 0; i < this.sortedData.length; i++) {
+      if(this.checkGeneralFolder( this.sortedData[i])) {
+        checkGen=true
+        break;
+      }
+    } 
+
+    if (checkGen) return this.count ==this.sortedData.length-1
+    return this.count ==this.sortedData.length
+  }
   contextMenuPosition = { x: '0px', y: '0px' };
 
   onContextMenu(event: MouseEvent, item: any) {
     if(!this.checkGeneralFolder(item) && !this.isTrashView) {
-      console.log('contextMenu', item);
       event.preventDefault();
       this.contextMenuPosition.x = event.clientX + 'px';
       this.contextMenuPosition.y = event.clientY + 'px';
       this.contextMenu.menuData = { 'item': item };
       this.contextMenu.menu.focusFirstItem('mouse');
       this.contextMenu.openMenu();
-
+      
       $(document).click( (e)=> {
-        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0) {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0 && !this.selectAllClicked) {
           // $(".availableActions").hide();
           this.removeAssets()
         }
@@ -2294,7 +2387,69 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData[splitedData?.length - 1];
+    const lowercaseMime = mimeType.toLowerCase();
+
+    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      return '../../../assets/images/doc-preveiw.svg';
+    } 
+    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      return '../../../assets/images/ppt-preveiw.svg';
+    }
+    if(item.update) {
+      return '../../../assets/images/no-preview.png';
+    }
+
+    return '../../../assets/images/no-preview-grid.svg';
+  }
+  
   checkFolderContains(){
-    return Object.values(this.selectedFolderList).length <1
+    return Object.keys(this.selectedFolderList).length <1
+  }
+
+  lastIndexClicked:number
+  currentIndexClicked:number
+  
+  shiftkeyDown(e,item,i){
+    // console.log("e",this.lastIndexClicked,this.currentIndexClicked,this.sortedData);
+    // let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
+    // let slicedData = this.sortedData.slice(sortedNumber[0],sortedNumber[1]+1)
+    // console.log("sliccesdData", slicedData);
+
+      // this.sortedData.forEach((ele:any,i)=>{
+        //  if (i >=sortedNumber[0] && i <=sortedNumber[1]) {
+        //     ele.isSelected = true
+        //     this.selectAsset({checked:true,update:false}, ele, i)
+        //  }
+        // })
+      // })
+    
+  }
+  shiftkeyUp($event,item,i){
+    let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
+    this.sortedData.forEach((ele:any,i)=>{
+         if (i >=sortedNumber[0] && i <=sortedNumber[1] && !this.checkGeneralFolder(ele)) {
+          if( !ele.isSelected) {       
+            ele.isSelected = true
+            this.selectAsset({checked:true,update:true}, ele, i)
+          }
+         }
+      })
+  }
+  selectAllToggle(e) {
+    if(e.target.checked) {
+      this.rightClickSelectAll();
+      this.selectAllClicked = true;
+    } else {
+      this.removeAssets();
+      this.selectAllClicked = false;
+    }
+  }
+
+  getFileContent(doc) {
+    return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
 }

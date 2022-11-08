@@ -4065,6 +4065,7 @@ app-search {
   display: block !important;
   min-height: 100px !important;
   height: 100% !important;
+  border-radius: 8px;
 }
 document-card img {
   display: block !important;
@@ -4520,7 +4521,7 @@ input.requesInput::-ms-input-placeholder {
   appearance: none;
   border: 0px;
   outline: none;
-  width: 30px;
+  width: 20px;
   margin-left: auto;
   vertical-align: top;
   padding: 0px 0px 15px;
@@ -4544,4 +4545,16 @@ input.requesInput::-ms-input-placeholder {
 ::-webkit-scrollbar-thumb{
 	background-color: #E8E6DF;
   border-radius: 10px;
+}
+
+.slide img.noPreviewItem {
+  height: 175px !important;
+  object-fit: none !important;
+  width: 160px !important;
+  margin: 0px auto;
+}
+ul.all-sectors img.noPreviewItem {
+  height: 135px !important;
+  object-fit: none !important;
+  width: 160px !important;
 }
