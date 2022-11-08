@@ -1509,6 +1509,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       var storeHeight = $(".main-content").outerHeight();
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
+
+      var getWidth1 = $('.getWidth1').outerWidth();
+      var getWidth2 = $('.getWidth2').outerWidth();
+      var getWidth3 = $('.getWidth3').outerWidth();
+      var totalWidth = getWidth1 + getWidth2 + getWidth3;
+      console.log('getWidth', totalWidth);
+      $('.chkbox.width1600').css("width", totalWidth - 60);
     }, 0);
   }
 

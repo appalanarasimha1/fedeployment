@@ -1229,7 +1229,7 @@
                     <th style="width: 3%">&nbsp;&nbsp;</th>
                   </tr>
                   <tr *ngFor="let item of sortedData; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder positionRelative">
-                    <td style="position: relative;" (contextmenu)="onContextMenu($event, item)"><!--(contextmenu)="currentIndexRightClick = i; i == currentIndexRightClick ? onRightClick(item,i): ''"-->
+                    <td style="position: relative;" class="getWidth1" (contextmenu)="onContextMenu($event, item)"><!--(contextmenu)="currentIndexRightClick = i; i == currentIndexRightClick ? onRightClick(item,i): ''"-->
                       <div
                         class="delete-folder-action"
                         *ngIf="
@@ -1333,8 +1333,8 @@
                         </ul> -/->
                       </div> -->
                     </td>
-                    <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative">
-                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px; position: relative; z-index: 99;">
+                    <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative getWidth2">
+                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px; position: relative; z-index: 99; ">
                       <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block;
                       vertical-align: middle;  position: relative; z-index: 99;">
                         <span class="tollTipCustom">
@@ -1389,7 +1389,7 @@
                         </div>
                       </span> -->
                     </td>
-                    <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
+                    <td *ngIf="checkAssetType(item.type)" class="getWidth2" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
                       <div class="zoomImg" style="display: inline-block;">
                         <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item)" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain;">
                         <div class="zoomImgBlock">
@@ -1451,7 +1451,7 @@
                         </div>
                       </span>
                     </td>
-                    <td *ngIf="!checkAssetType(item.type)" (contextmenu)="onContextMenu($event, item)">
+                    <td *ngIf="!checkAssetType(item.type)" class="getWidth3" (contextmenu)="onContextMenu($event, item)">
                       <span (click)="copyLink(item, 'folder')" style="text-align: right;">
                         <div *ngIf="!item.copy; else other_content" class="copyHover">
                           <img src="../../../assets/images/Link.svg" />

@@ -4243,7 +4243,7 @@ img.closeIcon {
   opacity: 1;
 }
 .width1600 {
-  width: 1600px !important;
+  /* width: 1600px !important; */
   z-index: 1 !important;
   top: -25px !important;
   height: 68px !important;
