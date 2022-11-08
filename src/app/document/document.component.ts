@@ -215,6 +215,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   downloadEnable: boolean = false;
   hasSearchData: boolean = false;
   isAware;
+  userIdNew;
 
   searchNameCLicked = [];
 
@@ -293,12 +294,13 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
+    this.userIdNew = JSON.parse(localStorage.getItem("user"))?.email;
     if (changes.searchTerm) {
       this.searchTerm = changes.searchTerm.currentValue;
       this.getRelatedTags();
     }
 
-    if (this.userId && this.recentUpdated && this.recentUpdated.length === 0) {
+    if (this.userIdNew && this.recentUpdated && this.recentUpdated.length === 0) {
       this.getRecentUpdated();
     }
 
@@ -963,7 +965,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     const query =
       "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND " +
       "ecm:isTrashed = 0 AND (ecm:primaryType IN ('File') OR ecm:mixinType IN ('Picture', 'Audio', 'Video')) AND " +
-      `dc:creator = '${this.userId}' ORDER BY dc:created DESC`;
+      `dc:creator = '${this.userIdNew}' ORDER BY dc:created DESC`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
