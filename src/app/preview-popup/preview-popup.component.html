@@ -2,7 +2,7 @@
   <ng-template #preview let-modal class="imgPopUpTab">
     <!-- <div class="modal-header">
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = '';showAllComments=false">
-        <!-- <span aria-hidden="true">&times;</span> -/->
+        <span aria-hidden="true">&times;</span> -/->
         <span aria-hidden="true"><img src="../../assets/images/modalclose.svg" /></span>
       </button>
     </div> -->
@@ -205,19 +205,11 @@
                         {{ toDateString(doc?.properties) }}
                         by
                         <br />
-<<<<<<< HEAD
-                        <span style="color: #DEB31A; word-break: break-all; font-family: 'brownregular';">{{getCreator()}}</span>
+                        <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
                       </li>
 
                       <li>
-                        Usage approver <br /><span style="color: #DEB31A; word-break: break-all; font-family: 'brownregular';">{{
-=======
-                        <span style="color: #DEB31A; word-break: break-all">{{getCreator()}}</span>
-                      </li>
-
-                      <li>
-                        Usage approver <br /><span style="color: #DEB31A; word-break: break-all">{{
->>>>>>> 5be8ff61 (fix comment ui issues)
+                        Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
                           }}</span>
                       </li>
@@ -232,11 +224,7 @@
                         Location <br />
                         <span style="word-break: break-all">
                           <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
-<<<<<<< HEAD
-                           class="pointer" style="color: #DEB31A; font-family: 'brownregular';">
-=======
-                           class="pointer" style="color: #DEB31A;">
->>>>>>> 5be8ff61 (fix comment ui issues)
+                           class="pointer" style="color: #ebc03f;">
                             {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                           </a>
                           <!-- remove click event (click)="navigateTo(doc?.parentRef)" -->
