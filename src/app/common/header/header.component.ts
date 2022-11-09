@@ -155,6 +155,13 @@ export class HeaderComponent implements OnInit {
       // window.scrollTo(0,document.body.scrollHeight);
       $('#favorites').animate({scrollTop: document.body.scrollHeight},"slow");
     }, 300);
+
+    $("#favorites").click(function(e) {
+      // console.log($('#favoritesHome').offset().top)
+      $('html, body').animate({
+        scrollTop: $('#favoritesHome').offset().top
+      }, 'slow');
+    });
   }
 
   selectTab(tab: string) {
