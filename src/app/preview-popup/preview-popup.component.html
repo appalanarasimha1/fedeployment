@@ -161,7 +161,7 @@
             <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
               <div class="timeline-content">
                 <ul>
-                  <li *ngFor="let log of doc.contextParameters.audit">
+                  <li *ngFor="let log of docAudit">
                     <p>
                       <span>{{ log.principalName }}</span>
                       {{ getEventString(log.eventId) }}
@@ -346,7 +346,7 @@
           <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
             <li class="nav-item customtooltip" role="presentation">
               <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
-                (click)="openInfo('timeline')" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
+                (click)="openInfo('timeline',this.doc?.contextParameters?.audit)" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
                 role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
             </li>
             <!-- <li class="nav-item customtooltip" role="presentation" *ngIf="hasPrivateAccess()">
@@ -537,7 +537,7 @@
           <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
             <div class="timeline-content">
               <ul>
-                <li *ngFor="let log of doc?.contextParameters?.audit">
+                <li *ngFor="let log of docAudit">
                   <p>
                     <span>{{ log.principalName }}</span>
                     {{ getEventString(log.eventId) }}
@@ -715,7 +715,7 @@
         <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
           <li class="nav-item customtooltip" role="presentation">
             <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
-              (click)="openInfo('timeline')" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline" role="tab"
+              (click)="openInfo('timeline',this.doc?.contextParameters?.audit)" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline" role="tab"
               aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
           </li>
           <li class="nav-item customtooltip" role="presentation">

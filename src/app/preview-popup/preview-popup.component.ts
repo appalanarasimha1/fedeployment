@@ -200,8 +200,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.inputTag = "";
     });
   }
-
-  openInfo(tabName: string) {
+  docAudit:any = []
+  openInfo(tabName: string,doc?:any) {
+    if (tabName =='timeline') {
+      console.log("doc",doc);
+      
+      this.docAudit = doc?.filter((aud:any)=>aud.principalName !== 'system' && aud.principalName !=='Administrator')
+    }
     if (!this.showShadow || this.selectedTab === tabName) {
       this.showShadow = !this.showShadow;
     }
