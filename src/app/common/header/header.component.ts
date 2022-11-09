@@ -409,4 +409,7 @@ export class HeaderComponent implements OnInit {
       this.userData = res.user.properties;
     }
   }
+  onActivate() {
+    $("#favorites").animate({ scrollTop: 0 }, "slow");
+  }
 }
