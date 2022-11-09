@@ -4558,3 +4558,7 @@ ul.all-sectors img.noPreviewItem {
   object-fit: none !important;
   width: 160px !important;
 }
+.slide.slick-slide.slick-current.slick-active {
+  z-index: 1;
+  position: relative;
+}
