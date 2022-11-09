@@ -63,21 +63,7 @@ export class RouteManager {
       changeOrigin: true, // needed for virtual hosted sites
       ws: true, // proxy websockets
       secure: false, // if you want to verify the certificate
-      
-      // onProxyRes: responseInterceptor(async (responseBuffer, proxyRes: any, req, res: any) => {
-      //   // const response = responseBuffer.toString('utf8'); // convert buffer to string
-      //   try {
-      //     // console.log('res = ', proxyRes.statusCode);
-      //     if (res.statusCode === 401) {
-      //       res.statusCode = 302;
-      //       proxyRes.headers['location'] = 'http://uatgroundx.neom.com/login';
-      //     }
-      //     return responseBuffer;
-      //   } catch (e) {
-      //     console.error('error = ', e);
-      //     return responseBuffer;
-      //   }
-      // })
+      proxyTimeout: 1200000
     };
 
     this.app.use('/nuxeo/', createProxyMiddleware(
