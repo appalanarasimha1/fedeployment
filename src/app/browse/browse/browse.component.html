@@ -1502,8 +1502,8 @@
                       <p>{{getCreatorName(item)}}</p>
                       <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
                     </td>
-                    <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
-                    <td (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
+                    <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat1(item.properties['dc:created'])}}</p></td>
+                    <td (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat1(item.properties['dc:modified'])}}</p></td>
                     <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     <td>
                       <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />

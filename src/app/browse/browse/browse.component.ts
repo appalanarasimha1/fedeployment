@@ -37,6 +37,7 @@ import { IEntry, ISearchResponse } from "src/app/common/interfaces";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
 
 import { MatMenuTrigger } from '@angular/material/menu';
+import * as moment from 'moment';
 
 @Component({
   selector: "app-browse",
@@ -883,6 +884,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return new Date(date).toDateString();
   }
 
+  getDateInFormat1(date: string): string {
+    return moment(date).format("DD/MM/YYYY")
+  }
+
   getIconByType(type: string): string {
     switch (type.toLowerCase()) {
       case ASSET_TYPE.WORKSPACE:
@@ -933,7 +938,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   deleteModalFailed() {
     this.sharedService.showSnackbar(
-      "You can't delete a folder contains assets uploaded by other users",
+      "You can’t delete items uploaded by others",
       6000,
       "top",
       "center",
