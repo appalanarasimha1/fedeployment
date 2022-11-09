@@ -1405,13 +1405,13 @@
                       </div>
                       <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; max-width: calc(100% - 30px); vertical-align: middle;">
                         <span class="tollTipCustom">
-                          {{item.title}}
+                          {{sharedService.stringShortener(item?.title, 25)}}
                           <span class="tolltipContent" style="top: 28px;
                           height: auto;
                           white-space: break-spaces;
                           text-align: left;
                           padding: 5px 10px;">
-                            {{item.title}}
+                            {{item?.title}}
                           </span>
                         </span>
                         <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
