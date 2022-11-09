@@ -91,7 +91,7 @@
                       <div *ngIf="!checkCanDownload() && !hasRequestPending() && !checkRejected()">
                         <p>To download this asset, please send <a href="mailto:{{getCreatorEmail()}}">{{getCreator()}}</a> a message below.</p>
                         <input type="text" [(ngModel)]="requestComment" class="requesInput" [ngClass]="{'goldenText': requestComment }" name="requestComment"
-                          placeholder="Write a comment here" />
+                          placeholder="Write a comment here. Use @ to mention." />
                           <button (click)="sendRequestDownload()" class="btn submitBtn" [disabled]="!requestComment">Submit</button>
                       </div>
                       <div class="requestSubmitted" *ngIf="!checkCanDownload() && hasRequestPending()">
@@ -189,7 +189,7 @@
                 </ul>
                 <form (submit)="saveComment(commentText)">
                   <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
-                    placeholder="Write a comment here" />
+                    placeholder="Write a comment here. Use @ to mention." />
                   <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
                     class="enterComment" style="cursor: pointer" />
                 </form>
@@ -418,7 +418,7 @@
                 [(ngModel)]="commentText" 
                 class="commentInput"
                 name="comment"
-                placeholder="Write a comment here" 
+                placeholder="Write a comment here. Use @ to mention." 
                 mwlTextInputAutocomplete
                 [findChoices]="findChoices"
                 [getChoiceLabel]="getChoiceLabel"
@@ -565,7 +565,7 @@
               </ul>
               <form (submit)="saveComment(commentText)">
                 <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
-                  placeholder="Write a comment here" />
+                  placeholder="Write a comment here. Use @ to mention." />
                 <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
                   class="enterComment" style="cursor: pointer" />
               </form>
