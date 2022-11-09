@@ -3935,7 +3935,7 @@ div#textnode p {
   display: inline-block;
   position: relative;
   vertical-align: middle;
-  z-index: 9;
+  z-index: 999;
 }
 .zoomImgBlock {
   max-width: 200px;
