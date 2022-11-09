@@ -610,8 +610,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   getCommentStr(str){
     let temp = str.replaceAll("&#64;","@");
-    temp = temp.replace('{<!-- -->{', "<span style='color: #DEB31A !important;font-family: 'brownregular' !important;'>");
-    return temp.replace("}}", "</span>");
-
+    temp = temp.replaceAll('{<!-- -->{', "<span style='color: #DEB31A !important;font-family: 'brownregular' !important;'>");
+    return temp.replaceAll("}}", "</span>");
   }
 }

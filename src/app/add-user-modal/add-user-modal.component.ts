@@ -75,6 +75,8 @@ export class AddUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.listExternalUser = [];
+    this.listExternalUserGlobal = [];
     this.getExternalGroupUser();
     this.getExternalGlobalGroupUser();
     this.selectedFolder = this.data.selectedFolder;
@@ -85,8 +87,6 @@ export class AddUserModalComponent implements OnInit {
     this.removedCollaborators = {};
     this.updatedCollaborators = {};
     this.invitedCollaborators = {};
-    this.listExternalUser = [];
-    this.listExternalUserGlobal = [];
     this.computeCollaborators();
     this.loadUsers();
     this.sharedService.fetchExternalUserInfo();
@@ -432,7 +432,8 @@ export class AddUserModalComponent implements OnInit {
     }
     dialogConfig.data = {
       isGlobal: this.isGlobal,
-      selectedMonth: this.selectedMonth
+      selectedMonth: this.selectedMonth,
+      selectedExternalUser: this.selectedExternalUser
     }
 
     const modalDialog = this.matDialog.open(EditAccessComponent, dialogConfig);
