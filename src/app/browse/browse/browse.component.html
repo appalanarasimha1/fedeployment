@@ -1405,7 +1405,7 @@
                       </div>
                       <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; max-width: calc(100% - 30px); vertical-align: middle;">
                         <span class="tollTipCustom">
-                          {{item.title}}
+                          {{sharedService.stringShortener(item?.title, 25)}}
                           <span class="tolltipContent" style="top: 28px;
                           height: auto;
                           white-space: break-spaces;
