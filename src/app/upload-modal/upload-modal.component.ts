@@ -54,7 +54,7 @@ const BUTTON_LABEL = {
   3: "Publish",
 };
 
-const MAX_CHUNK_SIZE = 100 * 1000 * 1000;
+const MAX_CHUNK_SIZE = 5 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
 const apiVersion1 = environment.apiVersion;
 
 @Component({

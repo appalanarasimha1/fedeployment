@@ -78,6 +78,7 @@ export class RouteManager {
       //     return responseBuffer;
       //   }
       // })
+      proxyTimeout: 1200000
     };
 
     this.app.use('/nuxeo/', createProxyMiddleware(
