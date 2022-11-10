@@ -31,6 +31,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.managedUsers = [];
+    this.fetchManagedExternalUsers()
   }
 
   async fetchManagedExternalUsers() {
@@ -152,4 +153,10 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  searchUser(e){
+    console.log("e",e.target.value);
+    e.target.value ?
+    this.managedUsers = this.managedUsers.filter(user => user.includes(e.target.value)):
+    null
+  }
 }
