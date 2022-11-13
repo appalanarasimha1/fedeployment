@@ -84,11 +84,13 @@ export class NuxeoService {
   }
 
   async logout(): Promise<void> {
+    try {
+      await this.http.get('/nuxeo/logout', {}).toPromise();
+    } catch (err) {}
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.nuxeoClient = null;
-    const response = await this.http.get(`${this.baseUrl}/nuxeo/logout`);
-    return;
+    document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
   }
 
   async authenticateUser(username: string, password: string) {
