@@ -55,6 +55,7 @@ const BUTTON_LABEL = {
 };
 
 const MAX_CHUNK_SIZE = 5 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
+const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
 const apiVersion1 = environment.apiVersion;
 
 @Component({
@@ -922,6 +923,9 @@ export class UploadModalComponent implements OnInit {
 
     for(let key in this.filesMap) {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
+      if (this.filesMap[key].size >= MAX_PROCESS_SIZE) {
+        this.attachFileToAsset(asset, key);
+      }
       if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
     }
     // this.calFileManagerApi();
@@ -971,10 +975,6 @@ export class UploadModalComponent implements OnInit {
       isTrashed: false,
       title: "null",
       properties: {
-        "file:content": {
-          "upload-batch": this.batchId,
-          "upload-fileId": `${index}`,
-        },
         "dc:description": this.description,
         "dc:path": folder.path, //
         "dc:parentId": this.data ? this.data.uid : folder.id,
@@ -1035,6 +1035,12 @@ export class UploadModalComponent implements OnInit {
       ],
       name: file.name,
     };
+    if (file.size < MAX_PROCESS_SIZE) {
+      payload.properties["file:content"] = {
+        "upload-batch": this.batchId,
+        "upload-fileId": `${index}`,
+      }
+    }
     if (this.associatedDate) {
       payload["dc:start"] = new Date(this.associatedDate).toISOString();
     }
@@ -1050,6 +1056,23 @@ export class UploadModalComponent implements OnInit {
       type: res["type"],
       path: res["path"],
     };
+  }
+
+  attachFileToAsset(asset, index) {
+    const params = {
+      properties: {
+        "file:content": {
+          "upload-batch": this.batchId,
+          "upload-fileId": `${index}`,
+        }
+      }
+    };
+    const payload = {
+      params,
+      context: {},
+      input: asset.uid,
+    };
+    this.apiService.post(apiRoutes.DOCUMENT_UPDATE + "/@async", payload).toPromise();
   }
 
   async setAssetPermission(asset, index) {
