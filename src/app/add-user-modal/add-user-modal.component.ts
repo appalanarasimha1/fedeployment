@@ -361,7 +361,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   getExternalName(item) {
-    return item.user.id.replace('transient/', '');
+    return item.user.id ? item.user.id.replace('transient/', '') : item.user;
   }
 
   trackByFn(item: any) {
