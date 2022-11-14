@@ -28,7 +28,8 @@ import { ACCESS,
   OWNER_APPROVAL_LABEL,
   WHITELIST_EXTENSIONS,
   YEARS,
-  ACCESS_TITLE} from "./constant";
+  ACCESS_TITLE,
+  ACCESSNEW} from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -71,6 +72,7 @@ export class UploadModalComponent implements OnInit {
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
+  readonly ACCESSNEW = ACCESSNEW;
   readonly ACCESS_LABEL = ACCESS_LABEL;
   readonly ALLOW_LABEL = ALLOW_LABEL;
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;

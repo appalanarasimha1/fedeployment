@@ -442,8 +442,9 @@ color: #000000;
 .myTabContent{
   width: 98%;
   position: relative;
-  overflow: scroll;
-  height: 108%;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 100%;
 }
 .myTabContentMain{
   position: absolute;

@@ -301,6 +301,7 @@ color: #FFFFFF;
   background: transparent;
   height: 22px;
   font-size: 20px;
+  cursor: pointer;
 }
 .custom-select-options {
   border: 1px solid #000;

@@ -703,7 +703,7 @@
                       <div class="customToolTipWorkspace" style="right: 5px; left: auto; top: 32px">Create new folder</div>
                     </div>
                     <div class='dropdownCreate createFolder'>
-                      <img src="../../../assets/images/cross-icon-createfolder.svg" class="closeIcon" />
+                      <img src="../../../assets/images/close-modal.svg" class="closeIcon" />
                       <form>
                         <div class="row">
                           <div class="col-xl-12">
@@ -1341,7 +1341,28 @@
                       </div> -->
                     </td>
                     <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative getWidth2">
-                      <img (click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px; position: relative; z-index: 99; ">
+                      <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block;  vertical-align: top; position: relative;">
+                        <div class="publicUseBlock">
+                          <div class="tollTipCustom">
+                            <img src="../../../assets/images/private-icon.svg" class="private-icon" style="position: relative; z-index: 9; width: 17px;margin-right: 10px;" />
+                            <div class="tolltipContent" style="top: 28px;
+                            height: auto;
+                            white-space: break-spaces;
+                            text-align: left;
+                            padding: 5px 10px;">
+                              This is a private folder
+                            </div>
+                          </div>
+                          <!-- <div class="publicUseBlk">Private</div> -->
+                          <!-- <div class="mouseHoverInfo">
+                            <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
+                            <div class="manageAccessBtn">
+                              Manage access
+                            </div>
+                          </div> -->
+                        </div>
+                      </span>
+                      <img  *ngIf="!item.properties['dc:isPrivate']"(click)="handleTest(item);selectedFolder=item;" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px; position: relative; z-index: 99; ">
                       <p (click)="handleTest(item);selectedFolder=item;" style="text-align: left; word-break: break-all;display: inline-block;
                       vertical-align: middle;  position: relative; z-index: 99;">
                         <span class="tollTipCustom">
@@ -1365,7 +1386,7 @@
                         </span>
 
                       </p>
-                      <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+                      <!-- <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                         <div class="publicUseBlock">
                           <div class="tollTipCustom">
                             <img src="../../../assets/images/private-icon.svg" class="private-icon" style="position: relative; z-index: 9;" />
@@ -1377,15 +1398,8 @@
                               This is a private folder
                             </div>
                           </div>
-                          <!-- <div class="publicUseBlk">Private</div> -->
-                          <!-- <div class="mouseHoverInfo">
-                            <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
-                            <div class="manageAccessBtn">
-                              Manage access
-                            </div>
-                          </div> -->
                         </div>
-                      </span>
+                      </span> -->
 
                       <!-- <span *ngIf="!item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                         <div class="publicUseBlock publishedBlock">
@@ -1411,7 +1425,7 @@
                           white-space: break-spaces;
                           text-align: left;
                           padding: 5px 10px;">
-                            {{item.title}}
+                            {{item?.title}}
                           </span>
                         </span>
                         <span *ngIf="searchBarValue" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
@@ -1488,8 +1502,8 @@
                       <p>{{getCreatorName(item)}}</p>
                       <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
                     </td>
-                    <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
-                    <td (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
+                    <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat1(item.properties['dc:created'])}}</p></td>
+                    <td (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat1(item.properties['dc:modified'])}}</p></td>
                     <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     <td>
                       <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />

@@ -200,8 +200,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.inputTag = "";
     });
   }
-
-  openInfo(tabName: string) {
+  docAudit:any = []
+  openInfo(tabName: string,doc?:any) {
+    if (tabName =='timeline') {
+      console.log("doc",doc);
+      
+      this.docAudit = doc?.filter((aud:any)=>aud.principalName !== 'system' && aud.principalName !=='Administrator')
+    }
     if (!this.showShadow || this.selectedTab === tabName) {
       this.showShadow = !this.showShadow;
     }
@@ -604,8 +609,12 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   closeModal() {
     this.modalOpen = false;
     this.modalLoading = false;
-    this.showAllComments= false
-    this.matDialog.closeAll()
+    this.showAllComments= false;
+    this.showShadow = false;
+    this.activeTabs.comments = false;
+    this.activeTabs.timeline = false;
+    this.activeTabs.info = false;
+    this.matDialog.closeAll();
   }
 
   getCommentStr(str){
