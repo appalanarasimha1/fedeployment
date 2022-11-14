@@ -158,7 +158,7 @@ export class SettingsComponent implements OnInit {
 
   searchUser(e){
     e.target.value ?
-      this.managedUsers = this.managedUsersBackUp.filter(user => user.toLowerCase().includes(e.target?.value?.toLowerCase())):
+      this.managedUsers = this.managedUsersBackUp.filter(user => user.toLowerCase().includes(e.target?.value?.toLowerCase().trim())):
       this.managedUsers = this.managedUsersBackUp
   }
 }
