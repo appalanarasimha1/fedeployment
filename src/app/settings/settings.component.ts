@@ -21,6 +21,7 @@ export class SettingsComponent implements OnInit {
   { }
 
   managedUsers = [];
+  managedUsersBackUp=[];
   managedUsersMap = {};
   loading = false;
   showUserSettingPage = false;
@@ -31,6 +32,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.managedUsers = [];
+    this.managedUsersBackUp=[];
     this.fetchManagedExternalUsers()
   }
 
@@ -47,6 +49,7 @@ export class SettingsComponent implements OnInit {
     this.showUserSettingPage = true;
     if (this.managedUsersMap) {
       this.managedUsers = Object.keys(this.managedUsersMap);
+      this.managedUsersBackUp = Object.keys(this.managedUsersMap);
     }
   }
 
@@ -154,9 +157,8 @@ export class SettingsComponent implements OnInit {
   }
 
   searchUser(e){
-    console.log("e",e.target.value);
     e.target.value ?
-    this.managedUsers = this.managedUsers.filter(user => user.includes(e.target.value)):
-    null
+      this.managedUsers = this.managedUsersBackUp.filter(user => user.toLowerCase().includes(e.target?.value?.toLowerCase())):
+      this.managedUsers = this.managedUsersBackUp
   }
 }
