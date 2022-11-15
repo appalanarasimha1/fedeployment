@@ -1438,7 +1438,7 @@
                           </span>
                         </span>
                       </p>
-                      <span *ngIf="item.edit" style="display: flex;">
+                      <span *ngIf="item.edit" style="display: flex; position: relative; z-index: 99;">
                         <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
                         <div class="actionIcon" style="margin-top: 0px;">
                           <svg
