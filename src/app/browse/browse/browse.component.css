@@ -731,11 +731,11 @@ font-weight: normal;
   background-color:  unset !important
 }
 .folderListview tr:nth-child(odd){
-  background-color: #F6F5F2;
+  background-color: #EFEEE9;
   /* border-bottom: 8px solid #fff; */
 }
 .folderListview tr:nth-child(even){
-  background-color: #FBF7E6;
+  background-color: #F8EECC;
   /* border-bottom: 8px solid #fff; */
 }
 /* .folderListview tr{
@@ -4251,3 +4251,31 @@ img.closeIcon {
 th.checkAll.positionRelative.showChecked .control-group {
   opacity: 1;
 }
+
+.folderListview tr.checkDelete:nth-child(odd){
+  background-color: #E8E6DF;
+}
+.folderListview tr.checkDelete:nth-child(even){
+  background-color: #F4E6B3;
+}
+/* .header-content h6.tollTipCustom {
+  transition: max-width 600ms ease-in-out;
+}
+.header-content h6.tollTipCustom span {
+  transition: max-width 600ms ease-in-out;
+  max-width: 5em;
+  /* min-width: 5em; /
+  overflow: hidden;
+  display: inline-block;
+  white-space: nowrap;
+}
+.header-content h6.tollTipCustom span:hover {
+  max-width: 100em;
+}
+/* .header-content h6.tollTipCustom span:nth-last-child(1),
+.header-content h6.tollTipCustom span:nth-last-child(2) {
+  max-width: 300em;
+} /
+.header-content h6.tollTipCustom span.copy-section {
+  max-width: 300em !important;
+} */
