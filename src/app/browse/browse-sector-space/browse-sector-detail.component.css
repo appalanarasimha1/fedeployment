@@ -31,3 +31,263 @@ div#dropzone {
   /* color: rgba(35, 33, 30, 0.6); */
   color: #24221f;
 }
+
+.tollTipCustom .tolltipContent {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.80);
+  padding: 3px 10px;
+  font-size: 13px;
+  color: #fff !important;
+  font-weight: normal;
+  width: max-content;
+  border-radius: 40px;
+  white-space: nowrap;
+  max-width: max-content;
+  width: max-content;
+  display: none;
+  text-align: center;
+  z-index: 99;
+  line-height: normal;
+}
+
+.tollTipCustom:hover .tolltipContent {
+  display: block;
+}
+
+.renameFolderImg, .renameFolderRemoveImg {
+  display: inline-block;
+  max-width: 18px;
+  cursor: pointer;
+  vertical-align: -1px;
+}
+
+.renameFolderRemoveImg {
+  max-width: 30px;
+  vertical-align: -8px;
+  margin-left: 10px;
+}
+
+.publicUseBlock.publishedBlock .mouseHoverInfo {
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  color: #040404;
+  width: 450px;
+  right: 0px;
+  left: auto;
+  padding: 12px 15px;
+  cursor: auto;
+}
+
+.publicUseBlock:hover .publicUseBlk {
+  background: #B1AAA1;
+  color: #1E1B19;
+}
+
+.publicUseBlk.published {
+  background-color: #E9E0C1;
+}
+
+.publicUseBlk.published img{
+  width: 10px;
+  display: inline-block;
+  height: 23px;
+}
+
+.publicUseBlk.published::after {
+  z-index: -1;
+}
+
+.mouseHoverInfo {
+  background: #1E1B19;
+  border-radius: 4px;
+  padding: 4px 12px 7px;
+  width: 290px;
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  position: absolute;
+  top: 32px;
+  left: 0px;
+  z-index: 9;
+  display: none;
+}
+
+ul.uploadAssetsClassifications {
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 20px;
+}
+
+ul.uploadAssetsClassifications li {
+  float: left;
+  margin-right: 25px;
+  vertical-align: middle;
+  position: relative;
+  /* cursor: pointer; */
+}
+
+ul.uploadAssetsClassifications li:last-child {
+  margin-right: 0px;
+}
+
+ul.uploadAssetsClassifications li:nth-child(2) .customToolTipWorkspace {
+  left: auto;
+  right: 0px;
+}
+
+ul.uploadAssetsClassifications li ul.subDropdownMenu {
+  position: absolute;
+  width: 250px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+  top: 35px;
+  right: 0px;
+  z-index: 99;
+  display: none;
+}
+
+ul.uploadAssetsClassifications li ul.subDropdownMenu li {
+  margin: 0 0 20px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #040404;
+  cursor: pointer;
+}
+
+ul.uploadAssetsClassifications li ul.subDropdownMenu li:last-child {
+  margin-bottom: 0px;
+}
+
+ul.uploadAssetsClassifications li:hover ul.subDropdownMenu {
+  display: block;
+  cursor: auto;
+}
+
+ul.uploadAssetsClassifications li:after {
+  content: '';
+  display: block;
+  height: 20px;
+  width: 100%;
+  position: absolute;
+  bottom: -19px;
+  right: 0;
+}
+
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
+  /* position: absolute; */
+  width: 250px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+  top: 35px;
+  right: 0px;
+  left: auto;
+  border: 0px;
+}
+
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li {
+  padding-left: 0px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:hover {
+  opacity: 0.5;
+}
+
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:last-child {
+  margin-bottom: 0px;
+}
+
+.createNewFolderDropdown {
+  padding: 0px !important; padding: 0px; font-size: 15px; line-height: 24px; color: #937206 !important; font-weight: normal;
+}
+
+.customNewFolder  .navbar-expand-lg .navbar-nav .dropdown-menu {
+  position: absolute;
+  border: 0px;
+  border-radius: 8px;
+}
+
+.goldenText{
+  color: #C49900  !important;
+  border-color: #C49900 !important;
+  font-weight: normal;
+}
+
+.customToolTipWorkspace {
+  display: none;
+  position: absolute;
+  top: 28px;
+  left: 0px;
+  z-index: 99;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: #413E3C;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  white-space: nowrap;
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  width: max-content;
+}
+
+.tollTipWorkspace:hover .customToolTipWorkspace {
+  display: block;
+}
+
+ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorkspace {
+  right: 0;
+}
+
+.customToolTipWorkspace.infoHover {
+  width: 380px;
+  left: -196px;
+  white-space: normal;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+svg.classificationsIcon.disablePermission path {
+  stroke: #bab8b1;
+}
+
+.classificationsIcon {
+  cursor: pointer;
+}
+
+.classificationsIcon-disabled {
+  cursor: auto;
+}
+
+.classificationsIcon:hover path {
+  stroke:#DAAA00;
+}
+
+.classificationsIcon.manageUsers:hover path {
+  fill: #DAAA00;
+  stroke: none;
+}
+/* custom checkbox end */
+
+.classificationsIcon-disabled.manageUsers path {
+  fill: #bab8b1;
+}
+
+.tollTipWorkspace.workspaceInfoHover .classificationsIcon:hover path {
+  stroke:none;
+}

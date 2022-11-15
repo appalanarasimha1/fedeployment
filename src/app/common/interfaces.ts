@@ -79,6 +79,8 @@ export interface IRangeDocCount {
 }
 
  export interface IEntry {
+   "childType"?: string,
+   "start"?: string,
    "isSelected"?: boolean,
    "copy"?: string,
    "entity-type"?: string,
@@ -116,7 +118,7 @@ export interface IRangeDocCount {
       "preview"?:{
          "url": string
       };
-      "thumbnail":{
+      "thumbnail"?:{
          "url": string
       }
    }

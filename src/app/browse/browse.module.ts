@@ -22,14 +22,8 @@ import { BrowseNavigationComponent } from './browse-navigation/browse-navigation
 import { BrowseHomeComponent } from './browse-home/browse-home.component';
 import { BrowseSectorDetailComponent } from './browse-sector-space/browse-sector-detail.component';
 import { BrowseSectorFolderComponent } from './browse-sector-folder/browse-sector-folder.component';
+import { CreateFolderComponent } from './create-folder/create-folder.component';
 @NgModule({
-  declarations: [
-    BrowseComponent,
-    BrowseNavigationComponent,
-    BrowseHomeComponent,
-    BrowseSectorDetailComponent,
-    BrowseSectorFolderComponent,
-  ],
   imports: [
     SharedModule,
     BrowseRoutingModule,
@@ -48,6 +42,14 @@ import { BrowseSectorFolderComponent } from './browse-sector-folder/browse-secto
     MatDatepickerModule,
     UploadModalModule,
     SearchModule,
+  ],
+  declarations: [
+    BrowseComponent,
+    BrowseNavigationComponent,
+    BrowseHomeComponent,
+    BrowseSectorDetailComponent,
+    BrowseSectorFolderComponent,
+    CreateFolderComponent,
   ],
   exports: [
   ],

@@ -35,6 +35,7 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   @Output() clickHandle: EventEmitter<any> = new EventEmitter();
   @Output() fetchAssets: EventEmitter<any> = new EventEmitter();
+  @Output() selectedAssetList: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("paginator") paginator: MatPaginator;
@@ -75,6 +76,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   newTitle: string;
   fileToPreview: IEntry;
   fileToPreviewUrl: string;
+  downloadErrorShow: boolean = false;
 
   constructor(
     public sharedService: SharedService,
@@ -369,6 +371,9 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.count = this.count - 1;
       //  }
     }
+    this.clickHandle.emit({eventName: 'forInternalUseListEvent', data: this.forInternalUse});
+    this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
+    this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
     this.getdownloadAssetsSize();
   }
 
@@ -388,6 +393,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     } else {
       this.sizeExeeded = false;
     }
+    this.clickHandle.emit({eventName: 'sizeExeededEvent', data: this.sizeExeeded});
   }
 
   selectFolder($event, item, i, updateCount = true) {
@@ -400,6 +406,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
     }
+    this.selectedAssetList.emit(this.selectedMoveList);
   }
 
   getIconByType(type: string): string {
@@ -435,9 +442,11 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.copyRightItem = []
     this.canNotDelete=[]
     this.selectedFolderList={}
-    this.selectedMoveList={}
-    // this.isAware=false
-    // $(".vh").prop("checked", false);
+    this.selectedMoveList={};
+    
+    this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});
+    this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
+    this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
 
@@ -712,71 +721,83 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.sortedData.sort(this.assetTypeCompare);
   }
 
-   /**
-   * brings folder to top position and then assets
-   */
-    assetTypeCompare(a: IEntry , b: IEntry): number {
-      return [ASSET_TYPE.WORKSPACE, ASSET_TYPE.FOLDER, ASSET_TYPE.ORDERED_FOLDER].indexOf(a.type.toLowerCase()) > -1? -1 : 1;
-    }
-  
-    compare(a: number | string, b: number | string, isAsc: boolean) {
-      return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-    }
+  /**
+  * brings folder to top position and then assets
+  */
+  assetTypeCompare(a: IEntry , b: IEntry): number {
+    return [ASSET_TYPE.WORKSPACE, ASSET_TYPE.FOLDER, ASSET_TYPE.ORDERED_FOLDER].indexOf(a.type.toLowerCase()) > -1? -1 : 1;
+  }
 
-    clickHandleChild(item) {
-      this.clickHandle.emit(item);
-    }
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
 
-    getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
-      this.initialLoad = false;
-      // this.showSearchbar = true; //TODO: to detail controller
-      // this.searchBarValue = ""; //TODO: to detail controller
-      offset || this.paginator?.firstPage();
-      if (this.folderNotFound) {
-        this.folderNotFound = false;
-        this.selectedFolder = {};
-      }
-      this.loading = true;
-      const url =this.myDeletedCheck ?
-       `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND dc:creator = '${this.user}' `:
-       `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1'`
-       this.apiService
-        .get(url, { headers: { "fetch-document": "properties" } })
-        .subscribe((docs: any) => {
-          this.numberOfPages = docs.numberOfPages;
-          this.resultCount = docs.resultsCount;
-          this.trashedList = docs.entries.filter((sector) => {
-            if (UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
-              --this.resultCount;
-              return true;
-            } else {
-              return false;
-            }
-          });
-          this.searchList = this.trashedList;
-          this.sortedData = this.searchList.slice();
-          this.isTrashView = true;
-          // this.handleSelectMenu(1,"LIST");
-          // this.showMoreButton = false;
-          this.loading = false;
+  clickHandleChild(item) {
+    this.clickHandle.emit(item);
+  }
+
+  getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+    this.initialLoad = false;
+    // this.showSearchbar = true; //TODO: to detail controller
+    // this.searchBarValue = ""; //TODO: to detail controller
+    offset || this.paginator?.firstPage();
+    if (this.folderNotFound) {
+      this.folderNotFound = false;
+      this.selectedFolder = {};
+    }
+    this.loading = true;
+    const url =this.myDeletedCheck ?
+      `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND dc:creator = '${this.user}' `:
+      `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1'`
+      this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .subscribe((docs: any) => {
+        this.numberOfPages = docs.numberOfPages;
+        this.resultCount = docs.resultsCount;
+        this.trashedList = docs.entries.filter((sector) => {
+          if (UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
+            --this.resultCount;
+            return true;
+          } else {
+            return false;
+          }
         });
-    }
+        this.searchList = this.trashedList;
+        this.sortedData = this.searchList.slice();
+        this.isTrashView = true;
+        // this.handleSelectMenu(1,"LIST");
+        // this.showMoreButton = false;
+        this.loading = false;
+      });
+  }
 
-    getCreatorName(item) {
-      const creatorName = item.properties["dc:creator"]?.properties?.firstName +
-        " " + item.properties["dc:creator"]?.properties?.lastName;
+  getCreatorName(item) {
+    const creatorName = item.properties["dc:creator"]?.properties?.firstName +
+      " " + item.properties["dc:creator"]?.properties?.lastName;
+
+      if(item.properties["dc:creator"]?.properties?.firstName) {
+        return creatorName;
+      } else if(item.properties["dc:creator"]?.id) {
+        return item.properties["dc:creator"]?.id;
+      } else {
+        return item.properties["dc:creator"];
+      }
+  }
+
+  openFolder(item: IEntry) {
+    this.router.navigate([window.location.pathname.split('/').splice(1,2).join('/'), item.uid]);
+  }
+
   
-        if(item.properties["dc:creator"]?.properties?.firstName) {
-          return creatorName;
-        } else if(item.properties["dc:creator"]?.id) {
-          return item.properties["dc:creator"]?.id;
-        } else {
-          return item.properties["dc:creator"];
-        }
-    }
+  cancelDownloadClick(e) {
+    e.stopPropagation();
+    $(".multiDownloadBlock").hide();
+  }
 
-    openFolder(item: IEntry) {
-      this.router.navigate([window.location.pathname.split('/').splice(1,2).join('/'), item.uid]);
+  downloadClick() {
+    if (!this.downloadEnable) {
+      this.downloadErrorShow = true;
     }
+  }
 
 }

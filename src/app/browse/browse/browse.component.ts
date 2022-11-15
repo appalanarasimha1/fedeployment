@@ -1102,6 +1102,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
   dropFilesNew=[];
+  // NOTE: name changed to openUploadModal
   openModal(key?:boolean) {
     if(key) this.dropFilesNew=[]
     const dialogConfig = new MatDialogConfig();
@@ -1288,8 +1289,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           "top",
           "center",
           "snackBarMiddle"
-          // "Updated folder",
-          // this.getTrashedWS.bind(this)
         );
 
     }else{
@@ -1521,11 +1520,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   saveState({uid, title, path, properties, sectorId, type, contextParameters}, index?: number, breadCrumbIndex?: number) {
-    // let breadcrumb;
-    // if(contextParameters) {
-    //   ({breadcrumb} = contextParameters);
-    //   contextParameters = { breadcrumb };
-    // }
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
     this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex);
