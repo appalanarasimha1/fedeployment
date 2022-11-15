@@ -154,12 +154,12 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       // window.scrollTo(0,document.body.scrollHeight);
       $('#favorites').animate({scrollTop: document.body.scrollHeight},"slow");
-    }, 300);
+    }, 0);
 
     $("#favorites").click(function(e) {
       // console.log($('#favoritesHome').offset().top)
       $('html, body').animate({
-        scrollTop: $('#favoritesHome').offset().top
+        scrollTop: $('#favorites').offset().top
       }, 'slow');
     });
   }

@@ -182,9 +182,9 @@
         </div>
       </div>
       
-      <!-- <div
+      <div
         id="favorites"
-        class="container-fluid pt-50 pb-50"
+        class="container-fluid pb-50"
         style="position: relative; z-index: 1"
       >
         <ul class="nav nav-tabs">
@@ -197,7 +197,7 @@
           style="height: 150px"
           [ngClass]="{'animate__animated animate__fadeIn' : !favourites.length}"
         >
-          <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -/->
+          <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
           <h2 class="noresult pb-3 pt-4">
             You have not marked any asset as favourite
           </h2>
@@ -233,7 +233,7 @@
             </ngx-slick-carousel>
           </div>
         </div>
-      </div> -->
+      </div>
   
       <div
         id="exTab2"
@@ -244,10 +244,10 @@
           Your Activity
         </h2>
         <ul class="nav nav-tabs" style="display: inline-block">
-          <li class="active pointer" id="favoritesHome">
+          <!-- <li class="active pointer" id="favoritesHome">
             <a href="#yourFavourites" (click)="selectTab('yourFavourites')" data-toggle="tab">Your Favourites</a>
-          </li>
-          <li class="pointer">
+          </li> -->
+          <li class="active pointer">
             <a href="#recentlyViewed" (click)="selectTab('recentView')" data-toggle="tab">Recently Viewed</a>
           </li>
           <li class="pointer">
@@ -256,14 +256,14 @@
         </ul>
   
         <div class="tab-content">
-          <div class="tab-pane active animate__animated animate__fadeIn animate__delay-3s" id="yourFavourites">
+          <!-- <div class="tab-pane active animate__animated animate__fadeIn animate__delay-3s" id="yourFavourites">
             <div (click)="showAll('favourite')" class="show-all">Show all</div>
             <div
               *ngIf="!favourites.length"
               style="height: 150px"
               [ngClass]="{'animate__animated animate__fadeIn' : !favourites.length}"
             >
-              <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -->
+              <!-- <img src="../../assets/images/search.svg" style="width: 50px;"> -/->
               <h2 class="noresult pb-3 pt-4">
                 You have not marked any asset as favourite
               </h2>
@@ -275,7 +275,7 @@
               [ngClass]="{'animate__animated animate__fadeIn' : favourites.length}"
             >
               <div class="tab-pane active" id="favourite">
-                <!-- <div (click)="showAll('favourite')" class="show-all">Show all</div> -->
+                <!-- <div (click)="showAll('favourite')" class="show-all">Show all</div> -/->
                 <ngx-slick-carousel
                   class="carousel"
                   #slickModal="slick-carousel"
@@ -299,9 +299,9 @@
                 </ngx-slick-carousel>
               </div>
             </div>
-          </div>
+          </div> -->
   
-          <div class="tab-pane animate__animated animate__fadeIn animate__delay-3s" id="recentlyViewed">
+          <div class="tab-pane active animate__animated animate__fadeIn animate__delay-3s" id="recentlyViewed">
             <div (click)="showAll('recentView')" class="show-all">Show all</div>
             <ngx-slick-carousel
               class="carousel"
