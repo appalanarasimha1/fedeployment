@@ -788,6 +788,7 @@ ul.sidebarList li .sidebarLink.active {
 }
 .bottomItems ul li a svg {
     margin-right: 5px;
+    vertical-align: -2px;
 }
 /* new sidebar end */
 .borderNone {
@@ -917,6 +918,7 @@ ul.sidebarList li .sidebarLink.active {
     height: 500px;
     background-color: #fff;
     padding: 30px !important;
+    border-radius: 8px;
 }
 .fix-notifaction h1 {
     text-align: center;

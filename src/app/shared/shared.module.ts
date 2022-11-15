@@ -29,6 +29,8 @@ import { ManageAccessModalComponent } from '../manage-access-modal/manage-access
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill';
 import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
+import { SafePipe } from '../common/pipe/safe.pipe';
+
 keyboardEventKeyPolyfill();
 @NgModule({
   providers: [
@@ -47,7 +49,8 @@ keyboardEventKeyPolyfill();
     SearchPipe,
     SnackbarComponent,
     AssetViewComponent,
-    // ManageAccessModalComponent
+    // ManageAccessModalComponent,
+    SafePipe
   ],
   imports: [
     CommonModule,
@@ -86,7 +89,8 @@ keyboardEventKeyPolyfill();
     MatSnackBarModule,
     SnackbarComponent,
     AssetViewComponent,
-    // ManageAccessModalComponent
+    // ManageAccessModalComponent,
+    SafePipe
   ]
 })
 export class SharedModule { }

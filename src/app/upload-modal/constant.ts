@@ -3,7 +3,10 @@ export const ACCESS = {
   "internal": "Internal access only",
   "restricted": "Restricted access only",
 };
-
+export const ACCESSNEW = {
+  "all": "All access",
+  "internal": "Internal access only",
+};
 export const ACCESS_LABEL = {
   "All access": "Public - external collaborators",
   "Internal access only": "Internal - employees and contractors with NEOM emails",

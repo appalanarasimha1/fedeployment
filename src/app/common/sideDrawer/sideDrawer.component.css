@@ -31,9 +31,9 @@
   margin: auto;
   min-height: 400px;
   padding-bottom: 30px;
-  padding-top: 15px;
+  padding-top: 1px;
   display: block;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 .filter-box-header {
   display: flex;
@@ -42,14 +42,14 @@
   align-items: center;
   margin: 15px 20px;
 }
-.filter-assets-count {
+/* .filter-assets-count {
     border-radius: 24px;
     background-color: white;
     color: black;
     padding: 5px 26px;
     font-size: 15px;
     font-weight: normal;
-}
+} */
 /* ::ng-deep .dropdown-list{
   position: relative !important;
 } */
@@ -479,3 +479,21 @@ button:focus {
   background: #fff;
 }
 /* Custom checkbox end */
+
+.filter-assets-count {
+  text-align: right;
+  padding: 15px 20px 0;
+  display: block;
+  width: auto;
+}
+.filter-assets-count span {
+  cursor: pointer;
+  text-align: center;
+  border-radius: 24px;
+  background-color: white;
+  color: black;
+  padding: 5px 26px;
+  font-size: 15px;
+  font-weight: normal;
+  display: inline-block;
+}

@@ -28,7 +28,8 @@ import { ACCESS,
   OWNER_APPROVAL_LABEL,
   WHITELIST_EXTENSIONS,
   YEARS,
-  ACCESS_TITLE} from "./constant";
+  ACCESS_TITLE,
+  ACCESSNEW} from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -72,6 +73,7 @@ export class UploadModalComponent implements OnInit {
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
+  readonly ACCESSNEW = ACCESSNEW;
   readonly ACCESS_LABEL = ACCESS_LABEL;
   readonly ALLOW_LABEL = ALLOW_LABEL;
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
@@ -153,6 +155,10 @@ export class UploadModalComponent implements OnInit {
   loading = true;
 
   showHideAllAsset: boolean = false;
+
+  publishingAssets: boolean = true;
+  publishingPrivateAssets: boolean = false;
+  checkboxIsPrivate: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -260,7 +266,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   publish() {
-    if(!this.isPrivateFolder()) {
+    if(!this.isPrivateFolder() && !this.enableFolderType) {
       if(!this.checkFormState()){
         this.showErrorUpload = false;
         this.publishAssets();
@@ -374,12 +380,16 @@ export class UploadModalComponent implements OnInit {
       await this.getWsList();
     }
     this.showWsList = true;
+
   }
 
   async selectWorkspace(ws, incomingParam?: boolean) {
+    if (!ws) return;
     this.extractBreadcrumb(ws.contextParameters);
     this.showWsList = false;
     this.folderNameParam = "";
+    this.enableFolderType=false
+    this.checkboxIsPrivate=false
     // if(incomingParam) {
     //   this.selectedWorkspace.title = ws;
     //   return;
@@ -736,6 +746,8 @@ export class UploadModalComponent implements OnInit {
     this.associatedDate = this.selectedFolder.properties["dc:start"];
     this.descriptionFilled = true;
     this.description = this.selectedFolder.properties["dc:description"];
+    this.enableFolderType=false
+    this.checkboxIsPrivate=false
   }
 
   createFolderOrder(type?: string) {
@@ -752,7 +764,9 @@ export class UploadModalComponent implements OnInit {
       `${this.folderNameParam}/${this.selectedFolder.title}`.slice(1);
   }
 
+  enableFolderType:boolean=false
   addNewFolder(folderName) {
+    this.enableFolderType=true
     this.descriptionFilled = false;
     this.description = "";
     this.folderToAddName = folderName.value;
@@ -946,8 +960,6 @@ export class UploadModalComponent implements OnInit {
   }
 
   async createAsset(file, index, folder) {
-    console.log({ file, index, folder });
-
     const url = `/path${folder.path}`;
     let fileType = "File";
     if (file.type?.includes("image/")) {
@@ -1046,8 +1058,6 @@ export class UploadModalComponent implements OnInit {
     }
     const res = await this.apiService.post(url, payload, {headers: {'X-Batch-No-Drop': 'true'}}).toPromise();
 
-    console.log("111111111",res);
-
     this.uploadedAsset=res;
     this.uploadedAsset1.push(res);
     return {
@@ -1120,7 +1130,8 @@ export class UploadModalComponent implements OnInit {
       this.selectedWorkspace.title,
       this.parentFolder,
       this.description,
-      this.associatedDate
+      this.associatedDate,
+      this.checkboxIsPrivate
     );
     const res = await this.apiService.post(url, payload).toPromise();
     return {
@@ -1356,5 +1367,21 @@ export class UploadModalComponent implements OnInit {
 
   showAllAsset() {
     this.showHideAllAsset = !this.showHideAllAsset;
+  }
+
+  handleChange(event, name: string) {
+    if (event.checked || event.target?.checked) {
+      if(name == 'published') {
+        this.publishingAssets = true;
+        this.publishingPrivateAssets = false;
+        this.checkboxIsPrivate = false
+      }
+      if(name == 'private') {
+        this.publishingAssets = false;
+        this.publishingPrivateAssets = true;
+        this.checkboxIsPrivate = true
+
+      }
+    }
   }
 }

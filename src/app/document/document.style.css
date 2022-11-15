@@ -1478,13 +1478,16 @@ color: #ACACAC;
   position: relative;
 }
 .customTab .show-all {
-  font-size: 15px;
-  line-height: 24px;
-  color: #040404;
+  font-size: 13px;
+  color: #fff;
   position: absolute;
   top: -56px;
   right: 0px;
   cursor: pointer;
+  background: #040404;
+  border-radius: 50px;
+  padding: 0px 20px;
+  line-height: 33px;
 }
 /* Custom tabs css end 12-Nov-2021 */
 .tab-pane.show {

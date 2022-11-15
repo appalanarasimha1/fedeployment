@@ -442,8 +442,9 @@ color: #000000;
 .myTabContent{
   width: 98%;
   position: relative;
-  overflow: scroll;
-  height: 108%;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 100%;
 }
 .myTabContentMain{
   position: absolute;
@@ -2003,9 +2004,9 @@ input.requesInput::-ms-input-placeholder {
   font-family: 'brownlight';
 }
 .comment-content ul li .commentTextBlk p.bodyContent span {
-  color: #DEB31A;
+  color: #DEB31A !important;
   opacity: 1;
-  font-family: 'brownregular';
+  font-family: 'brownregular' !important;
 }
 .comment-content ul {
   height: calc(100vh - 79vh);
@@ -2102,4 +2103,36 @@ form.commentTextForm {
   .comment-content ul {
     height: calc(100vh - 64vh);
   }
+}
+
+.commentTextForm ::ng-deep .dropdown-menu {
+  bottom: 60px !important;
+  top: auto !important;
+  background: #F6F5F2;
+  border: 0px;
+  padding: 10px 8px;
+  box-shadow: none;
+  border-radius: 8px;
+}
+.commentTextForm ::ng-deep .dropdown-menu>.active>a, 
+.commentTextForm ::ng-deep .dropdown-menu>.active>a:hover, 
+.commentTextForm ::ng-deep .dropdown-menu>.active>a:focus,
+.commentTextForm ::ng-deep .dropdown-menu > li > a:hover {
+  color: #DEB31A;
+  text-decoration: none;
+  background-color: #E8E6DF;
+  border-radius: 8px;
+}
+.commentTextForm ::ng-deep .dropdown-menu > li > a {
+  font-weight: 400;
+  line-height: 35px;
+  color: #DEB31A;
+  padding: 0 10px;
+  border-radius: 8px;
+}
+.commentTextForm ::ng-deep .dropdown-menu > li {
+  margin-bottom: 6px;
+}
+.commentTextForm ::ng-deep .dropdown-menu > li:last-child {
+  margin-bottom: 0px;
 }

@@ -37,6 +37,7 @@ import { IEntry, ISearchResponse } from "src/app/common/interfaces";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
 
 import { MatMenuTrigger } from '@angular/material/menu';
+import * as moment from 'moment';
 
 @Component({
   selector: "app-browse",
@@ -608,6 +609,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.selectedFolder2 = this.selectedFolder;
     this.extractBreadcrumb();
+    this.createDynamicSidebarScroll();
     this.loading = false;
   }
 
@@ -883,6 +885,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return new Date(date).toDateString();
   }
 
+  getDateInFormat1(date: string): string {
+    return moment(date).format("DD/MM/YYYY")
+  }
+
   getIconByType(type: string): string {
     switch (type.toLowerCase()) {
       case ASSET_TYPE.WORKSPACE:
@@ -933,7 +939,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   deleteModalFailed() {
     this.sharedService.showSnackbar(
-      "You can't delete a folder contains assets uploaded by other users",
+      "You can’t delete items uploaded by others",
       6000,
       "top",
       "center",
@@ -1020,6 +1026,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         if (this.count==0) {
           this.currentIndexClicked = undefined
           this.lastIndexClicked = undefined
+          this.selectAllClicked = false
+
         }else{
           this.lastIndexClicked = this.currentIndexClicked
           this.currentIndexClicked = undefined
@@ -1507,6 +1515,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       var storeHeight = $(".main-content").outerHeight();
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
+
+      var getWidth1 = $('.getWidth1').outerWidth();
+      var getWidth2 = $('.getWidth2').outerWidth();
+      var getWidth3 = $('.getWidth3').outerWidth();
+      var totalWidth = getWidth1 + getWidth2 + getWidth3;
+      console.log('getWidth', totalWidth);
+      $('.chkbox.width1600').css("width", totalWidth - 60);
     }, 0);
   }
 
@@ -1773,6 +1788,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (this.count==0) {
         this.currentIndexClicked = undefined
         this.lastIndexClicked = undefined
+        this.selectAllClicked = false
       }else{
         this.lastIndexClicked = this.currentIndexClicked
         this.currentIndexClicked = undefined
@@ -1809,7 +1825,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length > 0) {
+      if (this.downloadArray.length == 1) {
+        window.location.href =this.getFileContent(this.downloadFullItem[0])
+        this.removeAssets()
+      }
+      if (this.downloadArray.length > 1) {
         $(".multiDownloadBlock").hide();
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
@@ -1880,6 +1900,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedMoveList={}
     // this.isAware=false
     // $(".vh").prop("checked", false);
+    this.selectAllClicked = false
+    this.currentIndexClicked = undefined
+    this.lastIndexClicked = undefined
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
 
@@ -2443,5 +2466,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.removeAssets();
       this.selectAllClicked = false;
     }
+  }
+
+  getFileContent(doc) {
+    return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
 }
