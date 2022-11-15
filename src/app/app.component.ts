@@ -4,6 +4,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from './upload-modal/upload-modal.component';
 import { DataService } from './services/data.service';
 import { NuxeoService } from './services/nuxeo.service';
+import { KeycloakService } from 'keycloak-angular';
 import { fadeAnimation } from './animations';
 
 @Component({
@@ -19,16 +20,23 @@ export class AppComponent implements OnInit{
   showFooter = false;
 
   constructor(
+    protected readonly keycloak: KeycloakService,
+    private nuxeo: NuxeoService,
     private router: Router,
     public matDialog: MatDialog,
     private dataService: DataService,
     private nuxeoService: NuxeoService) {
       try {
-        const options = {
-          headers: { "X-Authentication-Token": localStorage.getItem("token") },
-        };
-        fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, options);
-        fetch(`/nuxeo/nxfile/default`, options);
+        if (localStorage.getItem("token")) {
+          const options = {
+            headers: { "X-Authentication-Token": localStorage.getItem("token") },
+          };
+          fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, options)
+          .then((response) => {
+            if (response.status === 401) this.logout();
+          });
+          fetch(`/nuxeo/nxfile/default`, options);
+        }
       } catch (err) {}
 
       router.events.forEach((event: any) => {
@@ -84,6 +92,11 @@ export class AppComponent implements OnInit{
     // if(tab.toLowerCase() === 'search') {
     //   this.showHeader =
     // }
+  }
+
+  logout() {
+    this.nuxeo.logout();
+    this.keycloak.logout(window.location.origin + '/login');
   }
 
   openModal() {
