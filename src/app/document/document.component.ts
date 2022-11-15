@@ -215,6 +215,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   downloadEnable: boolean = false;
   hasSearchData: boolean = false;
   isAware;
+  userIdNew;
 
   searchNameCLicked = [];
 
@@ -239,7 +240,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     });
     this.getRecentlyViewed();
     this.getFavorites();
-    this.getTrendingAssets();
+    // this.getTrendingAssets();
     this.getAssetBySectors();
     this.selectTab("recentlyViewed");
     this.showRecentlyViewed = true;
@@ -293,12 +294,13 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
+    this.userIdNew = JSON.parse(localStorage.getItem("user"))?.email;
     if (changes.searchTerm) {
       this.searchTerm = changes.searchTerm.currentValue;
       this.getRelatedTags();
     }
 
-    if (this.userId && this.recentUpdated && this.recentUpdated.length === 0) {
+    if (this.userIdNew && this.recentUpdated && this.recentUpdated.length === 0) {
       this.getRecentUpdated();
     }
 
@@ -671,8 +673,22 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.display = mode;
   }
 
-  getAssetUrl(event: any, url: string, type?: string): string {
-    return this.sharedService.getAssetUrl(event, url, type);
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
+      // return '../../../assets/images/no-preview.png';
+      return this.getNoPreview(document);
+    }
+
+    const mimeType = document?.properties['file:content']?.['mime-type'];
+    if(mimeType?.includes('pdf') && this.viewType ==="LIST" && !document?.update)
+      return '../../../assets/images/pdf.png';
+
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
+      // return '../../../assets/images/no-preview-grid.svg';
+      return this.getNoPreview(document);
+    }
+   return this.sharedService.getAssetUrl(event, url, type);
+    // return this.sharedService.getAssetUrl(event, url, type);
   }
 
   completeLoadingMasonry(event: any) {
@@ -748,9 +764,9 @@ export class DocumentComponent implements OnInit, OnChanges {
       // fileRenditionUrl = url;
     }
     this.selectedFileUrl =
-      fileType === "image"
-        ? this.getAssetUrl(null, fileRenditionUrl)
-        : fileRenditionUrl;
+      // fileType === "image" ? 
+      this.getAssetUrl(null, fileRenditionUrl, {...file, update:true })
+        // : fileRenditionUrl;
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
@@ -898,9 +914,11 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.selectedView = tab;
     if (tab === "recentUpload") {
       this.recentDataShow = [...this.recentUpdated];
+      console.log('recentDataShow1', this.recentDataShow)
     } else {
       this.getRecentlyViewed();
       this.recentDataShow = [...this.recentlyViewed];
+      console.log('recentDataShow2', this.recentDataShow)
     }
   }
 
@@ -947,7 +965,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     const query =
       "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND " +
       "ecm:isTrashed = 0 AND (ecm:primaryType IN ('File') OR ecm:mixinType IN ('Picture', 'Audio', 'Video')) AND " +
-      `dc:creator = '${this.userId}' ORDER BY dc:created DESC`;
+      `dc:creator = '${this.userIdNew}' ORDER BY dc:created DESC`;
     const params = {
       currentPageIndex: 0,
       offset: 0,
@@ -1309,5 +1327,26 @@ export class DocumentComponent implements OnInit, OnChanges {
       return true;
     }
     return false;
+  }
+
+  checkAssetMimeTypes(document: any): string {
+    return this.sharedService.checkMimeType(document);
+  }
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData[splitedData?.length - 1];
+    const lowercaseMime = mimeType.toLowerCase();
+
+    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      return '../../../assets/images/doc-preveiw.svg';
+    } 
+    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      return '../../../assets/images/ppt-preveiw.svg';
+    }
+    if(item.update) {
+      return '../../../assets/images/no-preview.png';
+    }
+
+    return '../../../assets/images/no-preview-grid.svg';
   }
 }

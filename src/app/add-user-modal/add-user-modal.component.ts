@@ -31,6 +31,7 @@ export class AddUserModalComponent implements OnInit {
   selectedFolder: any;
   makePrivate: boolean = false;
   userList$: Observable<any>;
+  userList = [];
   userInput$ = new Subject<string>();
   userLoading = false;
   folderCollaborators = {};
@@ -59,6 +60,9 @@ export class AddUserModalComponent implements OnInit {
   listExternalUserGlobal: string[] = [];
   isGlobal = false;
 
+  doneLoading:boolean = false;
+  loading = true;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<AddUserModalComponent>,
@@ -71,6 +75,8 @@ export class AddUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.listExternalUser = [];
+    this.listExternalUserGlobal = [];
     this.getExternalGroupUser();
     this.getExternalGlobalGroupUser();
     this.selectedFolder = this.data.selectedFolder;
@@ -81,14 +87,17 @@ export class AddUserModalComponent implements OnInit {
     this.removedCollaborators = {};
     this.updatedCollaborators = {};
     this.invitedCollaborators = {};
-    this.listExternalUser = [];
-    this.listExternalUserGlobal = [];
     this.computeCollaborators();
     this.loadUsers();
+    this.sharedService.fetchExternalUserInfo();
+    this.getExternalGroupUser();
+    this.sharedService.fetchExternalUserInfo();
+    this.getExternalGroupUser();
   }
 
   closeModal() {
     this.dialogRef.close(this.folderUpdated);
+    this.doneLoading = false;
   }
 
   computeCollaborators() {
@@ -96,7 +105,7 @@ export class AddUserModalComponent implements OnInit {
     this.internalCollaborators = {};
     Object.keys(this.folderCollaborators).forEach(key => {
       if ((this.folderCollaborators[key].externalUser
-        || this.listExternalUser.includes(key)) && !this.checkTransientNeomEmail(key)) {
+        || this.listExternalUser.includes(key)) || !this.checkTransientNeomEmail(key)) {
         this.externalCollaborators[key] = this.folderCollaborators[key];
       } else {
         this.internalCollaborators[key] = this.folderCollaborators[key];
@@ -118,7 +127,7 @@ export class AddUserModalComponent implements OnInit {
           id: item.id,
           fullname: item.fullname
         },
-        permission: "Read",
+        permission: "ReadWrite",
         duration: 1,
       }
     } else {
@@ -175,6 +184,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   async updateCollaborators() {
+    this.doneLoading = true;
     if (!this.canSave()) return;
     for (const key in this.removedCollaborators) {
       await this.removePermission(this.removedCollaborators[key])
@@ -183,7 +193,8 @@ export class AddUserModalComponent implements OnInit {
       await this.updatePermission(this.updatedCollaborators[key])
     }
     for (const key in this.addedCollaborators) {
-      await this.addPermission(this.addedCollaborators[key])
+      await this.addPermission(this.addedCollaborators[key]);
+      await this.sendInviteInternal(this.addedCollaborators[key]);
     }
     for (const key in this.addedExternalUsers) {
       await this.addPermission(this.addedExternalUsers[key])
@@ -193,7 +204,7 @@ export class AddUserModalComponent implements OnInit {
     }
     this.folderUpdated = await this.fetchFolder(this.folderId);
     this.closeModal();
-
+    this.doneLoading = false;
     this.sharedService.showSnackbar(
       "Collaborators updated",
       4000,
@@ -228,6 +239,8 @@ export class AddUserModalComponent implements OnInit {
   }
 
   addPermission(item) {
+    this.doneLoading = true;
+    console.log('this.doneLoading = true;', this.doneLoading)
     if (this.listExternalUser.includes(item.user.id) && !item.end) {
       const end = new Date();
       end.setMonth(new Date().getMonth() + 1);
@@ -287,9 +300,23 @@ export class AddUserModalComponent implements OnInit {
     return result;
   }
 
+  async sendInviteInternal (item) {
+    this.doneLoading = true;
+    const params = {
+      groundXUrl: location.protocol + '//' + location.host,
+      email: item.user.id,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: this.folderId,
+    };
+    await this.apiService.post(apiRoutes.INVITE_INTERNAL, payload).toPromise();
+  }
+
   async inviteUser(item) {
     const params = {
-      permission: 'Read',
+      permission: 'ReadWrite',
       email: item.user.id,
       end: item.end,
     };
@@ -349,12 +376,14 @@ export class AddUserModalComponent implements OnInit {
     };
     return this.apiService.get(apiRoutes.SEARCH_USER, {params}).pipe(
       map((resp) => {
-        return resp["entries"].map((entry) => ({
+        const entries = resp["entries"].map((entry) => ({
           id: entry.id,
           fullname: `${entry.properties.firstName || ""} ${
             entry.properties.lastName || ""
           }`.trim(),
         }));
+        this.userList = entries;
+        return entries;
       })
     );
   }
@@ -403,7 +432,8 @@ export class AddUserModalComponent implements OnInit {
     }
     dialogConfig.data = {
       isGlobal: this.isGlobal,
-      selectedMonth: this.selectedMonth
+      selectedMonth: this.selectedMonth,
+      selectedExternalUser: this.selectedExternalUser
     }
 
     const modalDialog = this.matDialog.open(EditAccessComponent, dialogConfig);
@@ -467,8 +497,23 @@ export class AddUserModalComponent implements OnInit {
     return this.checkNeomEmail(email);
   }
 
+  getEmailInUserList(email) {
+    try {
+      if (!this.userList) return null;
+      const res = this.userList.find(user => user.id === email);
+      return res;
+    } catch (err) {
+      return null;
+    }
+  }
+
   sendInvite(isNeom = false) {
     const invitedEmail = this.userInputText;
+    const existedUser = this.getEmailInUserList(invitedEmail);
+    if (existedUser) {
+      this.selectChange(existedUser);
+      return;
+    }
     this.userInputText = "";
     const end = new Date();
     end.setMonth(new Date().getMonth() + 1);
@@ -479,7 +524,7 @@ export class AddUserModalComponent implements OnInit {
           id: invitedEmail,
           notExisted: true
         },
-        permission: "Read",
+        permission: "ReadWrite",
         end
       }
       return;

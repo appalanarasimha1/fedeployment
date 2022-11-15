@@ -24,10 +24,11 @@ export class EditAccessComponent implements OnInit {
   ngOnInit(): void {
     this.selectedMonth = this.data.selectedMonth
     this.isGlobal = this.data.isGlobal;
+    this.selectedExternalUser = this.data.selectedExternalUser;
   }
 
   onFullAccessCheckboxChange(e, checkedGlobal = true) {
-    // this.selectedExternalUser.isGlobal = e.target.checked && checkedGlobal;
+    this.selectedExternalUser.isGlobal = e.target.checked && checkedGlobal;
     this.isGlobal = e.target.checked && checkedGlobal;
   }
   cancel() {
@@ -36,6 +37,16 @@ export class EditAccessComponent implements OnInit {
 
   closeModal() {
     this.dialogRef.close({selectedMonth: this.selectedMonth, isGlobal: this.isGlobal});
+  }
+
+  getEndDate(end) {
+    if (!end) return "";
+    const date = new Date(end);
+    const yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1; // Months start at 0!
+    let dd = date.getDate();
+
+    return dd + '.' + mm + '.' + yyyy;
   }
 
 }

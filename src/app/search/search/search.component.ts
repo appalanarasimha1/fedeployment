@@ -614,20 +614,21 @@ export class SearchComponent implements OnInit {
   }
 
   async fetchUserData() {
-    if (this.nuxeo.nuxeoClient) {
-      const res = await this.nuxeo.nuxeoClient.connect();
-      this.user = res.user.id;
-      this.sector = res.user.properties.sector;
-      localStorage.setItem("user", JSON.stringify(res.user.properties));
-      const groups = res.user.properties.groups;
-      if (!groups) return;
-      if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
-      if (groups.includes(EXTERNAL_USER)) {
-        this.router.navigate(['workspace']);
-        return;
+    try {
+      if (this.nuxeo.nuxeoClient) {
+        const res = await this.nuxeo.nuxeoClient.connect();
+        this.user = res.user.id;
+        this.sector = res.user.properties.sector;
+        localStorage.setItem("user", JSON.stringify(res.user.properties));
+        const groups = res.user.properties.groups;
+        if (!groups) return;
+        if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
+        if (groups.includes(EXTERNAL_USER)) {
+          this.router.navigate(['workspace']);
+          return;
+        }
       }
-
-    }
+    } catch (err) {}
   }
 
   async fetchFavoriteCollection() {

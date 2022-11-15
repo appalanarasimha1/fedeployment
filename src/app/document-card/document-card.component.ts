@@ -25,7 +25,7 @@ export class DocumentCardComponent implements OnChanges {
 
   constructor(
     private router: Router,
-    private sharedService: SharedService
+    public sharedService: SharedService
     ) {}
 
   ngOnChanges() {}
@@ -217,5 +217,20 @@ export class DocumentCardComponent implements OnChanges {
         return ASSET_TYPE.FILE;
       
       return 'nopreview';
+  }
+
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData[splitedData?.length - 1];
+    const lowercaseMime = mimeType.toLowerCase();
+
+    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      return '../../../assets/images/word.png';
+    } 
+    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      return '../../../assets/images/ppt.png';
+    }
+    return '../../../assets/images/no-preview.png';
+
   }
 }

@@ -31,6 +31,8 @@ import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill
 import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
 import { DataTableComponent } from '../data-table/data-table.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { SafePipe } from '../common/pipe/safe.pipe';
+
 keyboardEventKeyPolyfill();
 @NgModule({
   providers: [
@@ -51,6 +53,8 @@ keyboardEventKeyPolyfill();
     AssetViewComponent,
     ManageAccessModalComponent,
     DataTableComponent,
+    // ManageAccessModalComponent,
+    SafePipe
   ],
   imports: [
     CommonModule,
@@ -93,6 +97,8 @@ keyboardEventKeyPolyfill();
     MatMenuModule,
     DataTableComponent,
     ManageAccessModalComponent,
+    // ManageAccessModalComponent,
+    SafePipe
   ]
 })
 export class SharedModule { }

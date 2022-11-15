@@ -17,6 +17,7 @@
     border: 0px;
     margin: 0px 0px 0px;
     color: #040404;
+    width: 100%;
 }
 .makePrivate .control input {
     position: absolute;
@@ -77,6 +78,7 @@
     background: #fff;
 }
 /* Custom checkbox end */
+
 .makePrivate {
     position: relative;
 }
@@ -103,13 +105,6 @@
     font-size: 13px;
     line-height: 20px;
     width: 100%;
-    /* width: -webkit-max-content;
-    width: max-content;
-    white-space: nowrap;
-    max-width: -webkit-max-content;
-    max-width: -moz-max-content;
-    max-width: max-content;
-    width: max-content; */
 }
 .tollTipWorkspace .showTollTip:hover .customToolTipWorkspace {
     display: block;
@@ -147,76 +142,46 @@ button.upload-btn {
     letter-spacing: 0.5px;
 }
 
-.manageAccessHeader {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    margin-bottom: 3px;
+.button-groups button.upload-btn.disabled {
+    background: #ccc;
+    color: #fff;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
 }
 
-.manageAccessHeader .imgBlock {
-    margin-right: 10px;
-}
-
-.manageAccessHeader .imgBlock img {
-    display: block;
-}
-
-.nameBlock, .manageAccessBlock h3 {
+.modalContentBlock .addUserBlock h3, .addUserBlock h3 {
     font-weight: normal;
     font-size: 15px;
     letter-spacing: 0.5px;
     color: #040404;
     line-height: normal;
-}
-.manageAccessBlock h3 {
     padding-bottom: 20px;
 }
-
-.tagBlock {
-    background: #E6E2DA;
-    border-radius: 4px;
-    padding: 0px 8px;
+.disableColor {
+    color: #BAB8B2;
+}
+.mb-20 {
+    margin-bottom: 20px !important;
+}
+.mb-10 {
+    margin-bottom: 10px !important;
+}
+.pl-10 {
+    padding-left: 10px;
+}
+h3.externalUsers {
+    color: #BAB8B2;
+    font-weight: 400;
+    font-size: 15px;
     line-height: 24px;
-    margin-left: 10px;
-    font-weight: normal;
-    color: #645D57;
+    padding-bottom: 10px;
+}
+.addUserBlock {
+    width: 600px !important;
 }
 
-.breadcrumbBlock {
-    padding-bottom: 15px;
-    letter-spacing: 0.5px;
-}
-.breadcrumbBlock span.active {
-    color: #24221f;
-}
-.breadcrumbBlock {
-    color: rgba(35, 33, 30, 0.6);
-}
-.breadcrumbBlock a {
-    color: rgba(35, 33, 30, 0.6);
-    text-decoration: none;
-    outline: none;
-}
-.breadcrumbBlock a:hover {
-    text-decoration: underline;
-}
-
-.whenYouConvert {
-    background: #E6F2FF;
-    border-radius: 8px;
-    padding: 8px 16px;
-    color: #0072A2;
-    font-size: 14px;
-    font-weight: normal;
-    margin-bottom: 15px;
-}
-
-.button-groups button.upload-btn.disabled {
-    background: #ccc;
-    color: #fff;
-    border: 1px solid #ccc;
-}
-.manageAccessBlock {
-    width: 510px !important;
+.upload-btn ::ng-deep app-loader-small .text-center {
+    top: 0px !important;
+    left: 0px !important;
+    border-radius: 100px !important;
 }

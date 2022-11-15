@@ -1,5 +1,6 @@
 ::ng-deep .mat-dialog-container {
     padding: 20px !important;
+    border-radius: 8px !important;
 }
 /* Custom checkbox start */
 .makePrivate .control-group {
@@ -358,3 +359,9 @@ h3.externalUsers {
 ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-ripple {
     display: none;
 }
+
+.upload-btn ::ng-deep app-loader-small .text-center {
+    top: 0px !important;
+    left: 0px !important;
+    border-radius: 100px !important;
+  }

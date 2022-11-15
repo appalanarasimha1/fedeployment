@@ -4,7 +4,7 @@ const PROXY_CONFIG = [
             "/nuxeo/",
             "/sockjs-node/",
         ],
-        "target": 'https://uatgroundx.neom.com', // "https://uatgroundx.oci.sense.neomos.online", // 
+        "target": 'https://uatgroundx.neom.com', 
         "secure": false,
         "changeOrigin": true
     }];

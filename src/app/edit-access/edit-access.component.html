@@ -7,13 +7,16 @@
 
 <div class="modalContentBlock" style="position: relative;">
     <div class="addUserBlock">
-      <h3>Edit access</h3>
+      <h3>Edit access
+        <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+          <img src="../../assets/images/close-modal.svg" style="width: 20px" />
+       </button>
+      </h3>
       <ul class="mb-20">
         <li>
-          <!-- {{selectedExternalUser.user.id}}
-          <span class="disableColor pl-10"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Expiry date {{getEndDate(selectedExternalUser.end)}}</span> -->
+          <span class="disableColor pl-10"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Expiry date {{getEndDate(selectedExternalUser.end)}}</span>
 
-          <span class="disableColor pl-10"><span>Pending - </span>Expiry date </span>
+          <!-- <span class="disableColor pl-10"><span>Pending - </span>Expiry date </span> -->
         </li>
       </ul>
       <div class="makePrivate tollTipWorkspace">

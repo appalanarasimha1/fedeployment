@@ -261,6 +261,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         }, 500);
       }
 
+      this.fetchExternalUserInfo(fetchAll);
+
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
@@ -288,8 +290,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         parent.addClass("is-open");
       }
     });
-
-    this.fetchExternalUserInfo(fetchAll);
     this.dragNDrop();
     // this.removeAssets()
   }
@@ -419,10 +419,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
-      return '../../../assets/images/no-preview.png';
+      // return '../../../assets/images/no-preview.png';
+      return this.getNoPreview(document);
     }
+
+    const mimeType = document?.properties['file:content']?.['mime-type'];
+    if(mimeType?.includes('pdf') && this.viewType ==="LIST" && !document?.update)
+      return '../../../assets/images/pdf.png';
+
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
-      return '../../../assets/images/no-preview-grid.svg';
+      // return '../../../assets/images/no-preview-grid.svg';
+      return this.getNoPreview(document);
     }
    return this.sharedService.getAssetUrl(event, url, type);
   }
@@ -461,9 +468,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // fileRenditionUrl = url;
     }
     this.selectedFileUrl =
-      fileType === "image"
-        ? this.getAssetUrl(null, fileRenditionUrl)
-        : fileRenditionUrl;
+      // fileType === "image"?
+        this.getAssetUrl(null, fileRenditionUrl, {...file, update:true } )
+        // : fileRenditionUrl;
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
@@ -559,7 +566,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
-    this.removeAssets()
+    this.removeAssets();
     this.saveState(item, index, breadCrumbIndex);
     this.paginator?.firstPage();
     this.searchBarValue = "";
@@ -578,14 +585,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     this.isTrashView = false;
     if (index || breadCrumbIndex === 1) {
-      console.log("inside if");
 
       const listView = 1;
       this.loading = true;
       await this.getWorkspaceFolders(item.uid, listView);
       this.loading = false;
     } else {
-      console.log("inside else");
       // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
@@ -607,7 +612,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.showMoreButton = true;
     this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
     if (checkCache && this.folderAssetsResult[id] && !this.permissionChange) {
-      console.log("comming");
 
       return this.folderAssetsResult[id];
     }
@@ -961,7 +965,39 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   selectFolder($event, item, i, updateCount = true) {
+    console.log('updatecount', updateCount);
+
+    if(this.selectAllClicked) updateCount = true
+
+    // var $chkboxes = $('.chkbox');
+    // var lastChecked = null;
+
+    // $chkboxes.click(function(e) {
+    //   console.log('shift', e.shiftKey);
+    //     if (!lastChecked) {
+    //         lastChecked = this;
+    //         // return;
+    //     }
+
+    //     if (e.shiftKey) {
+    //         var start = $chkboxes.index(this);
+    //         var end = $chkboxes.index(lastChecked);
+    //         $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastChecked.checked);
+    //     }
+
+    //     lastChecked = this;
+    // });
+
+
     if ($event.target?.checked || $event.checked) {
+      if (this.lastIndexClicked ==undefined) {
+        this.currentIndexClicked = i
+        this.lastIndexClicked = i
+
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = i
+      }
       if (updateCount) this.count = this.count + 1;
       this.selectedFolderList[i] = item;
       this.selectedMoveList[i] = item;
@@ -969,23 +1005,29 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (updateCount) this.count = this.count - 1;
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
+        if (this.count==0) {
+          this.currentIndexClicked = undefined
+          this.lastIndexClicked = undefined
+          this.selectAllClicked = false
+
+        }else{
+          this.lastIndexClicked = this.currentIndexClicked
+          this.currentIndexClicked = undefined
+        }
     }
+
   }
 
   // moved to data-table
   async deleteFolders() {
-    if (Object.keys(this.selectedFolderList).length == 0) return;
+    // if (Object.keys(this.selectedFolderList).length == 0 ) return;
     this.loading = true;
-
-    const listDocs = Object.entries(this.selectedFolderList)
-    .filter(([key, item]) => this.checkCanDelete(item)).map(function (
-      [key, item],
-      index
-    ) {
-      return item["uid"];
-    });
+    let data = Object.values(this.selectedFolderList)
+    let dataToParse =  data.concat(this.assetCanDelete)
+    const listDocs = dataToParse
+    .filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
     await this.apiService
-      .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}` })
+      .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}`})
       .subscribe((docs: any) => {
         this.loading = false;
         this.deleteModal(listDocs);
@@ -997,8 +1039,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async unTrashFolders() {
-    console.log("selectedFolderList",this.selectedFolderList);
-    
+
     if (Object.keys(this.selectedFolderList).length == 0) return;
     this.loading = true;
 
@@ -1016,7 +1057,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkEnableDeleteBtn() {
-    return Object.keys(this.selectedFolderList).length > 0;
+    return Object.keys(this.selectedFolderList).length > 0  || Object.keys(this.selectedMoveList).length >this.canNotDelete.length;
   }
 
 
@@ -1109,9 +1150,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.minHeight = "350px";
-    dialogConfig.height = "700px";
-    dialogConfig.maxHeight = "900px";
-    dialogConfig.width = "650px";
+    dialogConfig.height = "100%";
+    dialogConfig.maxHeight = "92vh"
+    dialogConfig.width = "80vw";
     dialogConfig.disableClose = true;
     this.selectedFolder["sectorId"] = this.selectedFolder2.uid;
     dialogConfig.data = this.selectedFolder;
@@ -1379,7 +1420,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   
   initialLoad:Boolean= true
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
-    console.log("getWorkspaceFolders");
 
     this.showSearchbar = true;
     // this.loading = true;
@@ -1459,6 +1499,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       var storeHeight = $(".main-content").outerHeight();
       $(".leftPanel.insideScroll").css("height", storeHeight - 80);
+
+      var getWidth1 = $('.getWidth1').outerWidth();
+      var getWidth2 = $('.getWidth2').outerWidth();
+      var getWidth3 = $('.getWidth3').outerWidth();
+      var totalWidth = getWidth1 + getWidth2 + getWidth3;
+      console.log('getWidth', totalWidth);
+      $('.chkbox.width1600').css("width", totalWidth - 60);
     }, 0);
   }
 
@@ -1500,21 +1547,69 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   
+  async searchFolders(searchString: string) {
+    // this.loading = true;
+    let query;
+    if (this.isExternalView && !this.selectedFolder.uid && !this.selectedFolder.path) {
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
+    } else {
+      const path = this.sectorSelected.uid === this.selectedFolder.uid ?
+      `/${this.sectorSelected.title}/workspaces/` :
+      `${this.selectedFolder.path}/`;
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${path.replace(/(["'])/g, "\\$1")}' AND dc:title ILIKE '%${searchString}%'`;
+    }
+    query = encodeURIComponent(query);
+    const params = {
+      currentPageIndex: 0,
+      offset: 0,
+      pageSize: 20,
+      queryParams: query,
+    };
+    const result: any = await this.apiService
+      .get(apiRoutes.NXQL_SEARCH, {
+        params,
+        headers: { "fetch-document": "properties" },
+      }).toPromise();
 
-  navigateToWorkspaceFolder(uid: string, index?: number, breadCrumbIndex?: number) {
+    result.entries = result.entries.sort((a, b) =>
+      this.compare(a.title, b.title, false)
+    );
+    const folders = result.entries.filter(entry =>
+      [ASSET_TYPE.WORKSPACE_ROOT,
+        ASSET_TYPE.DOMAIN, ASSET_TYPE.FOLDER,
+        ASSET_TYPE.ORDERED_FOLDER,
+        ASSET_TYPE.WORKSPACE].indexOf(entry.type.toLowerCase()) > -1
+        );
+    const assets = result.entries.filter(entry => [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(entry.type.toLowerCase()) > -1);
+    result.entries = folders.concat(assets);
+    // result.entries = result.entries.sort((a, b) =>
+    //   this.assetTypeCompare(a.type, b.type)
+    // );
+    this.numberOfPages = result.numberOfPages;
+    this.resultCount = result.resultsCount;
+    this.sortedData = result.entries;
+    this.searchList = result.entries;
+    // this.loading = false;
+  }
+
+  navigateToWorkspaceFolder(uid: string, index?: number, breadCrumbIndex?: number, sectorId?: any) {
     if(this.routeParams.folderId === uid) {
       return;
     }
-    const path = this.sectorSelected?.path.split("/");
     // NOTE: todo, refactor if-else
+    let sectorTitle = this.sectorSelected?.title;
+    if (this.isExternalView) sectorTitle = sectorId;
+    console.log(this.isExternalView);
+
+
     if(breadCrumbIndex === 0) {
       this.router.navigate([ASSET_TYPE.WORKSPACE]);
     } else  if(breadCrumbIndex === 1) {
-      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
+      this.router.navigate([ASSET_TYPE.WORKSPACE, sectorTitle]);
     } else if(!isNaN(index)) {
-      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+      this.router.navigate([ASSET_TYPE.WORKSPACE, sectorTitle, uid]);
     } else {
-      this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title, uid]);
+      this.router.navigate([ASSET_TYPE.WORKSPACE, sectorTitle, uid]);
       // else this.router.navigate([ASSET_TYPE.WORKSPACE, this.sectorSelected.title]);
     }
   }
@@ -1522,7 +1617,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   saveState({uid, title, path, properties, sectorId, type, contextParameters}, index?: number, breadCrumbIndex?: number) {
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
-    this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex);
+    const sector = (path) ? path.split('/')[1] : '';
+    this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex, sector);
     return;
   }
 
@@ -1596,19 +1692,42 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // forInternalUse: any = [];
+  // downloadArray: any = [];
+  // sizeExeeded: boolean = false;
+  // forInternaCheck: boolean = false;
+  // downloadFullItem: any = [];
+  // needPermissionToDownload: any = [];
+  // count: number = 0;
+  // copyRightItem: any = [];
+  // canNotDelete: any = [];
+  assetCanDelete:any=[]
+
   selectAsset($event, item, i) {
+
+
     let canDelete = this.checkCanDelete(item)
-    if(canDelete){
-      this.selectFolder($event, item, i, false);
+    if(this.checkCanMove(item)){
+      console.log('update', $event.update);
+      return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
     }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
       }
-      
+      if (this.lastIndexClicked ==undefined) {
+        this.currentIndexClicked = i
+        this.lastIndexClicked = i
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = i
+      }
+
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
+      }else{
+        this.assetCanDelete.push(item)
       }
        if (
          item.properties['sa:copyrightName'] !== null &&
@@ -1616,7 +1735,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
        ) {
          this.copyRightItem.push(item.uid);
        }
-      if (item.properties["sa:downloadApprovalUsers"].length > 0) {
+      if (item.properties["sa:downloadApprovalUsers"]?.length > 0) {
         this.needPermissionToDownload.push(item);
       } else {
         if (item.properties["sa:access"] === "Internal access only") {
@@ -1640,7 +1759,20 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         (m) => m.uid !== item.uid
       );
       delete this.selectedMoveList[i];
-      this.count = this.count - 1;
+
+
+      if ($event.from !== "rightClick") {
+        this.count = this.count - 1;
+      }
+
+      if (this.count==0) {
+        this.currentIndexClicked = undefined
+        this.lastIndexClicked = undefined
+        this.selectAllClicked = false
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = undefined
+      }
       //  }
     }
     this.getdownloadAssetsSize();
@@ -1673,7 +1805,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length > 0) {
+      if (this.downloadArray.length == 1) {
+        window.location.href =this.getFileContent(this.downloadFullItem[0])
+        this.removeAssets()
+      }
+      if (this.downloadArray.length > 1) {
         $(".multiDownloadBlock").hide();
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
@@ -1690,20 +1826,40 @@ export class BrowseComponent implements OnInit, AfterViewInit {
             let splittedLocation = res.headers.get("location").split("/");
             let newUID = splittedLocation[splittedLocation.length - 2];
             uid = newUID;
-            this.apiService
-              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-              .subscribe((resp: any) => {
-                let locationForDownload = resp.headers.get("location");
-              });
+            // setTimeout(() => {
+            //   window.open(
+            //     environment.apiServiceBaseUrl +
+            //       "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+            //       uid
+            //   );
+            //   this.removeAssets();
+            // }, 10000);
+            let counter = 0
+            let checkZipCompleted=(newUID) =>{
+                  this.loading = true
+                  this.apiService
+                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+                .toPromise().then((resp: any) => {
+                }).catch(e=>{
+                  console.error("2222222222222",e)
+                  counter += 1
 
-            setTimeout(() => {
-              window.open(
-                environment.apiServiceBaseUrl +
-                  "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-                  uid
-              );
-              this.removeAssets();
-            }, 1000);
+                  if (e.status ==404) {
+                     checkZipCompleted(newUID)
+                  }else{
+                    this.loading = false
+                    window.open(
+                      environment.apiServiceBaseUrl +
+                        "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                        uid
+                    );
+                    this.removeAssets();
+                  }
+
+                });
+
+            }
+            checkZipCompleted(uid)
           });
       }
     }
@@ -1724,6 +1880,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.selectedMoveList={}
     // this.isAware=false
     // $(".vh").prop("checked", false);
+    this.selectAllClicked = false
+    this.currentIndexClicked = undefined
+    this.lastIndexClicked = undefined
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
 
@@ -1985,7 +2144,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async getAllFolders(folder?:any){
     let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
     if(currentState.length){
-      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${folder.path}'`;
+      const path = folder.path?.replace(/(["'])/g, "\\$1");
+      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${encodeURIComponent(path)}'`;
       const result: any = await this.apiService
           .get(url, { headers: { "fetch-document": "properties" } })
           .toPromise();
@@ -1998,12 +2158,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   folderNameChange(){
-    console.log("this.titleExists",this.titleExists);
 
     return this.titleExists = false
   }
 
   checkShowManageAccessButton() {
+    if (!this.selectedFolder?.properties) return false;
     if (this.selectedFolder.properties['dc:isPrivate']) return false;
     const userData = localStorage.getItem("user");
 
@@ -2035,8 +2195,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async openMoveModal() {
     const listDocs = Object.values(this.selectedMoveList)
     .filter( item => !this.checkDownloadPermission(item))
-   console.log("listDocslistDocs",listDocs);
-    
+
     if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -2056,7 +2215,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if (result) {
         delete this.folderAssetsResult[result.uid];
         delete this.folderAssetsResult[this.selectedFolder.uid];
-
+        this.removeAssets();
         this.loading = true;
         setTimeout(() => {
           if (this.selectedFolder.type === 'Domain') window.location.reload();
@@ -2080,7 +2239,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    return processAble.length>0 
+    return processAble.length>0
   }
 
   checkEnableMoveButton1() {
@@ -2129,7 +2288,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.rightClickedItem = item ? item : this.rightClickedItem
     this.rightClickedIndex = i
 
-   
+
     $(document).click(function (e) {
       if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0) {
         $(".availableActions").hide();
@@ -2172,17 +2331,39 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return $(".availableActions").hide();
   }
   rightClickRename(item){
-    if (this.count == 0) {
+    if (this.count < 2) {
       return item.edit =!item.edit
     }
-    
+
+  }
+  selectAllClicked:boolean=false
+  rightClickSelectAll(){
+    this.removeAssets()
+    this.sortedData.forEach((e,i) => {
+      if(!this.checkGeneralFolder(e)){
+         e.isSelected = true
+        this.selectAllClicked = true
+         this.selectAsset({checked:true , update:true}, e, i)
+      }
+    });
   }
 
+  unSelectEnable(){
+    let checkGen = false
+    for (let i = 0; i < this.sortedData.length; i++) {
+      if(this.checkGeneralFolder( this.sortedData[i])) {
+        checkGen=true
+        break;
+      }
+    }
+
+    if (checkGen) return this.count ==this.sortedData.length-1
+    return this.count ==this.sortedData.length
+  }
   contextMenuPosition = { x: '0px', y: '0px' };
 
   onContextMenu(event: MouseEvent, item: any) {
-    if(!this.checkGeneralFolder(item)) {
-      console.log('contextMenu', item);
+    if(!this.checkGeneralFolder(item) && !this.isTrashView) {
       event.preventDefault();
       this.contextMenuPosition.x = event.clientX + 'px';
       this.contextMenuPosition.y = event.clientY + 'px';
@@ -2191,7 +2372,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.contextMenu.openMenu();
 
       $(document).click( (e)=> {
-        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0) {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0 && !this.selectAllClicked) {
           // $(".availableActions").hide();
           this.removeAssets()
         }
@@ -2203,5 +2384,70 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem, '')
       }
     }
+  }
+
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData[splitedData?.length - 1];
+    const lowercaseMime = mimeType.toLowerCase();
+
+    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      return '../../../assets/images/doc-preveiw.svg';
+    }
+    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      return '../../../assets/images/ppt-preveiw.svg';
+    }
+    if(item.update) {
+      return '../../../assets/images/no-preview.png';
+    }
+
+    return '../../../assets/images/no-preview-grid.svg';
+  }
+
+  checkFolderContains(){
+    return Object.keys(this.selectedFolderList).length <1
+  }
+
+  lastIndexClicked:number
+  currentIndexClicked:number
+
+  shiftkeyDown(e,item,i){
+    // console.log("e",this.lastIndexClicked,this.currentIndexClicked,this.sortedData);
+    // let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
+    // let slicedData = this.sortedData.slice(sortedNumber[0],sortedNumber[1]+1)
+    // console.log("sliccesdData", slicedData);
+
+      // this.sortedData.forEach((ele:any,i)=>{
+        //  if (i >=sortedNumber[0] && i <=sortedNumber[1]) {
+        //     ele.isSelected = true
+        //     this.selectAsset({checked:true,update:false}, ele, i)
+        //  }
+        // })
+      // })
+
+  }
+  shiftkeyUp($event,item,i){
+    let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
+    this.sortedData.forEach((ele:any,i)=>{
+         if (i >=sortedNumber[0] && i <=sortedNumber[1] && !this.checkGeneralFolder(ele)) {
+          if( !ele.isSelected) {
+            ele.isSelected = true
+            this.selectAsset({checked:true,update:true}, ele, i)
+          }
+         }
+      })
+  }
+  selectAllToggle(e) {
+    if(e.target.checked) {
+      this.rightClickSelectAll();
+      this.selectAllClicked = true;
+    } else {
+      this.removeAssets();
+      this.selectAllClicked = false;
+    }
+  }
+
+  getFileContent(doc) {
+    return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
 }
