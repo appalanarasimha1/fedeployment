@@ -180,7 +180,7 @@ export class NuxeoService {
     return location;
   }
 
-  createClientWithToken(token, redirect = true) {
+  async createClientWithToken(token, redirect = true) {
     this.nuxeoClient = new Nuxeo({
       baseURL: `${this.baseUrl}/nuxeo/`,
       auth: {
@@ -189,6 +189,13 @@ export class NuxeoService {
       },
       headers: this.defaultHeader
     });
+    try {
+      await this.nuxeoClient.connect();
+    } catch (err) {
+      await this.logout();
+      this.router.navigate(['/login']);
+      return;
+    }
     if(this.router.url === '/login' && redirect) {
       this.router.navigate(['/']);
     }
