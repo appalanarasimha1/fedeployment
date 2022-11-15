@@ -157,7 +157,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       },
     ],
   };
-  selectedView = "recentlyViewed";
+  selectedView = "yourFavourites";
   selectedType = "all";
 
   // /* <!-- sprint12-fixes start --> */
@@ -242,7 +242,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.getFavorites();
     // this.getTrendingAssets();
     this.getAssetBySectors();
-    this.selectTab("recentlyViewed");
+    this.selectTab("yourFavourites");
     this.showRecentlyViewed = true;
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.hasSearchData = true
@@ -385,7 +385,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.countOfTheme =0
     // this.clearFilter();
     // this.resetView();
-    this.selectTab("recentlyViewed");
+    this.selectTab("yourFavourites");
     this.dataService.searchBarClickInit(false);
     this.dataService.termSearchForHideInit("")
   }
