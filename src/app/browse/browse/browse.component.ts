@@ -2115,7 +2115,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.openModal()
     let openM=(files)=> {
       this.dropFilesNew = files
-      this.openModal()
+      setTimeout(() => {
+        this.openModal()
+      }, 300);
+     
     }
 
     window.addEventListener("dragenter", function (e) {
