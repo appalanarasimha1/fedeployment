@@ -171,7 +171,7 @@
 
       <div *ngIf="!onSectorLevel" class="dateFileSize">
         <ul>
-          <li *ngIf="currentWorkspace.start">
+          <li *ngIf="currentWorkspace?.start">
             <img
               src="../../../assets/images/calendar-icon.svg"
               alt=""
@@ -179,7 +179,7 @@
             {{ getDateInFormat(currentWorkspace.start) }}
           </li>
           <li>
-            {{ assetList.length }} assets,
+            {{ assetList?.length }} assets,
             {{ getSelectedAssetsSize() }}
           </li>
         </ul>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ASSET_TYPE, constants, PAGE_SIZE_1000, PAGE_SIZE_20, UNWANTED_WORKSPACES, WORKSPACE_ROOT } from 'src/app/common/constant';
 import { IEntry, ISearchResponse } from 'src/app/common/interfaces';
@@ -23,7 +23,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './browse-sector-detail.component.html',
   styleUrls: ['./browse-sector-detail.component.css']
 })
-export class BrowseSectorDetailComponent implements OnInit {
+export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
   loading: boolean = false;
   renameFolderName: boolean = false;
@@ -64,10 +64,10 @@ export class BrowseSectorDetailComponent implements OnInit {
   copyRightItem: [];
   needPermissionToDownload: [];
   sizeExeeded: boolean = false;
-  dataTableComponent: DataTableComponent;
+  // dataTableComponent: DataTableComponent;
   folderStructure = {};
 
-  // @ViewChild("DataTableComponent") dataTableComponent: DataTableComponent;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
   constructor(
@@ -84,7 +84,7 @@ export class BrowseSectorDetailComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.dataTableComponent = new DataTableComponent(SharedService, ApiService, MatDialog, DataService, Router);
+    // this.dataTableComponent = new DataTableComponent(SharedService, ApiService, MatDialog, DataService, Router);
     this.fetchUserData();
     this.searchInitialised = null;
     // this.dataService.fetchAssets$.subscribe(async (data) => {
@@ -104,6 +104,10 @@ export class BrowseSectorDetailComponent implements OnInit {
     });
     const fetchAll = false;
     this.fetchExternalUserInfo(fetchAll);
+  }
+
+  ngAfterViewInit(): void {
+    
   }
   
   async fetchExternalUserInfo(fetchAll = false) {
@@ -382,7 +386,7 @@ export class BrowseSectorDetailComponent implements OnInit {
   
   getSelectedAssetsSize() {
     let size = 0;
-    this.assetList.forEach((doc) => {
+    this.assetList?.forEach((doc) => {
       size += +doc.properties?.["file:content"]?.length || 0;
     });
     return this.humanFileSize(size);
@@ -705,15 +709,6 @@ export class BrowseSectorDetailComponent implements OnInit {
     //   this.hasUpdatedChildren.push(this.currentWorkspace.uid);
     // }
   }
-  
-  
-  multiDownload() {
-    this.dataTableComponent.multiDownload();
-  }
-
-  downloadAssets(e?:any) {
-    this.dataTableComponent.downloadAssets(e);
-  }
 
   dataTableEvent(event: {eventName: string, data: any}) {
     if(event.eventName === 'forInternalUseListEvent') {
@@ -725,10 +720,6 @@ export class BrowseSectorDetailComponent implements OnInit {
     } else if(event.eventName === 'sizeExeededEvent') {
       this.sizeExeeded = event.data;
     }
-  }
-  
-  downloadClick() {
-    this.dataTableComponent.downloadClick();
   }
   
   onCheckboxChange(e: any) {
@@ -745,14 +736,33 @@ export class BrowseSectorDetailComponent implements OnInit {
   }
 
   openMoveModal() {
-    this.dataTableComponent.openMoveModal();
+    if(this.dataTableComponent)
+      this.dataTableComponent.openMoveModal();
+    else return;
   }
 
   checkEnableMoveButton() {
+    if(this.dataTableComponent)
     this.dataTableComponent.checkEnableMoveButton();
   }
 
   removeAssets() {
+    if(this.dataTableComponent)
     this.dataTableComponent.removeAssets();
+  }
+  
+  downloadClick() {
+    if(this.dataTableComponent)
+    this.dataTableComponent.downloadClick();
+  }
+  
+  multiDownload() {
+    if(this.dataTableComponent)
+    this.dataTableComponent.multiDownload();
+  }
+
+  downloadAssets(e?:any) {
+    if(this.dataTableComponent)
+    this.dataTableComponent.downloadAssets(e);
   }
 }

@@ -127,7 +127,7 @@ export class CreateFolderComponent implements OnInit {
 
      this.allFolders = result?.entries
     }else{
-      let currentState1 = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.type == "OrderedFolder")
+      let currentState1 = this.folderAssetsResult[folder?.uid]?.entries?.filter(r => r.type == "OrderedFolder")
       this.allFolders = currentState1
     }
   }
