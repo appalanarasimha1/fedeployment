@@ -55,7 +55,7 @@ const BUTTON_LABEL = {
   3: "Publish",
 };
 
-const MAX_CHUNK_SIZE = 5 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
+const MAX_CHUNK_SIZE = 0.2 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
 const apiVersion1 = environment.apiVersion;
 
@@ -633,7 +633,7 @@ export class UploadModalComponent implements OnInit {
     const totalSize = blob.size;
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
-    if (totalSize > 500 * 1000 * 1000) {
+    if (totalSize > 20 * 1000 * 1000) {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
       try {
