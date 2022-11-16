@@ -65,6 +65,7 @@ export class SettingsComponent implements OnInit {
     this.showUserAccessPage = false;
     this.currentEditingUser = null;
     this.currentUserFolderList = [];
+    this.managedUsers = this.managedUsersBackUp
   }
 
   async removeAllAccess(user) {
