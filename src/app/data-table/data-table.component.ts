@@ -9,7 +9,7 @@ import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-asse
 import { ASSET_TYPE, constants, PAGE_SIZE_20, UNWANTED_WORKSPACES } from '../common/constant';
 import { Sort } from "@angular/material/sort";
 import { DataService } from '../services/data.service';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 import { Router } from '@angular/router';
@@ -25,13 +25,14 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Input() trashedList: IEntry[] = [];
   @Input() searchBarValue;
   @Input() showAssetPath: boolean = false;
-
-  @Input() sectorSelected: IEntry = null;
-  @Input() folderStructure: IBrowseSidebar[] = [];
-  @Input() folderAssetsResult: {[key: string]: ISearchResponse} = {};
-  @Input() selectedFolder: IEntry = null; // TODO: check if this will come from parent or has to be created here only
-  @Input() fetchFolderStatus = {};
+  @Input() currentWorkspace: IEntry;
   @Input() breadCrumb = [];
+
+  // @Input() currentWorkspace: IEntry = null;
+  @Input() folderStructure: IBrowseSidebar[] = [];
+  // @Input() folderAssetsResult: {[key: string]: ISearchResponse} = {};
+  // @Input() fetchFolderStatus = {};
+  
 
   @Output() clickHandle: EventEmitter<any> = new EventEmitter();
   @Output() fetchAssets: EventEmitter<any> = new EventEmitter();
@@ -57,8 +58,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   user = null;
   sortedData: IEntry[] = [];
   hasUpdatedChildren;
-  numberOfPages: number;
-  resultCount: number;
+  numberOfPages: number= 0;
+  resultCount: number = 0;
   showLinkCopy: boolean = false;
   currentPageCount: number = 0;
   permissionChange:boolean = false;
@@ -77,6 +78,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   fileToPreview: IEntry;
   fileToPreviewUrl: string;
   downloadErrorShow: boolean = false;
+  defaultPageSize: number = 20;
+  pageSizeOptions = [20, 50, 100];
 
   constructor(
     public sharedService: SharedService,
@@ -92,14 +95,70 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.sortedData = this.searchList?.slice();
+    // this.pageSize = changes.currentValue[this.currentWorkspace.uid].pageSize;
+    this.numberOfPages = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.numberOfPages;
+    this.resultCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.resultsCount;
+    this.currentPageCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.currentPageSize;
   }
   
+  /**
+   * @param event = {previousPageIndex: 0, pageIndex: 1, pageSize: 10, length: 100};
+   */
+   paginatorEvent(event: PageEvent) {
+    const offset = event.pageIndex * event.pageSize;
+    // if (!this.isTrashView) {
+      let uid = this.currentWorkspace.uid;
+      // let showLinkCopy = true;
+      // if (this.currentWorkspace.type.toLowerCase() === "domain") {
+      //   uid = this.sectorWorkspace.uid;
+      //   showLinkCopy = false;
+      // }
+      const data = {
+        id: uid,
+        checkCache: false,
+        pageSize: event.pageSize,
+        pageIndex: event.pageIndex,
+        offset
+      }; 
+      this.fetchAssets.emit(data);
+      // this.fetchCurrentFolderAssets(
+      //   uid,
+      //   false,
+      //   event.pageSize,
+      //   event.pageIndex,
+      //   offset
+      // );
+    // } 
+    // else {
+    //   this.getTrashedWS(event.pageSize, event.pageIndex, offset);
+    // }
+  }
+  
+  async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+    this.loading = true;
+    // const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
+    //   sectorUid,
+    //   checkCache,
+    //   pageSize,
+    //   pageIndex,
+    //   offset
+    // );
+    // this.sortedData = entries;
+    // this.searchList = entries;
+    // this.numberOfPages = numberOfPages;
+    // this.resultCount = resultsCount;
+    // this.extractBreadcrumb();
+    // this.showLinkCopy = showLinkCopy;
+    // this.showSearchbar = true;
+    // this.loading = false;
+  }
+
   getDateInFormat(date: string): string {
     return new Date(date).toDateString();
   }
 
   rightClickMove(){
-    if (this.count >0) return this.openMoveModal();
+    if (this.count > 0) return this.openMoveModal();
      this.openMoveModal();
     this.removeAssets()
     this.contextMenu.closeMenu();
@@ -468,8 +527,8 @@ export class DataTableComponent implements OnInit, OnChanges {
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     dialogConfig.data = {
       selectedList: this.selectedMoveList,
-      parentId: this.sectorSelected.uid,
-      sectorList: this.folderStructure[0]?.children || [],
+      parentId: this.currentWorkspace.uid,
+      sectorList: [], //  this.folderStructure[0]?.children ||
       user:this.user
     }
 
@@ -477,14 +536,14 @@ export class DataTableComponent implements OnInit, OnChanges {
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-        delete this.folderAssetsResult[result.uid];
-        delete this.folderAssetsResult[this.selectedFolder.uid];
+        // delete this.folderAssetsResult[result.uid];
+        // delete this.folderAssetsResult[this.currentWorkspace.uid];
 
         this.loading = true;
         setTimeout(() => {
-          if (this.selectedFolder.type === 'Domain') window.location.reload();
+          if (this.currentWorkspace.type === 'Domain') window.location.reload();
           else {
-            // this.handleClickNew(this.selectedFolder.uid);
+            // this.handleClickNew(this.currentWorkspace.uid);
           }
         }, 1000);
       }
@@ -508,25 +567,25 @@ export class DataTableComponent implements OnInit, OnChanges {
       (item) => !listDocs.includes(item["uid"])
     );
     this.sortedData = this.searchList.slice();
-    this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    this.hasUpdatedChildren.push(this.currentWorkspace.uid);
     this.selectedFolderList = {};
     deletedFolders.forEach((item) => {
-      if (this.folderAssetsResult[item.parentRef]) {
-        const index = this.folderAssetsResult[item.parentRef].entries.findIndex(
-          (entry) => entry.uid === item.uid
-        );
-        this.folderAssetsResult[item.parentRef].entries.splice(index, 1);
-      }
+      // if (this.folderAssetsResult[item.parentRef]) {
+      //   const index = this.folderAssetsResult[item.parentRef].entries.findIndex(
+      //     (entry) => entry.uid === item.uid
+      //   );
+      //   this.folderAssetsResult[item.parentRef].entries.splice(index, 1);
+      // }
     });
   }
 
   renameFolder(title?: string, assetUid?: number) {
-    let { newTitle, selectedFolder } = this;
-    if (newTitle?.trim() ===selectedFolder.title) return this.updateFolderAction();
+    let { newTitle, currentWorkspace } = this;
+    if (newTitle?.trim() ===currentWorkspace.title) return this.updateFolderAction();
 
     this.apiService
       .post(apiRoutes.DOCUMENT_UPDATE, {
-        input: assetUid || selectedFolder.uid,
+        input: assetUid || currentWorkspace.uid,
         params: {
           properties: {
             "dc:title": title?.trim() || newTitle?.trim(),
@@ -561,7 +620,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   
   updateFolderAction() {
     this.renameFolderName = false;
-    this.newTitle =this.selectedFolder.title
+    this.newTitle =this.currentWorkspace.title
   }
 
   deleteModalFailed() {
@@ -657,13 +716,12 @@ export class DataTableComponent implements OnInit, OnChanges {
     );
     this.searchList = this.trashedList;
     this.sortedData = this.searchList.slice();
-    // this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    // this.hasUpdatedChildren.push(this.currentWorkspace.uid);
     this.selectedFolderList = {};
-    recoveredFolders.forEach(
-      (item) =>
-        this.folderAssetsResult[item.parentRef] &&
-        this.folderAssetsResult[item.parentRef].entries.push(item)
-    );
+    recoveredFolders.forEach((item) => {
+        // this.folderAssetsResult[item.parentRef] &&
+        // this.folderAssetsResult[item.parentRef].entries.push(item)
+    });
   }
 
   sortData(sort: Sort) {
@@ -736,6 +794,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit(item);
   }
 
+  // NOTE: move to trash component
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.initialLoad = false;
     // this.showSearchbar = true; //TODO: to detail controller
@@ -743,7 +802,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     offset || this.paginator?.firstPage();
     if (this.folderNotFound) {
       this.folderNotFound = false;
-      this.selectedFolder = {};
+      this.currentWorkspace = {};
     }
     this.loading = true;
     const url =this.myDeletedCheck ?

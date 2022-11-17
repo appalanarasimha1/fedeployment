@@ -472,11 +472,11 @@
           <div class="customToolTipWorkspace">Upload here</div>
         </li>
         <li
-          *ngIf="!isPrivateFolder(true, true) && selectedAssetCount < 1 && breadCrumb.length > 1"
+          *ngIf="!isPrivateFolder(true, true) && selectedAssetCount < 1 && breadCrumb?.length > 1"
           (click)="openUpdateClassModal(breadCrumb[0] ? breadCrumb[0] : null);"
           class="tollTipWorkspace manageFolderIcon"
           [ngClass]="{uploadClassificationDisable: breadCrumb[0] 
-              ? false || !assetList.length : true}"
+              ? false || !assetList?.length : true}"
         >
           <!-- !upadtePermission(breadCrumb[0]) --> 
           <svg  width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon" [ngClass]="{'disablePermission': breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true}">
@@ -542,9 +542,15 @@
   <div id="text">&nbsp;</div>
 <app-data-table 
     *ngIf="selectedMenu === 1"
+
     [searchList]="assetList"
     [isTrashView]="isTrashView"
     [showAssetPath]="showAssetPath"
+    [currentWorkspace]="currentWorkspace"
+    [breadCrumb]="breadCrumb"
+    [folderStructure]="folderStructure"
+
     (clickHandle)="dataTableEvent($event)"
     (assetSelected)="assetSelected($event)"
+    (fetchAssets)="fetchAssetsEvent($event)"
 ></app-data-table>

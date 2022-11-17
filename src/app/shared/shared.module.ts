@@ -32,6 +32,7 @@ import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
 import { DataTableComponent } from '../data-table/data-table.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { SafePipe } from '../common/pipe/safe.pipe';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -63,6 +64,7 @@ keyboardEventKeyPolyfill();
     FormsModule,
     MatDialogModule,
     NgbModule,
+    MatPaginatorModule,
     PdfViewerModule,
     MatStepperModule,
     ChartsModule,
@@ -85,6 +87,7 @@ keyboardEventKeyPolyfill();
     DocumentCardComponent,
     PreviewPopupComponent,
     MatStepperModule,
+    MatPaginatorModule,
     ReversePipe,
     ChartsModule,
     SearchPipe,

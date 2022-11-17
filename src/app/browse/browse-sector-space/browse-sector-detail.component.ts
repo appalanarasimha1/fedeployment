@@ -171,15 +171,20 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getAssets(folderUid: string, index?: number, selected?: IEntry, childIndex?: number): void {
+  fetchAssetsEvent(event: any) {
+    this.getAssets(event.id, event.checkCache, event.pageSize, event.pageIndex, event.offset);
+  }
+
+  getAssets(folderUid: string, checkCache = true, pageSize = 0, pageIndex = 1, offset = 0): void {
     // this.selectedFile = [];
     // this.selectedFolder = { ...selected, uid: selected.id };
     this.showAssetPath = false;
-    let pageIndex = 1;
-    let offset = 0;
-    let pageSize = 0;
+    // let pageIndex = 1;
+    // let offset = 0;
+    // let pageSize = 0;
 
     this.sharedService.toTop();
+    if(checkCache && this.folderStructure[folderUid]) return this.folderStructure[folderUid];
     // let url1 = `/search/pp/nxql_search/execute?currentPage=0&Index=0&offset=0&pageSize=${PAGE_SIZE_20}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${folderUid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${folderUid}&ecm_trashed=false`;
     this.apiService
@@ -188,7 +193,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         this.assetList = docs.entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
         let workSpaceIndex = this.assetList.findIndex((res) => res.title === "Workspaces");
         if (workSpaceIndex >= 0) {
-          this.getAssets(this.assetList[workSpaceIndex].uid, index, selected, childIndex);
+          this.getAssets(this.assetList[workSpaceIndex].uid);
         } else {
           // this.sortedData = this.assetList.slice();
           // if (childIndex !== null && childIndex !== undefined) {
@@ -196,8 +201,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
           //   this.folderStructure[index].children[childIndex].isExpand = true;
           //   this.handleTest(selected);
           // } else {
-            this.folderStructure[folderUid] = {};
+            this.folderStructure[folderUid] = docs;
             this.folderStructure[folderUid].children = docs.entries;
+            this.folderStructure = Object.assign({}, this.folderStructure);
           //   this.folderStructure[index].isExpand = true;
           // }
         }
@@ -214,7 +220,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
             tap(async (text: Event) => {
               if(!this.workspaceSearch.nativeElement.value) {
                 this.loading = true;
-                await this.getAssets(this.folderId);
+                await this.getAssets(this.folderId, true);
                 // todo: uncomment when apply tile view this.handleSelectMenu(1, "LIST");
                 this.loading = false;
                 return;

@@ -777,30 +777,6 @@ font-weight: normal;
   float: right;
   padding-top: 2px;
 }
-.createFolder input{
-  border: unset;
-  border-bottom: 2px solid #413E3C;
-  width: 100%;
-  font-size: 15px;
-  font-weight: normal;
-  line-height: 24px;
-  color: #040404;
-  padding-bottom: 5px;
-  padding-left: 0px;
-  font-weight: 500;
-}
-.createFolder input::placeholder{
-  font-size: 15px !important;
-  line-height: 24px !important;
-  color: #040404 !important;
-  font-weight: normal !important;
-}
-.createFolder label{
-  font-size: 15px;
-  line-height: 24px;
-  color: #040404;
-  font-weight: normal;
-}
 .mat-expansion-panel:not([class*=mat-elevation-z]){
   box-shadow: unset;
 }
@@ -824,31 +800,6 @@ font-weight: normal;
   vertical-align: middle;
   color: #937206;
   position: absolute;
-}
-.createFolder ::ng-deep .mat-expansion-indicator {
-  /* transform: rotate(-180deg) !important; */
-  height: 10px;
-  width: 10px;
-}
-::ng-deep .mat-expansion-panel-body{
-  padding: 0px !important;
-}
-.createBtn{
-  background-color: #EDD580;
-  border-radius: 24px;
-  float: right;
-  width: unset;
-  font-weight: normal;
-  padding: 6px 19px;
-  font-size: 14px;
-  /* line-height: 20px; */
-  color: #040505;
-}
-/* ::ng-deep .mat-datepicker-popup{
-  left: 819px !important;
-} */
-::ng-deep .mat-expansion-panel-header-description{
-  color: #937206;
 }
 .sectorssText{
   font-size: 20px;
@@ -2192,18 +2143,6 @@ font-weight: normal;
 .pb-5 {
   padding-bottom: 30px !important;
 }
-.createFolder{
-  position: absolute;
-  background: #FFFFFF;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 20px;
-  width: 500px;
-  right: 0px;
-  top: 50px;
-  /* left: auto; */
-  z-index: 999;
-}
 .createNew{
   font-size: 15px;
   line-height: 24px;
@@ -2216,30 +2155,6 @@ font-weight: normal;
   color: #BAB8B2;
   float: right;
   padding-top: 2px;
-}
-.createFolder input{
-  border: unset;
-  border-bottom: 2px solid #413E3C;
-  width: 100%;
-  font-size: 15px;
-  font-weight: normal;
-  line-height: 24px;
-  color: #040404;
-  padding-bottom: 5px;
-  padding-left: 0px;
-  font-weight: 500;
-}
-.createFolder input::placeholder{
-  font-size: 15px !important;
-  line-height: 24px !important;
-  color: #040404 !important;
-  font-weight: normal !important;
-}
-.createFolder label{
-  font-size: 15px;
-  line-height: 24px;
-  color: #040404;
-  font-weight: normal;
 }
 .mat-expansion-panel:not([class*=mat-elevation-z]){
   box-shadow: unset;
@@ -2264,11 +2179,6 @@ font-weight: normal;
   vertical-align: middle;
   color: #937206;
   position: absolute;
-}
-.createFolder ::ng-deep .mat-expansion-indicator {
-  /* transform: rotate(-180deg) !important; */
-  height: 10px;
-  width: 10px;
 }
 ::ng-deep .mat-expansion-panel-body{
   padding: 0px !important;
