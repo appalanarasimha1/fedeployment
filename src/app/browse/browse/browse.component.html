@@ -386,6 +386,16 @@
                       /></a>
                     </div>
                   </li>
+                  <li class="edit-icon">
+                    <div class="moveFolderImg tollTipWorkspace"> <!-- (click)="rightClickRename(item)" -->
+                      <svg
+                        width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-rename-icon">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Rename</div>
+                    </div>
+                  </li>
                   <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && count > 0" -->
                     <div class="moveFolderImg tollTipWorkspace">
                       <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
@@ -1438,9 +1448,9 @@
                           </span>
                         </span>
                       </p>
-                      <span *ngIf="item.edit" style="display: flex; position: relative; z-index: 99;">
+                      <span *ngIf="item.edit" style="display: inline-block; position: relative; z-index: 99;">
                         <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
-                        <div class="actionIcon" style="margin-top: 0px;">
+                        <div class="actionIcon" style="margin-top: 0px;display: inline-block;">
                           <svg
                             width="18"
                             height="13"
@@ -1455,7 +1465,7 @@
                             />
                           </svg>
                         </div>
-                        <div class="actionIcon" style="margin-top: 0px;">
+                        <div class="actionIcon" style="margin-top: 0px;display: inline-block;">
                           <svg
                             width="14"
                             height="14"

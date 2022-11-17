@@ -4279,3 +4279,10 @@ th.checkAll.positionRelative.showChecked .control-group {
 .header-content h6.tollTipCustom span.copy-section {
   max-width: 300em !important;
 } */
+.edit-icon {
+  cursor: pointer;
+}
+ul.uploadAssetsClassifications li.edit-icon:hover path {
+  fill: transparent;
+  stroke: #DAAA00;
+}
