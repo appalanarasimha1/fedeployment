@@ -1344,7 +1344,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       return '../../../assets/images/ppt-preveiw.svg';
     }
     if(item.update) {
-      return '../../../assets/images/no-preview.png';
+      return '../../../assets/images/no-preview-big.png';
     }
 
     return '../../../assets/images/no-preview-grid.svg';

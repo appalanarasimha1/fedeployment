@@ -294,7 +294,7 @@ color: #FFFFFF;
 /* custom drowndown */
 .custom-select {
   position: relative;
-  width: calc(100% - 50px);
+  width: calc(100% - 20px);
   margin: 0;
   padding: 0;
   /* border-bottom: 1.5px solid #000; */
@@ -1427,7 +1427,7 @@ a.breadcrumb-not-active {
   cursor: auto;
 }
 .upload-form-input input#title {
-  padding-right: 30px;
+  /* padding-right: 30px; */
 }
 
 .errorMessage {
@@ -1695,6 +1695,7 @@ span.showAllClassifications svg.rotateArrow {
   font-size: 14px;
   line-height: 24px;
   font-family: 'brownlight';
+  margin-right: 18px;
 }
 .publishingAssets::after {
   content: '';

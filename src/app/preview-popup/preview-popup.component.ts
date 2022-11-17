@@ -93,10 +93,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
-    dialogConfig.minHeight = "350px";
-    dialogConfig.height = "100%";
-    dialogConfig.maxHeight = "94vh"
-    dialogConfig.width = "80vw";
+    // dialogConfig.minHeight = "350px";
+    // dialogConfig.height = "100%";
+    // dialogConfig.maxHeight = "94vh"
+    // dialogConfig.width = "80vw";
     // dialogConfig.maxWidth = "80vw";
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-modalbox';
