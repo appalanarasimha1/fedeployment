@@ -2524,10 +2524,6 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 .deleted-by-me {
   padding-top: 10px;
 }
-.gallery-view-block {
-  float: right;
-  border-left: 1px solid #EFEEE9;
-}
 .buttonCreate img {opacity: 1 !important;width: 18px !important; margin-top: 4px;}
 .deleteRecover {display: inline-block;}
 .deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}

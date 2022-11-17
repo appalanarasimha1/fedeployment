@@ -291,3 +291,8 @@ svg.classificationsIcon.disablePermission path {
 .tollTipWorkspace.workspaceInfoHover .classificationsIcon:hover path {
   stroke:none;
 }
+
+.gallery-view-block {
+  float: right;
+  border-left: 1px solid #EFEEE9;
+}

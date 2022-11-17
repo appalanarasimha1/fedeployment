@@ -23,6 +23,7 @@ import { BrowseHomeComponent } from './browse-home/browse-home.component';
 import { BrowseSectorDetailComponent } from './browse-sector-space/browse-sector-detail.component';
 import { BrowseSectorFolderComponent } from './browse-sector-folder/browse-sector-folder.component';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
+import { TrashViewComponent } from './trash-view/trash-view.component';
 @NgModule({
   imports: [
     SharedModule,
@@ -48,6 +49,7 @@ import { CreateFolderComponent } from './create-folder/create-folder.component';
     BrowseSectorDetailComponent,
     BrowseSectorFolderComponent,
     CreateFolderComponent,
+    TrashViewComponent,
   ],
   exports: [
   ],

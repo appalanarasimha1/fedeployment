@@ -175,7 +175,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.getAssets(event.id, event.checkCache, event.pageSize, event.pageIndex, event.offset);
   }
 
-  getAssets(folderUid: string, checkCache = true, pageSize = 0, pageIndex = 1, offset = 0): void {
+  getAssets(folderUid: string, checkCache = true, pageSize = 20, pageIndex = 1, offset = 0): void {
     // this.selectedFile = [];
     // this.selectedFolder = { ...selected, uid: selected.id };
     this.showAssetPath = false;

@@ -1,88 +1,85 @@
-<p>browse-navigation works!</p>
-
 
 <section class="">
+  <div class="customToggle animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
+      <!-- Add custom toggle start -->
 
-<div class="customToggle animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
-    <!-- Add custom toggle start -->
-
-    <!-- Add custom toggle end -->
-    <div class="pb-5 pl-12">
-      <h2 class="commonHeading main-title" style="font-weight: normal">
-        Workspace
-      </h2>
-    </div>
-    <div class="tree" *ngIf="!isExternalView">
-      <ul style="list-style: none" class="leftPanel">
-        <li *ngFor="let item of folderStructure; let i = index" style="cursor: pointer">
-          <div
-            class="d-flex set"
-            (click)="onAllSectorClick(item)"
-            [routerLink]="['/workspace']"
-          >
-            <div style="z-index: 9">
-              <img
-                src="../../../assets/images/down-arrow.svg"
-                height="9px"
-                *ngIf="item.isExpand"
-              />
-              <img
-                src="../../../assets/images/left-arrow.svg"
-                height="14px"
-                *ngIf="!item.isExpand"
-              />
-            </div>
-            <span style="padding-left: 10px; z-index: 9">{{
-              item.title
-            }}</span>
-          </div>
-          <ul
-            *ngIf="item.children?.length && item.isExpand"
-            class="leftPanel insideScroll"
-            id="customScrollBar"
-          >
-            <li
-              *ngFor="let child of item.children; let childIndex = index"
-              style="cursor: pointer"
-              class="hoverPin"
+      <!-- Add custom toggle end -->
+      <div class="pb-5 pl-12">
+        <h2 class="commonHeading main-title" style="font-weight: normal">
+          Workspace
+        </h2>
+      </div>
+      <div class="tree" *ngIf="!isExternalView">
+        <ul style="list-style: none" class="leftPanel">
+          <li *ngFor="let item of folderStructure; let i = index" style="cursor: pointer">
+            <div
+              class="d-flex set"
+              (click)="onAllSectorClick(item)"
+              [routerLink]="['/workspace']"
             >
-            <!-- [ngClass]="sectorSelected?.uid === child.uid && !isTrashView? 'active-tab' : ''" -->
-              <div
-                class="workspaceLink"
-                (click)="onSectorClick(child, childIndex)"
-              >
-                <span style="z-index: 9; display: block;">
-                  <a [routerLink]="['/workspace', child.title]" [routerLinkActive]="getClass()">
-                    
-                  <!-- [queryParams]="{ folder: child.uid }" -->
-                    {{ child.title }}
-                  </a>
-                </span>
+              <div style="z-index: 9">
+                <img
+                  src="../../../assets/images/down-arrow.svg"
+                  height="9px"
+                  *ngIf="item.isExpand"
+                />
+                <img
+                  src="../../../assets/images/left-arrow.svg"
+                  height="14px"
+                  *ngIf="!item.isExpand"
+                />
               </div>
-            </li>
-          </ul>
-        </li>
-        <!-- <li
-          style="cursor: pointer"
-          [ngClass]="isTrashView ? 'active-tab' : ''"
-          class="d-flex set"
-          (click)="getTrashedWS()"
-        >
-          <span>Trash</span>
-        </li> -->
-      </ul>
-    </div>
-    <!-- <div *ngIf="isExternalView" class="tree">
-      <ul style="list-style: none" class="leftPanel">
-        <li
-          style="cursor: pointer"
-          [ngClass]="isExternalView ? 'active-tab' : ''"
-          class="d-flex set"
-          (click)="fetchAllPrivateWorkspaces()"
-        >
-          <span>Shared Folders</span>
-        </li>
-      </ul>
-    </div> -->
+              <span style="padding-left: 10px; z-index: 9">{{
+                item.title
+              }}</span>
+            </div>
+            <ul
+              *ngIf="item.children?.length && item.isExpand"
+              class="leftPanel insideScroll"
+              id="customScrollBar"
+            >
+              <li
+                *ngFor="let child of item.children; let childIndex = index"
+                style="cursor: pointer"
+                class="hoverPin"
+              >
+              <!-- [ngClass]="sectorSelected?.uid === child.uid && !isTrashView? 'active-tab' : ''" -->
+                <div
+                  class="workspaceLink"
+                  (click)="onSectorClick(child, childIndex)"
+                >
+                  <span style="z-index: 9; display: block;">
+                    <a [routerLink]="['/workspace', child.title]" [routerLinkActive]="getClass()">
+                      
+                    <!-- [queryParams]="{ folder: child.uid }" -->
+                      {{ child.title }}
+                    </a>
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li
+            style="cursor: pointer"
+            class="d-flex set"
+            [routerLinkActive]="getClass()"
+            [routerLink]="['/workspace/trash']"
+          >
+            <span>Trash</span>
+          </li>
+        </ul>
+      </div>
+      <!-- <div *ngIf="isExternalView" class="tree">
+        <ul style="list-style: none" class="leftPanel">
+          <li
+            style="cursor: pointer"
+            [ngClass]="isExternalView ? 'active-tab' : ''"
+            class="d-flex set"
+            (click)="fetchAllPrivateWorkspaces()"
+          >
+            <span>Shared Folders</span>
+          </li>
+        </ul>
+      </div> -->
   </div>
 </section>
