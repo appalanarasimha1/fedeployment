@@ -172,6 +172,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   rightClickedItem:any =null;
   rightClickedIndex:number;
   rightDownload:boolean=false;
+  lastIndexClicked:number;
+  currentIndexClicked:number;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -1703,8 +1705,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
-
-
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
       console.log('update', $event.update);
@@ -2406,9 +2406,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkFolderContains(){
     return Object.keys(this.selectedFolderList).length <1
   }
-
-  lastIndexClicked:number
-  currentIndexClicked:number
 
   shiftkeyDown(e,item,i){
     // console.log("e",this.lastIndexClicked,this.currentIndexClicked,this.sortedData);

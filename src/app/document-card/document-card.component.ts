@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ASSET_TYPE, MONTH_MAP_SHORT } from '../common/constant';
 import { SharedService } from '../services/shared.service';
@@ -9,9 +9,9 @@ import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
   templateUrl: "./document-card.component.html",
   styleUrls: ["./document-card.component.css"],
 })
-export class DocumentCardComponent implements OnChanges {
+export class DocumentCardComponent implements OnInit, OnChanges {
   @Input() doc: any;
-  @Input() viewType: string;
+  // @Input() viewType: string;
   @Output() onOpenPreview = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
   @Output() onMarkFavourite = new EventEmitter<any>();
@@ -27,6 +27,10 @@ export class DocumentCardComponent implements OnChanges {
     private router: Router,
     public sharedService: SharedService
     ) {}
+
+  ngOnInit() {
+    console.log("Init = ", this.doc.type);
+  }
 
   ngOnChanges() {}
 

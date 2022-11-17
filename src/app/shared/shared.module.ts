@@ -33,6 +33,7 @@ import { DataTableComponent } from '../data-table/data-table.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { SafePipe } from '../common/pipe/safe.pipe';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MasonryViewComponent } from '../masonry-view/masonry-view.component';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -55,7 +56,8 @@ keyboardEventKeyPolyfill();
     ManageAccessModalComponent,
     DataTableComponent,
     // ManageAccessModalComponent,
-    SafePipe
+    SafePipe,
+    MasonryViewComponent
   ],
   imports: [
     CommonModule,
@@ -101,7 +103,8 @@ keyboardEventKeyPolyfill();
     DataTableComponent,
     ManageAccessModalComponent,
     // ManageAccessModalComponent,
-    SafePipe
+    SafePipe,
+    MasonryViewComponent
   ]
 })
 export class SharedModule { }

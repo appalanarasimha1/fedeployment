@@ -971,7 +971,6 @@
                     <document-card
                       *ngIf="checkAssetType(item.type)"
                       [doc]="item"
-                      [viewType]="viewType"
                       (onOpenPreview)="open(item, item.type)"
                       (onSelect)="selectImage($event, item, i)"
                       (onMarkFavourite)="markFavourite(item, false)"

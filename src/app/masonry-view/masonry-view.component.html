@@ -1,0 +1,116 @@
+<p>masonry-view works!</p>
+<div class="main-content row">
+  <div
+    class="col-xl-12 col-md-12"
+    style="padding-right: 0px"
+    *ngIf="searchList && searchList.length"
+  >
+    <ul
+      class="all-sectors"
+      *ngIf="true"
+      [ngClass]="{
+        'animate__animated animate__fadeIn': isTrashView
+      }"
+    >
+      <li
+        [ngClass]="{ 'inner-sectors': item.type === 'Domain' }"
+        *ngFor="let item of searchList; let i = index"
+      >
+        <span
+          *ngIf="!checkAssetType(item.type) && !checkWSType(item.type)"
+          class="folder-structure pointerCursor"
+          (click)="openFolder(item)"
+          >{{ item.title }}
+        </span>
+
+        <div class="groupFolder" > <!-- [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" -->
+          <div
+            class="delete-folder-action"
+            *ngIf="
+              !checkAssetType(item.type) &&
+              checkWSType(item.type) &&
+              !checkGeneralFolder(item)
+            "
+          >
+            <div class="control-group">
+              <label class="control control--checkbox">
+                <input
+                  id="checkbox-{{ i }}"
+                  type="checkbox"
+                  class="vh"
+                  
+                  [checked]="item.isSelected"
+                  [(ngModel)]="item.isSelected"
+                  (keyup.shift)="shiftkeyUp($event, item, i)"
+                /> <!-- (change)="selectFolder($event, item, i)" -->
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+          <div
+            *ngIf="!checkAssetType(item.type) && checkWSType(item.type)"
+            class="folder-structure"
+            [ngClass]="{ pointerCursor: !isTrashView }"
+            
+          > <!--(click)="handleTest(item)"-->
+            <div class="folder-content">
+              <p
+                class="tollTipCustom"
+                style="
+                  white-space: normal;
+                  width: 100%;
+                  overflow: inherit;
+                  text-overflow: inherit;
+                  vertical-align: middle;
+                "
+              >
+                {{ sharedService.stringShortener(item.title, 16) }}
+                <span
+                  class="tolltipContent"
+                  style="
+                    bottom: -20px;
+                    top: auto;
+                    left: 50%;
+                    transform: translate(-50%, 0%);
+                  "
+                >
+                  {{ item.title }}
+                </span>
+              </p>
+              <span>{{ getFolderInfo(item) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <document-card
+          *ngIf="checkAssetType(item.type)"
+          [doc]="item"
+          
+          (onOpenPreview)="open(item, item.type)"
+          (onSelect)="selectImage($event, item, i)"
+          (onMarkFavourite)="markFavourite(item)"
+        >
+        </document-card>
+      </li>
+    </ul>
+  </div>
+  
+  <preview-popup
+    #previewModal
+    [doc]="fileToPreview"
+    [docUrl]="fileToPreviewUrl"
+  ></preview-popup>
+
+  
+  <mat-paginator
+    *ngIf="searchList?.length"
+    #paginator
+    [length]="resultCount"
+    [pageSize]="defaultPageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="paginatorEvent($event)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+
+</div>

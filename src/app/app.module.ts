@@ -64,7 +64,7 @@ import { AddUserPrivateFolderModalComponent } from './add-user-private-folder-mo
     MoveCopyAssetsComponent,
     AssetCannotBeAccessedComponent,
     EditAccessComponent,
-    AddUserPrivateFolderModalComponent,
+    AddUserPrivateFolderModalComponent
     // AssetViewComponent,
   ],
   imports: [

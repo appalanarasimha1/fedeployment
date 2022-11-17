@@ -95,7 +95,6 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.sortedData = this.searchList?.slice();
-    // this.pageSize = changes.currentValue[this.currentWorkspace.uid].pageSize;
     this.numberOfPages = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.numberOfPages;
     this.resultCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.resultsCount;
     this.currentPageCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.currentPageSize;
@@ -106,13 +105,7 @@ export class DataTableComponent implements OnInit, OnChanges {
    */
    paginatorEvent(event: PageEvent) {
     const offset = event.pageIndex * event.pageSize;
-    // if (!this.isTrashView) {
       let uid = this.currentWorkspace.uid;
-      // let showLinkCopy = true;
-      // if (this.currentWorkspace.type.toLowerCase() === "domain") {
-      //   uid = this.sectorWorkspace.uid;
-      //   showLinkCopy = false;
-      // }
       const data = {
         id: uid,
         checkCache: false,
@@ -121,17 +114,6 @@ export class DataTableComponent implements OnInit, OnChanges {
         offset
       }; 
       this.fetchAssets.emit(data);
-      // this.fetchCurrentFolderAssets(
-      //   uid,
-      //   false,
-      //   event.pageSize,
-      //   event.pageIndex,
-      //   offset
-      // );
-    // } 
-    // else {
-    //   this.getTrashedWS(event.pageSize, event.pageIndex, offset);
-    // }
   }
   
   async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
