@@ -86,7 +86,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     
     // this.dataTableComponent = new DataTableComponent(SharedService, ApiService, MatDialog, DataService, Router);
     this.fetchUserData();
-    this.searchInitialised = null;
     // this.dataService.fetchAssets$.subscribe(async (data) => {
     //   // await this.fetchAssets(data.sectorUid, data.checkCache, data.pageSize, data.pageIndex, data.offset);
     // });
@@ -175,7 +174,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.getAssets(event.id, event.checkCache, event.pageSize, event.pageIndex, event.offset);
   }
 
-  getAssets(folderUid: string, checkCache = true, pageSize = 20, pageIndex = 1, offset = 0): void {
+  getAssets(folderUid: string, checkCache = true, pageSize = 20, pageIndex = 0, offset = 0): void {
     // this.selectedFile = [];
     // this.selectedFolder = { ...selected, uid: selected.id };
     this.showAssetPath = false;
@@ -288,12 +287,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       return `Search for folder in trash`;
     }
     return `Search in ${this.sharedService.stringShortener(this.currentWorkspace?.title, 19)}`;
-  }
-  
-  myDeleted(e) {
-      // this.myDeletedCheck = e.target.checked;
-      // this.getTrashedWS();
-
   }
 
   extractBreadcrumb() {
@@ -618,8 +611,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-  assetSelected(selectedAssetList: IEntry[]) {
-    this.selectedAssetCount = selectedAssetList.length;
+  assetSelectedEvent(selectedAssetList: IEntry[]) {
+    this.selectedAssetCount = Object.keys(selectedAssetList).length;
   }
 
   dragNDrop() {

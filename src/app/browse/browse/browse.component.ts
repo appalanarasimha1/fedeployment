@@ -969,27 +969,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   selectFolder($event, item, i, updateCount = true) {
     console.log('updatecount', updateCount);
 
-    if(this.selectAllClicked) updateCount = true
-
-    // var $chkboxes = $('.chkbox');
-    // var lastChecked = null;
-
-    // $chkboxes.click(function(e) {
-    //   console.log('shift', e.shiftKey);
-    //     if (!lastChecked) {
-    //         lastChecked = this;
-    //         // return;
-    //     }
-
-    //     if (e.shiftKey) {
-    //         var start = $chkboxes.index(this);
-    //         var end = $chkboxes.index(lastChecked);
-    //         $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastChecked.checked);
-    //     }
-
-    //     lastChecked = this;
-    // });
-
+    if(this.selectAllClicked) updateCount = true;
 
     if ($event.target?.checked || $event.checked) {
       if (this.lastIndexClicked ==undefined) {

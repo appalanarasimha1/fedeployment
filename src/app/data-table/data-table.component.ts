@@ -366,8 +366,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   selectAsset($event, item, i) {
-    let canDelete = this.checkCanDelete(item)
-    if(canDelete){
+    let canDelete = this.checkCanDelete(item);
+    if(canDelete) {
       this.selectFolder($event, item, i, false);
     }
     if ($event.target?.checked || $event.checked) {
@@ -376,6 +376,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       }
       
       this.selectedMoveList[i] = item;
+      this.selectedFolderList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
       }
@@ -409,12 +410,14 @@ export class DataTableComponent implements OnInit, OnChanges {
         (m) => m.uid !== item.uid
       );
       delete this.selectedMoveList[i];
+      delete this.selectedFolderList[i];
       this.count = this.count - 1;
       //  }
     }
     this.clickHandle.emit({eventName: 'forInternalUseListEvent', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
+    this.selectedAssetList.emit(this.selectedFolderList);
     this.getdownloadAssetsSize();
   }
 
@@ -447,7 +450,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
     }
-    this.selectedAssetList.emit(this.selectedMoveList);
+    this.selectedAssetList.emit(this.selectedFolderList);
   }
 
   getIconByType(type: string): string {
@@ -488,6 +491,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
+    this.selectedAssetList.emit(this.selectedFolderList);
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
 

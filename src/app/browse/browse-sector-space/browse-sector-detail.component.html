@@ -13,25 +13,6 @@
       </div>
     </div>
     <div class="col-xl-5">
-      <div style="float: right; position: relative">
-        <div class="deleted-by-me" *ngIf="isTrashView">
-          <label
-            class="control control--checkbox"
-            style="margin-bottom: 0px; float: left"
-          >
-            Only show items removed by me
-            <input
-              type="checkbox"
-              checked="checked"
-              (click)="myDeleted($event)"
-            />
-            <div
-              class="control__indicator"
-              style="top: 0px; left: 0px"
-            ></div>
-          </label>
-        </div>
-      </div>
     </div>
   </div>
   
@@ -552,7 +533,7 @@
     [folderStructure]="folderStructure"
 
     (clickHandle)="dataTableEvent($event)"
-    (assetSelected)="assetSelected($event)"
+    (selectedAssetList)="assetSelectedEvent($event)"
     (fetchAssets)="fetchAssetsEvent($event)"
 ></app-masonry-view>
   <app-data-table 
@@ -566,7 +547,7 @@
     [folderStructure]="folderStructure"
 
     (clickHandle)="dataTableEvent($event)"
-    (assetSelected)="assetSelected($event)"
+    (selectedAssetList)="assetSelectedEvent($event)"
     (fetchAssets)="fetchAssetsEvent($event)"
   ></app-data-table>
 
