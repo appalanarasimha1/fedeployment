@@ -2148,3 +2148,19 @@ form.commentTextForm {
     height: calc(100vh - 64vh);
   }
 }
+.popupTabSec.notPrivateAccess img.nopreviewClass {
+  display: block;
+  object-fit: cover;
+  max-height: calc(100vh - 250px) !important;
+  height: 100% !important;
+  margin: 0px !important;
+  object-position: center bottom;
+}
+.popupTabSec img.nopreviewClass {
+  display: block;
+  object-fit: cover;
+  max-height: calc(100vh - 450px) !important;
+  height: 100% !important;
+  margin: 0px !important;
+  object-position: center bottom;
+}
