@@ -127,6 +127,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   breadCrumb = [];
   selectedFolderList: any = {};
   selectedMoveList: any = {};
+  selectedMoveListNew: any = {};
   trashedList = null;
   deletedByMe: any;
   myDeletedCheck: boolean = true;
@@ -1403,6 +1404,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           // this.getTrashedWS.bind(this)
         );
       });
+    this.removeAssets()
   }
 
   checkForDescription(): boolean {
@@ -1430,6 +1432,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async handleClickNew(folderUid: string) {
     this.selectedFolderList = {};
     this.count = 0;
+    this.assetCount=0
     this.loading = true;
     this.isTrashView = false;
     await this.fetchCurrentFolderAssets(folderUid);
@@ -1719,21 +1722,20 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   downloadFullItem: any = [];
   needPermissionToDownload: any = [];
   count: number = 0;
+  assetCount: number = 0;
   copyRightItem: any = [];
   canNotDelete: any = [];
   assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
-
-
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
-      console.log('update', $event.update);
       return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
     }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
+        this.assetCount = this.assetCount + 1;
       }
       if (this.lastIndexClicked ==undefined) {
         this.currentIndexClicked = i
@@ -1742,7 +1744,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.lastIndexClicked = this.currentIndexClicked
         this.currentIndexClicked = i
       }
-
+      this.selectedMoveListNew[i] = item;
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
@@ -1779,10 +1781,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         (m) => m.uid !== item.uid
       );
       delete this.selectedMoveList[i];
+      delete this.selectedMoveListNew[i];
 
 
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
+        this.assetCount = this.assetCount - 1;
+        
       }
 
       if (this.count==0) {
@@ -1893,6 +1898,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.downloadFullItem = [];
     this.needPermissionToDownload = [];
     this.count = 0;
+    this.assetCount=0
     this.fileSelected = [];
     this.copyRightItem = []
     this.canNotDelete=[]
@@ -2359,6 +2365,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return item.edit =!item.edit
     }
 
+  }
+
+  renameAsset(){
+    let keySort = Object.keys(this.selectedMoveListNew)
+    return this.sortedData[keySort[0]].edit = !this.sortedData[keySort[0]]?.edit
+    
   }
   selectAllClicked:boolean=false
   rightClickSelectAll(){
