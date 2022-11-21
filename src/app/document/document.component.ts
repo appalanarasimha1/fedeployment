@@ -505,6 +505,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       .get()
       .then((response) => {
         if (response) {
+          console.log('slider1');
           this.assetsBySector = response.entries ? this.assetsBySector.concat(response?.entries) : [];
           if (dontResetSectors) {
             this.sectorsHomepage = [];

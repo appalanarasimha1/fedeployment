@@ -174,19 +174,21 @@
                   <!-- <div *ngIf="data" class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div> -->
                   <div  class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}"> <!-- *ngIf="!data"-->
                      <input autocomplete="off" type="text" id="title" #searchFolderInput value="{{sharedService.stringShortener(folderOrder,30)}}"
-                              [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" > <!-- [disabled]="data"-->
-                     <span class="custom-select-icons" (click)="focusDropdown()" (focusout)="focusOutDropdown()">
-                     <i class="fa fa-angle-down"></i>
+                        [(ngModel)]="folderNameParam" (input)="filterFolder($event)"  (click)="opened = !opened" class="select-css"  placeholder="Enter a folder name or select an existing folder" > <!-- (focusout)="focusOutDropdown()" --> <!-- [disabled]="data"-->
+                     <span class="custom-select-icons" (click)="opened = !opened" ><!-- (focusout)="focusOutDropdown()" -->
+                        <i class="fa fa-angle-down"></i>
                      </span>
-                     <ul *ngIf="showCustomDropdown" class="custom-select-options" id="custom-select-list">
+                     <ul class="custom-select-options" id="custom-select-list"
+                     *ngIf="opened" (clickOutside)="clickOutside()">
                         <div class="breadcrumb-folder">
                            <span *ngFor="let folder of breadCrumb; let i = index">
-                              <span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title)">
+                              <span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title); $event.stopPropagation()">
                                  {{sharedService.stringShortener(folder.title,30)}}
                               </a>
                            </span>
                            <div style="display: block; clear: both; height: 1;"></div>
-                           <div *ngIf="breadCrumb.length >= 2" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder.title)"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</div>
+                           <!-- <a *ngIf="breadCrumb.length >= 2" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder?.title)"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</a> -->
+                           <div [ngClass]="{'showBackBtn' : breadCrumb.length >= 2}" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb?.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder?.title); $event.stopPropagation()"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</div>
                         </div>
                         <div style="min-height: 52px; max-height: 138px; overflow: auto; margin-bottom: 10px;" id="customScrollBar">
                            <li *ngFor="let folder of dropdownFolderList" class="styled">
@@ -195,7 +197,7 @@
                                  {{folder.title}}
                                  <span *ngIf="folder?.properties['dc:isPrivate']" class="publicUseBlk">Private</span>
                               </div>
-                              <span (click)="getFolderByParentId(folder.uid, folder.path); extractBreadcrumb(folder.contextParameters)" class="folderTitleArrow">
+                              <span (click)="getFolderByParentId(folder.uid, folder.path); extractBreadcrumb(folder.contextParameters); $event.stopPropagation()" class="folderTitleArrow">
                                  <img src="../../assets/images/back-arrow.svg" />
                               </span>
                            </li>

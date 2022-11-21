@@ -627,7 +627,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       return this.folderAssetsResult[id];
     }
-    this.dataService.folderPermissionInit(false)
+    this.dataService.folderPermissionInit(false);
+    console.log('sliderload 1');
     let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
     const result: any = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
@@ -1088,6 +1089,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.selectedFolder = {};
     }
     this.loading = true;
+    console.log('sliderload 2');
     const url =this.myDeletedCheck ?
      `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND dc:creator = '${this.user}' `:
      `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1'`
