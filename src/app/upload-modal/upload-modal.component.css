@@ -1403,7 +1403,8 @@ ul.custom-select-options li span.folderTitleArrow img {
   margin-top: -4px;
 }
 .breadcrumb-folder {padding: 5px 15px;}
-.back-icon {display: inline-block;color: #8f8f8f;font-size: 14px;padding: 10px 2px 0px;}
+.back-icon {display: none;color: #8f8f8f;font-size: 14px;padding: 10px 2px 0px; text-decoration: none;}
+.back-icon.showBackBtn {display: inline-block;}
 .back-icon i {font-size: 20px;vertical-align: -2px;}
 .breadcrumb-folder {color: #8f8f8f;}
 .breadcrumb-folder a {color: #040404;}
@@ -1427,7 +1428,7 @@ a.breadcrumb-not-active {
   cursor: auto;
 }
 .upload-form-input input#title {
-  padding-right: 30px;
+  /* padding-right: 30px; */
 }
 
 .errorMessage {
@@ -1695,6 +1696,7 @@ span.showAllClassifications svg.rotateArrow {
   font-size: 14px;
   line-height: 24px;
   font-family: 'brownlight';
+  margin-right: 18px;
 }
 .publishingAssets::after {
   content: '';

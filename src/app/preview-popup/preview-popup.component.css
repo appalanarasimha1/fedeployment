@@ -427,7 +427,7 @@ color: #000000;
   position: relative;
 }
 .popupTabSec img{
-  height: 38vh;
+  max-height: calc(100vh - 67vh) !important;
   object-fit: contain;
   object-position: contain;
 }
@@ -2009,7 +2009,7 @@ input.requesInput::-ms-input-placeholder {
   font-family: 'brownregular' !important;
 }
 .comment-content ul {
-  height: calc(100vh - 79vh);
+  max-height: calc(100vh - 77vh);
   padding-top: 0px;
 }
 .comment-content ul li.allComments,
@@ -2135,4 +2135,16 @@ form.commentTextForm {
 }
 .commentTextForm ::ng-deep .dropdown-menu > li:last-child {
   margin-bottom: 0px;
+}
+
+::ng-deep .cdk-overlay-pane.custom-modalbox {
+  width: 1080px !important;
+  max-width: calc(100vw - 120px) !important;
+  max-height: calc(100vh - 80px) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  position: absolute !important;
+  top: 20px !important;
+  right: 0px !important;
+  left: 0px !important;
 }

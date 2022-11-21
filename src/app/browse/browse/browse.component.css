@@ -4258,16 +4258,17 @@ th.checkAll.positionRelative.showChecked .control-group {
 .folderListview tr.checkDelete:nth-child(even){
   background-color: #F4E6B3;
 }
-/* .header-content h6.tollTipCustom {
+.header-content h6.tollTipCustom {
   transition: max-width 600ms ease-in-out;
 }
 .header-content h6.tollTipCustom span {
   transition: max-width 600ms ease-in-out;
   max-width: 5em;
-  /* min-width: 5em; /
   overflow: hidden;
   display: inline-block;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .header-content h6.tollTipCustom span:hover {
   max-width: 100em;
@@ -4275,10 +4276,10 @@ th.checkAll.positionRelative.showChecked .control-group {
 /* .header-content h6.tollTipCustom span:nth-last-child(1),
 .header-content h6.tollTipCustom span:nth-last-child(2) {
   max-width: 300em;
-} /
+} */
 .header-content h6.tollTipCustom span.copy-section {
   max-width: 300em !important;
-} */
+} 
 .edit-icon {
   cursor: pointer;
 }
