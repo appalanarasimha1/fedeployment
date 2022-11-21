@@ -127,6 +127,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   breadCrumb = [];
   selectedFolderList: any = {};
   selectedMoveList: any = {};
+  selectedMoveListNew: any = {};
   trashedList = null;
   deletedByMe: any;
   myDeletedCheck: boolean = true;
@@ -627,7 +628,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       return this.folderAssetsResult[id];
     }
-    this.dataService.folderPermissionInit(false)
+    this.dataService.folderPermissionInit(false);
+    console.log('sliderload 1');
     let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${id}&ecm_trashed=false`;
     const result: any = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
@@ -1088,6 +1090,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.selectedFolder = {};
     }
     this.loading = true;
+    console.log('sliderload 2');
     const url =this.myDeletedCheck ?
      `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND dc:creator = '${this.user}' `:
      `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1'`
@@ -1403,6 +1406,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           // this.getTrashedWS.bind(this)
         );
       });
+    this.removeAssets()
   }
 
   checkForDescription(): boolean {
@@ -1430,6 +1434,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async handleClickNew(folderUid: string) {
     this.selectedFolderList = {};
     this.count = 0;
+    this.assetCount=0
     this.loading = true;
     this.isTrashView = false;
     await this.fetchCurrentFolderAssets(folderUid);
@@ -1719,21 +1724,20 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   downloadFullItem: any = [];
   needPermissionToDownload: any = [];
   count: number = 0;
+  assetCount: number = 0;
   copyRightItem: any = [];
   canNotDelete: any = [];
   assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
-
-
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
-      console.log('update', $event.update);
       return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
     }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
+        this.assetCount = this.assetCount + 1;
       }
       if (this.lastIndexClicked ==undefined) {
         this.currentIndexClicked = i
@@ -1742,7 +1746,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.lastIndexClicked = this.currentIndexClicked
         this.currentIndexClicked = i
       }
-
+      this.selectedMoveListNew[i] = item;
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
@@ -1779,10 +1783,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         (m) => m.uid !== item.uid
       );
       delete this.selectedMoveList[i];
+      delete this.selectedMoveListNew[i];
 
 
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
+        this.assetCount = this.assetCount - 1;
+        
       }
 
       if (this.count==0) {
@@ -1893,6 +1900,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.downloadFullItem = [];
     this.needPermissionToDownload = [];
     this.count = 0;
+    this.assetCount=0
     this.fileSelected = [];
     this.copyRightItem = []
     this.canNotDelete=[]
@@ -2115,7 +2123,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.openModal()
     let openM=(files)=> {
       this.dropFilesNew = files
-      this.openModal()
+      setTimeout(() => {
+        this.openModal()
+      }, 300);
+     
     }
 
     window.addEventListener("dragenter", function (e) {
@@ -2357,6 +2368,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
 
   }
+
+  renameAsset(){
+    let keySort = Object.keys(this.selectedMoveListNew)
+    return this.sortedData[keySort[0]].edit = !this.sortedData[keySort[0]]?.edit
+    
+  }
   selectAllClicked:boolean=false
   rightClickSelectAll(){
     this.removeAssets()
@@ -2419,7 +2436,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return '../../../assets/images/ppt-preveiw.svg';
     }
     if(item.update) {
-      return '../../../assets/images/no-preview.png';
+      // return '../../../assets/images/no-preview.png';
+      return '../../../assets/images/no-preview-big.png';
     }
 
     return '../../../assets/images/no-preview-grid.svg';

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject } from "@angular/core";
+import { Component, OnInit, ViewChild, Inject, HostListener } from "@angular/core";
 import { HttpEventType, HttpResponse } from "@angular/common/http";
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // import { MatStepper } from "@angular/material/stepper";
@@ -67,6 +67,11 @@ const apiVersion1 = environment.apiVersion;
 export class UploadModalComponent implements OnInit {
   @ViewChild(MatHorizontalStepper) stepper: MatHorizontalStepper;
   // @ViewChild('searchFolderInput') searchFolderInputRef: any;
+
+  @HostListener('document:click', ['$event']) onDocumentClick(event) {
+    // this.showPopup(2,event);
+    event.stopPropagation()  
+  }
 
   isLinear = true;
   panelOpenState = false;
@@ -159,6 +164,7 @@ export class UploadModalComponent implements OnInit {
   publishingAssets: boolean = true;
   publishingPrivateAssets: boolean = false;
   checkboxIsPrivate: boolean = false;
+  opened: boolean;
 
   constructor(
     private apiService: ApiService,
@@ -495,12 +501,14 @@ export class UploadModalComponent implements OnInit {
     this.parentFolder = { id, path, type: this.ORDERED_FOLDER };
     const result = await this.getFolderList(id);
     this.folderNameParam = "";
+    this.opened = true;
     if (index === null) {
       this.dropdownFolderList = result.filter(
         (res) => res.type === this.ORDERED_FOLDER || res.type === "Workspace"
       );
       this.folderList = [...this.dropdownFolderList];
       this.breadCrumb.pop();
+      this.opened = true;
       return;
     }
     this.dropdownFolderList =
@@ -709,7 +717,8 @@ export class UploadModalComponent implements OnInit {
     // if(this.data) return;
     this.folderNameParam = "";
     this.selectedFolder = null;
-    this.showCustomDropdown = true;
+    // this.showCustomDropdown = true;
+    
   }
 
   focusOutDropdown() {
@@ -747,11 +756,13 @@ export class UploadModalComponent implements OnInit {
     this.descriptionFilled = true;
     this.description = this.selectedFolder.properties["dc:description"];
     this.enableFolderType=false
-    this.checkboxIsPrivate=false
+    this.checkboxIsPrivate=false;
+    this.opened = false;
   }
 
   createFolderOrder(type?: string) {
     this.folderNameParam = "";
+    this.opened = true;
     this.breadCrumb.forEach((element) => {
       this.folderNameParam = `${this.folderNameParam}/${element.title}`;
     });
@@ -777,6 +788,7 @@ export class UploadModalComponent implements OnInit {
     this.disableDateInput = false;
     this.associatedDate = "";
     this.description = "";
+    this.opened = false;
   }
 
   // onSelectConfidentiality(confidentiality, fileIndex?: any) {
@@ -1383,5 +1395,9 @@ export class UploadModalComponent implements OnInit {
 
       }
     }
+  }
+  clickOutside() {
+    this.opened = !this.opened;
+    // console.log("clicked outside");
   }
 }
