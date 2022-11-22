@@ -41,7 +41,8 @@
                   [checked]="item.isSelected"
                   [(ngModel)]="item.isSelected"
                   (keyup.shift)="shiftkeyUp($event, item, i)"
-                /> <!-- (change)="selectFolder($event, item, i)" -->
+                  (change)="selectFolder($event, item, i)"
+                /> <!--  -->
                 <div class="control__indicator"></div>
               </label>
             </div>

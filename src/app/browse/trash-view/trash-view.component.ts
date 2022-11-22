@@ -3,7 +3,7 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
 import { apiRoutes } from 'src/app/common/config';
 import { ASSET_TYPE, PAGE_SIZE_20, UNWANTED_WORKSPACES } from 'src/app/common/constant';
-import { IEntry } from 'src/app/common/interfaces';
+import { IEntry, ISearchResponse } from 'src/app/common/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -31,6 +31,7 @@ export class TrashViewComponent implements OnInit {
   searchInitialised: any;
   searchBarValue: string = "";
   showAssetPath: boolean = false;
+  trashedData: ISearchResponse;
 
   constructor(
     private apiService: ApiService,
@@ -72,10 +73,11 @@ export class TrashViewComponent implements OnInit {
      `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1'`
      this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
-      .subscribe((docs: any) => {
+      .subscribe((recoveredAssets: any) => {
+        this.trashedData = recoveredAssets;
         // this.numberOfPages = docs.numberOfPages;
         // this.resultCount = docs.resultsCount;
-        this.assetList = docs.entries.filter((sector) => {
+        this.assetList = recoveredAssets.entries.filter((sector) => {
           if (UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
             // --this.resultCount;
             return true;
@@ -158,9 +160,10 @@ export class TrashViewComponent implements OnInit {
   }
   
   recoverModal(listDocs) {
-    let recoveredFolders = this.assetList.filter((item) =>
-      listDocs.includes(item["uid"])
-    );
+    // let recoveredFolders = this.assetList.filter((item) =>
+    //   listDocs.includes(item["uid"])
+    // );
+    this.getTrashedWS();
     this.sharedService.showSnackbar(
       "Successfully recovered.",
       3000,
@@ -168,23 +171,26 @@ export class TrashViewComponent implements OnInit {
       "center",
       "snackBarMiddleRecover"
     );
-    this.assetList = this.assetList.filter(
-      (item) => !listDocs.includes(item["uid"])
-    );
+    // this.assetList = this.assetList.filter(
+    //   (item) => !listDocs.includes(item["uid"])
+    // );
     // this.searchList = this.assetList;
     // this.sortedData = this.searchList.slice();
     // this.hasUpdatedChildren.push(this.selectedFolder.uid);
+    // this.trashedData.entries = this.assetList;
     this.selectedFolderList = {};
-    recoveredFolders.forEach(
-      (item) =>
-        this.folderAssetsResult[item.parentRef] &&
-        this.folderAssetsResult[item.parentRef].entries.push(item)
-    );
+    // recoveredFolders.forEach(
+    //   (item) =>
+    //     this.folderAssetsResult[item.parentRef] &&
+    //     this.folderAssetsResult[item.parentRef].entries.push(item)
+    // );
   }
 
   dataTableEvent(event) {}
 
-  assetSelected(event) {}
+  assetSelected(event) {
+    this.selectedFolderList = event;
+  }
 
   fetchAssetsEvent(event) {}
   

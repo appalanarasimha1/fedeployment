@@ -36,7 +36,7 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   @Output() clickHandle: EventEmitter<any> = new EventEmitter();
   @Output() fetchAssets: EventEmitter<any> = new EventEmitter();
-  @Output() selectedAssetList: EventEmitter<any> = new EventEmitter();
+  @Output() selectedAsset: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("paginator") paginator: MatPaginator;
@@ -95,6 +95,13 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.sortedData = this.searchList?.slice();
+    if(this.isTrashView) {
+      this.numberOfPages = changes?.folderStructure?.currentValue?.numberOfPages;
+      this.resultCount = changes?.folderStructure?.currentValue?.resultsCount;
+      this.currentPageCount = changes?.folderStructure?.currentValue?.currentPageSize;
+      return;
+    }
+
     this.numberOfPages = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.numberOfPages;
     this.resultCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.resultsCount;
     this.currentPageCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.currentPageSize;
@@ -417,7 +424,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'forInternalUseListEvent', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
-    this.selectedAssetList.emit(this.selectedFolderList);
+    this.selectedAsset.emit(this.selectedFolderList);
     this.getdownloadAssetsSize();
   }
 
@@ -450,7 +457,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
     }
-    this.selectedAssetList.emit(this.selectedFolderList);
+    this.selectedAsset.emit(this.selectedFolderList);
   }
 
   getIconByType(type: string): string {
@@ -491,7 +498,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
-    this.selectedAssetList.emit(this.selectedFolderList);
+    this.selectedAsset.emit(this.selectedFolderList);
     this.sortedData.forEach((e) => (e.isSelected = false));
   }
 
@@ -684,30 +691,6 @@ export class DataTableComponent implements OnInit, OnChanges {
       "center",
       "snackBarMiddle",
     );
-  }
-
-  recoverModal(listDocs) {
-    let recoveredFolders = this.trashedList.filter((item) =>
-      listDocs.includes(item["uid"])
-    );
-    this.sharedService.showSnackbar(
-      "Successfully recovered.",
-      3000,
-      "top",
-      "center",
-      "snackBarMiddleRecover"
-    );
-    this.trashedList = this.trashedList.filter(
-      (item) => !listDocs.includes(item["uid"])
-    );
-    this.searchList = this.trashedList;
-    this.sortedData = this.searchList.slice();
-    // this.hasUpdatedChildren.push(this.currentWorkspace.uid);
-    this.selectedFolderList = {};
-    recoveredFolders.forEach((item) => {
-        // this.folderAssetsResult[item.parentRef] &&
-        // this.folderAssetsResult[item.parentRef].entries.push(item)
-    });
   }
 
   sortData(sort: Sort) {

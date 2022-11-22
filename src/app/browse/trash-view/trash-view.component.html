@@ -76,6 +76,7 @@
     [searchList]="assetList"
     [isTrashView]="isTrashView"
     [showAssetPath]="showAssetPath"
+    [folderStructure]="trashedData"
 
     (clickHandle)="dataTableEvent($event)"
     (assetSelected)="assetSelected($event)"
@@ -94,8 +95,9 @@
     [searchList]="assetList"
     [isTrashView]="isTrashView"
     [showAssetPath]="showAssetPath"
+    [folderStructure]="trashedData"
 
     (clickHandle)="dataTableEvent($event)"
-    (assetSelected)="assetSelected($event)"
+    (selectedAsset)="assetSelected($event)"
     (fetchAssets)="fetchAssetsEvent($event)"
 ></app-data-table>

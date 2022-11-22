@@ -20,7 +20,11 @@
             Name
           </th>
           <th width="10%"> &nbsp;&nbsp; </th>
-          <th mat-sort-header="dc:creator" width="20%">Created by</th>
+          <th 
+            mat-sort-header="dc:creator" 
+            width="20%"
+          >Created by
+          </th>
           <th
             *ngIf="!isTrashView"
             mat-sort-header="dc:created"
@@ -36,8 +40,15 @@
             Deleted on
           </th>
           <th
-            mat-sort-header="dc:sector"
+            *ngIf="!isTrashView"
+            mat-sort-header="dc:modified"
+            width="18%"
+          >
+            Updated on
+          </th>
+          <th
             *ngIf="isTrashView"
+            mat-sort-header="dc:sector"
             width="20%"
           >
             Workspace
@@ -226,7 +237,7 @@
             <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
           </td>
           <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
-          <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
+          <td (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td>
           <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{item.properties['dc:sector'] || ''}}</p></td>
           <td>
             <img 

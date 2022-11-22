@@ -24,7 +24,7 @@ export class MasonryViewComponent implements OnInit, OnChanges {
 
   @Output() clickHandle: EventEmitter<any> = new EventEmitter();
   @Output() fetchAssets: EventEmitter<any> = new EventEmitter();
-  @Output() selectedAssetList: EventEmitter<any> = new EventEmitter();
+  @Output() assetSelected: EventEmitter<any> = new EventEmitter();
 
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
   @ViewChild("paginator") paginator: MatPaginator;
@@ -40,6 +40,7 @@ export class MasonryViewComponent implements OnInit, OnChanges {
   currentPageCount: number = 0;
   defaultPageSize: number = 20;
   pageSizeOptions = [20, 50, 100];
+  selectedFolder: {[index: string]: IEntry} = {};
 
   constructor(
     public sharedService: SharedService,
@@ -51,6 +52,14 @@ export class MasonryViewComponent implements OnInit, OnChanges {
   
   ngOnChanges(changes: SimpleChanges) {
     this.searchList = this.searchList?.slice();
+    
+    if(this.isTrashView) {
+      this.numberOfPages = changes?.folderStructure?.currentValue?.numberOfPages;
+      this.resultCount = changes?.folderStructure?.currentValue?.resultsCount;
+      this.currentPageCount = changes?.folderStructure?.currentValue?.currentPageSize;
+      return;
+    }
+
     this.numberOfPages = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.numberOfPages;
     this.resultCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.resultsCount;
     this.currentPageCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.currentPageSize;
@@ -80,8 +89,10 @@ export class MasonryViewComponent implements OnInit, OnChanges {
   selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
     // this.selectAsset(event, file, index);
     if (event.checked || event.target?.checked) {
+      this.selectedFolder[file.uid] = file;
       this.fileSelected.push(file);
     } else {
+      delete this.selectedFolder[file.uid];
       if (this.fileSelected.length) {
         let i = -1;
         this.fileSelected.forEach((item, ind) => {
@@ -94,7 +105,64 @@ export class MasonryViewComponent implements OnInit, OnChanges {
         }
       }
     }
+    this.assetSelected.emit(this.selectedFolder);
   }
+
+  // selectAsset($event, item, i) {
+  //   let canDelete = this.checkCanDelete(item);
+  //   if(canDelete) {
+  //     this.selectFolder($event, item, i, false);
+  //   }
+  //   if ($event.target?.checked || $event.checked) {
+  //     if ($event.from !== "rightClick") {
+  //       this.count = this.count + 1;
+  //     }
+      
+  //     this.selectedMoveList[i] = item;
+  //     this.selectedFolderList[i] = item;
+  //     if (!canDelete) {
+  //       this.canNotDelete.push(item)
+  //     }
+  //      if (
+  //        item.properties['sa:copyrightName'] !== null &&
+  //        item.properties['sa:copyrightName'] !== ""
+  //      ) {
+  //        this.copyRightItem.push(item.uid);
+  //      }
+  //     if (item.properties["sa:downloadApprovalUsers"].length > 0) {
+  //       this.needPermissionToDownload.push(item);
+  //     } else {
+  //       if (item.properties["sa:access"] === "Internal access only") {
+  //         this.forInternalUse.push(item.uid);
+  //       }
+  //       this.downloadArray.push(item.uid);
+  //       this.downloadFullItem.push(item);
+  //     }
+  //   } else {
+  //     //  if (!$event.target?.checked || !$event.checked) {
+  //     this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+  //     this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+  //     this.copyRightItem = this.copyRightItem.filter((m) => m !== item.uid);
+  //     this.downloadFullItem = this.downloadFullItem.filter(
+  //       (m) => m.uid !== item.uid
+  //     );
+  //     this.needPermissionToDownload = this.needPermissionToDownload.filter(
+  //       (m) => m.uid !== item.uid
+  //     );
+  //     this.canNotDelete = this.canNotDelete.filter(
+  //       (m) => m.uid !== item.uid
+  //     );
+  //     delete this.selectedMoveList[i];
+  //     delete this.selectedFolderList[i];
+  //     this.count = this.count - 1;
+  //     //  }
+  //   }
+  //   this.clickHandle.emit({eventName: 'forInternalUseListEvent', data: this.forInternalUse});
+  //   this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
+  //   this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
+  //   this.selectedAsset.emit(this.selectedFolderList);
+  //   this.getdownloadAssetsSize();
+  // }
 
   open(file, fileType?: string): void {
     // this.showShadow = false;
@@ -192,6 +260,19 @@ export class MasonryViewComponent implements OnInit, OnChanges {
 
   openFolder(item: IEntry) {
     this.router.navigate([window.location.pathname.split('/').splice(1,2).join('/'), item.uid]);
+  }
+  
+  selectFolder($event, item, i, updateCount = true) {
+    if ($event.target?.checked || $event.checked) {
+      // if (updateCount) this.count = this.count + 1;
+      this.selectedFolder[i] = item;
+      // this.selectedMoveList[i] = item;
+    } else {
+      // if (updateCount) this.count = this.count - 1;
+      delete this.selectedFolder[i];
+      // delete this.selectedMoveList[i];
+    }
+    this.assetSelected.emit(this.selectedFolder);
   }
 
 }
