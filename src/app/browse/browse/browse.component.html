@@ -1227,13 +1227,13 @@
                     >
                       Deleted on
                     </th>
-                    <th
+                    <!-- <th
                       *ngIf="!isTrashView"
                       mat-sort-header="dc:modified"
                       width="18%"
                     >
                       Updated on
-                    </th>
+                    </th> -->
                     <!-- <th mat-sort-header="dc:start" *ngIf="!showLinkCopy && !isTrashView" width="20%">Associated date</th> -->
                     <!-- <th mat-sort-header="dc:start" *ngIf="isTrashView" width="20%">Deleted on</th> -->
                     <th
@@ -1513,7 +1513,7 @@
                       <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
                     </td>
                     <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat1(item.properties['dc:created'])}}</p></td>
-                    <td (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat1(item.properties['dc:modified'])}}</p></td>
+                    <!-- <td (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat1(item.properties['dc:modified'])}}</p></td> -->
                     <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{item.properties['dc:sector'] || ''}}</p></td>
                     <td>
                       <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="handleTest(item);selectedFolder=item;" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
