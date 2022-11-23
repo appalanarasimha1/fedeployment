@@ -173,6 +173,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   showTagInput = false;
   loading: boolean[] = [];
   innerLoading: boolean[] = [];
+  innerLoadingNew: boolean[] = [];
   modalLoading = false;
   sectors: string[] = [];
   sectorSelected;
@@ -258,6 +259,12 @@ export class DocumentComponent implements OnInit, OnChanges {
       // else this.loading.pop();
       if (value) this.innerLoading.push(value);
       else this.innerLoading.pop();
+    });
+    this.dataService.showHideLoaderNew$.subscribe((value) => {
+      // if(value) this.loading.push(value);
+      // else this.loading.pop();
+      if (value) this.innerLoadingNew.push(value);
+      else this.innerLoadingNew.pop();
     });
     // /* <!-- sprint12-fixes start --> */
     this.sharedService.getSidebarToggle().subscribe(() => {

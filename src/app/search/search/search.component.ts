@@ -281,8 +281,11 @@ export class SearchComponent implements OnInit {
       }
       delete params["includePrivate"];
     }
-
-    this.dataService.loaderValueChange(true);
+    console.log("params",params)
+    if (params?.currentPageIndex==0) {
+      this.dataService.loaderValueChange(true);
+    }
+     this.dataService.loaderValueChangeNew(true);
     this.nuxeo.nuxeoClient
       .request(url, { queryParams: params, headers })
       .get()
@@ -290,6 +293,7 @@ export class SearchComponent implements OnInit {
         this.setData(docs, isShowMore);
         this.getAggregationValues();
         this.dataService.loaderValueChange(false);
+        this.dataService.loaderValueChangeNew(false);
       })
       .catch((error) => {
         console.log("search document error = ", error);
@@ -298,6 +302,7 @@ export class SearchComponent implements OnInit {
           this.getAggregationValues();
           // this.loading = false;
           this.dataService.loaderValueChange(false);
+          this.dataService.loaderValueChangeNew(false);
         }
       });
   }
