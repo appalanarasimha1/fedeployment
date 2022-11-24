@@ -1616,7 +1616,7 @@ a.hover-icon.download-icon:after {content: '';display: block;position: absolute;
   max-width: 100%;
 }
 ::ng-deep .slick-slide{
-  margin-right: 5px;
+  margin-right: 8px;
 }
 ::ng-deep .slide.slick-slide.slick-current.slick-active .download-dropdown {
   right: auto !important;
