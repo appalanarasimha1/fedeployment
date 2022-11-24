@@ -1068,19 +1068,15 @@ export class UploadModalComponent implements OnInit {
 
   attachFileToAsset(asset, index) {
     const params = {
-      properties: {
-        "file:content": {
-          "upload-batch": this.batchId,
-          "upload-fileId": `${index}`,
-        }
-      }
+      "uploadBatch": this.batchId,
+      "uploadFileId": `${index}`,
     };
     const payload = {
       params,
       context: {},
       input: asset.uid,
     };
-    this.apiService.post(apiRoutes.DOCUMENT_UPDATE + "/@async", payload).toPromise();
+    this.apiService.post(apiRoutes.ATTACH_LARGE_FILE + "/@async", payload).toPromise();
   }
 
   async setAssetPermission(asset, index) {
