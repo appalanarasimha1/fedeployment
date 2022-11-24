@@ -157,7 +157,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       },
     ],
   };
-  selectedView = "recentView";
+  selectedView = "yourFavourites";
   selectedType = "all";
 
   // /* <!-- sprint12-fixes start --> */
@@ -243,7 +243,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.getFavorites();
     // this.getTrendingAssets();
     this.getAssetBySectors();
-    this.selectTab("recentView");
+    this.selectTab("yourFavourites");
     this.showRecentlyViewed = true;
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.hasSearchData = true
@@ -392,7 +392,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.countOfTheme =0
     // this.clearFilter();
     // this.resetView();
-    this.selectTab("recentView");
+    this.selectTab("yourFavourites");
     this.dataService.searchBarClickInit(false);
     this.dataService.termSearchForHideInit("")
   }
@@ -1017,7 +1017,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (this.detailView === page) return;
     this.showDetailView = true;
     this.detailView = page;
-    if (page === "recentView") {
+    if (page === "yourFavourites") {
       this.documents = this.createStaticDocumentResults(this.recentlyViewed);
       this.documents["entity-type"] = {};
     }
@@ -1056,6 +1056,8 @@ export class DocumentComponent implements OnInit, OnChanges {
         return "Assets by Sector";
       case "trendingPage":
         return "What’s Trending";
+      case "yourFavourites":
+        return "Your Favorites"
     }
 
     return "";
