@@ -356,7 +356,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.searchTem = searchTerm;
-      
+
       // this.searchNameCLicked.push(this.sharedService.toStartCase(searchTerm));
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
@@ -495,7 +495,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (sector) {
       queryParams["sectors"] = `["${sector}"]`;
     }
-    queryParams["duplicate_show"] = "1";
+    // queryParams["duplicate_show"] = "1";
     if (this.sharedService.checkExternalUser()) {
       queryParams["sa_access"] = "All access";
     }
@@ -764,7 +764,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       // fileRenditionUrl = url;
     }
     this.selectedFileUrl =
-      // fileType === "image" ? 
+      // fileType === "image" ?
       this.getAssetUrl(null, fileRenditionUrl, {...file, update:true })
         // : fileRenditionUrl;
     // if(fileType === 'file') {
@@ -1290,9 +1290,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   activeSearchCatalogue(name:string) {
     if(this.searchNameCLicked.indexOf(name) === -1) {
       this.searchNameCLicked.push(name);
-      this.countOfTheme += 1 
+      this.countOfTheme += 1
       this.selectTheme = true
-     
+
     } else {
       this.searchNameCLicked = this.searchNameCLicked.filter(m => m !== name)
       this.selectTheme = false
@@ -1301,7 +1301,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         termArray.pop()
         this.termFinal = termArray.join(" or ")
       }
-      this.countOfTheme -= 1 
+      this.countOfTheme -= 1
     }
     if (!this.hasSearchData) {
       this.termFinal = this.searchNameCLicked.join(" or ")
@@ -1339,7 +1339,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
       return '../../../assets/images/doc-preveiw.svg';
-    } 
+    }
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt-preveiw.svg';
     }
