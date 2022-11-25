@@ -610,16 +610,20 @@ export class UploadModalComponent implements OnInit {
       method: 'POST',
       body: blob.content
     };
-
-    const res = await fetch(apiVersion1 + uploadUrl, options);
-    if (res.status === 201) {
-      this.setUploadProgressBar(index, 100);
-      $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-      console.log("Upload done");
-    } else {
-      const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
-      console.log(`File is ${percentDone}% loaded.`);
-      this.setUploadProgressBar(index, percentDone);
+    try {
+      const res = await fetch(apiVersion1 + uploadUrl, options);
+      if (res.status === 201) {
+        this.setUploadProgressBar(index, 100);
+        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+        console.log("Upload done");
+      } else {
+        const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
+        console.log(`File is ${percentDone}% loaded.`);
+        this.setUploadProgressBar(index, percentDone);
+      }
+    } catch (err) {
+      // retry upload failed chunk
+      await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType)
     }
   }
 
