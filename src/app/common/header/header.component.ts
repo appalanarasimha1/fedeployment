@@ -151,17 +151,25 @@ export class HeaderComponent implements OnInit {
   }
 
   toFavouriteSection() {
+    $('.nav.nav-tabs').find('li').removeClass('active');
+    $('#favoritesHome').addClass('active');
+
+    if($("#favoritesHome").hasClass("active")){
+      $('.tab-content').find('#recentlyViewed').removeClass('active');
+      $('.tab-content').find('#recentlyUploaded').removeClass('active');
+      $('.tab-content').find('#yourFavourites').addClass('active');
+    }
+    if($('div').hasClass("filterMenuRow")){
+      this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+    }
+
     setTimeout(() => {
-      // window.scrollTo(0,document.body.scrollHeight);
       $('#favorites').animate({scrollTop: document.body.scrollHeight},"slow");
     }, 0);
 
-    $("#favorites").click(function(e) {
-      // console.log($('#favoritesHome').offset().top)
-      $('html, body').animate({
-        scrollTop: $('#favorites').offset().top
-      }, 'slow');
-    });
+    $('html, body').animate({
+      scrollTop: $('#favorites').offset().top
+    }, 'slow');
   }
 
   selectTab(tab: string) {
