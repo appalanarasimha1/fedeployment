@@ -56,6 +56,7 @@ const BUTTON_LABEL = {
 
 const MAX_CHUNK_SIZE = 5 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
+const CONCURRENT_UPLOAD_REQUEST = 5;
 const apiVersion1 = environment.apiVersion;
 
 @Component({
@@ -589,8 +590,8 @@ export class UploadModalComponent implements OnInit {
     element.setAttribute("style", attr + background);
   }
 
-  async uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType) {
-    const blob = new Nuxeo.Blob({ content: chunkedBlob });fileType
+  async uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount = 1) {
+    const blob = new Nuxeo.Blob({ content: chunkedBlob });
     const headers = {
       "Cache-Control": "no-cache",
       "X-Upload-Chunk-Index": chunkIndex,
@@ -610,16 +611,25 @@ export class UploadModalComponent implements OnInit {
       method: 'POST',
       body: blob.content
     };
-
-    const res = await fetch(apiVersion1 + uploadUrl, options);
-    if (res.status === 201) {
-      this.setUploadProgressBar(index, 100);
-      $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-      console.log("Upload done");
-    } else {
-      const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
-      console.log(`File is ${percentDone}% loaded.`);
-      this.setUploadProgressBar(index, percentDone);
+    try {
+      const res = await fetch(apiVersion1 + uploadUrl, options);
+      if (res.status === 201) {
+        this.setUploadProgressBar(index, 100);
+        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+        console.log("Upload done");
+      } else if (res.status === 202) {
+        const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
+        console.log(`File is ${percentDone}% loaded.`);
+        this.setUploadProgressBar(index, percentDone);
+      } else {
+        // retry upload failed chunk
+        if (retryCount < 4)
+          await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
+      }
+    } catch (err) {
+      // retry upload failed chunk
+      if (retryCount < 4)
+        await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
     }
   }
 
@@ -635,10 +645,16 @@ export class UploadModalComponent implements OnInit {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
       try {
+        let promiseArray = [];
         for (let i = 0; i < totalChunk; i++) {
           const chunkedBlob = file.slice(i * MAX_CHUNK_SIZE, (i + 1) * MAX_CHUNK_SIZE);
-          await this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType);
+          promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
+          if (promiseArray.length === CONCURRENT_UPLOAD_REQUEST) {
+            await Promise.all(promiseArray.map(p => p.catch(e => e)));
+            promiseArray = [];
+          }
         }
+        if (promiseArray.length > 0) await Promise.all(promiseArray);
         this.filesUploadDone[index] = true;
       } catch (err) {
         console.log("Upload Error:", err);
