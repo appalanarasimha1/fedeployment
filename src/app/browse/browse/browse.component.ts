@@ -446,7 +446,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    return this.sharedService.getAssetUrl(event, url, type);
   }
 
+  openGetNoPreview: boolean = false;
   open(file, fileType?: string): void {
+    console.log('item', this.checkAssetMimeTypes(file));
+    if(this.checkAssetMimeTypes(file) == 'nopreview') {
+      this.openGetNoPreview = true;
+    } else {
+      this.openGetNoPreview = false;
+    }
+
     this.showShadow = false;
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
@@ -488,6 +496,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // }
 
     this.previewModal.open();
+    this.openGetNoPreview = false;
   }
 
   // markRecentlyViewed(data: any) {
@@ -2429,18 +2438,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const mimeType = splitedData[splitedData?.length - 1];
     const lowercaseMime = mimeType.toLowerCase();
 
-    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
-      return '../../../assets/images/doc-preveiw.svg';
-    }
-    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
-      return '../../../assets/images/ppt-preveiw.svg';
-    }
-    if(item.update) {
-      // return '../../../assets/images/no-preview.png';
+    if(this.openGetNoPreview){
       return '../../../assets/images/no-preview-big.png';
+    } else {
+      if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+        return '../../../assets/images/doc-preveiw.svg';
+      }
+      if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+        return '../../../assets/images/ppt-preveiw.svg';
+      }
+      if(item.update) {
+        // return '../../../assets/images/no-preview.png';
+        return '../../../assets/images/no-preview-big.png';
+      }
+  
+      return '../../../assets/images/no-preview-grid.svg';
     }
-
-    return '../../../assets/images/no-preview-grid.svg';
   }
 
   checkFolderContains(){
