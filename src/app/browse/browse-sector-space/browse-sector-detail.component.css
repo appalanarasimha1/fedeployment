@@ -296,3 +296,18 @@ svg.classificationsIcon.disablePermission path {
   float: right;
   border-left: 1px solid #EFEEE9;
 }
+
+.no-items {
+  width: 100%;
+  height: 500px;
+  text-align: center;
+  padding: 70px 0;
+  color: #BAB8B2;
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 500;
+}
+.no-items img {
+  display: block;
+  margin: 0px auto 14px;
+}

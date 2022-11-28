@@ -31,7 +31,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   titleExists: boolean = false;
   folderDescriptionRef = undefined;
   folderDateRef = undefined;
-  assetList: IEntry[];
+  assetList: IEntry[] = [];
   isTrashView: boolean = false;
   searchInitialised: any;
   sectorName: string;

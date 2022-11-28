@@ -823,20 +823,6 @@ font-weight: normal;
 ::ng-deep .mat-expansion-panel-header-description{
   color: #937206;
 }
-.no-items {
-  width: 100%;
-  height: 500px;
-  text-align: center;
-  padding: 70px 0;
-  color: #BAB8B2;
-  font-size: 24px;
-  line-height: 36px;
-  font-weight: 500;
-}
-.no-items img {
-  display: block;
-  margin: 0px auto 14px;
-}
 .recoverFolder {
   padding-bottom: 5px;
   margin-right: 10px;

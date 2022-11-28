@@ -522,32 +522,44 @@
   </div>
   <div id="text">&nbsp;</div>
 
-  <app-masonry-view 
-    *ngIf="selectedMenu === 0"
+  <section *ngIf="!assetList.length && !isPrivateFolder(true, true)">
+    <div class="no-items">
+      <img
+        src="../../../assets/images/no-items.svg"
+        alt="No items here"
+      />
+      No items here
+    </div>
+  </section>
 
-    [searchList]="assetList"
-    [isTrashView]="isTrashView"
-    [showAssetPath]="showAssetPath"
-    [currentWorkspace]="currentWorkspace"
-    [breadCrumb]="breadCrumb"
-    [folderStructure]="folderStructure"
+  <section *ngIf="assetList.length">
+    <app-masonry-view 
+      *ngIf="selectedMenu === 0"
 
-    (clickHandle)="dataTableEvent($event)"
-    (selectedAssetList)="assetSelectedEvent($event)"
-    (fetchAssets)="fetchAssetsEvent($event)"
-></app-masonry-view>
-  <app-data-table 
-    *ngIf="selectedMenu === 1"
+      [searchList]="assetList"
+      [isTrashView]="isTrashView"
+      [showAssetPath]="showAssetPath"
+      [currentWorkspace]="currentWorkspace"
+      [breadCrumb]="breadCrumb"
+      [folderStructure]="folderStructure"
 
-    [searchList]="assetList"
-    [isTrashView]="isTrashView"
-    [showAssetPath]="showAssetPath"
-    [currentWorkspace]="currentWorkspace"
-    [breadCrumb]="breadCrumb"
-    [folderStructure]="folderStructure"
+      (clickHandle)="dataTableEvent($event)"
+      (selectedAssetList)="assetSelectedEvent($event)"
+      (fetchAssets)="fetchAssetsEvent($event)"
+    ></app-masonry-view>
+    <app-data-table 
+      *ngIf="selectedMenu === 1"
 
-    (clickHandle)="dataTableEvent($event)"
-    (selectedAssetList)="assetSelectedEvent($event)"
-    (fetchAssets)="fetchAssetsEvent($event)"
-  ></app-data-table>
+      [searchList]="assetList"
+      [isTrashView]="isTrashView"
+      [showAssetPath]="showAssetPath"
+      [currentWorkspace]="currentWorkspace"
+      [breadCrumb]="breadCrumb"
+      [folderStructure]="folderStructure"
+
+      (clickHandle)="dataTableEvent($event)"
+      (selectedAssetList)="assetSelectedEvent($event)"
+      (fetchAssets)="fetchAssetsEvent($event)"
+    ></app-data-table>
+  </section>
 
