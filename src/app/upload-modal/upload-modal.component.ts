@@ -620,16 +620,20 @@ export class UploadModalComponent implements OnInit {
       method: 'POST',
       body: blob.content
     };
-
-    const res = await fetch(apiVersion1 + uploadUrl, options);
-    if (res.status === 201) {
-      this.setUploadProgressBar(index, 100);
-      $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-      console.log("Upload done");
-    } else {
-      const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
-      console.log(`File is ${percentDone}% loaded.`);
-      this.setUploadProgressBar(index, percentDone);
+    try {
+      const res = await fetch(apiVersion1 + uploadUrl, options);
+      if (res.status === 201) {
+        this.setUploadProgressBar(index, 100);
+        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+        console.log("Upload done");
+      } else {
+        const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
+        console.log(`File is ${percentDone}% loaded.`);
+        this.setUploadProgressBar(index, percentDone);
+      }
+    } catch (err) {
+      // retry upload failed chunk
+      await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType)
     }
   }
 
@@ -1082,19 +1086,15 @@ export class UploadModalComponent implements OnInit {
 
   attachFileToAsset(asset, index) {
     const params = {
-      properties: {
-        "file:content": {
-          "upload-batch": this.batchId,
-          "upload-fileId": `${index}`,
-        }
-      }
+      "uploadBatch": this.batchId,
+      "uploadFileId": `${index}`,
     };
     const payload = {
       params,
       context: {},
       input: asset.uid,
     };
-    this.apiService.post(apiRoutes.DOCUMENT_UPDATE + "/@async", payload).toPromise();
+    this.apiService.post(apiRoutes.ATTACH_LARGE_FILE + "/@async", payload).toPromise();
   }
 
   async setAssetPermission(asset, index) {
