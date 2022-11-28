@@ -11,7 +11,26 @@
         class="folderListview pb-5"
         >
         <tr>
-          <th style="width: 3%">&nbsp;&nbsp;</th>
+          <th style="width: 3%" class="checkAll positionRelative" [ngClass]="{'showChecked' : selectAllClicked }">
+            <div class="control-group tollTipCustom">
+              <label class="control control--checkbox">
+                <input class="chkbox"
+                  id="checkbox-selectAll"
+                  type="checkbox"
+                  [checked]="selectAllClicked"
+                  (change)="selectAllToggle($event)"
+                />
+                <div class="control__indicator"></div>
+              </label>
+              <span class="tolltipContent" style="top: 22px;
+                height: auto;
+                white-space: break-spaces;
+                text-align: left;
+                padding: 5px 10px; max-width: 100vh;">
+                {{selectAllClicked ? 'Unselect all': 'Select all'}}
+              </span>
+            </div>&nbsp;&nbsp;
+          </th>
           <th
             mat-sort-header="title"
             width="40%"

@@ -80,6 +80,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   downloadErrorShow: boolean = false;
   defaultPageSize: number = 20;
   pageSizeOptions = [20, 50, 100];
+  selectAllClicked: boolean = false;
 
   constructor(
     public sharedService: SharedService,
@@ -426,6 +427,17 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
     this.selectedAsset.emit(this.selectedFolderList);
     this.getdownloadAssetsSize();
+  }
+  
+  rightClickSelectAll(){
+    this.removeAssets()
+    this.sortedData.forEach((e,i) => {
+      if(!this.checkGeneralFolder(e)){
+         e.isSelected = true
+        this.selectAllClicked = true
+         this.selectAsset({checked:true , update:true}, e, i)
+      }
+    });
   }
 
   getdownloadAssetsSize() {
@@ -797,6 +809,17 @@ export class DataTableComponent implements OnInit, OnChanges {
         // this.showMoreButton = false;
         this.loading = false;
       });
+  }
+
+  
+  selectAllToggle(e) {
+    if(e.target.checked) {
+      this.rightClickSelectAll();
+      this.selectAllClicked = true;
+    } else {
+      this.removeAssets();
+      this.selectAllClicked = false;
+    }
   }
 
   getCreatorName(item) {
