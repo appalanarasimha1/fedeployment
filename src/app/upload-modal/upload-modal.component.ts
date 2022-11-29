@@ -56,7 +56,7 @@ const BUTTON_LABEL = {
 
 const MAX_CHUNK_SIZE = 5 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
-const CONCURRENT_UPLOAD_REQUEST = 5;
+const CONCURRENT_UPLOAD_REQUEST = 10;
 const apiVersion1 = environment.apiVersion;
 
 @Component({
