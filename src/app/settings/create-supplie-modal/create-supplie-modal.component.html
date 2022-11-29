@@ -1,0 +1,49 @@
+<div class="create-supplier">
+    <h3>Create supplier
+        <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+          <img src="../../assets/images/close-modal.svg" style="width: 20px" />
+       </button>
+    </h3>
+
+    <div class="create-supplier-form">
+        <ul>
+            <li>
+                <div class="form-group">
+                    <label for="Supplier's Name" >Supplier's Name</label>
+                    <input type="text" placeholder="Drone Experts Ltd" [(ngModel)]="suppliersName" />
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label for="Tech support email (optional)">Tech support email (optional)</label>
+                    <input type="email" placeholder="Enter a tech support email" />
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label for="Tech support email (optional)">Assigned regions (optional)</label>
+                    <mat-form-field class="example-chip-list">
+                        <mat-chip-list #chipList>
+                            <mat-chip *ngFor="let suppliers of fruits;let indx=index;" [selectable]="selectable" [removable]="removable" (removed)="remove(suppliers,indx)">
+                                {{suppliers.name}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input placeholder="Add..." #suppliersInput [formControl]="suppliersCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            <mat-option *ngFor="let suppliers of filteredFruits | async" [value]="suppliers">
+                                {{suppliers.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="button-groups">
+        <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+        <button class="upload-btn" [disabled]="!suppliersName">Create supplier</button>
+    </div>
+</div>

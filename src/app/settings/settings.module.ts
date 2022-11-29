@@ -19,9 +19,20 @@ import { UploadModalModule } from '../upload-modal/upload-modal.module';
 import { SearchModule } from '../search/search.module';
 
 import { MatMenuModule } from '@angular/material/menu';
+import { ManageSuppliersComponent } from './manage-suppliers/manage-suppliers.component';
+import { ManageLocationsComponent } from './manage-locations/manage-locations.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatChipsModule } from '@angular/material/chips';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CreateSupplieModalComponent } from './create-supplie-modal/create-supplie-modal.component';
+
 @NgModule({
   declarations: [
     SettingsComponent,
+    ManageSuppliersComponent,
+    ManageLocationsComponent,
+    CreateSupplieModalComponent,
   ],
   imports: [
     SharedModule,
@@ -42,6 +53,11 @@ import { MatMenuModule } from '@angular/material/menu';
     UploadModalModule,
     SearchModule,
     MatMenuModule,
+    MatSlideToggleModule,
+    MatChipsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
   ],
   exports: [
     MatMenuModule
