@@ -431,7 +431,7 @@
         
         <li *ngIf="selectedAssetCount < 1 && !checkExternalUser()">
           <div class="buttonCreate tollTipWorkspace" >
-            <a href="javascript:void(0)" class="createNew flexible">
+            <a (click)="showCreateFolderPopup = !showCreateFolderPopup" href="javascript:void(0)" class="createNew flexible">
               <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M1.50857 18.24V1.50857H9.00864L11.2029 3.70286H20.4343V9.18672C20.9668 9.34171 21.4725 9.55954 21.9429 9.83165V3.29143C21.9429 3.00045 21.8273 2.72139 21.6215 2.51563C21.4158 2.30988 21.1367 2.19429 20.8457 2.19429H11.4256L9.23136 0H1.09714C0.806162 0 0.5271 0.115591 0.321346 0.321346C0.115591 0.5271 0 0.806162 0 1.09714V18.6514C0 18.9424 0.115591 19.2215 0.321346 19.4272C0.5271 19.633 0.806162 19.7486 1.09714 19.7486H12.9277C12.5972 19.2852 12.323 18.7791 12.1149 18.24H1.50857ZM18.5143 19.8571C20.7708 19.8571 22.6 18.0279 22.6 15.7714C22.6 13.515 20.7708 11.6857 18.5143 11.6857C16.2578 11.6857 14.4286 13.515 14.4286 15.7714C14.4286 18.0279 16.2578 19.8571 18.5143 19.8571ZM18.5143 21.2571C21.544 21.2571 24 18.8011 24 15.7714C24 12.7418 21.544 10.2857 18.5143 10.2857C15.4846 10.2857 13.0286 12.7418 13.0286 15.7714C13.0286 18.8011 15.4846 21.2571 18.5143 21.2571ZM17.9657 13.0286V15.2229H15.7714V16.32H17.9657V18.5143H19.0629V16.32H21.2571V15.2229H19.0629V13.0286H17.9657Z" fill="#947200"/>
               </svg>
@@ -439,6 +439,7 @@
             <div class="customToolTipWorkspace" style="right: 5px; left: auto; top: 32px">Create new folder</div>
           </div>
           <app-create-folder 
+            *ngIf="showCreateFolderPopup"
             [folderAssetsResult]="folderStructure" 
             (folderCreateEvent)="folderCreateEvent($event)"
           ></app-create-folder>

@@ -66,6 +66,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   sizeExeeded: boolean = false;
   // dataTableComponent: DataTableComponent;
   folderStructure = {};
+  showCreateFolderPopup: boolean = false;
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
