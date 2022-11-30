@@ -41,7 +41,8 @@ padding: unset;
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(92vh - 50px);
+  padding: 20px;
+  /* height: calc(92vh - 50px); */
   /* min-height: 400px; */
 }
 .upload-modal-step {
@@ -587,9 +588,13 @@ font-weight: normal;
   display: block;
   font-size: 15px;
   /* height: 320px !important; */
-  height: calc(92vh - 270px) !important;
+  /* height: calc(92vh - 270px) !important; */
+  min-height: 323px;
   overflow-x: auto;
   margin-right: 24px;
+  height: 100%;
+  margin: 0px auto;
+  padding: 10px;
 }
 .tooltip1 {
   position: relative;
@@ -1003,8 +1008,9 @@ padding: 10px 18px
 }
 .numberAssets{
   font-size: 13px;
-line-height: 13px;
-color: #737373;
+  line-height: 13px;
+  color: #737373;
+  font-family: 'brownlight';
 }
 
 /* ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
@@ -1735,4 +1741,42 @@ span.showAllClassifications svg.rotateArrow {
 }
 .publishingAssets ul li:last-child {
   padding-bottom: 0px;
+}
+
+::ng-deep .cdk-overlay-pane.custom-modalbox {
+  width: 1080px !important;
+  max-width: calc(100vw - 120px) !important;
+  max-height: calc(100vh - 80px) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  position: absolute !important;
+  top: 20px !important;
+  right: 0px !important;
+  left: 0px !important;
+}
+::ng-deep .custom-modalbox .mat-dialog-container {
+  padding: 0px !important;
+  min-height: auto !important;
+  max-height: 100% !important;
+  border-radius: 8px !important;
+}
+
+.newFolderUi {
+  background-image: url(../../assets/images/folder-workspace.svg);
+  background-position: center center;
+  background-size: contain;
+  height: 146px;
+  width: 200px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 40px;
+}
+.newFolderUi .assetName {
+  width: 180px;
+  text-align: left;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
