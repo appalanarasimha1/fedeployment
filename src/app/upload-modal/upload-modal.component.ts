@@ -624,6 +624,7 @@ export class UploadModalComponent implements OnInit {
     try {
       const res = await fetch(apiVersion1 + uploadUrl, options);
       if (res.status === 201) {
+        // retryCount = 1;
         this.setUploadProgressBar(index, 100);
         $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
         console.log("Upload done");
@@ -633,12 +634,22 @@ export class UploadModalComponent implements OnInit {
         this.setUploadProgressBar(index, percentDone);
       } else {
         // retry upload failed chunk
+<<<<<<< HEAD
         if (retryCount < 4)
+=======
+        // if (retryCount < 11)
+          console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+>>>>>>> 817ab220 (sprint42: retrycount code commented and console added for file upload)
           await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
       }
     } catch (err) {
       // retry upload failed chunk
+<<<<<<< HEAD
       if (retryCount < 4)
+=======
+      // if (retryCount < 11)
+          console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+>>>>>>> 817ab220 (sprint42: retrycount code commented and console added for file upload)
         await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
     }
   }
