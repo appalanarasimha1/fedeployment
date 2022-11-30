@@ -634,22 +634,14 @@ export class UploadModalComponent implements OnInit {
         this.setUploadProgressBar(index, percentDone);
       } else {
         // retry upload failed chunk
-<<<<<<< HEAD
-        if (retryCount < 4)
-=======
         // if (retryCount < 11)
           console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
->>>>>>> 817ab220 (sprint42: retrycount code commented and console added for file upload)
           await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
       }
     } catch (err) {
       // retry upload failed chunk
-<<<<<<< HEAD
-      if (retryCount < 4)
-=======
       // if (retryCount < 11)
           console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
->>>>>>> 817ab220 (sprint42: retrycount code commented and console added for file upload)
         await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
     }
   }
