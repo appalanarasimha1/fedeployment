@@ -104,8 +104,8 @@ export class AddUserModalComponent implements OnInit {
     this.externalCollaborators = {};
     this.internalCollaborators = {};
     Object.keys(this.folderCollaborators).forEach(key => {
-      if ((this.folderCollaborators[key].externalUser
-        || this.listExternalUser.includes(key)) || !this.checkTransientNeomEmail(key)) {
+      if (((this.folderCollaborators[key].externalUser
+        || this.listExternalUser.includes(key)) ) && !this.checkTransientNeomEmail(key)) {
         this.externalCollaborators[key] = this.folderCollaborators[key];
       } else {
         this.internalCollaborators[key] = this.folderCollaborators[key];
@@ -383,7 +383,9 @@ export class AddUserModalComponent implements OnInit {
           }`.trim(),
         }));
         this.userList = entries;
-        return entries;
+        let unique = Array.from(new Set(entries.map(JSON.stringify))).map((data:any)=>JSON.parse(data))
+        // console.log(Array.from(new Set(entries.map(JSON.stringify))).map((data:any)=>JSON.parse(data)),entries)
+        return unique;
       })
     );
   }
