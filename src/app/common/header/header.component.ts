@@ -35,11 +35,13 @@ export class HeaderComponent implements OnInit {
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
   allSectors = [
     {label: 'All NEOM sectors', value: 'general'},
+    {label: 'Entertainment and culture', value:'entertainment_and_culture'},
+    {label: 'Energy', value:'energy'},
     {label: 'Food', value: 'food'},
     {label: 'Manufacturing', value: 'manufacturing'},
     {label: 'Mobility', value: 'mobility'},
     {label: 'Sports', value: 'sport'},
-    { label: "Tourism", value: "tourism" },
+    { label: 'Tourism', value: 'tourism' },
     {label: 'Water', value: 'water'},
    ];
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
