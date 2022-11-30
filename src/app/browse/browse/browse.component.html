@@ -140,6 +140,27 @@
           style="min-height: 100vh"
         >
           <app-loader [show]="loading"></app-loader>
+
+          <div class="permissionRequired">
+            <div class="folderImg">
+              <img src="../../../assets/images/lock-new-icon.svg" class="lockIcon" />
+              <div class="photoVideos">Photos & Videos</div>
+              <div class="name">Curated by Jing Lin</div>
+            </div>
+            <div class="heading">Permission required</div>
+            <p>Please request to be added to this private folder.</p>
+            <button class="sendRequest">Send request</button>
+
+            <div class="folderOwner">
+              <span>Your request has been sent to the folder owner.</span>
+            </div>
+            <div class="folderOwnerRed">
+              <span>Your request has been rejected by the folder owner.</span>
+            </div>
+            
+          </div>
+
+
           <div class="no-items" *ngIf="folderNotFound">
             <img
               src="../../../assets/images/folder-delete-icon.svg"

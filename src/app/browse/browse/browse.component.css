@@ -4382,3 +4382,84 @@ span.addVerticalAlignMiddle {
   white-space: nowrap;
   vertical-align: -2px;
 }
+.permissionRequired {
+  text-align: center;
+}
+.folderImg {
+  background-image: url(../../../assets/images/folder-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  height: 170px;
+  width: 208px;
+  position: relative;
+  padding: 15px;
+  margin: 0px auto;
+}
+.folderImg .lockIcon {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+.photoVideos {
+  font-size: 15px;
+  font-family: 'brownregular';
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 85%;
+  top: 60px;
+  position: absolute;
+  text-align: left;
+}
+.name {
+  font-family: 'brownlight';
+  position: absolute;
+  bottom: 15px;
+  color: #737373;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 85%;
+  text-align: left;
+}
+.heading {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 12px;
+  font-size: 25px;
+}
+.permissionRequired p {
+  padding-bottom: 30px;
+  font-family: 'brownlight';
+  text-align: center;
+}
+button.sendRequest {
+  margin: 0px auto;
+  display: block;
+  background: #040404;
+  border-radius: 100px;
+  border: 0px;
+  color: #fff;
+  line-height: 40px;
+  cursor: pointer;
+  padding: 0px 30px 2px;
+  letter-spacing: 0.5px;
+}
+.folderOwner span {
+  display: inline-block;
+  background: rgba(0, 104, 69, 0.1);
+  border-radius: 8px;
+  line-height: 30px;
+  padding: 0px 10px 2px;
+  color: #006845;
+}
+
+.folderOwnerRed span {
+  display: inline-block;
+  background: rgba(224, 60, 49, 0.1);
+  border-radius: 8px;
+  line-height: 30px;
+  padding: 0px 10px 2px;
+  color: #E03C31;
+}
