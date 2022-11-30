@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   keycloakLoading = false;
   redirectURL: string;
   externalPartnerShow: boolean = false;
+  contactNeom: boolean = false;
 
   constructor(
     private nuxeo: NuxeoService,

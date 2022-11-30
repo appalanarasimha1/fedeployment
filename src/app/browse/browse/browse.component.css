@@ -4400,3 +4400,17 @@ span.addVerticalAlignMiddle {
   max-height: 100% !important;
   border-radius: 8px !important;
 }
+::ng-deep .mat-paginator-page-size-label,
+::ng-deep .mat-paginator-range-label {
+  font-family: 'brownregular';
+  font-size: 15px;
+  letter-spacing: normal;
+  color: #413E3C;
+}
+::ng-deep .mat-select-value {
+  font-family: 'brownlight';
+  font-size: 14px;
+}
+::ng-deep .mat-paginator-range-actions button span svg {
+  width: 40px;
+}
