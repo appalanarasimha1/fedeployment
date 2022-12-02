@@ -614,15 +614,16 @@ export class UploadModalComponent implements OnInit {
     try {
       const res = await fetch(apiVersion1 + uploadUrl, options);
       if (res.status === 201) {
-        // retryCount = 1;
+        retryCount = 1;
         this.setUploadProgressBar(index, 100);
         $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
         console.log("Upload done");
       } else if (res.status === 202) {
+        retryCount = 1;
         const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
         console.log(`File is ${percentDone}% loaded.`);
         this.setUploadProgressBar(index, percentDone);
-      } else {
+      }  else if (res.status === 504) {
         // retry upload failed chunk
         // if (retryCount < 11)
           console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
@@ -630,9 +631,10 @@ export class UploadModalComponent implements OnInit {
       }
     } catch (err) {
       // retry upload failed chunk
-      // if (retryCount < 11)
-          console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
-        await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
+      if (retryCount < 11) {
+        console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+        await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1);
+      }
     }
   }
 
@@ -653,7 +655,11 @@ export class UploadModalComponent implements OnInit {
           const chunkedBlob = file.slice(i * MAX_CHUNK_SIZE, (i + 1) * MAX_CHUNK_SIZE);
           promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
           if (promiseArray.length === CONCURRENT_UPLOAD_REQUEST) {
-            await Promise.all(promiseArray.map(p => p.catch(e => e)));
+            
+            await Promise.all(promiseArray.map(async (p) => {
+              // await this.apiService.get(apiVersion1 + uploadUrl);
+              p.catch(e => e);
+            }));
             promiseArray = [];
           }
         }
