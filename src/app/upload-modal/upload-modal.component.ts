@@ -649,6 +649,7 @@ export class UploadModalComponent implements OnInit {
     if (totalSize > MAX_CHUNK_SIZE) {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
+      console.log('total chunk: ' + totalChunk);
       try {
         let promiseArray = [];
         let chunksToBeSent = totalChunk;
