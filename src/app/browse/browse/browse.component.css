@@ -4413,4 +4413,58 @@ span.addVerticalAlignMiddle {
 }
 ::ng-deep .mat-paginator-range-actions button span svg {
   width: 40px;
+  opacity: 1;
+}
+
+::ng-deep .mat-paginator-range-actions .mat-button.mat-primary[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-button.mat-accent[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-button.mat-warn[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-button[disabled][disabled], 
+::ng-deep .mat-paginator-range-actions .mat-icon-button.mat-primary[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-icon-button.mat-accent[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-icon-button.mat-warn[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-icon-button[disabled][disabled], 
+::ng-deep .mat-paginator-range-actions .mat-stroked-button.mat-primary[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-stroked-button.mat-accent[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-stroked-button.mat-warn[disabled], 
+::ng-deep .mat-paginator-range-actions .mat-stroked-button[disabled][disabled] {
+  color: #C4C4C4;
+}
+::ng-deep .mat-paginator-range-actions .mat-button.mat-primary, 
+::ng-deep .mat-paginator-range-actions .mat-button.mat-accent, 
+::ng-deep .mat-paginator-range-actions .mat-button.mat-warn, 
+::ng-deep .mat-paginator-range-actions .mat-button, 
+::ng-deep .mat-paginator-range-actions .mat-icon-button.mat-primary, 
+::ng-deep .mat-paginator-range-actions .mat-icon-button.mat-accent, 
+::ng-deep .mat-paginator-range-actions .mat-icon-button.mat-warn, 
+::ng-deep .mat-paginator-range-actions .mat-icon-button, 
+::ng-deep .mat-paginator-range-actions .mat-stroked-button.mat-primary, 
+::ng-deep .mat-paginator-range-actions .mat-stroked-button.mat-accent, 
+::ng-deep .mat-paginator-range-actions .mat-stroked-button.mat-warn, 
+::ng-deep .mat-paginator-range-actions .mat-stroked-button {
+  color: #2B2825;
+}
+::ng-deep .mat-select-arrow {
+  position: relative;
+  border-top: 5px solid transparent !important;
+}
+::ng-deep .mat-select-arrow::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url(../../../assets/images/down-arrow.svg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  top: -12px;
+  right: -10px;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  height: 2px !important;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #413E3C !important;
+}
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #040404 !important;
 }
