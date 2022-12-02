@@ -56,7 +56,7 @@ const BUTTON_LABEL = {
 
 const MAX_CHUNK_SIZE = 8 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
-const CONCURRENT_UPLOAD_REQUEST = 10;
+const CONCURRENT_UPLOAD_REQUEST = 5;
 const apiVersion1 = environment.apiVersion;
 
 @Component({
@@ -651,17 +651,18 @@ export class UploadModalComponent implements OnInit {
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
       try {
         let promiseArray = [];
-        for (let i = 0; i < totalChunk; i++) {
-          const chunkedBlob = file.slice(i * MAX_CHUNK_SIZE, (i + 1) * MAX_CHUNK_SIZE);
-          promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
-          if (promiseArray.length === CONCURRENT_UPLOAD_REQUEST) {
-            
-            await Promise.all(promiseArray.map(async (p) => {
-              // await this.apiService.get(apiVersion1 + uploadUrl);
-              p.catch(e => e);
-            }));
-            promiseArray = [];
+        let chunksToBeSent = totalChunk;
+        for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j+CONCURRENT_UPLOAD_REQUEST) {
+          chunksToBeSent = chunksToBeSent % CONCURRENT_UPLOAD_REQUEST === 0 ? CONCURRENT_UPLOAD_REQUEST : totalChunk % CONCURRENT_UPLOAD_REQUEST ;
+          for (let i = 0; i < chunksToBeSent; i++) {
+            const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
+            promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
+
+            if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
           }
+          if(CONCURRENT_UPLOAD_REQUEST - chunksToBeSent > 0)
+            chunksToBeSent = totalChunk - chunksToBeSent;
+          promiseArray = [];
         }
         if (promiseArray.length > 0) await Promise.all(promiseArray);
         this.filesUploadDone[index] = true;
