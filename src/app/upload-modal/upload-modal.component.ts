@@ -54,7 +54,7 @@ const BUTTON_LABEL = {
   3: "Publish",
 };
 
-const MAX_CHUNK_SIZE = 5 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
+const MAX_CHUNK_SIZE = 8 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
 const CONCURRENT_UPLOAD_REQUEST = 10;
 const apiVersion1 = environment.apiVersion;
@@ -614,16 +614,16 @@ export class UploadModalComponent implements OnInit {
     try {
       const res = await fetch(apiVersion1 + uploadUrl, options);
       if (res.status === 201) {
-        retryCount = 1;
+        // retryCount = 1;
         this.setUploadProgressBar(index, 100);
         $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
         console.log("Upload done");
       } else if (res.status === 202) {
-        retryCount = 1;
+        // retryCount = 1;
         const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
         console.log(`File is ${percentDone}% loaded.`);
         this.setUploadProgressBar(index, percentDone);
-      }  else if (res.status === 504) {
+      }  else {
         // retry upload failed chunk
         // if (retryCount < 11)
           console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
@@ -631,10 +631,10 @@ export class UploadModalComponent implements OnInit {
       }
     } catch (err) {
       // retry upload failed chunk
-      if (retryCount < 11) {
+      // if (retryCount < 11) {
         console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
         await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1);
-      }
+      // }
     }
   }
 
@@ -646,7 +646,7 @@ export class UploadModalComponent implements OnInit {
     const totalSize = blob.size;
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
-    if (totalSize > 500 * 1000 * 1000) {
+    if (totalSize > MAX_CHUNK_SIZE) {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
       try {
