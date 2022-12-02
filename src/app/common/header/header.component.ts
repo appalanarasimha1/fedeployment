@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit {
     {label: 'All NEOM sectors', value: 'general'},
     {label: 'Entertainment and culture', value:'entertainment_and_culture'},
     {label: 'Energy', value:'energy'},
+    {label: 'Financial services', value: 'financial_services'},
     {label: 'Food', value: 'food'},
     {label: 'Manufacturing', value: 'manufacturing'},
     {label: 'Mobility', value: 'mobility'},
