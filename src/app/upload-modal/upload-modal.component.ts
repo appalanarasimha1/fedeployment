@@ -55,8 +55,9 @@ const BUTTON_LABEL = {
   3: "Publish",
 };
 
-const MAX_CHUNK_SIZE = 5 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
+const MAX_CHUNK_SIZE = 8 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
+const CONCURRENT_UPLOAD_REQUEST = 5;
 const apiVersion1 = environment.apiVersion;
 
 @Component({
@@ -599,8 +600,8 @@ export class UploadModalComponent implements OnInit {
     element.setAttribute("style", attr + background);
   }
 
-  async uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType) {
-    const blob = new Nuxeo.Blob({ content: chunkedBlob });fileType
+  async uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount = 1) {
+    const blob = new Nuxeo.Blob({ content: chunkedBlob });
     const headers = {
       "Cache-Control": "no-cache",
       "X-Upload-Chunk-Index": chunkIndex,
@@ -623,17 +624,27 @@ export class UploadModalComponent implements OnInit {
     try {
       const res = await fetch(apiVersion1 + uploadUrl, options);
       if (res.status === 201) {
+        // retryCount = 1;
         this.setUploadProgressBar(index, 100);
         $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
         console.log("Upload done");
-      } else {
+      } else if (res.status === 202) {
+        // retryCount = 1;
         const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
         console.log(`File is ${percentDone}% loaded.`);
         this.setUploadProgressBar(index, percentDone);
+      }  else {
+        // retry upload failed chunk
+        // if (retryCount < 11)
+          console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+          await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
       }
     } catch (err) {
       // retry upload failed chunk
-      await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType)
+      // if (retryCount < 11) {
+        console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+        await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1);
+      // }
     }
   }
 
@@ -645,14 +656,26 @@ export class UploadModalComponent implements OnInit {
     const totalSize = blob.size;
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
-    if (totalSize > 500 * 1000 * 1000) {
+    if (totalSize > MAX_CHUNK_SIZE) {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
+      console.log('total chunk: ' + totalChunk);
       try {
-        for (let i = 0; i < totalChunk; i++) {
-          const chunkedBlob = file.slice(i * MAX_CHUNK_SIZE, (i + 1) * MAX_CHUNK_SIZE);
-          await this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType);
+        let promiseArray = [];
+        let chunksToBeSent = totalChunk;
+        for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j+CONCURRENT_UPLOAD_REQUEST) {
+          chunksToBeSent = chunksToBeSent % CONCURRENT_UPLOAD_REQUEST === 0 ? CONCURRENT_UPLOAD_REQUEST : totalChunk % CONCURRENT_UPLOAD_REQUEST ;
+          for (let i = 0; i < chunksToBeSent; i++) {
+            const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
+            promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
+
+            if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
+          }
+          if(CONCURRENT_UPLOAD_REQUEST - chunksToBeSent > 0)
+            chunksToBeSent = totalChunk - chunksToBeSent;
+          promiseArray = [];
         }
+        if (promiseArray.length > 0) await Promise.all(promiseArray);
         this.filesUploadDone[index] = true;
       } catch (err) {
         console.log("Upload Error:", err);
