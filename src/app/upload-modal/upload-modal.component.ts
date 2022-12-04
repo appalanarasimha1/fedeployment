@@ -737,13 +737,13 @@ export class UploadModalComponent implements OnInit {
         // retry upload failed chunk
         // if (retryCount < 11)
           // console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
-          this.chunksFailedToUpload[index] = {chunkIndex, chunkCount, options, apiUrl};
+          this.chunksFailedToUpload[chunkIndex] = {chunkIndex, chunkCount, options, apiUrl};
       }
     } catch (err) {
       // retry upload failed chunk
       // if (retryCount < 11) {
         // console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
-          this.chunksFailedToUpload[index] = {chunkIndex, chunkCount, options, apiUrl};
+          this.chunksFailedToUpload[chunkIndex] = {chunkIndex, chunkCount, options, apiUrl};
       // }
     }
   }
