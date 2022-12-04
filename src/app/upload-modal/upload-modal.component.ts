@@ -642,13 +642,17 @@ export class UploadModalComponent implements OnInit {
       try {
         let promiseArray = [];
         let chunksToBeSent = totalChunk;
-        for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j+=CONCURRENT_UPLOAD_REQUEST) {
-          console.log('value of j = ', j);
+        let chunkIndex = 0;
+        for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j++) {
+          console.log('value of Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST) = ', Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST));
           chunksToBeSent = chunksToBeSent % CONCURRENT_UPLOAD_REQUEST === 0 ? CONCURRENT_UPLOAD_REQUEST : totalChunk % CONCURRENT_UPLOAD_REQUEST ;
           for (let i = 0; i < chunksToBeSent; i++) {
             const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
-            promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
-
+            console.log("i = ", i, " | j = ", j);
+            promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
+            
+            console.log("chunkIndex = ", chunkIndex);
+            chunkIndex += 1;
             if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
           }
           if(CONCURRENT_UPLOAD_REQUEST - chunksToBeSent > 0)
@@ -703,9 +707,12 @@ export class UploadModalComponent implements OnInit {
 
   async checkUploadedFileStatusAndUploadFailedChunks(uploadUrl: string) {
     const fileStatus: any = await this.apiService.get(uploadUrl).toPromise();
-    if(fileStatus.chunkCount !== fileStatus.uploadedChunkIds.length) {
+    if(Object.keys(this.chunksFailedToUpload).length) {
       let promiseArray = [];
       for(const key in this.chunksFailedToUpload) {
+        if(key.indexOf(fileStatus.uploadedChunkIds) != -1) {
+          continue;
+        }
         promiseArray.push(this.uploadChunks(key, this.chunksFailedToUpload[key].chunkIndex, this.chunksFailedToUpload[key].chunkCount, this.chunksFailedToUpload[key].apiUrl, this.chunksFailedToUpload[key].options));
       }
       await Promise.all(promiseArray.map(p => p.catch(e => e)));
