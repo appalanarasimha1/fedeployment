@@ -1,0 +1,40 @@
+<div class="create-supplier">
+    <h3>Create sub-area
+        <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+          <img src="../../assets/images/close-modal.svg" style="width: 20px" />
+       </button>
+    </h3>
+
+    <div class="create-supplier-form">
+        <ul>
+            <li>
+                <div class="form-group">
+                    <label for="Supplier's Name" >User's email address</label>
+                    <input type="text" [(ngModel)]="userEmail" />
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label for="Permissions">Permissions</label>
+                    Upload <input type="checkbox" [(ngModel)]="upload" />
+                    Download <input type="checkbox" [(ngModel)]="download" />
+                    Delete <input type="checkbox" [(ngModel)]="delete" />
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label for="Permissions">Access Expiry</label>
+                    <input matInput  [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                    [(ngModel)]="selectedMonth" (click)="picker.open()"  [ngClass]="{'goldenText': selectedMonth}">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="button-groups">
+        <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+        <button class="upload-btn" [disabled]="!userEmail || loading" (click)="inviteUser()">Invite User</button>
+    </div>
+</div>

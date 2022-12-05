@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { NuxeoService } from "src/app/services/nuxeo.service";
+import { adminPanelWorkspacePath } from "src/app/common/constant";
 
 @Component({
   selector: 'app-create-supplie-modal',
@@ -41,11 +42,16 @@ export class CreateSupplieModalComponent implements OnInit {
   renameEmail : boolean = false;
   createSuppliers: string = '';
   suppliersName: string = '';
+  supportEmail = "";
+  loading = false;
+  selectedRegion = [];
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
 
   constructor(
     public dialogRef: MatDialogRef<CreateSupplieModalComponent>,
+    private nuxeo: NuxeoService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.filteredFruits = this.suppliersCtrl.valueChanges.pipe(
       startWith(null),
@@ -53,6 +59,8 @@ export class CreateSupplieModalComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.suppliersName = this.data.supplierInput;
+    this.suppliersRegion = this.data.suppliersRegion;
   }
 
   add(event: MatChipInputEvent): void {
@@ -82,14 +90,33 @@ export class CreateSupplieModalComponent implements OnInit {
     this.fruits.push(event.option.value);
     this.suppliersInput.nativeElement.value = '';
     this.suppliersCtrl.setValue(null);
+    this.selectedRegion = this.fruits || [];
+  }
+
+  async createSupplier() {
+    this.loading = true;
+    const regions = this.selectedRegion.map(region => region.uid);
+    const result = await this.nuxeo.nuxeoClient.operation('Document.Create')
+    .params({
+      type: "Supplier",
+      name: this.suppliersName,
+      properties: {
+        "supplier:supportEmail": this.supportEmail,
+        "supplier:regions": regions,
+        "supplier:activated": true,
+      }
+    })
+    .input(adminPanelWorkspacePath + '/SupplierFolder')
+    .execute();
+    this.closeModal(result);
   }
 
   private _filter(value: any): any[] {
-    return this.suppliersRegion.filter(fruit => fruit?.name.toLowerCase().includes(value?.name.toLowerCase()));
+    return this.suppliersRegion.filter(fruit => fruit?.name?.toLowerCase().includes(value?.name?.toLowerCase()));
   }
 
-  closeModal() {
-    this.dialogRef.close();
+  closeModal(result?) {
+    this.dialogRef.close(result);
   }
 
 }

@@ -1,0 +1,83 @@
+.create-supplier h3 {
+    font-weight: normal;
+    font-size: 15px;
+    letter-spacing: normal;
+    color: #040404;
+    line-height: normal;
+    padding-bottom: 20px;
+}
+.button-groups {
+    padding-top: 20px
+}
+.button-groups::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.button-groups button.cancel-btn {
+    float: left;
+    appearance: none;
+    border: 1px solid #BAB8B2;
+    border-radius: 30px;
+    color: #090808;
+    line-height: 34px;
+    padding: 0px 20px 3px;
+    min-width: 100px;
+    letter-spacing: 0.5px;
+}
+button.upload-btn {
+    float: right;
+    appearance: none;
+    border: 1px solid #EDD580;
+    border-radius: 30px;
+    color: #040505;
+    line-height: 34px;
+    padding: 0px 20px 3px;
+    min-width: 100px;
+    background: #EDD580;
+    letter-spacing: 0.5px;
+}
+.button-groups button.upload-btn.disabled,
+.button-groups button.upload-btn:disabled,
+.button-groups button.upload-btn[disabled] {
+    background: #faf2d9;
+    border: 1px solid #faf2d9;
+    cursor: not-allowed;
+    padding: 0px 20px 3px;
+    color: #b4b4b4;
+}
+.create-supplier-form {
+    padding-top: 20px;
+}
+.create-supplier-form ul li {
+    padding-bottom: 10px;
+}
+.create-supplier-form ul li label {
+    display: block;
+    text-transform: none;
+    font-weight: normal;
+    font-size: 15px;
+    letter-spacing: normal;
+    color: #040404;
+}
+.create-supplier-form ul li input {
+    border: 0px;
+    border-bottom: 1px solid #413E3C;
+    width: 100%;
+    font-family: 'brownlight';
+    font-size: 15px;
+    color: #040404;
+    line-height: 40px;
+}
+
+::ng-deep .create-supplier ::placeholder{
+    color: #645D57 !important;
+}
+::ng-deep .create-supplier input:focus::placeholder{
+    opacity: 1 !important;
+}
+
+::ng-deep .mat-dialog-container {
+    padding: 20px !important;
+    border-radius: 8px !important;
+}

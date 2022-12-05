@@ -16,7 +16,7 @@
             <li>
                 <div class="form-group">
                     <label for="Tech support email (optional)">Tech support email (optional)</label>
-                    <input type="email" placeholder="Enter a tech support email" />
+                    <input type="email" [(ngModel)]="supportEmail" placeholder="Enter a tech support email" />
                 </div>
             </li>
             <li>
@@ -44,6 +44,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!suppliersName">Create supplier</button>
+        <button class="upload-btn" [disabled]="!suppliersName || loading" (click)="createSupplier()">Create supplier</button>
     </div>
 </div>
