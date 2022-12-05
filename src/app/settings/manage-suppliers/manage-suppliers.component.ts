@@ -7,7 +7,12 @@ import { map, startWith } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { NuxeoService } from "src/app/services/nuxeo.service";
+import { apiRoutes } from "src/app/common/config";
+import { adminPanelWorkspacePath } from "src/app/common/constant";
+import { ApiService } from "../../services/api.service";
 import { CreateSupplieModalComponent } from '../create-supplie-modal/create-supplie-modal.component';
+import { InviteUserModalComponent} from '../invite-user-modal/invite-user-modal.component';
 
 @Component({
   selector: 'app-manage-suppliers',
@@ -41,9 +46,15 @@ export class ManageSuppliersComponent implements OnInit {
     }
   ];
   renameEmail : boolean = false;
-  createSuppliers: string = '';
-  inviteSuppliers: string = '';
+  supplierInput: string = '';
+  inviteUserInput: string = '';
   showExternalUserPage: boolean = false;
+  adminPanelWorkspace = null;
+  supplierList = [];
+  users = [];
+  regionList = [];
+  regionMap = {};
+  selectedSupplier = null;
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
@@ -52,18 +63,99 @@ export class ManageSuppliersComponent implements OnInit {
   hiddenSpan = this.renderer.createElement("span");
 
   renameUserName: boolean = false;
-  
 
   constructor(
     public matDialog: MatDialog,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private nuxeo: NuxeoService,
+    private apiService: ApiService,
   ) {
+  }
+
+  ngOnInit(): void {
+    //init admin panel folder structure if not exist
+    this.getOrCreateAdminPanelWorkspace();
+    this.getAllUsers();
+    this.getSupplierList();
+    this.getRegionList();
+  }
+
+  async getOrCreateAdminPanelWorkspace() {
+    if (!this.nuxeo || !this.nuxeo.nuxeoClient) return;
+    try {
+      const folder = await this.nuxeo.nuxeoClient.repository().fetch(adminPanelWorkspacePath);
+      if (!folder) return this.createAdminPanelFolderStructure();
+    } catch (err) {
+      this.createAdminPanelFolderStructure();
+    }
+  }
+
+  createFolder(type, name, path) {
+    return this.nuxeo.nuxeoClient.operation('Document.Create')
+    .params({
+      type,
+      name,
+    })
+    .input(path)
+    .execute();
+  }
+
+  async createAdminPanelFolderStructure() {
+    // create AdminPanelWorkspace
+    this.adminPanelWorkspace = await this.createFolder("MiscFolder", "AdminPanelWorkspace", "/default-domain/workspaces");
+    await this.createFolder("Folder", "SupplierFolder", adminPanelWorkspacePath);
+    await this.createFolder("Folder", "RegionFolder", adminPanelWorkspacePath);
+    await this.createFolder("Folder", "LocationFolder", adminPanelWorkspacePath);
+  }
+
+  async getAllUsers() {
+    const url = '/user/search?q=*&pageSize=1000';
+    const res = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
+
+    if (res) this.users = res['entries'].map(user => user.id);
+  }
+
+  async getSupplierList() {
+    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const res = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
+
+    if (!res) return;
+    this.supplierList = res["entries"].map(supplier => ({
+      name: supplier.title,
+      uid: supplier.uid,
+      regions: supplier.properties["supplier:regions"],
+      users: supplier.properties["supplier:supplierUsers"],
+      activated: supplier.properties["supplier:activated"],
+      supportEmail: supplier.properties["supplier:supportEmail"],
+    }));
+  }
+
+  async getRegionList() {
+    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const res = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
+
+    if (res) this.regionList = res["entries"] || [];
+    this.suppliersRegion = this.regionList.map(region => ({
+      id: region.properties["region:initial"],
+      name: region.title,
+      uid: region.uid,
+    }));
+    this.computeRegionMap();
+
+
     this.filteredFruits = this.suppliersCtrl.valueChanges.pipe(
       startWith(null),
       map((fruit: string | null) => fruit ? this._filter(fruit) : this.suppliersRegion.slice()));
   }
 
-  ngOnInit(): void {
+  computeRegionMap() {
+    this.regionMap = {};
+    this.suppliersRegion?.forEach(region => {
+      this.regionMap[region.uid] = region;
+    });
   }
 
   add(event: MatChipInputEvent): void {
@@ -85,22 +177,48 @@ export class ManageSuppliersComponent implements OnInit {
     this.suppliersCtrl.setValue(null);
   }
 
-  remove(fruit, indx): void {
-    this.fruits.splice(indx, 1);
+  remove(fruit, indx, index): void {
+    const regions = this.supplierList[index].regions;
+    const removedIndex = regions.indexOf(fruit);
+    if (removedIndex < 0) return;
+    regions.splice(removedIndex, 1);
+    this.supplierList[index].regions = regions;
+    this.updateDocument(this.supplierList[index].uid, {properties: {"supplier:regions": regions}})
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  selected(event: MatAutocompleteSelectedEvent, index): void {
     this.fruits.push(event.option.value);
     this.suppliersInput.nativeElement.value = '';
     this.suppliersCtrl.setValue(null);
+    const regions = this.supplierList[index].regions;
+    this.fruits.map(fruit => {
+      if (!regions.find(region => region === fruit.uid)) {
+        regions.push(fruit.uid);
+      }
+    });
+    this.supplierList[index].regions = regions;
+    this.updateDocument(this.supplierList[index].uid, {properties: {"supplier:regions": regions}})
   }
 
   private _filter(value: any): any[] {
     return this.suppliersRegion.filter(fruit => fruit?.name.toLowerCase().includes(value?.name.toLowerCase()));
   }
-  
-  renameEmailClick(){
+
+  renameEmailClick(saved=false, email?, index?){
     this.renameEmail = !this.renameEmail;
+    if (!saved) return;
+    this.updateDocument(this.supplierList[index].uid, {properties: {"supplier:supportEmail": email}})
+  }
+
+  updateDocument(id, params) {
+    return this.nuxeo.nuxeoClient.operation('Document.Update')
+    .params(params)
+    .input(id)
+    .execute();
+  }
+
+  toggleActivated(event, supplier) {
+    this.updateDocument(supplier.uid, {properties: {"supplier:activated": event.checked}})
   }
 
   async openCreateSupplierModal() {
@@ -110,11 +228,37 @@ export class ManageSuppliersComponent implements OnInit {
     dialogConfig.width = "500px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
 
+    dialogConfig.data = {
+      suppliersRegion: this.suppliersRegion,
+      supplierInput: this.supplierInput,
+    }
+
     const modalDialog = this.matDialog.open(CreateSupplieModalComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('result', result)
+        this.getSupplierList();
+      }
+    });
+  }
+
+  async openInviteUserModal() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.width = "500px";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+
+    dialogConfig.data = {
+      userEmail: this.inviteUserInput,
+      supplier: this.selectedSupplier,
+    }
+
+    const modalDialog = this.matDialog.open(InviteUserModalComponent, dialogConfig);
+
+    modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getSupplierList();
       }
     });
   }
@@ -127,8 +271,9 @@ export class ManageSuppliersComponent implements OnInit {
     folder.end = value.getTime();
   }
 
-  showExternalUserList() {
+  showExternalUserList(supplier) {
     this.showExternalUserPage = !this.showExternalUserPage;
+    this.selectedSupplier = supplier;
   }
   backExternalUserList() {
     this.showExternalUserPage = false;
@@ -138,7 +283,7 @@ export class ManageSuppliersComponent implements OnInit {
     const input = event.target;
     input.parentNode.dataset.value = input.value;
   }
-  
+
   renameUserClick() {
     this.renameUserName = !this.renameUserName;
   }

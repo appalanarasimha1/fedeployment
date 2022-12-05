@@ -26,6 +26,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CreateSupplieModalComponent } from './create-supplie-modal/create-supplie-modal.component';
+import { CreateLocationModalComponent } from './create-location-modal/create-location-modal.component';
+import { CreateSubAreaModalComponent } from './create-sub-area-modal/create-sub-area-modal.component';
+import { InviteUserModalComponent } from './invite-user-modal/invite-user-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { CreateSupplieModalComponent } from './create-supplie-modal/create-suppl
     ManageSuppliersComponent,
     ManageLocationsComponent,
     CreateSupplieModalComponent,
+    CreateLocationModalComponent,
+    CreateSubAreaModalComponent,
+    InviteUserModalComponent,
   ],
   imports: [
     SharedModule,
