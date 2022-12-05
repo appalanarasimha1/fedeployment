@@ -262,12 +262,12 @@ export class HeaderComponent implements OnInit {
   }
 
   playPersonalizedVideo() {
-    const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
+    const body = {sector: this.sectorSelected, user: JSON.parse(localStorage.getItem('user'))};
     localStorage.setItem('videoSector', this.sectorSelected);
     this.videoResponse = false;
     this.modalLoading = true;
     try {
-      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.user.email)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
