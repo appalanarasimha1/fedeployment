@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, Renderer2, Input } from "@angular/core";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ApiService } from "../../services/api.service";
 import { PreviewPopupComponent } from "src/app/preview-popup/preview-popup.component";
@@ -53,6 +53,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+  @ViewChild("myInput", { static: false }) myInput: ElementRef;
+  @Input() name: string;
 
 
   constructor(
@@ -64,6 +66,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     public nuxeo: NuxeoService,
     public dataService: DataService,
+    private renderer: Renderer2,
   ) {}
 
   faCoffee = faCoffee;
@@ -193,6 +196,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   currentIndexPublished: any;
   currentIndexRightClick: any;
+
+  hiddenSpan = this.renderer.createElement("span");
 
   async ngOnInit() {
     this.fetchUserData();
@@ -1372,7 +1377,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       //   this.getAllFolders({uid:res.parentRef,path})
       // })
-      this.newTitle =this.selectedFolder.title;
+      this.newTitle = this.selectedFolder.title;
+      console.log('get length', this.newTitle.length)
       this.renameFolderName = true;
     }
   }
@@ -1534,8 +1540,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       var getWidth2 = $('.getWidth2').outerWidth();
       var getWidth3 = $('.getWidth3').outerWidth();
       var totalWidth = getWidth1 + getWidth2 + getWidth3;
-      console.log('getWidth', totalWidth);
+      console.log('getWidth2', getWidth2);
       $('.chkbox.width1600').css("width", totalWidth - 60);
+
+      // $('.itemTitleContent').css("width", getWidth2 - 30 )
     }, 0);
   }
 
@@ -2501,5 +2509,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   getFileContent(doc) {
     return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
+  }
+
+  onInput(event) {
+    const input = event.target;
+    input.parentNode.dataset.value = input.value;
   }
 }

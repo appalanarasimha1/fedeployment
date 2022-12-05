@@ -41,4 +41,5 @@ export const apiRoutes = {
   PROCESS_REQUEST_DOWNLOAD: "/automation/Scry.ProcessRequestDownload",
   GET_MANAGED_EXT_USERS: "/automation/Scry.GetManagedExternalUsers",
   GET_PRIVATE_FOLDERS: "/automation/Scry.GetAllPrivateFolders",
+  ATTACH_LARGE_FILE: "/automation/Scry.AttachLargeFile",
 };
