@@ -10,7 +10,7 @@
             <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)" id="customScrollBar">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
             <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length" >
-               <div class="flexible" style="justify-content: center;position: relative;margin: 75px auto">
+               <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto">
                   <div class="upload-label">
                      <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
                      <span style="margin-top: 20px; color: #040404; padding-bottom: 10px;"><b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
