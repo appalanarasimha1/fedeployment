@@ -4517,3 +4517,7 @@ ul.all-sectors img.noPreviewItem {
   z-index: 1;
   position: relative;
 }
+::ng-deep .mat-calendar-body-selected {
+  background-color: #EDD580;
+  color: #000;
+}

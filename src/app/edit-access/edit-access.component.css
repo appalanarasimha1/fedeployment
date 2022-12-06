@@ -361,5 +361,6 @@ h3.externalUsers {
 }
 
 ::ng-deep .mat-calendar-body-selected {
-    background-color: #DEB31A !important;
-}
+    background-color: #EDD580;
+    color: #000;
+  }

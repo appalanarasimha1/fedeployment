@@ -1,5 +1,5 @@
 <div class="create-supplier">
-    <h3>Create sub-area
+    <h3>Invite user
         <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
           <img src="../../assets/images/close-modal.svg" style="width: 20px" />
        </button>
@@ -10,25 +10,62 @@
             <li>
                 <div class="form-group">
                     <label for="Supplier's Name" >User's email address</label>
-                    <input type="text" [(ngModel)]="userEmail" />
+                    <input type="text" [(ngModel)]="userEmail" [ngClass]="{'goldenText': userEmail}" />
                 </div>
             </li>
             <li>
-                <div class="form-group">
-                    <label for="Permissions">Permissions</label>
-                    Upload <input type="checkbox" [(ngModel)]="upload" />
+                <div class="form-group broader-access-assets">
+                    <h3 for="Permissions">Permissions</h3>
+                    <ul class="permissionsBlock">
+                        <li>
+                            <div class="control-group">
+                                <label class="control control--checkbox">
+                                  <input class="chkbox" type="checkbox" [(ngModel)]="upload" />
+                                  <div class="control__indicator"></div>
+                                  Upload
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="control-group">
+                                <label class="control control--checkbox">
+                                  <input class="chkbox" type="checkbox" [(ngModel)]="download" />
+                                  <div class="control__indicator"></div>
+                                  Download
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="control-group">
+                                <label class="control control--checkbox">
+                                  <input class="chkbox" type="checkbox" [(ngModel)]="delete" />
+                                  <div class="control__indicator"></div>
+                                  Delete
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- Upload <input type="checkbox" [(ngModel)]="upload" />
                     Download <input type="checkbox" [(ngModel)]="download" />
-                    Delete <input type="checkbox" [(ngModel)]="delete" />
+                    Delete <input type="checkbox" [(ngModel)]="delete" /> -->
                 </div>
             </li>
-            <li>
-                <div class="form-group">
+            <li class="folderListview">
+                <label for="Permissions">Access Expiry</label>
+                <mat-form-field appearance="fill">
+                    <input matInput class="datePicker" [ngClass]="{'goldenText': selectedMonth}" placeholder="Choose a date" 
+                    [(ngModel)]="selectedMonth" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" 
+                    (click)="picker.open()">
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <!-- <div class="form-group">
                     <label for="Permissions">Access Expiry</label>
                     <input matInput  [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
                     [(ngModel)]="selectedMonth" (click)="picker.open()"  [ngClass]="{'goldenText': selectedMonth}">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-                </div>
+                </div> -->
             </li>
         </ul>
     </div>

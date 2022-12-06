@@ -47,7 +47,7 @@ button.upload-btn {
     color: #b4b4b4;
 }
 .create-supplier-form {
-    padding-top: 20px;
+    padding-top: 0px;
 }
 .create-supplier-form ul li {
     padding-bottom: 10px;
@@ -80,4 +80,149 @@ button.upload-btn {
 ::ng-deep .mat-dialog-container {
     padding: 20px !important;
     border-radius: 8px !important;
+}
+
+.broader-access-assets .control-group {
+    display: block;
+  }
+  .broader-access-assets .control {
+    display: block;
+    position: relative;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-size: 14px !important;
+    font-weight: normal;
+    padding: 0px;
+    padding-left: 28px;
+    border: 0px;
+    margin: 0px 0px 0px;
+    line-height: 18px;
+  }
+  .broader-access-assets .control input {
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    height: 20px;
+    width: 20px;
+    left: 0;
+    top: 0;
+  }
+  .broader-access-assets .control__indicator {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #1E1B19;
+  }
+  .broader-access-assets .control--radio .control__indicator {
+    border-radius: 50%;
+  }
+  .broader-access-assets .control:hover input ~ .control__indicator,
+  .broader-access-assets .control input:focus ~ .control__indicator {
+    background: #fff;
+  }
+  .broader-access-assets .control input:checked ~ .control__indicator {
+    background: #006845;
+    border-color: #006845;
+  }
+  .broader-access-assets .control:hover input:not([disabled]):checked ~ .control__indicator,
+  .broader-access-assets .control input:checked:focus ~ .control__indicator {
+    background: #006845;
+    border-color: #006845;
+  }
+  .broader-access-assets .control input:disabled ~ .control__indicator{
+    background: #006845;
+    border-color: #006845;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .broader-access-assets .control__indicator:after,
+  .broader-access-assets .control__indicator:before {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+  .broader-access-assets .control input:checked ~ .control__indicator:after,
+  .broader-access-assets .control input ~ .control__indicator:before {
+    display: block;
+  }
+  .broader-access-assets .control--checkbox .control__indicator:after,
+  .broader-access-assets .control--checkbox .control__indicator:before {
+    left: 6px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .broader-access-assets .control--checkbox .control__indicator:before {
+    border-color: #fff;
+  }
+  .broader-access-assets .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #7b7b7b;
+  }
+  .broader-access-assets .control--radio .control__indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .broader-access-assets .control--radio input:disabled ~ .control__indicator:after {
+    background: #7b7b7b;
+  }
+ul.permissionsBlock {
+    display: block;
+    overflow: hidden;
+}
+
+ul.permissionsBlock li {
+    display: inline-block;
+    margin-right: 20px;
+}
+input.goldenText {
+    color: #C49900 !important;
+    border-color: #C49900 !important;
+    font-weight: normal;
+}
+
+.folderListview input {
+    outline: none;
+    border: 0px !important;
+    background: transparent;
+    appearance: none;
+    width: 120px !important;
+}
+.folderListview ::ng-deep mat-form-field {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+.folderListview ::ng-deep mat-form-field::after {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(../../../assets/images/down-arrow.svg) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    z-index: -1;
+}
+.datePicker::placeholder{
+    color: #645D57 !important;
+}
+input.datePicker:focus::placeholder{
+    opacity: 1 !important;
+}
+
+::ng-deep .mat-calendar-body-selected {
+    background-color: #EDD580 !important;
+    color: #000;
 }
