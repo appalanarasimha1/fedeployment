@@ -5,6 +5,7 @@
     color: #040404;
     line-height: normal;
     padding-bottom: 20px;
+    font-family: myBrown !important;
 }
 .button-groups {
     padding-top: 20px
@@ -59,6 +60,7 @@ button.upload-btn {
     font-size: 15px;
     letter-spacing: normal;
     color: #040404;
+    font-family: myBrown !important;
 }
 .create-supplier-form ul li input {
     border: 0px;
@@ -90,7 +92,7 @@ button.upload-btn {
     position: relative;
     margin-bottom: 0px;
     cursor: pointer;
-    font-size: 14px !important;
+    font-size: 13px !important;
     font-weight: normal;
     padding: 0px;
     padding-left: 28px;
@@ -183,7 +185,7 @@ ul.permissionsBlock {
 
 ul.permissionsBlock li {
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 input.goldenText {
     color: #C49900 !important;
@@ -225,4 +227,7 @@ input.datePicker:focus::placeholder{
 ::ng-deep .mat-calendar-body-selected {
     background-color: #EDD580 !important;
     color: #000;
+}
+.permissionsBlock .control-group label {
+    font-family: 'brownregular' !important;
 }
