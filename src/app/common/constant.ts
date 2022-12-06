@@ -137,3 +137,4 @@ export const specialExtensions = [ // NOTE: this is the extensions of special ro
 
 export const EXTERNAL_GROUP_GLOBAL = 'external_group_global';
 export const EXTERNAL_USER = 'external_user';
+export const adminPanelWorkspacePath = '/default-domain/workspaces/AdminPanelWorkspace';

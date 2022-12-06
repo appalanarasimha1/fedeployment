@@ -35,11 +35,14 @@ export class HeaderComponent implements OnInit {
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
   allSectors = [
     {label: 'All NEOM sectors', value: 'general'},
+    {label: 'Entertainment and culture', value:'entertainment_and_culture'},
+    {label: 'Energy', value:'energy'},
+    {label: 'Financial services', value: 'financial_services'},
     {label: 'Food', value: 'food'},
     {label: 'Manufacturing', value: 'manufacturing'},
     {label: 'Mobility', value: 'mobility'},
     {label: 'Sports', value: 'sport'},
-    { label: "Tourism", value: "tourism" },
+    { label: 'Tourism', value: 'tourism' },
     {label: 'Water', value: 'water'},
    ];
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
@@ -198,11 +201,12 @@ export class HeaderComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
-    dialogConfig.minHeight = "350px";
-    dialogConfig.height = "100%";
-    dialogConfig.maxHeight = "92vh"
-    dialogConfig.width = "80vw";
+    // dialogConfig.minHeight = "350px";
+    // dialogConfig.height = "100%";
+    // dialogConfig.maxHeight = "92vh"
+    // dialogConfig.width = "80vw";
     // dialogConfig.maxWidth = "80vw";
+    dialogConfig.panelClass = 'custom-modalbox';
     dialogConfig.disableClose = true;
     const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
     if(workspaceState) {
@@ -259,12 +263,12 @@ export class HeaderComponent implements OnInit {
   }
 
   playPersonalizedVideo() {
-    const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
+    const body = {sector: this.sectorSelected, user: JSON.parse(localStorage.getItem('user'))};
     localStorage.setItem('videoSector', this.sectorSelected);
     this.videoResponse = false;
     this.modalLoading = true;
     try {
-      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.user.email)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
