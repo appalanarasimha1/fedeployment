@@ -123,5 +123,8 @@ export class LoginComponent implements OnInit {
   externalPartner() {
     this.externalPartnerShow = !this.externalPartnerShow;
   }
-
+  contactNeomPage() {
+    // this.externalPartnerShow = !this.externalPartnerShow;
+    this.contactNeom = !this.contactNeom
+  }
 }

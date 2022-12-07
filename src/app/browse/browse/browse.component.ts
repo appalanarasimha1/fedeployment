@@ -369,7 +369,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       constants.VIDEO_SMALL_CASE,
       constants.AUDIO_SMALL_CASE,
     ];
-    if (assetTypes.indexOf(assetType.toLowerCase()) !== -1) return true;
+    if (assetTypes.indexOf(assetType?.toLowerCase()) !== -1) return true;
     else return false;
   }
 
@@ -434,7 +434,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFolder = item;
   }
 
-  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+  getAssetUrl(event: any, url: string, document?: IEntry, type?: string): string {
+    if(type =="thumbnail" ){
+      let thumbNailUrl = url ? url :document.properties['file:content'].data
+      return this.sharedService.getAssetUrl(event, thumbNailUrl, type);
+    }
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
       // return '../../../assets/images/no-preview.png';
       return this.getNoPreview(document);

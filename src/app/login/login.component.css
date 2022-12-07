@@ -154,9 +154,11 @@ button.btn-primary:focus, button.btn-primary:hover{
 }
 .floatLeft {
     float: left;
+    
 }
 .floatRight {
     float: right;
+    cursor: pointer;
 }
 .signupForm h4 {
     text-align: center;
