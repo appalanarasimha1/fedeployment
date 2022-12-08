@@ -1,0 +1,306 @@
+.externalUser h2{
+    font-size: 24px;
+    line-height: 30px;
+    color: #000;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+.externalUser h3{
+    font-size: 18px;
+    line-height: 30px;
+    color: #000;
+    font-weight: 400;
+    padding-bottom: 8px;
+}
+.externalEditAccess {
+    font-family: 'brownlight';
+    padding-bottom: 20px;
+    font-size: 15px;
+}
+.externalEditAccess strong {
+    font-weight: normal;
+    font-family: 'brownregular';
+}
+.searchBlock {
+    position: relative;
+}
+.searchBlock .search-bar {
+    width: 100%;
+    padding: 8px 15px;
+}
+.search-bar{
+    position: relative;
+    padding: 8px 45px 8px 46px;
+    border-radius: 8px;
+    border: 1px solid #F6F5F2;
+    width: 100%;
+    background-color: #F6F5F2;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 25px;
+    color: #000;
+}
+.search-bar::placeholder{
+    font-weight: 100;
+}
+.search-btn{
+    position: absolute;
+    left: 6px;
+    top: 0px;
+    bottom: 0px;
+    border: unset;
+    padding: 0px 10px;
+    background-color: transparent;
+    z-index: 1;
+}
+.search-btn img{
+    width: 19px;
+}
+.input-sizer ::-webkit-input-placeholder,
+.input-sizer ::-webkit-input-placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.input-sizer :-ms-input-placeholder,
+.input-sizer :-ms-input-placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.input-sizer ::placeholder,
+.input-sizer ::placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.positionRelative input.search-bar::placeholder{
+    color: #413E3C !important;
+}
+
+/* Table style start */
+.folderListview {
+    text-align: left;
+}
+.folderListview th{
+    font-size: 12px;
+    line-height: 20px;
+    text-align: left;
+    color: #BAB8B2;
+    border-bottom: unset;
+}
+.folderListview td p{
+    line-height: 24px;
+    color: #040404;
+    text-align: left;
+}
+.folderListview td, th{
+    padding: 10px;
+}
+.folderListview tr td:th-child(1) p{
+    text-align: left !important
+}
+.folderListview tr:nth-child(1){
+    background-color:  unset !important
+}
+.folderListview tr:nth-child(odd){
+    background-color: #F6F5F2;
+}
+.folderListview tr:nth-child(even){
+    background-color: #FBF7E6;
+}
+.customTableStyle table {
+    border-collapse: separate;
+    width: 100%;
+    border: none;
+    border-spacing: 0 10px;
+}
+.customTableStyle td:first-child,
+.customTableStyle th:first-child {
+    border-radius: 10px 0 0 10px;
+}
+.customTableStyle td:last-child,
+.customTableStyle th:last-child {
+    border-radius: 0 10px 10px 0;
+}
+/* Table style end */
+.clickArrowAction {
+    transform: rotate(180deg); 
+    margin-right: 16px; 
+    cursor: pointer;
+    margin: -4px auto 0px;
+    vertical-align: middle;
+}
+span.penvilIcon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+span.penvilIcon svg {
+    display: block;
+    width: 100%;
+}
+.editIcon:hover .penvilIcon {
+    display: inline-block;
+    opacity: 1;
+}
+.renameAssets {
+    border-radius: 10px;
+    background: #ebe9e3;
+    padding: 1px 10px 4px 10px;
+    line-height: 27px;
+    border: 0px;
+    max-width: 210px;
+    width: 100%;
+}
+.actionIcon {
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 0px;
+    display: inline-block;
+}
+.positionRelative {
+    position: relative !important;
+}
+.positionRelative::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.searchBlock button.primary.createSuppliers {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    border: 1px solid #BAB8B2;
+    border-radius: 100px;
+    line-height: 33px;
+    height: 33px;
+    padding: 0px 20px;
+}
+.searchBlock span.positionRelative {
+    width: 60%;
+    display: inline-block;
+}
+.height32 {
+    min-height: 32px;
+}
+.lightGray {
+    opacity: 0.5;
+    padding-left: 5px;
+}
+.backBtn {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    font-family: 'brownlight';
+  }
+  .backBtn span {
+    cursor: pointer;
+    color: #BAB8B2;
+  }
+  .backBtn svg {
+    width: 7px;
+    margin-right: 4px;
+    vertical-align: -1px;
+  }
+::ng-deep .mat-slide-toggle-bar {
+    background-color: #D1CFC9;
+    border-radius: 20px !important;
+    height: 17px !important;
+    width: 32px !important;
+}
+::ng-deep .mat-slide-toggle-thumb-container {
+    width: 12px !important;
+    height: 12px !important;
+    top: 2px !important;
+    left: 2px !important;
+}
+::ng-deep .mat-slide-toggle-thumb {
+    height: 12px !important;
+    width: 12px !important;
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    background-color: #fff;
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: #0E7A53;
+}
+::ng-deep .mat-slide-toggle-label {
+    margin-bottom: 0px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    height: 20px !important;
+}
+::ng-deep .mat-slide-toggle .mat-slide-toggle-ripple {
+    height: 16px !important;
+    width: 16px !important;
+}
+::ng-deep .example-chip-list ::placeholder{
+    color: #645D57 !important;
+}
+::ng-deep .example-chip-list input:focus::placeholder{
+    opacity: 1 !important;
+}
+.input-resizable {
+    max-width: 90%;
+    display: inline-grid;
+    vertical-align: top;
+    align-items: center;
+    position: relative;
+    margin-top: -2px;
+    margin-left: -10px;
+}
+.input-resizable::after,
+.input-resizable input {
+    width: auto;
+    min-width: 1em;
+    grid-area: 1 / 2;
+    font: inherit;
+    margin: 0;
+    resize: none;
+    background: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: auto;
+    border: 0px;
+    border-radius: 10px;
+    background: #FBF7E6;
+    padding: 0px 10px 4px 10px;
+    line-height: normal;
+    font-weight: normal;
+}
+.input-resizable::after {
+    content: attr(data-value) " ";
+    visibility: hidden;
+    white-space: pre-wrap;
+}
+.renameUserIcon {
+    margin-left: 10px;
+    cursor: pointer;
+    vertical-align: -2px;
+    width: 20px;
+}
+
+.input-resizable input::placeholder{
+    color: #040404 !important;
+}
+.input-resizable input:focus::placeholder{
+    opacity: 1 !important;
+}
+.userActionIcon {
+    display: inline-block;
+    width: 80px;
+}
+.userActionIcon svg {
+    cursor: pointer;
+    margin-left: 20px;
+    margin-top: -7px;
+}
+.externalUser h2.removeExtraSpace {
+    padding-bottom: 15px;
+}
