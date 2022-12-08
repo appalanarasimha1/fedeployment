@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NuxeoService } from "src/app/services/nuxeo.service";
-import { adminPanelWorkspacePath, EXTERNAL_USER } from "src/app/common/constant";
+import { ApiService } from "../../services/api.service";
+import { EXTERNAL_USER } from "src/app/common/constant";
 
 @Component({
   selector: 'app-invite-user-modal',
@@ -21,6 +22,7 @@ export class InviteUserModalComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<InviteUserModalComponent>,
     private nuxeo: NuxeoService,
+    private apiService: ApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
    }
@@ -35,6 +37,16 @@ export class InviteUserModalComponent implements OnInit {
     .params(params)
     .input(id)
     .execute();
+  }
+
+  updateSuppilerUsers(id, users) {
+    return this.apiService.put(`/id/${id}`, {
+      "entity-type": "document",
+      uid: id,
+      properties: {
+        "supplier:supplierUsers": users,
+      }
+    }).toPromise();
   }
 
   async inviteUser() {
@@ -67,7 +79,7 @@ export class InviteUserModalComponent implements OnInit {
     }
     const users = this.supplier.users || [];
     users.push(newUserProp);
-    const res = await this.updateDocument(this.supplier.uid, {properties: {"supplier:supplierUsers": users}});
+    const res = await this.updateSuppilerUsers(this.supplier.uid, users);
     this.closeModal(res);
   }
 

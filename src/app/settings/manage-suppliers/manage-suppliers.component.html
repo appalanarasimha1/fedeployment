@@ -96,7 +96,7 @@
     <h3>Users</h3>
     <h2 [ngClass]="{'removeExtraSpace' : renameUserName}">
         <span *ngIf="!renameUserName">
-            Company DFG
+            {{selectedSupplier?.name}}
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="renameUserIcon" (click)="renameUserClick()">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -104,7 +104,7 @@
         </span>
 
         <div class="input-resizable" #wrapper *ngIf="renameUserName">
-            <input type="text" (input)="onInput($event)" size="12" placeholder="Company DFG" value="Company DFG">
+            <input type="text" (input)="onInput($event)" size="12" [(ngModel)]="selectedSupplier.name">
         </div>
         <div class="userActionIcon" *ngIf="renameUserName">
             <svg (click)="renameUserClick()" width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.99974 10.172L16.1917 0.979004L17.6067 2.393L6.99974 13L0.635742 6.636L2.04974 5.222L6.99974 10.172Z" fill="#DAAA00"></path></svg>
@@ -114,22 +114,20 @@
     <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>invite new users</strong> by typing their email address below:</p>
     <div class="searchBlock">
         <span class="positionRelative">
-          <!-- <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Number</mat-label>
+          <form class="example-form">
             <input type="text"
-                   placeholder="Pick one"
-                   aria-label="Number"
-                   matInput
-                   [formControl]="myControl"
-                   [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option}}
+              placeholder="Search or invite users by email address"
+              [formControl]="usersCtrl"
+              [matAutocomplete]="auto"
+              [(ngModel)]="inviteUserInput"
+              class="search-bar">
+            <button class="primary createSuppliers" *ngIf="checkEnableInviteBtn()" (click)="openInviteUserModal()">Invite</button>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectUser($event.option.value)'>
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+                {{user}}
               </mat-option>
             </mat-autocomplete>
-          </mat-form-field> -->
-            <input type="text" placeholder="Search or invite users by email address" [(ngModel)]="inviteUserInput" class="search-bar" />
-            <button class="primary createSuppliers" *ngIf="inviteUserInput" (click)="openInviteUserModal()">Invite</button>
+          </form>
         </span>
     </div>
     <div class="makeAdminBlock customTableStyle">
@@ -142,16 +140,16 @@
                 <th style="width: 3%">&nbsp;&nbsp;</th>
                 <th style="width: 1%">&nbsp;&nbsp;</th>
             </tr>
-            <tr>
+            <tr *ngFor="let user of selectedSupplier?.users; let i = index">
                 <td><div class="height32"></div></td>
-                <td>azeem.ahmadi@example.com</td>
+                <td>{{user.user}}</td>
                 <td>
                     <ul>
                         <li>
                           <div class="broader-access-assets">
                             <div class="control-group">
                               <label class="control control--checkbox">
-                                <input class="chkbox" type="checkbox"/>
+                                <input class="chkbox" (change)="onPermissionChange('upload', $event, i)" [checked]="hasPermission(user, 'upload')" type="checkbox"/>
                                 <div class="control__indicator"></div>
                                 Upload
                               </label>
@@ -162,7 +160,7 @@
                           <div class="broader-access-assets">
                             <div class="control-group">
                               <label class="control control--checkbox">
-                                <input class="chkbox" type="checkbox"/>
+                                <input class="chkbox" (change)="onPermissionChange('download', $event, i)" [checked]="hasPermission(user, 'download')" type="checkbox"/>
                                 <div class="control__indicator"></div>
                                 Download
                               </label>
@@ -173,7 +171,7 @@
                           <div class="broader-access-assets">
                             <div class="control-group">
                               <label class="control control--checkbox">
-                                <input class="chkbox" type="checkbox"/>
+                                <input class="chkbox" (change)="onPermissionChange('delete', $event, i)" [checked]="hasPermission(user, 'delete')" type="checkbox"/>
                                 <div class="control__indicator"></div>
                                 Delete
                               </label>
@@ -184,11 +182,11 @@
                 </td>
                 <td>
                     <mat-form-field appearance="fill">
-                        <input class="datePicker" placeholder="Choose a date" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                        <input class="datePicker" placeholder="Choose a date" (dateChange)="updateUserExpiry($event, i)" [(ngModel)]="user.expiry" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </td>
-                <td><mat-slide-toggle></mat-slide-toggle></td>
+                <td><mat-slide-toggle [(ngModel)]="user.activated" (change)="togglerUserActivated($event, i)"></mat-slide-toggle></td>
                 <td></td>
             </tr>
         </table>
