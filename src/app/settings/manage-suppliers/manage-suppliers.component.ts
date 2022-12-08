@@ -8,7 +8,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { NuxeoService } from "src/app/services/nuxeo.service";
-import { apiRoutes } from "src/app/common/config";
 import { adminPanelWorkspacePath } from "src/app/common/constant";
 import { ApiService } from "../../services/api.service";
 import { CreateSupplieModalComponent } from '../create-supplie-modal/create-supplie-modal.component';
@@ -29,6 +28,7 @@ export class ManageSuppliersComponent implements OnInit {
   addOnBlur = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   suppliersCtrl = new FormControl();
+  usersCtrl = new FormControl();
   filteredFruits: Observable<string[]>;
   fruits: any = [];
   suppliersRegion: any = [
@@ -55,6 +55,7 @@ export class ManageSuppliersComponent implements OnInit {
   regionList = [];
   regionMap = {};
   selectedSupplier = null;
+  filteredUsers: Observable<string[]>;
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
@@ -73,11 +74,82 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.filteredUsers = this.usersCtrl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._userFilter(value || '')),
+    );
     //init admin panel folder structure if not exist
     this.getOrCreateAdminPanelWorkspace();
     this.getAllUsers();
     this.getSupplierList();
     this.getRegionList();
+  }
+
+  private _userFilter(value: string): string[] {
+    const filterValue = this._userNormalizeValue(value);
+    return this.users.filter(street => this._userNormalizeValue(street).includes(filterValue));
+  }
+
+  private _userNormalizeValue(value: string): string {
+    return value.toLowerCase().replace(/\s/g, '');
+  }
+
+  checkEnableInviteBtn() {
+    return this.inviteUserInput && !this.users?.includes(this.inviteUserInput);
+  }
+
+  updateSuppilerUsers(id, users) {
+    return this.apiService.put(`/id/${id}`, {
+      "entity-type": "document",
+      uid: id,
+      properties: {
+        "supplier:supplierUsers": users,
+      }
+    }).toPromise();
+  }
+
+  hasPermission(user, permission) {
+    return user.permissions.includes(permission);
+  }
+
+  onPermissionChange(permission, $event, index) {
+    const enabled = $event.target?.checked || $event.checked;
+    const users = this.selectedSupplier.users;
+    const user = users[index];
+    const permissions = user.permissions || [];
+    const permissionIndex = permissions.indexOf(permission);
+    if (enabled && permissionIndex < 0) {
+      permissions.push(permission);
+    } else if (!enabled && permissionIndex > -1) {
+      permissions.splice(permissionIndex, 1);
+    }
+    users[index].permissions = permissions;
+    this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+  }
+
+  togglerUserActivated(event, index) {
+    const users = this.selectedSupplier.users;
+    users[index].activated = event.checked;
+    this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+  }
+
+  updateUserExpiry(event, index) {
+    const users = this.selectedSupplier.users;
+    users[index].expiry = event.value;
+    this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+  }
+
+  async selectUser(user) {
+    const permissions = [];
+    const newUserProp = {
+      user,
+      permissions,
+      activated: true,
+      expiry: new Date(),
+    }
+    const users = this.selectedSupplier.users || [];
+    users.push(newUserProp);
+    await this.updateSuppilerUsers(this.selectedSupplier.uid, users);
   }
 
   async getOrCreateAdminPanelWorkspace() {
