@@ -236,7 +236,7 @@ export class SearchComponent implements OnInit {
       ],
       "fetch.document": "properties",
       properties: "*",
-      "enrichers.user": "userprofile",
+      // "enrichers.user": "userprofile",
     };
     let url = apiRoutes.SEARCH_PP_ASSETS;
 
@@ -287,7 +287,7 @@ export class SearchComponent implements OnInit {
     }
      this.dataService.loaderValueChangeNew(true);
     this.nuxeo.nuxeoClient
-      .request(url, { queryParams: params, headers })
+      .request(url, { queryParams: params })
       .get()
       .then((docs) => {
         this.setData(docs, isShowMore);
