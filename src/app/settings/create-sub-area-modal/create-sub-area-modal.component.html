@@ -1,0 +1,29 @@
+<div class="create-supplier">
+    <h3>Create sub-area
+        <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+          <img src="../../assets/images/close-modal.svg" style="width: 20px" />
+       </button>
+    </h3>
+
+    <div class="create-supplier-form">
+        <ul>
+            <li>
+                <div class="form-group">
+                    <label for="Supplier's Name" >Sub-area's Name</label>
+                    <input type="text" placeholder="Drone Experts Ltd" [(ngModel)]="subAreaName" />
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label for="Location's ID">Location's ID</label>
+                    <input type="email" [(ngModel)]="locationId" placeholder="Enter location's ID" />
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="button-groups">
+        <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+        <button class="upload-btn" [disabled]="!subAreaName || loading" (click)="createSubArea()">Create sub-area</button>
+    </div>
+</div>

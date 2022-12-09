@@ -55,7 +55,7 @@ const BUTTON_LABEL = {
   3: "Publish",
 };
 
-const MAX_CHUNK_SIZE = 8 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
+const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
 const CONCURRENT_UPLOAD_REQUEST = 5;
 const apiVersion1 = environment.apiVersion;
@@ -166,6 +166,7 @@ export class UploadModalComponent implements OnInit {
   publishingPrivateAssets: boolean = false;
   checkboxIsPrivate: boolean = false;
   opened: boolean;
+  chunksFailedToUpload = {};
 
   constructor(
     private apiService: ApiService,
@@ -621,31 +622,8 @@ export class UploadModalComponent implements OnInit {
       method: 'POST',
       body: blob.content
     };
-    try {
-      const res = await fetch(apiVersion1 + uploadUrl, options);
-      if (res.status === 201) {
-        // retryCount = 1;
-        this.setUploadProgressBar(index, 100);
-        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-        console.log("Upload done");
-      } else if (res.status === 202) {
-        // retryCount = 1;
-        const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
-        console.log(`File is ${percentDone}% loaded.`);
-        this.setUploadProgressBar(index, percentDone);
-      }  else {
-        // retry upload failed chunk
-        // if (retryCount < 11)
-          console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
-          await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1)
-      }
-    } catch (err) {
-      // retry upload failed chunk
-      // if (retryCount < 11) {
-        console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
-        await this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount + 1);
-      // }
-    }
+    const apiUrl = apiVersion1 + uploadUrl;
+    await this.uploadChunks(index, chunkIndex, chunkCount, apiUrl, options);
   }
 
   async uploadFileIndex(index, file) {
@@ -656,6 +634,7 @@ export class UploadModalComponent implements OnInit {
     const totalSize = blob.size;
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
+    this.chunksFailedToUpload = {};
     if (totalSize > MAX_CHUNK_SIZE) {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
@@ -663,18 +642,24 @@ export class UploadModalComponent implements OnInit {
       try {
         let promiseArray = [];
         let chunksToBeSent = totalChunk;
-        for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j+CONCURRENT_UPLOAD_REQUEST) {
+        let chunkIndex = 0;
+        for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j++) {
+          console.log('value of Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST) = ', Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST));
           chunksToBeSent = chunksToBeSent % CONCURRENT_UPLOAD_REQUEST === 0 ? CONCURRENT_UPLOAD_REQUEST : totalChunk % CONCURRENT_UPLOAD_REQUEST ;
           for (let i = 0; i < chunksToBeSent; i++) {
             const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
-            promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
-
+            console.log("i = ", i, " | j = ", j);
+            promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
+            
+            console.log("chunkIndex = ", chunkIndex);
+            chunkIndex += 1;
             if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
           }
           if(CONCURRENT_UPLOAD_REQUEST - chunksToBeSent > 0)
             chunksToBeSent = totalChunk - chunksToBeSent;
           promiseArray = [];
         }
+        this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
         if (promiseArray.length > 0) await Promise.all(promiseArray);
         this.filesUploadDone[index] = true;
       } catch (err) {
@@ -701,6 +686,7 @@ export class UploadModalComponent implements OnInit {
             console.log(`File is ${percentDone}% loaded.`);
             this.setUploadProgressBar(index, percentDone);
           } else if (event instanceof HttpResponse) {
+            this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
             console.log("File is completely loaded!");
           }
         },
@@ -716,6 +702,49 @@ export class UploadModalComponent implements OnInit {
           console.log("Upload done");
         }
       );
+    }
+  }
+
+  async checkUploadedFileStatusAndUploadFailedChunks(uploadUrl: string) {
+    const fileStatus: any = await this.apiService.get(uploadUrl).toPromise();
+    if(Object.keys(this.chunksFailedToUpload).length) {
+      let promiseArray = [];
+      for(const key in this.chunksFailedToUpload) {
+        if(key.indexOf(fileStatus.uploadedChunkIds) != -1) {
+          continue;
+        }
+        promiseArray.push(this.uploadChunks(key, this.chunksFailedToUpload[key].chunkIndex, this.chunksFailedToUpload[key].chunkCount, this.chunksFailedToUpload[key].apiUrl, this.chunksFailedToUpload[key].options));
+      }
+      await Promise.all(promiseArray.map(p => p.catch(e => e)));
+    }
+    return fileStatus;
+  }
+
+  async uploadChunks(index, chunkIndex, chunkCount, apiUrl: string, options: any) {
+    try {
+      const res = await fetch(apiUrl, options);
+      if (res.status === 201) {
+        // retryCount = 1;
+        this.setUploadProgressBar(index, 100);
+        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+        console.log("Upload done");
+      } else if (res.status === 202) {
+        // retryCount = 1;
+        const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
+        console.log(`File is ${percentDone}% loaded.`);
+        this.setUploadProgressBar(index, percentDone);
+      }  else {
+        // retry upload failed chunk
+        // if (retryCount < 11)
+          // console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+          this.chunksFailedToUpload[chunkIndex] = {chunkIndex, chunkCount, options, apiUrl};
+      }
+    } catch (err) {
+      // retry upload failed chunk
+      // if (retryCount < 11) {
+        // console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+          this.chunksFailedToUpload[chunkIndex] = {chunkIndex, chunkCount, options, apiUrl};
+      // }
     }
   }
 
