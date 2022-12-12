@@ -141,9 +141,16 @@
                       </a>
                       <div class="dropdown-menu borderNone" aria-labelledby="notificationDropdown">
                         <div *ngIf="!notifications?.length" style="margin: 15px 20px;" class="empty-notification">
-                          <img style="width: 30%;" src="../../../assets/images/alarm-bell-1.svg">
+                          <div class="no-notifaction">
+                            <img style="width: 22%; padding-top: 0px;" src="../../../assets/images/alarm-bell-1.svg">
+                            <div class="no-notifactionContent">
+                              <span>You're all caught up</span>
+                              Check back later for new notifications.
+                            </div>
+                          </div>
+                          <!-- <img style="width: 30%;" src="../../../assets/images/alarm-bell-1.svg">
                           <div style="margin-top: 20px; font-size: 18px;">You're all caught up</div>
-                          <div style="margin-top: 25px; font-size: 18px">Check back later for new notifications.</div>
+                          <div style="margin-top: 25px; font-size: 18px">Check back later for new notifications.</div> -->
                         </div>
                         <div *ngIf="notifications?.length > 0" id="customScrollBar" class="notificationDropdown">
                           <!-- No Notifaction show block start -->

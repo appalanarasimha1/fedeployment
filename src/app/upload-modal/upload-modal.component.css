@@ -589,12 +589,13 @@ font-weight: normal;
   font-size: 15px;
   /* height: 320px !important; */
   /* height: calc(92vh - 270px) !important; */
-  min-height: 323px;
+  min-height: 343px;
   overflow-x: auto;
   margin-right: 24px;
   height: 100%;
   margin: 0px auto;
   padding: 10px;
+  height: 50vh;
 }
 .tooltip1 {
   position: relative;
@@ -1304,7 +1305,7 @@ input.copyright-input::placeholder{
   height: 100px;
   filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
   padding: 22px 20px 22px 13px;
-  margin: 30px 0 20px;
+  margin: 20px 0 20px;
   text-align: left;
 }
 .folderHeading {
@@ -1779,4 +1780,34 @@ span.showAllClassifications svg.rotateArrow {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.publishingAssets .table-bordered>thead>tr>th, 
+.publishingAssets .table-bordered>tbody>tr>th, 
+.publishingAssets .table-bordered>tfoot>tr>th, 
+.publishingAssets .table-bordered>thead>tr>td, 
+.publishingAssets .table-bordered>tbody>tr>td, 
+.publishingAssets .table-bordered>tfoot>tr>td
+.publishingAssets .table.table-bordered {
+  border: 1px solid #AFD9FF;
+}
+.publishingAssets .table-bordered>tbody>tr>td {
+  border-left: 0px;
+  color: #0072A2;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'brownlight';
+}
+.publishingAssets .table-bordered {
+  border: 0px;
+  margin-bottom: 8px;
+}
+.publishingAssets tbody tr:hover {
+  background-color: transparent;
+}
+.drag-drop.dragDropDate {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
