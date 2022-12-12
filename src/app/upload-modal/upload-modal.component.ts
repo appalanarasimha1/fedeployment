@@ -1028,7 +1028,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async createAsset(file, index, folder) {
-    const url = `/path${folder.path}`;
+    const url = encodeURI(`/path${folder.path}`);
     let fileType = "File";
     if (file.type?.includes("image/")) {
       fileType = "Picture";
@@ -1187,7 +1187,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async createFolder(name, parentFolder?: any, data?: any) {
-    const url = `/path${this.parentFolder.path}`;
+    const url = encodeURI(`/path${this.parentFolder.path}`);
 
     const payload = await this.sharedService.getCreateFolderPayload(
       name,
