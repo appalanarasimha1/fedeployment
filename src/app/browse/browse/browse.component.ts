@@ -166,6 +166,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
   permissionChange:boolean=false
+  onlyPrivate:boolean = true;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -2519,5 +2520,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   onInput(event) {
     const input = event.target;
     input.parentNode.dataset.value = input.value;
+  }
+  onlyPrivateFolder() {
+    this.onlyPrivate = !this.onlyPrivate;
   }
 }
