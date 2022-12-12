@@ -157,7 +157,7 @@
             <div class="folderOwnerRed">
               <span>Your request has been rejected by the folder owner.</span>
             </div>
-            
+
           </div> -->
 
 
@@ -248,8 +248,8 @@
                   <span *ngIf="renameFolderName && showLinkCopy" style="align-items: center;">
 
                     <div class="input-renamer" #wrapper>
-                      <input type="text" size="{{newTitle.length}}" 
-                      (input)="onInput($event)" value="{{selectedFolder?.title}}" 
+                      <input type="text" size="{{newTitle.length}}"
+                      (input)="onInput($event)" value="{{selectedFolder?.title}}"
                       [(ngModel)]="newTitle"
                       (keyup.enter)="renameFolder()" autocomplete="off"
                       onInput="this.parentNode.dataset.value = this.value" placeholder="{{selectedFolder?.title}}">
@@ -428,7 +428,16 @@
                       <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Rename</div>
                     </div>
                   </li>
-                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && count > 0" -->
+                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal(false)"> <!-- *ngIf="!isTrashView && count > 0" -->
+                    <div class="moveFolderImg tollTipWorkspace">
+                      <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
+                        <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Copy</div>
+                    </div>
+                  </li>
+                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal(true)"> <!-- *ngIf="!isTrashView && count > 0" -->
                     <div class="moveFolderImg tollTipWorkspace">
                       <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
                         <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1434,7 +1443,7 @@
                             height: auto;
                             white-space: break-spaces;
                             text-align: left;
-                            padding: 5px 10px;"> 
+                            padding: 5px 10px;">
                               This is a private folder
                             </div>
                           </div>
@@ -1570,7 +1579,14 @@
                               <path d="M15.9374 14.8125H16.7812C18.3554 14.8152 19.7546 13.8099 20.2544 12.3172C20.7543 10.8244 20.2425 9.17928 18.9841 8.23348C17.7256 7.28768 16.0031 7.25355 14.7082 8.14877C14.1862 5.36953 11.682 3.40988 8.85877 3.5713C6.03554 3.73272 3.77104 5.96503 3.5692 8.78565C3.36737 11.6063 5.29096 14.1383 8.06244 14.7" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
                               </svg></span> Download</a>
                           </li>
-                          <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove()">
+                          <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove(false)">
+                            <a href="javascript:void(0);">
+                            <span><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
+                              <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg></span> Copy</a>
+                          </li>
+                          <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove(true)">
                             <a href="javascript:void(0);">
                             <span><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
                               <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

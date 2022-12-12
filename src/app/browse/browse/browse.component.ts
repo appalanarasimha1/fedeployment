@@ -1811,7 +1811,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
         this.assetCount = this.assetCount - 1;
-        
+
       }
 
       if (this.count==0) {
@@ -2148,7 +2148,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.openModal()
       }, 300);
-     
+
     }
 
     window.addEventListener("dragenter", function (e) {
@@ -2244,7 +2244,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return  ["workspace", "folder", "orderedfolder"].indexOf(m.type.toLowerCase()) !== -1
   }
 
-  async openMoveModal() {
+  async openMoveModal(move=true) {
     const listDocs = Object.values(this.selectedMoveList)
     .filter( item => !this.checkDownloadPermission(item))
 
@@ -2258,7 +2258,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       selectedList: this.selectedMoveList,
       parentId: this.sectorSelected.uid,
       sectorList: this.folderStructure[0]?.children || [],
-      user:this.user
+      user:this.user,
+      move,
     }
 
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
@@ -2367,10 +2368,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return $(".availableActions").hide();
   }
 
-  rightClickMove(){
-    if (this.count >0) return this.openMoveModal();
+  rightClickMove(move=true){
+    if (this.count >0) return this.openMoveModal(move);
     // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
-     this.openMoveModal();
+    this.openMoveModal(move);
     this.removeAssets()
     this.contextMenu.closeMenu();
     return $(".availableActions").hide();
@@ -2394,7 +2395,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   renameAsset(){
     let keySort = Object.keys(this.selectedMoveListNew)
     return this.sortedData[keySort[0]].edit = !this.sortedData[keySort[0]]?.edit
-    
+
   }
   selectAllClicked:boolean=false
   rightClickSelectAll(){
@@ -2464,7 +2465,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         // return '../../../assets/images/no-preview.png';
         return '../../../assets/images/no-preview-big.png';
       }
-  
+
       return '../../../assets/images/no-preview-grid.svg';
     }
   }
