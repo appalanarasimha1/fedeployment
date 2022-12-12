@@ -1230,7 +1230,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
       this.createFolderLoading = true;
       const backupPath = this.selectedFolder.path;
-      let url = `/path${this.selectedFolder.path}`;
+      let url = encodeURI(`/path${this.selectedFolder.path}`);
       if (this.selectedFolder.type.toLowerCase() === "domain") {
         url = `/path${this.selectedFolder.path}/workspaces`;
         this.selectedFolder.path = `${this.selectedFolder.path}/workspaces/null`;
