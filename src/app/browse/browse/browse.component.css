@@ -4548,3 +4548,24 @@ button.sendRequest {
 ::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
   color: #040404 !important;
 }
+.invitePeople > span {
+  display: inline-block;
+  background: #E6F2FF;
+  border-radius: 8px;
+  line-height: 31px;
+  padding: 0px 11px;
+  color: #0072A2;
+  font-family: 'brownregular';
+  margin-top: 10px;
+}
+
+.invitePeople > span img {
+  display: inline-block;
+  vertical-align: 0px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.clickEvent {
+  text-decoration: underline;
+  cursor: pointer;
+}
