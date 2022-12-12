@@ -166,7 +166,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
   permissionChange:boolean=false
-  onlyPrivate:boolean = true;
+  onlyPrivate:boolean = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -260,7 +260,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       this.fetchExternalUserInfo(fetchAll);
-
+      this.checkCollabAndPrivateFolder()
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
@@ -433,6 +433,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.sharedService.toTop();
     this.createDynamicSidebarScroll();
     // this.selectedFolder = item;
+    this.checkCollabAndPrivateFolder()
   }
 
   getAssetUrl(event: any, url: string, document?: IEntry, type?: string): string {
@@ -1756,6 +1757,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
+    this.checkCollabAndPrivateFolder()
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
       return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
@@ -2427,6 +2429,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   contextMenuPosition = { x: '0px', y: '0px' };
 
   onContextMenu(event: MouseEvent, item: any) {
+    this.checkCollabAndPrivateFolder()
     if(!this.checkGeneralFolder(item) && !this.isTrashView) {
       event.preventDefault();
       this.contextMenuPosition.x = event.clientX + 'px';
@@ -2525,11 +2528,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     input.parentNode.dataset.value = input.value;
   }
 
-  checkCollabAndPrivateFolder(){
+  checkCollabAndPrivateFolder(cancel?:boolean){
+    // if(cancel) return false
     let collabs = this.getFolderCollaborators()
-    console.log("=================",collabs , this.isPrivateFolder());
-    
+    if(!collabs) return false 
+    console.log(Object.keys(collabs))
+    let checkCollabs = Object.keys(collabs)?.length < 2
+    this.onlyPrivate = checkCollabs && this.isPrivateFolder()
+    // return this.onlyPrivate
   }
+
   onlyPrivateFolder() {
     this.onlyPrivate = !this.onlyPrivate;
   }
