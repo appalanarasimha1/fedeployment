@@ -1005,6 +1005,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   selectFolder($event, item, i, updateCount = true) {
     console.log('updatecount', updateCount);
+    this.checkCollabAndPrivateFolder()
 
     if(this.selectAllClicked) updateCount = true
 
@@ -1200,6 +1201,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
+      console.log("selwctedFolder", this.selectedFolder , "result", result);
+      
       if (!result) return;
       this.folderAssetsResult[
         this.breadCrumb[this.breadCrumb.length - 1].uid
@@ -2520,6 +2523,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   onInput(event) {
     const input = event.target;
     input.parentNode.dataset.value = input.value;
+  }
+
+  checkCollabAndPrivateFolder(){
+    let collabs = this.getFolderCollaborators()
+    console.log("=================",collabs , this.isPrivateFolder());
+    
   }
   onlyPrivateFolder() {
     this.onlyPrivate = !this.onlyPrivate;
