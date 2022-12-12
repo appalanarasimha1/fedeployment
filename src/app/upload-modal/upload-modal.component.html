@@ -758,7 +758,7 @@
       <div class="newFolderUi" (click)="openBrowseRoute()" style="cursor: pointer;">
          <div class="destination-content-block">
             <!-- <span class="assetName">National Day 2021</span> -->
-            <span class="assetName" style="width: 100%;text-align: left; display: block;">name here - {{ folderToAdd || selectedFolder?.title }}</span>
+            <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
             <p class="numberAssets">{{ getAssetNumber() }} assets</p>
          </div>
       </div>
