@@ -1348,10 +1348,10 @@ export class DocumentComponent implements OnInit, OnChanges {
     const lowercaseMime = mimeType.toLowerCase();
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
-      return '../../../assets/images/doc-preveiw.svg';
-    }
+      return '../../../assets/images/no-preview-big.png';
+    } 
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
-      return '../../../assets/images/ppt-preveiw.svg';
+      return '../../../assets/images/no-preview-big.png';
     }
     if(item.update) {
       return '../../../assets/images/no-preview-big.png';

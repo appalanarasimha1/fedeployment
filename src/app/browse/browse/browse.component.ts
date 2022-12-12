@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, Renderer2, Input } from "@angular/core";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ApiService } from "../../services/api.service";
 import { PreviewPopupComponent } from "src/app/preview-popup/preview-popup.component";
@@ -53,6 +53,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+  @ViewChild("myInput", { static: false }) myInput: ElementRef;
+  @Input() name: string;
 
 
   constructor(
@@ -64,6 +66,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     public nuxeo: NuxeoService,
     public dataService: DataService,
+    private renderer: Renderer2,
   ) {}
 
   faCoffee = faCoffee;
@@ -193,6 +196,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   currentIndexPublished: any;
   currentIndexRightClick: any;
+
+  hiddenSpan = this.renderer.createElement("span");
 
   async ngOnInit() {
     this.fetchUserData();
@@ -364,7 +369,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       constants.VIDEO_SMALL_CASE,
       constants.AUDIO_SMALL_CASE,
     ];
-    if (assetTypes.indexOf(assetType.toLowerCase()) !== -1) return true;
+    if (assetTypes.indexOf(assetType?.toLowerCase()) !== -1) return true;
     else return false;
   }
 
@@ -429,7 +434,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFolder = item;
   }
 
-  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+  getAssetUrl(event: any, url: string, document?: IEntry, type?: string): string {
+    if(type =="thumbnail" ){
+      let thumbNailUrl = url ? url :document.properties['file:content'].data
+      return this.sharedService.getAssetUrl(event, thumbNailUrl, type);
+    }
     if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
       // return '../../../assets/images/no-preview.png';
       return this.getNoPreview(document);
@@ -446,7 +455,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    return this.sharedService.getAssetUrl(event, url, type);
   }
 
+  openGetNoPreview: boolean = false;
   open(file, fileType?: string): void {
+    console.log('item', this.checkAssetMimeTypes(file));
+    if(this.checkAssetMimeTypes(file) == 'nopreview') {
+      this.openGetNoPreview = true;
+    } else {
+      this.openGetNoPreview = false;
+    }
+
     this.showShadow = false;
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
@@ -488,6 +505,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // }
 
     this.previewModal.open();
+    this.openGetNoPreview = false;
   }
 
   // markRecentlyViewed(data: any) {
@@ -1168,10 +1186,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
-    dialogConfig.minHeight = "350px";
-    dialogConfig.height = "100%";
-    dialogConfig.maxHeight = "92vh"
-    dialogConfig.width = "80vw";
+    // dialogConfig.minHeight = "350px";
+    // dialogConfig.height = "100%";
+    // dialogConfig.maxHeight = "92vh"
+    // dialogConfig.width = "80vw";
+    dialogConfig.panelClass = 'custom-modalbox';
     dialogConfig.disableClose = true;
     this.selectedFolder["sectorId"] = this.selectedFolder2.uid;
     dialogConfig.data = this.selectedFolder;
@@ -1363,7 +1382,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       //   this.getAllFolders({uid:res.parentRef,path})
       // })
-      this.newTitle =this.selectedFolder.title;
+      this.newTitle = this.selectedFolder.title;
+      console.log('get length', this.newTitle.length)
       this.renameFolderName = true;
     }
   }
@@ -1525,8 +1545,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       var getWidth2 = $('.getWidth2').outerWidth();
       var getWidth3 = $('.getWidth3').outerWidth();
       var totalWidth = getWidth1 + getWidth2 + getWidth3;
-      console.log('getWidth', totalWidth);
+      console.log('getWidth2', getWidth2);
       $('.chkbox.width1600').css("width", totalWidth - 60);
+
+      // $('.itemTitleContent').css("width", getWidth2 - 30 )
     }, 0);
   }
 
@@ -1789,7 +1811,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
         this.assetCount = this.assetCount - 1;
-        
+
       }
 
       if (this.count==0) {
@@ -2126,7 +2148,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.openModal()
       }, 300);
-     
+
     }
 
     window.addEventListener("dragenter", function (e) {
@@ -2222,7 +2244,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       return  ["workspace", "folder", "orderedfolder"].indexOf(m.type.toLowerCase()) !== -1
   }
 
-  async openMoveModal() {
+  async openMoveModal(move=true) {
     const listDocs = Object.values(this.selectedMoveList)
     .filter( item => !this.checkDownloadPermission(item))
 
@@ -2236,7 +2258,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       selectedList: this.selectedMoveList,
       parentId: this.sectorSelected.uid,
       sectorList: this.folderStructure[0]?.children || [],
-      user:this.user
+      user:this.user,
+      move,
     }
 
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
@@ -2345,10 +2368,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return $(".availableActions").hide();
   }
 
-  rightClickMove(){
-    if (this.count >0) return this.openMoveModal();
+  rightClickMove(move=true){
+    if (this.count >0) return this.openMoveModal(move);
     // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
-     this.openMoveModal();
+    this.openMoveModal(move);
     this.removeAssets()
     this.contextMenu.closeMenu();
     return $(".availableActions").hide();
@@ -2372,7 +2395,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   renameAsset(){
     let keySort = Object.keys(this.selectedMoveListNew)
     return this.sortedData[keySort[0]].edit = !this.sortedData[keySort[0]]?.edit
-    
+
   }
   selectAllClicked:boolean=false
   rightClickSelectAll(){
@@ -2429,18 +2452,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const mimeType = splitedData[splitedData?.length - 1];
     const lowercaseMime = mimeType.toLowerCase();
 
-    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
-      return '../../../assets/images/doc-preveiw.svg';
-    }
-    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
-      return '../../../assets/images/ppt-preveiw.svg';
-    }
-    if(item.update) {
-      // return '../../../assets/images/no-preview.png';
+    if(this.openGetNoPreview){
       return '../../../assets/images/no-preview-big.png';
-    }
+    } else {
+      if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+        return '../../../assets/images/doc-preveiw.svg';
+      }
+      if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+        return '../../../assets/images/ppt-preveiw.svg';
+      }
+      if(item.update) {
+        // return '../../../assets/images/no-preview.png';
+        return '../../../assets/images/no-preview-big.png';
+      }
 
-    return '../../../assets/images/no-preview-grid.svg';
+      return '../../../assets/images/no-preview-grid.svg';
+    }
   }
 
   checkFolderContains(){
@@ -2488,5 +2515,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   getFileContent(doc) {
     return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
+  }
+
+  onInput(event) {
+    const input = event.target;
+    input.parentNode.dataset.value = input.value;
   }
 }

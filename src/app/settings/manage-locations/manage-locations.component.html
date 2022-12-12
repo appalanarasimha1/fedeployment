@@ -1,0 +1,77 @@
+
+<div class="externalUser positionRelative" *ngIf="!showExternalUserPage">
+    <h2>Locations</h2>
+    <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>add new regions</strong> by typing their name below:</p>
+    <div class="searchBlock">
+        <span class="positionRelative">
+            <input type="text" [(ngModel)]="regionInput" placeholder="Search or create region by name" class="search-bar" />
+            <button class="primary createSuppliers" *ngIf="regionInput" (click)="openCreateLocationModal()">Create region</button>
+        </span>
+    </div>
+    <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width: 2%">&nbsp;&nbsp;</th>
+                <th style="width: 80%;">Region</th>
+                <th style="width: 6%;">&nbsp;</th>
+                <th style="width: 6%;">&nbsp;</th>
+            </tr>
+            <tr *ngFor="let region of regionList">
+                <td><div class="height32"></div></td>
+                <td>{{region.initial}} <span class="lightGray">{{region.name}}</span></td>
+                <td style="text-align: center !important;" (click)="removeRegion(region)"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+                <td style="text-align: center !important;" (click)="openSubAreaList(region)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="externalUser positionRelative" *ngIf="showExternalUserPage">
+    <div class="backBtn" (click)="backExternalUserList()">
+        <span>
+        <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.828 7.00072L7.778 11.9507L6.364 13.3647L0 7.00072L6.364 0.636719L7.778 2.05072L2.828 7.00072Z" fill="#BAB8B2"/>
+        </svg> Back</span>
+    </div>
+    <h3>Sub-areas / activities</h3>
+    <h2 [ngClass]="{'removeExtraSpace' : renameUserName}">
+        <span *ngIf="!renameUserName">
+            {{selectedRegion.initial}} {{selectedRegion.name}}
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="renameUserIcon" (click)="renameUserClick()">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+
+        <div class="input-resizable" #wrapper *ngIf="renameUserName">
+            <input type="text" size="10" [(ngModel)]="renameRegionInput">
+        </div>
+        <div class="userActionIcon" *ngIf="renameUserName">
+            <svg (click)="renameUserClick(true)" width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.99974 10.172L16.1917 0.979004L17.6067 2.393L6.99974 13L0.635742 6.636L2.04974 5.222L6.99974 10.172Z" fill="#DAAA00"></path></svg>
+            <svg (click)="renameUserClick()" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.99974 5.58623L11.9497 0.63623L13.3637 2.05023L8.41374 7.00023L13.3637 11.9502L11.9497 13.3642L6.99974 8.41423L2.04974 13.3642L0.635742 11.9502L5.58574 7.00023L0.635742 2.05023L2.04974 0.63623L6.99974 5.58623Z" fill="#DAAA00"></path></svg>
+        </div>
+    </h2>
+    <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>add new sub-areas/activities</strong> by typing their name below:</p>
+    <div class="searchBlock">
+        <span class="positionRelative">
+            <input type="text" placeholder="Search or add sub-areas/activities by ID or name" [(ngModel)]="subAreaInput" class="search-bar" />
+            <button class="primary createSuppliers" *ngIf="subAreaInput" (click)="openCreateSubAreaModal()">Create sub-area</button>
+        </span>
+    </div>
+    <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width: 2%">&nbsp;&nbsp;</th>
+                <th style="width: 15%;">Location ID</th>
+                <th style="width: 65%;">Sub-area/activity</th>
+                <th style="width: 6%;">&nbsp;</th>
+            </tr>
+            <tr *ngFor="let subArea of subAreaList">
+                <td><div class="height32"></div></td>
+                <td>{{subArea.locationId}}</td>
+                <td>{{subArea.name}}</td>
+                <td (click)="removeSubArea(subArea)" style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+            </tr>
+        </table>
+    </div>
+</div>

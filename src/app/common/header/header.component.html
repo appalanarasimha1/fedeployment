@@ -256,6 +256,17 @@
           [closeOnSelect]
           [searchable]="false" [clearable]="false"
           >
+          <ng-template ng-option-tmp let-item="item">
+            <div title="{{item.label}}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.label}}</div>
+          </ng-template>
+          <!-- <ng-template ng-option-tmp let-item="item">
+            <div title="{{item.label}}" style="position: relative;">
+              <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis; position: relative;">{{item.label}}</div>
+              <div class="videoTooltip">
+                {{item.label}}
+              </div>
+            </div>
+          </ng-template> -->
         </ng-select>
        </div>
           <video *ngIf="videoResponse" style="width: 100%" preload="false" autoplay  controls tabindex="0">
@@ -269,7 +280,7 @@
         <div class="">
           <img src="../../../assets/images/logo-neom.png" style="width: 50px;">
           <h2>Thanks for watching.</h2>
-          <p>Start discovering NEOM’s digital assets by using the search. You can search with a specific keyword, select a sector and get keyword suggestions from the Ground X AI.</p>
+          <p>Start discovering NEOM's digital assets by using the search. You can search with a specific keyword, select a sector and get keyword suggestions from the Ground X AI.</p>
           <img (click)="modal.dismiss('Cross click'); closeModal()" src="../../../assets/images/Btn Next.png" style="width: 30px; cursor: pointer;">
         </div>
       </div>

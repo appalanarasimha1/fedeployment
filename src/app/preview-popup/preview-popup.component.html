@@ -210,7 +210,9 @@
 
                       <li>
                         Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
+                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length ? 
+                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
+                          'Contact sector for usage approval'
                           }}</span>
                       </li>
 
@@ -631,7 +633,9 @@
 
                     <li>
                       Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
+                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length? 
+                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
+                        '“Contact sector for usage approval'
                         }}</span>
                     </li>
 

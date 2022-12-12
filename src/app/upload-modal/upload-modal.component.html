@@ -7,10 +7,10 @@
          <ng-template matStepLabel>Select assets</ng-template>
          <!-- <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div> -->
          <div>
-            <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)" id="customScrollBar" >
+            <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)" id="customScrollBar">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
-            <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length">
-               <div class="flexible" style="height: calc(92vh - 273px);justify-content: center;position: relative;">
+            <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length" >
+               <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto">
                   <div class="upload-label">
                      <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
                      <span style="margin-top: 20px; color: #040404; padding-bottom: 10px;"><b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
@@ -755,20 +755,27 @@
       <!-- <mat-icon>upload</mat-icon> -->
       <span>Your assets have been successfully published on Ground X.</span>
       <!-- remove this condition *ngIf="showRedirectUrl()" -->
-      <div class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
-         <div class="destination-img-block">
-            <img src="../../../assets/images/yellow-folder.png" style="max-width: 100%;">
-         </div>
+      <div class="newFolderUi" (click)="openBrowseRoute()" style="cursor: pointer;">
          <div class="destination-content-block">
             <!-- <span class="assetName">National Day 2021</span> -->
             <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
             <p class="numberAssets">{{ getAssetNumber() }} assets</p>
          </div>
       </div>
-      <div (click)="openBrowseRoute()" class="close-modal">
-         <!-- <mat-icon>close</mat-icon> -->
+      <!-- <div class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
+         <div class="destination-img-block">
+            <img src="../../../assets/images/yellow-folder.png" style="max-width: 100%;">
+         </div>
+         <div class="destination-content-block">
+            <!-- <span class="assetName">National Day 2021</span> -/->
+            <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
+            <p class="numberAssets">{{ getAssetNumber() }} assets</p>
+         </div>
+      </div> -->
+      <!-- <div (click)="openBrowseRoute()" class="close-modal">
+         <!-- <mat-icon>close</mat-icon> -/->
          Close
-      </div>
+      </div> -->
    </div>
 </div>
 </div>

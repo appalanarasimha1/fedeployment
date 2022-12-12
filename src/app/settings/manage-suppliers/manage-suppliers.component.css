@@ -1,0 +1,505 @@
+.externalUser h2{
+    font-size: 24px;
+    line-height: 30px;
+    color: #000;
+    font-weight: 400;
+    padding-bottom: 20px;
+    min-height: 43px;
+}
+.externalUser h3{
+    font-size: 18px;
+    line-height: 30px;
+    color: #000;
+    font-weight: 400;
+    padding-bottom: 8px;
+}
+.externalEditAccess {
+    font-family: 'brownlight';
+    padding-bottom: 20px;
+    font-size: 15px;
+}
+.externalEditAccess strong {
+    font-weight: normal;
+    font-family: 'brownregular';
+}
+.searchBlock {
+    position: relative;
+}
+.searchBlock .search-bar {
+    width: 100%;
+    padding: 8px 15px;
+}
+.search-bar{
+    position: relative;
+    padding: 8px 45px 8px 46px;
+    border-radius: 8px;
+    border: 1px solid #F6F5F2;
+    width: 100%;
+    background-color: #F6F5F2;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 25px;
+    color: #000;
+}
+.search-bar::placeholder{
+    font-weight: 100;
+}
+.search-btn{
+    position: absolute;
+    left: 6px;
+    top: 0px;
+    bottom: 0px;
+    border: unset;
+    padding: 0px 10px;
+    background-color: transparent;
+    z-index: 1;
+}
+.search-btn img{
+    width: 19px;
+}
+.input-sizer ::-webkit-input-placeholder,
+.input-sizer ::-webkit-input-placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.input-sizer :-ms-input-placeholder,
+.input-sizer :-ms-input-placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.input-sizer ::placeholder,
+.input-sizer ::placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.positionRelative input.search-bar::placeholder{
+    color: #413E3C !important;
+}
+
+/* Table style start */
+.folderListview {
+    text-align: left;
+}
+.folderListview th{
+    font-size: 12px;
+    line-height: 20px;
+    text-align: left;
+    color: #BAB8B2;
+    border-bottom: unset;
+}
+.folderListview td p{
+    line-height: 24px;
+    color: #040404;
+    text-align: left;
+}
+.folderListview td, th{
+    padding: 10px;
+}
+.folderListview tr td:th-child(1) p{
+    text-align: left !important
+}
+.folderListview tr:nth-child(1){
+    background-color:  unset !important
+}
+.folderListview tr:nth-child(odd){
+    background-color: #F6F5F2;
+}
+.folderListview tr:nth-child(even){
+    background-color: #FBF7E6;
+}
+.customTableStyle table {
+    border-collapse: separate;
+    width: 100%;
+    border: none;
+    border-spacing: 0 10px;
+}
+.customTableStyle td:first-child,
+.customTableStyle th:first-child {
+    border-radius: 10px 0 0 10px;
+}
+.customTableStyle td:last-child,
+.customTableStyle th:last-child {
+    border-radius: 0 10px 10px 0;
+}
+/* Table style end */
+.clickArrowAction {
+    transform: rotate(180deg); 
+    margin-right: 16px; 
+    cursor: pointer;
+    margin: -4px auto 0px;
+    vertical-align: middle;
+}
+span.penvilIcon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+span.penvilIcon svg {
+    display: block;
+    width: 100%;
+}
+.editIcon:hover .penvilIcon {
+    display: inline-block;
+    opacity: 1;
+}
+.renameAssets {
+    border-radius: 10px;
+    background: #ebe9e3;
+    padding: 1px 10px 4px 10px;
+    line-height: 27px;
+    border: 0px;
+    max-width: 210px;
+    width: 100%;
+}
+.actionIcon {
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 0px;
+    display: inline-block;
+}
+.positionRelative {
+    position: relative !important;
+}
+.positionRelative::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.searchBlock button.primary.createSuppliers {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    border: 1px solid #BAB8B2;
+    border-radius: 100px;
+    line-height: 33px;
+    height: 33px;
+    padding: 0px 20px;
+}
+.searchBlock span.positionRelative {
+    width: 60%;
+    display: inline-block;
+}
+.height32 {
+    min-height: 32px;
+}
+::ng-deep .mat-slide-toggle-bar {
+    background-color: #D1CFC9;
+    border-radius: 20px !important;
+    height: 17px !important;
+    width: 32px !important;
+}
+::ng-deep .mat-slide-toggle-thumb-container {
+    width: 12px !important;
+    height: 12px !important;
+    top: 2px !important;
+    left: 2px !important;
+}
+::ng-deep .mat-slide-toggle-thumb {
+    height: 12px !important;
+    width: 12px !important;
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    background-color: #fff;
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: #0E7A53;
+}
+::ng-deep .mat-slide-toggle-label {
+    margin-bottom: 0px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    height: 20px !important;
+}
+::ng-deep .mat-slide-toggle .mat-slide-toggle-ripple {
+    height: 16px !important;
+    width: 16px !important;
+}
+::ng-deep .example-chip-list ::placeholder{
+    color: #645D57 !important;
+}
+::ng-deep .example-chip-list input:focus::placeholder{
+    opacity: 1 !important;
+}
+::ng-deep input.mat-chip-input {
+    width: 70px !important;
+    flex: auto !important;
+    border: 0px;
+    background: transparent;
+}
+::ng-deep .mat-option {
+    line-height: 38px;
+    height: 38px;
+    padding: 0 10px;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+::ng-deep .mat-autocomplete-panel-above .mat-autocomplete-panel {
+    border-radius: 8px !important;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+::ng-deep .mat-autocomplete-panel:not([class*=mat-elevation-z]) {
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 0%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+::ng-deep .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
+    background: rgb(225 187 52);
+}
+::ng-deep .mat-chip-list-wrapper input.mat-input-element, .mat-chip-list-wrapper .mat-standard-chip {
+    margin: 4px;
+}
+::ng-deep .mat-chip.mat-standard-chip {
+    background-color: #E6E2DA;
+    color: #645D57;
+    font-family: 'brownregular';
+}
+::ng-deep .mat-standard-chip {
+    border-radius: 4px !important;
+}
+::ng-deep .mat-chip.mat-standard-chip .mat-chip-remove {
+    color: #645D57;
+    opacity: 1;
+}
+/* ::ng-deep .mat-standard-chip.mat-chip-with-trailing-icon {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 4px;
+    padding-left: 6px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+} */
+.folderListview input {
+    outline: none;
+    border: 0px !important;
+    background: transparent;
+    appearance: none;
+    width: 120px !important;
+}
+.folderListview ::ng-deep mat-form-field {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+.folderListview ::ng-deep mat-form-field::after {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(../../../assets/images/down-arrow.svg) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    z-index: -1;
+}
+.datePicker::placeholder{
+    color: #645D57 !important;
+}
+input.datePicker:focus::placeholder{
+    opacity: 1 !important;
+}
+
+.broader-access-assets .control-group {
+    display: block;
+  }
+  .broader-access-assets .control {
+    display: block;
+    position: relative;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: normal;
+    padding: 0px;
+    padding-left: 34px;
+    border: 0px;
+    margin: 0px 0px 0px;
+    line-height: 20px;
+  }
+  .broader-access-assets .control input {
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    height: 23px;
+    width: 23px;
+    left: 0;
+    top: 0;
+  }
+  .broader-access-assets .control__indicator {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 23px;
+    width: 23px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #1E1B19;
+  }
+  .broader-access-assets .control--radio .control__indicator {
+    border-radius: 50%;
+  }
+  .broader-access-assets .control:hover input ~ .control__indicator,
+  .broader-access-assets .control input:focus ~ .control__indicator {
+    background: #fff;
+  }
+  .broader-access-assets .control input:checked ~ .control__indicator {
+    background: #006845;
+    border-color: #006845;
+  }
+  .broader-access-assets .control:hover input:not([disabled]):checked ~ .control__indicator,
+  .broader-access-assets .control input:checked:focus ~ .control__indicator {
+    background: #006845;
+    border-color: #006845;
+  }
+  .broader-access-assets .control input:disabled ~ .control__indicator{
+    background: #006845;
+    border-color: #006845;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .broader-access-assets .control__indicator:after,
+  .broader-access-assets .control__indicator:before {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+  .broader-access-assets .control input:checked ~ .control__indicator:after,
+  .broader-access-assets .control input ~ .control__indicator:before {
+    display: block;
+  }
+  .broader-access-assets .control--checkbox .control__indicator:after,
+  .broader-access-assets .control--checkbox .control__indicator:before {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .broader-access-assets .control--checkbox .control__indicator:before {
+    border-color: #fff;
+  }
+  .broader-access-assets .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #7b7b7b;
+  }
+  .broader-access-assets .control--radio .control__indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .broader-access-assets .control--radio input:disabled ~ .control__indicator:after {
+    background: #7b7b7b;
+  }
+
+  .folderListview ul li {
+    float: left;
+    padding: 0px 10px;
+  }
+  .folderListview ul li .broader-access-assets .control__indicator {
+    height: 17px;
+    width: 17px;
+    border-radius: 6px;
+  }
+  .folderListview ul li .broader-access-assets .control {
+    font-size: 13px;
+    padding-left: 24px;
+    line-height: 17px;
+  }
+  .folderListview ul li .broader-access-assets .control--checkbox .control__indicator:after, 
+  .folderListview ul li .broader-access-assets .control--checkbox .control__indicator:before {
+    left: 5px;
+    top: 3px;
+    width: 5px;
+    height: 8px;
+  }
+.backBtn {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    font-family: 'brownlight';
+}
+.backBtn span {
+    cursor: pointer;
+    color: #BAB8B2;
+}
+.backBtn svg {
+    width: 7px;
+    margin-right: 4px;
+    vertical-align: -1px;
+}
+
+/* input.resizable {
+    min-width:50px!important;
+    max-width:99.99%!important;
+    transition: width 0.25s;
+    text-align:center;
+} */
+.input-resizable {
+    max-width: 90%;
+    display: inline-grid;
+    vertical-align: top;
+    align-items: center;
+    position: relative;
+    margin-top: -2px;
+    margin-left: -10px;
+}
+.input-resizable::after,
+.input-resizable input {
+    width: auto;
+    min-width: 1em;
+    grid-area: 1 / 2;
+    font: inherit;
+    margin: 0;
+    resize: none;
+    background: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: auto;
+    border: 0px;
+    border-radius: 10px;
+    background: #FBF7E6;
+    padding: 0px 10px 4px 10px;
+    line-height: normal;
+    font-weight: normal;
+}
+.input-resizable::after {
+    content: attr(data-value) " ";
+    visibility: hidden;
+    white-space: pre-wrap;
+}
+.renameUserIcon {
+    margin-left: 10px;
+    cursor: pointer;
+    vertical-align: -2px;
+    width: 20px;
+}
+
+.input-resizable input::placeholder{
+    color: #040404 !important;
+}
+.input-resizable input:focus::placeholder{
+    opacity: 1 !important;
+}
+.userActionIcon {
+    display: inline-block;
+    width: 80px;
+}
+.userActionIcon svg {
+    cursor: pointer;
+    margin-left: 20px;
+    margin-top: -7px;
+}
+.externalUser h2.removeExtraSpace {
+    padding-bottom: 15px;
+}
