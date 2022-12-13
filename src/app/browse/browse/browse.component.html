@@ -157,7 +157,7 @@
             <div class="folderOwnerRed">
               <span>Your request has been rejected by the folder owner.</span>
             </div>
-            
+
           </div> -->
 
 
@@ -248,8 +248,8 @@
                   <span *ngIf="renameFolderName && showLinkCopy" style="align-items: center;">
 
                     <div class="input-renamer" #wrapper>
-                      <input type="text" size="{{newTitle.length}}" 
-                      (input)="onInput($event)" value="{{selectedFolder?.title}}" 
+                      <input type="text" size="{{newTitle.length}}"
+                      (input)="onInput($event)" value="{{selectedFolder?.title}}"
                       [(ngModel)]="newTitle"
                       (keyup.enter)="renameFolder()" autocomplete="off"
                       onInput="this.parentNode.dataset.value = this.value" placeholder="{{selectedFolder?.title}}">
@@ -726,7 +726,7 @@
                       </span>
                     </div>
                   </li>
-                  <li *ngIf="count < 1 && !checkExternalUser()">
+                  <li *ngIf="count < 1">
                     <div class="buttonCreate tollTipWorkspace" >
                       <a
                         href="javascript:void(0)"
@@ -1434,7 +1434,7 @@
                             height: auto;
                             white-space: break-spaces;
                             text-align: left;
-                            padding: 5px 10px;"> 
+                            padding: 5px 10px;">
                               This is a private folder
                             </div>
                           </div>
