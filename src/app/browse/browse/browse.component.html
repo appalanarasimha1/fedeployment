@@ -735,7 +735,7 @@
                       </span>
                     </div>
                   </li>
-                  <li *ngIf="count < 1 && !(!isPrivateFolder() && checkExternalUser())">
+                  <li *ngIf="!(!isPrivateFolder() && checkExternalUser())">
                     <div class="buttonCreate tollTipWorkspace" >
                       <a
                         href="javascript:void(0)"
@@ -819,7 +819,7 @@
                           </span>
                         </div> -->
 
-                        <div class="col-xl-12" *ngIf="!isPrivateFolder() && !permissionChange">
+                        <div class="col-xl-12" *ngIf="!isPrivateFolder(true, true) && !permissionChange">
                           <div class="folderType">
                             <label>Folder type</label>
 
