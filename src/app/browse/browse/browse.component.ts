@@ -165,7 +165,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUser: string[] = [];
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
-  permissionChange:boolean=false
+  permissionChange:boolean=false;
+  accessDenied = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -219,7 +220,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       if (sectorName && folderId && folderId !== ROOT_ID) {
 
-        await this.fetchBreadCrumbByAssetsUId(folderId);
+        const res = await this.fetchBreadCrumbByAssetsUId(folderId);
+        if (!res) return;
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
@@ -544,6 +546,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   // }
 
   handleViewClick(item, index) {
+    this.accessDenied = false;
     this.handleClickNew(item.uid);
     this.paginator.firstPage();
     this.searchBarValue = "";
@@ -693,11 +696,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     //   return this.folderAssetsResult[id];
     // }
     const url = `/id/${assetUid}?fetch-acls=username%2Ccreator%2Cextended&depth=children`;
-    const { contextParameters }: any = await this.apiService
-      .get(url)
-      .toPromise();
-    this.extractBreadcrumb(contextParameters);
-    return;
+    try {
+      const { contextParameters }: any = await this.apiService
+        .get(url)
+        .toPromise();
+      this.extractBreadcrumb(contextParameters);
+      return true;
+    } catch (err) {
+      if (err && err.status === 403) {
+        this.accessDenied = true;
+        this.loading = false;
+      }
+      return false;
+    }
   }
 
   // async showMore(id: string) {
@@ -1811,7 +1822,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
         this.assetCount = this.assetCount - 1;
-        
+
       }
 
       if (this.count==0) {
@@ -2148,7 +2159,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.openModal()
       }, 300);
-     
+
     }
 
     window.addEventListener("dragenter", function (e) {
@@ -2394,7 +2405,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   renameAsset(){
     let keySort = Object.keys(this.selectedMoveListNew)
     return this.sortedData[keySort[0]].edit = !this.sortedData[keySort[0]]?.edit
-    
+
   }
   selectAllClicked:boolean=false
   rightClickSelectAll(){
@@ -2464,7 +2475,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         // return '../../../assets/images/no-preview.png';
         return '../../../assets/images/no-preview-big.png';
       }
-  
+
       return '../../../assets/images/no-preview-grid.svg';
     }
   }
