@@ -438,9 +438,9 @@ export class SharedService {
     selBox.style.top = "0";
     selBox.style.opacity = "0";
     if(assetType === 'folder') {
-      selBox.value = `${window.location.origin}/workspace/${sectorName}/${assetId}`;
+      selBox.value = encodeURI(`${window.location.origin}/workspace/${sectorName}/${assetId}`);
     } else {
-      selBox.value = `${window.location.origin}/asset-view?assetId=${assetId}`;
+      selBox.value = encodeURI(`${window.location.origin}/asset-view?assetId=${assetId}`);
     }
     document.body.appendChild(selBox);
     selBox.focus();
