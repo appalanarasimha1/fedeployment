@@ -197,7 +197,8 @@ export class AddUserModalComponent implements OnInit {
       await this.sendInviteInternal(this.addedCollaborators[key]);
     }
     for (const key in this.addedExternalUsers) {
-      await this.addPermission(this.addedExternalUsers[key])
+      await this.addPermission(this.addedExternalUsers[key]);
+      await this.sendInviteInternal(this.addedExternalUsers[key]);
     }
     for (const key in this.invitedCollaborators) {
       await this.inviteUser(this.invitedCollaborators[key])
