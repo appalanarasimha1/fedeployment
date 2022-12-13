@@ -1998,6 +1998,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
+        this.onlyPrivate = false
         this.saveState(result);
       }
     });
