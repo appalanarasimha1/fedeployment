@@ -1507,7 +1507,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.isTrashView = false;
     this.sectorSelected = null;
     this.sharedService.toTop();
-    const { entries } = await this.fetchAssets(ROOT_ID, true, PAGE_SIZE_200);
+    let { entries } = await this.fetchAssets(ROOT_ID, true, PAGE_SIZE_200);
+    entries = entries.filter((data:any)=>data?.title?.toLowerCase() !='domain')
+    // console.log("entries",entries)
     this.folderStructure[0]["children"] = entries;
     this.folderStructure[0].isExpand = !isExpand;
     this.searchList = entries;
