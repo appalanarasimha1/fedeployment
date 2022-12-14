@@ -1975,6 +1975,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   async openAddUserModal() {
     if (!this.isAdmin) return;
+    // this.loading = true;
     const folderCollaborators = this.getFolderCollaborators();
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -1989,7 +1990,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
 
     const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
-
+    this.loading = false;
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
         this.saveState(result);
