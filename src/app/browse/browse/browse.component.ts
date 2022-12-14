@@ -166,6 +166,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
   permissionChange:boolean=false
+  whiteLoader: boolean = true;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -1975,7 +1976,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   async openAddUserModal() {
     if (!this.isAdmin) return;
-    // this.loading = true;
+    this.whiteLoader = false;
+    this.loading = true;
     const folderCollaborators = this.getFolderCollaborators();
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -1990,6 +1992,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
 
     const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
+    this.whiteLoader = true;
     this.loading = false;
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
