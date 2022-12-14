@@ -169,6 +169,15 @@
             This folder has been deleted
           </div>
 
+          <div class="no-items" style="color: black;" *ngIf="accessDenied && !selectedFolder">
+            <img
+              src="../../../assets/images/folder-icon.svg"
+              alt="Permission required"
+            />
+            <h2>Permission required</h2>
+            <span>Please contact your NEOM representative to access the folder.</span>
+          </div>
+
           <div *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
             <div class="row">
               <div class="col-xl-7">
@@ -735,7 +744,7 @@
                       </span>
                     </div>
                   </li>
-                  <li *ngIf="!(!isPrivateFolder() && checkExternalUser())">
+                  <li *ngIf="!(!isPrivateFolder(true, true) && checkExternalUser())">
                     <div class="buttonCreate tollTipWorkspace" >
                       <a
                         href="javascript:void(0)"
@@ -1704,7 +1713,7 @@
             ></preview-popup>
           </div>
           <mat-paginator
-            *ngIf="searchList?.length && selectedFolder?.uid !== parentId || isTrashView"
+            *ngIf="searchList?.length && selectedFolder && selectedFolder.uid !== parentId || isTrashView"
             #paginator
             [length]="resultCount"
             [pageSize]="defaultPageSize"
