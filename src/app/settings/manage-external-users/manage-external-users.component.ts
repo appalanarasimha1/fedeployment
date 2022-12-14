@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ApiService } from "../services/api.service";
 import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "src/app/services/shared.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { AddUserPrivateFolderModalComponent } from '../add-user-private-folder-modal/add-user-private-folder-modal.component';
+import { ApiService } from 'src/app/services/api.service';
+import { AddUserPrivateFolderModalComponent } from 'src/app/add-user-private-folder-modal/add-user-private-folder-modal.component';
+
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  selector: 'app-manage-external-users',
+  templateUrl: './manage-external-users.component.html',
+  styleUrls: ['./manage-external-users.component.css']
 })
-export class SettingsComponent implements OnInit {
+export class ManageExternalUsersComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
@@ -189,4 +190,5 @@ export class SettingsComponent implements OnInit {
   //   this.showUserManageSuppliers = false;
   //   this.loading = false;
   // }
+
 }
