@@ -735,7 +735,7 @@
                       </span>
                     </div>
                   </li>
-                  <li *ngIf="!(!isPrivateFolder() && checkExternalUser())">
+                  <li *ngIf="!(!isPrivateFolder(true, true) && checkExternalUser())">
                     <div class="buttonCreate tollTipWorkspace" >
                       <a
                         href="javascript:void(0)"
