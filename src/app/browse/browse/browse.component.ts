@@ -629,6 +629,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
+    this.saveState(this.selectedFolder, index, breadCrumbIndex);
     this.selectedFolder2 = this.selectedFolder;
     this.extractBreadcrumb();
     this.createDynamicSidebarScroll();
