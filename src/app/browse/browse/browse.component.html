@@ -386,7 +386,7 @@
                   </span>
                 </h6>
 
-                <div class="invitePeople">
+                <div class="invitePeople" *ngIf="onlyPrivate">
                   <span>You are the only member of this private folder. <span class="clickEvent" (click)="openAddUserModal()">Invite people</span> to join as folder members.
                   <img src="../../../assets/images/close-icon-workspace.svg" alt="" (click)="onlyPrivateFolder()" /></span>
                 </div>
@@ -833,7 +833,7 @@
                           </span>
                         </div> -->
 
-                        <div class="col-xl-12" *ngIf="!isPrivateFolder(true, true) && !permissionChange">
+                        <div class="col-xl-12" *ngIf="!isPrivateFolder()">
                           <div class="folderType">
                             <label>Folder type</label>
 
