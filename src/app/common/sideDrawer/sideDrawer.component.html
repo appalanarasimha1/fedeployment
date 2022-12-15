@@ -14,7 +14,8 @@
       </svg>
     </div>
     <div class="filter-assets-count">
-      <span (click)="closeModal()">Show {{count()}} assets</span>
+      <span *ngIf="!assetCountLoader" (click)="closeModal()">Show {{assetCount}} assets</span>
+      <span *ngIf="assetCountLoader" (click)="closeModal()" class="upload-loading">fetching...</span>
     </div>
     <div class="filter-form">
       <div class="filter-form-left">

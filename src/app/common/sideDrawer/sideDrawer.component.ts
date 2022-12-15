@@ -96,6 +96,10 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   isOpen = false;
   selectedType: string;
 
+  assetCount: number = 0;
+  assetCountLoader: boolean = false;
+
+
   constructor(
     private nuxeo: NuxeoService,
     private http: HttpClient,
@@ -125,6 +129,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any): void {
     if (changes.inputMetaData.currentValue && Object.keys(changes.inputMetaData.currentValue).length) {
       this.metaData = this.inputMetaData;
+      this.count();
     }
   }
 
@@ -511,12 +516,14 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   }
 
   onCheckDownloadApproval(event) {
+    this.assetCountLoader = true;
     this.searchCriteria['downloadApproval'] = this.downloadApproval;
     this.emitData(this.searchCriteria);
     return;
   }
 
   onCheckIncludePrivate(event) {
+    this.assetCountLoader = true;
     this.searchCriteria['includePrivate'] = this.includePrivate;
     this.emitData(this.searchCriteria);
     return;
@@ -535,15 +542,18 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   // }
 
   count() {
+    this.assetCount = 0;
     if (this.selectedType === 'all') {
-      let total = 0;
+      // let total = 0;
       this.inputMetaData.system_primaryType_agg.extendedBuckets.forEach(b => {
-        total += b.docCount;
+        this.assetCount += b.docCount;
       });
-      return total;
+      this.assetCountLoader = false;
+      return;
     }
     const bucket = this.inputMetaData.system_primaryType_agg.extendedBuckets.find(b => b.key === this.selectedType);
-    return bucket?.docCount || 0;
+    this.assetCount = bucket?.docCount || 0;
+    this.assetCountLoader = false;
   }
 
   closeModal() {
@@ -558,6 +568,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
 
     this.manupulateData(this.inputMetaData, false);
     this.filterSeelectedMimetype(this.searchCriteria.system_mimetype_agg);
+    this.count();
   }
 
   resetFilter() {

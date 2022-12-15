@@ -14,7 +14,9 @@
       >
     </app-sub-header>
 </div>
-<app-side-drawer #advancedFilter
+
+<app-side-drawer 
+  #advancedFilter
   [inputMetaData]="aggregationsMetaData"
   (searchTextOutput)="filters($event)"
   (resetFilterOuput)="resetFilter()">
@@ -22,7 +24,8 @@
 <!-- <app-content [images]="images" [videos]="videos" [audio]="audio" [searchTerm]="searchValue" (searchTextOutput)="searchDocuments($event)"
      (pageCount)="fetchNextPageResults(1, $event)"></app-content> -->
 
-<app-content #documentsView
+<app-content 
+  #documentsView
   [documents]="documents"
   [searchTerm]="searchValue"
   [filters]="filtersParams"
