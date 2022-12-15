@@ -37,27 +37,27 @@ export class ManageExternalUsersComponent implements OnInit {
   ngOnInit(): void {
     this.managedUsers = [];
     this.managedUsersBackUp=[];
-    // this.fetchManagedExternalUsers()
+    this.fetchManagedExternalUsers()
   }
 
-  // async fetchManagedExternalUsers() {
-  //   this.backToUserList();
-  //   const body = {
-  //     context: {},
-  //     params: {},
-  //   };
-  //   this.loading = true;
-  //   const res = await this.apiService.post(apiRoutes.GET_MANAGED_EXT_USERS, body).toPromise();
-  //   this.managedUsersMap = res['value'] || {};
-  //   this.loading = false;
-  //   this.showUserSettingPage = true;
-  //   this.showUserManageSuppliers = false;
-  //   this.showUserManageLocations = false;
-  //   if (this.managedUsersMap) {
-  //     this.managedUsers = Object.keys(this.managedUsersMap);
-  //     this.managedUsersBackUp = Object.keys(this.managedUsersMap);
-  //   }
-  // }
+  async fetchManagedExternalUsers() {
+    this.backToUserList();
+    const body = {
+      context: {},
+      params: {},
+    };
+    this.loading = true;
+    const res = await this.apiService.post(apiRoutes.GET_MANAGED_EXT_USERS, body).toPromise();
+    this.managedUsersMap = res['value'] || {};
+    this.loading = false;
+    this.showUserSettingPage = true;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    if (this.managedUsersMap) {
+      this.managedUsers = Object.keys(this.managedUsersMap);
+      this.managedUsersBackUp = Object.keys(this.managedUsersMap);
+    }
+  }
 
   openEditUserAccess(user) {
     this.showUserSettingPage = false;
@@ -68,16 +68,16 @@ export class ManageExternalUsersComponent implements OnInit {
     this.showUserManageLocations = false;
   }
 
-  // backToUserList() {
-  //   this.showUserSettingPage = true;
-  //   this.showUserAccessPage = false;
-  //   this.currentEditingUser = null;
-  //   this.currentUserFolderList = [];
-  //   this.managedUsers = this.managedUsersBackUp;
-  //   this.showUserManageSuppliers = false;
-  //   this.showUserManageLocations = false;
-  //   this.showUserAccessPage = false;
-  // }
+  backToUserList() {
+    this.showUserSettingPage = true;
+    this.showUserAccessPage = false;
+    this.currentEditingUser = null;
+    this.currentUserFolderList = [];
+    this.managedUsers = this.managedUsersBackUp;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    this.showUserAccessPage = false;
+  }
 
   async removeAllAccess(user) {
     const folders = this.managedUsersMap[user] || [];
