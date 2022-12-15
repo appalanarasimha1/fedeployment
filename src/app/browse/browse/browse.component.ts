@@ -1238,7 +1238,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       } else {
         this.selectedFolder.childType = ORDERED_FOLDER;
       }
-
+      if(this.isPrivateFolder()){
+        this.checkboxIsPrivate = true
+      }
       const payload = await this.sharedService.getCreateFolderPayload(
         folderName?.trim(),
         this.selectedFolder2.title,
@@ -2004,6 +2006,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   isPrivateFolder(isButton = true, includeChild = false) {
+    this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
+    if(this.permissionChange) return true
     if (!this.hasInheritAcl() && !includeChild) return false;
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
 
