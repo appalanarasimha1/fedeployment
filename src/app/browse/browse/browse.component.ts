@@ -166,7 +166,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
   permissionChange:boolean=false
-  onlyPrivate:boolean = true;
+  onlyPrivate:boolean = false;
   accessDenied = false;
   whiteLoader: boolean = true;
 
@@ -1019,7 +1019,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   selectFolder($event, item, i, updateCount = true) {
     console.log('updatecount', updateCount);
-    this.checkCollabAndPrivateFolder()
+    // this.checkCollabAndPrivateFolder()
 
     if(this.selectAllClicked) updateCount = true
 
@@ -1774,7 +1774,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
-    this.checkCollabAndPrivateFolder()
+    // this.checkCollabAndPrivateFolder()
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
       return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
@@ -2453,7 +2453,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   contextMenuPosition = { x: '0px', y: '0px' };
 
   onContextMenu(event: MouseEvent, item: any) {
-    this.checkCollabAndPrivateFolder()
+    // this.checkCollabAndPrivateFolder()
     if(!this.checkGeneralFolder(item) && !this.isTrashView) {
       event.preventDefault();
       this.contextMenuPosition.x = event.clientX + 'px';
@@ -2553,14 +2553,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkCollabAndPrivateFolder(cancel?:boolean){
-    // if(cancel) return false
     let collabs = this.getFolderCollaborators()
     if(!collabs) return false 
     console.log(Object.keys(collabs))
     let checkCollabs = Object.keys(collabs)?.length < 2
     this.onlyPrivate = checkCollabs && this.isPrivateFolder()
-    // return this.onlyPrivate
-  }
+   }
 
   onlyPrivateFolder() {
     this.onlyPrivate = !this.onlyPrivate;
