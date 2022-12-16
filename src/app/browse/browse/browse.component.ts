@@ -630,6 +630,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
+    this.checkCollabAndPrivateFolder()
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.saveState(this.selectedFolder, index, breadCrumbIndex);
@@ -637,6 +638,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.extractBreadcrumb();
     this.createDynamicSidebarScroll();
     this.loading = false;
+
   }
 
   async fetchFolder(id) {
@@ -2130,6 +2132,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.showSearchbar = true;
     this.showLinkCopy = false;
     this.breadCrumb = [];
+    this.checkCollabAndPrivateFolder()
   }
 
   isExternalUser() {
