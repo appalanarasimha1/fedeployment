@@ -574,8 +574,8 @@ export class UploadModalComponent implements OnInit {
     this.assetCache[uid]["contextParameters"] = contextParameters;
     return this.assetCache[uid]["entries"];
   }
-
   async uploadFile(files) {
+    console.log('testUpload');
     if (!this.batchId) {
       await this.createBatchUpload();
     }

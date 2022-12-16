@@ -3818,6 +3818,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 }
 .copyedBlock {
   width: auto;
+  max-width: 100px;
   line-height: normal;
   vertical-align: middle;
   margin-left: 0px;
@@ -3826,6 +3827,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
   white-space: nowrap;
   text-align: left;
   padding: 3px 10px 5px;
+  float: right;
 }
 .copyHover {
   position: relative;
