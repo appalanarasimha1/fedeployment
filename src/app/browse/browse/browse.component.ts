@@ -169,6 +169,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   onlyPrivate:boolean = false;
   accessDenied = false;
   whiteLoader: boolean = false;
+  transparentLoader: boolean = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -2002,6 +2003,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   async openAddUserModal() {
     if (!this.isAdmin) return;
     this.whiteLoader = true;
+    this.transparentLoader = true;
     // this.loading = true;
     const folderCollaborators = this.getFolderCollaborators();
     const dialogConfig = new MatDialogConfig();
@@ -2018,6 +2020,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
     const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
     this.whiteLoader = false;
+    this.transparentLoader = false;
     // this.loading = false;
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {

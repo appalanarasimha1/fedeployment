@@ -390,8 +390,10 @@
                   </span>
                 </h6>
 
-                <div class="invitePeople" *ngIf="onlyPrivate">
-                  <span>You are the only member of this private folder. <span class="clickEvent" (click)="openAddUserModal()">Invite people</span> to join as folder members.
+                <div *ngIf="onlyPrivate" class="invitePeople" style="position: relative;">
+                  <span>You are the only member of this private folder. <span class="clickEvent" (click)="openAddUserModal()" [ngClass]="{'textDIsable' : transparentLoader}">
+                    Invite people
+                  </span> to join as folder members.
                   <img src="../../../assets/images/close-icon-workspace.svg" alt="" (click)="onlyPrivateFolder()" /></span>
                 </div>
 
