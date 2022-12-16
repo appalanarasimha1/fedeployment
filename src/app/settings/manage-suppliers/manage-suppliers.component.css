@@ -94,6 +94,7 @@
 }
 .folderListview td, th{
     padding: 10px;
+    white-space: nowrap;
 }
 .folderListview tr td:th-child(1) p{
     text-align: left !important
@@ -148,12 +149,12 @@ span.penvilIcon svg {
 }
 .renameAssets {
     border-radius: 10px;
-    background: #ebe9e3;
+    background: #ebe9e3 !important;
     padding: 1px 10px 4px 10px;
     line-height: 27px;
     border: 0px;
-    max-width: 210px;
-    width: 100%;
+    /* max-width: 210px !important; */
+    width: 81% !important;
 }
 .actionIcon {
     width: 30px;
@@ -251,7 +252,7 @@ span.penvilIcon svg {
     background: rgb(225 187 52);
 }
 ::ng-deep .mat-chip-list-wrapper input.mat-input-element, .mat-chip-list-wrapper .mat-standard-chip {
-    margin: 4px;
+    margin: 0px;
 }
 ::ng-deep .mat-chip.mat-standard-chip {
     background-color: #E6E2DA;
@@ -273,7 +274,7 @@ span.penvilIcon svg {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
 } */
-.folderListview input {
+.folderListview > input {
     outline: none;
     border: 0px !important;
     background: transparent;
@@ -502,4 +503,10 @@ input.datePicker:focus::placeholder{
 }
 .externalUser h2.removeExtraSpace {
     padding-bottom: 15px;
+}
+.folderListview ::ng-deep mat-form-field::after {
+    background: transparent !important;
+}
+.renameEmail {
+    min-width: 270px;
 }

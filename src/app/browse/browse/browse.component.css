@@ -4571,3 +4571,40 @@ button.sendRequest {
   text-decoration: underline;
   cursor: pointer;
 }
+.publishingAssets .table-bordered>thead>tr>th, 
+.publishingAssets .table-bordered>tbody>tr>th, 
+.publishingAssets .table-bordered>tfoot>tr>th, 
+.publishingAssets .table-bordered>thead>tr>td, 
+.publishingAssets .table-bordered>tbody>tr>td, 
+.publishingAssets .table-bordered>tfoot>tr>td
+.publishingAssets .table.table-bordered {
+  border: 1px solid #AFD9FF;
+}
+.publishingAssets .table-bordered>tbody>tr>td {
+  border-left: 0px;
+  color: #0072A2;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'brownlight';
+}
+.publishingAssets .table-bordered {
+  border: 0px;
+  margin-bottom: 8px;
+}
+.publishingAssets tbody tr:hover {
+  background-color: transparent;
+}
+.positionRelative {
+  position: relative !important;
+}
+::ng-deep app-loader-small .text-center {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fff !important;
+  border-radius: 20px;
+  top: 0px;
+  right: -4px;
+  padding: 15px;
+}

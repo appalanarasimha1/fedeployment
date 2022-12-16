@@ -139,7 +139,7 @@
           class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"
           style="min-height: 100vh"
         >
-          <app-loader [show]="loading" [hasOverlay]="whiteLoader"></app-loader>
+          <app-loader [show]="loading"></app-loader>
 
           <!-- <div class="permissionRequired">
             <div class="folderImg">
@@ -321,9 +321,13 @@
                       <div class="customToolTipWorkspace">Manage Access</div>
                     </li>
                     <li *ngIf="isPrivateFolder() && isAdmin" class="tollTipWorkspace">
-                      <svg width="23" height="23" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="isAdmin ? 'classificationsIcon manageUsers' : 'classificationsIcon-disabled manageUsers'" (click)="openAddUserModal()">
-                        <path d="M0 21C0 18.8783 0.842855 16.8434 2.34315 15.3431C3.84344 13.8429 5.87827 13 8 13C10.1217 13 12.1566 13.8429 13.6569 15.3431C15.1571 16.8434 16 18.8783 16 21H14C14 19.4087 13.3679 17.8826 12.2426 16.7574C11.1174 15.6321 9.5913 15 8 15C6.4087 15 4.88258 15.6321 3.75736 16.7574C2.63214 17.8826 2 19.4087 2 21H0ZM8 12C4.685 12 2 9.315 2 6C2 2.685 4.685 0 8 0C11.315 0 14 2.685 14 6C14 9.315 11.315 12 8 12ZM8 10C10.21 10 12 8.21 12 6C12 3.79 10.21 2 8 2C5.79 2 4 3.79 4 6C4 8.21 5.79 10 8 10ZM16.284 13.703C17.6893 14.3359 18.882 15.3612 19.7186 16.6557C20.5552 17.9502 21.0002 19.4587 21 21H19C19.0002 19.844 18.6666 18.7125 18.0391 17.7416C17.4116 16.7707 16.5171 16.0017 15.463 15.527L16.283 13.703H16.284ZM15.596 2.413C16.6035 2.8283 17.465 3.53354 18.071 4.43923C18.6771 5.34492 19.0004 6.41024 19 7.5C19.0004 8.87233 18.4877 10.1952 17.5625 11.2088C16.6374 12.2224 15.3667 12.8535 14 12.978V10.965C14.7409 10.8589 15.4283 10.518 15.9613 9.99246C16.4943 9.4669 16.8447 8.78432 16.9612 8.04493C17.0776 7.30555 16.954 6.5483 16.6084 5.88435C16.2628 5.22041 15.7134 4.68475 15.041 4.356L15.596 2.413Z" fill="#937206"/>
-                      </svg>
+                      <div class="positionRelative">
+                        <!-- <app-loader [show]="whiteLoader" [hasOverlay]="whiteLoader"></app-loader> -->
+                        <app-loader-small [show]="whiteLoader" [hasOverlay]="whiteLoader"></app-loader-small>
+                        <svg width="23" height="23" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="isAdmin ? 'classificationsIcon manageUsers' : 'classificationsIcon-disabled manageUsers'" (click)="openAddUserModal()">
+                          <path d="M0 21C0 18.8783 0.842855 16.8434 2.34315 15.3431C3.84344 13.8429 5.87827 13 8 13C10.1217 13 12.1566 13.8429 13.6569 15.3431C15.1571 16.8434 16 18.8783 16 21H14C14 19.4087 13.3679 17.8826 12.2426 16.7574C11.1174 15.6321 9.5913 15 8 15C6.4087 15 4.88258 15.6321 3.75736 16.7574C2.63214 17.8826 2 19.4087 2 21H0ZM8 12C4.685 12 2 9.315 2 6C2 2.685 4.685 0 8 0C11.315 0 14 2.685 14 6C14 9.315 11.315 12 8 12ZM8 10C10.21 10 12 8.21 12 6C12 3.79 10.21 2 8 2C5.79 2 4 3.79 4 6C4 8.21 5.79 10 8 10ZM16.284 13.703C17.6893 14.3359 18.882 15.3612 19.7186 16.6557C20.5552 17.9502 21.0002 19.4587 21 21H19C19.0002 19.844 18.6666 18.7125 18.0391 17.7416C17.4116 16.7707 16.5171 16.0017 15.463 15.527L16.283 13.703H16.284ZM15.596 2.413C16.6035 2.8283 17.465 3.53354 18.071 4.43923C18.6771 5.34492 19.0004 6.41024 19 7.5C19.0004 8.87233 18.4877 10.1952 17.5625 11.2088C16.6374 12.2224 15.3667 12.8535 14 12.978V10.965C14.7409 10.8589 15.4283 10.518 15.9613 9.99246C16.4943 9.4669 16.8447 8.78432 16.9612 8.04493C17.0776 7.30555 16.954 6.5483 16.6084 5.88435C16.2628 5.22041 15.7134 4.68475 15.041 4.356L15.596 2.413Z" fill="#937206"/>
+                        </svg>
+                      </div>
                       <!-- <img src="../../../assets/images/user-icon.svg" alt="" /> -->
                       <div class="customToolTipWorkspace">Manage users</div>
                     </li>
@@ -444,9 +448,12 @@
                   </li>
                   <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal(false)"> <!-- *ngIf="!isTrashView && count > 0" -->
                     <div class="moveFolderImg tollTipWorkspace">
-                      <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
+                      <!-- <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
                         <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg> -->
+                      <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
+                        <path d="M4 4V1C4 0.734784 4.10536 0.48043 4.29289 0.292893C4.48043 0.105357 4.73478 0 5 0H17C17.2652 0 17.5196 0.105357 17.7071 0.292893C17.8946 0.48043 18 0.734784 18 1V15C18 15.2652 17.8946 15.5196 17.7071 15.7071C17.5196 15.8946 17.2652 16 17 16H14V19C14 19.552 13.55 20 12.993 20H1.007C0.875127 20.0008 0.744397 19.9755 0.622322 19.9256C0.500247 19.8757 0.389233 19.8022 0.295659 19.7093C0.202084 19.6164 0.127793 19.5059 0.0770543 19.3841C0.0263156 19.2624 0.000129374 19.1319 0 19L0.00300002 5C0.00300002 4.448 0.453 4 1.01 4H4ZM1.5 5.5V18.5H12.5V5.5H1.5ZM5.5 4H13C13.5523 4 14 4.44772 14 5V14.5H16.5V1.5H5.5V4Z" fill="#937206"/>
                       </svg>
                       <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Copy</div>
                     </div>
@@ -855,17 +862,33 @@
                               <div class="col-xl-12 mb-10">
                                 <div class="publishingAssets" *ngIf="publishingAssets">
                                   <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
-                                  <ul>
+                                  <table class="table table-bordered">
+                                    <tbody>
+                                       <tr>
+                                          <td style="padding-left: 0px; white-space: nowrap;">Discoverable from search</td>
+                                          <td style="border-right: 0px; font-family: 'brownregular';">Yes</td>
+                                       </tr>
+                                       <tr>
+                                          <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
+                                          <td style="border-right: 0px; font-family: 'brownregular';">Set per asset <br />("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</td>
+                                       </tr>
+                                       <tr>
+                                          <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
+                                          <td style="border-right: 0px;font-family: 'brownregular';">No</td>
+                                       </tr>
+                                    </tbody>
+                                  </table>
+                                  <!-- <ul>
                                     <!-- <li>
                                       <span class="leftCont">Discoverable from search:</span> <span class="rightCont">Yes</span>
-                                    </li> -->
+                                    </li> -/->
                                     <li>
                                       <span class="leftCont">Access and Usage:</span> <span class="rightCont">Set per asset ("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</span>
                                     </li>
                                     <li>
                                       <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">No</span>
                                     </li>
-                                  </ul>
+                                  </ul> -->
                                 </div>
 
                                 <div class="publishingAssets" *ngIf="publishingPrivateAssets">
@@ -1595,10 +1618,10 @@
                           </li>
                           <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove(false)">
                             <a href="javascript:void(0);">
-                            <span><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
-                              <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg></span> Copy</a>
+                            <span><svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
+                              <path d="M4 4V1C4 0.734784 4.10536 0.48043 4.29289 0.292893C4.48043 0.105357 4.73478 0 5 0H17C17.2652 0 17.5196 0.105357 17.7071 0.292893C17.8946 0.48043 18 0.734784 18 1V15C18 15.2652 17.8946 15.5196 17.7071 15.7071C17.5196 15.8946 17.2652 16 17 16H14V19C14 19.552 13.55 20 12.993 20H1.007C0.875127 20.0008 0.744397 19.9755 0.622322 19.9256C0.500247 19.8757 0.389233 19.8022 0.295659 19.7093C0.202084 19.6164 0.127793 19.5059 0.0770543 19.3841C0.0263156 19.2624 0.000129374 19.1319 0 19L0.00300002 5C0.00300002 4.448 0.453 4 1.01 4H4ZM1.5 5.5V18.5H12.5V5.5H1.5ZM5.5 4H13C13.5523 4 14 4.44772 14 5V14.5H16.5V1.5H5.5V4Z" fill="#937206"/>
+                              </svg>
+                            </span> Copy</a>
                           </li>
                           <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove(true)">
                             <a href="javascript:void(0);">

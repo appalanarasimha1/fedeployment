@@ -201,6 +201,7 @@ export class ManageSuppliersComponent implements OnInit {
       users: supplier.properties["supplier:supplierUsers"],
       activated: supplier.properties["supplier:activated"],
       supportEmail: supplier.properties["supplier:supportEmail"],
+      renameEmail : false,
     }));
   }
 
@@ -277,7 +278,7 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   renameEmailClick(saved=false, email?, index?){
-    this.renameEmail = !this.renameEmail;
+    // this.renameEmail = !this.renameEmail;
     if (!saved) return;
     this.updateDocument(this.supplierList[index].uid, {properties: {"supplier:supportEmail": email}})
   }
