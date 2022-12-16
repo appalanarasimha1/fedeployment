@@ -4294,7 +4294,7 @@ ul.uploadAssetsClassifications li.edit-icon:hover path {
   vertical-align: middle; 
   position: relative; 
   z-index: 99;
-  width: calc(100% - 30px);
+  max-width: calc(100% - 30px);
 }
 .workspaeName .tolltipContent {
   top: 28px;
@@ -4372,7 +4372,7 @@ span.addVerticalAlignMiddle {
 }
 .itemTitleContent {
   /* width: calc(100% - 30px); */
-  width: 100%;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   height: 20px;
