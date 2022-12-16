@@ -48,13 +48,13 @@
     line-height: 25px;
     color: #000;
   }
-  .search-bar::placeholder{
-    font-weight: 100;
-  }
+.search-bar::placeholder{
+  font-weight: 100;
+}
   
 .positionRelative input.search-bar::placeholder{
-    color: #413E3C !important;
-  }
+  color: #413E3C !important;
+}
   
 .makeAdminBlock {
     padding: 0px 0px 20px;
@@ -521,4 +521,9 @@ tr.groupFolder td:first-child {
     height: 20px;
   }
   
-  
+.externalUser .searchBlock input.search-bar::placeholder{
+    color: #040404 !important;
+}
+.externalUser .searchBlock input:focus::placeholder{
+    opacity: 1 !important;
+}
