@@ -308,6 +308,7 @@ export class ManageSuppliersComponent implements OnInit {
     const modalDialog = this.matDialog.open(CreateSupplieModalComponent, dialogConfig);
 
     modalDialog.afterClosed().subscribe((result) => {
+      this.matDialog.closeAll()
       if (result) {
         this.getSupplierList();
       }

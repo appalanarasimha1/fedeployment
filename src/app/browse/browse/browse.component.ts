@@ -2033,15 +2033,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   isPrivateFolder(isButton = true, includeChild = false) {
     this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
     if(this.permissionChange) return true
-    if (!this.hasInheritAcl() && !includeChild) return false;
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
 
     const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
     if (isButton) return isPrivate;
+    if (!this.hasInheritAcl() && !includeChild) return false;
     const currentCollaborators = this.getFolderCollaborators();
     this.isAdmin = this.hasAdminPermission(currentCollaborators);
     return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
+
+  
 
   hasNoOtherCollaborators(currentCollaborators) {
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return true;
@@ -2560,7 +2562,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     if(!collabs) return false 
     console.log(Object.keys(collabs))
     let checkCollabs = Object.keys(collabs)?.length < 2
-    this.onlyPrivate = checkCollabs && this.isPrivateFolder()
+    this.onlyPrivate = checkCollabs && this.isPrivateFolder() && this.isAdmin
    }
 
   onlyPrivateFolder() {
