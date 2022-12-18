@@ -71,7 +71,7 @@ export class UploadModalComponent implements OnInit {
 
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     // this.showPopup(2,event);
-    event.stopPropagation()  
+    event.stopPropagation()
   }
 
   isLinear = true;
@@ -650,7 +650,7 @@ export class UploadModalComponent implements OnInit {
             const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
             console.log("i = ", i, " | j = ", j);
             promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
-            
+
             console.log("chunkIndex = ", chunkIndex);
             chunkIndex += 1;
             if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
@@ -774,7 +774,7 @@ export class UploadModalComponent implements OnInit {
     this.folderNameParam = "";
     this.selectedFolder = null;
     // this.showCustomDropdown = true;
-    
+
   }
 
   focusOutDropdown() {
@@ -1146,7 +1146,7 @@ export class UploadModalComponent implements OnInit {
       context: {},
       input: asset.uid,
     };
-    this.apiService.post(apiRoutes.ATTACH_LARGE_FILE + "/@async", payload).toPromise();
+    this.apiService.post(apiRoutes.ATTACH_LARGE_FILE, payload).toPromise();
   }
 
   async setAssetPermission(asset, index) {
