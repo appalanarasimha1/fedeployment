@@ -1,5 +1,9 @@
 <div *ngIf="openInModal">
   <ng-template #preview let-modal class="imgPopUpTab">
+    <div class="fullSIzeImg" *ngIf="fullSIzeImg" (click)="clickFullsizeImg()">
+      <!-- <img src="../../assets/images/close-modal.svg" style="width: 20px; position: absolute; top: 10px; right: 10px; height: auto;"> -->
+      <img [src]="getAssetUrl(null, docUrl)" alt="" />
+    </div>
     <!-- <div class="modal-header">
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = '';showAllComments=false">
         <span aria-hidden="true">&times;</span> -/->
@@ -140,7 +144,8 @@
       <div class="popupTabSec" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess()}">
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
-          <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
+          <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" />
+          <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" (click)="clickFullsizeImg()" />
           <!-- ../../../assets/images/no-preview.png -->
           <img *ngIf="checkMimeType(doc) === 'nopreview'" [ngClass]="{'nopreviewClass' : checkMimeType(doc) === 'nopreview'}" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;background-color: #fbf7e6;" />
         </div>
