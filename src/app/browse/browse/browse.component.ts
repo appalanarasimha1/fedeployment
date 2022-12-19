@@ -2285,10 +2285,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async openMoveModal(move=true) {
-    const listDocs = Object.values(this.selectedMoveList)
-    .filter( item => !this.checkDownloadPermission(item))
+    // const listDocs = Object.values(this.selectedMoveList)
+    // .filter( item => !this.checkDownloadPermission(item))
 
-    if (!listDocs.length) return this.moveModalFailed()
+    // if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
