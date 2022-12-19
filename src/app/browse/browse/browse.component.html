@@ -75,17 +75,7 @@
 
           <div *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
             <div class="row">
-              <div class="col-xl-7">
-                <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
-                  <div style="position: relative;">
-                    <form autocomplete="off" style="position: relative;">
-                      <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
-                      <input #workspaceSearch [(ngModel)]="searchBarValue" name="searchBar" (focus)="initWorkspaceSearch()" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar" autocomplete="off"> <!--[(ngModel)]="searchBarValue" (ngModelChange)="searchFolders($event)"-->
-                      <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; getWorkspaceFolders(selectedFolder.uid, 1)" src="../assets/images/circle-close.png" class="placeholder-search">
-                    </form>
-                  </div>
-                </div>
-              </div>
+              <!--  -->
               <div class="col-xl-5">
                 <div style="float: right; position: relative">
                   <div class="deleted-by-me" *ngIf="isTrashView">
