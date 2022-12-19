@@ -2312,22 +2312,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return false
   }
 
-  checkEnableMoveButton() {
-    let processAble = []
-    if (Object.keys(this.selectedMoveList).length) {
-       for (const key in this.selectedMoveList) {
-        if(!this.checkDownloadPermission(this.selectedMoveList[key])){
-          processAble.push(true)
-        }
-      }
-    }
-    return processAble.length>0
-  }
+  // checkEnableMoveButton() {
+  //   let processAble = []
+  //   if (Object.keys(this.selectedMoveList).length) {
+  //      for (const key in this.selectedMoveList) {
+  //       if(!this.checkDownloadPermission(this.selectedMoveList[key])){
+  //         processAble.push(true)
+  //       }
+  //     }
+  //   }
+  //   return processAble.length>0
+  // }
 
-  checkEnableMoveButton1() {
-    if (Object.keys(this.selectedMoveList)?.length > 0) {
-      if (this.selectedFolder.properties["dc:isPrivate"]) return false;
-    }
+  checkEnableMoveButton() {
+    // if (Object.keys(this.selectedMoveList)?.length > 0) {
+    //   if (this.selectedFolder.properties["dc:isPrivate"]) return false;
+    // }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
   markIsPrivate(data: IEntry) {
