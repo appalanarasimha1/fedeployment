@@ -84,11 +84,13 @@ export class NuxeoService {
   }
 
   async logout(): Promise<void> {
+    try {
+      await this.http.get('/nuxeo/logout', {}).toPromise();
+    } catch (err) {}
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.nuxeoClient = null;
-    const response = await this.http.get(`${this.baseUrl}/nuxeo/logout`);
-    return;
+    document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
   }
 
   async authenticateUser(username: string, password: string) {
@@ -178,7 +180,7 @@ export class NuxeoService {
     return location;
   }
 
-  createClientWithToken(token, redirect = true) {
+  async createClientWithToken(token, redirect = true) {
     this.nuxeoClient = new Nuxeo({
       baseURL: `${this.baseUrl}/nuxeo/`,
       auth: {
@@ -187,6 +189,13 @@ export class NuxeoService {
       },
       headers: this.defaultHeader
     });
+    try {
+      await this.nuxeoClient.connect();
+    } catch (err) {
+      await this.logout();
+      this.router.navigate(['/login']);
+      return;
+    }
     if(this.router.url === '/login' && redirect) {
       this.router.navigate(['/']);
     }

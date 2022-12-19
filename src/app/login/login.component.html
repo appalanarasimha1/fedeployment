@@ -6,23 +6,24 @@
             <div class="col-xl-12 col-md-12">
                 <h2 class="text-center mb-4">Ground x</h2>
                 <form autocomplete="off" class="signupForm">
-                  <div class="text-center mb-3">
+                  <div class="text-center mb-3" *ngIf="!externalPartnerShow && !contactNeom">
                     <img src="../../assets/images/NEOM_logo.svg" style="width: 60px;">
                   </div>
-                  <div class="mb-3">
+                  <div class="mb-3" *ngIf="!externalPartnerShow && !contactNeom">
                     <button type="button" class="btn btn-primary loginKeycloakBtn" (click)="loginKeycloak()">Login with NEOM account</button>
                   </div>
-                  <div class="text-center">
+                  <div class="text-center" *ngIf="!externalPartnerShow && !contactNeom">
                     <p style="color: #5c5b59;" class="orText">or</p>
                   </div>
-                  <div class="mb-3" *ngIf="!externalPartnerShow">
+                  <div class="mb-3" *ngIf="!externalPartnerShow && !contactNeom">
                     <button type="button" class="btn btn-primary loginKeycloakBtn" (click)="externalPartner()">Login as an external partner or vendor</button>
                   </div>
-                  <div *ngIf="externalPartnerShow">
+                  <div *ngIf="externalPartnerShow && !contactNeom">
+                    <h4><img src="../../assets/images/back-arrow.svg" class="backArrow" (click)="externalPartner()" /> Log in to your account</h4>
                     <p class="externalPartner">Login as an external partner or vendor:</p>
                     <div class="">
-                      <label for="username" class="form-label">Username</label>
-                      <input type="text" class="form-control" id="username" name="username" placeholder="Username" [(ngModel)]="username" >
+                      <label for="username" class="form-label">Email</label>
+                      <input type="text" class="form-control" id="username" name="username" placeholder="Email" [(ngModel)]="username" >
                     </div>
                     <div class="">
                       <label for="pass" class="form-label">Password</label>
@@ -31,12 +32,16 @@
                     <span *ngIf="error" class="error">{{errorMessage}}</span>
                     <div class="mb-4 overflow-hidden">
                       <a [routerLink]="['/forgot-password']" class="floatLeft">Forgot password?</a>
-                      <a [routerLink]="['/signup']" class="floatRight">Create account</a>
+                      <a (click)="contactNeomPage()" class="floatRight">Need an account</a>
                     </div>
 
                     <button type="submit" class="btn btn-primary loginBtn"(click)="login()">Login</button>
-
                     <!-- <button type="button" class="btn btn-primary"(click)="logout()">Logout</button> -->
+                  </div>
+                  <!-- Contact NEOM representative -->
+                  <div *ngIf="contactNeom">
+                    <h4><img src="../../assets/images/back-arrow.svg" class="backArrow" (click)="contactNeomPage()" /> Contact NEOM representative</h4>
+                    <p>To get support on Ground X account creation, please reach out a NEOM representative.</p>
                   </div>
                 </form>
             </div>

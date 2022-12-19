@@ -104,8 +104,8 @@ export class AddUserModalComponent implements OnInit {
     this.externalCollaborators = {};
     this.internalCollaborators = {};
     Object.keys(this.folderCollaborators).forEach(key => {
-      if ((this.folderCollaborators[key].externalUser
-        || this.listExternalUser.includes(key)) || !this.checkTransientNeomEmail(key)) {
+      if (((this.folderCollaborators[key].externalUser
+        || this.listExternalUser.includes(key)) ) && !this.checkTransientNeomEmail(key)) {
         this.externalCollaborators[key] = this.folderCollaborators[key];
       } else {
         this.internalCollaborators[key] = this.folderCollaborators[key];
@@ -197,7 +197,8 @@ export class AddUserModalComponent implements OnInit {
       await this.sendInviteInternal(this.addedCollaborators[key]);
     }
     for (const key in this.addedExternalUsers) {
-      await this.addPermission(this.addedExternalUsers[key])
+      await this.addPermission(this.addedExternalUsers[key]);
+      await this.sendInviteInternal(this.addedExternalUsers[key]);
     }
     for (const key in this.invitedCollaborators) {
       await this.inviteUser(this.invitedCollaborators[key])
@@ -361,7 +362,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   getExternalName(item) {
-    return item.user.id.replace('transient/', '');
+    return item.user.id ? item.user.id.replace('transient/', '') : item.user;
   }
 
   trackByFn(item: any) {
@@ -383,7 +384,9 @@ export class AddUserModalComponent implements OnInit {
           }`.trim(),
         }));
         this.userList = entries;
-        return entries;
+        let unique = Array.from(new Set(entries.map(JSON.stringify))).map((data:any)=>JSON.parse(data))
+        // console.log(Array.from(new Set(entries.map(JSON.stringify))).map((data:any)=>JSON.parse(data)),entries)
+        return unique;
       })
     );
   }

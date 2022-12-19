@@ -236,7 +236,7 @@ export class SearchComponent implements OnInit {
       ],
       "fetch.document": "properties",
       properties: "*",
-      "enrichers.user": "userprofile",
+      // "enrichers.user": "userprofile",
     };
     let url = apiRoutes.SEARCH_PP_ASSETS;
 
@@ -258,13 +258,13 @@ export class SearchComponent implements OnInit {
       case "sectorPage":
         params["sortBy"] = "dc:created";
         params["sortOrder"] = "desc";
-        params["duplicate_show"] = "1";
+        // params["duplicate_show"] = "1";
         if (this.documentsView.sectorSelected) {
           params["sectors"] = `["${this.documentsView.sectorSelected}"]`;
         }
         break;
       default:
-        params["duplicate_show"] = "1";
+        // params["duplicate_show"] = "1";
     }
     if (!url) return;
 
@@ -281,15 +281,19 @@ export class SearchComponent implements OnInit {
       }
       delete params["includePrivate"];
     }
-
-    this.dataService.loaderValueChange(true);
+    console.log("params",params)
+    if (params?.currentPageIndex==0) {
+      this.dataService.loaderValueChange(true);
+    }
+     this.dataService.loaderValueChangeNew(true);
     this.nuxeo.nuxeoClient
-      .request(url, { queryParams: params, headers })
+      .request(url, { queryParams: params })
       .get()
       .then((docs) => {
         this.setData(docs, isShowMore);
         this.getAggregationValues();
         this.dataService.loaderValueChange(false);
+        this.dataService.loaderValueChangeNew(false);
       })
       .catch((error) => {
         console.log("search document error = ", error);
@@ -298,6 +302,7 @@ export class SearchComponent implements OnInit {
           this.getAggregationValues();
           // this.loading = false;
           this.dataService.loaderValueChange(false);
+          this.dataService.loaderValueChangeNew(false);
         }
       });
   }

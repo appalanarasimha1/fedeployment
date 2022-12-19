@@ -41,7 +41,8 @@ padding: unset;
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(92vh - 50px);
+  padding: 20px;
+  /* height: calc(92vh - 50px); */
   /* min-height: 400px; */
 }
 .upload-modal-step {
@@ -338,6 +339,7 @@ color: #FFFFFF;
   background: transparent;
   height: 22px;
   font-size: 20px;
+  cursor: pointer;
 }
 .custom-select-options {
   box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
@@ -586,9 +588,14 @@ font-weight: normal;
   display: block;
   font-size: 15px;
   /* height: 320px !important; */
-  height: calc(92vh - 270px) !important;
+  /* height: calc(92vh - 270px) !important; */
+  min-height: 343px;
   overflow-x: auto;
   margin-right: 24px;
+  height: 100%;
+  margin: 0px auto;
+  padding: 10px;
+  height: 50vh;
 }
 .tooltip1 {
   position: relative;
@@ -1002,8 +1009,9 @@ padding: 10px 18px
 }
 .numberAssets{
   font-size: 13px;
-line-height: 13px;
-color: #737373;
+  line-height: 13px;
+  color: #737373;
+  font-family: 'brownlight';
 }
 
 /* ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
@@ -1297,7 +1305,7 @@ input.copyright-input::placeholder{
   height: 100px;
   filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
   padding: 22px 20px 22px 13px;
-  margin: 30px 0 20px;
+  margin: 20px 0 20px;
   text-align: left;
 }
 .folderHeading {
@@ -1402,7 +1410,8 @@ ul.custom-select-options li span.folderTitleArrow img {
   margin-top: -4px;
 }
 .breadcrumb-folder {padding: 5px 15px;}
-.back-icon {display: inline-block;color: #8f8f8f;font-size: 14px;padding: 10px 2px 0px;}
+.back-icon {display: none;color: #8f8f8f;font-size: 14px;padding: 10px 2px 0px; text-decoration: none;}
+.back-icon.showBackBtn {display: inline-block;}
 .back-icon i {font-size: 20px;vertical-align: -2px;}
 .breadcrumb-folder {color: #8f8f8f;}
 .breadcrumb-folder a {color: #040404;}
@@ -1426,7 +1435,7 @@ a.breadcrumb-not-active {
   cursor: auto;
 }
 .upload-form-input input#title {
-  padding-right: 30px;
+  /* padding-right: 30px; */
 }
 
 .errorMessage {
@@ -1694,6 +1703,7 @@ span.showAllClassifications svg.rotateArrow {
   font-size: 14px;
   line-height: 24px;
   font-family: 'brownlight';
+  margin-right: 18px;
 }
 .publishingAssets::after {
   content: '';
@@ -1732,4 +1742,72 @@ span.showAllClassifications svg.rotateArrow {
 }
 .publishingAssets ul li:last-child {
   padding-bottom: 0px;
+}
+
+::ng-deep .cdk-overlay-pane.custom-modalbox {
+  width: 1080px !important;
+  max-width: calc(100vw - 120px) !important;
+  max-height: calc(100vh - 80px) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  position: absolute !important;
+  top: 20px !important;
+  right: 0px !important;
+  left: 0px !important;
+}
+::ng-deep .custom-modalbox .mat-dialog-container {
+  padding: 0px !important;
+  min-height: auto !important;
+  max-height: 100% !important;
+  border-radius: 8px !important;
+}
+
+.newFolderUi {
+  background-image: url(../../assets/images/folder-workspace.svg);
+  background-position: center center;
+  background-size: contain;
+  height: 146px;
+  width: 200px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 40px;
+}
+.newFolderUi .assetName {
+  width: 180px;
+  text-align: left;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.publishingAssets .table-bordered>thead>tr>th, 
+.publishingAssets .table-bordered>tbody>tr>th, 
+.publishingAssets .table-bordered>tfoot>tr>th, 
+.publishingAssets .table-bordered>thead>tr>td, 
+.publishingAssets .table-bordered>tbody>tr>td, 
+.publishingAssets .table-bordered>tfoot>tr>td
+.publishingAssets .table.table-bordered {
+  border: 1px solid #AFD9FF;
+}
+.publishingAssets .table-bordered>tbody>tr>td {
+  border-left: 0px;
+  color: #0072A2;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'brownlight';
+}
+.publishingAssets .table-bordered {
+  border: 0px;
+  margin-bottom: 8px;
+}
+.publishingAssets tbody tr:hover {
+  background-color: transparent;
+}
+.drag-drop.dragDropDate {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }

@@ -157,7 +157,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       },
     ],
   };
-  selectedView = "recentlyViewed";
+  selectedView = "yourFavourites";
   selectedType = "all";
 
   // /* <!-- sprint12-fixes start --> */
@@ -173,6 +173,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   showTagInput = false;
   loading: boolean[] = [];
   innerLoading: boolean[] = [];
+  innerLoadingNew: boolean[] = [];
   modalLoading = false;
   sectors: string[] = [];
   sectorSelected;
@@ -242,7 +243,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.getFavorites();
     // this.getTrendingAssets();
     this.getAssetBySectors();
-    this.selectTab("recentlyViewed");
+    this.selectTab("yourFavourites");
     this.showRecentlyViewed = true;
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.hasSearchData = true
@@ -258,6 +259,12 @@ export class DocumentComponent implements OnInit, OnChanges {
       // else this.loading.pop();
       if (value) this.innerLoading.push(value);
       else this.innerLoading.pop();
+    });
+    this.dataService.showHideLoaderNew$.subscribe((value) => {
+      // if(value) this.loading.push(value);
+      // else this.loading.pop();
+      if (value) this.innerLoadingNew.push(value);
+      else this.innerLoadingNew.pop();
     });
     // /* <!-- sprint12-fixes start --> */
     this.sharedService.getSidebarToggle().subscribe(() => {
@@ -356,7 +363,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.searchTem = searchTerm;
-      
+
       // this.searchNameCLicked.push(this.sharedService.toStartCase(searchTerm));
     });
     this.dataService.tagsMetaReal$.subscribe((data: any): void => {
@@ -385,7 +392,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.countOfTheme =0
     // this.clearFilter();
     // this.resetView();
-    this.selectTab("recentlyViewed");
+    this.selectTab("yourFavourites");
     this.dataService.searchBarClickInit(false);
     this.dataService.termSearchForHideInit("")
   }
@@ -495,7 +502,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (sector) {
       queryParams["sectors"] = `["${sector}"]`;
     }
-    queryParams["duplicate_show"] = "1";
+    // queryParams["duplicate_show"] = "1";
     if (this.sharedService.checkExternalUser()) {
       queryParams["sa_access"] = "All access";
     }
@@ -505,6 +512,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       .get()
       .then((response) => {
         if (response) {
+          console.log('slider1');
           this.assetsBySector = response.entries ? this.assetsBySector.concat(response?.entries) : [];
           if (dontResetSectors) {
             this.sectorsHomepage = [];
@@ -764,7 +772,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       // fileRenditionUrl = url;
     }
     this.selectedFileUrl =
-      // fileType === "image" ? 
+      // fileType === "image" ?
       this.getAssetUrl(null, fileRenditionUrl, {...file, update:true })
         // : fileRenditionUrl;
     // if(fileType === 'file') {
@@ -1009,7 +1017,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (this.detailView === page) return;
     this.showDetailView = true;
     this.detailView = page;
-    if (page === "recentView") {
+    if (page === "yourFavourites") {
       this.documents = this.createStaticDocumentResults(this.recentlyViewed);
       this.documents["entity-type"] = {};
     }
@@ -1048,6 +1056,8 @@ export class DocumentComponent implements OnInit, OnChanges {
         return "Assets by Sector";
       case "trendingPage":
         return "What’s Trending";
+      case "yourFavourites":
+        return "Your Favorites"
     }
 
     return "";
@@ -1290,9 +1300,9 @@ export class DocumentComponent implements OnInit, OnChanges {
   activeSearchCatalogue(name:string) {
     if(this.searchNameCLicked.indexOf(name) === -1) {
       this.searchNameCLicked.push(name);
-      this.countOfTheme += 1 
+      this.countOfTheme += 1
       this.selectTheme = true
-     
+
     } else {
       this.searchNameCLicked = this.searchNameCLicked.filter(m => m !== name)
       this.selectTheme = false
@@ -1301,7 +1311,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         termArray.pop()
         this.termFinal = termArray.join(" or ")
       }
-      this.countOfTheme -= 1 
+      this.countOfTheme -= 1
     }
     if (!this.hasSearchData) {
       this.termFinal = this.searchNameCLicked.join(" or ")
@@ -1338,13 +1348,13 @@ export class DocumentComponent implements OnInit, OnChanges {
     const lowercaseMime = mimeType.toLowerCase();
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
-      return '../../../assets/images/doc-preveiw.svg';
+      return '../../../assets/images/no-preview-big.png';
     } 
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
-      return '../../../assets/images/ppt-preveiw.svg';
+      return '../../../assets/images/no-preview-big.png';
     }
     if(item.update) {
-      return '../../../assets/images/no-preview.png';
+      return '../../../assets/images/no-preview-big.png';
     }
 
     return '../../../assets/images/no-preview-grid.svg';

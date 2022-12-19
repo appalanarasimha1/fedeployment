@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject } from "@angular/core";
+import { Component, OnInit, ViewChild, Inject, HostListener } from "@angular/core";
 import { HttpEventType, HttpResponse } from "@angular/common/http";
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // import { MatStepper } from "@angular/material/stepper";
@@ -28,7 +28,8 @@ import { ACCESS,
   OWNER_APPROVAL_LABEL,
   WHITELIST_EXTENSIONS,
   YEARS,
-  ACCESS_TITLE} from "./constant";
+  ACCESS_TITLE,
+  ACCESSNEW} from "./constant";
 import { NgbTooltip} from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
@@ -54,7 +55,9 @@ const BUTTON_LABEL = {
   3: "Publish",
 };
 
-const MAX_CHUNK_SIZE = 5 * 100 * 1000 * 1000; // NOTE: this denotes to 500MB
+const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
+const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
+const CONCURRENT_UPLOAD_REQUEST = 5;
 const apiVersion1 = environment.apiVersion;
 
 @Component({
@@ -66,11 +69,17 @@ export class UploadModalComponent implements OnInit {
   @ViewChild(MatHorizontalStepper) stepper: MatHorizontalStepper;
   // @ViewChild('searchFolderInput') searchFolderInputRef: any;
 
+  @HostListener('document:click', ['$event']) onDocumentClick(event) {
+    // this.showPopup(2,event);
+    event.stopPropagation()
+  }
+
   isLinear = true;
   panelOpenState = false;
   readonly ACCESS = ACCESS;
   readonly CONFIDENTIALITY = CONFIDENTIALITY;
   readonly ALLOW = ALLOW;
+  readonly ACCESSNEW = ACCESSNEW;
   readonly ACCESS_LABEL = ACCESS_LABEL;
   readonly ALLOW_LABEL = ALLOW_LABEL;
   readonly CONFIDENTIALITY_LABEL = CONFIDENTIALITY_LABEL;
@@ -156,6 +165,8 @@ export class UploadModalComponent implements OnInit {
   publishingAssets: boolean = true;
   publishingPrivateAssets: boolean = false;
   checkboxIsPrivate: boolean = false;
+  opened: boolean;
+  chunksFailedToUpload = {};
 
   constructor(
     private apiService: ApiService,
@@ -492,12 +503,14 @@ export class UploadModalComponent implements OnInit {
     this.parentFolder = { id, path, type: this.ORDERED_FOLDER };
     const result = await this.getFolderList(id);
     this.folderNameParam = "";
+    this.opened = true;
     if (index === null) {
       this.dropdownFolderList = result.filter(
         (res) => res.type === this.ORDERED_FOLDER || res.type === "Workspace"
       );
       this.folderList = [...this.dropdownFolderList];
       this.breadCrumb.pop();
+      this.opened = true;
       return;
     }
     this.dropdownFolderList =
@@ -561,8 +574,8 @@ export class UploadModalComponent implements OnInit {
     this.assetCache[uid]["contextParameters"] = contextParameters;
     return this.assetCache[uid]["entries"];
   }
-
   async uploadFile(files) {
+    console.log('testUpload');
     if (!this.batchId) {
       await this.createBatchUpload();
     }
@@ -588,8 +601,8 @@ export class UploadModalComponent implements OnInit {
     element.setAttribute("style", attr + background);
   }
 
-  async uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType) {
-    const blob = new Nuxeo.Blob({ content: chunkedBlob });fileType
+  async uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount = 1) {
+    const blob = new Nuxeo.Blob({ content: chunkedBlob });
     const headers = {
       "Cache-Control": "no-cache",
       "X-Upload-Chunk-Index": chunkIndex,
@@ -609,17 +622,8 @@ export class UploadModalComponent implements OnInit {
       method: 'POST',
       body: blob.content
     };
-
-    const res = await fetch(apiVersion1 + uploadUrl, options);
-    if (res.status === 201) {
-      this.setUploadProgressBar(index, 100);
-      $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-      console.log("Upload done");
-    } else {
-      const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
-      console.log(`File is ${percentDone}% loaded.`);
-      this.setUploadProgressBar(index, percentDone);
-    }
+    const apiUrl = apiVersion1 + uploadUrl;
+    await this.uploadChunks(index, chunkIndex, chunkCount, apiUrl, options);
   }
 
   async uploadFileIndex(index, file) {
@@ -630,14 +634,33 @@ export class UploadModalComponent implements OnInit {
     const totalSize = blob.size;
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
-    if (totalSize > 500 * 1000 * 1000) {
+    this.chunksFailedToUpload = {};
+    if (totalSize > MAX_CHUNK_SIZE) {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
+      console.log('total chunk: ' + totalChunk);
       try {
-        for (let i = 0; i < totalChunk; i++) {
-          const chunkedBlob = file.slice(i * MAX_CHUNK_SIZE, (i + 1) * MAX_CHUNK_SIZE);
-          await this.uploadFileChunk(index, uploadUrl, chunkedBlob, i, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType);
+        let promiseArray = [];
+        let chunksToBeSent = totalChunk;
+        let chunkIndex = 0;
+        for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j++) {
+          console.log('value of Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST) = ', Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST));
+          chunksToBeSent = chunksToBeSent % CONCURRENT_UPLOAD_REQUEST === 0 ? CONCURRENT_UPLOAD_REQUEST : totalChunk % CONCURRENT_UPLOAD_REQUEST ;
+          for (let i = 0; i < chunksToBeSent; i++) {
+            const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
+            console.log("i = ", i, " | j = ", j);
+            promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
+
+            console.log("chunkIndex = ", chunkIndex);
+            chunkIndex += 1;
+            if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
+          }
+          if(CONCURRENT_UPLOAD_REQUEST - chunksToBeSent > 0)
+            chunksToBeSent = totalChunk - chunksToBeSent;
+          promiseArray = [];
         }
+        this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+        if (promiseArray.length > 0) await Promise.all(promiseArray);
         this.filesUploadDone[index] = true;
       } catch (err) {
         console.log("Upload Error:", err);
@@ -663,6 +686,7 @@ export class UploadModalComponent implements OnInit {
             console.log(`File is ${percentDone}% loaded.`);
             this.setUploadProgressBar(index, percentDone);
           } else if (event instanceof HttpResponse) {
+            this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
             console.log("File is completely loaded!");
           }
         },
@@ -678,6 +702,49 @@ export class UploadModalComponent implements OnInit {
           console.log("Upload done");
         }
       );
+    }
+  }
+
+  async checkUploadedFileStatusAndUploadFailedChunks(uploadUrl: string) {
+    const fileStatus: any = await this.apiService.get(uploadUrl).toPromise();
+    if(Object.keys(this.chunksFailedToUpload).length) {
+      let promiseArray = [];
+      for(const key in this.chunksFailedToUpload) {
+        if(key.indexOf(fileStatus.uploadedChunkIds) != -1) {
+          continue;
+        }
+        promiseArray.push(this.uploadChunks(key, this.chunksFailedToUpload[key].chunkIndex, this.chunksFailedToUpload[key].chunkCount, this.chunksFailedToUpload[key].apiUrl, this.chunksFailedToUpload[key].options));
+      }
+      await Promise.all(promiseArray.map(p => p.catch(e => e)));
+    }
+    return fileStatus;
+  }
+
+  async uploadChunks(index, chunkIndex, chunkCount, apiUrl: string, options: any) {
+    try {
+      const res = await fetch(apiUrl, options);
+      if (res.status === 201) {
+        // retryCount = 1;
+        this.setUploadProgressBar(index, 100);
+        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+        console.log("Upload done");
+      } else if (res.status === 202) {
+        // retryCount = 1;
+        const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
+        console.log(`File is ${percentDone}% loaded.`);
+        this.setUploadProgressBar(index, percentDone);
+      }  else {
+        // retry upload failed chunk
+        // if (retryCount < 11)
+          // console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+          this.chunksFailedToUpload[chunkIndex] = {chunkIndex, chunkCount, options, apiUrl};
+      }
+    } catch (err) {
+      // retry upload failed chunk
+      // if (retryCount < 11) {
+        // console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+          this.chunksFailedToUpload[chunkIndex] = {chunkIndex, chunkCount, options, apiUrl};
+      // }
     }
   }
 
@@ -706,7 +773,8 @@ export class UploadModalComponent implements OnInit {
     // if(this.data) return;
     this.folderNameParam = "";
     this.selectedFolder = null;
-    this.showCustomDropdown = true;
+    // this.showCustomDropdown = true;
+
   }
 
   focusOutDropdown() {
@@ -744,11 +812,13 @@ export class UploadModalComponent implements OnInit {
     this.descriptionFilled = true;
     this.description = this.selectedFolder.properties["dc:description"];
     this.enableFolderType=false
-    this.checkboxIsPrivate=false
+    this.checkboxIsPrivate=false;
+    this.opened = false;
   }
 
   createFolderOrder(type?: string) {
     this.folderNameParam = "";
+    this.opened = true;
     this.breadCrumb.forEach((element) => {
       this.folderNameParam = `${this.folderNameParam}/${element.title}`;
     });
@@ -774,6 +844,7 @@ export class UploadModalComponent implements OnInit {
     this.disableDateInput = false;
     this.associatedDate = "";
     this.description = "";
+    this.opened = false;
   }
 
   // onSelectConfidentiality(confidentiality, fileIndex?: any) {
@@ -934,6 +1005,9 @@ export class UploadModalComponent implements OnInit {
 
     for(let key in this.filesMap) {
       const asset = await this.createAsset(this.filesMap[key], key, folder);
+      if (this.filesMap[key].size >= MAX_PROCESS_SIZE) {
+        this.attachFileToAsset(asset, key);
+      }
       if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
     }
     // this.calFileManagerApi();
@@ -954,8 +1028,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async createAsset(file, index, folder) {
-
-    const url = `/path${folder.path}`;
+    const url = encodeURI(`/path${folder.path}`);
     let fileType = "File";
     if (file.type?.includes("image/")) {
       fileType = "Picture";
@@ -982,10 +1055,6 @@ export class UploadModalComponent implements OnInit {
       isTrashed: false,
       title: "null",
       properties: {
-        "file:content": {
-          "upload-batch": this.batchId,
-          "upload-fileId": `${index}`,
-        },
         "dc:description": this.description,
         "dc:path": folder.path, //
         "dc:parentId": this.data ? this.data.uid : folder.id,
@@ -1046,6 +1115,12 @@ export class UploadModalComponent implements OnInit {
       ],
       name: file.name,
     };
+    if (file.size < MAX_PROCESS_SIZE) {
+      payload.properties["file:content"] = {
+        "upload-batch": this.batchId,
+        "upload-fileId": `${index}`,
+      }
+    }
     if (this.associatedDate) {
       payload["dc:start"] = new Date(this.associatedDate).toISOString();
     }
@@ -1059,6 +1134,19 @@ export class UploadModalComponent implements OnInit {
       type: res["type"],
       path: res["path"],
     };
+  }
+
+  attachFileToAsset(asset, index) {
+    const params = {
+      "uploadBatch": this.batchId,
+      "uploadFileId": `${index}`,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: asset.uid,
+    };
+    this.apiService.post(apiRoutes.ATTACH_LARGE_FILE, payload).toPromise();
   }
 
   async setAssetPermission(asset, index) {
@@ -1099,7 +1187,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   async createFolder(name, parentFolder?: any, data?: any) {
-    const url = `/path${this.parentFolder.path}`;
+    const url = encodeURI(`/path${this.parentFolder.path}`);
 
     const payload = await this.sharedService.getCreateFolderPayload(
       name,
@@ -1359,5 +1447,9 @@ export class UploadModalComponent implements OnInit {
 
       }
     }
+  }
+  clickOutside() {
+    this.opened = !this.opened;
+    // console.log("clicked outside");
   }
 }

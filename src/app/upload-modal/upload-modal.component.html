@@ -7,10 +7,10 @@
          <ng-template matStepLabel>Select assets</ng-template>
          <!-- <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div> -->
          <div>
-            <ngx-dropzone #drop class="drag-drop" (change)="onSelect($event)" id="customScrollBar" >
+            <ngx-dropzone #drop class="drag-drop" [ngClass]="{'dragDropDate' : !getAssetNumber() }" (change)="onSelect($event)" id="customScrollBar">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
-            <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length">
-               <div class="flexible" style="height: calc(92vh - 273px);justify-content: center;position: relative;">
+            <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length" >
+               <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto">
                   <div class="upload-label">
                      <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
                      <span style="margin-top: 20px; color: #040404; padding-bottom: 10px;"><b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
@@ -133,10 +133,10 @@
                   </ul>
                   <div class="select-workspace">
                      <div class="select-workspace-menu row" style="width: 100%;">
-                        <div class="col-xl-4 col-md-4">
+                        <div class="col-xl-3 col-md-3">
                            <div class="menu-title">Workspace</div>
                         </div>
-                        <div class="col-xl-8 col-md-8">
+                        <div class="col-xl-9 col-md-9">
                            <div class="flexible">
                               <div class="workshaptitle">{{ selectedWorkspace.title || "Select workspace" }}</div>
                               <div class="select-workspace-menu-btn pointer" (click)="showWorkspaceList()">Change workspace</div> <!-- *ngIf="!data"  [ngClass]="{'disableDiv': data}" -->
@@ -165,28 +165,30 @@
             </div>
 
             <div class="row upload-form-input mb-20">
-               <div class="col-xl-4 col-md-4">
+               <div class="col-xl-3 col-md-3">
                   <label for="title">Folder name<br>
                   <span style="font-size: 12px" *ngIf="!data">e.g. Title of project or event</span></label>
                   <div id='custom-select-status' class='hidden-visually' aria-live="polite"></div>
                </div>
-               <div class="col-xl-8 col-md-8 flexible">
+               <div class="col-xl-9 col-md-9 flexible">
                   <!-- <div *ngIf="data" class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div> -->
                   <div  class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}"> <!-- *ngIf="!data"-->
                      <input autocomplete="off" type="text" id="title" #searchFolderInput value="{{sharedService.stringShortener(folderOrder,30)}}"
-                              [(ngModel)]="folderNameParam" (input)="filterFolder($event)" (focus)="focusDropdown()" (focusout)="focusOutDropdown()" class="select-css"  placeholder="Enter a folder name or select an existing folder" > <!-- [disabled]="data"-->
-                     <span class="custom-select-icons">
-                     <i class="fa fa-angle-down"></i>
+                        [(ngModel)]="folderNameParam" (input)="filterFolder($event)"  (click)="opened = !opened" class="select-css"  placeholder="Enter a folder name or select an existing folder" > <!-- (focusout)="focusOutDropdown()" --> <!-- [disabled]="data"-->
+                     <span class="custom-select-icons" (click)="opened = !opened" ><!-- (focusout)="focusOutDropdown()" -->
+                        <i class="fa fa-angle-down"></i>
                      </span>
-                     <ul *ngIf="showCustomDropdown" class="custom-select-options" id="custom-select-list">
+                     <ul class="custom-select-options" id="custom-select-list"
+                     *ngIf="opened" (clickOutside)="clickOutside()">
                         <div class="breadcrumb-folder">
                            <span *ngFor="let folder of breadCrumb; let i = index">
-                              <span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title)">
+                              <span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title); $event.stopPropagation()">
                                  {{sharedService.stringShortener(folder.title,30)}}
                               </a>
                            </span>
                            <div style="display: block; clear: both; height: 1;"></div>
-                           <div *ngIf="breadCrumb.length >= 2" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder.title)"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</div>
+                           <!-- <a *ngIf="breadCrumb.length >= 2" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder?.title)"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</a> -->
+                           <div [ngClass]="{'showBackBtn' : breadCrumb.length >= 2}" class="back-icon" (click)="getFolderByParentId(breadCrumb[breadCrumb?.length - 2].uid, breadCrumb[breadCrumb.length - 2].path, null); removeBreadcrumb(selectedFolder?.title); $event.stopPropagation()"><i class="fa fa-angle-left" aria-hidden="true" ></i> Back</div>
                         </div>
                         <div style="min-height: 52px; max-height: 138px; overflow: auto; margin-bottom: 10px;" id="customScrollBar">
                            <li *ngFor="let folder of dropdownFolderList" class="styled">
@@ -195,7 +197,7 @@
                                  {{folder.title}}
                                  <span *ngIf="folder?.properties['dc:isPrivate']" class="publicUseBlk">Private</span>
                               </div>
-                              <span (click)="getFolderByParentId(folder.uid, folder.path); extractBreadcrumb(folder.contextParameters)" class="folderTitleArrow">
+                              <span (click)="getFolderByParentId(folder.uid, folder.path); extractBreadcrumb(folder.contextParameters); $event.stopPropagation()" class="folderTitleArrow">
                                  <img src="../../assets/images/back-arrow.svg" />
                               </span>
                            </li>
@@ -232,17 +234,17 @@
                </div>
             </div>
             <div class="update-form-input row mb-20">
-               <!-- <div class="col-xl-4 col-md-4"></div> -->
+               <!-- <div class="col-xl-3 col-md-3"></div> -->
                <div  class="col-xl-12 col-md-12">
                   <!-- [ngClass]="{'disableDiv': data}" -->
 
                   <div class="upload-form-input row mb-20" *ngIf="enableFolderType">
-                     <div class="col-xl-4 col-md-4">
+                     <div class="col-xl-3 col-md-3">
                         <label for="title">Folder type</label>
                      </div>
-                     <div class="col-xl-8 col-md-8 folderType"  [ngClass]="{'grayField': descriptionFilled}" >
+                     <div class="col-xl-9 col-md-9 folderType"  [ngClass]="{'grayField': descriptionFilled}" >
                         <div class="row">
-                           <div class="col-xl-3 col-md-3">
+                           <div class="col-xl-2 col-md-2">
                               <div class="row">
                                  <div class="col-xl-12 mb-10">
                                     <label class="control control--checkbox" (change)="handleChange($event, 'published')" style="margin-bottom: 0px; display: inline-block;">
@@ -260,19 +262,37 @@
                                   </div>
                               </div>
                            </div>
-                           <div class="col-xl-9 col-md-9" >
+                           <div class="col-xl-10 col-md-10" >
                               <div class="row">
                                  <div class="col-xl-12 mb-10">
                                     <div class="publishingAssets" *ngIf="publishingAssets">
-                                      <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
-                                      <ul>
+                                       <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
+                                       
+                                       <table class="table table-bordered">
+                                          <tbody>
+                                             <tr>
+                                                <td style="padding-left: 0px; white-space: nowrap;">Discoverable from search</td>
+                                                <td style="border-right: 0px; font-family: 'brownregular';">Yes</td>
+                                             </tr>
+                                             <tr>
+                                                <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
+                                                <td style="border-right: 0px; font-family: 'brownregular';">Set per asset <br />("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</td>
+                                             </tr>
+                                             <tr>
+                                                <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
+                                                <td style="border-right: 0px;font-family: 'brownregular';">No</td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                      
+                                      <!-- <ul>
                                         <li>
                                           <span class="leftCont">Access and Usage:</span> <span class="rightCont">Set per asset ("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</span>
                                         </li>
                                         <li>
                                           <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">No</span>
                                         </li>
-                                      </ul>
+                                      </ul> -->
                                     </div>
        
                                     <div class="publishingAssets" *ngIf="publishingPrivateAssets">
@@ -294,25 +314,25 @@
                   </div>
 
                   <div class="upload-form-input row mb-20">
-                     <div class="col-xl-4 col-md-4">
+                     <div class="col-xl-3 col-md-3">
                         <label for="title">Description <br><span style="font-size: 12px">Project or event description (optional)</span></label>
                      </div>
-                     <div class="col-xl-8 col-md-8"  [ngClass]="{'grayField': descriptionFilled}" >
+                     <div class="col-xl-9 col-md-9"  [ngClass]="{'grayField': descriptionFilled }" >
                         <!-- [ngClass]="{'grayField': descriptionFilled}" -->
-                        <input type="text" [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }" style="width: 95%; margin-top: 26px;" />
+                        <input type="text" [disabled]="descriptionFilled || !enableFolderType" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }" style="width: calc(100% - 20px); margin-top: 26px;" />
                         <!-- <textarea  [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea> -->
                         <!-- [disabled]="descriptionFilled" -->
                      </div>
                   </div>
                   <div class="row upload-form-input custom-date-picker mb-20">
-                     <div class="col-xl-4 col-md-4">
+                     <div class="col-xl-3 col-md-3">
                         <label for="date">Associated Date <br><span style="font-size: 12px">Project or event date (optional)</span></label>
                      </div>
-                     <div class="col-xl-8 col-md-8 flexible" [ngClass]="{'grayField': descriptionFilled}" >
+                     <div class="col-xl-9 col-md-9 flexible" [ngClass]="{'grayField': descriptionFilled }" >
                         <!-- [ngClass]="{'grayField': disableDateInput}" -->
                         <!-- placeholder="Choose a date"  -->
                         <mat-form-field appearance="fill">
-                           <input matInput [disabled]="disableDateInput" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                           <input matInput [disabled]="disableDateInput || !enableFolderType" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
                            [(ngModel)]="associatedDate" (click)="picker.open()"  [ngClass]="{'goldenText': associatedDate}">
                            <!-- [disabled]="disableDateInput" -->
                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -331,18 +351,18 @@
                         </mat-panel-description>
                      </mat-expansion-panel-header>
                      <div class="upload-form-input row mb-20">
-                        <div class="col-xl-4 col-md-4">
+                        <div class="col-xl-3 col-md-3">
                            <label for="title">Description <br><span style="font-size: 14px">(optional)</span></label>
                         </div>
-                        <div class="col-xl-8 col-md-8"  [ngClass]="{'grayField': descriptionFilled}">
+                        <div class="col-xl-9 col-md-9"  [ngClass]="{'grayField': descriptionFilled}">
                            <textarea [disabled]="descriptionFilled" [(ngModel)]="description" id="title" name="Title" [ngClass]="{'goldenText': description }"></textarea>
                         </div>
                      </div>
                      <div class="row upload-form-input custom-date-picker mb-20">
-                        <div class="col-xl-4 col-md-4">
+                        <div class="col-xl-3 col-md-3">
                            <label for="date">Associated Date <br><span style="font-size: 14px">(optional)</span></label>
                         </div>
-                        <div class="col-xl-8 col-md-8 flexible" [ngClass]="{'grayField': disableDateInput}">
+                        <div class="col-xl-9 col-md-9 flexible" [ngClass]="{'grayField': disableDateInput}">
                            <mat-form-field appearance="fill">
                               <input matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
                               placeholder="Choose a date" [(ngModel)]="associatedDate" (click)="picker.open()" [disabled]="disableDateInput" [ngClass]="{'goldenText': associatedDate}">
@@ -409,10 +429,10 @@
                </div>
                <div class="col-xl-6 col-md-6">
                   <div class="row">
-                     <div class="col-xl-4 col-md-4">
+                     <div class="col-xl-3 col-md-3">
                         <label for="confidentiality">Confidentiality</label>
                      </div>
-                     <div class="col-xl-8 col-md-8 flexible">
+                     <div class="col-xl-9 col-md-9 flexible">
                         <ng-select placeholder="Specify sensitivity"
                            (change)="onSelectConfidentiality($event)"
                            [searchable]="false"
@@ -434,12 +454,12 @@
                </div>
                <div class="col-xl-6 col-md-6">
                   <div class="row">
-                     <div class="col-xl-4 col-md-4">
+                     <div class="col-xl-3 col-md-3">
                         <label for="access">{{ACCESS_TITLE}}</label>
                      </div>
-                     <div class="col-xl-8 col-md-8 flexible">
+                     <div class="col-xl-9 col-md-9 flexible">
                         <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="overallAccess" id="access" [ngClass]="{'goldenText': overallAccess}">
-                           <ng-option *ngFor="let c of ACCESS | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
+                           <ng-option *ngFor="let c of ACCESSNEW | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
                            {{ACCESS_LABEL[c.value]}}
                            </ng-option>
                         </ng-select>
@@ -484,8 +504,8 @@
             <div class="upload-form-input row mb-20">
                <div class="col-xl-6 col-md-6">
                   <div class="row">
-                     <div class="col-xl-4 col-md-4">Usage right</div>
-                     <div class="col-xl-8 col-md-8 flexible">
+                     <div class="col-xl-3 col-md-3">Usage right</div>
+                     <div class="col-xl-9 col-md-9 flexible">
                         <label class="control control--checkbox" style="margin-bottom: 0px; font-family: 'brownlight';">
                           Approval required before download
                           <input
@@ -628,7 +648,7 @@
                               </div>
                               <div class="col-xl-8">
                                  <ng-select placeholder="Specify visibility" name="access"  [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
-                                    <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESS | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
+                                    <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESSNEW | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
                                     </ng-option>
                                  </ng-select>
                                  <div class="showErrorMessage" *ngIf="showErrorUpload && !customAccessMap[file.key] ">Please complete all mandatory fields</div>
@@ -751,22 +771,30 @@
 <div *ngIf="step === 4">
    <div class="finish-screen">
       <!-- <mat-icon>upload</mat-icon> -->
-      <span>Your assets have been successfully published on Ground X.</span>
+      <span>Your assets have been successfully {{isPrivateFolder() || checkboxIsPrivate?'uploaded':'published'}} on Ground X.</span>
+      <p style="padding-top: 20px;" *ngIf="checkboxIsPrivate">You are the only member of this private folder. You can manage the folder and invite people to join as folder members.</p>
       <!-- remove this condition *ngIf="showRedirectUrl()" -->
-      <div class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
-         <div class="destination-img-block">
-            <img src="../../../assets/images/yellow-folder.png" style="max-width: 100%;">
-         </div>
+      <div class="newFolderUi" (click)="openBrowseRoute()" style="cursor: pointer;">
          <div class="destination-content-block">
             <!-- <span class="assetName">National Day 2021</span> -->
             <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
             <p class="numberAssets">{{ getAssetNumber() }} assets</p>
          </div>
       </div>
-      <div (click)="openBrowseRoute()" class="close-modal">
-         <!-- <mat-icon>close</mat-icon> -->
+      <!-- <div class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
+         <div class="destination-img-block">
+            <img src="../../../assets/images/yellow-folder.png" style="max-width: 100%;">
+         </div>
+         <div class="destination-content-block">
+            <!-- <span class="assetName">National Day 2021</span> -/->
+            <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
+            <p class="numberAssets">{{ getAssetNumber() }} assets</p>
+         </div>
+      </div> -->
+      <!-- <div (click)="openBrowseRoute()" class="close-modal">
+         <!-- <mat-icon>close</mat-icon> -/->
          Close
-      </div>
+      </div> -->
    </div>
 </div>
 </div>

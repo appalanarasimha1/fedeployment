@@ -9,6 +9,7 @@ export class DataService {
   private sectorChangedSource = new Subject<string>();
   private sectorSelected = new Subject<IHeaderSearchCriteria>();
   private showHideLoader = new Subject<boolean>();
+  private showHideLoaderNew = new Subject<boolean>();
   private resetFilter = new Subject<string>();
   private termSearch = new Subject<string>();
   private termSearchForHide = new Subject<string>();
@@ -27,6 +28,7 @@ export class DataService {
   sectorChanged$ = this.sectorChangedSource.asObservable();
   sectorSelected$ = this.sectorSelected.asObservable();
   showHideLoader$ = this.showHideLoader.asObservable();
+  showHideLoaderNew$ = this.showHideLoaderNew.asObservable();
   resetFilter$ = this.resetFilter.asObservable();
   termSearch$ = this.termSearch.asObservable();
   termSearchForHide$ = this.termSearchForHide.asObservable();
@@ -52,6 +54,9 @@ export class DataService {
     this.showHideLoader.next(loaderValue);
   }
 
+  loaderValueChangeNew(loaderValue: boolean) {
+    this.showHideLoaderNew.next(loaderValue);
+  }
   resetFilterInit(triggeredFrom: string) {
     this.resetFilter.next(triggeredFrom);
   }

@@ -3,8 +3,8 @@
   <section class="lpSecOne ">
     <div class="container">
 
-      <div class="row ">
-        <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
+      <div class="row">
+        <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn" style="background-color: #F8F8F5;">
           <div class="pb-5 pl-12">
             <h2 class="commonHeading main-title" style="font-weight: normal">
               Settings
@@ -20,15 +20,31 @@
               >
                 <span>Manage external users</span>
               </li>
+              <li
+                style="cursor: pointer"
+                class="d-flex set"
+                (click)="fetchManagedSuppliers()"
+                [ngClass]="{'active-tab': showUserManageSuppliers}"
+              >
+                <span>Manage suppliers</span>
+              </li>
+              <li
+                style="cursor: pointer"
+                class="d-flex set"
+                (click)="fetchManagedLocations()"
+                [ngClass]="{'active-tab': showUserManageLocations}"
+              >
+                <span>Manage locations</span>
+              </li>
             </ul>
           </div>
         </div>
         <div
-          class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"
+          class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative animate__animated animate__fadeIn"
           style="min-height: 100vh"
         >
           <app-loader [show]="loading"></app-loader>
-          <div *ngIf="showUserSettingPage" class="externalUser">
+          <div *ngIf="showUserSettingPage && !showUserManageSuppliers" class="externalUser">
             <h2>Manage external users</h2>
             <p class="externalEditAccess">Hover over a user to edit their access.</p>
             <div class="searchBlock">
@@ -42,6 +58,7 @@
                 type="text"
                 placeholder="Search users by their name or email address"
                 class="search-bar"
+                (input)="searchUser($event)"
               />
             </div>
             <div class="makeAdminBlock">
@@ -64,7 +81,7 @@
               </ul>
             </div>
           </div>
-          <div *ngIf="showUserAccessPage" class="showUserAccess customTableStyle">
+          <div *ngIf="showUserAccessPage && !showUserManageSuppliers" class="showUserAccess customTableStyle">
             <div class="backBtn">
               <span (click)="backToUserList();">
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -206,6 +223,10 @@
               </div>
             </div> -->
           </div>
+
+
+          <app-manage-suppliers *ngIf="showUserManageSuppliers && !showUserSettingPage && !showUserAccessPage"></app-manage-suppliers>
+          <app-manage-locations *ngIf="showUserManageLocations && !showUserManageSuppliers && !showUserSettingPage && !showUserAccessPage"></app-manage-locations>
         </div>
       </div>
     </div>

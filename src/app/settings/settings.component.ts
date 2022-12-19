@@ -21,6 +21,7 @@ export class SettingsComponent implements OnInit {
   { }
 
   managedUsers = [];
+  managedUsersBackUp=[];
   managedUsersMap = {};
   loading = false;
   showUserSettingPage = false;
@@ -28,9 +29,14 @@ export class SettingsComponent implements OnInit {
   currentEditingUser = null;
   currentUserFolderList = [];
 
+  showUserManageSuppliers: boolean = false;
+  showUserManageLocations: boolean = false;
+
 
   ngOnInit(): void {
     this.managedUsers = [];
+    this.managedUsersBackUp=[];
+    this.fetchManagedExternalUsers()
   }
 
   async fetchManagedExternalUsers() {
@@ -44,8 +50,11 @@ export class SettingsComponent implements OnInit {
     this.managedUsersMap = res['value'] || {};
     this.loading = false;
     this.showUserSettingPage = true;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
     if (this.managedUsersMap) {
       this.managedUsers = Object.keys(this.managedUsersMap);
+      this.managedUsersBackUp = Object.keys(this.managedUsersMap);
     }
   }
 
@@ -54,6 +63,8 @@ export class SettingsComponent implements OnInit {
     this.showUserAccessPage = true;
     this.currentEditingUser = user;
     this.currentUserFolderList = this.managedUsersMap[user] || [];
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
   }
 
   backToUserList() {
@@ -61,6 +72,10 @@ export class SettingsComponent implements OnInit {
     this.showUserAccessPage = false;
     this.currentEditingUser = null;
     this.currentUserFolderList = [];
+    this.managedUsers = this.managedUsersBackUp;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    this.showUserAccessPage = false;
   }
 
   async removeAllAccess(user) {
@@ -152,4 +167,26 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  searchUser(e){
+    e.target.value ?
+      this.managedUsers = this.managedUsersBackUp.filter(user => user.toLowerCase().includes(e.target?.value?.toLowerCase().trim())):
+      this.managedUsers = this.managedUsersBackUp
+  }
+
+  fetchManagedSuppliers() {
+    this.loading = true;
+    this.showUserSettingPage = false;
+    this.showUserAccessPage = false;
+    this.showUserManageSuppliers = true;
+    this.showUserManageLocations = false;
+    this.loading = false;
+  }
+  fetchManagedLocations() {
+    this.showUserManageLocations = true;
+    this.loading = true;
+    this.showUserSettingPage = false;
+    this.showUserAccessPage = false;
+    this.showUserManageSuppliers = false;
+    this.loading = false;
+  }
 }

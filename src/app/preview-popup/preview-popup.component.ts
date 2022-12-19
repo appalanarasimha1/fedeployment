@@ -40,6 +40,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   requestSent = false;
   rejectComment = "";
   modalOpen: boolean = true;
+  fullSIzeImg: boolean = false;
 
   constructor(
     private router: Router,
@@ -93,10 +94,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
-    dialogConfig.minHeight = "350px";
-    dialogConfig.height = "100%";
-    dialogConfig.maxHeight = "94vh"
-    dialogConfig.width = "80vw";
+    // dialogConfig.minHeight = "350px";
+    // dialogConfig.height = "100%";
+    // dialogConfig.maxHeight = "94vh"
+    // dialogConfig.width = "80vw";
     // dialogConfig.maxWidth = "80vw";
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-modalbox';
@@ -200,8 +201,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.inputTag = "";
     });
   }
-
-  openInfo(tabName: string) {
+  docAudit:any = []
+  openInfo(tabName: string,doc?:any) {
+    if (tabName =='timeline') {
+      console.log("doc",doc);
+      
+      this.docAudit = doc?.filter((aud:any)=>aud.principalName !== 'system' && aud.principalName !=='Administrator')
+    }
     if (!this.showShadow || this.selectedTab === tabName) {
       this.showShadow = !this.showShadow;
     }
@@ -441,10 +447,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   search(searchTerm: string) {
+    this.closeModal();
     this.dataService.termSearchInit(searchTerm);
     this.dataService.termSearchForHideInit(searchTerm);
 
-    this.modalService.dismissAll();
   }
 
   showMoreTags() {
@@ -604,13 +610,21 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   closeModal() {
     this.modalOpen = false;
     this.modalLoading = false;
-    this.showAllComments= false
-    this.matDialog.closeAll()
+    this.showAllComments= false;
+    this.showShadow = false;
+    this.activeTabs.comments = false;
+    this.activeTabs.timeline = false;
+    this.activeTabs.info = false;
+    this.matDialog.closeAll();
   }
 
   getCommentStr(str){
     let temp = str.replaceAll("&#64;","@");
     temp = temp.replaceAll('{<!-- -->{', "<span style='color: #DEB31A !important;font-family: 'brownregular' !important;'>");
     return temp.replaceAll("}}", "</span>");
+  }
+
+  clickFullsizeImg() {
+    this.fullSIzeImg = !this.fullSIzeImg;
   }
 }

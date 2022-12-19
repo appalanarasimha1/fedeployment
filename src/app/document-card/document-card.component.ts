@@ -165,7 +165,7 @@ export class DocumentCardComponent implements OnInit, OnChanges {
     selBox.style.left = "0";
     selBox.style.top = "0";
     selBox.style.opacity = "0";
-    selBox.value = `${window.location.origin}/asset-view${sector}/${folderStructure}/${assetName}`;
+    selBox.value = encodeURI(`${window.location.origin}/asset-view${sector}/${folderStructure}/${assetName}`);
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();

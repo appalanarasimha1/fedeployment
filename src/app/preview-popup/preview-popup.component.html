@@ -1,5 +1,9 @@
 <div *ngIf="openInModal">
   <ng-template #preview let-modal class="imgPopUpTab">
+    <div class="fullSIzeImg" *ngIf="fullSIzeImg" (click)="clickFullsizeImg()">
+      <!-- <img src="../../assets/images/close-modal.svg" style="width: 20px; position: absolute; top: 10px; right: 10px; height: auto;"> -->
+      <img [src]="getAssetUrl(null, docUrl)" alt="" />
+    </div>
     <!-- <div class="modal-header">
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = '';showAllComments=false">
         <span aria-hidden="true">&times;</span> -/->
@@ -91,7 +95,7 @@
                       <div *ngIf="!checkCanDownload() && !hasRequestPending() && !checkRejected()">
                         <p>To download this asset, please send <a href="mailto:{{getCreatorEmail()}}">{{getCreator()}}</a> a message below.</p>
                         <input type="text" [(ngModel)]="requestComment" class="requesInput" [ngClass]="{'goldenText': requestComment }" name="requestComment"
-                          placeholder="Write a comment here" />
+                          placeholder="Write a comment here. Use @ to mention." />
                           <button (click)="sendRequestDownload()" class="btn submitBtn" [disabled]="!requestComment">Submit</button>
                       </div>
                       <div class="requestSubmitted" *ngIf="!checkCanDownload() && hasRequestPending()">
@@ -129,7 +133,7 @@
                 </div>
               </li>
               <li>
-                <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal(); copiedString = ''"><!-- (click)="modal.dismiss('Cross click'); copiedString = ''"-->
+                <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal(); copiedString = ''; showAllComments=false"><!-- (click)="modal.dismiss('Cross click'); copiedString = ''"-->
                   <img src="../../assets/images/close-modal.svg" />
                 </button>
               </li>
@@ -140,9 +144,10 @@
       <div class="popupTabSec" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess()}">
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
-          <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
+          <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" />
+          <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" (click)="clickFullsizeImg()" />
           <!-- ../../../assets/images/no-preview.png -->
-          <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;" />
+          <img *ngIf="checkMimeType(doc) === 'nopreview'" [ngClass]="{'nopreviewClass' : checkMimeType(doc) === 'nopreview'}" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;background-color: #fbf7e6;" />
         </div>
 
         <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
@@ -153,7 +158,7 @@
         <div *ngIf="checkMimeType(doc) === 'file'">
           <!-- <img [src]="docUrl" alt="" /> -->
           <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="umesh"
-            style="display: block; width: 100%; height: calc(100vh - 68vh)" [original-size]="false" [autoresize]="true"
+            style="display: block; width: 100%; height: calc(100vh - 75vh)" [original-size]="false" [autoresize]="true"
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>
         <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
@@ -161,7 +166,7 @@
             <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
               <div class="timeline-content">
                 <ul>
-                  <li *ngFor="let log of doc.contextParameters.audit">
+                  <li *ngFor="let log of docAudit">
                     <p>
                       <span>{{ log.principalName }}</span>
                       {{ getEventString(log.eventId) }}
@@ -189,7 +194,7 @@
                 </ul>
                 <form (submit)="saveComment(commentText)">
                   <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
-                    placeholder="Write a comment here" />
+                    placeholder="Write a comment here. Use @ to mention." />
                   <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
                     class="enterComment" style="cursor: pointer" />
                 </form>
@@ -210,7 +215,9 @@
 
                       <li>
                         Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
+                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length ? 
+                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
+                          'Contact sector for usage approval'
                           }}</span>
                       </li>
 
@@ -313,7 +320,7 @@
       </div>
 
       <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
-        <div class="mb-4" style="width: 80%">
+        <div class="mb-4" style="width: 80%; min-height: 60px;">
           <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
 
           <div class="weight-size-block">
@@ -346,7 +353,7 @@
           <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
             <li class="nav-item customtooltip" role="presentation">
               <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
-                (click)="openInfo('timeline')" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
+                (click)="openInfo('timeline',this.doc?.contextParameters?.audit)" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
                 role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
             </li>
             <!-- <li class="nav-item customtooltip" role="presentation" *ngIf="hasPrivateAccess()">
@@ -418,7 +425,7 @@
                 [(ngModel)]="commentText" 
                 class="commentInput"
                 name="comment"
-                placeholder="Write a comment here" 
+                placeholder="Write a comment here. Use @ to mention." 
                 mwlTextInputAutocomplete
                 [findChoices]="findChoices"
                 [getChoiceLabel]="getChoiceLabel"
@@ -440,6 +447,48 @@
     <div class="modalHead">
       <div class="row flexible" style="justify-content: space-between">
         <div class="col-xl-6 col-md-6">
+          <ol class="publicUse" >
+            <li>
+              <div class="publicUseBlock" *ngIf="hasNoRestriction() && !hasPrivateAccess()">
+                <!-- <div class="publicUseBlk">ALL USERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div> -->
+                <div class="publicUseBlk">Public <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
+                <div class="mouseHoverInfo">
+                  This asset is visible to all NEOM users and their external collaborators
+                </div>
+              </div>
+
+              <div class="internalUseBlock" *ngIf="internalUse() && !hasPrivateAccess()">
+                <!-- <div class="publicUseBlk">NEOM EMAIL HOLDERS <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div> -->
+                <div class="publicUseBlk">Internal <img src="../../assets/images/eye-icon.svg" class="eyeIcon" /></div>
+                <div class="mouseHoverInfo">
+                  This asset is visible to users with NEOM emails only
+                </div>
+              </div>
+
+              <div class="privateBlock" *ngIf="hasPrivateAccess()">
+                <div class="publicUseBlk">Private</div>
+                <div class="mouseHoverInfo">
+                  Yet to be published on Ground X. No usage information available.
+                </div>
+              </div>
+            </li>
+            <li *ngIf="!hasPrivateAccess() && getApprovalUsers1()">
+              <div class="usagePermission">Usage permission{{!getApprovalUsers1() ? ' not':''}} required</div>
+              <div class="mouseHoverInfo w219">
+                {{!getApprovalUsers1()? 'Does not requires approval before use':'Requires approval before use'}}.
+              </div>
+            </li>
+            <li>
+              <span class="copy-section" >
+                <a class="flexible">
+                  <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 0px;">
+                  <span class="copy-link pointer" (click)="copyLink()">
+                    {{!copiedString ? 'Copy link' : 'Link copied!'}}
+                  </span>
+                </a>
+              </span>
+            </li>
+          </ol>
         </div>
         <div class="col-xl-6 col-md-6">
           <ul class="flexible">
@@ -453,7 +502,10 @@
             </li>
             <li>
               <div class="downloadBlock">
-                <div class="download-icon"></div>
+                <!-- <div class="download-icon"></div> -->
+                <div class="downloadBtn">
+                  <img src="../../assets/images/download-white-icon.svg" /> Download
+                </div>
                 <div *ngIf="doc" class="download-dropdown">
 
                   <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
@@ -519,7 +571,7 @@
       <div class="copyright-caption">
         <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
         <!-- ../../../assets/images/no-preview.png -->
-        <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;" />
+        <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px; background-color: #fbf7e6;" />
       </div>
 
       <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
@@ -529,7 +581,7 @@
       </div>
       <div *ngIf="checkMimeType(doc) === 'file'">
         <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="nitin"
-          style="display: block; width: 100%; height: calc(100vh - 68vh)" [original-size]="false" [autoresize]="true"
+          style="display: block; width: 100%; height: calc(100vh - 75vh)" [original-size]="false" [autoresize]="true"
           [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
       </div>
       <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
@@ -537,7 +589,7 @@
           <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
             <div class="timeline-content">
               <ul>
-                <li *ngFor="let log of doc?.contextParameters?.audit">
+                <li *ngFor="let log of docAudit">
                   <p>
                     <span>{{ log.principalName }}</span>
                     {{ getEventString(log.eventId) }}
@@ -565,7 +617,7 @@
               </ul>
               <form (submit)="saveComment(commentText)">
                 <input type="text" [(ngModel)]="commentText" class="commentInput" name="comment"
-                  placeholder="Write a comment here" />
+                  placeholder="Write a comment here. Use @ to mention." />
                 <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
                   class="enterComment" style="cursor: pointer" />
               </form>
@@ -586,7 +638,9 @@
 
                     <li>
                       Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]
+                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length? 
+                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
+                        '“Contact sector for usage approval'
                         }}</span>
                     </li>
 
@@ -684,7 +738,7 @@
     </div>
 
     <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
-      <div class="mb-4" style="width: 80%">
+      <div class="mb-4" style="width: 80%; min-height: 60px;">
         <span *ngIf="doc?.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
         <div class="weight-size-block">
           <ul>
@@ -715,7 +769,7 @@
         <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
           <li class="nav-item customtooltip" role="presentation">
             <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
-              (click)="openInfo('timeline')" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline" role="tab"
+              (click)="openInfo('timeline',this.doc?.contextParameters?.audit)" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline" role="tab"
               aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
           </li>
           <li class="nav-item customtooltip" role="presentation">

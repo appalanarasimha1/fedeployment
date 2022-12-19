@@ -14,10 +14,10 @@
         (click)="openPreview()"
         (load)="showLock = true"
         crossorigin="use-credentials"
-        loading="lazy" [ngClass]="getNoPreview(doc) !== '../../../assets/images/no-preview.png' ? '' : 'noPreviewItem' " />
+        loading="lazy" /><!-- [ngClass]="getNoPreview(doc) !== '../../../assets/images/no-preview.png' ? '' : 'noPreviewItem' " -->
 
-        <div class="pdfWhiteBlock" style="width: 100%;" *ngIf="getNoPreview(doc) !== '../../../assets/images/no-preview.png' ">
-          <div class="flexible pb-2" style="justify-content: space-between ;">
+        <div class="pdfWhiteBlock" style="width: 100%;"> <!-- *ngIf="getNoPreview(doc) == '../../../assets/images/no-preview.png' "-->
+          <div class="flexible pb-2" style="justify-content: space-between ;" >
             <p style="width: 100%;">{{sharedService.stringShortener(doc?.title, 15)}}</p>
           </div>
           <span>{{doc['dc:description']}}</span>

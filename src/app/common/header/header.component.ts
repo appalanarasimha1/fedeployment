@@ -35,11 +35,15 @@ export class HeaderComponent implements OnInit {
   // allSectors = ['education', 'energy', 'entertainment', 'food', 'health_well_being_and_biotech', 'manufacturing', 'mobility', 'services', 'sport', 'tourism', 'water', 'design_and_construction'];
   allSectors = [
     {label: 'All NEOM sectors', value: 'general'},
+    {label: 'Entertainment and culture', value:'entertainment_and_culture'},
+    {label: 'Energy', value:'energy'},
+    {label: 'Healthcare wellbeing & biotech', value:'healthcare_wellbeing_and_biotech'},
+    {label: 'Financial services', value: 'financial_services'},
     {label: 'Food', value: 'food'},
     {label: 'Manufacturing', value: 'manufacturing'},
     {label: 'Mobility', value: 'mobility'},
     {label: 'Sports', value: 'sport'},
-    { label: "Tourism", value: "tourism" },
+    { label: 'Tourism', value: 'tourism' },
     {label: 'Water', value: 'water'},
    ];
   sectorSelected = localStorage.getItem('videoSector') || this.allSectors[0].value;
@@ -151,10 +155,25 @@ export class HeaderComponent implements OnInit {
   }
 
   toFavouriteSection() {
+    $('.nav.nav-tabs').find('li').removeClass('active');
+    $('#favoritesHome').addClass('active');
+
+    if($("#favoritesHome").hasClass("active")){
+      $('.tab-content').find('#recentlyViewed').removeClass('active');
+      $('.tab-content').find('#recentlyUploaded').removeClass('active');
+      $('.tab-content').find('#yourFavourites').addClass('active');
+    }
+    if($('div').hasClass("filterMenuRow")){
+      this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+    }
+
     setTimeout(() => {
-      // window.scrollTo(0,document.body.scrollHeight);
       $('#favorites').animate({scrollTop: document.body.scrollHeight},"slow");
-    }, 300);
+    }, 0);
+
+    $('html, body').animate({
+      scrollTop: $('#favorites').offset().top
+    }, 'slow');
   }
 
   selectTab(tab: string) {
@@ -183,11 +202,12 @@ export class HeaderComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
-    dialogConfig.minHeight = "350px";
-    dialogConfig.height = "100%";
-    dialogConfig.maxHeight = "92vh"
-    dialogConfig.width = "80vw";
+    // dialogConfig.minHeight = "350px";
+    // dialogConfig.height = "100%";
+    // dialogConfig.maxHeight = "92vh"
+    // dialogConfig.width = "80vw";
     // dialogConfig.maxWidth = "80vw";
+    dialogConfig.panelClass = 'custom-modalbox';
     dialogConfig.disableClose = true;
     const workspaceState = JSON.parse(localStorage.getItem("workspaceState"));
     if(workspaceState) {
@@ -236,20 +256,20 @@ export class HeaderComponent implements OnInit {
     if (excludeGlobal) {
       if (!this.sharedService.checkExternalUser()) return false; // normal user
       const user = JSON.parse(localStorage.getItem('user'));
-      this.userData = user
-      return user?.groups.includes(EXTERNAL_GROUP_GLOBAL);
+      this.userData = user;
+      return !user?.groups.includes(EXTERNAL_GROUP_GLOBAL);
     } else {
       return this.sharedService.checkExternalUser();
     }
   }
 
   playPersonalizedVideo() {
-    const body = {sector: this.sectorSelected, username: localStorage.getItem('username')};
+    const body = {sector: this.sectorSelected, user: JSON.parse(localStorage.getItem('user'))};
     localStorage.setItem('videoSector', this.sectorSelected);
     this.videoResponse = false;
     this.modalLoading = true;
     try {
-      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.username)
+      this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.user.email)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
@@ -408,5 +428,8 @@ export class HeaderComponent implements OnInit {
       // const user = JSON.parse(localStorage.getItem('user'));
       this.userData = res.user.properties;
     }
+  }
+  onActivate() {
+    $("#favorites").animate({ scrollTop: 0 }, "slow");
   }
 }

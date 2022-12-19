@@ -1,0 +1,194 @@
+<div class="externalUser positionRelative" *ngIf="!showExternalUserPage">
+    <h2>Suppliers</h2>
+    <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p>
+    <div class="searchBlock">
+        <span class="positionRelative">
+            <input type="text" placeholder="Search or create suppliers by name" [(ngModel)]="supplierInput" class="search-bar" />
+            <button class="primary createSuppliers" *ngIf="supplierInput" (click)="openCreateSupplierModal()">Create supplier</button>
+        </span>
+    </div>
+    <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width: 1%">&nbsp;&nbsp;</th>
+                <th>Suppliers</th>
+                <th>Assigned region</th>
+                <th>Tech support email</th>
+                <th style="width: 3%">&nbsp;&nbsp;</th>
+                <th style="width: 40px">&nbsp;&nbsp;</th>
+            </tr>
+            <tr *ngFor="let supplier of supplierList; let i = index">
+                <td><div class="height32"></div></td>
+                <td>{{supplier.name}}</td>
+                <td>
+                    <mat-form-field class="example-chip-list">
+                        <mat-chip-list #chipList>
+                            <mat-chip *ngFor="let regionId of supplier.regions;let indx=index;" [selectable]="selectable" [removable]="removable" (removed)="remove(regionId,indx, i)">
+                                {{regionMap[regionId]?.name}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input placeholder="Add..." #suppliersInput [formControl]="suppliersCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, i)">
+                            <mat-option *ngFor="let suppliers of filteredFruits | async" [value]="suppliers">
+                                {{suppliers.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </td>
+                <td class="editIcon">
+                    <div class="emailBlock" *ngIf="!supplier.renameEmail">
+                      {{supplier.supportEmail}}
+                        <span *ngIf="supplier.supportEmail" class="penvilIcon" (click)="renameEmailClick(); supplier.renameEmail = true">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="renameEmail" *ngIf="supplier.renameEmail">
+                        <input type="text" [(ngModel)]="supplier.supportEmail" class="renameAssets" />
+                        <div class="actionIcon" (click)="renameEmailClick(true, supplier.supportEmail, i);">
+                          <svg
+                            width="18"
+                            height="13"
+                            viewBox="0 0 18 13"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M6.99974 10.172L16.1917 0.979004L17.6067 2.393L6.99974 13L0.635742 6.636L2.04974 5.222L6.99974 10.172Z"
+                              fill="#DAAA00"
+                            />
+                          </svg>
+                        </div>
+                        <div *ngIf="supplier.supportEmail.trim()" class="actionIcon" (click)="renameEmailClick(); supplier.renameEmail = false">
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M6.99974 5.58623L11.9497 0.63623L13.3637 2.05023L8.41374 7.00023L13.3637 11.9502L11.9497 13.3642L6.99974 8.41423L2.04974 13.3642L0.635742 11.9502L5.58574 7.00023L0.635742 2.05023L2.04974 0.63623L6.99974 5.58623Z"
+                              fill="#DAAA00"
+                            />
+                          </svg>
+                        </div>
+                    </div>
+                </td>
+                <td><mat-slide-toggle (change)="toggleActivated($event, supplier)" [(ngModel)]="supplier.activated"></mat-slide-toggle></td>
+                <td (click)="showExternalUserList(supplier)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="externalUser positionRelative" *ngIf="showExternalUserPage">
+    <div class="backBtn" (click)="backExternalUserList()">
+        <span>
+        <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.828 7.00072L7.778 11.9507L6.364 13.3647L0 7.00072L6.364 0.636719L7.778 2.05072L2.828 7.00072Z" fill="#BAB8B2"/>
+        </svg> Back</span>
+    </div>
+    <h3>Users</h3>
+    <h2 [ngClass]="{'removeExtraSpace' : renameUserName}">
+        <span *ngIf="!renameUserName">
+            {{selectedSupplier?.name}}
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="renameUserIcon" (click)="renameUserClick()">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+
+        <div class="input-resizable" #wrapper *ngIf="renameUserName">
+            <input type="text" (input)="onInput($event)" size="12" [(ngModel)]="selectedSupplier.name">
+        </div>
+        <div class="userActionIcon" *ngIf="renameUserName">
+            <svg (click)="renameUserClick()" width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.99974 10.172L16.1917 0.979004L17.6067 2.393L6.99974 13L0.635742 6.636L2.04974 5.222L6.99974 10.172Z" fill="#DAAA00"></path></svg>
+            <svg (click)="renameUserClick()" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.99974 5.58623L11.9497 0.63623L13.3637 2.05023L8.41374 7.00023L13.3637 11.9502L11.9497 13.3642L6.99974 8.41423L2.04974 13.3642L0.635742 11.9502L5.58574 7.00023L0.635742 2.05023L2.04974 0.63623L6.99974 5.58623Z" fill="#DAAA00"></path></svg>
+        </div>
+    </h2>
+    <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>invite new users</strong> by typing their email address below:</p>
+    <div class="searchBlock">
+        <span class="positionRelative">
+          <form class="example-form">
+            <input type="text"
+              placeholder="Search or invite users by email address"
+              [formControl]="usersCtrl"
+              [matAutocomplete]="auto"
+              [(ngModel)]="inviteUserInput"
+              class="search-bar">
+            <button class="primary createSuppliers" *ngIf="checkEnableInviteBtn()" (click)="openInviteUserModal()">Invite</button>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectUser($event.option.value)'>
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+                {{user}}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+        </span>
+    </div>
+    <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width: 2%">&nbsp;&nbsp;</th>
+                <th>User</th>
+                <th>Permissions</th>
+                <th>Access expiry</th>
+                <th style="width: 3%">&nbsp;&nbsp;</th>
+                <th style="width: 1%">&nbsp;&nbsp;</th>
+            </tr>
+            <tr *ngFor="let user of selectedSupplier?.users; let i = index">
+                <td><div class="height32"></div></td>
+                <td>{{user.user}}</td>
+                <td>
+                    <ul>
+                        <li>
+                          <div class="broader-access-assets">
+                            <div class="control-group">
+                              <label class="control control--checkbox">
+                                <input class="chkbox" (change)="onPermissionChange('upload', $event, i)" [checked]="hasPermission(user, 'upload')" type="checkbox"/>
+                                <div class="control__indicator"></div>
+                                Upload
+                              </label>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="broader-access-assets">
+                            <div class="control-group">
+                              <label class="control control--checkbox">
+                                <input class="chkbox" (change)="onPermissionChange('download', $event, i)" [checked]="hasPermission(user, 'download')" type="checkbox"/>
+                                <div class="control__indicator"></div>
+                                Download
+                              </label>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="broader-access-assets">
+                            <div class="control-group">
+                              <label class="control control--checkbox">
+                                <input class="chkbox" (change)="onPermissionChange('delete', $event, i)" [checked]="hasPermission(user, 'delete')" type="checkbox"/>
+                                <div class="control__indicator"></div>
+                                Delete
+                              </label>
+                            </div>
+                          </div>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <mat-form-field appearance="fill">
+                        <input class="datePicker" placeholder="Choose a date" (dateChange)="updateUserExpiry($event, i)" [(ngModel)]="user.expiry" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </td>
+                <td><mat-slide-toggle [(ngModel)]="user.activated" (change)="togglerUserActivated($event, i)"></mat-slide-toggle></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
