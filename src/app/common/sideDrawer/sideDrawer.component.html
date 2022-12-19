@@ -15,7 +15,9 @@
     </div>
     <div class="filter-assets-count">
       <span *ngIf="!assetCountLoader" (click)="closeModal()">Show {{assetCount}} assets</span>
-      <span *ngIf="assetCountLoader" (click)="closeModal()" class="upload-loading">fetching...</span>
+      <span *ngIf="assetCountLoader" (click)="closeModal()" class="upload-loading">
+        <app-loader-small [show]="true"></app-loader-small>
+      </span>
     </div>
     <div class="filter-form">
       <div class="filter-form-left">

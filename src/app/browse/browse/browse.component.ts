@@ -166,7 +166,10 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
   permissionChange:boolean=false
-  whiteLoader: boolean = true;
+  onlyPrivate:boolean = false;
+  accessDenied = false;
+  whiteLoader: boolean = false;
+  transparentLoader: boolean = false;
 
   completeLoadingMasonry(event: any) {
     this.masonry?.reloadItems();
@@ -220,7 +223,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
       if (sectorName && folderId && folderId !== ROOT_ID) {
 
-        await this.fetchBreadCrumbByAssetsUId(folderId);
+        const res = await this.fetchBreadCrumbByAssetsUId(folderId);
+        if (!res) return;
         this.selectedFolder2 = this.breadCrumb[0];
         this.sectorSelected = this.breadCrumb[0];
         this.selectedFolder = this.breadCrumb[this.breadCrumb.length - 1];
@@ -260,7 +264,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       }
 
       this.fetchExternalUserInfo(fetchAll);
-
+      this.checkCollabAndPrivateFolder()
     });
 
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
@@ -433,6 +437,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.sharedService.toTop();
     this.createDynamicSidebarScroll();
     // this.selectedFolder = item;
+    this.checkCollabAndPrivateFolder()
   }
 
   getAssetUrl(event: any, url: string, document?: IEntry, type?: string): string {
@@ -545,6 +550,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   // }
 
   handleViewClick(item, index) {
+    this.accessDenied = false;
     this.handleClickNew(item.uid);
     this.paginator.firstPage();
     this.searchBarValue = "";
@@ -593,12 +599,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
    */
   async handleGotoBreadcrumb(item, index, breadCrumbIndex?: any) {
     $("body").animate({ scrollTop: 0 }, "slow");
-      this.titleExists = false
-      this.folderNameRef = undefined;
+    this.titleExists = false
+    this.folderNameRef = undefined;
     this.folderDescriptionRef = undefined;
     this.folderDateRef = undefined;
     this.removeAssets();
     this.saveState(item, index, breadCrumbIndex);
+    this.checkCollabAndPrivateFolder()
     this.paginator?.firstPage();
     this.searchBarValue = "";
     // this.getAllFolders()
@@ -625,12 +632,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
+    
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
+    this.saveState(this.selectedFolder, index, breadCrumbIndex);
     this.selectedFolder2 = this.selectedFolder;
     this.extractBreadcrumb();
     this.createDynamicSidebarScroll();
     this.loading = false;
+
   }
 
   async fetchFolder(id) {
@@ -694,11 +704,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     //   return this.folderAssetsResult[id];
     // }
     const url = `/id/${assetUid}?fetch-acls=username%2Ccreator%2Cextended&depth=children`;
-    const { contextParameters }: any = await this.apiService
-      .get(url)
-      .toPromise();
-    this.extractBreadcrumb(contextParameters);
-    return;
+    try {
+      const { contextParameters }: any = await this.apiService
+        .get(url)
+        .toPromise();
+      this.extractBreadcrumb(contextParameters);
+      return true;
+    } catch (err) {
+      if (err && err.status === 403) {
+        this.accessDenied = true;
+        this.loading = false;
+      }
+      return false;
+    }
   }
 
   // async showMore(id: string) {
@@ -1005,6 +1023,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   selectFolder($event, item, i, updateCount = true) {
     console.log('updatecount', updateCount);
+    // this.checkCollabAndPrivateFolder()
 
     if(this.selectAllClicked) updateCount = true
 
@@ -1200,6 +1219,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
+      console.log("selwctedFolder", this.selectedFolder , "result", result);
+      
       if (!result) return;
       this.folderAssetsResult[
         this.breadCrumb[this.breadCrumb.length - 1].uid
@@ -1239,7 +1260,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       } else {
         this.selectedFolder.childType = ORDERED_FOLDER;
       }
-
+      if(this.isPrivateFolder()){
+        this.checkboxIsPrivate = true
+      }
       const payload = await this.sharedService.getCreateFolderPayload(
         folderName?.trim(),
         this.selectedFolder2.title,
@@ -1508,7 +1531,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.isTrashView = false;
     this.sectorSelected = null;
     this.sharedService.toTop();
-    const { entries } = await this.fetchAssets(ROOT_ID, true, PAGE_SIZE_200);
+    let { entries } = await this.fetchAssets(ROOT_ID, true, PAGE_SIZE_200);
+    entries = entries.filter((data:any)=>data?.title?.toLowerCase() !='domain')
+    // console.log("entries",entries)
     this.folderStructure[0]["children"] = entries;
     this.folderStructure[0].isExpand = !isExpand;
     this.searchList = entries;
@@ -1753,6 +1778,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
+    // this.checkCollabAndPrivateFolder()
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
       return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
@@ -1976,8 +2002,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   async openAddUserModal() {
     if (!this.isAdmin) return;
-    this.whiteLoader = false;
-    this.loading = true;
+    this.whiteLoader = true;
+    this.transparentLoader = true;
+    // this.loading = true;
     const folderCollaborators = this.getFolderCollaborators();
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -1992,10 +2019,12 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
 
     const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
-    this.whiteLoader = true;
-    this.loading = false;
+    this.whiteLoader = false;
+    this.transparentLoader = false;
+    // this.loading = false;
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
+        this.onlyPrivate = false
         this.saveState(result);
       }
     });
@@ -2006,15 +2035,19 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    if (!this.hasInheritAcl() && !includeChild) return false;
+    this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
+    if(this.permissionChange) return true
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
 
     const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
     if (isButton) return isPrivate;
+    if (!this.hasInheritAcl() && !includeChild) return false;
     const currentCollaborators = this.getFolderCollaborators();
     this.isAdmin = this.hasAdminPermission(currentCollaborators);
     return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
+
+  
 
   hasNoOtherCollaborators(currentCollaborators) {
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return true;
@@ -2051,13 +2084,15 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     localAces.aces.forEach(ace => {
       if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
       if (!ace.granted || ace.username === "Administrator" || ace.username === 'administrators') return;
-      folderCollaborators[ace.username.id] = {
+      folderCollaborators[ace.username.id || ace.username] = {
         user: ace.username,
         permission: ace.permission,
         externalUser: ace.externalUser,
         end: ace.end,
         id: ace.id,
       }
+      console.log("ace.username = ",ace.username);
+      
     });
     return folderCollaborators;
   }
@@ -2105,6 +2140,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.showSearchbar = true;
     this.showLinkCopy = false;
     this.breadCrumb = [];
+    this.checkCollabAndPrivateFolder()
   }
 
   isExternalUser() {
@@ -2287,22 +2323,22 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return false
   }
 
-  checkEnableMoveButton() {
-    let processAble = []
-    if (Object.keys(this.selectedMoveList).length) {
-       for (const key in this.selectedMoveList) {
-        if(!this.checkDownloadPermission(this.selectedMoveList[key])){
-          processAble.push(true)
-        }
-      }
-    }
-    return processAble.length>0
-  }
+  // checkEnableMoveButton() {
+  //   let processAble = []
+  //   if (Object.keys(this.selectedMoveList).length) {
+  //      for (const key in this.selectedMoveList) {
+  //       if(!this.checkDownloadPermission(this.selectedMoveList[key])){
+  //         processAble.push(true)
+  //       }
+  //     }
+  //   }
+  //   return processAble.length>0
+  // }
 
-  checkEnableMoveButton1() {
-    if (Object.keys(this.selectedMoveList)?.length > 0) {
-      if (this.selectedFolder.properties["dc:isPrivate"]) return false;
-    }
+  checkEnableMoveButton() {
+    // if (Object.keys(this.selectedMoveList)?.length > 0) {
+    //   if (this.selectedFolder.properties["dc:isPrivate"]) return false;
+    // }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
   markIsPrivate(data: IEntry) {
@@ -2428,6 +2464,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   contextMenuPosition = { x: '0px', y: '0px' };
 
   onContextMenu(event: MouseEvent, item: any) {
+    // this.checkCollabAndPrivateFolder()
     if(!this.checkGeneralFolder(item) && !this.isTrashView) {
       event.preventDefault();
       this.contextMenuPosition.x = event.clientX + 'px';
@@ -2524,5 +2561,23 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   onInput(event) {
     const input = event.target;
     input.parentNode.dataset.value = input.value;
+  }
+
+  checkCollabAndPrivateFolder(cancel?:boolean){
+    // if(!this.isAdmin) return this.onlyPrivate =  false 
+    let collabs = this.getFolderCollaborators()
+    let checkCollabs
+    if (!collabs) {
+      checkCollabs = true
+    } else {
+       checkCollabs = Object.keys(collabs)?.length < 2
+    }
+    let isPrvt = this.isPrivateFolder()
+    // let checkCollabs = Object.keys(collabs)?.length < 2
+    this.onlyPrivate = checkCollabs && isPrvt && this.isAdmin
+   }
+
+  onlyPrivateFolder() {
+    this.onlyPrivate = !this.onlyPrivate;
   }
 }

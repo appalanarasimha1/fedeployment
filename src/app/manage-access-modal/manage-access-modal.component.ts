@@ -56,7 +56,7 @@ export class ManageAccessModalComponent implements OnInit {
 
   async updateRights() {
     if (!this.makePrivate) return;
-    this.dataService.folderPermissionInit(true)
+    
     const params = {
       isPrivate: !this.docIsPrivate
     };
@@ -69,6 +69,7 @@ export class ManageAccessModalComponent implements OnInit {
     if (res['value'] !== 'OK') {
       this.error = res['value'];
     } else  {
+      this.dataService.folderPermissionInit(true)
       if(this.input_data) {
         this.input_data.properties['dc:isPrivate'] = true;``
         this.markIsPrivate.emit(this.input_data);
