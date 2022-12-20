@@ -24,7 +24,7 @@
                     <mat-form-field class="example-chip-list">
                         <mat-chip-list #chipList>
                             <mat-chip *ngFor="let regionId of supplier.regions;let indx=index;" [selectable]="selectable" [removable]="removable" (removed)="remove(regionId,indx, i)">
-                                {{regionMap[regionId]?.name}}
+                                {{regionMap[regionId]?.id}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
                             <input placeholder="Add..." #suppliersInput [formControl]="suppliersCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"

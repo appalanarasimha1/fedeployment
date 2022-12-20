@@ -8,6 +8,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { NuxeoService } from "src/app/services/nuxeo.service";
+import { SharedService } from "src/app/services/shared.service";
 import { adminPanelWorkspacePath } from "src/app/common/constant";
 import { ApiService } from "../../services/api.service";
 import { CreateSupplieModalComponent } from '../create-supplie-modal/create-supplie-modal.component';
@@ -70,6 +71,7 @@ export class ManageSuppliersComponent implements OnInit {
     private renderer: Renderer2,
     private nuxeo: NuxeoService,
     private apiService: ApiService,
+    public sharedService: SharedService,
   ) {
   }
 
@@ -290,8 +292,15 @@ export class ManageSuppliersComponent implements OnInit {
     .execute();
   }
 
-  toggleActivated(event, supplier) {
-    this.updateDocument(supplier.uid, {properties: {"supplier:activated": event.checked}})
+  async toggleActivated(event, supplier) {
+    await this.updateDocument(supplier.uid, {properties: {"supplier:activated": event.checked}});
+    this.sharedService.showSnackbar(
+      `Supplier's access has been ${event.checked ? "enabled" : "disabled"}`,
+      5000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
   }
 
   async openCreateSupplierModal() {
