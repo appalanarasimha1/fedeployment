@@ -180,7 +180,7 @@
                         </li>
                     </ul>
                 </td>
-                <td>
+                <td class="accessExpiryCal">
                     <mat-form-field appearance="fill">
                         <input class="datePicker" placeholder="Choose a date" (dateChange)="updateUserExpiry($event, i)" [(ngModel)]="user.expiry" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
                         <mat-datepicker #picker></mat-datepicker>

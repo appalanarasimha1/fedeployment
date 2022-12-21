@@ -510,3 +510,28 @@ input.datePicker:focus::placeholder{
 .renameEmail {
     min-width: 270px;
 }
+.folderListview .accessExpiryCal ::ng-deep mat-form-field::after {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(../../../assets/images/down-arrow.svg) no-repeat center center !important;
+    background-size: 100%;
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    z-index: -1;
+}
+.folderListview .accessExpiryCal ::ng-deep mat-form-field .datePicker {
+    width: 96px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0px;
+    border-bottom: 0px solid #000 !important;
+    background: transparent;
+}
+::ng-deep .mat-calendar-body-selected {
+    background-color: #EDD580 !important;
+    color: #000;
+}

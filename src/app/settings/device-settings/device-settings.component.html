@@ -1,1 +1,171 @@
-<p>device-settings works!</p>
+<div class="externalUser positionRelative">
+    <h2>Devices</h2>
+    <!-- <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p> -->
+    <div class="searchBlock">
+        <span class="positionRelative">
+            <input type="text" placeholder="Search or create devices by typing the installation ID" [(ngModel)]="supplierInput" class="search-bar" />
+            <button class="primary createSuppliers" *ngIf="supplierInput" (click)="openCreateSupplierModal()">Create device</button>
+        </span>
+    </div>
+    <div class="regionBlok">
+        <ul>
+            <li>
+                <ng-select placeholder="Region"
+                    (change)="onSelectRegions($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedRegions"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedRegions}"
+                >
+                    <ng-option *ngFor="let region of regions" [value]="region.name">
+                        {{region.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li>
+                <ng-select placeholder="Sub-area"
+                    (change)="onSelectRegions($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedsubAreas"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedsubAreas}"
+                >
+                    <ng-option *ngFor="let subArea of subAreas" [value]="subArea.name">
+                        {{subArea.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li>
+                <ng-select placeholder="Device type"
+                    (change)="onSelectRegions($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selecteddeviceTypes"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selecteddeviceTypes}"
+                >
+                    <ng-option *ngFor="let deviceType of deviceTypes" [value]="deviceType.name">
+                        {{deviceType.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li>
+                <ng-select placeholder="Status"
+                    (change)="onSelectRegions($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedStatus"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedStatus}"
+                >
+                    <ng-option *ngFor="let statu of status" [value]="statu.name">
+                        {{statu.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+        </ul>
+    </div>
+    <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width:1%">&nbsp;&nbsp;</th>
+                <th style="width:15%">Installation ID</th>
+                <th style="width:25%">Sub-area</th>
+                <th style="width:10%">Direction</th>
+                <th style="width:10%">Pole ID</th>
+                <th style="width:14%">Device type</th>
+                <th style="width:19%">Status</th>
+                <th style="width:6%">&nbsp;</th>
+            </tr>
+            <tr>
+                <td><div class="height32"></div></td>
+                <td>T-TME-OX-0051</td>
+                <td><div class="itemTitleContent">Zone E South</div></td>
+                <td>315°</td>
+                <td>A03</td>
+                <td>Fixed</td>
+                <td>
+                    <ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="statusTage online">Online <span></span></div>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <div class="statusTage online">Online <span></span></div>
+                                </li>
+                                <li>
+                                    <div class="statusTage inactive">Inactive <span></span></div>
+                                </li>
+                                <li>
+                                    <div class="statusTage decommissioned">Decommissioned <span></span></div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+            </tr>
+            <tr>
+                <td><div class="height32"></div></td>
+                <td>T-TME-OX-0051</td>
+                <td><div class="itemTitleContent">Excavation of Rock and Non-Rock</div> </td>
+                <td>90°</td>
+                <td>B19</td>
+                <td>Fixed</td>
+                <td>
+                    <ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="statusTage inactive">Inactive <span></span></div>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <div class="statusTage online">Online <span></span></div>
+                                </li>
+                                <li>
+                                    <div class="statusTage inactive">Inactive <span></span></div>
+                                </li>
+                                <li>
+                                    <div class="statusTage decommissioned">Decommissioned <span></span></div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+            </tr>
+            <tr>
+                <td><div class="height32"></div></td>
+                <td>T-TME-OX-0054</td>
+                <td><div class="itemTitleContent">High Security Fence And Wadi Crossing High Security Fence And Wadi Crossing</div></td>
+                <td>315°</td>
+                <td>A03</td>
+                <td>Fixed</td>
+                <td>
+                    <ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="statusTage decommissioned">Decommissioned <span></span></div>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <div class="statusTage online">Online <span></span></div>
+                                </li>
+                                <li>
+                                    <div class="statusTage inactive">Inactive <span></span></div>
+                                </li>
+                                <li>
+                                    <div class="statusTage decommissioned">Decommissioned <span></span></div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+            </tr>
+        </table>
+    </div>
+</div>

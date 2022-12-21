@@ -6,6 +6,45 @@
   </div>
   <div class="tree">
     <ul style="list-style: none" class="leftPanel">
+      <li style="padding: 0px;">
+        <div class="d-flex set">
+          <div style="z-index: 9; text-align: center; width: 20px;">
+            <img src="../../../assets/images/down-arrow.svg" height="9px" />
+            <!-- <img src="../../../assets/images/left-arrow.svg" height="14px" /> -->
+          </div>
+          <span style="padding-left: 10px; z-index: 9">Documentation project</span>
+        </div>
+        <ul class="leftPanel insideScroll" id="customScrollBar">
+          <li
+            style="cursor: pointer"
+            class="d-flex set"
+            routerLink="/settings/devices"
+            routerLinkActive="'active-tab'"
+          >
+            <span>Devices <span class="counting">149</span></span>
+          </li>
+
+          <li
+            style="cursor: pointer"
+            class="d-flex set"
+            routerLink="/settings/manage-suppliers"
+            routerLinkActive="'active-tab'"
+          >
+            <span>Suppliers <span class="counting">21</span></span>
+          </li>
+
+          <li
+            style="cursor: pointer"
+            class="d-flex set"
+            routerLink="/settings/manage-locations"
+            routerLinkActive="'active-tab'"
+          >
+            <!-- <span>Manage locations</span> -->
+            <span>Regions <span class="counting">3</span></span>
+          </li>
+        </ul>
+      </li>
+
       <li
         style="cursor: pointer"
         class="d-flex set"
@@ -13,33 +52,6 @@
         routerLinkActive="'active-tab'"
       >
         <span>Manage external users</span>
-      </li>
-
-      <li
-        style="cursor: pointer"
-        class="d-flex set"
-        routerLink="/settings/manage-suppliers"
-        routerLinkActive="'active-tab'"
-      >
-        <span>Manage suppliers</span>
-      </li>
-
-      <li
-        style="cursor: pointer"
-        class="d-flex set"
-        routerLink="/settings/manage-locations"
-        routerLinkActive="'active-tab'"
-      >
-        <span>Manage locations</span>
-      </li>
-
-      <li
-        style="cursor: pointer"
-        class="d-flex set"
-        routerLink="/settings/devices"
-        routerLinkActive="'active-tab'"
-      >
-        <span>Devices</span>
       </li>
     </ul>
   </div>

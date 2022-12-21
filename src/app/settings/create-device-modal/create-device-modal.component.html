@@ -1,0 +1,99 @@
+<div class="create-supplier">
+    <h3>Create device
+        <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+          <img src="../../../assets/images/close-modal.svg" style="width: 20px" />
+       </button>
+    </h3>
+
+    <div class="create-supplier-form">
+        <ul>
+            <li>
+                <ol class="deviceType">
+                    <li>
+                        <input type="radio" id="timelapse" name="deviceType" (change)="onSelectdeviceType($event, 'timelapse')" checked />
+                        <label for="timelapse">Timelapse</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="360" name="deviceType" (change)="onSelectdeviceType($event, '360')" />
+                        <label for="360">360</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="live" name="deviceType" (change)="onSelectdeviceType($event, 'live')" />
+                        <label for="live">Live</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="drone" name="deviceType" (change)="onSelectdeviceType($event, 'drone')" />
+                        <label for="drone">Drone</label>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <div class="form-group">
+                    <label for="Supplier's Name">Installation ID</label>
+                    <input type="text" placeholder="Installation ID" [(ngModel)]="installationID" />
+                </div>
+            </li>
+            <li>
+                <div class="flex">
+                    <div class="form-group">
+                        <label for="Latitude / Northing">Latitude / Northing</label>
+                        <input type="text" placeholder="E.g. 27.480860" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Longitude / Easting">Longitude / Easting</label>
+                        <input type="text" placeholder="E.g. 35.589090" />
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="flex">
+                    <div class="form-group" *ngIf="direction">
+                        <label for="Direction">Direction</label>
+                        <input type="text" placeholder="E.g. SW" />
+                    </div>
+                    <div class="form-group" *ngIf="poleId">
+                        <label for="Pole ID">Pole ID</label>
+                        <input type="text" placeholder="E.g. A05" />
+                    </div>
+                </div>
+            </li>
+            <li class="regionBlok">
+                <div class="form-group">
+                    <label for="Region">Region</label>
+                    <ng-select placeholder="Select"
+                        [searchable]="false"
+                        [clearable]="false"
+                        [(ngModel)]="selectedRegions"
+                        id="region"
+                        [ngClass]="{'goldenText': selectedRegions}"
+                    >
+                        <ng-option *ngFor="let region of regions" [value]="region.name">
+                            {{region.name}}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </li>
+            <li class="regionBlok">
+                <div class="form-group">
+                    <label for="Sub-area">Sub-area</label>
+                    <ng-select placeholder="Select"
+                        [searchable]="false"
+                        [clearable]="false"
+                        [(ngModel)]="selectedsubAreas"
+                        id="Sub-area"
+                        [ngClass]="{'goldenText': selectedsubAreas}"
+                    >
+                        <ng-option *ngFor="let subArea of subAreas" [value]="subArea.name">
+                            {{subArea.name}}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="button-groups">
+        <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+        <button class="upload-btn" [disabled]="!installationID" >Create device</button>
+    </div>
+</div>
