@@ -1,8 +1,9 @@
 <div *ngIf="openInModal">
   <ng-template #preview let-modal class="imgPopUpTab">
     <div class="fullSIzeImg" *ngIf="fullSIzeImg" (click)="clickFullsizeImg()">
+    <div class="imgFullWidth" style="background-image: url({{docUrl}});"></div>
       <!-- <img src="../../assets/images/close-modal.svg" style="width: 20px; position: absolute; top: 10px; right: 10px; height: auto;"> -->
-      <img [src]="getAssetUrl(null, docUrl)" alt="" />
+      <!-- <img [src]="getAssetUrl(null, docUrl)" alt="" /> -->
     </div>
     <!-- <div class="modal-header">
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); copiedString = '';showAllComments=false">
