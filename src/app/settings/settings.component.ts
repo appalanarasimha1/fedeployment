@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from "@angular/router";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "src/app/services/shared.service";
@@ -17,6 +18,7 @@ export class SettingsComponent implements OnInit {
     private apiService: ApiService,
     public sharedService: SharedService,
     public matDialog: MatDialog,
+    private router: Router,
     )
   { }
 
@@ -34,6 +36,7 @@ export class SettingsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if (this.sharedService.checkExternalUser()) this.router.navigate(['workspace']);
     this.managedUsers = [];
     this.managedUsersBackUp=[];
     this.fetchManagedExternalUsers()
@@ -162,7 +165,7 @@ export class SettingsComponent implements OnInit {
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-        
+
       }
     });
   }
