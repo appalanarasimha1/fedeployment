@@ -684,7 +684,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 } */
 
 .fix-scroll{
-  max-height: 24vh;
+  max-height: 26vh;
   overflow: hidden;
   overflow-y: scroll;
 }
