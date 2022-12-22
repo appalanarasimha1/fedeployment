@@ -363,6 +363,15 @@ video{
     padding-right: 15px;
 }
 ::ng-deep .ng-select .ng-select-container {
+    color: #fff !important;
+    background-color: transparent;
+    border-radius: 0px;
+    border: unset;
+    border-bottom: 1px solid #fff;
+    min-height: 36px;
+    align-items: center;
+}
+::ng-deep .goldenText.ng-select .ng-select-container {
     color: #DEB31A !important;
     background-color: transparent;
     border-radius: 0px;
@@ -384,7 +393,14 @@ video{
     background-color: #DEB31A !important;
 }
 ::ng-deep .ng-select-container.ng-has-value .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../../assets/images/down-arrow-white.svg);
+}
+::ng-deep .goldenText .ng-select-container.ng-has-value .ng-arrow-wrapper .ng-arrow {
     background-image: url(../../../assets/images/down-arrow-yellow.svg);
+}
+::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+    border-color: rgba(225, 187, 51, 1) !important;
+    box-shadow:  none !important;
 }
 
 ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {
