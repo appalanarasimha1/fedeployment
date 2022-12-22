@@ -487,9 +487,12 @@ border-radius: 8px;
 .publish-file-preview {
   display: flex;
   background-color: #F8F8F5;
-  margin: 0px 0;
+  margin: 0px 0px 20px;
   padding:20px 15px;
   border-radius: 8px;
+}
+.publish-file-preview:last-child {
+  margin-bottom: 0px;
 }
 .publish-file-preview-img {
   display: block;
@@ -681,7 +684,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 } */
 
 .fix-scroll{
-  height: 24vh;
+  max-height: 24vh;
   overflow: hidden;
   overflow-y: scroll;
 }
@@ -1663,7 +1666,7 @@ span.showAllClassifications svg.rotateArrow {
     min-height: 12vh;
   }
   .fix-scroll{
-    height: 30vh;
+    max-height: 30vh;
   }
 }
 @media  screen and (min-width: 1680px) {
@@ -1671,7 +1674,7 @@ span.showAllClassifications svg.rotateArrow {
     min-height: 10vh;
   }
   .fix-scroll{
-    height: 37vh;
+    max-height: 37vh;
   }
 }
 @media  screen and (min-width: 1920px) {
@@ -1679,7 +1682,7 @@ span.showAllClassifications svg.rotateArrow {
     min-height: 90px;
   }
   .fix-scroll{
-    height: 46vh;
+    max-height: 46vh;
   }
   
 }

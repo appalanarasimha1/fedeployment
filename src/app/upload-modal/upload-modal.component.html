@@ -433,7 +433,7 @@
                <div class="col-xl-6 col-md-6">
                   <div class="row">
                      <div class="col-xl-3 col-md-3">
-                        <label for="confidentiality">Confidentiality</label>
+                        <label for="confidentiality" style="text-align: right; display: block;">Confidentiality</label>
                      </div>
                      <div class="col-xl-9 col-md-9 flexible">
                         <ng-select placeholder="Specify sensitivity"
@@ -457,10 +457,10 @@
                </div>
                <div class="col-xl-6 col-md-6">
                   <div class="row">
-                     <div class="col-xl-3 col-md-3">
-                        <label for="access">{{ACCESS_TITLE}}</label>
+                     <div class="col-xl-4 col-md-4">
+                        <label for="access" style="text-align: right;display: block;">{{ACCESS_TITLE}}</label>
                      </div>
-                     <div class="col-xl-9 col-md-9 flexible">
+                     <div class="col-xl-8 col-md-8 flexible">
                         <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="overallAccess" id="access" [ngClass]="{'goldenText': overallAccess}">
                            <ng-option *ngFor="let c of ACCESSNEW | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
                            {{ACCESS_LABEL[c.value]}}
@@ -480,7 +480,7 @@
                <div class="col-xl-6 col-md-6">
                   <div class="row">
                      <div class="col-xl-12 col-md-12">
-                        <label for="{{SPECIFIC_USER_LABEL}}">{{SPECIFIC_USER_LABEL}}</label>
+                        <label for="{{SPECIFIC_USER_LABEL}}" style="text-align: right;display: block;">{{SPECIFIC_USER_LABEL}}</label>
                         <ng-select style="height: unset !important;" 
                         (change)="userOverall()"
                         [items]="userList$ | async"
@@ -507,7 +507,7 @@
             <div class="upload-form-input row mb-20">
                <div class="col-xl-6 col-md-6">
                   <div class="row">
-                     <div class="col-xl-3 col-md-3">Usage right</div>
+                     <div class="col-xl-3 col-md-3" style="text-align: right;">Usage right</div>
                      <div class="col-xl-9 col-md-9 flexible">
                         <label class="control control--checkbox" style="margin-bottom: 0px; font-family: 'brownlight';">
                           Approval required before download
@@ -524,9 +524,34 @@
                      </div>
                   </div>
                </div>
+               <div class="col-xl-6 col-md-6" *ngIf="overallDownloadApproval">
+                  <div class="row" >
+                     <div class="col-xl-4 col-md-4"><label style="margin-bottom: 0px;text-align: right;float: none;color: #040404;display: block;">{{OWNER_APPROVAL_LABEL}}</label></div>
+                     <div class="col-xl-8 col-md-8">
+                        <ng-select style="height: unset !important; width: 100%;"
+                        (change)="dowloadUsers()"
+                        [items]="userList$ | async"
+                        bindLabel="id"
+                        bindValue="id"
+                        [multiple]="true"
+                        [hideSelected]="true"
+                        [trackByFn]="trackByFn"
+                        [minTermLength]="2"
+                        [loading]="userLoading"
+                        typeToSearchText="Search users"
+                        [typeahead]="userInput$"
+                        [(ngModel)]="overallDownloadApprovalUsers"
+                        [ngClass]="{'goldenText': overallDownloadApprovalUsers }" >
+                        <ng-template ng-option-tmp let-item="item">
+                           {{item.id}} ({{item.fullname}})
+                        </ng-template>
+                        </ng-select>
+                     </div>
+                  </div>
+               </div>
             </div>
 
-            <div class="upload-form-input row mb-30 uploadModalBlk" *ngIf="overallDownloadApproval">
+            <!-- <div class="upload-form-input row mb-10 uploadModalBlk" *ngIf="overallDownloadApproval">
                <div class="col-xl-6 col-md-6">
                   <div class="row" >
                      <div class="col-xl-12 col-md-12">
@@ -554,8 +579,8 @@
                </div>
                <!-- <div class="col-xl-6 col-md-6" (click)=" applyToAll()">
                   <button class="cancel-btn" style="float: right;">Apply to all</button>
-               </div> -->
-            </div>
+               </div> -/->
+            </div> -->
             <div class="upload-form-input row uploadModalBlk" style="margin-bottom: 20px; margin-right: 3px">
                <div class="col-xl-12 col-md-12">
                   <span class="showAllClassifications" (click)="showAllAsset()">Show all asset classifications 
@@ -631,7 +656,7 @@
                         <div *ngIf="!isPrivateFolder() && !checkboxIsPrivate" class="publish-file-preview-access">
                            <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customConfidentialityMap[file.key] }">
                               <div class="col-xl-4">
-                                 <label for="confidentiality">Confidentiality</label>
+                                 <label for="confidentiality" style="text-align: right; display: block;">Confidentiality</label>
                               </div>
                               <div class="col-xl-8 ">
                                  <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
@@ -647,7 +672,7 @@
       
                            <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customAccessMap[file.key] }">
                               <div class="col-xl-4">
-                                 <label for="access">{{ACCESS_TITLE}}</label>
+                                 <label for="access" style="text-align: right; display: block;">{{ACCESS_TITLE}}</label>
                               </div>
                               <div class="col-xl-8">
                                  <ng-select placeholder="Specify visibility" name="access"  [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
