@@ -234,6 +234,7 @@
         <h3>Please select an area of interest.</h3>
         <ng-select
           class="pointer"
+          [ngClass]="{'goldenText': sectorSelected !== 'general' }"
           [items]="allSectors"
           ngDefaultControl
           placeholder="Select a sector"
@@ -243,7 +244,7 @@
           [closeOnSelect]
           [searchable]="false" [clearable]="false">
         </ng-select>
-        <div *ngIf="sectorSelected" class="next-arrow">
+        <div *ngIf="sectorSelected !== 'general'" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->
           <img src="../../../assets/images/left-arrow-video.svg" class="logo pointer" (click)="playPersonalizedVideo()" />
         </div>
@@ -253,7 +254,8 @@
       <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
        <div class="ssector">
         <!-- <span>Change sector</span> -->
-        <ng-select [items]="allSectors" class="sectorsss" id="customScrollBar"
+        <ng-select [items]="allSectors" class="sectorsss" [ngClass]="{'goldenText': sectorSelected !== 'general' }"
+        id="customScrollBar"
           ngDefaultControl
           placeholder="Select a sector"
           [(ngModel)]="sectorSelected"
