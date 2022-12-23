@@ -256,8 +256,8 @@ export class HeaderComponent implements OnInit {
     if (excludeGlobal) {
       if (!this.sharedService.checkExternalUser()) return false; // normal user
       const user = JSON.parse(localStorage.getItem('user'));
-      this.userData = user
-      return user?.groups.includes(EXTERNAL_GROUP_GLOBAL);
+      this.userData = user;
+      return !user?.groups.includes(EXTERNAL_GROUP_GLOBAL);
     } else {
       return this.sharedService.checkExternalUser();
     }

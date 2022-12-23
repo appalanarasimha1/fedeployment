@@ -71,7 +71,7 @@ export class UploadModalComponent implements OnInit {
 
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     // this.showPopup(2,event);
-    event.stopPropagation()  
+    event.stopPropagation()
   }
 
   isLinear = true;
@@ -574,8 +574,8 @@ export class UploadModalComponent implements OnInit {
     this.assetCache[uid]["contextParameters"] = contextParameters;
     return this.assetCache[uid]["entries"];
   }
-
   async uploadFile(files) {
+    console.log('testUpload');
     if (!this.batchId) {
       await this.createBatchUpload();
     }
@@ -594,7 +594,7 @@ export class UploadModalComponent implements OnInit {
     const element = <HTMLElement>(
       document.getElementsByClassName(`upload-progress-bar-${index}`)[0]
     );
-    const background = `background-image: linear-gradient(to right, rgba(0, 104, 69, 0.1) ${percentDone}%,#ffffff ${percentDone}%) !important;`;
+    const background = `background-image: linear-gradient(to right, rgba(0, 123, 181, 0.3) ${percentDone}%,#ffffff ${percentDone}%);`;
     let attr = element.getAttribute("style");
     attr = attr.replace(/background-image:.*?;/g, "");
     // if (percentDone === 100) return;
@@ -650,7 +650,7 @@ export class UploadModalComponent implements OnInit {
             const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
             console.log("i = ", i, " | j = ", j);
             promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
-            
+
             console.log("chunkIndex = ", chunkIndex);
             chunkIndex += 1;
             if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
@@ -774,7 +774,7 @@ export class UploadModalComponent implements OnInit {
     this.folderNameParam = "";
     this.selectedFolder = null;
     // this.showCustomDropdown = true;
-    
+
   }
 
   focusOutDropdown() {
@@ -1146,7 +1146,7 @@ export class UploadModalComponent implements OnInit {
       context: {},
       input: asset.uid,
     };
-    this.apiService.post(apiRoutes.ATTACH_LARGE_FILE + "/@async", payload).toPromise();
+    this.apiService.post(apiRoutes.ATTACH_LARGE_FILE, payload).toPromise();
   }
 
   async setAssetPermission(asset, index) {

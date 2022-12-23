@@ -18,6 +18,7 @@
       [typeahead]="userInput$"
       (change)="selectChange(selectedCollaborator)"
       placeholder="Add users by their name or email address"
+      notFoundText="No user found"
     >
       <ng-template ng-option-tmp let-item="item">
         {{ item.id }} ({{ item.fullname }})
@@ -222,7 +223,7 @@
 
           <div class="row">
             <div class="col-md-3">
-              Access duration
+              Access expiry
             </div>
             <div class="col-md-9">
               <span style="width: calc(100% - 31px);display: inline-block;">

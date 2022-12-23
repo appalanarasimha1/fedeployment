@@ -30,6 +30,7 @@ export class MoveCopyAssetsComponent implements OnInit {
   sectorList: any;
   currentSector: string;
   user:string;
+  move = true;
 
   constructor(
     private apiService: ApiService,
@@ -44,6 +45,7 @@ export class MoveCopyAssetsComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.data.user
     this.selectedList = this.data.selectedList;
+    this.move = this.data.move;
     this.currentSector = this.getSectorFromPath(Object.values(this.selectedList)[0])
     this.sectorList = this.data.sectorList;
     this.selectedIdList = Object.keys(this.selectedList).map(key => this.selectedList[key].uid);
@@ -157,7 +159,7 @@ export class MoveCopyAssetsComponent implements OnInit {
         arrayCall.push(this.moveAsset(this.selectedList[key]));
         arrayIndex.push(key)
       }
-      
+
     }
     const res = await Promise.all(arrayCall);
     res.forEach((response, index) => this.showNoti(response.value, arrayIndex[index], index));
@@ -169,7 +171,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     const isFolder = this.selectedList[key]?.type.includes('Folder') || this.selectedList[key]?.type.includes('Workspace');
 
     this.sharedService.showSnackbar(
-      message === 'OK' ? `${isFolder ? 'Folder' : 'Asset'} ${this.selectedList[key]?.title} has been ${this.selectedDestination?.properties['dc:isPrivate']?"copied":"moved"} successfully`
+      message === 'OK' ? `${isFolder ? 'Folder' : 'Asset'} ${this.selectedList[key]?.title} has been ${this.move?"moved":"copied"} successfully`
       : `Cannot move ${this.selectedList[key]?.title}: ${message}`,
       4000,
       "top",
@@ -185,6 +187,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     const params = {
       src: item.uid,
       des: this.selectedDestination.uid,
+      move: this.move,
     }
     const body = {
       context: {},

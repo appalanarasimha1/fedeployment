@@ -190,14 +190,12 @@ export class NuxeoService {
       headers: this.defaultHeader
     });
     try {
-      await this.nuxeoClient.connect();
+      const res = await this.nuxeoClient.connect();
+      localStorage.setItem("user", JSON.stringify(res.user.properties));
     } catch (err) {
       await this.logout();
       this.router.navigate(['/login']);
       return;
-    }
-    if(this.router.url === '/login' && redirect) {
-      this.router.navigate(['/']);
     }
     return;
   }

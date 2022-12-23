@@ -1,5 +1,5 @@
 <div class="moveCopyBlock">
-  <h3>Where would you like to move the item?
+  <h3>Where would you like to {{move ? 'move' : 'copy'}} the item?
     <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
       <img src="../../assets/images/close-modal.svg" style="width: 20px" />
    </button>
@@ -44,17 +44,17 @@
   </div>
   <div class="fixheight">
     <div *ngIf="selectedDestination">
-      <div class="movedContent" *ngIf="selectedDestination?.properties['dc:isPrivate']">
+      <!-- <div class="movedContent" *ngIf="selectedDestination?.properties['dc:isPrivate']">
         Items that are moved to private folders will always be copied.
-      </div>
-      <div class="movedContent" *ngIf="!selectedDestination?.properties['dc:isPrivate']">
-        Items will be moved to this folder. The owner will be notified.
+      </div> -->
+      <div class="movedContent">
+        Items will be {{move ? 'moved' : 'copied'}} to this folder. The owner will be notified.
       </div>
     </div>
   </div>
 </div>
 <div class="button-groups">
   <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-  <button *ngIf="selectedDestination?.properties['dc:isPrivate']" [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">Copy here</button>
-  <button *ngIf="!selectedDestination?.properties['dc:isPrivate']" [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">Move here</button>
+  <button [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">{{move ? 'Move' : 'Copy'}} here</button>
+  <!-- <button *ngIf="!selectedDestination?.properties['dc:isPrivate']" [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">Move here</button> -->
 </div>

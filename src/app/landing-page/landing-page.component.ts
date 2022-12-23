@@ -239,7 +239,7 @@ export class LandingPageComponent implements OnInit {
     let error;
     const queryParams = { pageSize: 10, currentPageIndex: 0 };
     const route = apiRoutes.FETCH_COMMENTS.replace('[assetId]', this.selectedFile.uid);
-    this.nuxeo.nuxeoClient.request(route, { queryParams, headers: { 'enrichers.user': 'userprofile' } })
+    this.nuxeo.nuxeoClient.request(route, { queryParams,  }) //headers: { 'enrichers.user': 'userprofile' }
       .get().then((docs) => {
         this.comments = docs.entries;
         loading = false;

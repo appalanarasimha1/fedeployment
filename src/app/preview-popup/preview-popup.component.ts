@@ -40,6 +40,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   requestSent = false;
   rejectComment = "";
   modalOpen: boolean = true;
+  fullSIzeImg: boolean = false;
 
   constructor(
     private router: Router,
@@ -446,10 +447,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   search(searchTerm: string) {
+    this.closeModal();
     this.dataService.termSearchInit(searchTerm);
     this.dataService.termSearchForHideInit(searchTerm);
 
-    this.modalService.dismissAll();
   }
 
   showMoreTags() {
@@ -621,5 +622,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     let temp = str.replaceAll("&#64;","@");
     temp = temp.replaceAll('{<!-- -->{', "<span style='color: #DEB31A !important;font-family: 'brownregular' !important;'>");
     return temp.replaceAll("}}", "</span>");
+  }
+
+  clickFullsizeImg() {
+    this.fullSIzeImg = !this.fullSIzeImg;
   }
 }

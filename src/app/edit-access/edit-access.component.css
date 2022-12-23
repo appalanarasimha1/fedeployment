@@ -363,4 +363,22 @@ h3.externalUsers {
 ::ng-deep .mat-calendar-body-selected {
     background-color: #EDD580;
     color: #000;
-  }
+}
+::ng-deep span.mat-button-wrapper {
+    position: relative;
+}
+::ng-deep span.mat-button-wrapper svg {
+    opacity: 0;
+}
+
+::ng-deep span.mat-button-wrapper:after {
+    content: '';
+    display: block;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: -5px;
+    right: 0px;
+    background: url(../../assets/images/calendar-icon.svg)  center center / 20px;
+    background-repeat: no-repeat;
+}

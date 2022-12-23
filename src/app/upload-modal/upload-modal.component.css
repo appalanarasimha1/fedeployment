@@ -69,13 +69,13 @@ font-weight: normal;
   font-size: 35px;
   padding: 10px;
 }
-.upload-prevoew li{
-  width: 29%;
-  margin: 0px 15px;
+.upload-preview li{
+  width: 23%;
+  margin: 0px 10px;
   max-width: 240px;
 }
 .upload-file-preview {
-  background: rgba(0, 104, 69, 0.1) !important;
+  background: rgba(0, 123, 181, 0.3);
   box-shadow: 1px 2px 4px rgb(0 0 0 / 25%);
   border-radius: 8px !important;
   font-size: 14px;
@@ -86,7 +86,8 @@ font-weight: normal;
   display: block !important;
   padding: 15px!important;
   min-width: 100% !important;
-  border: 2px solid transparent;
+  border: 0px solid transparent;
+  margin: 10px 0px !important;
 }
 .assets-selected{
   background: rgba(0, 104, 69, 0.1);
@@ -122,22 +123,24 @@ font-weight: normal;
   line-height: 16px;
   letter-spacing: 0.055em;
   position: absolute;
-  bottom: 10px;
+  top: 50px;
   color: #B7B7B8;
 }
 .upload-loading {
-  color: #006dd4;
+  color: #0072A2;
   position: absolute;
-  bottom: 10px;
+  top: 45px;
 }
 ngx-dropzone-preview:hover {
   background-color: white !important;
   border: 2px solid red;
+  padding: 13px !important;;
 }
 .button-groups {
   display: flex;
   /* margin-top: 50px; */
   width: 100%;
+  padding: 0px 25px;
 }
 .button-groups button {
   border-radius: 7px;
@@ -240,7 +243,8 @@ text-align: center;
 color: #FFFFFF;
 }
 .upload-form {
-  margin: 0px  2px 20px 0px;
+  margin: 0px  2px 20px 27px;
+  width: calc(100% - 27px);
 }
 .mb-10{
   margin-bottom: 10px;
@@ -483,9 +487,12 @@ border-radius: 8px;
 .publish-file-preview {
   display: flex;
   background-color: #F8F8F5;
-  margin: 0px 0;
+  margin: 0px 0px 20px;
   padding:20px 15px;
   border-radius: 8px;
+}
+.publish-file-preview:last-child {
+  margin-bottom: 0px;
 }
 .publish-file-preview-img {
   display: block;
@@ -589,12 +596,13 @@ font-weight: normal;
   font-size: 15px;
   /* height: 320px !important; */
   /* height: calc(92vh - 270px) !important; */
-  min-height: 323px;
+  min-height: 343px;
   overflow-x: auto;
   margin-right: 24px;
   height: 100%;
   margin: 0px auto;
   padding: 10px;
+  height: 50vh;
 }
 .tooltip1 {
   position: relative;
@@ -676,7 +684,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 } */
 
 .fix-scroll{
-  height: 24vh;
+  max-height: 26vh;
   overflow: hidden;
   overflow-y: scroll;
 }
@@ -1260,7 +1268,10 @@ input.copyright-input::placeholder{
   border-radius: 10px;
 }
 .assets-selected-text {
+  font-size: 12px;
   line-height: 16px;
+  letter-spacing: 0.055em;
+  color: #006845;
 }
 .upload-form-input ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow{
   border: 0px !important;
@@ -1304,7 +1315,7 @@ input.copyright-input::placeholder{
   height: 100px;
   filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
   padding: 22px 20px 22px 13px;
-  margin: 30px 0 20px;
+  margin: 20px 0 20px;
   text-align: left;
 }
 .folderHeading {
@@ -1533,7 +1544,7 @@ button.btn-disable {
   pointer-events: none;
 }
 .upload-file-preview.fillbar {
-  background: rgba(0, 104, 69, 0.1) !important;
+  background: rgba(255, 255, 255, 1) !important;
   background-image: linear-gradient(to right, rgba(0, 104, 69, 0) 100%,#ffffff 100%) !important;
 }
 .upload-form-input.validationMsg ng-select {
@@ -1600,17 +1611,17 @@ span.showAllClassifications svg.rotateArrow {
   padding-bottom: 0px !important;
 }
 .updateClassification, .upload-form-input.row.mb-30.uploadModalBlk, .publish-assets {
-  padding-right: 20px;
+  padding-right: 0px;
 }
 .updated-asset-classifications::after {
   width: 107%;
 }
 .newscrollBar {
-  margin: 0px 0px 17px -8px;
-  padding: 0px 30px 0px 30px;
+  margin: 0px -20px 17px -8px;
+  padding: 0px 30px 0px 20px;
 }
 .publish-assets {
-  padding-right: 10px;
+  padding-right: 20px;
 }
 
 .upload-file-preview.errorNewUi {
@@ -1655,7 +1666,7 @@ span.showAllClassifications svg.rotateArrow {
     min-height: 12vh;
   }
   .fix-scroll{
-    height: 30vh;
+    max-height: 30vh;
   }
 }
 @media  screen and (min-width: 1680px) {
@@ -1663,7 +1674,7 @@ span.showAllClassifications svg.rotateArrow {
     min-height: 10vh;
   }
   .fix-scroll{
-    height: 37vh;
+    max-height: 37vh;
   }
 }
 @media  screen and (min-width: 1920px) {
@@ -1671,7 +1682,7 @@ span.showAllClassifications svg.rotateArrow {
     min-height: 90px;
   }
   .fix-scroll{
-    height: 46vh;
+    max-height: 46vh;
   }
   
 }
@@ -1779,4 +1790,63 @@ span.showAllClassifications svg.rotateArrow {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.publishingAssets .table-bordered>thead>tr>th, 
+.publishingAssets .table-bordered>tbody>tr>th, 
+.publishingAssets .table-bordered>tfoot>tr>th, 
+.publishingAssets .table-bordered>thead>tr>td, 
+.publishingAssets .table-bordered>tbody>tr>td, 
+.publishingAssets .table-bordered>tfoot>tr>td
+.publishingAssets .table.table-bordered {
+  border: 1px solid #AFD9FF;
+}
+.publishingAssets .table-bordered>tbody>tr>td {
+  border-left: 0px;
+  color: #0072A2;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'brownlight';
+}
+.publishingAssets .table-bordered {
+  border: 0px;
+  margin-bottom: 8px;
+}
+.publishingAssets tbody tr:hover {
+  background-color: transparent;
+}
+.drag-drop.dragDropDate {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+ngx-dropzone-label {
+  position: relative;
+}
+.selected-icon {
+  position: absolute;
+  right: -3px;
+  top: 45px;
+  width: 20px;
+  height: 20px;
+}
+
+.selected-icon img {
+  width: 100%;
+}
+.acknowledgeBlock .goldenText {
+  color: #937206;
+  border-color: #937206 !important;
+  font-weight: normal;
+}
+.selected-icon.step2 {
+  position: absolute;
+  right: -3px;
+  top: 23px;
+  width: 25px;
+  height: 25px;
+}
+.reviewClassifaction {
+  padding: 0px 25px;
 }
