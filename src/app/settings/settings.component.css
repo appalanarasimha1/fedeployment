@@ -2805,7 +2805,7 @@ tr.groupFolder td:first-child {
 }
 .mt-30 {
   margin-top: 30px !important;
-} 
+}
 
 .broader-access-assets .control-group {
   display: block;
@@ -2930,7 +2930,7 @@ tr.groupFolder td:first-child {
   padding-left: 24px;
   line-height: 17px;
 }
-.folderListview ul li .broader-access-assets .control--checkbox .control__indicator:after, 
+.folderListview ul li .broader-access-assets .control--checkbox .control__indicator:after,
 .folderListview ul li .broader-access-assets .control--checkbox .control__indicator:before {
   left: 5px;
   top: 3px;
@@ -2953,4 +2953,8 @@ tr.groupFolder td:first-child {
   top: 5px;
   right: 0px;
   z-index: -1;
+}
+::ng-deep .mat-calendar-body-selected {
+  background-color: #EDD580;
+  color: #000;
 }

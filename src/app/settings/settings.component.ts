@@ -6,6 +6,7 @@ import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "src/app/services/shared.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AddUserPrivateFolderModalComponent } from '../add-user-private-folder-modal/add-user-private-folder-modal.component';
+import { REPORT_ROLE } from '../common/constant';
 
 @Component({
   selector: 'app-settings',
@@ -107,6 +108,13 @@ export class SettingsComponent implements OnInit {
     this.loading = true;
     await this.updateFolderPermission(folder);
     this.updateFolderEndDate(value, index);
+    this.sharedService.showSnackbar(
+      'Access expiry has been set',
+      5000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
     this.loading = false;
   }
 
@@ -191,5 +199,10 @@ export class SettingsComponent implements OnInit {
     this.showUserAccessPage = false;
     this.showUserManageSuppliers = false;
     this.loading = false;
+  }
+
+  checkReportRole() {
+    const expectedRole = REPORT_ROLE;
+    return this.sharedService.chekForReportRoles(expectedRole);
   }
 }
