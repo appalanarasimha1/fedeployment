@@ -25,6 +25,7 @@
                 class="d-flex set"
                 (click)="fetchManagedSuppliers()"
                 [ngClass]="{'active-tab': showUserManageSuppliers}"
+                *ngIf="checkReportRole()"
               >
                 <span>Manage suppliers</span>
               </li>
@@ -33,6 +34,7 @@
                 class="d-flex set"
                 (click)="fetchManagedLocations()"
                 [ngClass]="{'active-tab': showUserManageLocations}"
+                *ngIf="checkReportRole()"
               >
                 <span>Manage locations</span>
               </li>
