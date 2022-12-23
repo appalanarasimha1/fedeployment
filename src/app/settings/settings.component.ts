@@ -107,6 +107,13 @@ export class SettingsComponent implements OnInit {
     this.loading = true;
     await this.updateFolderPermission(folder);
     this.updateFolderEndDate(value, index);
+    this.sharedService.showSnackbar(
+      'Access expiry has been set',
+      5000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
     this.loading = false;
   }
 
