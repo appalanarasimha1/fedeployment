@@ -203,6 +203,7 @@ export class ManageSuppliersComponent implements OnInit {
       users: supplier.properties["supplier:supplierUsers"],
       activated: supplier.properties["supplier:activated"],
       supportEmail: supplier.properties["supplier:supportEmail"],
+      expiry: supplier.properties["supplier:expiry"],
       renameEmail : false,
     }));
   }
@@ -292,6 +293,11 @@ export class ManageSuppliersComponent implements OnInit {
     .execute();
   }
 
+  async updateSupplierExpiry(event, supplier) {
+    await this.updateDocument(supplier.uid, {properties: {"supplier:expiry": event.value}});
+    this.getSupplierList();
+  }
+
   async toggleActivated(event, supplier) {
     await this.updateDocument(supplier.uid, {properties: {"supplier:activated": event.checked}});
     this.sharedService.showSnackbar(
@@ -301,6 +307,7 @@ export class ManageSuppliersComponent implements OnInit {
       "center",
       "snackBarMiddle",
     );
+    this.getSupplierList();
   }
 
   async openCreateSupplierModal() {

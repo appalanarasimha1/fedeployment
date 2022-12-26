@@ -14,6 +14,7 @@
                 <th>Suppliers</th>
                 <th>Assigned region</th>
                 <th>Tech support email</th>
+                <th>Access expire</th>
                 <th style="width: 3%">&nbsp;&nbsp;</th>
                 <th style="width: 40px">&nbsp;&nbsp;</th>
             </tr>
@@ -78,6 +79,12 @@
                           </svg>
                         </div>
                     </div>
+                </td>
+                <td>
+                  <mat-form-field appearance="fill">
+                      <input class="datePicker" placeholder="Choose a date" (dateChange)="updateSupplierExpiry($event, supplier)" [(ngModel)]="supplier.expiry" matInput [matDatepicker]="supplierPicker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="supplierPicker.open()">
+                      <mat-datepicker #supplierPicker></mat-datepicker>
+                  </mat-form-field>
                 </td>
                 <td><mat-slide-toggle (change)="toggleActivated($event, supplier)" [(ngModel)]="supplier.activated"></mat-slide-toggle></td>
                 <td (click)="showExternalUserList(supplier)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
