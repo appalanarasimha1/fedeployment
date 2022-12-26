@@ -57,6 +57,7 @@ export class ManageSuppliersComponent implements OnInit {
   regionMap = {};
   selectedSupplier = null;
   filteredUsers: Observable<string[]>;
+  filteredSuppliers = [];
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
@@ -206,6 +207,8 @@ export class ManageSuppliersComponent implements OnInit {
       expiry: supplier.properties["supplier:expiry"],
       renameEmail : false,
     }));
+    this.filteredSuppliers = this.supplierList;
+    this.supplierInput = "";
   }
 
   async getRegionList() {
@@ -376,6 +379,16 @@ export class ManageSuppliersComponent implements OnInit {
 
   renameUserClick() {
     this.renameUserName = !this.renameUserName;
+  }
+
+  searchSupplier(event) {
+    if (!this.supplierInput) {
+      this.filteredSuppliers = this.supplierList;
+      return;
+    }
+    this.filteredSuppliers = this.supplierList.filter(supplier => {
+      return supplier.name.toLowerCase().includes(this.supplierInput.toLowerCase());
+    });
   }
 
 }

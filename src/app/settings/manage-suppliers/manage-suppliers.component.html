@@ -3,8 +3,8 @@
     <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p>
     <div class="searchBlock">
         <span class="positionRelative">
-            <input type="text" placeholder="Search or create suppliers by name" [(ngModel)]="supplierInput" class="search-bar" />
-            <button class="primary createSuppliers" *ngIf="supplierInput" (click)="openCreateSupplierModal()">Create supplier</button>
+          <input type="text" placeholder="Search or create suppliers by name" [(ngModel)]="supplierInput" (input)="searchSupplier($event)" class="search-bar" />
+          <button class="primary createSuppliers" *ngIf="supplierInput" (click)="openCreateSupplierModal()">Create supplier</button>
         </span>
     </div>
     <div class="makeAdminBlock customTableStyle">
@@ -18,7 +18,7 @@
                 <th style="width: 3%">&nbsp;&nbsp;</th>
                 <th style="width: 40px">&nbsp;&nbsp;</th>
             </tr>
-            <tr *ngFor="let supplier of supplierList; let i = index">
+            <tr *ngFor="let supplier of filteredSuppliers; let i = index">
                 <td><div class="height32"></div></td>
                 <td>{{supplier.name}}</td>
                 <td>
