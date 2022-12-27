@@ -627,4 +627,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   clickFullsizeImg() {
     this.fullSIzeImg = !this.fullSIzeImg;
   }
+
+  isFavorite() {
+    return this.doc.contextParameters.favorites?.isFavorite;
+  }
 }
