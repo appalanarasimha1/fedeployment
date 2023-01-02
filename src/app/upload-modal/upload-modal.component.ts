@@ -594,7 +594,7 @@ export class UploadModalComponent implements OnInit {
     const element = <HTMLElement>(
       document.getElementsByClassName(`upload-progress-bar-${index}`)[0]
     );
-    const background = `background-image: linear-gradient(to right, rgba(0, 104, 69, 0.1) ${percentDone}%,#ffffff ${percentDone}%) !important;`;
+    const background = `background-image: linear-gradient(to right, rgba(0, 123, 181, 0.3) ${percentDone}%,#ffffff ${percentDone}%);`;
     let attr = element.getAttribute("style");
     attr = attr.replace(/background-image:.*?;/g, "");
     // if (percentDone === 100) return;

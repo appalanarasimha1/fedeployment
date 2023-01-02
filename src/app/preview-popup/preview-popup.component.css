@@ -2169,10 +2169,11 @@ form.commentTextForm {
   position: fixed;
   height: 100%;
   width: 100%;
-  background: #f6f5f2;
+  background: rgba(0, 0, 0, 0.7);
   z-index: 999999;
   top: 0px;
   left: 0px;
+  padding: 10px;
   cursor: zoom-out;
 }
 .fullScreenIcon {
@@ -2188,4 +2189,15 @@ form.commentTextForm {
   height: 100%;
   margin: 0px auto;
   display: block;
+}
+.fullSIzeImg .imgFullWidth {
+  height: 100%;
+  width: 100%;
+  cursor: zoom-out;
+  border-radius: 8px;
+  background:no-repeat center center fixed #F6F5F2;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
