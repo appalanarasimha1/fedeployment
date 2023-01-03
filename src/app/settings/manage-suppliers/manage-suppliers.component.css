@@ -523,7 +523,7 @@ input.datePicker:focus::placeholder{
     z-index: -1;
 }
 .folderListview .accessExpiryCal ::ng-deep mat-form-field .datePicker {
-    width: 96px !important;
+    width: 100px !important;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

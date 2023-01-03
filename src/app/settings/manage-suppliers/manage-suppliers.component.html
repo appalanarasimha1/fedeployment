@@ -80,9 +80,9 @@
                         </div>
                     </div>
                 </td>
-                <td>
+                <td class="accessExpiryCal">
                   <mat-form-field appearance="fill">
-                      <input class="datePicker" placeholder="Choose a date" (dateChange)="updateSupplierExpiry($event, supplier)" [(ngModel)]="supplier.expiry" matInput [matDatepicker]="supplierPicker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="supplierPicker.open()">
+                      <input class="datePicker" placeholder="Choose date" (dateChange)="updateSupplierExpiry($event, supplier)" [(ngModel)]="supplier.expiry" matInput [matDatepicker]="supplierPicker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="supplierPicker.open()">
                       <mat-datepicker #supplierPicker></mat-datepicker>
                   </mat-form-field>
                 </td>
