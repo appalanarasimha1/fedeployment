@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
     if ((this.username && this.username.trim()) && (this.password)) {
       this.loading = true;
       this.nuxeo.authenticateUser(this.username, this.password)
-        .then((token) => {
+        .then(async (token) => {
           try {
             fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, {
               headers: { "X-Authentication-Token": token },
@@ -79,7 +79,6 @@ export class LoginComponent implements OnInit {
           // console.log({token});
 
           // this.nuxeo.createClientWithToken(token);
-          this.loading = false;
           if (token.toLowerCase().includes('doctype')) {
             this.error = true;
             this.errorMessage = 'Incorrect credentials!';
@@ -87,7 +86,8 @@ export class LoginComponent implements OnInit {
           }
           localStorage.setItem('token', token);
           localStorage.setItem('username', this.username);
-          this.nuxeo.createClientWithToken(token, false);
+          await this.nuxeo.createClientWithToken(token, false);
+          this.loading = false;
           this.router.navigateByUrl(this.redirectURL);
         })
         .catch((err) => {

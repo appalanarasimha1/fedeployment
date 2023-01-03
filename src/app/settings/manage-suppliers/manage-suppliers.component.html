@@ -3,8 +3,8 @@
     <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p>
     <div class="searchBlock">
         <span class="positionRelative">
-            <input type="text" placeholder="Search or create suppliers by name" [(ngModel)]="supplierInput" class="search-bar" />
-            <button class="primary createSuppliers" *ngIf="supplierInput" (click)="openCreateSupplierModal()">Create supplier</button>
+          <input type="text" placeholder="Search or create suppliers by name" [(ngModel)]="supplierInput" (input)="searchSupplier($event)" class="search-bar" />
+          <button class="primary createSuppliers" *ngIf="supplierInput" (click)="openCreateSupplierModal()">Create supplier</button>
         </span>
     </div>
     <div class="makeAdminBlock customTableStyle">
@@ -14,17 +14,18 @@
                 <th>Suppliers</th>
                 <th>Assigned region</th>
                 <th>Tech support email</th>
+                <th>Access expire</th>
                 <th style="width: 3%">&nbsp;&nbsp;</th>
                 <th style="width: 40px">&nbsp;&nbsp;</th>
             </tr>
-            <tr *ngFor="let supplier of supplierList; let i = index">
+            <tr *ngFor="let supplier of filteredSuppliers; let i = index">
                 <td><div class="height32"></div></td>
                 <td>{{supplier.name}}</td>
                 <td>
                     <mat-form-field class="example-chip-list">
                         <mat-chip-list #chipList>
                             <mat-chip *ngFor="let regionId of supplier.regions;let indx=index;" [selectable]="selectable" [removable]="removable" (removed)="remove(regionId,indx, i)">
-                                {{regionMap[regionId]?.name}}
+                                {{regionMap[regionId]?.id}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
                             <input placeholder="Add..." #suppliersInput [formControl]="suppliersCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
@@ -32,7 +33,7 @@
                         </mat-chip-list>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, i)">
                             <mat-option *ngFor="let suppliers of filteredFruits | async" [value]="suppliers">
-                                {{suppliers.name}}
+                                {{suppliers.id}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -78,6 +79,12 @@
                           </svg>
                         </div>
                     </div>
+                </td>
+                <td>
+                  <mat-form-field appearance="fill">
+                      <input class="datePicker" placeholder="Choose a date" (dateChange)="updateSupplierExpiry($event, supplier)" [(ngModel)]="supplier.expiry" matInput [matDatepicker]="supplierPicker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="supplierPicker.open()">
+                      <mat-datepicker #supplierPicker></mat-datepicker>
+                  </mat-form-field>
                 </td>
                 <td><mat-slide-toggle (change)="toggleActivated($event, supplier)" [(ngModel)]="supplier.activated"></mat-slide-toggle></td>
                 <td (click)="showExternalUserList(supplier)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>

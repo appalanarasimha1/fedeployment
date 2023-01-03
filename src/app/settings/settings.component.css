@@ -2370,7 +2370,7 @@ img.closeIcon {
 }
 .mt-30 {
   margin-top: 30px !important;
-} 
+}
 
 .broader-access-assets .control-group {
   display: block;
@@ -2465,4 +2465,61 @@ img.closeIcon {
 }
 .broader-access-assets .control--radio input:disabled ~ .control__indicator:after {
   background: #7b7b7b;
+}
+
+.folderListview svg.private-icon {
+  width: 16px;
+  display: inline-block;
+}
+.folderListview input {
+  outline: none;
+  border: 0px !important;
+  background: transparent;
+  appearance: none;
+  /* width: 90px !important; */
+}
+.folderListview ul {
+  margin: 0px -10px;
+}
+.folderListview ul li {
+  float: left;
+  padding: 0px 10px;
+}
+.folderListview ul li .broader-access-assets .control__indicator {
+  height: 17px;
+  width: 17px;
+  border-radius: 6px;
+}
+.folderListview ul li .broader-access-assets .control {
+  font-size: 13px;
+  padding-left: 24px;
+  line-height: 17px;
+}
+.folderListview ul li .broader-access-assets .control--checkbox .control__indicator:after,
+.folderListview ul li .broader-access-assets .control--checkbox .control__indicator:before {
+  left: 5px;
+  top: 3px;
+  width: 5px;
+  height: 8px;
+}
+.folderListview ::ng-deep mat-form-field {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+.folderListview ::ng-deep mat-form-field::after {
+  content: '';
+  display: block;
+  width: 13px;
+  height: 13px;
+  background: url(../../assets/images/down-arrow.svg) no-repeat center center;
+  background-size: 100%;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  z-index: -1;
+}
+::ng-deep .mat-calendar-body-selected {
+  background-color: #EDD580;
+  color: #000;
 }

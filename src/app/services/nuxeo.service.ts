@@ -29,7 +29,7 @@ export class NuxeoService {
   private defaultHeader = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-    'enrichers.document': 'thumbnail,permissions,preview',
+    'enrichers-document': 'thumbnail,permissions,preview',
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     properties: '*',
     'CSRF-Token': 'defaults'
@@ -190,14 +190,12 @@ export class NuxeoService {
       headers: this.defaultHeader
     });
     try {
-      await this.nuxeoClient.connect();
+      const res = await this.nuxeoClient.connect();
+      localStorage.setItem("user", JSON.stringify(res.user.properties));
     } catch (err) {
       await this.logout();
       this.router.navigate(['/login']);
       return;
-    }
-    if(this.router.url === '/login' && redirect) {
-      this.router.navigate(['/']);
     }
     return;
   }
