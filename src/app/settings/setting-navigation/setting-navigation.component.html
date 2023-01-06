@@ -21,7 +21,7 @@
             routerLink="/settings/devices"
             routerLinkActive="'active-tab'"
           >
-            <span>Devices <span class="counting">149</span></span>
+            <span>Devices <span class="counting">{{deviceCount}}</span></span>
           </li>
 
           <li
@@ -30,7 +30,7 @@
             routerLink="/settings/manage-suppliers"
             routerLinkActive="'active-tab'"
           >
-            <span>Suppliers <span class="counting">21</span></span>
+            <span>Suppliers <span class="counting">{{supplierCount}}</span></span>
           </li>
 
           <li
@@ -40,7 +40,7 @@
             routerLinkActive="'active-tab'"
           >
             <!-- <span>Manage locations</span> -->
-            <span>Regions <span class="counting">3</span></span>
+            <span>Regions <span class="counting">{{regionCount}}</span></span>
           </li>
         </ul>
       </li>

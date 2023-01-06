@@ -3,8 +3,8 @@
     <!-- <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p> -->
     <div class="searchBlock">
         <span class="positionRelative">
-            <input type="text" placeholder="Search or create devices by typing the installation ID" [(ngModel)]="supplierInput" class="search-bar" />
-            <button class="primary createSuppliers" *ngIf="supplierInput" (click)="openCreateSupplierModal()">Create device</button>
+            <input type="text" placeholder="Search or create devices by typing the installation ID" (input)="searchDevice($event)" [(ngModel)]="deviceInput" class="search-bar" />
+            <button class="primary createSuppliers" *ngIf="deviceInput" (click)="openCreateDeviceModal()">Create device</button>
         </span>
     </div>
     <div class="regionBlok">
@@ -18,28 +18,28 @@
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedRegions}"
                 >
-                    <ng-option *ngFor="let region of regions" [value]="region.name">
-                        {{region.name}}
+                    <ng-option *ngFor="let region of regionList" [value]="region">
+                        {{region.initial}}
                     </ng-option>
                 </ng-select>
             </li>
             <li>
                 <ng-select placeholder="Sub-area"
-                    (change)="onSelectRegions($event)"
+                    (change)="onSelectSubArea($event)"
                     [searchable]="false"
                     [clearable]="false"
                     [(ngModel)]="selectedsubAreas"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedsubAreas}"
                 >
-                    <ng-option *ngFor="let subArea of subAreas" [value]="subArea.name">
+                    <ng-option *ngFor="let subArea of subAreaList" [value]="subArea">
                         {{subArea.name}}
                     </ng-option>
                 </ng-select>
             </li>
             <li>
                 <ng-select placeholder="Device type"
-                    (change)="onSelectRegions($event)"
+                    (change)="onSelectType($event)"
                     [searchable]="false"
                     [clearable]="false"
                     [(ngModel)]="selecteddeviceTypes"
@@ -53,7 +53,7 @@
             </li>
             <li>
                 <ng-select placeholder="Status"
-                    (change)="onSelectRegions($event)"
+                    (change)="onSelectStatus($event)"
                     [searchable]="false"
                     [clearable]="false"
                     [(ngModel)]="selectedStatus"
@@ -79,92 +79,36 @@
                 <th style="width:19%">Status</th>
                 <th style="width:6%">&nbsp;</th>
             </tr>
-            <tr>
+            <tr *ngFor="let device of filteredDeviceList; let i = index">
                 <td><div class="height32"></div></td>
-                <td>T-TME-OX-0051</td>
-                <td><div class="itemTitleContent">Zone E South</div></td>
-                <td>315°</td>
-                <td>A03</td>
-                <td>Fixed</td>
+                <td>{{device.name}}</td>
+                <td><div class="itemTitleContent">{{subAreaMap[device.subArea]?.name}}</div></td>
+                <td>{{formatDirection(device.direction)}}</td>
+                <td>{{device.poleId}}</td>
+                <td>{{capitalizeFirstLetter(device.deviceTyp)}}</td>
                 <td>
                     <ul>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div class="statusTage online">Online <span></span></div>
+                                <div *ngIf="device.status === 'online'" class="statusTage online">Online <span></span></div>
+                                <div *ngIf="device.status === 'inactive'" class="statusTage inactive">Inactive <span></span></div>
+                                <div *ngIf="device.status === 'decommissioned'" class="statusTage decommissioned">Decommissioned <span></span></div>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <div class="statusTage online">Online <span></span></div>
+                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'online')" class="statusTage online">Online <span></span></div>
                                 </li>
                                 <li>
-                                    <div class="statusTage inactive">Inactive <span></span></div>
+                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'inactive')" class="statusTage inactive">Inactive <span></span></div>
                                 </li>
                                 <li>
-                                    <div class="statusTage decommissioned">Decommissioned <span></span></div>
+                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'decommissioned')" class="statusTage decommissioned">Decommissioned <span></span></div>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </td>
-                <td style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
-            </tr>
-            <tr>
-                <td><div class="height32"></div></td>
-                <td>T-TME-OX-0051</td>
-                <td><div class="itemTitleContent">Excavation of Rock and Non-Rock</div> </td>
-                <td>90°</td>
-                <td>B19</td>
-                <td>Fixed</td>
-                <td>
-                    <ul>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div class="statusTage inactive">Inactive <span></span></div>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <div class="statusTage online">Online <span></span></div>
-                                </li>
-                                <li>
-                                    <div class="statusTage inactive">Inactive <span></span></div>
-                                </li>
-                                <li>
-                                    <div class="statusTage decommissioned">Decommissioned <span></span></div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </td>
-                <td style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
-            </tr>
-            <tr>
-                <td><div class="height32"></div></td>
-                <td>T-TME-OX-0054</td>
-                <td><div class="itemTitleContent">High Security Fence And Wadi Crossing High Security Fence And Wadi Crossing</div></td>
-                <td>315°</td>
-                <td>A03</td>
-                <td>Fixed</td>
-                <td>
-                    <ul>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div class="statusTage decommissioned">Decommissioned <span></span></div>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <div class="statusTage online">Online <span></span></div>
-                                </li>
-                                <li>
-                                    <div class="statusTage inactive">Inactive <span></span></div>
-                                </li>
-                                <li>
-                                    <div class="statusTage decommissioned">Decommissioned <span></span></div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </td>
-                <td style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+                <td (click)="deleteDevice(device)" style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
             </tr>
         </table>
     </div>

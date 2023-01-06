@@ -37,23 +37,23 @@
                 <div class="flex">
                     <div class="form-group">
                         <label for="Latitude / Northing">Latitude / Northing</label>
-                        <input type="text" placeholder="E.g. 27.480860" />
+                        <input [(ngModel)]="latitude" type="text" placeholder="E.g. 27.480860" />
                     </div>
                     <div class="form-group">
                         <label for="Longitude / Easting">Longitude / Easting</label>
-                        <input type="text" placeholder="E.g. 35.589090" />
+                        <input [(ngModel)]="longitude" type="text" placeholder="E.g. 35.589090" />
                     </div>
                 </div>
             </li>
             <li>
                 <div class="flex">
-                    <div class="form-group" *ngIf="direction">
+                    <div class="form-group" *ngIf="directionShow">
                         <label for="Direction">Direction</label>
-                        <input type="text" placeholder="E.g. SW" />
+                        <input [(ngModel)]="direction" type="text" placeholder="E.g. 270" />
                     </div>
-                    <div class="form-group" *ngIf="poleId">
+                    <div class="form-group" *ngIf="poleIdShow">
                         <label for="Pole ID">Pole ID</label>
-                        <input type="text" placeholder="E.g. A05" />
+                        <input [(ngModel)]="poleId" type="text" placeholder="E.g. A05" />
                     </div>
                 </div>
             </li>
@@ -64,11 +64,12 @@
                         [searchable]="false"
                         [clearable]="false"
                         [(ngModel)]="selectedRegions"
+                        (change)="onSelectRegion($event)"
                         id="region"
                         [ngClass]="{'goldenText': selectedRegions}"
                     >
-                        <ng-option *ngFor="let region of regions" [value]="region.name">
-                            {{region.name}}
+                        <ng-option *ngFor="let region of regionList" [value]="region">
+                            {{region.initial}}
                         </ng-option>
                     </ng-select>
                 </div>
@@ -79,11 +80,11 @@
                     <ng-select placeholder="Select"
                         [searchable]="false"
                         [clearable]="false"
-                        [(ngModel)]="selectedsubAreas"
+                        [(ngModel)]="selectedSubArea"
                         id="Sub-area"
-                        [ngClass]="{'goldenText': selectedsubAreas}"
+                        [ngClass]="{'goldenText': selectedSubArea}"
                     >
-                        <ng-option *ngFor="let subArea of subAreas" [value]="subArea.name">
+                        <ng-option *ngFor="let subArea of filteredSubAreaList" [value]="subArea.uid">
                             {{subArea.name}}
                         </ng-option>
                     </ng-select>
@@ -94,6 +95,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!installationID" >Create device</button>
+        <button (click)="createDevice()" class="upload-btn" [disabled]="!checkEnableCreateDeviceButton() || loading" >Create device</button>
     </div>
 </div>
