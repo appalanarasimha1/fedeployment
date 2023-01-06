@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { UploadModalComponent } from '../upload-modal/upload-modal.component';
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { NgxMasonryComponent } from "ngx-masonry";
 import { SharedService } from "../services/shared.service";
+import { UploadDroneComponent } from '../upload-drone/upload-drone.component';
 
 @Component({
   selector: 'app-documentation-assets',
@@ -26,6 +26,7 @@ export class DocumentationAssetsComponent implements OnInit {
 		fitWidth: true
 	};
 
+  supplierInput: string = '';
   masonryImages;
 	limit = 15;
 	dummyPictures = [
@@ -62,6 +63,39 @@ export class DocumentationAssetsComponent implements OnInit {
 	];
   public updateMasonryLayout = false;
 
+  selectedRegions: any;
+  selectedsubAreas: any;
+  selecteddeviceTypes: any;
+  selectedStatus: any;
+
+  regions = [
+    {id: 1, name: 'LN The Line'},
+    {id: 2, name: 'OX Oxagon'},
+    {id: 3, name: 'TR Trojena'}
+  ];
+  subAreas = [
+    {id: 1, name: 'Sub-area 1'},
+    {id: 2, name: 'Sub-area 2'},
+    {id: 3, name: 'Sub-area 3'},
+    {id: 4, name: 'Sub-area 4'},
+    {id: 5, name: 'Sub-area 5'}
+  ];
+  deviceTypes = [
+    {id: 1, name: 'Device type 1'},
+    {id: 2, name: 'Device type 2'},
+    {id: 3, name: 'Device type 3'},
+    {id: 4, name: 'Device type 4'},
+    {id: 5, name: 'Device type 5'}
+  ];
+  status = [
+    {id: 1, name: 'Image'},
+    {id: 2, name: 'Video'}
+  ];
+
+  onSelectRegions(regions) {
+    console.log('regions', regions);
+  }
+
 
   ngOnInit(): void {
     // this.masonryImages = this.dummyPictures.slice(0);
@@ -84,7 +118,7 @@ export class DocumentationAssetsComponent implements OnInit {
     if(workspaceState) {
       dialogConfig.data = workspaceState;
     }
-    const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
+    const modalDialog = this.matDialog.open(UploadDroneComponent, dialogConfig);
   }
 
   completeLoadingMasonry(event: any) {

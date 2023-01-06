@@ -1,0 +1,51 @@
+<div class="upload-modal">
+    <button type="button" class="close-modal-icon" aria-label="Close" (click)="openBrowseRoute()">
+       <img src="../../assets/images/close-modal.svg" style="width: 20px" />
+    </button>
+    <div class="contentBlockOverflow">
+        <div class="uploadHeading">New Installation ID</div>
+        <img src="../../assets/images/Installation-search-icon.svg" class="installation-search-icon" />
+        <div class="searchBar" *ngIf="!showUpload">
+            <img src="../../assets/images/Iocn_Search.svg" class="searchIcon" />
+            <input type="search" placeholder="Search installation ID, region, location or monthly footage"
+                [ngModel]="searchText"
+                (ngModelChange)="onSearchBarChange($event)"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="search-bar"
+                [ngClass]="{ removeBorderRadious: searchPopup }"
+                (click)="inputClicked()"
+                (blur)="blurOnSearch()"
+                (clickOutside)="outClick()"
+                bindLabel="id"
+                bindValue="id"
+                [multiple]="false"
+                typeToSearchText="Search users"
+            />
+            <!-- 
+                (blur)="blurOnSearch()"
+                (clickOutside)="outClick()"  -->
+            <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar">
+                <ul>
+                    <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>TROJENA</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span class="numberBlk">D-OX-0001</span> <span class="ellipsis">Excavation Non Dippable Rock</span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span class="numberBlk">D-OX-0002</span> <span class="ellipsis">Excavation of Rock and Non-Rock Excavation of Rock and Non-Rock</span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span class="numberBlk">D-OX-0003</span> <span class="ellipsis">Zone E South</span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span class="numberBlk">D-OX-0004</span> <span class="ellipsis">High Security Fence And Wadi...</span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span class="numberBlk">D-OX-0005</span> <span class="ellipsis">Offices And Base Camp  </span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span class="numberBlk">D-OX-0006</span> <span class="ellipsis">Logistics Warehouse  </span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span class="numberBlk">D-OX-0007</span> <span class="ellipsis">Zone E</span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span class="numberBlk">D-OX-0008</span> <span class="ellipsis">Highway 55</span> <span>OXAGON</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div *ngIf="showUpload" class="" >file upload block</div>
+
+    </div>
+    <div class="buttonBlock">
+        <button class="cancel-btn">Cancel</button>
+        <button class="upload-btn">Cancel</button>
+    </div>
+</div>
