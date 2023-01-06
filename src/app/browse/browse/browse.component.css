@@ -4613,3 +4613,7 @@ span.clickEvent.textDIsable {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.pointer-events {
+  pointer-events: none;
+  opacity: 0.5;
+}
