@@ -13,6 +13,7 @@ import { adminPanelWorkspacePath } from "src/app/common/constant";
 import { ApiService } from "../../services/api.service";
 import { CreateSupplieModalComponent } from '../create-supplie-modal/create-supplie-modal.component';
 import { InviteUserModalComponent} from '../invite-user-modal/invite-user-modal.component';
+import { apiRoutes } from 'src/app/common/config';
 
 @Component({
   selector: 'app-manage-suppliers',
@@ -66,6 +67,17 @@ export class ManageSuppliersComponent implements OnInit {
   hiddenSpan = this.renderer.createElement("span");
 
   renameUserName: boolean = false;
+  
+  showUserSettingPage = true;
+  showUserAccessPage = false;
+  currentEditingUser = null;
+  currentUserFolderList = [];
+  managedUsers;
+  showUserManageSuppliers = false;
+  showUserManageLocations = false;
+  loading = false;
+  managedUsersMap = {};
+  managedUsersBackUp=[];
 
   constructor(
     public matDialog: MatDialog,
@@ -77,6 +89,7 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchManagedExternalUsers();
     this.filteredUsers = this.usersCtrl.valueChanges.pipe(
       startWith(''),
       map(value => this._userFilter(value || '')),
@@ -86,6 +99,38 @@ export class ManageSuppliersComponent implements OnInit {
     this.getAllUsers();
     this.getSupplierList();
     this.getRegionList();
+  }
+
+  
+  async fetchManagedExternalUsers() {
+    this.backToUserList();
+    const body = {
+      context: {},
+      params: {},
+    };
+    this.loading = true;
+    const res = await this.apiService.post(apiRoutes.GET_MANAGED_EXT_USERS, body).toPromise();
+    this.managedUsersMap = res['value'] || {};
+    this.loading = false;
+    this.showUserSettingPage = true;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    if (this.managedUsersMap) {
+      this.managedUsers = Object.keys(this.managedUsersMap);
+      this.managedUsersBackUp = Object.keys(this.managedUsersMap);
+    }
+  }
+
+  
+  backToUserList() {
+    this.showUserSettingPage = true;
+    this.showUserAccessPage = false;
+    this.currentEditingUser = null;
+    this.currentUserFolderList = [];
+    this.managedUsers = this.managedUsersBackUp;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    this.showUserAccessPage = false;
   }
 
   private _userFilter(value: string): string[] {

@@ -1,0 +1,529 @@
+
+
+.externalUser h2{
+    font-size: 24px;
+    line-height: 30px;
+    color: #000;
+    font-weight: 400;
+    padding-bottom: 8px;
+  }
+  
+.externalEditAccess {
+    font-family: 'brownlight';
+    padding-bottom: 20px;
+    font-size: 15px;
+  }
+  
+.searchBlock {
+    position: relative;
+  }
+  .searchBlock .search-bar {
+    width: 60%;
+    padding: 8px 8px 8px 56px;
+  }
+  
+.search-btn{
+    position: absolute;
+    left: 6px;
+    top: 0px;
+    bottom: 0px;
+    border: unset;
+    padding: 0px 10px;
+    background-color: transparent;
+    z-index: 1;
+  }
+  .search-btn img{
+    width: 19px;
+  }
+  
+.search-bar{
+    position: relative;
+    padding: 8px 45px 8px 46px;
+    border-radius: 8px;
+    border: 1px solid #F6F5F2;
+    width: 100%;
+    background-color: #F6F5F2;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 25px;
+    color: #000;
+  }
+.search-bar::placeholder{
+  font-weight: 100;
+}
+  
+.positionRelative input.search-bar::placeholder{
+  color: #413E3C !important;
+}
+  
+.makeAdminBlock {
+    padding: 0px 0px 20px;
+    margin-top: 20px;
+  }
+  .makeAdminBlock ul li {
+    line-height: 40px;
+    padding: 0px 10px;
+    margin-bottom: 0px;
+    border-radius: 8px;
+    font-weight: normal;
+    color: #040404;
+    font-size: 15px;
+  }
+  .makeAdminBlock ul {
+    margin: 0px 0px;
+    min-height: 100px;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    max-height: 200px;
+  }
+  .makeAdminBlock ul li:hover, .makeAdminBlock ul li.active {
+    background: #F8EECC;
+  }
+  
+.makeAdminBlock ul li:hover .makeAdminAction {
+    display: block;
+  }
+  
+
+span.makeAdminAction {
+    float: right;
+    cursor: pointer;
+    color: #937206;
+    font-weight: normal;
+    display: none;
+  }
+  span.makeAdminAction img {
+    display: inline-block;
+    vertical-align: -4px;
+    padding-left: 5px;
+  }
+  .makeAdminAction {
+    position: relative;
+  }
+  
+span.makeAdminAction svg {
+    vertical-align: -5px;
+    margin-left: 8px;
+  }
+  
+.removeInfo {
+    position: absolute;
+    right: 0px;
+    bottom: -23px;
+    background: #1E1B19;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    width: 100px;
+    display: none;
+    color: #fff;
+    width: fit-content;
+    white-space: nowrap;
+  }
+  .removeIcon:hover .removeInfo {
+    display: block;
+  }
+  
+.showUserAccess h3 {
+    font-size: 16px;
+    padding-bottom: 10px;
+  }
+  .showUserAccess h2 {
+    font-size: 19px;
+    padding-bottom: 40px;
+  }
+
+  .customTableStyle table {
+    /* border-collapse: collapse; */
+    border-collapse: separate;
+    width: 100%;
+    border: none;
+    border-spacing: 0 10px;
+  }
+  .customTableStyle td:first-child,
+  .customTableStyle th:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+  .customTableStyle td:last-child,
+  .customTableStyle th:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+  
+.customTableStyle table {
+    /* border-collapse: collapse; */
+    border-collapse: separate;
+    width: 100%;
+    border: none;
+    border-spacing: 0 10px;
+  }
+  .customTableStyle td:first-child,
+  .customTableStyle th:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+  .customTableStyle td:last-child,
+  .customTableStyle th:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+  
+.backBtn {
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    font-family: 'brownlight';
+  }
+  .backBtn span {
+    cursor: pointer;
+    color: #BAB8B2;
+  }
+  .backBtn svg {
+    width: 7px;
+    margin-right: 4px;
+    vertical-align: -1px;
+  }
+  
+img.private-icon {
+    vertical-align: top;
+    margin-right: 6px;
+    width: 24px;
+  }
+  
+.folderListview svg.private-icon {
+    width: 16px;
+    display: inline-block;
+  }
+  
+.folderListview input {
+    outline: none;
+    border: 0px !important;
+    background: transparent;
+    appearance: none;
+    /* width: 90px !important; */
+  }
+  .folderListview ul {
+    margin: 0px -10px;
+  }
+  .folderListview ul li {
+    float: left;
+    padding: 0px 10px;
+  }
+  .folderListview ul li .broader-access-assets .control__indicator {
+    height: 17px;
+    width: 17px;
+    border-radius: 6px;
+  }
+  .folderListview ul li .broader-access-assets .control {
+    font-size: 13px;
+    padding-left: 24px;
+    line-height: 17px;
+  }
+  .folderListview ul li .broader-access-assets .control--checkbox .control__indicator:after, 
+  .folderListview ul li .broader-access-assets .control--checkbox .control__indicator:before {
+    left: 5px;
+    top: 3px;
+    width: 5px;
+    height: 8px;
+  }
+  .folderListview ::ng-deep mat-form-field {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+  }
+  .folderListview ::ng-deep mat-form-field::after {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(../../../assets/images/down-arrow.svg) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    z-index: -1;
+  }
+  
+.folderListview .tollTipCustom .tolltipContent {
+    top: 45px;
+    left: 0px;
+    background: #413E3C;
+    padding: 2px 20px;
+    color: #fff !important;
+    border-radius: 4px;
+  }
+  .folderListview th{
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    color: #BAB8B2;
+    border-bottom: unset;
+  }
+  .folderListview td p{
+    /* font-size: 15px; */
+    line-height: 24px;
+    color: #040404;
+    text-align: left;
+  }
+  .folderListview td, th{
+    padding: 10px;
+  }
+  .folderListview tr td:th-child(1) p{
+    text-align: left !important
+  }
+  .folderListview tr:nth-child(1){
+    background-color:  unset !important
+  }
+  .folderListview tr:nth-child(odd){
+    background-color: #F6F5F2;
+  }
+  .folderListview tr:nth-child(even){
+    background-color: #FBF7E6;
+  }
+  
+.folderListview {
+    text-align: left;
+  }
+
+  
+.delete-folder-action .control-group,
+.checkAll .control-group {
+  display: block;
+}
+.delete-folder-action .control,
+.checkAll .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 40px;
+  border: 0px;
+  margin: 0px 0px 0px;
+}
+.delete-folder-action .control input,
+.checkAll .control input {
+  position: static;
+  z-index: 1;
+  opacity: 0;
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  top: -4px;
+}
+.delete-folder-action .control__indicator,
+.checkAll .control__indicator {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #ffffff;
+  border-radius: 20px;
+}
+.delete-folder-action .control--radio .control__indicator,
+.checkAll .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.delete-folder-action .control:hover input ~ .control__indicator,
+.delete-folder-action .control input:focus ~ .control__indicator,
+
+.checkAll .control:hover input ~ .control__indicator,
+.checkAll .control input:focus ~ .control__indicator {
+  background: #fff;
+}
+.delete-folder-action .control input:checked ~ .control__indicator,
+.checkAll .control input:checked ~ .control__indicator {
+  background: #C49900;
+}
+.delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
+.delete-folder-action .control input:checked:focus ~ .control__indicator,
+
+.checkAll .control:hover input:not([disabled]):checked ~ .control__indicator,
+.checkAll .control input:checked:focus ~ .control__indicator {
+  background: #C49900;
+}
+.delete-folder-action .control input:disabled ~ .control__indicator,
+.checkAll .control input:disabled ~ .control__indicator{
+  background: #C49900;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.delete-folder-action .control__indicator:after,
+.delete-folder-action .control__indicator:before,
+
+.checkAll .control__indicator:after,
+.checkAll .control__indicator:before{
+  content: '';
+  position: absolute;
+  display: none;
+}
+.delete-folder-action .control input:checked ~ .control__indicator:after,
+.delete-folder-action .control input ~ .control__indicator:before,
+
+.checkAll .control input:checked ~ .control__indicator:after,
+.checkAll .control input ~ .control__indicator:before{
+  display: block;
+}
+.delete-folder-action .control--checkbox .control__indicator:after,
+.delete-folder-action .control--checkbox .control__indicator:before,
+
+.checkAll .control--checkbox .control__indicator:after,
+.checkAll .control--checkbox .control__indicator:before {
+  left: 8px;
+  top: 4px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.delete-folder-action .control--checkbox .control__indicator:before,
+.checkAll .control--checkbox .control__indicator:before {
+  border-color: #BAB8B2;
+}
+.delete-folder-action .control--checkbox input:disabled ~ .control__indicator:after,
+.checkAll .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.delete-folder-action .control--radio .control__indicator:after,
+.checkAll .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.delete-folder-action .control--radio input:disabled ~ .control__indicator:after,
+.checkAll .control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b;
+}
+
+.checkAll .control {
+    padding-left: 0px;
+  }
+  .checkAll input[type=checkbox] {
+    margin-top: 0px;
+  }
+  .checkAll .control__indicator {
+    position: relative;
+    border: 1px solid #040404;
+    height: 20px;
+    width: 20px;
+  }
+  .checkAll .control--checkbox .control__indicator:after,
+  .checkAll .control--checkbox .control__indicator:before {
+    left: 6px;
+    top: 3px;
+    width: 6px;
+    height: 10px;
+  }
+  .checkAll .control input:checked ~ .control__indicator {
+    background: #C49900;
+    border: 1px solid #C49900;
+  }
+  .checkAll .control-group {
+    display: block;
+    opacity: 0;
+  }
+  .checkAll:hover .control-group {
+    opacity: 1;
+  }
+  
+.positionRelative.pointerCursor img {
+    width: 17px;
+    margin-right: 10px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  
+.tollTipCustom{
+    position: relative;
+  }
+  
+  .tollTipCustom .tolltipContent {
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.80);
+    padding: 3px 10px;
+    font-size: 13px;
+    color: #fff !important;
+    font-weight: normal;
+    width: max-content;
+    border-radius: 40px;
+    white-space: nowrap;
+    max-width: max-content;
+    width: max-content;
+    display: none;
+    text-align: center;
+    z-index: 99;
+    line-height: normal;
+  }
+  .tollTipCustom:hover .tolltipContent {
+    display: block;
+  }
+  
+.header-content h6.tollTipCustom span{
+    color: rgba(35, 33, 30, 0.6);
+  }
+  
+button.createBtn.btn.tollTipCustom.disableBtn {background: #E8E6DF;color: #BAB8B2;}
+
+
+tr.groupFolder td:first-child {
+    padding-right: 0px !important;
+  }
+  
+.groupFolder {
+    position: relative;
+  }
+  
+.groupFolder:hover .delete-folder-action {
+    opacity: 1;
+    transition: transform 0.3s;
+  }
+  
+.groupFolder.checkDelete .delete-folder-action {
+    opacity: 1;
+  }
+  
+tr.groupFolder td:first-child {
+    padding-right: 0px !important;
+  }
+  
+.delete-folder-action.activeHover {
+    opacity: 1;
+  }
+  .all-sectors .delete-folder-action {
+    position: absolute;
+  }
+
+  .delete-folder-action:after {
+    clear: both;
+    content: '';
+    display: block;
+  }
+  .delete-folder-action {
+    position: static;
+    left: 10px;
+    top: 4px;
+    opacity: 0;
+    transition: transform 0.3s;
+    width: 20px;
+    height: 20px;
+  }
+  
+.externalUser .searchBlock input.search-bar::placeholder{
+    color: #040404 !important;
+}
+.externalUser .searchBlock input:focus::placeholder{
+    opacity: 1 !important;
+}

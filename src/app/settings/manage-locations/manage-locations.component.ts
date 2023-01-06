@@ -24,6 +24,12 @@ export class ManageLocationsComponent implements OnInit {
   selectedRegion = null;
   subAreaInput = "";
   renameRegionInput = "";
+  
+  showUserManageLocations = true;
+  showUserSettingPage = false;
+  showUserAccessPage = false;
+  showUserManageSuppliers = false;
+  loading = false;
 
   constructor(
     public matDialog: MatDialog,
@@ -34,6 +40,17 @@ export class ManageLocationsComponent implements OnInit {
   ngOnInit(): void {
     this.getOrCreateAdminPanelWorkspace();
     this.getRegionList();
+    this.fetchManagedLocations();
+  }
+
+  
+  fetchManagedLocations() {
+    this.showUserManageLocations = true;
+    this.loading = true;
+    this.showUserSettingPage = false;
+    this.showUserAccessPage = false;
+    this.showUserManageSuppliers = false;
+    this.loading = false;
   }
 
   async getOrCreateAdminPanelWorkspace() {
