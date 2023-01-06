@@ -14,6 +14,7 @@ import { ApiService } from "../../services/api.service";
 import { CreateSupplieModalComponent } from '../create-supplie-modal/create-supplie-modal.component';
 import { InviteUserModalComponent} from '../invite-user-modal/invite-user-modal.component';
 import { apiRoutes } from 'src/app/common/config';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-manage-suppliers',
@@ -78,6 +79,7 @@ export class ManageSuppliersComponent implements OnInit {
   loading = false;
   managedUsersMap = {};
   managedUsersBackUp=[];
+  modalOpen: boolean = true;
 
   constructor(
     public matDialog: MatDialog,
@@ -85,6 +87,7 @@ export class ManageSuppliersComponent implements OnInit {
     private nuxeo: NuxeoService,
     private apiService: ApiService,
     public sharedService: SharedService,
+    private modalService: NgbModal,
   ) {
   }
 
@@ -346,15 +349,23 @@ export class ManageSuppliersComponent implements OnInit {
     this.getSupplierList();
   }
 
-  async toggleActivated(event, supplier) {
+  async toggleActivated(event, supplier, allNotifactionContent) {
     await this.updateDocument(supplier.uid, {properties: {"supplier:activated": event.checked}});
-    this.sharedService.showSnackbar(
-      `Supplier's access has been ${event.checked ? "enabled" : "disabled"}`,
-      5000,
-      "top",
-      "center",
-      "snackBarMiddle",
-    );
+    if(event.checked) {
+      this.modalOpen = true;
+      this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+      }, (reason) => {
+        this.closeModal();
+      });
+    } else {
+      this.sharedService.showSnackbar(
+        `Supplier's access has been ${event.checked ? "enabled" : "disabled"}`,
+        5000,
+        "top",
+        "center",
+        "snackBarMiddle",
+      );
+    }
     this.getSupplierList();
   }
 
@@ -434,6 +445,17 @@ export class ManageSuppliersComponent implements OnInit {
     this.filteredSuppliers = this.supplierList.filter(supplier => {
       return supplier.name.toLowerCase().includes(this.supplierInput.toLowerCase());
     });
+  }
+
+  allNotifactionOpen(allNotifactionContent) {
+    this.modalOpen = true;
+    this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+    }, (reason) => {
+      this.closeModal();
+    });
+  }
+  closeModal() {
+    this.modalOpen = true;
   }
 
 }
