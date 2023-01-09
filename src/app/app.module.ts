@@ -51,6 +51,7 @@ import { AddUserPrivateFolderModalComponent } from './add-user-private-folder-mo
 import { DocumentationAssetsComponent } from './documentation-assets/documentation-assets.component';
 import { NgxMasonryModule } from 'ngx-masonry';
 import { UploadDroneComponent } from './upload-drone/upload-drone.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { UploadDroneComponent } from './upload-drone/upload-drone.component';
     MatTooltipModule,
     MatNativeDateModule,
     NgxMasonryModule,
+    NgxDropzoneModule,
   ],
   providers: [
     // CookieService,

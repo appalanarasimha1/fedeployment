@@ -126,7 +126,7 @@ img.installation-search-icon {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     padding: 10px 0px;
 }
-li.flex {
+li.flex, .flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -142,4 +142,200 @@ li.flex span.ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.expandable {
+    min-height: calc(100vh - 273px) !important;
+    background: transparent !important;
+    border: 0px !important;
+    /* flex-wrap: wrap-reverse !important; */
+}
+.dropzoneContent h2 {
+    font-family: 'brownlight';
+    font-size: 22px;
+    color: #937206;
+    padding-top: 10px;
+}
+.dropzoneContent h2 span {
+    display: block;
+    font-size: 16px;
+    padding-top: 10px;
+}
+.dropzoneContent img {
+    max-width: 40px;
+    width: 100%;
+}
+.customScrollBar {
+    min-height: calc(100vh - 231px) !important;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 0px;
+}
+.dropzoneContent.filesAdded {
+    display: block;
+    min-height: auto !important;
+    padding: 15px;
+    background: transparent;
+    height: auto !important;
+    border: 0px !important;
+    padding-bottom: 0px;
+}
+.dropzoneContent.filesAdded img {
+    max-width: 25px !important;
+    width: 100%;
+    display: inline-block;
+}
+.dropzoneContent.filesAdded h2, .dropzoneContent.filesAdded h2 span {
+    display: inline-block;
+    padding-top: 0px;
+}
+.dropzoneContent.filesAdded h2 {
+    font-size: 15px;
+    font-family: 'brownregular';
+    padding-left: 10px;
+}
+.dropzoneContent.filesAdded h2 span {
+    font-size: 13px;
+    font-family: 'brownlight';
+    padding-left: 5px;
+}
+.contentBlockOverflow ::ng-deep ngx-dropzone-image-preview {
+    display: block !important;
+    width: 100%;
+    height: auto !important;
+    min-height: auto !important;
+    padding: 0px !important;
+    margin: 0px 0px 10px !important;
+}
+.contentBlockOverflow ::ng-deep ngx-dropzone-image-preview img {
+    max-width: 28px !important;
+    width: 100% !important;
+    height: 20px;
+}
+.uanet_dropzone {
+    padding: 15px;
+}
+.customScrollBar .expandable {
+    align-items: flex-start !important;
+    display: block;
+}
+.contentBlockOverflow ::ng-deep ngx-dropzone-remove-badge {
+    opacity: 1 !important;
+    background: transparent !important;
+    right: 0px !important;
+    top: 5px !important;
+}
+.contentBlockOverflow ::ng-deep ngx-dropzone-remove-badge svg line{
+    stroke: #BAB8B2 !important;
+}
+.contentBlockOverflow ::ng-deep ngx-dropzone-label {
+    margin: 0px auto !important;
+    padding-left: 10px;
+    font-size: 13px;
+    top: 5px;
+    width: calc(100% - 70px);
+}
+.contentBlockOverflow ::ng-deep ngx-dropzone-image-preview .flex {
+    padding: 0px !important;
+}
+.gettingInfo {
+    font-size: 13px;
+    font-family: 'brownlight';
+    color: #007BB5;
+}
+.dropzoneContent.defaultTextUpload {
+    transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.folderListview ::ng-deep mat-form-field {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+.folderListview ::ng-deep mat-form-field::after {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(../../assets/images/down-arrow.svg) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    z-index: -1;
+}
+::ng-deep .mat-calendar-body-selected {
+    background-color: #EDD580;
+    color: #000;
+}
+.custom-date-picker ::ng-deep input.mat-input-element {
+    border-bottom: 0px solid #000 !important;
+    text-align: right;
+    width: 75px !important;
+    height: 20px !important;
+}
+.custom-date-picker ::ng-deep input.mat-input-element::-webkit-input-placeholder {
+    color: #040404 !important;
+}
+.custom-date-picker ::ng-deep input.mat-input-element:-ms-input-placeholder {
+    color: #040404 !important;
+}
+.custom-date-picker ::ng-deep input.mat-input-element::placeholder {
+    color: #040404 !important;
+}
+.custom-date-picker ::ng-deep .mat-form-field-label-wrapper {
+    top: 0em;
+    padding-top: 0;
+}
+.custom-date-picker ::ng-deep button.mat-focus-indicator.mat-icon-button.mat-button-base:after {
+    content: "";
+    display: block;
+    background-image: url('../../assets/images/calendar-dark-icon.svg') !important;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 18px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+}
+.custom-date-picker ::ng-deep .mat-form-field-infix {
+    width: 104px;
+    line-height: 20px;
+}
+.custom-date-picker ::ng-deep .mat-icon-button {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    vertical-align: middle;
+    margin-left: 6px;
+}
+.custom-date-picker ::ng-deep .mat-datepicker-popup {
+    width: 296px !important;
+    position: absolute !important;
+    right: 0px !important;
+    box-shadow: 2px 2px 6px 3px rgb(0 0 0 / 25%);
+    border-radius: 8px;
+    left: 725px !important;
+    bottom: 83px !important;
+    overflow: hidden;
+    height: max-content !important;
+}
+.custom-date-picker ::ng-deep .mat-calendar-body-today.mat-calendar-body-selected{
+    box-shadow: unset !important;
+}
+.custom-date-picker ::ng-deep .mat-calendar-body-selected {
+    background-color: #EDD580;
+    color: #000;
+}
+.custom-date-picker ::ng-deep .mat-form-field-underline {
+    display: none !important;
+}
+.mr-20 {
+    margin-right: 20px;
+}
+.expandable.addHeight {
+    min-height: calc(100vh - 232px) !important;
 }
