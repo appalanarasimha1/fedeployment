@@ -29,6 +29,11 @@ import { CreateSupplieModalComponent } from './create-supplie-modal/create-suppl
 import { CreateLocationModalComponent } from './create-location-modal/create-location-modal.component';
 import { CreateSubAreaModalComponent } from './create-sub-area-modal/create-sub-area-modal.component';
 import { InviteUserModalComponent } from './invite-user-modal/invite-user-modal.component';
+import { SettingNavigationComponent } from './setting-navigation/setting-navigation.component';
+import { DeviceSettingsComponent } from './device-settings/device-settings.component';
+import { ManageExternalUsersComponent } from './manage-external-users/manage-external-users.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { CreateDeviceModalComponent } from './create-device-modal/create-device-modal.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +44,10 @@ import { InviteUserModalComponent } from './invite-user-modal/invite-user-modal.
     CreateLocationModalComponent,
     CreateSubAreaModalComponent,
     InviteUserModalComponent,
+    SettingNavigationComponent,
+    DeviceSettingsComponent,
+    ManageExternalUsersComponent,
+    CreateDeviceModalComponent,
   ],
   imports: [
     SharedModule,
@@ -64,6 +73,7 @@ import { InviteUserModalComponent } from './invite-user-modal/invite-user-modal.
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    NgSelectModule,
   ],
   exports: [
     MatMenuModule

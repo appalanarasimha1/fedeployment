@@ -14,7 +14,7 @@
                 <th>Suppliers</th>
                 <th>Assigned region</th>
                 <th>Tech support email</th>
-                <th>Access expire</th>
+                <th>Access expiry</th>
                 <th style="width: 3%">&nbsp;&nbsp;</th>
                 <th style="width: 40px">&nbsp;&nbsp;</th>
             </tr>
@@ -80,14 +80,24 @@
                         </div>
                     </div>
                 </td>
-                <td>
+                <td class="accessExpiryCal">
                   <mat-form-field appearance="fill">
-                      <input class="datePicker" placeholder="Choose a date" (dateChange)="updateSupplierExpiry($event, supplier)" [(ngModel)]="supplier.expiry" matInput [matDatepicker]="supplierPicker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="supplierPicker.open()">
+                      <input class="datePicker" placeholder="Choose date" (dateChange)="updateSupplierExpiry($event, supplier)" [(ngModel)]="supplier.expiry" matInput [matDatepicker]="supplierPicker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="supplierPicker.open()">
                       <mat-datepicker #supplierPicker></mat-datepicker>
                   </mat-form-field>
                 </td>
-                <td><mat-slide-toggle (change)="toggleActivated($event, supplier)" [(ngModel)]="supplier.activated"></mat-slide-toggle></td>
-                <td (click)="showExternalUserList(supplier)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
+                <td>
+                  <span class="removeIcon">
+                    <mat-slide-toggle (change)="toggleActivated($event, supplier, allNotifactionContent)" [(ngModel)]="supplier.activated"></mat-slide-toggle>
+                    <div class="removeInfo">Supplier's access can be turned on and off from this toggle.</div>
+                  </span>
+                </td>
+                <td (click)="showExternalUserList(supplier)" class="positionRelative">
+                  <span class="removeIcon">
+                    <img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" />
+                    <div class="removeInfo">You can manage the supplier's users by opening it.</div>
+                  </span>
+                </td>
             </tr>
         </table>
     </div>
@@ -187,7 +197,7 @@
                         </li>
                     </ul>
                 </td>
-                <td>
+                <td class="accessExpiryCal">
                     <mat-form-field appearance="fill">
                         <input class="datePicker" placeholder="Choose a date" (dateChange)="updateUserExpiry($event, i)" [(ngModel)]="user.expiry" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
                         <mat-datepicker #picker></mat-datepicker>
@@ -199,3 +209,12 @@
         </table>
     </div>
 </div>
+
+
+
+<ng-template #allNotifactionContent let-modal>
+  <div class="modal-body fix-notifaction">
+    <h1>This supplier's access previously expired. Their access period will now be extended by a year.</h1>
+    <div class="cloaseModal" (click)="modal.dismiss('Cross click'); closeModal()">Ok</div>
+  </div>
+</ng-template>
