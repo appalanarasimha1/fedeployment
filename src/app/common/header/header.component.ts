@@ -373,9 +373,10 @@ export class HeaderComponent implements OnInit {
   }
 
   goToNotificationLink(notification) {
+    let folderName = notification?.docPath?.split("/")[1]
     const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
     if (isAsset) this.router.navigate(['asset-view'], {queryParams : {assetId: notification.docUUID}});
-    else this.router.navigate(['workspace'], {queryParams : {folder: notification.docUUID}});
+    else this.router.navigate([`workspace/${folderName}/${notification?.docUUID}`]);
   }
 
   async processDownloadRequest(notification, isApproved) {
