@@ -7,7 +7,7 @@ import { IBrowseSidebar, IEntry } from 'src/app/common/interfaces';
   templateUrl: './browse-navigation.component.html',
   styleUrls: ['./browse-navigation.component.css']
 })
-export class BrowseNavigationComponent implements OnInit, OnChanges{
+export class BrowseNavigationComponent {
   @Input() folderStructure: IBrowseSidebar[];
   @Input() isExternalView: boolean;
 
@@ -16,35 +16,26 @@ export class BrowseNavigationComponent implements OnInit, OnChanges{
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void {
-    this;
-  }
-
-  ngOnChanges(changes: any) {
-    this;
-    changes;
-  }
-
   getClass() {
     return 'active-tab';
   }
 
-  onAllSectorClick(item: IBrowseSidebar) {
-    // this.router.navigate(['workspace']);
-    // fetchAllSectors(item.isExpand);
-    // selectedFolder2 = item;
-    // selectedFolder = item;
-    // createBreadCrumb(item.title, item.type, item.path);
-    // initialLoad = true;
-  }
+  // onAllSectorClick(item: IBrowseSidebar) {
+  //   // this.router.navigate(['workspace']);
+  //   // fetchAllSectors(item.isExpand);
+  //   // selectedFolder2 = item;
+  //   // selectedFolder = item;
+  //   // createBreadCrumb(item.title, item.type, item.path);
+  //   // initialLoad = true;
+  // }
 
-  onSectorClick(item: IEntry, index: number) {
-    // handleGotoBreadcrumb(item, index);
-    // selectedFolder2 = item;
-    // selectedFolder = item;
-    // sectorSelected = item;
-    // closeOtherSectore(item, item.children);
-    // initialLoad= false;
-  }
+  // onSectorClick(item: IEntry, index: number) {
+  //   // handleGotoBreadcrumb(item, index);
+  //   // selectedFolder2 = item;
+  //   // selectedFolder = item;
+  //   // sectorSelected = item;
+  //   // closeOtherSectore(item, item.children);
+  //   // initialLoad= false;
+  // }
 
 }

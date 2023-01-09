@@ -14,7 +14,6 @@
           <li *ngFor="let item of folderStructure; let i = index" style="cursor: pointer">
             <div
               class="d-flex set"
-              (click)="onAllSectorClick(item)"
               [routerLink]="['/workspace']"
             >
               <div style="z-index: 9">
@@ -46,7 +45,7 @@
               <!-- [ngClass]="sectorSelected?.uid === child.uid && !isTrashView? 'active-tab' : ''" -->
                 <div
                   class="workspaceLink"
-                  (click)="onSectorClick(child, childIndex)"
+                  
                 >
                   <span style="z-index: 9; display: block;">
                     <a [routerLink]="['/workspace', child.title]" [routerLinkActive]="getClass()">
@@ -69,17 +68,5 @@
           </li>
         </ul>
       </div>
-      <!-- <div *ngIf="isExternalView" class="tree">
-        <ul style="list-style: none" class="leftPanel">
-          <li
-            style="cursor: pointer"
-            [ngClass]="isExternalView ? 'active-tab' : ''"
-            class="d-flex set"
-            (click)="fetchAllPrivateWorkspaces()"
-          >
-            <span>Shared Folders</span>
-          </li>
-        </ul>
-      </div> -->
   </div>
 </section>
