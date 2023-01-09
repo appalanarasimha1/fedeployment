@@ -75,7 +75,8 @@ export class UploadDroneComponent implements OnInit {
     this.showInfo = false;
     this.countFile = true;
   }
-  gettingInfo() {
+  gettingInfo(event) {
+    event.stopPropagation();
     this.showInfo = !this.showInfo;
   }
 
