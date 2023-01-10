@@ -4617,3 +4617,11 @@ span.clickEvent.textDIsable {
   pointer-events: none;
   opacity: 0.5;
 }
+.disablePagi ::ng-deep mat-form-field {
+  pointer-events: none;
+  opacity: 0.5;
+}
+::ng-deep .mat-paginator-container {
+  align-items: center !important;
+  justify-content: center !important;
+}
