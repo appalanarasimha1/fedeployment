@@ -632,7 +632,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
-    
+
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.saveState(this.selectedFolder, index, breadCrumbIndex);
@@ -1220,7 +1220,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
       console.log("selwctedFolder", this.selectedFolder , "result", result);
-      
+
       if (!result) return;
       this.folderAssetsResult[
         this.breadCrumb[this.breadCrumb.length - 1].uid
@@ -1259,9 +1259,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         this.selectedFolder.childType = FOLDER_TYPE_WORKSPACE;
       } else {
         this.selectedFolder.childType = ORDERED_FOLDER;
-      }
-      if(this.isPrivateFolder()){
-        this.checkboxIsPrivate = true
       }
       const payload = await this.sharedService.getCreateFolderPayload(
         folderName?.trim(),
@@ -2047,7 +2044,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
 
-  
+
 
   hasNoOtherCollaborators(currentCollaborators) {
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return true;
@@ -2092,7 +2089,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         id: ace.id,
       }
       console.log("ace.username = ",ace.username);
-      
+
     });
     return folderCollaborators;
   }
@@ -2564,7 +2561,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkCollabAndPrivateFolder(cancel?:boolean){
-    // if(!this.isAdmin) return this.onlyPrivate =  false 
+    // if(!this.isAdmin) return this.onlyPrivate =  false
     let collabs = this.getFolderCollaborators()
     let checkCollabs
     if (!collabs) {
