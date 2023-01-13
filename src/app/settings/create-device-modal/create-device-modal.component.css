@@ -200,3 +200,30 @@ ol.deviceType li {
 .regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked .ng-option-label{
     font-weight: normal !important;
 }
+.copyHover {
+    position: relative;
+    margin-left: 0px;
+    cursor: pointer;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+.copyHover img {
+    width: 100%;
+}
+.copyHoverInfo {
+    display: none;
+    top: 31px;
+    left: 0px;
+    background: #413E3C;
+    padding: 2px 7px;
+    color: #fff !important;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    width: max-content;
+    font-size: 12px;
+}
+.copyHover:hover .copyHoverInfo {
+    display: block;
+}

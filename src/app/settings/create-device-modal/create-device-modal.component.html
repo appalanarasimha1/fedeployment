@@ -8,6 +8,7 @@
     <div class="create-supplier-form">
         <ul>
             <li>
+                <label for="Device Type">Device Type</label>
                 <ol class="deviceType">
                     <li>
                         <input type="radio" id="timelapse" name="deviceType" (change)="onSelectdeviceType($event, 'timelapse')" checked />
@@ -48,7 +49,12 @@
             <li>
                 <div class="flex">
                     <div class="form-group" *ngIf="directionShow">
-                        <label for="Direction">Direction</label>
+                        <label for="Direction">Direction 
+                            <div class="copyHover">
+                                <img src="../../../assets/images/Info-icon.svg" />
+                                <div class="copyHoverInfo">3-digit degree value on a 360 degrees scale</div>
+                            </div>
+                        </label>
                         <input [(ngModel)]="direction" type="text" placeholder="E.g. 270" />
                     </div>
                     <div class="form-group" *ngIf="poleIdShow">

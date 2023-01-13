@@ -91,7 +91,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div *ngIf="device.status === 'online'" class="statusTage online">Online <span></span></div>
-                                <div *ngIf="device.status === 'inactive'" class="statusTage inactive">Inactive <span></span></div>
+                                <div *ngIf="device.status === 'inactive'" class="statusTage inactive">Offline <span></span></div>
                                 <div *ngIf="device.status === 'decommissioned'" class="statusTage decommissioned">Decommissioned <span></span></div>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -99,7 +99,7 @@
                                     <div style="cursor: pointer;" (click)="changeStatus(device, 'online')" class="statusTage online">Online <span></span></div>
                                 </li>
                                 <li>
-                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'inactive')" class="statusTage inactive">Inactive <span></span></div>
+                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'inactive')" class="statusTage inactive">Offline <span></span></div>
                                 </li>
                                 <li>
                                     <div style="cursor: pointer;" (click)="changeStatus(device, 'decommissioned')" class="statusTage decommissioned">Decommissioned <span></span></div>
