@@ -1751,6 +1751,7 @@
             [pageSizeOptions]="pageSizeOptions"
             (page)="paginatorEvent($event)"
             aria-label="Select page"
+            [ngClass]="{'disablePagi' : searchList.length < 20}"
           >
           </mat-paginator>
         </div>

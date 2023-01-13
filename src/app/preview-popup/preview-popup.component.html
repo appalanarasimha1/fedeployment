@@ -61,7 +61,7 @@
           <div class="col-xl-5 col-md-5">
             <ul class="flexible">
               <li class="customtooltip">
-                <a placement="bottom" ngbTooltip="Favourite">
+                <a placement="bottom" ngbTooltip="Add to Favorites" style="display: inline-block;">
                   <img *ngIf="doc.contextParameters.favorites?.isFavorite" (click)="markFavourite(doc, false)"
                     src="../../assets/images/yellow-star.svg" />
                   <img *ngIf="!doc.contextParameters.favorites?.isFavorite" (click)="markFavourite(doc, true)"
@@ -320,7 +320,7 @@
         </div>
       </div>
 
-      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
+      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 15px 25px 25px;">
         <div class="mb-4" style="width: 80%; min-height: 60px;">
           <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
 
@@ -494,7 +494,7 @@
         <div class="col-xl-6 col-md-6">
           <ul class="flexible">
             <li class="customtooltip">
-              <a placement="bottom" ngbTooltip="Favourite">
+              <a placement="bottom" ngbTooltip="Add to Favorites" style="display: inline-block;">
                 <img *ngIf="doc?.contextParameters?.favorites?.isFavorite" (click)="markFavourite(doc, false)"
                   src="../../assets/images/yellow-star.svg" />
                 <img *ngIf="!doc?.contextParameters?.favorites?.isFavorite" (click)="markFavourite(doc, true)"
@@ -738,7 +738,7 @@
       </div>
     </div>
 
-    <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset">
+    <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 15px 25px 25px;">
       <div class="mb-4" style="width: 80%; min-height: 60px;">
         <span *ngIf="doc?.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
         <div class="weight-size-block">
