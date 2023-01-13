@@ -62,8 +62,9 @@
                   *ngIf="item.children?.length && item.isExpand"
                   class="leftPanel insideScroll"
                   id="customScrollBar"
-                  [ngClass]="loading ? 'pointer-events':''"
                 >
+                  <!-- [ngClass]="loading ? 'pointer-events':''" -->
+
                   <li
                     *ngFor="let firstChild of item.children; let fIndex = index"
                     style="cursor: pointer"
