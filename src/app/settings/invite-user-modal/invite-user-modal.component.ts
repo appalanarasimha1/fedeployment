@@ -40,13 +40,12 @@ export class InviteUserModalComponent implements OnInit {
   }
 
   updateSuppilerUsers(id, users) {
-    return this.apiService.put(`/id/${id}`, {
-      "entity-type": "document",
-      uid: id,
+    const params = {
       properties: {
-        "supplier:supplierUsers": users,
+        "supplier:supplierUsers": JSON.stringify(users),
       }
-    }).toPromise();
+    }
+    this.updateDocument(id, params);
   }
 
   async inviteUser() {
