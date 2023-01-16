@@ -42,4 +42,5 @@ export const apiRoutes = {
   GET_MANAGED_EXT_USERS: "/automation/Scry.GetManagedExternalUsers",
   GET_PRIVATE_FOLDERS: "/automation/Scry.GetAllPrivateFolders",
   ATTACH_LARGE_FILE: "/automation/Scry.AttachLargeFile",
+  GET_DRONE_UPLOAD_PATH: "/automation/Scry.GetDroneUploadPath",
 };

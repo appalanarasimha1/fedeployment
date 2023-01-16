@@ -1,0 +1,264 @@
+.documentationBlck {
+    padding: 35px 0 0;
+}
+.pl-110 {
+    position: relative;
+    padding-left: 110px;
+}
+.documentationBlck h2 {
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 40px;
+    padding-bottom: 10px;
+}
+.documentationBlck h3 {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+}
+.adding-assets {
+    max-width: 250px;
+    margin: 40px auto;
+    text-align: center;
+    font-family: 'brownlight';
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 36px;
+    width: 100%;
+}
+.adding-assets img {
+    display: block;
+    margin: 0px auto 30px;
+    width: 50px;
+}
+.adding-assets .uploadBtn {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+    background: #937206;
+    border-radius: 80px;
+    padding: 8px 34px;
+    letter-spacing: 0.5px;
+    margin-top: 30px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.masonry-item{
+    width: 306px;
+    /* width: calc(25% - 10px); */
+    margin-bottom: 10px;
+}
+.masonry-item img {
+    max-width: 100%;
+    width: 100%;
+}
+.masonryBlock {
+    margin: 30px 0px;
+}
+
+.regionBlok {
+    padding: 0px 0px 30px;
+    max-width: 86%;
+}
+.regionBlok::after,
+.regionBlok ul::after {
+    content: '';
+    clear: both;
+    display: block;
+}
+.regionBlok ul {
+    width: 100%;
+    display: block;
+    clear: left;
+}
+.regionBlok ul li {
+    float: left;
+    padding-right: 30px;
+    width: 25%;
+}
+.goldenText input {
+    color: #C49900 !important;
+    border-color: #C49900 !important;
+    font-weight: normal;
+  }
+  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+    max-height: 120px !important;
+  }
+  ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    content: "";
+    background-image: url(../../assets/images/black-downarrow.png) !important;
+    background-position: 0px 3px !important;
+    right: -6px;
+  }
+.goldenText ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../assets/images/golden-arrow.png) !important ;
+    height: 10px !important;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+    padding: 0px !important;
+}
+::ng-deep .ng-select .ng-arrow-wrapper {
+    padding-right: 0px;
+}
+.regionBlok .ng-select-focused:focus, .regionBlok .ng-select-focused:active {
+    box-shadow: none !important;
+    border: none !important;
+}
+.regionBlok ::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+    box-shadow: unset !important;
+    border-color: unset !important;
+}
+.regionBlok ::ng-deep .ng-select .ng-select-container{
+    background-color: transparent !important;
+    border-color: #413E3C !important;
+}
+.regionBlok ::ng-deep .ng-select.goldenText .ng-select-container{
+    border-color: #DEB31A !important;
+}
+.regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label, 
+.regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked .ng-option-label{
+    font-weight: normal !important;
+}
+.regionBlok ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder,
+.regionBlok ::ng-deep .mat-form-field-label {
+    color: #404040;
+    font-family: 'brownregular';
+}
+::ng-deep .mat-calendar-body-selected {
+    background-color: #EDD580 !important;
+    color: #000 !important;
+}
+.regionBlok ::ng-deep span.mat-button-wrapper {
+    position: relative;
+}
+.regionBlok ::ng-deep .mat-calendar-body-in-range::before {
+    background: #f8eecc;
+}
+.regionBlok ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 0 0 0 0 !important;
+    padding: 0px !important;
+    background: transparent;
+}
+.regionBlok ::ng-deep .mat-form-field-appearance-fill .mat-form-field-ripple {
+    height: 1px;
+}
+.regionBlok ::ng-deep .mat-form-field-appearance-fill .mat-form-field-underline::before {
+    background-color: rgb(65 62 60) !important;
+}
+.regionBlok ::ng-deep .mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: 0em 0 0.6em 0;
+    position: relative;
+    z-index: 2;
+}
+.regionBlok ::ng-deep .mat-form-field-appearance-fill.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, 
+.regionBlok ::ng-deep .mat-form-field-appearance-fill.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label {
+    transform: translateY(-0.59375em) scale(0);
+    width: 133.3333333333%;
+}
+
+.regionBlok ::ng-deep .mat-form-field-appearance-fill .mat-form-field-infix::after {
+    content: "";
+    background-image: url(../../assets/images/black-downarrow.png);
+    background-repeat: no-repeat;
+    background-position: 10px 5px !important;
+    right: -6px;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: 0px;
+    background-size: 12px;
+    z-index: -1;
+}
+::ng-deep .goldenText.mat-form-field-appearance-fill .mat-form-field-infix::after {
+    background-image: url(../../assets/images/golden-arrow.png) !important ;
+}
+.regionBlok ::ng-deep .mat-calendar-body-cell-content, 
+.regionBlok ::ng-deep .mat-date-range-input-separator {
+    color: #C49900;
+}
+.regionBlok ::ng-deep .goldenText.mat-form-field-appearance-fill .mat-form-field-underline::before {
+    background-color: #C49900 !important;
+}
+::ng-deep tbody tr:hover {
+    background-color: transparent;
+}
+
+.control-group {
+    display: inline-block;
+    vertical-align: top;
+    background: #fff;
+    text-align: left;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 190px;
+    height: 180px;
+    margin: 10px;
+  }
+  .control {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-weight: 400;
+  }
+  .control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+  .control__indicator {
+    position: absolute;
+    top: 3px;
+    left: 0px;
+    height: 17px;
+    width: 17px;
+    /* background: #e6e6e6; */
+    border: 1px solid #000;
+    border-radius: 4px;
+  
+  }
+  .control--radio .control__indicator {
+    border-radius: 50%;
+  }
+  .control:hover input ~ .control__indicator,
+  .control input:focus ~ .control__indicator {
+    background: #fff;
+  }
+  .control input:checked ~ .control__indicator {
+    background: #2C6946;
+    border-color: #2C6946;
+  }
+  .control:hover input:not([disabled]):checked ~ .control__indicator,
+  .control input:checked:focus ~ .control__indicator {
+    background: #2C6946;
+    border-color: #2C6946;
+  }
+  .control__indicator:after {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+  .control input:checked ~ .control__indicator:after {
+    display: block;
+  }
+  .control--checkbox .control__indicator:after {
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 11px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .control--radio .control__indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #fff;
+  }
