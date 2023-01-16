@@ -12,7 +12,7 @@ import { SharedService } from 'src/app/services/shared.service';
 export class CreateFolderComponent implements OnInit {
   @Input() currentWorkspace: IEntry;
   @Input() folderAssetsResult;
-  @Output() folderCreatEvent: EventEmitter<any> = new EventEmitter();
+  @Output() folderCreateEvent: EventEmitter<any> = new EventEmitter();
 
   titleExists: boolean = false;
   folderNameRef;
@@ -42,6 +42,7 @@ export class CreateFolderComponent implements OnInit {
 
   ngOnInit(): void {
     this.datePickerDefaultAction();
+    // this.getAllFolders()
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {
@@ -80,7 +81,7 @@ export class CreateFolderComponent implements OnInit {
       // this.searchList.unshift(res);
       // this.sortedData = this.searchList.slice();
       // this.folderAssetsResult[this.currentWorkspace.uid].entries.unshift(res);
-      this.folderCreatEvent.emit(res);
+      this.folderCreateEvent.emit(res);
       // this.showMoreButton = false;
       this.checkboxIsPrivate = false;
       $(".dropdownCreate").hide();
@@ -112,6 +113,7 @@ export class CreateFolderComponent implements OnInit {
   }
   
   CheckTitleAlreadyExits(name: string) {
+    console.log('this.allFolders',this.allFolders, typeof this.allFolders)
     let titles = this.allFolders.map((m:any)=>m.title.toLowerCase().trim())
     if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
     return false
@@ -124,7 +126,6 @@ export class CreateFolderComponent implements OnInit {
       const result: any = await this.apiService
           .get(url, { headers: { "fetch-document": "properties" } })
           .toPromise();
-
      this.allFolders = result?.entries
     }else{
       let currentState1 = this.folderAssetsResult[folder?.uid]?.entries?.filter(r => r.type == "OrderedFolder")

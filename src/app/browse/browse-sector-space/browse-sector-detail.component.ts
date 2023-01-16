@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { ASSET_TYPE, constants, PAGE_SIZE_1000, PAGE_SIZE_20, UNWANTED_WORKSPACES, WORKSPACE_ROOT } from 'src/app/common/constant';
 import { IEntry, ISearchResponse } from 'src/app/common/interfaces';
-import { DataTableComponent } from 'src/app/data-table/data-table.component';
+import { DataTableComponent } from 'src/app/browse/data-table/data-table.component';
 import { ApiService } from 'src/app/services/api.service';
 import { DataService } from 'src/app/services/data.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -704,6 +704,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
   folderCreateEvent(asset: IEntry) {
     this.assetList.unshift(asset);
+    this.assetList = this.assetList.slice()
     // this.showFolder = false;
     // if (!this.hasUpdatedChildren.includes(this.currentWorkspace.uid)) {
     //   this.hasUpdatedChildren.push(this.currentWorkspace.uid);

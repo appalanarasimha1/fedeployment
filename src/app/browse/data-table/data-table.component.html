@@ -118,7 +118,28 @@
             </div>
           </td>
           <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative">
-            <img [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;"> <!-- (click)="handleTest(item);selectedFolder=item;" -->
+            <span *ngIf="item.properties['dc:isPrivate']"  style="display: inline-block;  vertical-align: top; position: relative;">
+              <div class="publicUseBlock">
+                <div class="tollTipCustom">
+                  <img src="../../../assets/images/private-icon.svg" class="private-icon" style="position: relative; z-index: 9; width: 17px;margin-right: 10px;" />
+                  <div class="tolltipContent" style="top: 28px;
+                  height: auto;
+                  white-space: break-spaces;
+                  text-align: left;
+                  padding: 5px 10px;">
+                    This is a private folder
+                  </div>
+                </div>
+                <!-- <div class="publicUseBlk">Private</div> -->
+                <!-- <div class="mouseHoverInfo">
+                  <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
+                  <div class="manageAccessBtn">
+                    Manage access
+                  </div>
+                </div> -->
+              </div>
+            </span>
+            <img *ngIf="!item.properties['dc:isPrivate']" [src]="getIconByType(item.type)" style="width: 15px;margin-right: 10px;object-fit: contain; display: inline-block;vertical-align: -1px;"> <!-- (click)="handleTest(item);selectedFolder=item;" -->
             <!-- this is for <p> tag below (click)="handleTest(item);selectedFolder=item;" -->
             <p style="text-align: left; word-break: break-all;display: inline-block;
             vertical-align: middle;">
@@ -143,13 +164,13 @@
               </span>
 
             </p>
-            <span *ngIf="item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;"> <!-- (click)="clickHandle(item);selectedFolder=item;" -->
+            <!-- <span *ngIf="item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
               <div class="publicUseBlock">
                 <div class="publicUseBlk">Private</div>
               </div>
-            </span>
+            </span> -->
 
-            <span *ngIf="!item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
+            <!-- <span *ngIf="!item.properties['dc:isPrivate']" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
               <div class="publicUseBlock publishedBlock">
                 <div class="publicUseBlk published">
                   Published 
@@ -161,7 +182,7 @@
                   <app-manage-access-modal [input_data]="item" [input_folder_structure]="breadCrumb" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
                 </div>
               </div>
-            </span>
+            </span> -->
           </td>
           <td *ngIf="checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" style="display: flex" (contextmenu)="onContextMenu($event, item)">
             <div class="zoomImg">

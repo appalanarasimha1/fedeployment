@@ -1,17 +1,17 @@
 import { Component, OnInit, ViewChild, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
-import { SharedService } from '../services/shared.service';
+import { SharedService } from '../../services/shared.service';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { ApiService } from '../services/api.service';
-import { apiRoutes } from '../common/config';
-import { IBrowseSidebar, IEntry, ISearchResponse } from '../common/interfaces';
+import { ApiService } from '../../services/api.service';
+import { apiRoutes } from '../../common/config';
+import { IBrowseSidebar, IEntry, ISearchResponse } from '../../common/interfaces';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
-import { ASSET_TYPE, constants, PAGE_SIZE_20, UNWANTED_WORKSPACES } from '../common/constant';
+import { ASSET_TYPE, constants, PAGE_SIZE_20, UNWANTED_WORKSPACES } from '../../common/constant';
 import { Sort } from "@angular/material/sort";
-import { DataService } from '../services/data.service';
+import { DataService } from '../../services/data.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
-import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
+import { PreviewPopupComponent } from '../../preview-popup/preview-popup.component';
 import { Router } from '@angular/router';
 
 @Component({

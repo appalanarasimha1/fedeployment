@@ -29,7 +29,7 @@ import { ManageAccessModalComponent } from '../manage-access-modal/manage-access
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill';
 import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
-import { DataTableComponent } from '../data-table/data-table.component';
+import { DataTableComponent } from '../browse/data-table/data-table.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { SafePipe } from '../common/pipe/safe.pipe';
 import { MatPaginatorModule } from '@angular/material/paginator';

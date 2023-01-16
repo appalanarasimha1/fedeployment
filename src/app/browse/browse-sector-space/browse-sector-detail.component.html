@@ -167,7 +167,8 @@
       </div>
 
       <ul class="uploadAssetsClassifications">
-        <li *ngIf="selectedAssetCount > 0">
+        <li >
+          <!-- *ngIf="selectedAssetCount > 0" -->
           <div class="selectedItemBlock">
             {{ selectedAssetCount }} selected
             <a (click)="removeAssets()"
@@ -175,7 +176,8 @@
             /></a>
           </div>
         </li>
-        <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && selectedAssetCount > 0" -->
+        <li  (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && selectedAssetCount > 0" -->
+          <!-- *ngIf="checkEnableMoveButton()" -->
           <div class="moveFolderImg tollTipWorkspace">
             <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
               <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -440,6 +442,7 @@
           </div>
           <app-create-folder 
             *ngIf="showCreateFolderPopup"
+            [currentWorkspace]="currentWorkspace"
             [folderAssetsResult]="folderStructure" 
             (folderCreateEvent)="folderCreateEvent($event)"
           ></app-create-folder>
