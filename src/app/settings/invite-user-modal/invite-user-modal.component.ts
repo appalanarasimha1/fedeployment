@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NuxeoService } from "src/app/services/nuxeo.service";
 import { ApiService } from "../../services/api.service";
-import { EXTERNAL_USER } from "src/app/common/constant";
+import { DRONE_UPLOADER } from "src/app/common/constant";
 
 @Component({
   selector: 'app-invite-user-modal',
@@ -63,10 +63,11 @@ export class InviteUserModalComponent implements OnInit {
       "properties": {
         "username": this.userEmail,
         "email": this.userEmail,
-        "groups": [EXTERNAL_USER]
+        "groups": [DRONE_UPLOADER]
       }
     })
     .execute();
+
     const permissions = [];
     if (this.upload) permissions.push("upload");
     if (this.download) permissions.push("download");
@@ -80,6 +81,12 @@ export class InviteUserModalComponent implements OnInit {
     const users = this.supplier.users || [];
     users.push(newUserProp);
     const res = await this.updateSuppilerUsers(this.supplier.uid, users);
+    this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
+    .params({
+      "user": this.userEmail,
+    })
+    .execute();
+
     this.closeModal(res);
   }
 

@@ -632,7 +632,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // this.showSearchbar = false;
       await this.handleClickNew(item.uid);
     }
-    
+
     this.loading = true;
     this.selectedFolder = await this.fetchFolder(item.uid);
     this.saveState(this.selectedFolder, index, breadCrumbIndex);
@@ -738,7 +738,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.selectedFile = [];
     this.selectedFolder = { ...selected, uid: selected.id };
     this.sharedService.toTop();
-    let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${item.uid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
@@ -1220,7 +1220,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
       console.log("selwctedFolder", this.selectedFolder , "result", result);
-      
+
       if (!result) return;
       this.folderAssetsResult[
         this.breadCrumb[this.breadCrumb.length - 1].uid
@@ -2047,7 +2047,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
 
-  
+
 
   hasNoOtherCollaborators(currentCollaborators) {
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return true;
@@ -2092,7 +2092,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         id: ace.id,
       }
       console.log("ace.username = ",ace.username);
-      
+
     });
     return folderCollaborators;
   }
@@ -2238,7 +2238,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let currentState = this.folderAssetsResult[folder.uid]?.entries?.filter(r => r.title == "Workspaces")
     if(currentState.length){
       const path = folder.path?.replace(/(["'])/g, "\\$1");
-      let url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${encodeURIComponent(path)}'`;
+      let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=${PAGE_SIZE_1000}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${currentState[0]?.uid}' AND ecm:mixinType = 'Folderish' AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '${encodeURIComponent(path)}'`;
       const result: any = await this.apiService
           .get(url, { headers: { "fetch-document": "properties" } })
           .toPromise();
@@ -2564,7 +2564,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   checkCollabAndPrivateFolder(cancel?:boolean){
-    // if(!this.isAdmin) return this.onlyPrivate =  false 
+    // if(!this.isAdmin) return this.onlyPrivate =  false
     let collabs = this.getFolderCollaborators()
     let checkCollabs
     if (!collabs) {

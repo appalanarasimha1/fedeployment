@@ -1,17 +1,17 @@
 <section class="documentationBlck">
   <div class="container">
       <h2>Documentation assets</h2>
-      <h3>Company DFG</h3>
+      <h3>{{company}}</h3>
       <div class="adding-assets">
           <img src="../../assets/images/upload-icon.svg" />
           Start adding assets
           <div class="uploadBtn" (click)="openModal()">Upload</div>
       </div>
-      
+
       <div class="masonryBlock">
         <div class="regionBlok">
           <ul>
-            <li>
+            <!-- <li>
                 <ng-select placeholder="Region"
                     (change)="onSelectRegions($event)"
                     [searchable]="false"
@@ -62,9 +62,9 @@
                         {{statu.name}}
                     </ng-option>
                 </ng-select>
-            </li>
+            </li> -->
           </ul>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-4">
               <label class="control control--checkbox" style="margin-bottom: 0px;">
                 Only show assets uploaded by me
@@ -79,18 +79,35 @@
                 <div class="control__indicator"></div>
              </label>
             </div>
-          </div>
+          </div> -->
         </div>
-    
+
+
+        <app-loader
+          [show]="loading"
+        ></app-loader>
+
         <ngx-masonry [options]="masonryOptions"
           (layoutComplete)="completeLoadingMasonry($event)"
           [updateLayout]="updateMasonryLayout">
-          <div ngxMasonryItem class="masonry-item" *ngFor="let picture of dummyPictures">
-            <img src="{{picture.picture}}">
+
+          <div
+            ngxMasonryItem
+            class="masonry-item"
+            [ngClass]="{'masonrZindex': masoneryItemIndex === i}"
+            *ngFor="let doc of assetList; let i = index"
+            (mouseover)="over(i)"
+            (mouseout)="out()"
+          >
+            <document-card
+              [doc]="doc"
+              [viewType]="viewType"
+            >
+            </document-card>
           </div>
         </ngx-masonry>
       </div>
-      
+
 
   </div>
 

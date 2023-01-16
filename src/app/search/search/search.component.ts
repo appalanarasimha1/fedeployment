@@ -12,6 +12,7 @@ import {
   unwantedTags,
   EXTERNAL_GROUP_GLOBAL,
   EXTERNAL_USER,
+  DRONE_UPLOADER,
 } from "src/app/common/constant";
 import { DataService } from "src/app/services/data.service";
 import { SideDrawerComponent } from "src/app/common/sideDrawer/sideDrawer.component";
@@ -627,6 +628,10 @@ export class SearchComponent implements OnInit {
         localStorage.setItem("user", JSON.stringify(res.user.properties));
         const groups = res.user.properties.groups;
         if (!groups) return;
+        if (groups.includes(DRONE_UPLOADER)) {
+          this.router.navigate(['documentation-assets']);
+          return;
+        }
         if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
         if (groups.includes(EXTERNAL_USER)) {
           this.router.navigate(['workspace']);

@@ -48,6 +48,8 @@
     font-size: 16px;
     line-height: 24px;
     padding: 6px 15px;
+    display: flex;
+    justify-content: space-between;
 }
 .cancel-btn{
     color: #23211E;
@@ -77,7 +79,7 @@ img.installation-search-icon {
 }
 .searchBar {
     max-width: 550px;
-    width: 100%; 
+    width: 100%;
     margin: 0px auto;
     position: relative;
 }
@@ -338,4 +340,10 @@ li.flex span.ellipsis {
 }
 .expandable.addHeight {
     min-height: calc(100vh - 232px) !important;
+}
+.uploadProgress {
+    color: #007BB5;
+}
+.uploadProgressDone {
+    color: green;
 }

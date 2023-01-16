@@ -68,7 +68,7 @@ export class ManageSuppliersComponent implements OnInit {
   hiddenSpan = this.renderer.createElement("span");
 
   renameUserName: boolean = false;
-  
+
   showUserSettingPage = true;
   showUserAccessPage = false;
   currentEditingUser = null;
@@ -104,7 +104,7 @@ export class ManageSuppliersComponent implements OnInit {
     this.getRegionList();
   }
 
-  
+
   async fetchManagedExternalUsers() {
     this.backToUserList();
     const body = {
@@ -124,7 +124,7 @@ export class ManageSuppliersComponent implements OnInit {
     }
   }
 
-  
+
   backToUserList() {
     this.showUserSettingPage = true;
     this.showUserAccessPage = false;
@@ -201,6 +201,11 @@ export class ManageSuppliersComponent implements OnInit {
     const users = this.selectedSupplier.users || [];
     users.push(newUserProp);
     await this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+    this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
+    .params({
+      "user": user,
+    })
+    .execute();
   }
 
   async getOrCreateAdminPanelWorkspace() {
@@ -240,7 +245,7 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async getSupplierList() {
-    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
 
@@ -260,7 +265,7 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async getRegionList() {
-    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
 
