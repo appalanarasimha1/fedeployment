@@ -190,12 +190,13 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async selectUser(user) {
-    const permissions = [];
+    const permissions = ["upload"];
+    const now = new Date();
     const newUserProp = {
       user,
       permissions,
       activated: true,
-      expiry: new Date(),
+      expiry: new Date(now.setMonth(now.getMonth() + 6)),
     }
     const users = this.selectedSupplier.users || [];
     users.push(newUserProp);

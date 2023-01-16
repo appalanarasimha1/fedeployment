@@ -13,7 +13,7 @@ export class InviteUserModalComponent implements OnInit {
 
   loading = false;
   userEmail = "";
-  upload = false;
+  upload = true;
   download = false;
   delete = false;
   selectedMonth = new Date();
@@ -28,6 +28,7 @@ export class InviteUserModalComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.selectedMonth = new Date(this.selectedMonth.setMonth(this.selectedMonth.getMonth() + 6));
     this.userEmail = this.data.userEmail;
     this.supplier = this.data.supplier;
   }
@@ -40,13 +41,12 @@ export class InviteUserModalComponent implements OnInit {
   }
 
   updateSuppilerUsers(id, users) {
-    return this.apiService.put(`/id/${id}`, {
-      "entity-type": "document",
-      uid: id,
+    const params = {
       properties: {
-        "supplier:supplierUsers": users,
+        "supplier:supplierUsers": JSON.stringify(users),
       }
-    }).toPromise();
+    }
+    this.updateDocument(id, params);
   }
 
   async inviteUser() {
@@ -55,7 +55,7 @@ export class InviteUserModalComponent implements OnInit {
       folderName: "",
       groundXUrl: location.protocol + '//' + location.host
     }
-    await this.nuxeo.nuxeoClient.operation('Scry.InviteUser')
+    this.nuxeo.nuxeoClient.operation('Scry.InviteUser')
     .params(inviteUserParams)
     .input({
       "entity-type": "user",
@@ -76,16 +76,16 @@ export class InviteUserModalComponent implements OnInit {
       user: this.userEmail,
       permissions,
       activated: true,
-      expiry: this.selectedMonth || new Date(),
+      expiry: this.selectedMonth,
     }
     const users = this.supplier.users || [];
     users.push(newUserProp);
-    const res = await this.updateSuppilerUsers(this.supplier.uid, users);
     this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
     .params({
       "user": this.userEmail,
     })
     .execute();
+    const res = await this.updateSuppilerUsers(this.supplier.uid, users);
 
     this.closeModal(res);
   }
