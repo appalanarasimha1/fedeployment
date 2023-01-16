@@ -439,7 +439,7 @@
   </ng-template>
 
 </header>
-<section class="left-sidebar" *ngIf="showFooter" >
+<section class="left-sidebar" *ngIf="showFooter && !isDroneUploadPage" >
   <ul class="sidebarList">
     <li>
       <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="!checkExternalUser(true)" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
