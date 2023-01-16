@@ -66,6 +66,7 @@ export class HeaderComponent implements OnInit {
   showRejectForm = {};
   requestSent = {};
   isApproved = {};
+  isDroneUploadPage = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -96,6 +97,7 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
+        if (event.url.includes('documentation-assets')) this.isDroneUploadPage = true;
 
       }
     });
@@ -120,6 +122,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(window.location);
+
+    if (window.location.href.includes('documentation-assets')) this.isDroneUploadPage = true;
     $(window).on('scroll', () => {
       const scroll = $(window).scrollTop();
       if (scroll >= 80 && scroll <= 20000) {
