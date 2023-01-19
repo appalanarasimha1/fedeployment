@@ -2201,3 +2201,12 @@ form.commentTextForm {
   -o-background-size: cover;
   background-size: cover;
 }
+.popupTabSec{
+  height: calc(100vh - 270px);
+}
+::ng-deep pdf-viewer {
+  height: 100% !important;
+}
+.popupTabSec.notPrivateAccess img {
+  max-height: calc(100vh - 280px) !important;
+}
