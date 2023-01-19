@@ -27,7 +27,7 @@ export class DeviceSettingsComponent implements OnInit {
     this.getRegionList();
     this.getSubAreaList();
   }
-  async openCreateDeviceModal() {
+  async openCreateDeviceModal(create=true, selectedDevice?) {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -38,6 +38,8 @@ export class DeviceSettingsComponent implements OnInit {
       deviceInput: this.deviceInput,
       regionList: this.regionList,
       subAreaList: this.subAreaList,
+      isCreate: create,
+      selectedDevice: selectedDevice,
     };
 
     const modalDialog = this.matDialog.open(

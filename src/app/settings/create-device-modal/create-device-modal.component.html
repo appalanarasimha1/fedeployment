@@ -1,5 +1,5 @@
 <div class="create-supplier">
-    <h3>Create device
+    <h3>{{isCreate ? 'Create' : 'Edit'}} device
         <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
           <img src="../../../assets/images/close-modal.svg" style="width: 20px" />
        </button>
@@ -49,7 +49,7 @@
             <li>
                 <div class="flex">
                     <div class="form-group" *ngIf="directionShow">
-                        <label for="Direction">Direction 
+                        <label for="Direction">Direction
                             <div class="copyHover">
                                 <img src="../../../assets/images/Info-icon.svg" />
                                 <div class="copyHoverInfo">3-digit degree value on a 360 degrees scale</div>
@@ -101,6 +101,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button (click)="createDevice()" class="upload-btn" [disabled]="!checkEnableCreateDeviceButton() || loading" >Create device</button>
+        <button (click)="createDevice()" class="upload-btn" [disabled]="!checkEnableCreateDeviceButton() || loading" >{{isCreate ? 'Create device' : 'Save'}}</button>
     </div>
 </div>
