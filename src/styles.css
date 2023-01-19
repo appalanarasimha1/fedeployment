@@ -3645,6 +3645,10 @@ li.breadcrumb-item {
   border-color: #000 !important;
   width: unset !important;
   color: #fff !important;
+  font-size: 13px !important;
+  line-height: 15px !important;
+  border-radius: 4px !important;
+  margin-right: 5px !important;
 }
 
 .hover-icon-group .tooltip-inner{
