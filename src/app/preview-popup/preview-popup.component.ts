@@ -204,8 +204,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   docAudit:any = []
   openInfo(tabName: string,doc?:any) {
     if (tabName =='timeline') {
-      console.log("doc",doc);
-      
       this.docAudit = doc?.filter((aud:any)=>aud.principalName !== 'system' && aud.principalName !=='Administrator')
     }
     if (!this.showShadow || this.selectedTab === tabName) {

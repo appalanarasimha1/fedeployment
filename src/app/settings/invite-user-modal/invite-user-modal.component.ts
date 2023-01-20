@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NuxeoService } from "src/app/services/nuxeo.service";
 import { ApiService } from "../../services/api.service";
-import { EXTERNAL_USER } from "src/app/common/constant";
+import { DRONE_UPLOADER } from "src/app/common/constant";
 
 @Component({
   selector: 'app-invite-user-modal',
@@ -13,7 +13,7 @@ export class InviteUserModalComponent implements OnInit {
 
   loading = false;
   userEmail = "";
-  upload = false;
+  upload = true;
   download = false;
   delete = false;
   selectedMonth = new Date();
@@ -28,6 +28,7 @@ export class InviteUserModalComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.selectedMonth = new Date(this.selectedMonth.setMonth(this.selectedMonth.getMonth() + 6));
     this.userEmail = this.data.userEmail;
     this.supplier = this.data.supplier;
   }
@@ -40,13 +41,12 @@ export class InviteUserModalComponent implements OnInit {
   }
 
   updateSuppilerUsers(id, users) {
-    return this.apiService.put(`/id/${id}`, {
-      "entity-type": "document",
-      uid: id,
+    const params = {
       properties: {
-        "supplier:supplierUsers": users,
+        "supplier:supplierUsers": JSON.stringify(users),
       }
-    }).toPromise();
+    }
+    this.updateDocument(id, params);
   }
 
   async inviteUser() {
@@ -55,7 +55,7 @@ export class InviteUserModalComponent implements OnInit {
       folderName: "",
       groundXUrl: location.protocol + '//' + location.host
     }
-    await this.nuxeo.nuxeoClient.operation('Scry.InviteUser')
+    this.nuxeo.nuxeoClient.operation('Scry.InviteUser')
     .params(inviteUserParams)
     .input({
       "entity-type": "user",
@@ -63,10 +63,11 @@ export class InviteUserModalComponent implements OnInit {
       "properties": {
         "username": this.userEmail,
         "email": this.userEmail,
-        "groups": [EXTERNAL_USER]
+        "groups": [DRONE_UPLOADER]
       }
     })
     .execute();
+
     const permissions = [];
     if (this.upload) permissions.push("upload");
     if (this.download) permissions.push("download");
@@ -75,11 +76,17 @@ export class InviteUserModalComponent implements OnInit {
       user: this.userEmail,
       permissions,
       activated: true,
-      expiry: this.selectedMonth || new Date(),
+      expiry: this.selectedMonth,
     }
     const users = this.supplier.users || [];
     users.push(newUserProp);
+    this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
+    .params({
+      "user": this.userEmail,
+    })
+    .execute();
     const res = await this.updateSuppilerUsers(this.supplier.uid, users);
+
     this.closeModal(res);
   }
 

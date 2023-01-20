@@ -30,10 +30,15 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill';
 import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
 import { SafePipe } from '../common/pipe/safe.pipe';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 keyboardEventKeyPolyfill();
 @NgModule({
   providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false }
+    }
     // {
     //   provide: MatDialogRef,
     //   useValue: {}

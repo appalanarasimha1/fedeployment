@@ -1,0 +1,81 @@
+<div class="upload-modal">
+    <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()">
+       <img src="../../assets/images/close-modal.svg" style="width: 20px" />
+    </button>
+    <div class="contentBlockOverflow">
+        <div class="uploadHeading">
+            <span>{{generateUploadHeader()}}</span>
+            <div *ngIf="loading && totalPercent < 100" class="uploadProgress">Uploading... {{totalPercent}}%</div>
+            <div *ngIf="totalPercent == 100" class="uploadProgressDone">Uploaded</div>
+        </div>
+        <img src="../../assets/images/Installation-search-icon.svg" class="installation-search-icon" *ngIf="!showUpload" />
+        <div class="searchBar" *ngIf="!showUpload">
+            <img src="../../assets/images/Iocn_Search.svg" class="searchIcon" />
+            <input type="search" placeholder="Search installation ID, region, location or monthly footage"
+                [ngModel]="searchText"
+                (ngModelChange)="onSearchBarChange($event)"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="search-bar"
+                [ngClass]="{ removeBorderRadious: searchPopup }"
+                (click)="inputClicked()"
+                (blur)="blurOnSearch()"
+                (clickOutside)="outClick()"
+                bindLabel="id"
+                bindValue="id"
+                [multiple]="false"
+                typeToSearchText="Search users"
+            />
+            <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar">
+                <ul>
+                    <!-- <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>OXAGON</span></li>
+                    <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>TROJENA</span></li> -->
+                    <li *ngFor="let device of installationIdList" class="flex" (click)="showUploadBlock(device)"><span class="numberBlk">{{device.installationId}}</span> <span class="ellipsis">{{device.area}}</span> <span>{{device.location}}</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div *ngIf="showUpload" class="customScrollBar">
+            <div class="dropzoneContent filesAdded" *ngIf="files.length>0 && !publishStep" ngx-dropzone accept="image/jpeg,image/jpg,image/png, .pdf, .docx, .xlsx" (change)="onSelect($event)">
+                <img src="../../assets/images/add-copyright-golden.svg" />
+                <h2>Drag and drop to add your assets <span>or click to select files</span></h2>
+            </div>
+            <div class="uanet_dropzone" [ngClass]="{'addHeight' : countFile }" ngx-dropzone accept="image/jpeg,image/jpg,image/png, .pdf, .docx, .xlsx" [disableClick]="loading || publishStep" [expandable]="true" (change)="onSelect($event)">
+                <ngx-dropzone-label *ngIf="!publishStep">
+                    <div class="dropzoneContent defaultTextUpload">
+                        <img src="../../assets/images/add-copyright-golden.svg" />
+                        <h2>Drag and drop to add your assets <span>or click to select files</span></h2>
+                    </div>
+                </ngx-dropzone-label>
+                <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files; let i = index" [file]="f" [removable]="!loading && !publishStep" (removed)="onRemove(f)">
+                    <ngx-dropzone-label>
+                        <div class="flex">
+                            <span>{{ f.name }}</span>
+                            <!-- <span *ngIf="!showInfo" class="gettingInfo" (click)="gettingInfo($event)">Getting info...</span> -->
+                            <span class="custom-date-picker">
+                                <mat-form-field appearance="fill">
+                                    <input matInput [matDatepicker]="picker" [(ngModel)]="dates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </span>
+                        </div>
+                         <!-- ({{ f.type }}) -->
+                    </ngx-dropzone-label>
+                </ngx-dropzone-image-preview>
+            </div>
+        </div>
+
+    </div>
+    <div class="buttonBlock">
+        <button *ngIf="!cancleBlock" class="cancel-btn" (click)="cancleShowHide()">Cancel</button>
+        <button [disabled]="files?.length === 0" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep" class="upload-btn">Start upload</button>
+        <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep" class="upload-btn">Publish</button>
+
+        <div *ngIf="cancleBlock">Are you sure you want to cancel the upload?</div>
+        <div *ngIf="cancleBlock" class="cancleUpload">
+            <button class="cancel-btn mr-20" (click)="closeModal()">Yes</button>
+            <button class="cancel-btn" (click)="cancleShowHide()">Nevermind</button>
+        </div>
+    </div>
+</div>

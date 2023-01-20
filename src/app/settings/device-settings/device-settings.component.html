@@ -1,0 +1,115 @@
+<div class="externalUser positionRelative">
+    <h2>Devices</h2>
+    <!-- <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p> -->
+    <div class="searchBlock">
+        <span class="positionRelative">
+            <input type="text" placeholder="Search or create devices by typing the installation ID" (input)="searchDevice($event)" [(ngModel)]="deviceInput" class="search-bar" />
+            <button class="primary createSuppliers" *ngIf="deviceInput" (click)="openCreateDeviceModal()">Create device</button>
+        </span>
+    </div>
+    <div class="regionBlok">
+        <ul>
+            <li>
+                <ng-select placeholder="Region"
+                    (change)="onSelectRegions($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedRegions"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedRegions}"
+                >
+                    <ng-option *ngFor="let region of regionList" [value]="region">
+                        {{region.initial}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li>
+                <ng-select placeholder="Sub-area"
+                    (change)="onSelectSubArea($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedsubAreas"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedsubAreas}"
+                >
+                    <ng-option *ngFor="let subArea of subAreaList" [value]="subArea">
+                        {{subArea.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li>
+                <ng-select placeholder="Device type"
+                    (change)="onSelectType($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selecteddeviceTypes"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selecteddeviceTypes}"
+                >
+                    <ng-option *ngFor="let deviceType of deviceTypes" [value]="deviceType.name">
+                        {{deviceType.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li>
+                <ng-select placeholder="Status"
+                    (change)="onSelectStatus($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedStatus"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedStatus}"
+                >
+                    <ng-option *ngFor="let statu of status" [value]="statu.name">
+                        {{statu.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+        </ul>
+    </div>
+    <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width:1%">&nbsp;&nbsp;</th>
+                <th style="width:15%">Installation ID</th>
+                <th style="width:25%">Sub-area</th>
+                <th style="width:10%">Direction</th>
+                <th style="width:10%">Pole ID</th>
+                <th style="width:14%">Device type</th>
+                <th style="width:19%">Status</th>
+                <th style="width:6%">&nbsp;</th>
+            </tr>
+            <tr *ngFor="let device of filteredDeviceList; let i = index">
+                <td><div class="height32"></div></td>
+                <td>{{device.name}}</td>
+                <td><div class="itemTitleContent">{{subAreaMap[device.subArea]?.name}}</div></td>
+                <td>{{formatDirection(device.direction)}}</td>
+                <td>{{device.poleId}}</td>
+                <td>{{capitalizeFirstLetter(device.deviceTyp)}}</td>
+                <td>
+                    <ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div *ngIf="device.status === 'online'" class="statusTage online">Online <span></span></div>
+                                <div *ngIf="device.status === 'inactive'" class="statusTage inactive">Offline <span></span></div>
+                                <div *ngIf="device.status === 'decommissioned'" class="statusTage decommissioned">Decommissioned <span></span></div>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'online')" class="statusTage online">Online <span></span></div>
+                                </li>
+                                <li>
+                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'inactive')" class="statusTage inactive">Offline <span></span></div>
+                                </li>
+                                <li>
+                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'decommissioned')" class="statusTage decommissioned">Decommissioned <span></span></div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td (click)="deleteDevice(device)" style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+            </tr>
+        </table>
+    </div>
+</div>

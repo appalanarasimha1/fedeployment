@@ -13,6 +13,8 @@ import { adminPanelWorkspacePath } from "src/app/common/constant";
 import { ApiService } from "../../services/api.service";
 import { CreateSupplieModalComponent } from '../create-supplie-modal/create-supplie-modal.component';
 import { InviteUserModalComponent} from '../invite-user-modal/invite-user-modal.component';
+import { apiRoutes } from 'src/app/common/config';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-manage-suppliers',
@@ -57,6 +59,7 @@ export class ManageSuppliersComponent implements OnInit {
   regionMap = {};
   selectedSupplier = null;
   filteredUsers: Observable<string[]>;
+  filteredSuppliers = [];
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
@@ -66,16 +69,30 @@ export class ManageSuppliersComponent implements OnInit {
 
   renameUserName: boolean = false;
 
+  showUserSettingPage = true;
+  showUserAccessPage = false;
+  currentEditingUser = null;
+  currentUserFolderList = [];
+  managedUsers;
+  showUserManageSuppliers = false;
+  showUserManageLocations = false;
+  loading = false;
+  managedUsersMap = {};
+  managedUsersBackUp=[];
+  modalOpen: boolean = true;
+
   constructor(
     public matDialog: MatDialog,
     private renderer: Renderer2,
     private nuxeo: NuxeoService,
     private apiService: ApiService,
     public sharedService: SharedService,
+    private modalService: NgbModal,
   ) {
   }
 
   ngOnInit(): void {
+    this.fetchManagedExternalUsers();
     this.filteredUsers = this.usersCtrl.valueChanges.pipe(
       startWith(''),
       map(value => this._userFilter(value || '')),
@@ -85,6 +102,38 @@ export class ManageSuppliersComponent implements OnInit {
     this.getAllUsers();
     this.getSupplierList();
     this.getRegionList();
+  }
+
+
+  async fetchManagedExternalUsers() {
+    this.backToUserList();
+    const body = {
+      context: {},
+      params: {},
+    };
+    this.loading = true;
+    const res = await this.apiService.post(apiRoutes.GET_MANAGED_EXT_USERS, body).toPromise();
+    this.managedUsersMap = res['value'] || {};
+    this.loading = false;
+    this.showUserSettingPage = true;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    if (this.managedUsersMap) {
+      this.managedUsers = Object.keys(this.managedUsersMap);
+      this.managedUsersBackUp = Object.keys(this.managedUsersMap);
+    }
+  }
+
+
+  backToUserList() {
+    this.showUserSettingPage = true;
+    this.showUserAccessPage = false;
+    this.currentEditingUser = null;
+    this.currentUserFolderList = [];
+    this.managedUsers = this.managedUsersBackUp;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    this.showUserAccessPage = false;
   }
 
   private _userFilter(value: string): string[] {
@@ -101,13 +150,12 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   updateSuppilerUsers(id, users) {
-    return this.apiService.put(`/id/${id}`, {
-      "entity-type": "document",
-      uid: id,
+    const params = {
       properties: {
-        "supplier:supplierUsers": users,
+        "supplier:supplierUsers": JSON.stringify(users),
       }
-    }).toPromise();
+    }
+    this.updateDocument(id, params);
   }
 
   hasPermission(user, permission) {
@@ -142,16 +190,22 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async selectUser(user) {
-    const permissions = [];
+    const permissions = ["upload"];
+    const now = new Date();
     const newUserProp = {
       user,
       permissions,
       activated: true,
-      expiry: new Date(),
+      expiry: new Date(now.setMonth(now.getMonth() + 6)),
     }
     const users = this.selectedSupplier.users || [];
     users.push(newUserProp);
     await this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+    this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
+    .params({
+      "user": user,
+    })
+    .execute();
   }
 
   async getOrCreateAdminPanelWorkspace() {
@@ -191,7 +245,7 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async getSupplierList() {
-    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
 
@@ -203,12 +257,15 @@ export class ManageSuppliersComponent implements OnInit {
       users: supplier.properties["supplier:supplierUsers"],
       activated: supplier.properties["supplier:activated"],
       supportEmail: supplier.properties["supplier:supportEmail"],
+      expiry: supplier.properties["supplier:expiry"],
       renameEmail : false,
     }));
+    this.filteredSuppliers = this.supplierList;
+    this.supplierInput = "";
   }
 
   async getRegionList() {
-    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
 
@@ -292,15 +349,29 @@ export class ManageSuppliersComponent implements OnInit {
     .execute();
   }
 
-  async toggleActivated(event, supplier) {
+  async updateSupplierExpiry(event, supplier) {
+    await this.updateDocument(supplier.uid, {properties: {"supplier:expiry": event.value}});
+    this.getSupplierList();
+  }
+
+  async toggleActivated(event, supplier, allNotifactionContent) {
     await this.updateDocument(supplier.uid, {properties: {"supplier:activated": event.checked}});
-    this.sharedService.showSnackbar(
-      `Supplier's access has been ${event.checked ? "enabled" : "disabled"}`,
-      5000,
-      "top",
-      "center",
-      "snackBarMiddle",
-    );
+    if(event.checked) {
+      this.modalOpen = true;
+      this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+      }, (reason) => {
+        this.closeModal();
+      });
+    } else {
+      this.sharedService.showSnackbar(
+        `Supplier's access has been ${event.checked ? "enabled" : "disabled"}`,
+        5000,
+        "top",
+        "center",
+        "snackBarMiddle",
+      );
+    }
+    this.getSupplierList();
   }
 
   async openCreateSupplierModal() {
@@ -369,6 +440,27 @@ export class ManageSuppliersComponent implements OnInit {
 
   renameUserClick() {
     this.renameUserName = !this.renameUserName;
+  }
+
+  searchSupplier(event) {
+    if (!this.supplierInput) {
+      this.filteredSuppliers = this.supplierList;
+      return;
+    }
+    this.filteredSuppliers = this.supplierList.filter(supplier => {
+      return supplier.name.toLowerCase().includes(this.supplierInput.toLowerCase());
+    });
+  }
+
+  allNotifactionOpen(allNotifactionContent) {
+    this.modalOpen = true;
+    this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+    }, (reason) => {
+      this.closeModal();
+    });
+  }
+  closeModal() {
+    this.modalOpen = true;
   }
 
 }

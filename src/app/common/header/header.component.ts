@@ -66,6 +66,7 @@ export class HeaderComponent implements OnInit {
   showRejectForm = {};
   requestSent = {};
   isApproved = {};
+  isDroneUploadPage = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -96,6 +97,7 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
+        if (event.url.includes('documentation-assets')) this.isDroneUploadPage = true;
 
       }
     });
@@ -120,6 +122,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(window.location);
+
+    if (window.location.href.includes('documentation-assets')) this.isDroneUploadPage = true;
     $(window).on('scroll', () => {
       const scroll = $(window).scrollTop();
       if (scroll >= 80 && scroll <= 20000) {
@@ -373,9 +378,10 @@ export class HeaderComponent implements OnInit {
   }
 
   goToNotificationLink(notification) {
+    let folderName = notification?.docPath?.split("/")[1]
     const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
     if (isAsset) this.router.navigate(['asset-view'], {queryParams : {assetId: notification.docUUID}});
-    else this.router.navigate(['workspace'], {queryParams : {folder: notification.docUUID}});
+    else this.router.navigate([`workspace/${folderName}/${notification?.docUUID}`]);
   }
 
   async processDownloadRequest(notification, isApproved) {

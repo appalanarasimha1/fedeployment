@@ -1,19 +1,26 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer2, VERSION, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  Renderer2,
+  VERSION,
+  Input,
+} from "@angular/core";
 import { NuxeoService } from "src/app/services/nuxeo.service";
 import { apiRoutes } from "src/app/common/config";
 import { adminPanelWorkspacePath } from "src/app/common/constant";
 import { ApiService } from "../../services/api.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { CreateLocationModalComponent } from '../create-location-modal/create-location-modal.component';
-import { CreateSubAreaModalComponent } from '../create-sub-area-modal/create-sub-area-modal.component';
+import { CreateLocationModalComponent } from "../create-location-modal/create-location-modal.component";
+import { CreateSubAreaModalComponent } from "../create-sub-area-modal/create-sub-area-modal.component";
 
 @Component({
-  selector: 'app-manage-locations',
-  templateUrl: './manage-locations.component.html',
-  styleUrls: ['./manage-locations.component.css']
+  selector: "app-manage-locations",
+  templateUrl: "./manage-locations.component.html",
+  styleUrls: ["./manage-locations.component.css"],
 })
 export class ManageLocationsComponent implements OnInit {
-
   @Input() name: string;
 
   showExternalUserPage: boolean = false;
@@ -25,21 +32,39 @@ export class ManageLocationsComponent implements OnInit {
   subAreaInput = "";
   renameRegionInput = "";
 
+  showUserManageLocations = true;
+  showUserSettingPage = false;
+  showUserAccessPage = false;
+  showUserManageSuppliers = false;
+  loading = false;
+
   constructor(
     public matDialog: MatDialog,
     private nuxeo: NuxeoService,
-    private apiService: ApiService,
-  ) { }
+    private apiService: ApiService
+  ) {}
 
   ngOnInit(): void {
     this.getOrCreateAdminPanelWorkspace();
     this.getRegionList();
+    this.fetchManagedLocations();
+  }
+
+  fetchManagedLocations() {
+    this.showUserManageLocations = true;
+    this.loading = true;
+    this.showUserSettingPage = false;
+    this.showUserAccessPage = false;
+    this.showUserManageSuppliers = false;
+    this.loading = false;
   }
 
   async getOrCreateAdminPanelWorkspace() {
     if (!this.nuxeo || !this.nuxeo.nuxeoClient) return;
     try {
-      const folder = await this.nuxeo.nuxeoClient.repository().fetch(adminPanelWorkspacePath);
+      const folder = await this.nuxeo.nuxeoClient
+        .repository()
+        .fetch(adminPanelWorkspacePath);
       if (!folder) return this.createAdminPanelFolderStructure();
     } catch (err) {
       this.createAdminPanelFolderStructure();
@@ -47,54 +72,69 @@ export class ManageLocationsComponent implements OnInit {
   }
 
   createFolder(type, name, path) {
-    return this.nuxeo.nuxeoClient.operation('Document.Create')
-    .params({
-      type,
-      name,
-    })
-    .input(path)
-    .execute();
+    return this.nuxeo.nuxeoClient
+      .operation("Document.Create")
+      .params({
+        type,
+        name,
+      })
+      .input(path)
+      .execute();
   }
 
   async createAdminPanelFolderStructure() {
     // create AdminPanelWorkspace
-    await this.createFolder("MiscFolder", "AdminPanelWorkspace", "/default-domain/workspaces");
-    await this.createFolder("Folder", "SupplierFolder", adminPanelWorkspacePath);
+    await this.createFolder(
+      "MiscFolder",
+      "AdminPanelWorkspace",
+      "/default-domain/workspaces"
+    );
+    await this.createFolder(
+      "Folder",
+      "SupplierFolder",
+      adminPanelWorkspacePath
+    );
     await this.createFolder("Folder", "RegionFolder", adminPanelWorkspacePath);
-    await this.createFolder("Folder", "LocationFolder", adminPanelWorkspacePath);
+    await this.createFolder(
+      "Folder",
+      "LocationFolder",
+      adminPanelWorkspacePath
+    );
   }
 
   async getRegionList() {
-    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
 
     if (!res) return;
     const regions = res["entries"];
-    this.regionList = regions.map(region => ({
+    this.regionList = regions.map((region) => ({
       initial: region.properties["region:initial"],
       name: region.title,
       uid: region.uid,
-      locations: region.properties["region:locations"]
+      locations: region.properties["region:locations"],
     }));
   }
 
   async getSubAreaList(ids) {
     if (!ids || ids.length === 0) return [];
-    const idsString = ids.map(id => `'${id}'`).join()
-    const url = `/search/pp/nxql_search/execute?currentPage0Index=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'SubArea' AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:uuid IN (${idsString})`;
+    const idsString = ids.map((id) => `'${id}'`).join();
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'SubArea' AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:uuid IN (${idsString})`;
     const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
 
     if (!res) {
       this.subAreaList = [];
       return;
     }
-    this.subAreaList = res['entries'].map(area => ({
+    this.subAreaList = res["entries"].map((area) => ({
       locationId: area.properties["subArea:locationId"],
       name: area.title,
       uid: area.uid,
-    }))
+    }));
   }
 
   openCreateLocationModal() {
@@ -106,9 +146,12 @@ export class ManageLocationsComponent implements OnInit {
 
     dialogConfig.data = {
       regionName: this.regionInput,
-    }
+    };
 
-    const modalDialog = this.matDialog.open(CreateLocationModalComponent, dialogConfig);
+    const modalDialog = this.matDialog.open(
+      CreateLocationModalComponent,
+      dialogConfig
+    );
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
@@ -126,9 +169,12 @@ export class ManageLocationsComponent implements OnInit {
 
     dialogConfig.data = {
       subAreaInput: this.subAreaInput,
-    }
+    };
 
-    const modalDialog = this.matDialog.open(CreateSubAreaModalComponent, dialogConfig);
+    const modalDialog = this.matDialog.open(
+      CreateSubAreaModalComponent,
+      dialogConfig
+    );
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
@@ -136,24 +182,28 @@ export class ManageLocationsComponent implements OnInit {
         const currentLocations = this.selectedRegion.locations || [];
         currentLocations.push(subAreaId);
         this.selectedRegion.locations = currentLocations;
-        this.updateDocument(this.selectedRegion.uid, {properties: {"region:locations": currentLocations}});
+        this.updateDocument(this.selectedRegion.uid, {
+          properties: { "region:locations": currentLocations },
+        });
         this.getSubAreaList(currentLocations);
       }
     });
   }
 
   deleteDocument(id) {
-    return this.nuxeo.nuxeoClient.operation('Document.Delete')
-    .params({})
-    .input(id)
-    .execute();
+    return this.nuxeo.nuxeoClient
+      .operation("Document.Delete")
+      .params({})
+      .input(id)
+      .execute();
   }
 
   updateDocument(id, params) {
-    return this.nuxeo.nuxeoClient.operation('Document.Update')
-    .params(params)
-    .input(id)
-    .execute();
+    return this.nuxeo.nuxeoClient
+      .operation("Document.Update")
+      .params(params)
+      .input(id)
+      .execute();
   }
 
   async removeRegion(region) {
@@ -167,7 +217,9 @@ export class ManageLocationsComponent implements OnInit {
     if (index < 0) return;
     currentLocations.splice(index, 1);
     this.selectedRegion.locations = currentLocations;
-    this.updateDocument(this.selectedRegion.uid, {properties: {"region:locations": currentLocations}});
+    this.updateDocument(this.selectedRegion.uid, {
+      properties: { "region:locations": currentLocations },
+    });
     this.getSubAreaList(currentLocations);
   }
 
@@ -188,7 +240,8 @@ export class ManageLocationsComponent implements OnInit {
     this.renameUserName = !this.renameUserName;
     if (!saved) return;
     this.selectedRegion.name = this.renameRegionInput;
-    this.updateDocument(this.selectedRegion.uid, {properties: {"dc:title": this.renameRegionInput}});
+    this.updateDocument(this.selectedRegion.uid, {
+      properties: { "dc:title": this.renameRegionInput },
+    });
   }
-
 }

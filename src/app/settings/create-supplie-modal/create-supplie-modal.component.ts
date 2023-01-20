@@ -45,6 +45,7 @@ export class CreateSupplieModalComponent implements OnInit {
   supportEmail = "";
   loading = false;
   selectedRegion = [];
+  selectedMonth;
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
 
@@ -61,6 +62,8 @@ export class CreateSupplieModalComponent implements OnInit {
   ngOnInit(): void {
     this.suppliersName = this.data.supplierInput;
     this.suppliersRegion = this.data.suppliersRegion;
+    this.selectedMonth = new Date();
+    this.selectedMonth.setFullYear(this.selectedMonth.getFullYear() + 1);
   }
 
   add(event: MatChipInputEvent): void {
@@ -104,6 +107,7 @@ export class CreateSupplieModalComponent implements OnInit {
         "supplier:supportEmail": this.supportEmail,
         "supplier:regions": regions,
         "supplier:activated": true,
+        "supplier:expiry": this.selectedMonth || new Date(),
       }
     })
     .input(adminPanelWorkspacePath + '/SupplierFolder')
@@ -118,5 +122,13 @@ export class CreateSupplieModalComponent implements OnInit {
   closeModal(result?) {
     this.dialogRef.close(result);
   }
+
+  validateEmail(email) {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
 }

@@ -15,7 +15,7 @@
             </li>
             <li>
                 <div class="form-group">
-                    <label for="Tech support email (optional)">Tech support email (optional)</label>
+                    <label for="Tech support email (optional)">Tech support email</label>
                     <input type="email" [(ngModel)]="supportEmail" placeholder="Enter a tech support email" />
                 </div>
             </li>
@@ -25,7 +25,7 @@
                     <mat-form-field class="example-chip-list">
                         <mat-chip-list #chipList>
                             <mat-chip *ngFor="let suppliers of fruits;let indx=index;" [selectable]="selectable" [removable]="removable" (removed)="remove(suppliers,indx)">
-                                {{suppliers.name}}
+                                {{suppliers.id}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
                             <input placeholder="Add..." #suppliersInput [formControl]="suppliersCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
@@ -33,17 +33,27 @@
                         </mat-chip-list>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                             <mat-option *ngFor="let suppliers of filteredFruits | async" [value]="suppliers">
-                                {{suppliers.name}}
+                                {{suppliers.id}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
                 </div>
+            </li>
+
+            <li class="folderListview">
+                <label for="Permissions">Access Expiry</label>
+                <mat-form-field appearance="fill">
+                    <input matInput class="datePicker" [ngClass]="{'goldenText': selectedMonth}" placeholder="Choose a date"
+                    [(ngModel)]="selectedMonth" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                    (click)="picker.open()">
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
             </li>
         </ul>
     </div>
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!suppliersName || loading" (click)="createSupplier()">Create supplier</button>
+        <button class="upload-btn" [disabled]="!(suppliersName && validateEmail(supportEmail)) || loading" (click)="createSupplier()">Create supplier</button>
     </div>
 </div>

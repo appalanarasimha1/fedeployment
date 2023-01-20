@@ -15,8 +15,8 @@
 }
 .externalEditAccess {
     font-family: 'brownlight';
-    padding-bottom: 20px;
-    font-size: 15px;
+    padding-bottom: 15px;
+    font-size: 14px;
 }
 .externalEditAccess strong {
     font-weight: normal;
@@ -87,6 +87,9 @@
     color: #BAB8B2;
     border-bottom: unset;
 }
+.folderListview td {
+    font-family: 'brownlight';
+}
 .folderListview td p{
     line-height: 24px;
     color: #040404;
@@ -113,6 +116,7 @@
     width: 100%;
     border: none;
     border-spacing: 0 10px;
+    table-layout: fixed;
 }
 .customTableStyle td:first-child,
 .customTableStyle th:first-child {
@@ -170,6 +174,7 @@ span.penvilIcon svg {
     content: '';
     display: block;
     clear: both;
+    border: 0px;
 }
 .searchBlock button.primary.createSuppliers {
     position: absolute;
@@ -400,7 +405,7 @@ input.datePicker:focus::placeholder{
     background: #7b7b7b;
   }
 
-  .folderListview ul li {
+  .folderListview > ul > li {
     float: left;
     padding: 0px 10px;
   }
@@ -523,7 +528,7 @@ input.datePicker:focus::placeholder{
     z-index: -1;
 }
 .folderListview .accessExpiryCal ::ng-deep mat-form-field .datePicker {
-    width: 100px !important;
+    width: 96px !important;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -535,54 +540,117 @@ input.datePicker:focus::placeholder{
     background-color: #EDD580 !important;
     color: #000;
 }
-.fix-notifaction {
-    width: 100%;
-    height: auto;
-    background-color: #fff;
-    padding: 30px !important;
-    border-radius: 8px;
-}
-.fix-notifaction h1 {
-    text-align: left;
-    font-size: 22px;
-    padding-bottom: 30px;
-}
-.cloaseModal {
-    background: #edd580;
-    border-radius: 50px;
-    padding: 5px 20px;
-    cursor: pointer;
-    max-width: 100px;
-    text-align: center;
-    margin: 0px auto;
-    font-size: 16px;
-}
-.custom-modal-notifaction .modal-content {
-    width: 630px !important;
-}
-.removeIcon {
+.statusTage {
+    border-radius: 6px;
+    padding: 5px 7px;
     display: inline-block;
-    height: 17px;
-    position: relative;
 }
-.removeInfo {
-    position: absolute;
-    right: 0px;
-    bottom: -33px;
-    background: #1E1B19;
-    border-radius: 4px;
-    padding: 4px 10px;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 15px;
-    width: 100px;
-    display: none;
-    color: #fff;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
+.statusTage span {
+    width: 10px;
+    height: 10px;
+    background-color: #0E7A53;
+    border-radius: 100px;
+    margin-left: 4px;
+    display: inline-block;
+    vertical-align: -1px;
+}
+.statusTage.online {
+    background: #D2FAE4;
+    color: #0E7A53;
+}
+.statusTage.online span {
+    background-color: #0E7A53;
+}
+.statusTage.inactive {
+    background: #FEEEE1;
+    color: #C6342A;
+}
+.statusTage.inactive span {
+    background-color: #C6342A;
+}
+.statusTage.decommissioned {
+    background: #E8E6DF;
+    color: #413E3C;
+}
+.statusTage.decommissioned span {
+    background-color: #413E3C;
+}
+.itemTitleContent {
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
+    width: 100%;
 }
-.removeIcon:hover .removeInfo {
+.regionBlok {
+    padding: 20px 0px;
+    max-width: 90%;
+}
+.regionBlok::after {
+    content: '';
+    clear: both;
     display: block;
+}
+.regionBlok ul li {
+    float: left;
+    padding-right: 30px;
+    width: 25%;
+}
+.goldenText input {
+    color: #C49900 !important;
+    border-color: #C49900 !important;
+    font-weight: normal;
+  }
+  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+    max-height: 120px !important;
+  }
+  ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    content: "";
+    background-image: url(../../../assets/images/black-downarrow.png) !important;
+    background-position: 0px 3px !important;
+    right: -6px;
+  }
+.goldenText ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../../assets/images/golden-arrow.png) !important ;
+    height: 10px !important;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+    padding: 0px !important;
+}
+::ng-deep .ng-select .ng-arrow-wrapper {
+    padding-right: 0px;
+}
+.regionBlok .ng-select-focused:focus, .regionBlok .ng-select-focused:active {
+    box-shadow: none !important;
+    border: none !important;
+}
+.regionBlok ::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+    box-shadow: unset !important;
+    border-color: unset !important;
+}
+.regionBlok ::ng-deep .ng-select .ng-select-container{
+    background-color: transparent !important;
+    border-color: #413E3C !important;
+}
+.regionBlok ::ng-deep .ng-select.goldenText .ng-select-container{
+    border-color: #DEB31A !important;
+}
+.regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label, 
+.regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked .ng-option-label{
+    font-weight: normal !important;
+}
+.customTableStyle .nav-link {
+    color: inherit !important;
+    padding: 0px;
+}
+.customTableStyle .dropdown-menu {
+    border: 1px solid #E8E6DF;
+    border-radius: 8px;
+    width: 160px;
+    padding: 10px;
+}
+.customTableStyle .dropdown-menu li {
+    padding-bottom: 10px;
+}
+.customTableStyle .dropdown-menu li:last-child {
+    padding-bottom: 0px;
 }

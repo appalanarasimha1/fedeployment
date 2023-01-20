@@ -63,6 +63,8 @@
                   class="leftPanel insideScroll"
                   id="customScrollBar"
                 >
+                  <!-- [ngClass]="loading ? 'pointer-events':''" -->
+
                   <li
                     *ngFor="let firstChild of item.children; let fIndex = index"
                     style="cursor: pointer"
@@ -137,7 +139,7 @@
         </div>
         <div
           class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"
-          style="min-height: 100vh"
+          style="min-height: calc(100vh - 76px)"
         >
           <app-loader [show]="loading"></app-loader>
 
@@ -244,7 +246,7 @@
                     <!-- <img src="../../../assets/images/pencil-write.svg" alt="" *ngIf="showLinkCopy" class="renameFolderImg" (click)="renameFolderAction()" /> -->
                     <span *ngIf="showLinkCopy" [ngClass]="{'addVerticalAlignMiddle' : isPrivateFolder(true, true)}" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                       <div class="publicUseBlock">
-                        <div *ngIf="isPrivateFolder(true, true)" class="publicUseBlk">Private</div>
+                        <div *ngIf="isPrivateFolder()" class="publicUseBlk">Private</div>
                         <div class="mouseHoverInfo">
                           <p>You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
                           <div (click)="openAddUserModal()" [ngClass]="isAdmin ? 'manageAccessBtn' : 'manageAccessBtn-disabled'">
@@ -320,7 +322,7 @@
                       </svg>
                       <div class="customToolTipWorkspace">Manage Access</div>
                     </li>
-                    <li *ngIf="isPrivateFolder() && isAdmin" class="tollTipWorkspace">
+                    <li *ngIf="isPrivateFolder(true, true) && isAdmin" class="tollTipWorkspace">
                       <div class="positionRelative">
                         <!-- <app-loader [show]="whiteLoader" [hasOverlay]="whiteLoader"></app-loader> -->
                         <app-loader-small [show]="whiteLoader" [hasOverlay]="whiteLoader"></app-loader-small>
@@ -343,7 +345,7 @@
                       (click)="
                         handleGotoBreadcrumb(folderStructure[0], null, 0)
                       "
-                      >All Workspace</a
+                      >All Workspace umesh</a
                     ></span
                   >
                   <span *ngIf="isExternalView">/<a
@@ -1750,6 +1752,7 @@
             [pageSizeOptions]="pageSizeOptions"
             (page)="paginatorEvent($event)"
             aria-label="Select page"
+            [ngClass]="{'disablePagi' : searchList.length < 20}"
           >
           </mat-paginator>
         </div>

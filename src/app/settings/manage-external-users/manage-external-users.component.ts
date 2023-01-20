@@ -1,25 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from "@angular/router";
-import { ApiService } from "../services/api.service";
 import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "src/app/services/shared.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { AddUserPrivateFolderModalComponent } from '../add-user-private-folder-modal/add-user-private-folder-modal.component';
-import { REPORT_ROLE } from '../common/constant';
+import { ApiService } from 'src/app/services/api.service';
+import { AddUserPrivateFolderModalComponent } from 'src/app/add-user-private-folder-modal/add-user-private-folder-modal.component';
+
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  selector: 'app-manage-external-users',
+  templateUrl: './manage-external-users.component.html',
+  styleUrls: ['./manage-external-users.component.css']
 })
-export class SettingsComponent implements OnInit {
+export class ManageExternalUsersComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
     public sharedService: SharedService,
     public matDialog: MatDialog,
-    private router: Router,
     )
   { }
 
@@ -37,30 +35,29 @@ export class SettingsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.sharedService.checkExternalUser()) this.router.navigate(['workspace']);
     this.managedUsers = [];
     this.managedUsersBackUp=[];
-    // this.fetchManagedExternalUsers()
+    this.fetchManagedExternalUsers()
   }
 
-  // async fetchManagedExternalUsers() {
-  //   this.backToUserList();
-  //   const body = {
-  //     context: {},
-  //     params: {},
-  //   };
-  //   this.loading = true;
-  //   const res = await this.apiService.post(apiRoutes.GET_MANAGED_EXT_USERS, body).toPromise();
-  //   this.managedUsersMap = res['value'] || {};
-  //   this.loading = false;
-  //   this.showUserSettingPage = true;
-  //   this.showUserManageSuppliers = false;
-  //   this.showUserManageLocations = false;
-  //   if (this.managedUsersMap) {
-  //     this.managedUsers = Object.keys(this.managedUsersMap);
-  //     this.managedUsersBackUp = Object.keys(this.managedUsersMap);
-  //   }
-  // }
+  async fetchManagedExternalUsers() {
+    this.backToUserList();
+    const body = {
+      context: {},
+      params: {},
+    };
+    this.loading = true;
+    const res = await this.apiService.post(apiRoutes.GET_MANAGED_EXT_USERS, body).toPromise();
+    this.managedUsersMap = res['value'] || {};
+    this.loading = false;
+    this.showUserSettingPage = true;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    if (this.managedUsersMap) {
+      this.managedUsers = Object.keys(this.managedUsersMap);
+      this.managedUsersBackUp = Object.keys(this.managedUsersMap);
+    }
+  }
 
   openEditUserAccess(user) {
     this.showUserSettingPage = false;
@@ -71,16 +68,16 @@ export class SettingsComponent implements OnInit {
     this.showUserManageLocations = false;
   }
 
-  // backToUserList() {
-  //   this.showUserSettingPage = true;
-  //   this.showUserAccessPage = false;
-  //   this.currentEditingUser = null;
-  //   this.currentUserFolderList = [];
-  //   this.managedUsers = this.managedUsersBackUp;
-  //   this.showUserManageSuppliers = false;
-  //   this.showUserManageLocations = false;
-  //   this.showUserAccessPage = false;
-  // }
+  backToUserList() {
+    this.showUserSettingPage = true;
+    this.showUserAccessPage = false;
+    this.currentEditingUser = null;
+    this.currentUserFolderList = [];
+    this.managedUsers = this.managedUsersBackUp;
+    this.showUserManageSuppliers = false;
+    this.showUserManageLocations = false;
+    this.showUserAccessPage = false;
+  }
 
   async removeAllAccess(user) {
     const folders = this.managedUsersMap[user] || [];
@@ -108,13 +105,6 @@ export class SettingsComponent implements OnInit {
     this.loading = true;
     await this.updateFolderPermission(folder);
     this.updateFolderEndDate(value, index);
-    this.sharedService.showSnackbar(
-      'Access expiry has been set',
-      5000,
-      "top",
-      "center",
-      "snackBarMiddle",
-    );
     this.loading = false;
   }
 
@@ -173,7 +163,7 @@ export class SettingsComponent implements OnInit {
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-
+        
       }
     });
   }
@@ -201,8 +191,4 @@ export class SettingsComponent implements OnInit {
   //   this.loading = false;
   // }
 
-  checkReportRole() {
-    const expectedRole = REPORT_ROLE;
-    return this.sharedService.chekForReportRoles(expectedRole);
-  }
 }

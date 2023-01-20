@@ -12,6 +12,7 @@ import { AssetViewComponent } from "./asset-view/asset-view.component";
 import { SignupComponent } from "./signup/signup.component";
 import { ForgotPasswordComponent } from "./forgot-password/forgot-password.component";
 import { AssetCannotBeAccessedComponent } from "./asset-cannot-be-accessed/asset-cannot-be-accessed.component";
+import { DocumentationAssetsComponent } from "./documentation-assets/documentation-assets.component";
 
 
 
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "forgot-password", component: ForgotPasswordComponent },
   { path: "asset-not-accessed", component: AssetCannotBeAccessedComponent },
+  { path: "documentation-assets", component: DocumentationAssetsComponent },
   {
     path: "workspace",
     loadChildren: () =>

@@ -1,0 +1,114 @@
+<section class="documentationBlck">
+  <div class="container">
+      <h2>Documentation assets</h2>
+      <h3>{{company}}</h3>
+      <div class="adding-assets">
+          <img src="../../assets/images/upload-icon.svg" />
+          Start adding assets
+          <div class="uploadBtn" (click)="openModal()">Upload</div>
+      </div>
+
+      <div class="masonryBlock">
+        <div class="regionBlok">
+          <ul>
+            <!-- <li>
+                <ng-select placeholder="Region"
+                    (change)="onSelectRegions($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedRegions"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedRegions}"
+                >
+                    <ng-option *ngFor="let region of regions" [value]="region.name">
+                        {{region.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li>
+                <ng-select placeholder="Sub-area"
+                    (change)="onSelectRegions($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedsubAreas"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedsubAreas}"
+                >
+                    <ng-option *ngFor="let subArea of subAreas" [value]="subArea.name">
+                        {{subArea.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li>
+                <mat-form-field appearance="fill" [ngClass]="{'goldenText': selecteddeviceTypes}">
+                  <mat-label (click)="picker.open();">Enter a date range</mat-label>
+                  <mat-date-range-input [rangePicker]="picker" (click)="picker.open();">
+                    <input class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selecteddeviceTypes">
+                    <input class="customInput" matEndDate placeholder="End date" [(ngModel)]="selecteddeviceTypes">
+                  </mat-date-range-input>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </li>
+            <li>
+                <ng-select placeholder="Format"
+                    (change)="onSelectRegions($event)"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [(ngModel)]="selectedStatus"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedStatus}"
+                >
+                    <ng-option *ngFor="let statu of status" [value]="statu.name">
+                        {{statu.name}}
+                    </ng-option>
+                </ng-select>
+            </li> -->
+          </ul>
+          <!-- <div class="row">
+            <div class="col-md-4">
+              <label class="control control--checkbox" style="margin-bottom: 0px;">
+                Only show assets uploaded by me
+                <input type="checkbox" checked="checked"/>
+                <div class="control__indicator"></div>
+             </label>
+            </div>
+            <div class="col-md-4">
+              <label class="control control--checkbox" style="margin-bottom: 0px;">
+                Only show monthly videos
+                <input type="checkbox" checked="checked"/>
+                <div class="control__indicator"></div>
+             </label>
+            </div>
+          </div> -->
+        </div>
+
+
+        <app-loader
+          [show]="loading"
+        ></app-loader>
+
+        <ngx-masonry [options]="masonryOptions"
+          (layoutComplete)="completeLoadingMasonry($event)"
+          [updateLayout]="updateMasonryLayout">
+
+          <div
+            ngxMasonryItem
+            class="masonry-item"
+            [ngClass]="{'masonrZindex': masoneryItemIndex === i}"
+            *ngFor="let doc of assetList; let i = index"
+            (mouseover)="over(i)"
+            (mouseout)="out()"
+          >
+            <document-card
+              [doc]="doc"
+              [viewType]="viewType"
+            >
+            </document-card>
+          </div>
+        </ngx-masonry>
+      </div>
+
+
+  </div>
+
+</section>

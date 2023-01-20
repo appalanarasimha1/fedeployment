@@ -1,0 +1,229 @@
+:root {
+    --primary-color: #DAAA00;
+}
+.create-supplier h3 {
+    font-weight: normal;
+    font-size: 15px;
+    letter-spacing: normal;
+    color: #040404;
+    line-height: normal;
+    padding-bottom: 20px;
+}
+.button-groups {
+    padding-top: 20px
+}
+.button-groups::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.button-groups button.cancel-btn {
+    float: left;
+    appearance: none;
+    border: 1px solid #BAB8B2;
+    border-radius: 30px;
+    color: #090808;
+    line-height: 34px;
+    padding: 0px 20px 3px;
+    min-width: 100px;
+    letter-spacing: 0.5px;
+}
+button.upload-btn {
+    float: right;
+    appearance: none;
+    border: 1px solid #EDD580;
+    border-radius: 30px;
+    color: #040505;
+    line-height: 34px;
+    padding: 0px 20px 3px;
+    min-width: 100px;
+    background: #EDD580;
+    letter-spacing: 0.5px;
+}
+.button-groups button.upload-btn.disabled,
+.button-groups button.upload-btn:disabled,
+.button-groups button.upload-btn[disabled] {
+    background: #faf2d9;
+    border: 1px solid #faf2d9;
+    cursor: not-allowed;
+    padding: 0px 20px 3px;
+    color: #b4b4b4;
+}
+.create-supplier-form {
+    padding-top: 10px;
+    min-height: 453px;
+}
+.create-supplier-form ul > li {
+    padding-bottom: 10px;
+}
+.create-supplier-form ul > li label {
+    display: block;
+    text-transform: none;
+    font-weight: normal;
+    font-size: 15px;
+    letter-spacing: normal;
+    color: #040404;
+}
+.create-supplier-form ul > li input {
+    border: 0px;
+    border-bottom: 1px solid #413E3C;
+    width: 100%;
+    font-family: 'brownlight';
+    font-size: 15px;
+    color: #040404;
+    line-height: 30px;
+    padding: 0px;
+}
+.form-group label:not(.error) {
+    margin-right: 0px;
+}
+
+::ng-deep .create-supplier ::placeholder{
+    color: #645D57 !important;
+}
+::ng-deep .create-supplier input:focus::placeholder{
+    opacity: 1 !important;
+}
+
+::ng-deep .mat-dialog-container {
+    padding: 20px !important;
+    border-radius: 8px !important;
+}
+.deviceType {
+    display: block;
+    padding: 0px;
+    margin: 0px 0px 5px;
+    list-style: none;
+    width: 100%;
+    overflow: auto;
+}
+ol.deviceType li {
+    display: inline-block;
+    padding-right: 20px;
+}
+.create-supplier-form .flex {
+    display: flex;
+    width: 100%;
+}
+
+.create-supplier-form .flex > div {
+    width: 50%;
+}
+
+.create-supplier-form .flex > div:nth-child(odd) {
+    margin-right: 20px;
+}
+
+/* custom radio button start */
+.deviceType input[type="radio"] {
+    display: none;
+}
+.deviceType label {
+    cursor: pointer;
+    position: relative;
+    font-size: 14px !important;
+    padding-left: 26px;
+}  
+.deviceType label::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: transparent;
+    border: 1px solid #040404;
+    border-radius: 50%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    transition: border-color 400ms ease;
+} 
+.deviceType label::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: #DAAA00;
+    border: 1px solid #DAAA00;
+    border-radius: 50%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%) scale(0);
+    transition: transform 400ms ease;
+}
+.deviceType input[type="radio"]:checked + label::before {
+    border-color: #DAAA00;
+}
+.deviceType input[type="radio"]:checked + label::after {
+    transform: translateY(-50%) scale(0.55);
+}
+/* custom radio button end */
+.goldenText input {
+    color: #C49900 !important;
+    border-color: #C49900 !important;
+    font-weight: normal;
+}
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+    max-height: 120px !important;
+}
+::ng-deep .ng-arrow-wrapper .ng-arrow {
+    content: "";
+    background-image: url(../../../assets/images/black-downarrow.png) !important;
+    background-position: 0px 3px !important;
+    right: -6px;
+}
+.goldenText ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../../assets/images/golden-arrow.png) !important ;
+    height: 10px !important;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+    padding: 0px !important;
+}
+::ng-deep .ng-select .ng-arrow-wrapper {
+    padding-right: 0px;
+}
+.regionBlok .ng-select-focused:focus, .regionBlok .ng-select-focused:active {
+    box-shadow: none !important;
+    border: none !important;
+}
+.regionBlok ::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
+    box-shadow: unset !important;
+    border-color: unset !important;
+}
+.regionBlok ::ng-deep .ng-select .ng-select-container{
+    background-color: transparent !important;
+    border-color: #413E3C !important;
+}
+.regionBlok ::ng-deep .ng-select.goldenText .ng-select-container{
+    border-color: #DEB31A !important;
+}
+.regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label, 
+.regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked .ng-option-label{
+    font-weight: normal !important;
+}
+.copyHover {
+    position: relative;
+    margin-left: 0px;
+    cursor: pointer;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+}
+.copyHover img {
+    width: 100%;
+}
+.copyHoverInfo {
+    display: none;
+    top: 31px;
+    left: 0px;
+    background: #413E3C;
+    padding: 2px 7px;
+    color: #fff !important;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    width: max-content;
+    font-size: 12px;
+}
+.copyHover:hover .copyHoverInfo {
+    display: block;
+}

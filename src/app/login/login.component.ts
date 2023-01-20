@@ -79,7 +79,6 @@ export class LoginComponent implements OnInit {
           // console.log({token});
 
           // this.nuxeo.createClientWithToken(token);
-          this.loading = false;
           if (token.toLowerCase().includes('doctype')) {
             this.error = true;
             this.errorMessage = 'Incorrect credentials!';
@@ -88,6 +87,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', token);
           localStorage.setItem('username', this.username);
           await this.nuxeo.createClientWithToken(token, false);
+          this.loading = false;
           this.router.navigateByUrl(this.redirectURL);
         })
         .catch((err) => {
