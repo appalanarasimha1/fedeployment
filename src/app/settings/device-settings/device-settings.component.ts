@@ -71,7 +71,7 @@ export class DeviceSettingsComponent implements OnInit {
   ];
   status = [
     { id: 1, name: "Online" },
-    { id: 2, name: "Inactive" },
+    { id: 2, name: "Offline" },
     { id: 3, name: "Decommissioned" },
   ];
 
