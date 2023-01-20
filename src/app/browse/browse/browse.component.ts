@@ -2049,8 +2049,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         end: ace.end,
         id: ace.id,
       }
-      console.log("ace.username = ",ace.username);
-      
     });
     return folderCollaborators;
   }

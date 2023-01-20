@@ -67,6 +67,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   // dataTableComponent: DataTableComponent;
   folderStructure = {};
   showCreateFolderPopup: boolean = false;
+  count:number =0
+  sortedData;
+  selectedMoveListNew = {};
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -616,6 +619,10 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.selectedAssetCount = Object.keys(selectedAssetList).length;
   }
 
+  selectedCount(count:number){
+    this.count = count
+  }
+
   dragNDrop() {
     var lastTarget = null;
     var bool = false
@@ -736,9 +743,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     return item.properties["sa:downloadApprovalUsers"];
   }
 
-  openMoveModal() {
+  openMoveModal(move=true) {
     if(this.dataTableComponent)
-      this.dataTableComponent.openMoveModal();
+      this.dataTableComponent.openMoveModal(move);
     else return;
   }
 
@@ -765,5 +772,20 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   downloadAssets(e?:any) {
     if(this.dataTableComponent)
     this.dataTableComponent.downloadAssets(e);
+  }
+
+  renameAsset(){
+    let keySort = Object.keys(this.selectedMoveListNew)
+    this.sortedData[keySort[0]].edit = !this.sortedData[keySort[0]]?.edit
+    this.assetList = this.sortedData
+  }
+  selectedMoveList(e){
+    this.selectedMoveListNew = e
+  }
+  sortedDataList(e){
+    this.sortedData = e
+  }
+  checkAssetLength(){
+    return Object.keys(this.selectedMoveListNew).length == 1
   }
 }

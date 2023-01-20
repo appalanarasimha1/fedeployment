@@ -23,6 +23,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Input() searchList: IEntry[] = [];
   @Input() isTrashView: boolean = false;
   @Input() trashedList: IEntry[] = [];
+  // @Input() sortedDataList: IEntry[] = [];
   @Input() searchBarValue;
   @Input() showAssetPath: boolean = false;
   @Input() currentWorkspace: IEntry;
@@ -36,12 +37,17 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   @Output() clickHandle: EventEmitter<any> = new EventEmitter();
   @Output() fetchAssets: EventEmitter<any> = new EventEmitter();
-  @Output() selectedAsset: EventEmitter<any> = new EventEmitter();
+  @Output() selectedAssetList: EventEmitter<any> = new EventEmitter();
+  @Output() sortedDataList: EventEmitter<any> = new EventEmitter();
+  @Output() selectedCount: EventEmitter<number> = new EventEmitter();
+  @Output() selectedAssetMoveList: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("paginator") paginator: MatPaginator;
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
 
+  assetCount: number = 0;
+  assetCanDelete:any=[]
   count: number = 0;
   loading: boolean = false;
   forInternalUse = [];
@@ -81,7 +87,10 @@ export class DataTableComponent implements OnInit, OnChanges {
   defaultPageSize: number = 20;
   pageSizeOptions = [20, 50, 100];
   selectAllClicked: boolean = false;
-
+  lastIndexClicked:number
+  currentIndexClicked:number
+  selectedMoveListNew: any = {};
+  
   constructor(
     public sharedService: SharedService,
     private apiService: ApiService,
@@ -92,10 +101,12 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.sortedData = this.searchList?.slice();
+    this.sortedDataList.emit(this.sortedData)
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.sortedData = this.searchList?.slice();
+    this.sortedDataList.emit(this.sortedData)
     if(this.isTrashView) {
       this.numberOfPages = changes?.folderStructure?.currentValue?.numberOfPages;
       this.resultCount = changes?.folderStructure?.currentValue?.resultsCount;
@@ -148,8 +159,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   rightClickMove(){
-    if (this.count > 0) return this.openMoveModal();
-     this.openMoveModal();
+    if (this.count > 0) return this.openMoveModal(true);
+     this.openMoveModal(true);
     this.removeAssets()
     this.contextMenu.closeMenu();
     return $(".availableActions").hide();
@@ -161,6 +172,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         item.properties['dc:isPrivate'] = data.properties['dc:isPrivate'];
       }
     });
+    this.sortedDataList.emit(this.sortedData)
   }
 
   manageAccessPublished() {
@@ -374,19 +386,31 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   selectAsset($event, item, i) {
-    let canDelete = this.checkCanDelete(item);
-    if(canDelete) {
-      this.selectFolder($event, item, i, false);
+    // this.checkCollabAndPrivateFolder()
+    let canDelete = this.checkCanDelete(item)
+    if(this.checkCanMove(item)){
+      return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
     }
     if ($event.target?.checked || $event.checked) {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
+        this.assetCount = this.assetCount + 1;
+        this.selectedCount.emit(this.count)
       }
-      
+      if (this.lastIndexClicked ==undefined) {
+        this.currentIndexClicked = i
+        this.lastIndexClicked = i
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = i
+      }
+      this.selectedMoveListNew[i] = item;
+      this.selectedAssetMoveList.emit(this.selectedMoveListNew)
       this.selectedMoveList[i] = item;
-      this.selectedFolderList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
+      }else{
+        this.assetCanDelete.push(item)
       }
        if (
          item.properties['sa:copyrightName'] !== null &&
@@ -394,7 +418,7 @@ export class DataTableComponent implements OnInit, OnChanges {
        ) {
          this.copyRightItem.push(item.uid);
        }
-      if (item.properties["sa:downloadApprovalUsers"].length > 0) {
+      if (item.properties["sa:downloadApprovalUsers"]?.length > 0) {
         this.needPermissionToDownload.push(item);
       } else {
         if (item.properties["sa:access"] === "Internal access only") {
@@ -418,26 +442,72 @@ export class DataTableComponent implements OnInit, OnChanges {
         (m) => m.uid !== item.uid
       );
       delete this.selectedMoveList[i];
-      delete this.selectedFolderList[i];
-      this.count = this.count - 1;
+      delete this.selectedMoveListNew[i];
+      this.selectedAssetMoveList.emit(this.selectedMoveListNew)
+
+
+
+      if ($event.from !== "rightClick") {
+        this.count = this.count - 1;
+        this.assetCount = this.assetCount - 1;
+        this.selectedCount.emit(this.count)
+
+      }
+
+      if (this.count==0) {
+        this.currentIndexClicked = undefined
+        this.lastIndexClicked = undefined
+        this.selectAllClicked = false
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = undefined
+      }
       //  }
     }
     this.clickHandle.emit({eventName: 'forInternalUseListEvent', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
-    this.selectedAsset.emit(this.selectedFolderList);
+    this.selectedAssetList.emit(this.selectedFolderList);
     this.getdownloadAssetsSize();
+  }
+  shiftkeyDown(e,item,i){
+    // console.log("e",this.lastIndexClicked,this.currentIndexClicked,this.sortedData);
+    // let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
+    // let slicedData = this.sortedData.slice(sortedNumber[0],sortedNumber[1]+1)
+    // console.log("sliccesdData", slicedData);
+
+      // this.sortedData.forEach((ele:any,i)=>{
+        //  if (i >=sortedNumber[0] && i <=sortedNumber[1]) {
+        //     ele.isSelected = true
+        //     this.selectAsset({checked:true,update:false}, ele, i)
+        //  }
+        // })
+      // })
+
+  }
+  shiftkeyUp($event,item,i){
+    let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
+    this.sortedData.forEach((ele:any,i)=>{
+         if (i >=sortedNumber[0] && i <=sortedNumber[1] && !this.checkGeneralFolder(ele)) {
+          if( !ele.isSelected) {
+            ele.isSelected = true
+            this.selectAsset({checked:true,update:true}, ele, i)
+          }
+         }
+      })
+      this.sortedDataList.emit(this.sortedData)
   }
   
   rightClickSelectAll(){
     this.removeAssets()
     this.sortedData.forEach((e,i) => {
       if(!this.checkGeneralFolder(e)){
-         e.isSelected = true
+        e.isSelected = true
         this.selectAllClicked = true
-         this.selectAsset({checked:true , update:true}, e, i)
+        this.selectAsset({checked:true , update:true}, e, i)
       }
     });
+    this.sortedDataList.emit(this.sortedData)
   }
 
   getdownloadAssetsSize() {
@@ -460,16 +530,40 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   selectFolder($event, item, i, updateCount = true) {
+    if(this.selectAllClicked) updateCount = true
     if ($event.target?.checked || $event.checked) {
-      if (updateCount) this.count = this.count + 1;
+      if (this.lastIndexClicked ==undefined) {
+        this.currentIndexClicked = i
+        this.lastIndexClicked = i
+
+      }else{
+        this.lastIndexClicked = this.currentIndexClicked
+        this.currentIndexClicked = i
+      }
+      if (updateCount) {
+        this.count = this.count + 1
+        this.selectedCount.emit(this.count)
+      };
       this.selectedFolderList[i] = item;
       this.selectedMoveList[i] = item;
     } else {
-      if (updateCount) this.count = this.count - 1;
+      if (updateCount){
+         this.count = this.count - 1;
+         this.selectedCount.emit(this.count)
+        }
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
+        if (this.count==0) {
+          this.currentIndexClicked = undefined
+          this.lastIndexClicked = undefined
+          this.selectAllClicked = false
+
+        }else{
+          this.lastIndexClicked = this.currentIndexClicked
+          this.currentIndexClicked = undefined
+        }
     }
-    this.selectedAsset.emit(this.selectedFolderList);
+    this.selectedAssetList.emit(this.selectedFolderList);
   }
 
   getIconByType(type: string): string {
@@ -501,17 +595,21 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.downloadFullItem = [];
     this.needPermissionToDownload = [];
     this.count = 0;
+    this.selectedCount.emit(this.count)
     this.fileSelected = [];
     this.copyRightItem = []
     this.canNotDelete=[]
     this.selectedFolderList={}
     this.selectedMoveList={};
+    this.selectedMoveListNew = {}
     
+    this.selectedAssetMoveList.emit(this.selectedMoveListNew)
     this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
-    this.selectedAsset.emit(this.selectedFolderList);
+    this.selectedAssetList.emit(this.selectedFolderList);
     this.sortedData.forEach((e) => (e.isSelected = false));
+    this.sortedDataList.emit(this.sortedData)
   }
 
   checkDownloadPermission(item){
@@ -519,7 +617,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     return false
   }
 
-  async openMoveModal() {
+  async openMoveModal(move) {
     const listDocs = Object.values(this.selectedMoveList)
     .filter( item => !this.checkDownloadPermission(item))
    console.log("listDocslistDocs",listDocs);
@@ -572,6 +670,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       (item) => !listDocs.includes(item["uid"])
     );
     this.sortedData = this.searchList.slice();
+    this.sortedDataList.emit(this.sortedData)
     this.hasUpdatedChildren.push(this.currentWorkspace.uid);
     this.selectedFolderList = {};
     deletedFolders.forEach((item) => {
@@ -617,6 +716,7 @@ export class DataTableComponent implements OnInit, OnChanges {
           // this.getTrashedWS.bind(this)
         );
       });
+      this.removeAssets()
   }
   
   copyLink(asset: IEntry, assetType: string) {
@@ -709,6 +809,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     const data = this.searchList.slice();
     if (!sort.active || sort.direction === "") {
       this.sortedData = data;
+      this.sortedDataList.emit(this.sortedData)
       return;
     }
 
@@ -758,6 +859,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       }
     });
     this.sortedData.sort(this.assetTypeCompare);
+    this.sortedDataList.emit(this.sortedData)
   }
 
   /**
@@ -804,6 +906,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         });
         this.searchList = this.trashedList;
         this.sortedData = this.searchList.slice();
+        this.sortedDataList.emit(this.sortedData)
         this.isTrashView = true;
         // this.handleSelectMenu(1,"LIST");
         // this.showMoreButton = false;

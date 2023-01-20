@@ -332,3 +332,6 @@ tr.groupFolder td:first-child {
     width: 24px;
     height: 24px;
   }
+  .delete-folder-action.activeHover {
+    opacity: 1;
+  }

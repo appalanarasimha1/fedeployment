@@ -105,12 +105,14 @@
               <div class="control-group">
                 <label class="control control--checkbox">
                   <input
-                    id="checkbox-{{ i }}"
-                    type="checkbox"
-                    class="vh"
-                    (change)="selectAsset($event, item, i)"
-                    [checked]="item.isSelected"
-                    [(ngModel)]="item.isSelected"
+                  id="checkbox-{{ i }}"
+                  type="checkbox"
+                  class="chkbox vh width1600"
+                  (change)="selectAsset($event, item, i)"
+                  [checked]="item.isSelected"
+                  [(ngModel)]="item.isSelected"
+                  (keydown.shift)="shiftkeyDown($event,item,i)"
+                  (keyup.shift)="shiftkeyUp($event,item,i)"
                   />
                   <div class="control__indicator"></div>
                 </label>
