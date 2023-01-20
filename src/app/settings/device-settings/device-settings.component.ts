@@ -111,6 +111,7 @@ export class DeviceSettingsComponent implements OnInit {
 
     if (!res) return;
     const devices = res["entries"];
+    console.log('res["entries"]', res["entries"]);
     this.deviceList = devices.map((device) => ({
       deviceTyp: device.properties["device:deviceTyp"],
       latitude: device.properties["device:latitude"],
@@ -190,6 +191,7 @@ export class DeviceSettingsComponent implements OnInit {
   }
 
   async changeStatus(device, status) {
+    console.log('status change', status)
     if (device.status === status) return;
     await this.updateDocument(device.uid, {
       properties: { "device:status": status },
