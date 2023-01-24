@@ -27,40 +27,6 @@ export class DocumentationAssetsComponent implements OnInit {
     fitWidth: true,
   };
 
-  masonryImages;
-  limit = 15;
-  dummyPictures = [
-    {
-      picture: "https://source.unsplash.com/433x649/?Uruguay",
-    },
-    {
-      picture: "https://source.unsplash.com/530x572/?Jamaica",
-    },
-    {
-      picture: "https://source.unsplash.com/531x430/?Kuwait",
-    },
-    {
-      picture: "https://source.unsplash.com/586x1073/?Bermuda",
-    },
-    {
-      picture: "https://source.unsplash.com/500x571/?Ecuador",
-    },
-    {
-      picture: "https://source.unsplash.com/579x518/?Virgin Islands (British)",
-    },
-    {
-      picture: "https://source.unsplash.com/503x548/?Angola",
-    },
-    {
-      picture: "https://source.unsplash.com/511x630/?Mauritania",
-    },
-    {
-      picture: "https://source.unsplash.com/414x767/?Sri Lanka",
-    },
-    {
-      picture: "https://source.unsplash.com/443x704/?St. Helena",
-    },
-  ];
   public updateMasonryLayout = false;
 
   deviceList = [];
@@ -77,10 +43,22 @@ export class DocumentationAssetsComponent implements OnInit {
   assetList = [];
   masoneryItemIndex;
   viewType = "GRID";
+  formats = ['Picture', 'Video'];
+  selectedRegion;
+  selectedsubArea;
+  selectedFormat;
+  selectedStartDate;
+  selectedEndDate;
+  assetByMe = false;
+
 
   onSelectRegions(regions) {
-    console.log("regions", regions);
+    this.getAssetList();
   }
+  onSelectSubArea(area) {
+    this.getAssetList();
+  }
+
 
   ngOnInit(): void {
     this.loading = true;
@@ -172,6 +150,8 @@ export class DocumentationAssetsComponent implements OnInit {
       installationId: device.name,
       area: this.subAreaMap[device.subArea]?.name,
       location: this.regionMap[device.region]?.name,
+      areaId: device.subArea,
+      locationId: device.region,
       initial: this.regionMap[device.region]?.initial,
       type: device.deviceTyp,
     }));
@@ -204,15 +184,45 @@ export class DocumentationAssetsComponent implements OnInit {
 
   async getAssetList () {
     this.loading = true;
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType IN ('Picture', 'Video') AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND dc:vendor = '${this.companyId}'`;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND dc:vendor = '${this.companyId}'`;
+    url += this.buildFilterAssetQuery();
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .toPromise();
     this.loading = false;
     if (!res) return;
     this.assetList = res['entries'];
-    console.log(this.assetList);
+  }
 
+  dateRangeChange() {
+    if (this.selectedStartDate && this.selectedEndDate) this.getAssetList();
+  }
+
+  buildFilterAssetQuery() {
+    let query = '';
+    if (!this.selectedFormat) {
+      query += " AND ecm:primaryType IN ('Picture', 'Video')";
+    } else {
+      query += ` AND ecm:primaryType = '${this.selectedFormat}'`;
+    }
+    if (this.selectedRegion) {
+      query += ` AND drone_asset:region = '${this.selectedRegion}'`;
+    }
+    if (this.selectedsubArea) {
+      query += ` AND drone_asset:area = '${this.selectedsubArea}'`;
+    }
+    if (this.selectedStartDate && this.selectedEndDate) {
+      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(this.selectedStartDate)}' AND DATE '${this.formatDateString(this.selectedEndDate)}'`;
+    }
+    if (this.assetByMe) {
+      query += ` AND dc:creator = '${this.user}'`;
+    }
+
+    return query;
+  }
+
+  formatDateString(date) {
+    return date.toISOString().split('T')[0];
   }
 
   openModal() {
