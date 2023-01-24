@@ -1850,3 +1850,28 @@ ngx-dropzone-label {
 .reviewClassifaction {
   padding: 0px 25px;
 }
+
+.checkUploadLength {
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+.checkUploadLength img {
+  margin-bottom: 25px !important;
+  display: block;
+}
+.checkUploadLength h2 {
+  font-size: 21px;
+  line-height: 30px;
+  margin-bottom: 40px;
+}
+.checkUploadLength .butonBlock .cancelUpload {
+  display: inline-block;
+  margin: 0px 10px;
+  border: 1px solid #23211E;
+  border-radius: 100px;
+  line-height: 41px;
+  padding: 0px 30px;
+  font-size: 15px;
+  font-family: 'brownregular';
+}

@@ -10,6 +10,15 @@
             <ngx-dropzone #drop class="drag-drop" [ngClass]="{'dragDropDate' : !getAssetNumber() }" (change)="onSelect($event)" id="customScrollBar">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
             <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length" >
+               <div class="checkUploadLength">
+                  <img src="../../assets/images/controller-360.svg" alt="" style="margin: 0px auto;" />
+                  <h2>Assets larger than 50GB take too long to upload. Consider breaking into smaller files.</h2>
+                  <div class="butonBlock">
+                     <div class="cancelUpload">Cancel upload</div>
+                     <div class="cancelUpload">Proceed anyway</div>
+                  </div>
+               </div>
+               
                <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto">
                   <div class="upload-label">
                      <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
