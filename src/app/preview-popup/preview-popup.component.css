@@ -1887,7 +1887,7 @@ ol.publicUse li .publicUseBlk, ol.publicUse li .usagePermission {
   font-size: 14px;
   line-height: 25px;
   font-weight: normal;
-  cursor: pointer;
+  cursor: auto;
   position: relative;
 }
 
@@ -2209,12 +2209,18 @@ form.commentTextForm {
   -o-background-size: cover;
   background-size: cover;
 }
-.popupTabSec{
-  height: calc(100vh - 260px);
+.popupTabSec.notPrivateAccess{
+  height: calc(100vh - 260px) !important;
 }
 ::ng-deep pdf-viewer {
   height: 100% !important;
 }
 .popupTabSec.notPrivateAccess img {
   max-height: calc(100vh - 270px) !important;
+}
+.popupTabSec{
+  height: calc(100vh - 360px) !important;
+}
+.hideIcone {
+  display: none;
 }

@@ -145,20 +145,20 @@
       <div class="popupTabSec" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess()}">
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
-          <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" />
+          <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" [ngClass]="{'hideIcone' : checkMimeType(doc) === 'video' || checkMimeType(doc) === 'file'}" />
           <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" (click)="clickFullsizeImg()" />
           <!-- ../../../assets/images/no-preview.png -->
           <img *ngIf="checkMimeType(doc) === 'nopreview'" [ngClass]="{'nopreviewClass' : checkMimeType(doc) === 'nopreview'}" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;background-color: #fbf7e6;" />
         </div>
 
         <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
-        <div *ngIf="checkMimeType(doc) === 'video'" style="height: calc(100vh - 250px)!important; position: relative">
+        <div *ngIf="checkMimeType(doc) === 'video'" style="height: 100% !important; position: relative">
           <video controls style="width: 100%; height: 100%" [src]="getAssetUrl(null, docUrl)"
             crossorigin="use-credentials"></video>
         </div>
         <div *ngIf="checkMimeType(doc) === 'file'">
           <!-- <img [src]="docUrl" alt="" /> -->
-          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="umesh"
+          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
             style="display: block; width: 100%; height: 100vh" [original-size]="false" [autoresize]="true"
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>

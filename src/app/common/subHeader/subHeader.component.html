@@ -78,6 +78,13 @@
                       <a href="#">Trip</a>
                     </div> -->
 
+                  <div class="recent-searches">
+                    <!-- <div class="heading">All Assets</div> -->
+                    <ul class="recent-searches-tags">
+                      <li class="show-something" style="cursor: pointer;"> <a (click)="showEverything()">Show me everything</a></li>
+                    </ul>
+                  </div>
+
                   <div class="recent-searches" *ngIf="loadWorkSpace && !userLoading">
                     <div class="heading" *ngIf="searchedAdeadData?.length>0">Workspace Folders</div>
                     <ul
@@ -156,13 +163,6 @@
                       </li>
                     </ul>
                   </div>
-
-                  <div class="recent-searches">
-                      <div class="heading">All Assets</div>
-                      <ul class="recent-searches-tags">
-                        <li class="show-something" style="cursor: pointer;"> <a (click)="showEverything()">Show me everything</a></li>
-                      </ul>
-                    </div>
                 </div>
               </form>
             </div>
