@@ -231,6 +231,7 @@ export class UploadModalComponent implements OnInit {
     this.dialogRef.close(this.selectedFolder);
   }
 
+  whiteListFiles:any;
   onSelect(event) {
     // console.log("event.addedFiles", event.addedFiles);
     if (!event.addedFiles && !this.agreeTerms) {
@@ -240,6 +241,14 @@ export class UploadModalComponent implements OnInit {
       this.showError = false;
       this.showErrorCheckbox = false;
       const files = this.filterWhitelistFiles(event.addedFiles);
+      this.whiteListFiles = files
+      for (let i = 0; i < files.length; i++) {
+        this.filesMap[i] = files[i]
+      }
+      this.getTotalFileSize()
+
+      if(this.sizeExeeded) return 
+      // console.log("12345",this.getTotalFileSize())
       this.uploadFile(files);
     }
   }
@@ -418,7 +427,8 @@ export class UploadModalComponent implements OnInit {
     return;
   }
 
-  openBrowseRoute() {
+  openBrowseRoute(e) {
+    e.stopPropagation()
     // if(this.data) {
     //   // NOTE: as per the new requirements, we do not want to navigate to the folder in case of uploading asset in a folder.
     //   this.closeModal();
@@ -591,9 +601,12 @@ export class UploadModalComponent implements OnInit {
   }
 
   setUploadProgressBar(index, percentDone) {
+    console.log({index, percentDone});
+    
     const element = <HTMLElement>(
       document.getElementsByClassName(`upload-progress-bar-${index}`)[0]
     );
+    console.log({index, percentDone,element});
     const background = `background-image: linear-gradient(to right, rgba(0, 123, 181, 0.3) ${percentDone}%,#ffffff ${percentDone}%);`;
     let attr = element.getAttribute("style");
     attr = attr.replace(/background-image:.*?;/g, "");
@@ -985,12 +998,16 @@ export class UploadModalComponent implements OnInit {
       ["B", "kB", "MB", "GB", "TB"][i]
     );
   }
-
+  sizeExeeded:boolean=false;
+  proceedClicked:boolean=false;
   getTotalFileSize() {
     let size = 0;
     Object.keys(this.filesMap).forEach((key) => {
       size += this.filesMap[key].size;
     });
+    
+    let sizeInGB = size / 1024 / 1024 // /1024
+    if(sizeInGB>1 && !this.proceedClicked)this.sizeExeeded= true // 50
     return this.humanFileSize(size);
   }
   uploadedAsset1 =[]
@@ -1451,5 +1468,12 @@ export class UploadModalComponent implements OnInit {
   clickOutside() {
     this.opened = !this.opened;
     // console.log("clicked outside");
+  }
+
+  proceedClick(e){
+    e.stopPropagation();
+    this.sizeExeeded = false;
+    this.proceedClicked=true
+    this.uploadFile(this.whiteListFiles)
   }
 }
