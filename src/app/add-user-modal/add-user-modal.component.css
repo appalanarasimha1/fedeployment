@@ -365,3 +365,10 @@ h3.externalUsers {
     left: 0px !important;
     border-radius: 100px !important;
   }
+
+.addUsers ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input {
+    color: #DEB31A !important;
+}
+.addUsers ::ng-deep .ng-select .ng-has-value .ng-placeholder {
+    display: block;
+}
