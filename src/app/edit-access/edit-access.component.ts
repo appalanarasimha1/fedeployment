@@ -13,6 +13,7 @@ export class EditAccessComponent implements OnInit {
   selectedExternalUser: any;
   isGlobal = false;
   folderUpdated: any;
+  isAdmin = false;
 
   constructor(
     private modalService: NgbModal,
@@ -25,6 +26,7 @@ export class EditAccessComponent implements OnInit {
     this.selectedMonth = this.data.selectedMonth
     this.isGlobal = this.data.isGlobal;
     this.selectedExternalUser = this.data.selectedExternalUser;
+    this.isAdmin = this.data.isAdmin;
   }
 
   onFullAccessCheckboxChange(e, checkedGlobal = true) {
@@ -36,7 +38,7 @@ export class EditAccessComponent implements OnInit {
   }
 
   closeModal() {
-    this.dialogRef.close({selectedMonth: this.selectedMonth, isGlobal: this.isGlobal});
+    this.dialogRef.close({selectedMonth: this.selectedMonth, isGlobal: this.isGlobal, isAdmin: this.isAdmin});
   }
 
   getEndDate(end) {

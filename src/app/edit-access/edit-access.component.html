@@ -76,6 +76,22 @@
             </span> -->
           </div>
         </div>
+        <div class="row mb-20">
+          <div class="col-md-3">
+            Admin Rights
+          </div>
+          <div class="col-md-9">
+            <ol>
+              <li>
+                <label class="control control--checkbox">
+                  <input type="checkbox" [checked]="isAdmin" [(ngModel)]="isAdmin" />
+                  Make Admin
+                  <div class="control__indicator"></div>
+                </label>
+              </li>
+            </ol>
+          </div>
+        </div>
       </div>
     </div>
 
