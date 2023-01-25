@@ -1006,8 +1006,8 @@ export class UploadModalComponent implements OnInit {
       size += this.filesMap[key].size;
     });
     
-    let sizeInGB = size / 1024 / 1024 // /1024
-    if(sizeInGB>1 && !this.proceedClicked)this.sizeExeeded= true // 50
+    let sizeInGB = size / 1024 / 1024 /1024
+    if(sizeInGB>50 && !this.proceedClicked)this.sizeExeeded= true // 50
     return this.humanFileSize(size);
   }
   uploadedAsset1 =[]

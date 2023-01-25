@@ -10,12 +10,14 @@
             <ngx-dropzone #drop class="drag-drop" [ngClass]="{'dragDropDate' : !getAssetNumber() }" (change)="onSelect($event)" id="customScrollBar">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
             <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length" >
-               <div class="checkUploadLength" *ngIf="sizeExeeded">
-                  <img src="../../assets/images/controller-360.svg" alt="" style="margin: 0px auto;" />
-                  <h2>Assets larger than 50GB take too long to upload. Consider breaking into smaller files.</h2>
-                  <div class="butonBlock">
-                     <div class="cancelUpload" (click)="openBrowseRoute($event)">Cancel upload</div>
-                     <div class="cancelUpload" (click)="proceedClick($event)">Proceed anyway</div>
+               <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto; height: 100%;" *ngIf="sizeExeeded" >
+                  <div class="checkUploadLength">
+                     <img src="../../assets/images/controller-360.svg" alt="" style="margin: 0px auto;" />
+                     <h2>Assets larger than 50GB take too long to upload. Consider breaking into smaller files.</h2>
+                     <div class="butonBlock">
+                        <div class="cancelUpload" (click)="openBrowseRoute($event)">Cancel upload</div>
+                        <div class="cancelUpload" (click)="proceedClick($event)">Proceed anyway</div>
+                     </div>
                   </div>
                </div>
                
@@ -78,8 +80,8 @@
                </li>
             </ul>
             </ngx-dropzone>
-            <div class="row pt-2 acknowledgeBlock" *ngIf="!sizeExeeded">
-               <div class="col-xl-3" *ngIf="getAssetNumber()" >
+            <div class="row pt-2 acknowledgeBlock">
+               <div class="col-xl-3" *ngIf="getAssetNumber() && !sizeExeeded" >
                   <div class="flexible pt-3 pointer" style="align-items: end;" (click)="drop.showFileSelector()">
                      <a>
                      <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
@@ -89,7 +91,7 @@
                      </span>
                   </div>
                </div>
-               <div class="col-xl-9 flexible" *ngIf="getAssetNumber()">
+               <div class="col-xl-9 flexible" *ngIf="getAssetNumber() && !sizeExeeded">
                   <label class="control control--checkbox" style="margin-bottom: 0px;">
                      Where any of the assets being uploaded contains a photo/video of a recognizable individual, I acknowledge that I have sought and received the consent of the person to store their photo/video and make accessible to other users across NEOM. I also acknowledge that I have a clear business justification for storing this asset
                      <input type="checkbox" checked="checked"
