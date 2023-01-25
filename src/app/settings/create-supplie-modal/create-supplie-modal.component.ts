@@ -46,6 +46,7 @@ export class CreateSupplieModalComponent implements OnInit {
   loading = false;
   selectedRegion = [];
   selectedMonth;
+  currentSuppliers = [];
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
 
@@ -64,6 +65,7 @@ export class CreateSupplieModalComponent implements OnInit {
     this.suppliersRegion = this.data.suppliersRegion;
     this.selectedMonth = new Date();
     this.selectedMonth.setFullYear(this.selectedMonth.getFullYear() + 1);
+    this.currentSuppliers = this.data.currentSuppliers || [];;
   }
 
   add(event: MatChipInputEvent): void {
@@ -96,6 +98,10 @@ export class CreateSupplieModalComponent implements OnInit {
     this.selectedRegion = this.fruits || [];
   }
 
+  isSupplierNameExisted() {
+    return this.currentSuppliers.includes(this.suppliersName);
+  }
+
   async createSupplier() {
     this.loading = true;
     const regions = this.selectedRegion.map(region => region.uid);
@@ -124,6 +130,7 @@ export class CreateSupplieModalComponent implements OnInit {
   }
 
   validateEmail(email) {
+    if (!email) return true;
     return String(email)
       .toLowerCase()
       .match(

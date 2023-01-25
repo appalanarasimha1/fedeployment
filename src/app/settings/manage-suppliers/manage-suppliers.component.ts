@@ -60,6 +60,7 @@ export class ManageSuppliersComponent implements OnInit {
   selectedSupplier = null;
   filteredUsers: Observable<string[]>;
   filteredSuppliers = [];
+  currentSuppliers = [];
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
@@ -261,6 +262,7 @@ export class ManageSuppliersComponent implements OnInit {
       renameEmail : false,
     }));
     this.filteredSuppliers = this.supplierList;
+    this.currentSuppliers = this.supplierList.map(supplier => supplier.name);
     this.supplierInput = "";
   }
 
@@ -384,6 +386,7 @@ export class ManageSuppliersComponent implements OnInit {
     dialogConfig.data = {
       suppliersRegion: this.suppliersRegion,
       supplierInput: this.supplierInput,
+      currentSuppliers: this.currentSuppliers,
     }
 
     const modalDialog = this.matDialog.open(CreateSupplieModalComponent, dialogConfig);

@@ -11,6 +11,7 @@
                 <div class="form-group">
                     <label for="Supplier's Name" >Supplier's Name</label>
                     <input type="text" placeholder="Drone Experts Ltd" [(ngModel)]="suppliersName" />
+                    <span *ngIf="suppliersName && isSupplierNameExisted()" style="color: red;">Supplier already existed!</span>
                 </div>
             </li>
             <li>
@@ -54,6 +55,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!(suppliersName && validateEmail(supportEmail)) || loading" (click)="createSupplier()">Create supplier</button>
+        <button class="upload-btn" [disabled]="!(suppliersName && validateEmail(supportEmail)) || loading || isSupplierNameExisted()" (click)="createSupplier()">Create supplier</button>
     </div>
 </div>

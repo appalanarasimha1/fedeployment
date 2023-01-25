@@ -40,6 +40,8 @@ export class CreateDeviceModalComponent implements OnInit {
   poleId = "";
   selectedRegion:string;
   selectedSubArea:string;
+  isCreate = true;
+  selectedDevice = null;
 
 
   constructor(
@@ -52,6 +54,20 @@ export class CreateDeviceModalComponent implements OnInit {
     this.installationID = this.data.deviceInput;
     this.regionList = this.data.regionList;
     this.subAreaList = this.data.subAreaList;
+    this.isCreate = this.data.isCreate;
+    this.selectedDevice = this.data.selectedDevice;
+    if (!this.isCreate) {
+      this.installationID = this.selectedDevice.name;
+      this.selectedRegion = this.selectedDevice.region;
+      if (this.selectedDevice.region) this.selectedRegions = this.regionList.find(region => region.uid === this.selectedDevice.region);
+      this.onSelectRegion(this.selectedRegions)
+      this.selectedSubArea = this.selectedDevice.subArea;
+      this.onSelectdeviceType(null, this.selectedDevice.deviceTyp);
+      this.latitude = this.selectedDevice.latitude;
+      this.longitude = this.selectedDevice.longitude;
+      this.direction = this.selectedDevice.direction;
+      this.poleId = this.selectedDevice.poleId;
+    }
   }
 
   closeModal(result?) {
@@ -93,12 +109,17 @@ export class CreateDeviceModalComponent implements OnInit {
   }
 
   async createDevice() {
+    if (!this.isCreate) {
+      this.updateDevice();
+      return;
+    }
     this.loading = true;
     const result = await this.nuxeo.nuxeoClient.operation('Document.Create')
     .params({
       type: "Device",
       name: this.installationID,
       properties: {
+        "dc:title": this.installationID,
         "device:deviceTyp": this.selectedType,
         "device:latitude": this.latitude || "",
         "device:longitude": this.longitude || "",
@@ -110,6 +131,26 @@ export class CreateDeviceModalComponent implements OnInit {
       }
     })
     .input(adminPanelWorkspacePath + '/DeviceFolder')
+    .execute();
+    this.closeModal(result);
+  }
+
+  async updateDevice() {
+    this.loading = true;
+    const result = await this.nuxeo.nuxeoClient.operation('Document.Update')
+    .params({
+      properties: {
+        "dc:title": this.installationID,
+        "device:deviceTyp": this.selectedType,
+        "device:latitude": this.latitude || "",
+        "device:longitude": this.longitude || "",
+        "device:direction": this.directionShow ? this.direction : "",
+        "device:poleId": this.poleIdShow ? this.poleId : "",
+        "device:region": this.selectedRegion || "",
+        "device:subArea": this.selectedSubArea || "",
+      }
+    })
+    .input(this.selectedDevice.uid)
     .execute();
     this.closeModal(result);
   }
