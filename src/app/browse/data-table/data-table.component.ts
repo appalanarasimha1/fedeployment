@@ -39,7 +39,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Output() fetchAssets: EventEmitter<any> = new EventEmitter();
   @Output() selectedAssetList: EventEmitter<any> = new EventEmitter();
   @Output() sortedDataList: EventEmitter<any> = new EventEmitter();
-  @Output() selectedCount: EventEmitter<number> = new EventEmitter();
+  @Output() selectedCount: EventEmitter<any> = new EventEmitter();
   @Output() selectedAssetMoveList: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
@@ -395,7 +395,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       if ($event.from !== "rightClick") {
         this.count = this.count + 1;
         this.assetCount = this.assetCount + 1;
-        this.selectedCount.emit(this.count)
+        this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
       }
       if (this.lastIndexClicked ==undefined) {
         this.currentIndexClicked = i
@@ -450,8 +450,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
         this.assetCount = this.assetCount - 1;
-        this.selectedCount.emit(this.count)
-
+        this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
       }
 
       if (this.count==0) {
@@ -542,14 +541,16 @@ export class DataTableComponent implements OnInit, OnChanges {
       }
       if (updateCount) {
         this.count = this.count + 1
-        this.selectedCount.emit(this.count)
+        this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
+
       };
       this.selectedFolderList[i] = item;
       this.selectedMoveList[i] = item;
     } else {
       if (updateCount){
          this.count = this.count - 1;
-         this.selectedCount.emit(this.count)
+         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
+
         }
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
@@ -595,7 +596,8 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.downloadFullItem = [];
     this.needPermissionToDownload = [];
     this.count = 0;
-    this.selectedCount.emit(this.count)
+    this.assetCount=0
+    this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
     this.fileSelected = [];
     this.copyRightItem = []
     this.canNotDelete=[]
@@ -617,12 +619,47 @@ export class DataTableComponent implements OnInit, OnChanges {
     return false
   }
 
-  async openMoveModal(move) {
-    const listDocs = Object.values(this.selectedMoveList)
-    .filter( item => !this.checkDownloadPermission(item))
-   console.log("listDocslistDocs",listDocs);
+  // async openMoveModal(move) {
+  // //   const listDocs = Object.values(this.selectedMoveList)
+  // //   .filter( item => !this.checkDownloadPermission(item))
+  // //  console.log("listDocslistDocs",listDocs);
     
-    if (!listDocs.length) return this.moveModalFailed()
+  //   // if (!listDocs.length) return this.moveModalFailed()
+  //   const dialogConfig = new MatDialogConfig();
+  //   // The user can't close the dialog by clicking outside its body
+  //   dialogConfig.id = "modal-component";
+  //   dialogConfig.width = "660px";
+  //   dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+  //   dialogConfig.data = {
+  //     selectedList: this.selectedMoveList,
+  //     parentId: this.currentWorkspace.uid,
+  //     sectorList: [], //  this.folderStructure[0]?.children ||
+  //     user:this.user,
+  //     move
+  //   }
+
+  //   const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
+
+  //   modalDialog.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       // delete this.folderAssetsResult[result.uid];
+  //       // delete this.folderAssetsResult[this.currentWorkspace.uid];
+
+  //       this.loading = true;
+  //       setTimeout(() => {
+  //         if (this.currentWorkspace.type === 'Domain') window.location.reload();
+  //         else {
+  //           // this.handleClickNew(this.currentWorkspace.uid);
+  //         }
+  //       }, 1000);
+  //     }
+  //   });
+  // }
+  async openMoveModal(move=true) {
+    // const listDocs = Object.values(this.selectedMoveList)
+    // .filter( item => !this.checkDownloadPermission(item))
+
+    // if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -631,8 +668,9 @@ export class DataTableComponent implements OnInit, OnChanges {
     dialogConfig.data = {
       selectedList: this.selectedMoveList,
       parentId: this.currentWorkspace.uid,
-      sectorList: [], //  this.folderStructure[0]?.children ||
-      user:this.user
+      sectorList: this.folderStructure[0]?.children || [],
+      user:this.user,
+      move,
     }
 
     const modalDialog = this.matDialog.open(MoveCopyAssetsComponent, dialogConfig);
@@ -640,14 +678,12 @@ export class DataTableComponent implements OnInit, OnChanges {
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
         // delete this.folderAssetsResult[result.uid];
-        // delete this.folderAssetsResult[this.currentWorkspace.uid];
-
+        // delete this.folderAssetsResult[this.selectedFolder.uid];
+        this.removeAssets();
         this.loading = true;
         setTimeout(() => {
-          if (this.currentWorkspace.type === 'Domain') window.location.reload();
-          else {
-            // this.handleClickNew(this.currentWorkspace.uid);
-          }
+          // if (this.selectedFolder.type === 'Domain') window.location.reload();
+          // else this.handleClickNew(this.selectedFolder.uid);
         }, 1000);
       }
     });

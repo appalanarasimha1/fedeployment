@@ -167,15 +167,15 @@
       </div>
 
       <ul class="uploadAssetsClassifications">
-        <li *ngIf="count > 0">
+        <li *ngIf="count?.allCount > 0">
           <div class="selectedItemBlock">
-            {{ count }} selected
+            {{ count?.allCount }} selected
             <a (click)="removeAssets()"
               ><img src="../../../assets/images/remove-icon.svg" alt=""
             /></a>
           </div>
         </li>
-        <li class="edit-icon" *ngIf="checkAssetLength()"> <!--*ngIf="assetCount == 1" -->
+        <li class="edit-icon" *ngIf="count?.assetCount == 1"> <!--*ngIf="assetCount == 1" -->
           <div class="moveFolderImg tollTipWorkspace" (click)="renameAsset()"> <!-- (click)="rightClickRename(item)"(click)="renameAsset()" -->
             <svg
               width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-rename-icon">
@@ -193,7 +193,7 @@
             <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Copy</div>
           </div>
         </li>
-        <li  (click)="openMoveModal()"> <!-- *ngIf="!isTrashView && selectedAssetCount > 0" -->
+        <li  (click)="openMoveModal(true)"> <!-- *ngIf="!isTrashView && selectedAssetCount > 0" -->
           <!-- *ngIf="checkEnableMoveButton()" -->
           <div class="moveFolderImg tollTipWorkspace">
             <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">

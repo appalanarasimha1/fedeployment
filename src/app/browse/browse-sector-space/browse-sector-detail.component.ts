@@ -67,7 +67,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   // dataTableComponent: DataTableComponent;
   folderStructure = {};
   showCreateFolderPopup: boolean = false;
-  count:number =0
+  count:any;
   sortedData;
   selectedMoveListNew = {};
 
@@ -619,7 +619,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.selectedAssetCount = Object.keys(selectedAssetList).length;
   }
 
-  selectedCount(count:number){
+  selectedCount(count:any){
     this.count = count
   }
 
@@ -744,8 +744,12 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   openMoveModal(move=true) {
-    if(this.dataTableComponent)
-      this.dataTableComponent.openMoveModal(move);
+    console.log("1")
+    if(this.dataTableComponent){
+       console.log("2")
+    this.dataTableComponent.openMoveModal(move);
+    }
+   
     else return;
   }
 
