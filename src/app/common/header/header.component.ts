@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, OnInit, HostListener, ViewChild, Eleme
 import { NavigationStart, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
+import { UploadDroneComponent } from "../../upload-drone/upload-drone.component";
 import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
@@ -219,7 +220,11 @@ export class HeaderComponent implements OnInit {
       dialogConfig.data = workspaceState;
     }
     // https://material.angular.io/components/dialog/overview
-    const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
+    if (!this.isDroneUploadPage) {
+      const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
+    } else {
+      const modalDialog = this.matDialog.open(UploadDroneComponent, dialogConfig);
+    }
   }
 
   checkForUserGroup() {

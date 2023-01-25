@@ -39,6 +39,7 @@ export class UploadDroneComponent implements OnInit {
   now = new Date();
   publishStep = false;
   totalPercent = 0;
+  user = "";
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -49,9 +50,12 @@ export class UploadDroneComponent implements OnInit {
 
   ngOnInit(): void {
     this.showUpload = false;
-    this.installationIdList = this.data.installationIdList;
-    this.company = this.data.company;
-    this.companyId = this.data.companyId;
+    this.installationIdList = this.data?.installationIdList || [];
+    this.company = this.data?.company;
+    this.companyId = this.data?.companyId;
+    if (!this.installationIdList || this.installationIdList.length === 0) {
+      this.initData();
+    }
   }
 
   closeModal(done?) {
@@ -242,6 +246,10 @@ export class UploadDroneComponent implements OnInit {
         "dc:timeZone": "Asia/Riyadh",
         "dc:deviceType": this.selectedDevice.type,
         "dc:vendor": this.companyId,
+        "drone_asset:region": this.selectedDevice.locationId,
+        "drone_asset:area": this.selectedDevice.areaId,
+        "drone_asset:device": this.selectedDevice.installationId,
+        "drone_asset:supplier": this.companyId,
       },
       facets: [
         "Versionable",
@@ -374,6 +382,133 @@ export class UploadDroneComponent implements OnInit {
 
   cancleShowHide() {
     this.cancleBlock = !this.cancleBlock;
+  }
+
+
+  //TODO: pass data from document-assets component
+  async initData() {
+    this.user = JSON.parse(localStorage.getItem("user"))["username"];
+    const pormiseArray = [];
+    pormiseArray.push(this.getDeviceList());
+    pormiseArray.push(this.getSupplierList());
+    pormiseArray.push(this.getRegionList());
+    pormiseArray.push(this.getSubAreaList());
+    await Promise.all(pormiseArray);
+    this.computeInstallationIdList();
+  }
+  deviceList = [];
+  regionList = [];
+  regionMap = {};
+  subAreaList = [];
+  subAreaMap = {};
+  supplierList = [];
+
+  async getDeviceList() {
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Device' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const res = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
+
+    if (!res) return;
+    const devices = res["entries"];
+    this.deviceList = devices.map((device) => ({
+      deviceTyp: device.properties["device:deviceTyp"],
+      latitude: device.properties["device:latitude"],
+      longitude: device.properties["device:longitude"],
+      initial: device.properties["device:initial"],
+      direction: device.properties["device:direction"],
+      poleId: device.properties["device:poleId"],
+      region: device.properties["device:region"],
+      subArea: device.properties["device:subArea"],
+      status: device.properties["device:status"],
+      name: device.title,
+      uid: device.uid,
+    }));
+  }
+
+  async getRegionList() {
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const res = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
+
+    if (!res) return;
+    const regions = res["entries"];
+    this.regionList = regions.map((region) => ({
+      initial: region.properties["region:initial"],
+      name: region.title,
+      uid: region.uid,
+      locations: region.properties["region:locations"],
+    }));
+    this.computeRegionMap();
+  }
+
+  computeRegionMap() {
+    this.regionMap = {};
+    this.regionList?.forEach((region) => {
+      this.regionMap[region.uid] = region;
+    });
+  }
+
+  async getSubAreaList() {
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'SubArea' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const res = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
+
+    if (!res) {
+      this.subAreaList = [];
+      return;
+    }
+    this.subAreaList = res["entries"].map((area) => ({
+      locationId: area.properties["subArea:locationId"],
+      name: area.title,
+      uid: area.uid,
+    }));
+    this.computeSubAreaMap();
+  }
+
+  computeSubAreaMap() {
+    this.subAreaMap = {};
+    this.subAreaList?.forEach((subArea) => {
+      this.subAreaMap[subArea.uid] = subArea;
+    });
+  }
+
+  computeInstallationIdList() {
+    this.installationIdList = this.deviceList.map(device => ({
+      installationId: device.name,
+      area: this.subAreaMap[device.subArea]?.name,
+      location: this.regionMap[device.region]?.name,
+      areaId: device.subArea,
+      locationId: device.region,
+      initial: this.regionMap[device.region]?.initial,
+      type: device.deviceTyp,
+    }));
+  }
+
+  async getSupplierList() {
+    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const res = await this.apiService
+      .get(url, { headers: { "fetch-document": "properties" } })
+      .toPromise();
+
+    if (!res) return;
+    this.supplierList = res["entries"].map((supplier) => ({
+      name: supplier.title,
+      uid: supplier.uid,
+      regions: supplier.properties["supplier:regions"],
+      users: supplier.properties["supplier:supplierUsers"],
+      activated: supplier.properties["supplier:activated"],
+      supportEmail: supplier.properties["supplier:supportEmail"],
+      expiry: supplier.properties["supplier:expiry"],
+      renameEmail: false,
+    }));
+    const currentUserSupplier = this.supplierList.find((supplier) =>
+      supplier.users?.find(user => user.user == this.user)
+    );
+    this.company = currentUserSupplier?.name || "";
+    this.companyId = currentUserSupplier?.uid || "";
   }
 
 }
