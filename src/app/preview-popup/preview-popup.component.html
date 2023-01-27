@@ -142,7 +142,7 @@
           </div>
         </div>
       </div>
-      <div class="popupTabSec" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess()}">
+      <div class="popupTabSec modalAssets" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess()}">
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
           <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" [ngClass]="{'hideIcone' : checkMimeType(doc) === 'video' || checkMimeType(doc) === 'file'}" />
@@ -320,7 +320,7 @@
         </div>
       </div>
 
-      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 10px 25px 15px;">
+      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 20px 25px 20px;">
         <div class="search-tags">
           <ul class="flexible">
             <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
@@ -566,7 +566,7 @@
         </div>
       </div>
     </div>
-    <div class="popupTabSec">
+    <div class="popupTabSec singleAssets">
       <app-loader-small [show]="modalLoading"></app-loader-small>
       <div class="copyright-caption">
         <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
@@ -737,7 +737,22 @@
       </div>
     </div>
 
-    <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 10px 25px 15px">
+    <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 20px 25px 20px">
+      <div class="search-tags">
+        <ul class="flexible">
+          <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
+            <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
+              sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
+          </li>
+          <li *ngIf="tags.length > currentTagLength">
+            <button class="btn default" (click)="showMoreTags()">show more</button>
+          </li>
+          <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
+            <button class="btn default" (click)="showLessTags()">show less</button>
+          </li>
+        </ul>
+      </div>
+
       <div class="mb-4" style="width: calc(100% - 90px);">
         <span *ngIf="doc?.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
         <div class="weight-size-block">
@@ -780,21 +795,6 @@
           </li>
         </ul>
 
-      </div>
-
-      <div class="search-tags pb-5">
-        <ul class="flexible">
-          <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
-            <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
-              sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
-          </li>
-          <li *ngIf="tags.length > currentTagLength">
-            <button class="btn default" (click)="showMoreTags()">show more</button>
-          </li>
-          <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
-            <button class="btn default" (click)="showLessTags()">show less</button>
-          </li>
-        </ul>
       </div>
     </div>
   </div>

@@ -434,7 +434,7 @@ color: #000000;
   position: relative;
 }
 .popupTabSec img{
-  max-height: calc(100vh - 67vh) !important;
+  max-height: calc(100vh - 360px) !important;
   object-fit: contain;
   object-position: contain;
 }
@@ -2018,7 +2018,7 @@ input.requesInput::-ms-input-placeholder {
   font-family: 'brownregular' !important;
 }
 .comment-content ul {
-  max-height: calc(100vh - 77vh);
+  max-height: calc(100vh - 84vh);
   padding-top: 0px;
 }
 .comment-content ul li.allComments,
@@ -2168,7 +2168,7 @@ form.commentTextForm {
 .popupTabSec img.nopreviewClass {
   display: block;
   object-fit: cover;
-  max-height: calc(100vh - 450px) !important;
+  max-height: calc(100vh - 360px) !important;
   height: 100% !important;
   margin: 0px !important;
   object-position: center bottom;
@@ -2216,11 +2216,23 @@ form.commentTextForm {
   height: 100% !important;
 }
 .popupTabSec.notPrivateAccess img {
-  max-height: calc(100vh - 270px) !important;
+  max-height: calc(100vh - 260px) !important;
 }
-.popupTabSec{
-  height: calc(100vh - 360px) !important;
+.popupTabSec.singleAssets{
+  height: calc(100vh - 274px) !important;
+  /* height: 100% !important; */
+}
+.popupTabSec.modalAssets{
+  min-height: calc(100vh - 360px) !important;
+  /* height: 100% !important; */
 }
 .hideIcone {
   display: none;
+}
+.popupTabSec.singleAssets img {
+  max-height: calc(100vh - 274px) !important;
+}
+.popupTabSec.singleAssets video {
+  width: 100%;
+  height: calc(100vh - 280px) !important;
 }
