@@ -3645,6 +3645,10 @@ li.breadcrumb-item {
   border-color: #000 !important;
   width: unset !important;
   color: #fff !important;
+  font-size: 13px !important;
+  line-height: 15px !important;
+  border-radius: 4px !important;
+  margin-right: 5px !important;
 }
 
 .hover-icon-group .tooltip-inner{
@@ -3982,7 +3986,8 @@ body { margin: 0; }
   cursor: pointer;
 }
 ::ng-deep .ng-select .ng-clear-wrapper{
-  display: none
+  /* display: none; */
+  text-align: right;
 }
 .modal-dialog{
   animation-name: example;
@@ -4532,4 +4537,19 @@ ul.all-sectors img.noPreviewItem {
 ::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
   border-color: rgba(225, 187, 51, 1) !important;
   box-shadow:  none !important;
+}
+
+::ng-deep .mat-calendar-body-cell, ::ng-deep .mat-calendar-body-cell-content, ::ng-deep .mat-button-wrapper, ::ng-deep .mat-calendar-body-label {
+  font-family: 'brownregular' !important;
+}
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+  font-size: 21px !important;
+  color: #DEB31A !important;
+}
+.loginLoader .overlay__content {
+  left: 50%;
+  position: absolute;
+  top: 0px;
+  transform: translate(-50%, -50%) !important;
+  top: 50% !important;
 }

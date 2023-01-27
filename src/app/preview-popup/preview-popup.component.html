@@ -145,21 +145,21 @@
       <div class="popupTabSec" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess()}">
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
-          <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" />
+          <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" [ngClass]="{'hideIcone' : checkMimeType(doc) === 'video' || checkMimeType(doc) === 'file'}" />
           <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" (click)="clickFullsizeImg()" />
           <!-- ../../../assets/images/no-preview.png -->
           <img *ngIf="checkMimeType(doc) === 'nopreview'" [ngClass]="{'nopreviewClass' : checkMimeType(doc) === 'nopreview'}" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;background-color: #fbf7e6;" />
         </div>
 
         <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
-        <div *ngIf="checkMimeType(doc) === 'video'" style="height: calc(100vh - 250px)!important; position: relative">
+        <div *ngIf="checkMimeType(doc) === 'video'" style="height: 100% !important; position: relative">
           <video controls style="width: 100%; height: 100%" [src]="getAssetUrl(null, docUrl)"
             crossorigin="use-credentials"></video>
         </div>
         <div *ngIf="checkMimeType(doc) === 'file'">
           <!-- <img [src]="docUrl" alt="" /> -->
-          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="umesh"
-            style="display: block; width: 100%; height: calc(100vh - 75vh)" [original-size]="false" [autoresize]="true"
+          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
+            style="display: block; width: 100%; height: 100vh" [original-size]="false" [autoresize]="true"
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>
         <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
@@ -320,8 +320,24 @@
         </div>
       </div>
 
-      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 15px 25px 25px;">
-        <div class="mb-4" style="width: 80%; min-height: 60px;">
+      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 10px 25px 15px;">
+        <div class="search-tags">
+          <ul class="flexible">
+            <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
+              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
+                sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
+            </li>
+            <li *ngIf="tags.length > currentTagLength">
+              <button class="btn default" (click)="showMoreTags()">show more</button>
+            </li>
+            <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
+              <button class="btn default" (click)="showLessTags()">show less</button>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="" style="width: calc(100% - 90px);">
           <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
 
           <div class="weight-size-block">
@@ -332,7 +348,6 @@
               <li>
                 <img src="../../assets/images/briefcase.svg" alt="Folder" /> {{getParentFolderName()}}
               </li>
-
               <!-- <li *ngIf="getUsageAllowed()">
                 <span class="yellowBtn">{{getUsageAllowed()}}</span>
               </li> -->
@@ -350,10 +365,10 @@
           </div>
         </div>
 
-        <div class="flexible" style="align-items: unset; justify-content: end; width: 20%">
+        <div class="flexible" style="align-items: unset; justify-content: end; width: 90px;">
           <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
             <li class="nav-item customtooltip" role="presentation">
-              <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
+              <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="left" ngbTooltip="Timeline"
                 (click)="openInfo('timeline',this.doc?.contextParameters?.audit)" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
                 role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
             </li>
@@ -374,27 +389,11 @@
               /></a>
             </li> -->
             <li class="nav-item customtooltip" role="presentation">
-              <a class="nav-link" id="contact-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
+              <a class="nav-link" id="contact-tab" data-bs-toggle="tab" placement="left" ngbTooltip="Info"
                 (click)="openInfo('info')" [ngClass]="{ active: activeTabs['info'] }" href="#contact" role="tab"
                 aria-controls="contact" aria-selected="false">
                 <img src="../../assets/images/Info.svg" /></a>
             </li>
-          </ul>
-        </div>
-
-        <div class="search-tags">
-          <ul class="flexible">
-            <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
-              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
-                sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
-            </li>
-            <li *ngIf="tags.length > currentTagLength">
-              <button class="btn default" (click)="showMoreTags()">show more</button>
-            </li>
-            <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
-              <button class="btn default" (click)="showLessTags()">show less</button>
-            </li>
-
           </ul>
         </div>
 
@@ -582,7 +581,7 @@
       </div>
       <div *ngIf="checkMimeType(doc) === 'file'">
         <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="nitin"
-          style="display: block; width: 100%; height: calc(100vh - 75vh)" [original-size]="false" [autoresize]="true"
+          style="display: block; width: 100%; height: 100vh" [original-size]="false" [autoresize]="true"
           [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
       </div>
       <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
@@ -738,8 +737,8 @@
       </div>
     </div>
 
-    <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 15px 25px 25px;">
-      <div class="mb-4" style="width: 80%; min-height: 60px;">
+    <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 10px 25px 15px">
+      <div class="mb-4" style="width: calc(100% - 90px);">
         <span *ngIf="doc?.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
         <div class="weight-size-block">
           <ul>
@@ -766,7 +765,7 @@
         </div>
       </div>
 
-      <div class="flexible" style="align-items: unset; justify-content: end; width: 20%">
+      <div class="flexible" style="align-items: unset; justify-content: end; width: 90px">
         <ul class="nav nav-tabs iconsList iconsTab" id="myTab" role="tablist">
           <li class="nav-item customtooltip" role="presentation">
             <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"

@@ -562,18 +562,20 @@ font-weight: normal;
   visibility: hidden;
   width: 290px;
   background: #23211E;
-  box-shadow: 0px 2px 3px rgb(0 0 0 / 25%);
-  border-radius: 100px;
+  /* box-shadow: 0px 2px 3px rgb(0 0 0 / 25%); */
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  line-height: 15px;
   color: #fff;
   text-align: center;
-  padding: 5px 0;
   position: absolute;
   z-index: 1;
   bottom: -60%;
   right: 30px;
   margin-left: 0px;
   opacity: 0;
-  font-size: 11px;
+  /* font-size: 11px; */
   transition: opacity 0.3s;
   z-index: 99;
   padding: 8px 20px;
@@ -792,7 +794,8 @@ input.copyright-input {
   cursor: pointer !important;
 }
 ::ng-deep .ng-select .ng-clear-wrapper{
-  display: none;
+  /* display: none; */
+  text-align: right;
 }
 ::ng-deep .ng-select .ng-select-container:hover{
   box-shadow: unset;
@@ -900,12 +903,13 @@ input.copyright-input {
   top: 30px;
   left: 0px;
   background: rgba(0, 0, 0, 0.80);
-  padding: 3px 10px;
-  font-size: 13px;
+  padding: 4px 10px;
+  font-size: 12px;
   color: #fff;
   font-weight: normal;
+  line-height: 15px;
   width: max-content;
-  border-radius: 40px;
+  border-radius: 4px;
   white-space: nowrap;
   min-width: max-content;
   display: none;
@@ -1169,4 +1173,8 @@ ngx-dropzone-label {
 
 .selected-icon img {
   width: 100%;
+}
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+  font-size: 21px !important;
+  color: #DEB31A !important;
 }

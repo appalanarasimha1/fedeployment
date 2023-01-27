@@ -31,21 +31,22 @@
 	  visibility: hidden;
     width: 290px;
     background: #23211E;
-    box-shadow: 0px 2px 3px rgb(0 0 0 / 25%);
-    border-radius: 100px;
+    /* box-shadow: 0px 2px 3px rgb(0 0 0 / 25%); */
     color: #fff;
     text-align: center;
-    padding: 5px 0;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    line-height: 15px;
     position: absolute;
     z-index: 1;
     bottom: -60%;
     right: 30px;
     margin-left: 0px;
     opacity: 0;
-    font-size: 11px;
+    /* font-size: 11px; */
     transition: opacity 0.3s;
     z-index: 99;
-    padding: 8px 20px;
     text-align: left;
   }
   /* sprint16-v1 end */
@@ -54,3 +55,7 @@
 	visibility: visible;
 	opacity: 1;
   }
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+  font-size: 21px !important;
+  color: #DEB31A !important;
+}

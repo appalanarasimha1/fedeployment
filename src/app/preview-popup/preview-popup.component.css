@@ -310,11 +310,18 @@ color: #000000;
 }
 .main-heading{
   font-size: 24px;
-line-height: 34px;
-color: #000000;
-border: unset;
-padding-bottom: 15px;
-font-weight: normal;
+  line-height: 34px;
+  color: #000000;
+  border: unset;
+  padding-bottom: 15px;
+  font-weight: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
 }
 .yellowBtn{
   background: #F7E6B2;
@@ -1222,6 +1229,7 @@ color: #C4C4C4;
   left: 0;
   right: 0;
   margin: auto;
+  display: none;
 }
 .search-tags ul li:nth-child(1) a{
   margin-left: unset;
@@ -1879,7 +1887,7 @@ ol.publicUse li .publicUseBlk, ol.publicUse li .usagePermission {
   font-size: 14px;
   line-height: 25px;
   font-weight: normal;
-  cursor: pointer;
+  cursor: auto;
   position: relative;
 }
 
@@ -2200,4 +2208,19 @@ form.commentTextForm {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+.popupTabSec.notPrivateAccess{
+  height: calc(100vh - 260px) !important;
+}
+::ng-deep pdf-viewer {
+  height: 100% !important;
+}
+.popupTabSec.notPrivateAccess img {
+  max-height: calc(100vh - 270px) !important;
+}
+.popupTabSec{
+  height: calc(100vh - 360px) !important;
+}
+.hideIcone {
+  display: none;
 }

@@ -633,6 +633,7 @@ export class UploadModalComponent implements OnInit {
     const blob = new Nuxeo.Blob({ content: file });
     const totalSize = blob.size;
     this.filesMap[index] = file;
+    console.log('file', file);
     this.filesUploadDone[index] = false;
     this.chunksFailedToUpload = {};
     if (totalSize > MAX_CHUNK_SIZE) {

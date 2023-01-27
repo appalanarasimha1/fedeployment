@@ -618,21 +618,23 @@ font-weight: normal;
   visibility: hidden;
   width: 290px;
   background: #040404;
-  box-shadow: 0px 2px 3px rgb(0 0 0 / 25%);
-  border-radius: 100px;
+  /* box-shadow: 0px 2px 3px rgb(0 0 0 / 25%); */
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  line-height: 15px;
   color: #fff;
   text-align: center;
-  padding: 5px 0;
   position: absolute;
   z-index: 1;
   bottom: -60%;
   right: 30px;
   margin-left: 0px;
   opacity: 0;
-  font-size: 11px;
+  /* font-size: 11px; */
   transition: opacity 0.3s;
   z-index: 99;
-  padding: 8px 20px;
+  /* padding: 8px 20px; */
   text-align: left;
 }
 
@@ -1093,9 +1095,10 @@ input.copyright-input::placeholder{
   border-color: #C49900 !important;
   font-weight: normal;
 }
-/* ::ng-deep .ng-select .ng-clear-wrapper{
-  display: none
-} */
+::ng-deep .ng-select .ng-clear-wrapper{
+  /* display: none; */
+  text-align: right;
+}
 /* ::ng-deep .yearssss ng-dropdown-panel{
   max-height: 120px;
   overflow: auto;
@@ -1288,12 +1291,13 @@ input.copyright-input::placeholder{
   top: 30px;
   left: 0px;
   background: rgba(0, 0, 0, 0.80);
-  padding: 3px 10px;
-  font-size: 13px;
+  padding: 4px 10px;
+  font-size: 12px;
   color: #fff;
   font-weight: normal;
   width: max-content;
-  border-radius: 40px;
+  border-radius: 4px;
+  line-height: 15px;
   white-space: nowrap;
   min-width: max-content;
   display: none;
@@ -1849,4 +1853,8 @@ ngx-dropzone-label {
 }
 .reviewClassifaction {
   padding: 0px 25px;
+}
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+  font-size: 21px !important;
+  color: #DEB31A !important;
 }

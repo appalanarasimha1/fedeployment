@@ -384,7 +384,8 @@ video{
     background-color: transparent;
 }
 ::ng-deep .ng-select .ng-clear-wrapper{
-    display: none;
+    /* display: none; */
+    text-align: right;
 }
 ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow, ::ng-deep .ng-select.ng-select-opened>.ng-select-container .ng-arrow{
     border-color: #DEB31A transparent transparent;
@@ -645,6 +646,7 @@ video{
     font-size: 14px;
     line-height: 20px;
     color: #D1CFC9;
+    font-family: 'brownlight';
     padding-bottom: 20px;
 }
 .recent-searches ul.recent-searches-tags {
@@ -660,7 +662,7 @@ video{
     float: left;
     margin-right: 10px;
     margin-bottom: 15px;
-    border-radius: 100px;
+    border-radius: 999px;
     text-align: center;
     color: #FFFFFF;
 }
@@ -670,10 +672,14 @@ video{
     display: block
 }
 .recent-searches ul.recent-searches-tags li.show-something {
-    background: #937206;
+    background: #E4B200;
 }
 .recent-searches ul.recent-searches-tags li.show-something a {
     color: #fff;
+    padding: 0px 24px;
+    line-height: 40px;
+    font-size: 15px;
+    font-family: 'brownregular';
 }
 .tollTipCustom{
     position: relative;
@@ -797,6 +803,7 @@ video{
 .clearSearch {
     float: right;
     cursor: pointer;
+    font-family: 'brownregular';
 }
 .clearSearchModal .modal-footer {
     border: 0px;
@@ -852,4 +859,11 @@ video{
 .highLightColor{
     color: #937206;
     /* padding: 0px 5px; */
+}
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+    font-size: 21px !important;
+    color: #DEB31A !important;
+}
+.show-something {
+    margin-bottom: 0px !important;
 }

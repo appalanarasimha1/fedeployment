@@ -438,7 +438,8 @@ header.updateHeader .navbar .navbar-collapse {
     background-color: transparent;
 }
 ::ng-deep .ng-select .ng-clear-wrapper{
-    display: none;
+    /* display: none; */
+    text-align: right;
 }
 ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow, ::ng-deep .ng-select.ng-select-opened>.ng-select-container .ng-arrow{
     border-color: #DEB31A transparent transparent;
@@ -1102,4 +1103,8 @@ span.userName {
     border: 1px solid #DEB31A;
     height: 30px;
     width: 30px;
+}
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+    font-size: 21px !important;
+    color: #DEB31A !important;
 }
