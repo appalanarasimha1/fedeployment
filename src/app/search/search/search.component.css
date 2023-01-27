@@ -57,3 +57,64 @@
   .main.slideLeft{
     position: relative !important;
   }
+
+.tab-selection {
+  display: flex;
+  justify-content: center;
+}
+
+.iconsTab.nav-tabs {
+  border-bottom: unset !important;
+  height: fit-content;
+  align-items: center;
+}
+.iconsTab.nav-tabs .nav-item.show .nav-link, .iconsTab.nav-tabs .nav-link.active{
+  border: unset !important;
+  padding: unset !important;
+}
+.iconsList.nav-tabs .nav-link{
+  border: unset !important;
+  padding: unset !important;
+}
+.tab-content {
+  padding: 25px 0px 0px;
+}
+.nav>li>a {
+  position: relative;
+  display: block;
+  padding: 8px 0px;
+  color: #000000;
+  font-size: 15px;
+}
+.nav-tabs {
+   border-bottom: 0px;
+}
+.nav-tabs > li.active:before {
+  border-color: transparent;
+  border-top-color: transparent;
+  border-width: 1px;
+  margin-left: 0;
+  height: 2px;
+  background: #C49900;
+  width: 100%;
+  left: 0px;
+}
+.nav-tabs > li.active:after {
+  border-color: transparent;
+  border-top-color: transparent;
+  border-width: 0px;
+  margin-left: 0;
+  left: 0px;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover{
+  color: #C49900 !important;
+  font-weight: normal !important;
+}
+.nav-tabs>li>a{
+  margin: 0px;
+}
+.nav-tabs > li {
+  margin-right: 20px;
+}

@@ -1,6 +1,6 @@
 <section class="documentationBlck">
   <div class="container">
-      <h2>Documentation assets</h2>
+      <h2>Construction assets</h2>
       <h3>{{company}}</h3>
       <div *ngIf="!loading && (!assetList || assetList.length == 0)" class="adding-assets">
           <img src="../../assets/images/upload-icon.svg" />
@@ -102,13 +102,19 @@
             <document-card
               [doc]="doc"
               [viewType]="viewType"
+              (onOpenPreview)="open(doc, doc.type)"
+              (onMarkFavourite)="markFavourite(doc, 'recent')"
             >
             </document-card>
           </div>
         </ngx-masonry>
       </div>
 
-
+      <preview-popup
+        #previewModal
+        [doc]="selectedFile"
+        [docUrl]="selectedFileUrl"
+      ></preview-popup>
   </div>
 
 </section>

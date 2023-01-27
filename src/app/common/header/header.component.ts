@@ -7,7 +7,7 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
-import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL } from '../constant';
+import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL, DRONE_UPLOADER } from '../constant';
 import { SharedService } from 'src/app/services/shared.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -68,6 +68,7 @@ export class HeaderComponent implements OnInit {
   requestSent = {};
   isApproved = {};
   isDroneUploadPage = false;
+  isDroneUploader = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -98,7 +99,11 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        if (event.url.includes('documentation-assets')) this.isDroneUploadPage = true;
+        if (event.url.includes('documentation-assets')) {
+          this.isDroneUploadPage = true;
+        } else {
+          this.isDroneUploadPage = false;
+        }
 
       }
     });
@@ -123,9 +128,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(window.location);
-
-    if (window.location.href.includes('documentation-assets')) this.isDroneUploadPage = true;
     $(window).on('scroll', () => {
       const scroll = $(window).scrollTop();
       if (scroll >= 80 && scroll <= 20000) {
@@ -438,6 +440,10 @@ export class HeaderComponent implements OnInit {
       localStorage.setItem("user", JSON.stringify(res.user.properties));
       // const user = JSON.parse(localStorage.getItem('user'));
       this.userData = res.user.properties;
+      const groups = res.user.properties.groups;
+      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+        this.isDroneUploader = true;
+      }
     }
   }
   onActivate() {
