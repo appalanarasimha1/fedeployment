@@ -142,7 +142,7 @@
           </div>
         </div>
       </div>
-      <div class="popupTabSec modalAssets" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess()}">
+      <div class="popupTabSec modalAssets" [ngClass]="{'notPrivateAccess' : !hasPrivateAccess(), 'noPreveiwModal': checkMimeType(doc) === 'nopreview' }">
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
           <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" [ngClass]="{'hideIcone' : checkMimeType(doc) === 'video' || checkMimeType(doc) === 'file'}" />

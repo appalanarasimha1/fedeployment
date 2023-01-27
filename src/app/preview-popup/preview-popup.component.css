@@ -2236,3 +2236,11 @@ form.commentTextForm {
   width: 100%;
   height: calc(100vh - 280px) !important;
 }
+.popupTabSec.modalAssets.notPrivateAccess.noPreveiwModal {
+  min-height: auto !important;
+  height: auto !important;
+}
+.popupTabSec.modalAssets.noPreveiwModal {
+  height: auto !important;
+  min-height: auto !important;
+}
