@@ -744,9 +744,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   openMoveModal(move=true) {
-    console.log("1")
     if(this.dataTableComponent){
-       console.log("2")
     this.dataTableComponent.openMoveModal(move);
     }
    

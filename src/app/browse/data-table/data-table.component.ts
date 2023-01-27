@@ -320,13 +320,15 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   async deleteFolders() {
-    if (Object.keys(this.selectedFolderList).length == 0) return;
+    // if (Object.keys(this.selectedFolderList).length == 0 ) return;
     this.loading = true;
-
-    const listDocs = Object.entries(this.selectedFolderList)
-    .filter(([key, item]) => this.checkCanDelete(item)).map(([key, item],index) => item["uid"]);
+    let data = Object.values(this.selectedFolderList)
+    let dataToParse =  data.concat(this.assetCanDelete)
+    const listDocs = dataToParse
+    .filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
+    console.log({listDocs,data,dataToParse});
     await this.apiService
-      .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}` })
+      .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}`})
       .subscribe((docs: any) => {
         this.loading = false;
         this.deleteModal(listDocs);
@@ -656,10 +658,6 @@ export class DataTableComponent implements OnInit, OnChanges {
   //   });
   // }
   async openMoveModal(move=true) {
-    // const listDocs = Object.values(this.selectedMoveList)
-    // .filter( item => !this.checkDownloadPermission(item))
-
-    // if (!listDocs.length) return this.moveModalFailed()
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -667,7 +665,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     dialogConfig.data = {
       selectedList: this.selectedMoveList,
-      parentId: this.currentWorkspace.uid,
+      parentId: this.breadCrumb[0]?.uid,
       sectorList: this.folderStructure[0]?.children || [],
       user:this.user,
       move,

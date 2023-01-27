@@ -145,7 +145,7 @@
             <!-- this is for <p> tag below (click)="handleTest(item);selectedFolder=item;" -->
             <p style="text-align: left; word-break: break-all;display: inline-block;
             vertical-align: middle;">
-              <span class="tollTipCustom">
+              <span class="tollTipCustom" (click)="openFolder(item);">
                 {{item.title}}
                 <span class="tolltipContent" style="top: 28px;
                 height: auto;
