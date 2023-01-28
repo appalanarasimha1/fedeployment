@@ -750,6 +750,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
    
     else return;
   }
+  deleteFolders() {
+    if(this.dataTableComponent){
+    this.dataTableComponent.deleteFolders();
+    }
+   
+    else return;
+  }
+  
 
   checkEnableMoveButton() {
     if(this.dataTableComponent)

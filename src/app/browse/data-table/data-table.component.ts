@@ -13,6 +13,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { PreviewPopupComponent } from '../../preview-popup/preview-popup.component';
 import { Router } from '@angular/router';
+import { NuxeoService } from 'src/app/services/nuxeo.service';
 
 @Component({
   selector: 'app-data-table',
@@ -96,12 +97,14 @@ export class DataTableComponent implements OnInit, OnChanges {
     private apiService: ApiService,
     public matDialog: MatDialog,
     public dataService: DataService,
+    public nuxeo: NuxeoService,
     private router: Router
     ) { }
 
   ngOnInit(): void {
     this.sortedData = this.searchList?.slice();
     this.sortedDataList.emit(this.sortedData)
+    this.fetchUserData()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -134,7 +137,17 @@ export class DataTableComponent implements OnInit, OnChanges {
       }; 
       this.fetchAssets.emit(data);
   }
-  
+  async fetchUserData() {
+    if (localStorage.getItem("user")) {
+      this.user = JSON.parse(localStorage.getItem("user"))["username"];
+      if (this.user) return;
+    }
+    if (this.nuxeo.nuxeoClient) {
+      const res = await this.nuxeo.nuxeoClient.connect();
+      this.user = res.user.id;
+      localStorage.setItem("user", JSON.stringify(res.user.properties));
+    }
+  }
   async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
     this.loading = true;
     // const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
