@@ -1,5 +1,6 @@
 .documentationBlck {
     padding: 35px 0 0;
+    margin-left: 140px;
 }
 .pl-110 {
     position: relative;
@@ -117,7 +118,7 @@
 .regionBlok ::ng-deep .ng-select.goldenText .ng-select-container{
     border-color: #DEB31A !important;
 }
-.regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label, 
+.regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label,
 .regionBlok ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked .ng-option-label{
     font-weight: normal !important;
 }
@@ -152,7 +153,7 @@
     position: relative;
     z-index: 2;
 }
-.regionBlok ::ng-deep .mat-form-field-appearance-fill.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, 
+.regionBlok ::ng-deep .mat-form-field-appearance-fill.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
 .regionBlok ::ng-deep .mat-form-field-appearance-fill.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label {
     transform: translateY(-0.59375em) scale(0);
     width: 133.3333333333%;
@@ -174,7 +175,7 @@
 ::ng-deep .goldenText.mat-form-field-appearance-fill .mat-form-field-infix::after {
     background-image: url(../../assets/images/golden-arrow.png) !important ;
 }
-.regionBlok ::ng-deep .mat-calendar-body-cell-content, 
+.regionBlok ::ng-deep .mat-calendar-body-cell-content,
 .regionBlok ::ng-deep .mat-date-range-input-separator {
     color: #C49900;
 }
@@ -218,7 +219,7 @@
     /* background: #e6e6e6; */
     border: 1px solid #000;
     border-radius: 4px;
-  
+
   }
   .control--radio .control__indicator {
     border-radius: 50%;

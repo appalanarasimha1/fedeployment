@@ -5,6 +5,8 @@ import { NgxMasonryComponent } from "ngx-masonry";
 import { SharedService } from "../services/shared.service";
 import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
+import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
+import { apiRoutes } from "../common/config";
 
 @Component({
   selector: "app-documentation-assets",
@@ -260,5 +262,130 @@ export class DocumentationAssetsComponent implements OnInit {
 
   out() {
     this.masoneryItemIndex = null;
+  }
+
+  selectedFileUrl = "";
+  selectedFile: any;
+  @ViewChild("previewModal") previewModal: PreviewPopupComponent;
+  open(file, fileType?: string): void {
+    let fileRenditionUrl;
+    this.selectedFile = file;
+    // if (!fileType) {
+    switch (fileType) {
+      case "Picture":
+        fileType = "image";
+        break;
+      case "Video":
+        fileType = "video";
+        break;
+      default:
+        fileType = "file";
+        break;
+    }
+    // }
+    this.sharedService.markRecentlyViewed(file);
+    if (fileType === "image") {
+      const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
+      fileRenditionUrl = url; // file.properties['file:content'].data;
+      // this.favourite = file.contextParameters.favorites.isFavorite;
+    } else if (fileType === "video") {
+      fileRenditionUrl =
+        file.properties["vid:transcodedVideos"][0]?.content.data || "";
+    } else if (fileType === "file") {
+      const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
+      // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
+      fileRenditionUrl = file.properties["file:content"].data;
+      // fileRenditionUrl = url;
+    }
+    this.selectedFileUrl =
+      // fileType === "image" ?
+      this.getAssetUrl(null, fileRenditionUrl, {...file, update:true })
+        // : fileRenditionUrl;
+    // if(fileType === 'file') {
+    //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
+    // }
+
+    this.previewModal.open();
+  }
+
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
+      // return '../../../assets/images/no-preview.png';
+      return this.getNoPreview(document);
+    }
+
+    const mimeType = document?.properties['file:content']?.['mime-type'];
+    if(mimeType?.includes('pdf') && this.viewType ==="LIST" && !document?.update)
+      return '../../../assets/images/pdf.png';
+
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
+      // return '../../../assets/images/no-preview-grid.svg';
+      return this.getNoPreview(document);
+    }
+   return this.sharedService.getAssetUrl(event, url, type);
+    // return this.sharedService.getAssetUrl(event, url, type);
+  }
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData[splitedData?.length - 1];
+    const lowercaseMime = mimeType.toLowerCase();
+
+    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      return '../../../assets/images/no-preview-big.png';
+    }
+    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      return '../../../assets/images/no-preview-big.png';
+    }
+    if(item.update) {
+      return '../../../assets/images/no-preview-big.png';
+    }
+
+    return '../../../assets/images/no-preview-grid.svg';
+  }
+
+  checkAssetMimeTypes(document: any): string {
+    return this.sharedService.checkMimeType(document);
+  }
+
+  markFavourite(data, favouriteValue) {
+    // this.favourite = !this.favourite;
+    if (data.contextParameters.favorites.isFavorite) {
+      this.unmarkFavourite(data, favouriteValue);
+      return;
+    }
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {},
+    };
+    // this.loading.push(true);
+    this.apiService
+      .post(apiRoutes.MARK_FAVOURITE, body)
+      .subscribe((docs: any) => {
+        data.contextParameters.favorites.isFavorite =
+          !data.contextParameters.favorites.isFavorite;
+        if (favouriteValue === "recent") {
+          this.sharedService.markRecentlyViewed(data);
+        }
+        // this.loading.pop();
+      });
+  }
+
+  unmarkFavourite(data, favouriteValue) {
+    const body = {
+      context: {},
+      input: data.uid,
+      params: {},
+    };
+    this.apiService
+      .post(apiRoutes.UNMARK_FAVOURITE, body)
+      .subscribe((docs: any) => {
+        // data.contextParameters.favorites.isFavorite = this.favourite;
+        data.contextParameters.favorites.isFavorite =
+          !data.contextParameters.favorites.isFavorite;
+        if (favouriteValue === "recent") {
+          this.sharedService.markRecentlyViewed(data);
+        }
+      });
   }
 }

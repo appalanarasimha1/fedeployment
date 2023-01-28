@@ -69,6 +69,9 @@ export class SearchComponent implements OnInit {
   sector: any;
   favoriteCollectionId: string;
 
+  selectedTab = 'Media';
+  isDroneUploader = false;
+
   // TypeScript public modifiers
   constructor(
     public nuxeo: NuxeoService,
@@ -80,6 +83,9 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (window.location.href.includes("#documentation-assets")) {
+      this.selectedTab = 'Construction';
+    }
     this.fetchMostSearchedTags();
     this.fetchUserData();
     this.fetchFavoriteCollection();
@@ -628,8 +634,10 @@ export class SearchComponent implements OnInit {
         localStorage.setItem("user", JSON.stringify(res.user.properties));
         const groups = res.user.properties.groups;
         if (!groups) return;
-        if (groups.includes(DRONE_UPLOADER)) {
-          this.router.navigate(['documentation-assets']);
+        if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+          this.selectedTab = 'Construction';
+          this.isDroneUploader = true;
+          this.router.navigate(['/'], { fragment: 'documentation-assets' });
           return;
         }
         if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
@@ -648,6 +656,10 @@ export class SearchComponent implements OnInit {
         .execute();
       this.favoriteCollectionId = res.uid;
     }
+  }
+
+  selectTab(tab) {
+    this.selectedTab = tab;
   }
 
 }

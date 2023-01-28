@@ -15,7 +15,18 @@
     </app-sub-header>
 </div>
 
-<app-side-drawer 
+<div *ngIf="!isDroneUploader" class="tab-selection">
+  <ul class="nav nav-tabs" style="display: inline-block">
+    <li [ngClass]="selectedTab === 'Media' ? 'pointer active' : 'pointer'">
+      <a routerLink="/" fragment="" (click)="selectTab('Media')" data-toggle="tab">Media</a>
+    </li>
+    <li [ngClass]="selectedTab === 'Construction' ? 'pointer active' : 'pointer'">
+      <a routerLink="/" fragment="documentation-assets" (click)="selectTab('Construction')" data-toggle="tab">Construction</a>
+    </li>
+  </ul>
+</div>
+
+<app-side-drawer
   #advancedFilter
   [inputMetaData]="aggregationsMetaData"
   (searchTextOutput)="filters($event)"
@@ -24,7 +35,8 @@
 <!-- <app-content [images]="images" [videos]="videos" [audio]="audio" [searchTerm]="searchValue" (searchTextOutput)="searchDocuments($event)"
      (pageCount)="fetchNextPageResults(1, $event)"></app-content> -->
 
-<app-content 
+<app-content
+  *ngIf="selectedTab === 'Media'"
   #documentsView
   [documents]="documents"
   [searchTerm]="searchValue"
@@ -37,3 +49,7 @@
   (resetFilterOuput)="resetFilter()"
   (selectDetailViewType)="selectDetailViewType($event)"
 ></app-content>
+
+<app-documentation-assets
+  *ngIf="selectedTab === 'Construction'">
+</app-documentation-assets>

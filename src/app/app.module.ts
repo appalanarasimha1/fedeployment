@@ -48,7 +48,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditAccessComponent } from './edit-access/edit-access.component';
 import { AddUserPrivateFolderModalComponent } from './add-user-private-folder-modal/add-user-private-folder-modal.component';
-import { DocumentationAssetsComponent } from './documentation-assets/documentation-assets.component';
+// import { DocumentationAssetsComponent } from './documentation-assets/documentation-assets.component';
 import { NgxMasonryModule } from 'ngx-masonry';
 import { UploadDroneComponent } from './upload-drone/upload-drone.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
@@ -69,7 +69,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     AssetCannotBeAccessedComponent,
     EditAccessComponent,
     AddUserPrivateFolderModalComponent,
-    DocumentationAssetsComponent,
+    // DocumentationAssetsComponent,
     UploadDroneComponent,
     // AssetViewComponent,
   ],

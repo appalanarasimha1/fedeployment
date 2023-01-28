@@ -6,6 +6,7 @@ import { SearchComponent } from './search/search.component';
 import { SideDrawerComponent } from '../common/sideDrawer/sideDrawer.component';
 import { SubHeaderComponent } from '../common/subHeader/subHeader.component';
 import { DocumentComponent } from '../document/document.component';
+import { DocumentationAssetsComponent } from "../documentation-assets/documentation-assets.component";
 import { SharedModule } from '../shared/shared.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgxMasonryModule } from 'ngx-masonry';
@@ -15,6 +16,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 // import { NuxeoService } from '../services/nuxeo.service';
 import { CarouselModule  } from 'ngx-owl-carousel-o';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from "@angular/material/datepicker";
 
 @NgModule({
 
@@ -27,12 +30,15 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     NgMultiSelectDropDownModule.forRoot(),
     CarouselModule,
     SlickCarouselModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
   ],
   declarations: [
     SearchComponent,
     SideDrawerComponent,
     SubHeaderComponent,
-    DocumentComponent
+    DocumentComponent,
+    DocumentationAssetsComponent,
   ],
   schemas: [
       CUSTOM_ELEMENTS_SCHEMA,
