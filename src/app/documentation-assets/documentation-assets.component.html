@@ -2,7 +2,7 @@
   <div class="container">
       <h2>Documentation assets</h2>
       <h3>{{company}}</h3>
-      <div class="adding-assets">
+      <div *ngIf="!loading && (!assetList || assetList.length == 0)" class="adding-assets">
           <img src="../../assets/images/upload-icon.svg" />
           Start adding assets
           <div class="uploadBtn" (click)="openModal()">Upload</div>
@@ -11,75 +11,75 @@
       <div class="masonryBlock">
         <div class="regionBlok">
           <ul>
-            <!-- <li>
+            <li>
                 <ng-select placeholder="Region"
                     (change)="onSelectRegions($event)"
                     [searchable]="false"
                     [clearable]="false"
-                    [(ngModel)]="selectedRegions"
+                    [(ngModel)]="selectedRegion"
                     id="confidentiality"
-                    [ngClass]="{'goldenText': selectedRegions}"
+                    [ngClass]="{'goldenText': selectedRegion}"
                 >
-                    <ng-option *ngFor="let region of regions" [value]="region.name">
+                    <ng-option *ngFor="let region of regionList" [value]="region.uid">
                         {{region.name}}
                     </ng-option>
                 </ng-select>
             </li>
             <li>
                 <ng-select placeholder="Sub-area"
-                    (change)="onSelectRegions($event)"
+                    (change)="onSelectSubArea($event)"
                     [searchable]="false"
                     [clearable]="false"
-                    [(ngModel)]="selectedsubAreas"
+                    [(ngModel)]="selectedsubArea"
                     id="confidentiality"
-                    [ngClass]="{'goldenText': selectedsubAreas}"
+                    [ngClass]="{'goldenText': selectedsubArea}"
                 >
-                    <ng-option *ngFor="let subArea of subAreas" [value]="subArea.name">
+                    <ng-option *ngFor="let subArea of subAreaList" [value]="subArea.uid">
                         {{subArea.name}}
                     </ng-option>
                 </ng-select>
             </li>
             <li>
-                <mat-form-field appearance="fill" [ngClass]="{'goldenText': selecteddeviceTypes}">
+                <mat-form-field appearance="fill" [ngClass]="{'goldenText': selectedStartDate || selectedEndDate}">
                   <mat-label (click)="picker.open();">Enter a date range</mat-label>
-                  <mat-date-range-input [rangePicker]="picker" (click)="picker.open();">
-                    <input class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selecteddeviceTypes">
-                    <input class="customInput" matEndDate placeholder="End date" [(ngModel)]="selecteddeviceTypes">
+                  <mat-date-range-input (dateChange)="dateRangeChange()" [rangePicker]="picker" (click)="picker.open();">
+                    <input (dateChange)="dateRangeChange()" class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selectedStartDate">
+                    <input (dateChange)="dateRangeChange()" class="customInput" matEndDate placeholder="End date" [(ngModel)]="selectedEndDate">
                   </mat-date-range-input>
                   <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
             </li>
             <li>
                 <ng-select placeholder="Format"
-                    (change)="onSelectRegions($event)"
+                    (change)="getAssetList()"
                     [searchable]="false"
                     [clearable]="false"
-                    [(ngModel)]="selectedStatus"
+                    [(ngModel)]="selectedFormat"
                     id="confidentiality"
-                    [ngClass]="{'goldenText': selectedStatus}"
+                    [ngClass]="{'goldenText': selectedFormat}"
                 >
-                    <ng-option *ngFor="let statu of status" [value]="statu.name">
-                        {{statu.name}}
+                    <ng-option *ngFor="let format of formats" [value]="format">
+                        {{format}}
                     </ng-option>
                 </ng-select>
-            </li> -->
+            </li>
           </ul>
-          <!-- <div class="row">
+          <div class="row">
             <div class="col-md-4">
               <label class="control control--checkbox" style="margin-bottom: 0px;">
                 Only show assets uploaded by me
-                <input type="checkbox" checked="checked"/>
+                <input (change)="getAssetList()" [(ngModel)]="assetByMe" type="checkbox" checked="checked"/>
                 <div class="control__indicator"></div>
              </label>
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <label class="control control--checkbox" style="margin-bottom: 0px;">
                 Only show monthly videos
                 <input type="checkbox" checked="checked"/>
                 <div class="control__indicator"></div>
              </label>
-            </div>
-          </div> -->
+            </div> -->
+          </div>
         </div>
 
 

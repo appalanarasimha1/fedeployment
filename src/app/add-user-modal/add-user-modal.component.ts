@@ -224,8 +224,12 @@ export class AddUserModalComponent implements OnInit {
       end.setMonth(new Date().getMonth() + 1);
       item.end = end;
     }
+    let permission = item.permission;
+    if (item.isAdmin !== undefined) {
+      permission = item.isAdmin ? 'Everything' : 'ReadWrite';
+    }
     const params = {
-      permission: item.permission,
+      permission,
       comment: "",
       username: item.user.id,
       id: item.id,
@@ -250,8 +254,12 @@ export class AddUserModalComponent implements OnInit {
     if (item.isGlobal != undefined && this.listExternalUser.includes(item.user.id)) {
       this.updateExternalUserGroup(item.user.id, item.isGlobal);
     }
+    let permission = item.permission;
+    if (item.isAdmin !== undefined) {
+      permission = item.isAdmin ? 'Everything' : 'ReadWrite';
+    }
     const params = {
-      permission: item.permission,
+      permission,
       comment: "",
     };
     if (item.user.notExisted) {
@@ -316,8 +324,12 @@ export class AddUserModalComponent implements OnInit {
   }
 
   async inviteUser(item) {
+    let permission = 'ReadWrite';
+    if (item.isAdmin !== undefined) {
+      permission = item.isAdmin ? 'Everything' : 'ReadWrite';
+    }
     const params = {
-      permission: 'ReadWrite',
+      permission,
       email: item.user.id,
       end: item.end,
     };
@@ -433,10 +445,12 @@ export class AddUserModalComponent implements OnInit {
     if (this.listExternalUserGlobal.includes(this.selectedExternalUser.user?.id)) {
       this.isGlobal = true;
     }
+    const isAdmin = item.permission === 'Everything';
     dialogConfig.data = {
       isGlobal: this.isGlobal,
       selectedMonth: this.selectedMonth,
-      selectedExternalUser: this.selectedExternalUser
+      selectedExternalUser: this.selectedExternalUser,
+      isAdmin,
     }
 
     const modalDialog = this.matDialog.open(EditAccessComponent, dialogConfig);
@@ -445,6 +459,7 @@ export class AddUserModalComponent implements OnInit {
       if (result) {
         this.selectedMonth = result.selectedMonth;
         this.selectedExternalUser.isGlobal = result.isGlobal;
+        this.selectedExternalUser.isAdmin = result.isAdmin;
         this.updateExternalUserAccess();
       }
       this.selectedMonth = undefined;
@@ -460,14 +475,18 @@ export class AddUserModalComponent implements OnInit {
       if (!this.updatedCollaborators[this.selectedExternalUser.user.id])
         this.updatedCollaborators[this.selectedExternalUser.user.id] = this.externalCollaborators[this.selectedExternalUser.user.id];
       this.updatedCollaborators[this.selectedExternalUser.user.id].end = end;
+      this.updatedCollaborators[this.selectedExternalUser.user.id].isAdmin = this.selectedExternalUser.isAdmin;
       if (this.selectedExternalUser.isGlobal !== undefined)
         this.updatedCollaborators[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     } else if (this.addedExternalUsers[this.selectedExternalUser.user.id]) {
       this.addedExternalUsers[this.selectedExternalUser.user.id].end = end;
+      this.addedExternalUsers[this.selectedExternalUser.user.id].isAdmin = this.selectedExternalUser.isAdmin;
+
       if (this.selectedExternalUser.isGlobal !== undefined)
         this.addedExternalUsers[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     } else {
       this.invitedCollaborators[this.selectedExternalUser.user.id].end = end;
+      this.invitedCollaborators[this.selectedExternalUser.user.id].isAdmin = this.selectedExternalUser.isAdmin;
       if (this.selectedExternalUser.isGlobal !== undefined)
         this.invitedCollaborators[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     }
