@@ -42,6 +42,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Output() sortedDataList: EventEmitter<any> = new EventEmitter();
   @Output() selectedCount: EventEmitter<any> = new EventEmitter();
   @Output() selectedAssetMoveList: EventEmitter<any> = new EventEmitter();
+  @Output() canNotDeleteList: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("paginator") paginator: MatPaginator;
@@ -219,15 +220,11 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   checkEnableMoveButton() {
-    let processAble = []
-    if (Object.keys(this.selectedMoveList).length) {
-       for (const key in this.selectedMoveList) {
-        if(!this.checkDownloadPermission(this.selectedMoveList[key])){
-          processAble.push(true)
-        }
-      }
-    }
-    return processAble.length > 0; 
+    return Object.keys(this.selectedMoveList)?.length > 0;
+  }
+  
+  getFileContent(doc) {
+    return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
 
   downloadAssets(e?:any) {
@@ -235,7 +232,11 @@ export class DataTableComponent implements OnInit, OnChanges {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length > 0) {
+      if (this.downloadArray.length == 1) {
+        window.location.href =this.getFileContent(this.downloadFullItem[0])
+        this.removeAssets()
+      }
+      if (this.downloadArray.length > 1) {
         $(".multiDownloadBlock").hide();
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
@@ -252,24 +253,45 @@ export class DataTableComponent implements OnInit, OnChanges {
             let splittedLocation = res.headers.get("location").split("/");
             let newUID = splittedLocation[splittedLocation.length - 2];
             uid = newUID;
-            this.apiService
-              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-              .subscribe((resp: any) => {
-                let locationForDownload = resp.headers.get("location");
-              });
+            // setTimeout(() => {
+            //   window.open(
+            //     environment.apiServiceBaseUrl +
+            //       "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+            //       uid
+            //   );
+            //   this.removeAssets();
+            // }, 10000);
+            let counter = 0
+            let checkZipCompleted=(newUID) =>{
+                  this.loading = true
+                  this.apiService
+                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+                .toPromise().then((resp: any) => {
+                }).catch(e=>{
+                  console.error("2222222222222",e)
+                  counter += 1
 
-            setTimeout(() => {
-              window.open(
-                environment.apiServiceBaseUrl +
-                  "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-                  uid
-              );
-              this.removeAssets();
-            }, 1000);
+                  if (e.status ==404) {
+                     checkZipCompleted(newUID)
+                  }else{
+                    this.loading = false
+                    window.open(
+                      environment.apiServiceBaseUrl +
+                        "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                        uid
+                    );
+                    this.removeAssets();
+                  }
+
+                });
+
+            }
+            checkZipCompleted(uid)
           });
       }
     }
   }
+
 
   multiDownload() {
     if (
@@ -323,7 +345,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   checkEnableDeleteBtn() {
-    return Object.keys(this.selectedFolderList).length > 0;
+    return Object.keys(this.selectedFolderList).length > 0  || Object.keys(this.selectedMoveList).length >this.canNotDelete.length;
   }
 
   rightClickRename(item){
@@ -424,6 +446,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.selectedMoveList[i] = item;
       if (!canDelete) {
         this.canNotDelete.push(item)
+        this.canNotDeleteList.emit(this.canNotDelete)
       }else{
         this.assetCanDelete.push(item)
       }
@@ -456,6 +479,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.canNotDelete = this.canNotDelete.filter(
         (m) => m.uid !== item.uid
       );
+      this.canNotDeleteList.emit(this.canNotDelete)
       delete this.selectedMoveList[i];
       delete this.selectedMoveListNew[i];
       this.selectedAssetMoveList.emit(this.selectedMoveListNew)
@@ -481,6 +505,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'forInternalUseListEvent', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
+    this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
     this.getdownloadAssetsSize();
   }
@@ -621,9 +646,11 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.selectedMoveListNew = {}
     
     this.selectedAssetMoveList.emit(this.selectedMoveListNew)
+    this.canNotDeleteList.emit(this.canNotDelete)
     this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
+    this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
     this.sortedData.forEach((e) => (e.isSelected = false));
     this.sortedDataList.emit(this.sortedData)

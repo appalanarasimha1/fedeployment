@@ -64,12 +64,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   copyRightItem: [];
   needPermissionToDownload: [];
   sizeExeeded: boolean = false;
+  downloadArray:[]
   // dataTableComponent: DataTableComponent;
   folderStructure = {};
   showCreateFolderPopup: boolean = false;
   count:any;
   sortedData;
   selectedMoveListNew = {};
+  canNotDelete=[]
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -727,6 +729,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.needPermissionToDownload = event.data;
     } else if(event.eventName === 'sizeExeededEvent') {
       this.sizeExeeded = event.data;
+    } else if(event.eventName === 'downloadArray') {
+      this.downloadArray = event.data;
     }
   }
   
@@ -760,8 +764,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   
 
   checkEnableMoveButton() {
+    return Object.keys(this.selectedMoveListNew)?.length > 0;
+  }
+  checkEnableDeleteBtn() {
     if(this.dataTableComponent)
-    this.dataTableComponent.checkEnableMoveButton();
+    return this.dataTableComponent.checkEnableDeleteBtn();
   }
 
   removeAssets() {
@@ -779,11 +786,24 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.dataTableComponent.multiDownload();
   }
 
+  checkAssetType(e?:any) {
+    if(this.dataTableComponent)
+    return this.dataTableComponent.checkAssetType(e);
+  }
+
+  getIconByType(e?:any) {
+    if(this.dataTableComponent)
+    return this.dataTableComponent.getIconByType(e);
+  }
+
+  getAssetUrl(e:any,url:any,item:any) {
+    if(this.dataTableComponent)
+    return this.dataTableComponent.getAssetUrl(e,url,item);
+  }
   downloadAssets(e?:any) {
     if(this.dataTableComponent)
     this.dataTableComponent.downloadAssets(e);
   }
-
   renameAsset(){
     let keySort = Object.keys(this.selectedMoveListNew)
     this.sortedData[keySort[0]].edit = !this.sortedData[keySort[0]]?.edit
@@ -791,6 +811,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
   selectedMoveList(e){
     this.selectedMoveListNew = e
+  }
+  canNotDeleteList(e){
+    this.canNotDelete = e
   }
   sortedDataList(e){
     this.sortedData = e
