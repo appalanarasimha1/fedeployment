@@ -2244,3 +2244,24 @@ form.commentTextForm {
   height: auto !important;
   min-height: auto !important;
 }
+
+figure.zoom {
+  background-position: 50% 50%;
+  background-size: cover;
+  position: relative;
+  width: 1000%;
+  overflow: hidden;
+  cursor: zoom-out;
+  position: absolute;
+  top: 0px;
+
+}
+figure.zoom img:hover {
+  opacity: 0;
+}
+figure.zoom img {
+  transition: opacity .5s;
+  display: block;
+  width: 100%;
+  opacity: 0;
+}
