@@ -388,4 +388,15 @@ export class DocumentationAssetsComponent implements OnInit {
         }
       });
   }
+
+  checkNoFilterSelected() {
+    return !(
+      this.selectedEndDate ||
+      this.selectedStartDate ||
+      this.selectedFormat ||
+      this.selectedRegion ||
+      this.selectedsubArea ||
+      this.assetByMe
+    )
+  }
 }
