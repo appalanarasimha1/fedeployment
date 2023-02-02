@@ -2247,14 +2247,14 @@ form.commentTextForm {
 
 figure.zoom {
   background-position: 50% 50%;
-  background-size: cover;
+  /* background-size: 95%; */
   position: relative;
-  width: 1000%;
+  /* width: 1000%; */
   overflow: hidden;
   cursor: zoom-out;
   position: absolute;
   top: 0px;
-
+  background-color: #F6F5F2;
 }
 figure.zoom img:hover {
   opacity: 0;

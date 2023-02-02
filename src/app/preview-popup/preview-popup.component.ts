@@ -614,6 +614,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.activeTabs.timeline = false;
     this.activeTabs.info = false;
     this.matDialog.closeAll();
+    this.fullSIzeImg = false;
   }
 
   getCommentStr(str){
