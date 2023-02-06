@@ -165,9 +165,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUser: string[] = [];
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
-  permissionChange:boolean=false
-  onlyPrivate:boolean = false;
+  permissionChange:boolean=false;
   accessDenied = false;
+  onlyPrivate:boolean = false;
   whiteLoader: boolean = false;
   transparentLoader: boolean = false;
 
