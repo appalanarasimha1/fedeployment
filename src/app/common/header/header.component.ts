@@ -70,6 +70,8 @@ export class HeaderComponent implements OnInit {
   isDroneUploadPage = false;
   isDroneUploader = false;
 
+  loading = false;
+
   constructor(
     private nuxeo: NuxeoService,
     private router: Router,
@@ -202,7 +204,9 @@ export class HeaderComponent implements OnInit {
   }
 
   async logout() {
+    this.loading = true;
     await this.nuxeo.logout();
+    this.loading = false;
     this.keycloak.logout(window.location.origin + '/login');
   }
 
