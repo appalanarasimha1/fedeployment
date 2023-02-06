@@ -114,100 +114,6 @@ div#dropzone {
   z-index: 9;
   display: none;
 }
-
-ul.uploadAssetsClassifications {
-  display: inline-block;
-  margin-bottom: 0px;
-  margin-right: 20px;
-}
-
-ul.uploadAssetsClassifications li {
-  float: left;
-  margin-right: 25px;
-  vertical-align: middle;
-  position: relative;
-  /* cursor: pointer; */
-}
-
-ul.uploadAssetsClassifications li:last-child {
-  margin-right: 0px;
-}
-
-ul.uploadAssetsClassifications li:nth-child(2) .customToolTipWorkspace {
-  left: auto;
-  right: 0px;
-}
-
-ul.uploadAssetsClassifications li ul.subDropdownMenu {
-  position: absolute;
-  width: 250px;
-  background: #FFFFFF;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 24px;
-  text-align: left;
-  top: 35px;
-  right: 0px;
-  z-index: 99;
-  display: none;
-}
-
-ul.uploadAssetsClassifications li ul.subDropdownMenu li {
-  margin: 0 0 20px;
-  padding: 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: #040404;
-  cursor: pointer;
-}
-
-ul.uploadAssetsClassifications li ul.subDropdownMenu li:last-child {
-  margin-bottom: 0px;
-}
-
-ul.uploadAssetsClassifications li:hover ul.subDropdownMenu {
-  display: block;
-  cursor: auto;
-}
-
-ul.uploadAssetsClassifications li:after {
-  content: '';
-  display: block;
-  height: 20px;
-  width: 100%;
-  position: absolute;
-  bottom: -19px;
-  right: 0;
-}
-
-ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
-  /* position: absolute; */
-  width: 250px;
-  background: #FFFFFF;
-  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
-  border-radius: 8px;
-  padding: 24px;
-  text-align: left;
-  top: 35px;
-  right: 0px;
-  left: auto;
-  border: 0px;
-}
-
-ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li {
-  padding-left: 0px;
-  margin-bottom: 20px;
-  cursor: pointer;
-}
-
-ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:hover {
-  opacity: 0.5;
-}
-
-ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:last-child {
-  margin-bottom: 0px;
-}
-
 .createNewFolderDropdown {
   padding: 0px !important; padding: 0px; font-size: 15px; line-height: 24px; color: #937206 !important; font-weight: normal;
 }
@@ -603,4 +509,92 @@ span.addVerticalAlignMiddle {
   padding-top: 20px;
   text-align: right;
   position: relative;
+}
+.views img {
+  margin-left: 15px;
+  opacity: 0.2;
+  width: 28px;
+  cursor: pointer;
+}
+
+ul.uploadAssetsClassifications {
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 20px;
+  min-height: 34px;
+}
+ul.uploadAssetsClassifications li {
+  float: left;
+  margin-right: 25px;
+  vertical-align: middle;
+  position: relative;
+  /* cursor: pointer; */
+}
+ul.uploadAssetsClassifications li:last-child {
+  margin-right: 0px;
+}
+ul.uploadAssetsClassifications li:nth-child(2) .customToolTipWorkspace {
+  left: auto;
+  right: 0px;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu {
+  position: absolute;
+  width: 250px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+  top: 35px;
+  right: 0px;
+  z-index: 99;
+  display: none;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu li {
+  margin: 0 0 20px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #040404;
+  cursor: pointer;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu li:last-child {
+  margin-bottom: 0px;
+}
+ul.uploadAssetsClassifications li:hover ul.subDropdownMenu {
+  display: block;
+  cursor: auto;
+}
+ul.uploadAssetsClassifications li:after {
+  content: '';
+  display: block;
+  height: 20px;
+  width: 100%;
+  position: absolute;
+  bottom: -19px;
+  right: 0;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
+  /* position: absolute; */
+  width: 250px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+  top: 35px;
+  right: 0px;
+  left: auto;
+  border: 0px;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li {
+  padding-left: 0px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:hover {
+  opacity: 0.5;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:last-child {
+  margin-bottom: 0px;
 }
