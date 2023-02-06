@@ -16,7 +16,7 @@
     </div>
   </div>
   
-  <div>
+  <div class="header-content">
     <div style="width: 100%"> <!-- *ngIf="currentWorkspace?.uid !== parentId" -->
       <span class="customWidth">
         <span class="main-title" *ngIf="!renameFolderName">
@@ -44,14 +44,23 @@
             </div>
           </span>
         </span>
-        <span *ngIf="renameFolderName" style="display: flex; align-items: center;">
-          <label class="input-sizer customRenameBlock">
-            <input type="text"
-            value="{{sharedService.stringShortener(currentWorkspace?.title, 28)}}"
+        <span *ngIf="renameFolderName" style="align-items: center;">
+          <div class="input-renamer">
+            <label class="input-sizer customRenameBlock">
+              <input type="text"
+              value="{{sharedService.stringShortener(currentWorkspace?.title, 28)}}"
+              [(ngModel)]="newTitle"
+              (keyup.enter)="renameFolder()" autocomplete="off"
+              onInput="this.parentNode.dataset.value = this.value" placeholder="{{sharedService.stringShortener(currentWorkspace?.title, 28)}}">
+            </label>
+          </div>
+          <!-- <div class="input-renamer" #wrapper>
+            <input type="text" size="{{newTitle.length}}"
+            (input)="onInput($event)" value="{{selectedFolder?.title}}"
             [(ngModel)]="newTitle"
             (keyup.enter)="renameFolder()" autocomplete="off"
-            onInput="this.parentNode.dataset.value = this.value" placeholder="{{sharedService.stringShortener(currentWorkspace?.title, 28)}}">
-          </label>
+            onInput="this.parentNode.dataset.value = this.value" placeholder="{{selectedFolder?.title}}">
+          </div> -->
           <div class="actionIcon">
             <svg
               width="18"
@@ -112,11 +121,11 @@
       <h6 class="tollTipCustom">
         <span>/
           <a [ngClass]="
-            breadCrumb.length !== 0
-            ? 'breadcrumb-active'
-            : 'breadcrumb-not-active'
-          " (click)="handleGotoBreadcrumb(null, null)"
-          >All Workspace</a>
+                breadCrumb.length !== 0
+                ? 'breadcrumb-active'
+                : 'breadcrumb-not-active'
+            " (click)="handleGotoBreadcrumb(null, null)"
+            >All Workspace</a>
         </span>
         <span *ngFor="let c of breadCrumb; let i = index">
           /<a

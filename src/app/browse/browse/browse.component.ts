@@ -1543,6 +1543,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       var getWidth2 = $('.getWidth2').outerWidth();
       var getWidth3 = $('.getWidth3').outerWidth();
       var totalWidth = getWidth1 + getWidth2 + getWidth3;
+      console.log('getWidth2', getWidth2);
       $('.chkbox.width1600').css("width", totalWidth - 60);
 
       // $('.itemTitleContent').css("width", getWidth2 - 30 )

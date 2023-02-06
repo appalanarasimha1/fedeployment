@@ -17,7 +17,7 @@
     <div class="container">
 
       <div class="row">
-        <div class="col-xl-4 col-md-4" style="padding-left: 76px">
+        <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
           <app-browse-navigation 
             [folderStructure]="folderStructure" 
             [isExternalView]="isExternalView"
@@ -25,15 +25,12 @@
           >
           </app-browse-navigation>
         </div>
-        <div class="col-xl-8 col-md-8">
-          <router-outlet></router-outlet>
-        </div>
+        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative" style="min-height: calc(100vh - 76px)">
+          <!-- <router-outlet></router-outlet> -->
+        <!-- </div> -->
         
 
-        <div
-          class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"
-          style="min-height: 100vh"
-        >
+        <!-- <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"> -->
           <app-loader [show]="loading"></app-loader>
 
           <!-- <div class="permissionRequired">
@@ -100,12 +97,13 @@
             </div>
           </div>
 
-          <div *ngIf="selectedFolder && !folderNotFound" class="main-content" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+          <div *ngIf="selectedFolder && !folderNotFound" class="" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
             <div
               class="header-content"
               *ngIf="!isTrashView"
               style="width: 100%"
             >
+            <router-outlet></router-outlet>
               <div *ngIf="selectedFolder2?.uid !== parentId" style="width: 100%">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"

@@ -29,7 +29,7 @@
     border-radius: 8px;">
       <img 
         id="fileId" 
-        [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+        [src]="getAssetUrl(null, doc?.contextParameters?.thumbnail?.url)" 
         alt=""
         (click)="openPreview()"
         (load)="showLock = true"
@@ -59,7 +59,7 @@
 
         <div *ngIf="checkMimeType(doc) === 'video'" class="videoIconn">
           <img id="fileId" 
-          [src]="getAssetUrl(null, doc.contextParameters.thumbnail.url)" 
+          [src]="getAssetUrl(null, doc?.contextParameters?.thumbnail?.url)" 
           alt=""
           (click)="openPreview()"
           crossorigin="use-credentials" />
@@ -98,7 +98,7 @@
           style="cursor: not-allowed;">
         </div> -->
         <div class="hover-icon star-icon tollTipWorkspace"
-          [ngClass]="{'active': doc.contextParameters.favorites?.isFavorite}"
+          [ngClass]="{'active': doc?.contextParameters?.favorites?.isFavorite}"
           (click)="markFavourite()">
           <div class="customToolTipWorkspace">Add to favorites</div>
         </div>

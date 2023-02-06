@@ -127,7 +127,8 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   text-overflow: ellipsis;
 }
 
-/* .active-tab {
+.active-tab {
+  /* background: #48caf0; */
   color: #000;
   font-weight: normal;
   font-size: 15px;
@@ -143,7 +144,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   z-index: 9;
   width: 100%;
   top: 0px;
-} */
+}
 .set{
   padding: 12px 17px;
   /* width: max-content; */
@@ -188,15 +189,17 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   font-weight: normal;
 }
 section.lpSecOne {
+  /* min-height: 600px; */
   position: relative;
 }
 section.lpBAck:before, .lpSecOne:before {
   content: '';
-  position: absolute;
+  position: fixed;
   background: #f8f8f5;
   left: 0;
-  height: 100%;
-  width: 30%;
+  /* left: -19.3vw; */
+  height: calc(100% - 76px);
+  width: 50%;
 }
 
 .masonry-item {
@@ -217,7 +220,15 @@ section.lpBAck:before, .lpSecOne:before {
 .paddingLeft1{
   padding-left: 60px;
 }
-
+.header-content .main-title{
+    font-size: 24px;
+    line-height: 22px;
+    color: #000000;
+    font-weight: normal;
+    margin-bottom: 9px !important;
+    display: block;
+    /* display: contents; */
+}
 .header-content h6{
   font-size: 15px;
   line-height: 24px;
@@ -247,6 +258,17 @@ section.lpBAck:before, .lpSecOne:before {
  .folderCircle:hover {
   color: #C49900;
 }
+.folder-structure{
+  height: 129px;
+  width: 197px;
+  /* background: url(~/../../../assets/images/yellow-background.svg); */
+  background: url(~/../../../assets/images/folder-workspace.svg) no-repeat left top / cover;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  transition: 0.4s;
+  border-radius: 10px;
+}
 .folderTitle{
   font-size: 15px;
   line-height: 22px;
@@ -259,6 +281,29 @@ section.lpBAck:before, .lpSecOne:before {
   font-size: 13px;
   line-height: 13px;
   color: #737373;
+}
+.folder-content{
+  width: 100%;
+  /* padding: 15px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px; */
+}
+.folder-content p{
+  font-size: 14px;
+  line-height: 14px;
+  color: #000000;
+  font-weight: normal;
+  padding-bottom: 5px;
+}
+.folder-content span{
+  font-size: 13px;
+  line-height: 13px;
+  color: #737373;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  display: inline-block;
 }
 /* .folder-structure {
    width: 300px;
@@ -273,6 +318,29 @@ section.lpBAck:before, .lpSecOne:before {
 
 
 /* sprint16-v1 start */
+.all-sectors{
+  display: flex;
+  flex-wrap: wrap;
+}
+.all-sectors li {
+  width: auto;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+::ng-deep .all-sectors li #fileId,
+::ng-deep .all-sectors li #fileId2{
+  height: 135px;
+  width: 100%;
+  object-fit: cover;
+}
+::ng-deep .all-sectors li .pdfWhiteBlock {
+  background-color: #fff;
+  padding: 10px;
+  /* width: 178px; */
+  width: 100%;
+  font-size: 13px;
+}
 .list-container:after {
   content: '';
   display: block;
@@ -494,6 +562,10 @@ li.has-children.is-open > .acnav__label {
 /* ::-webkit-scrollbar {
   display: none;
 } */
+.tree{
+  /* max-height: 100vh; */
+  overflow: auto;
+}
 .copy-link{
   font-size: 15px;
   line-height: 24px;
@@ -694,6 +766,36 @@ font-weight: normal;
   width: 100%;
 }
 
+.tollTipCustom{
+  position: relative;
+}
+
+.tollTipCustom .tolltipContent {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.80);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #fff !important;
+  font-weight: normal;
+  width: max-content;
+  border-radius: 4px;
+  line-height: 15px;
+  white-space: nowrap;
+  max-width: max-content;
+  width: max-content;
+  display: none;
+  text-align: center;
+  z-index: 99;
+  line-height: normal;
+}
+.tollTipCustom:hover .tolltipContent {
+  display: block;
+}
+.folderListview {
+  text-align: left;
+}
 .pl-12 {
   padding-left: 12px !important;
 }
@@ -725,6 +827,15 @@ font-weight: normal;
 }
 
 
+.all-sectors li.inner-sectors {
+  width: calc(20% - 10px) !important;
+}
+.all-sectors li.inner-sectors:nth-child(5n+5) {
+  margin-right: 0px !important;
+}
+.all-sectors li.inner-sectors:nth-child(4n+4) {
+  margin-right: 10px !important;
+}
 .pb-5 {
   padding-bottom: 30px !important;
 }
@@ -740,6 +851,30 @@ font-weight: normal;
   color: #BAB8B2;
   float: right;
   padding-top: 2px;
+}
+.createFolder input{
+  border: unset;
+  border-bottom: 2px solid #413E3C;
+  width: 100%;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 24px;
+  color: #040404;
+  padding-bottom: 5px;
+  padding-left: 0px;
+  font-weight: 500;
+}
+.createFolder input::placeholder{
+  font-size: 15px !important;
+  line-height: 24px !important;
+  color: #040404 !important;
+  font-weight: normal !important;
+}
+.createFolder label{
+  font-size: 15px;
+  line-height: 24px;
+  color: #040404;
+  font-weight: normal;
 }
 .mat-expansion-panel:not([class*=mat-elevation-z]){
   box-shadow: unset;
@@ -764,6 +899,31 @@ font-weight: normal;
   vertical-align: middle;
   color: #937206;
   position: absolute;
+}
+.createFolder ::ng-deep .mat-expansion-indicator {
+  /* transform: rotate(-180deg) !important; */
+  height: 10px;
+  width: 10px;
+}
+::ng-deep .mat-expansion-panel-body{
+  padding: 0px !important;
+}
+.createBtn{
+  background-color: #EDD580;
+  border-radius: 24px;
+  float: right;
+  width: unset;
+  font-weight: normal;
+  padding: 6px 19px;
+  font-size: 14px;
+  /* line-height: 20px; */
+  color: #040505;
+}
+/* ::ng-deep .mat-datepicker-popup{
+  left: 819px !important;
+} */
+::ng-deep .mat-expansion-panel-header-description{
+  color: #937206;
 }
 .sectorssText{
   font-size: 20px;
@@ -827,8 +987,115 @@ font-weight: normal;
   /* color: rgba(35, 33, 30, 0.6); */
   color: #24221f;
 }
+.header-content h6.tollTipCustom span{
+  color: rgba(35, 33, 30, 0.6);
+}
 
 
+.delete-folder-action .control-group {
+  display: block;
+}
+.delete-folder-action .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 40px;
+  border: 0px;
+  margin: 0px 0px 0px;
+}
+.delete-folder-action .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.delete-folder-action .control__indicator {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  background: #ffffff;
+  border-radius: 20px;
+}
+.delete-folder-action .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.delete-folder-action .control:hover input ~ .control__indicator,
+.delete-folder-action .control input:focus ~ .control__indicator {
+  background: #fff;
+}
+.delete-folder-action .control input:checked ~ .control__indicator {
+  background: #C49900;
+}
+.delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
+.delete-folder-action .control input:checked:focus ~ .control__indicator {
+  background: #C49900;
+}
+.delete-folder-action .control input:disabled ~ .control__indicator {
+  background: #C49900;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.delete-folder-action .control__indicator:after,
+.delete-folder-action .control__indicator:before {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.delete-folder-action .control input:checked ~ .control__indicator:after,
+.delete-folder-action .control input ~ .control__indicator:before {
+  display: block;
+}
+.delete-folder-action .control--checkbox .control__indicator:after,
+.delete-folder-action .control--checkbox .control__indicator:before {
+  left: 10px;
+  top: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.delete-folder-action .control--checkbox .control__indicator:before{
+  border-color: #BAB8B2;
+}
+.delete-folder-action .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.delete-folder-action .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.delete-folder-action .control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b;
+}
+.groupFolder {
+  position: relative;
+}
+.delete-folder-action:after {
+  clear: both;
+  content: '';
+  display: block;
+}
+.delete-folder-action {
+  position: absolute;
+  left: 10px;
+  top: 4px;
+  opacity: 0;
+  transition: transform 0.3s;
+}
+.groupFolder:hover .delete-folder-action {
+  opacity: 1;
+  transition: transform 0.3s;
+}
 .deleteFolder, .recoverFolder {
   cursor: pointer;
   display: inline-block;
@@ -847,11 +1114,28 @@ font-weight: normal;
 .createNew {
   margin-left: 0px;
 }
+.groupFolder.checkDelete .delete-folder-action {
+  opacity: 1;
+}
 /* ::ng-deep .mat-datepicker-popup{
   left: 819px !important;
 } */
 ::ng-deep .mat-expansion-panel-header-description{
   color: #937206;
+}
+.no-items {
+  width: 100%;
+  height: 500px;
+  text-align: center;
+  padding: 70px 0;
+  color: #BAB8B2;
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 500;
+}
+.no-items img {
+  display: block;
+  margin: 0px auto 14px;
 }
 .recoverFolder {
   padding-bottom: 5px;
@@ -1126,6 +1410,15 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   color: #000;
   opacity: 1;
 }
+.classificationsIcon {
+  cursor: pointer;
+}
+.classificationsIcon-disabled {
+  cursor: auto;
+}
+.classificationsIcon:hover path {
+  stroke:#DAAA00;
+}
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.workspaceInfoBlock li {
   cursor: auto;
 }
@@ -1137,6 +1430,36 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
   font-size: 15px;
   padding-bottom: 10px;
 }
+.customToolTipWorkspace {
+  display: none;
+  position: absolute;
+  top: 28px;
+  left: 0px;
+  z-index: 99;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: #413E3C;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  white-space: nowrap;
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  width: max-content;
+}
+.tollTipWorkspace:hover .customToolTipWorkspace {
+  display: block;
+}
+ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorkspace {
+  right: 0;
+}
+.positionRelative input.search-bar::placeholder{
+  color: #413E3C !important;
+}
 
 .dateFileSize {padding-top: 10px; overflow: hidden;}
 .dateFileSize li {float: left;padding-right: 10px;padding-left: 6px; line-height: 20px; position: relative; color: #24221f}
@@ -1145,6 +1468,14 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
 .dateFileSize li:last-child:after {width: 0px}
 .dateFileSize li img {max-width: 16px;vertical-align: -2px;display: inline-block;margin-right: 5px;}
 
+.folderListview .tollTipCustom .tolltipContent {
+  top: 45px;
+  left: 0px;
+  background: #413E3C;
+  padding: 2px 20px;
+  color: #fff !important;
+  border-radius: 4px;
+}
 
 .deleted-by-me .control-group {
   display: block;
@@ -1204,6 +1535,22 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
 .deleted-by-me .control input:checked ~ .control__indicator:after,
 .deleted-by-me .control input ~ .control__indicator:before {
   display: block;
+}
+.deleted-by-me .control--checkbox .control__indicator:after,
+.deleted-by-me .control--checkbox .control__indicator:before {
+  left: 9px;
+  top: 4px;
+  width: 8px;
+  height: 12px;
+  border: solid #1E1B19;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.deleted-by-me .control--checkbox .control__indicator:before{
+  border-color: transparent;
+}
+.deleted-by-me .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
 }
 .deleted-by-me .control--radio .control__indicator:after {
   left: 7px;
@@ -1275,6 +1622,11 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   margin-left: 10px;
 }
 
+.main-content {
+  padding-top: 30px;
+  /* min-height: 600px; */
+  min-height: calc(100vh - 200px);
+}
 .block-container {
   width: 200px;
   margin: 10px;
@@ -1369,7 +1721,8 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   text-overflow: ellipsis;
 }
 
-/* .active-tab {
+.active-tab {
+  /* background: #48caf0; */
   color: #000;
   font-weight: normal;
   font-size: 15px;
@@ -1385,7 +1738,7 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   z-index: 9;
   width: 100%;
   top: 0px;
-} */
+}
 .set{
   padding: 12px 17px;
   /* width: max-content; */
@@ -1421,14 +1774,28 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 .views img.active{
   opacity: 1;
 }
-/* .leftPanel{
+.leftPanel{
   padding: 0px;
 }
 .leftPanel li span{
   font-size: 15px !important;
   word-break: break-word;
   font-weight: normal;
-} */
+}
+section.lpSecOne {
+  /* min-height: 600px; */
+  position: relative;
+  padding-left: 100px;
+}
+section.lpBAck:before, .lpSecOne:before {
+  content: '';
+  position: fixed;
+  background: #f8f8f5;
+  left: 0;
+  /* left: -19.3vw; */
+  min-height: calc(100% - 76px);
+  width: 50%;
+}
 
 .masonry-item {
   margin-bottom: 10px;
@@ -1448,14 +1815,15 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
 .paddingLeft1{
   padding-left: 60px;
 }
-/* .header-content .main-title{
+.header-content .main-title{
     font-size: 24px;
     line-height: 22px;
     color: #000000;
     font-weight: normal;
     margin-bottom: 9px !important;
     display: block;
-} */
+    /* display: contents; */
+}
 .header-content h6{
   font-size: 15px;
   line-height: 24px;
@@ -1509,6 +1877,30 @@ span.toggle-children-wrapper.toggle-children-wrapper-collapsed span.toggle-child
   line-height: 13px;
   color: #737373;
 }
+.folder-content{
+  width: 100%;
+  /* padding: 15px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px; */
+}
+.folder-content p{
+  font-size: 14px;
+  line-height: 14px;
+  color: #000000;
+  font-weight: normal;
+  padding-bottom: 5px;
+}
+.folder-content span{
+  font-size: 13px;
+  line-height: 13px;
+  color: #737373;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  display: inline-block;
+}
+
 /* sprint16-v1 start */
 .all-sectors{
   display: flex;
@@ -1901,6 +2293,36 @@ font-weight: normal;
   margin: auto;
   width: 18px;
 }
+.folderListview th{
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  color: #BAB8B2;
+  border-bottom: unset;
+}
+.folderListview td p{
+  /* font-size: 15px; */
+  line-height: 24px;
+  color: #040404;
+  text-align: left;
+}
+.folderListview td, th{
+  padding: 10px;
+}
+.folderListview tr td:th-child(1) p{
+  text-align: left !important
+}
+.folderListview tr:nth-child(1){
+  background-color:  unset !important
+}
+.folderListview tr:nth-child(odd){
+  background-color: #F6F5F2;
+  /* border-bottom: 8px solid #fff; */
+}
+.folderListview tr:nth-child(even){
+  background-color: #FBF7E6;
+  /* border-bottom: 8px solid #fff; */
+}
 /* .folderListview tr{
   margin: 3px 0px;
 } */
@@ -1933,6 +2355,29 @@ font-weight: normal;
   position: relative;
 }
 
+.tollTipCustom .tolltipContent {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.80);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #fff !important;
+  font-weight: normal;
+  width: max-content;
+  border-radius: 4px;
+  line-height: 15px;
+  white-space: nowrap;
+  max-width: max-content;
+  width: max-content;
+  display: none;
+  text-align: center;
+  z-index: 99;
+  line-height: normal;
+}
+.tollTipCustom:hover .tolltipContent {
+  display: block;
+}
 .folderListview {
   text-align: left;
 }
@@ -1983,6 +2428,18 @@ font-weight: normal;
 .pb-5 {
   padding-bottom: 30px !important;
 }
+.createFolder{
+  position: absolute;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 20px;
+  width: 500px;
+  right: 0px;
+  top: 50px;
+  /* left: auto; */
+  z-index: 999;
+}
 .createNew{
   font-size: 15px;
   line-height: 24px;
@@ -1995,6 +2452,30 @@ font-weight: normal;
   color: #BAB8B2;
   float: right;
   padding-top: 2px;
+}
+.createFolder input{
+  border: unset;
+  border-bottom: 2px solid #413E3C;
+  width: 100%;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 24px;
+  color: #040404;
+  padding-bottom: 5px;
+  padding-left: 0px;
+  font-weight: 500;
+}
+.createFolder input::placeholder{
+  font-size: 15px !important;
+  line-height: 24px !important;
+  color: #040404 !important;
+  font-weight: normal !important;
+}
+.createFolder label{
+  font-size: 15px;
+  line-height: 24px;
+  color: #040404;
+  font-weight: normal;
 }
 .mat-expansion-panel:not([class*=mat-elevation-z]){
   box-shadow: unset;
@@ -2019,6 +2500,11 @@ font-weight: normal;
   vertical-align: middle;
   color: #937206;
   position: absolute;
+}
+.createFolder ::ng-deep .mat-expansion-indicator {
+  /* transform: rotate(-180deg) !important; */
+  height: 10px;
+  width: 10px;
 }
 ::ng-deep .mat-expansion-panel-body{
   padding: 0px !important;
@@ -2086,15 +2572,162 @@ font-weight: normal;
   padding: 4px;
   display: none;
 }
+.breadcrumb-active {
+  cursor: pointer;
+  text-decoration: none;
+  color: rgba(35, 33, 30, 0.6);
+}
+.breadcrumb-active:hover {
+  text-decoration: underline;
+  color: rgba(35, 33, 30, 0.6);
+}
+
+.breadcrumb-not-active {
+  cursor: default;
+  text-decoration: none;
+  /* color: rgba(35, 33, 30, 0.6); */
+  color: #24221f;
+}
 .header-content h6.tollTipCustom span{
   color: rgba(35, 33, 30, 0.6);
 }
 
 
+.delete-folder-action .control-group,
+.checkAll .control-group {
+  display: block;
+}
+.delete-folder-action .control,
+.checkAll .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 40px;
+  border: 0px;
+  margin: 0px 0px 0px;
+}
+.delete-folder-action .control input,
+.checkAll .control input {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  top: -4px;
+}
+.delete-folder-action .control__indicator,
+.checkAll .control__indicator {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #ffffff;
+  border-radius: 20px;
+}
+.delete-folder-action .control--radio .control__indicator,
+.checkAll .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.delete-folder-action .control:hover input ~ .control__indicator,
+.delete-folder-action .control input:focus ~ .control__indicator,
 
 .checkAll .control:hover input ~ .control__indicator,
 .checkAll .control input:focus ~ .control__indicator {
   background: #fff;
+}
+.delete-folder-action .control input:checked ~ .control__indicator,
+.checkAll .control input:checked ~ .control__indicator {
+  background: #C49900;
+}
+.delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
+.delete-folder-action .control input:checked:focus ~ .control__indicator,
+
+.checkAll .control:hover input:not([disabled]):checked ~ .control__indicator,
+.checkAll .control input:checked:focus ~ .control__indicator {
+  background: #C49900;
+}
+.delete-folder-action .control input:disabled ~ .control__indicator,
+.checkAll .control input:disabled ~ .control__indicator{
+  background: #C49900;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.delete-folder-action .control__indicator:after,
+.delete-folder-action .control__indicator:before,
+
+.checkAll .control__indicator:after,
+.checkAll .control__indicator:before{
+  content: '';
+  position: absolute;
+  display: none;
+}
+.delete-folder-action .control input:checked ~ .control__indicator:after,
+.delete-folder-action .control input ~ .control__indicator:before,
+
+.checkAll .control input:checked ~ .control__indicator:after,
+.checkAll .control input ~ .control__indicator:before{
+  display: block;
+}
+.delete-folder-action .control--checkbox .control__indicator:after,
+.delete-folder-action .control--checkbox .control__indicator:before,
+
+.checkAll .control--checkbox .control__indicator:after,
+.checkAll .control--checkbox .control__indicator:before {
+  left: 8px;
+  top: 4px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.delete-folder-action .control--checkbox .control__indicator:before,
+.checkAll .control--checkbox .control__indicator:before {
+  border-color: #BAB8B2;
+}
+.delete-folder-action .control--checkbox input:disabled ~ .control__indicator:after,
+.checkAll .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.delete-folder-action .control--radio .control__indicator:after,
+.checkAll .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.delete-folder-action .control--radio input:disabled ~ .control__indicator:after,
+.checkAll .control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b;
+}
+.groupFolder {
+  position: relative;
+}
+.delete-folder-action:after {
+  clear: both;
+  content: '';
+  display: block;
+}
+.delete-folder-action {
+  position: static;
+  left: 10px;
+  top: 4px;
+  opacity: 0;
+  transition: transform 0.3s;
+  width: 24px;
+  height: 24px;
+}
+.groupFolder:hover .delete-folder-action {
+  opacity: 1;
+  transition: transform 0.3s;
 }
 .deleteFolder, .recoverFolder {
   cursor: pointer;
@@ -2113,6 +2746,9 @@ font-weight: normal;
 }
 .createNew {
   margin-left: 0px;
+}
+.groupFolder.checkDelete .delete-folder-action {
+  opacity: 1;
 }
 /* ::ng-deep .mat-datepicker-popup{
   left: 819px !important;
@@ -2329,6 +2965,17 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   text-align: center !important;
 }
 
+.renameFolderImg, .renameFolderRemoveImg {
+  display: inline-block;
+  max-width: 18px;
+  cursor: pointer;
+  vertical-align: -1px;
+}
+.renameFolderRemoveImg {
+  max-width: 30px;
+  vertical-align: -8px;
+  margin-left: 10px;
+}
 
 .input-sizer {
   display: inline-grid;
@@ -2457,7 +3104,9 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu.work
 ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorkspace {
   right: 0;
 }
-
+.positionRelative input.search-bar::placeholder{
+  color: #413E3C !important;
+}
 
 .dateFileSize {padding-top: 10px; overflow: hidden;}
 .dateFileSize li {float: left;padding-right: 10px;padding-left: 6px; line-height: 20px; position: relative; color: #24221f}
@@ -2466,6 +3115,16 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 .dateFileSize li:last-child:after {width: 0px}
 .dateFileSize li img {max-width: 16px;vertical-align: -2px;display: inline-block;margin-right: 5px;}
 
+.folderListview .tollTipCustom .tolltipContent {
+  top: 35px;
+  left: 0px;
+  background: #413E3C;
+  padding: 0px 5px;
+  color: #fff !important;
+  border-radius: 4px;
+  text-align: left;
+  line-height: 23px;
+}
 
 .deleted-by-me .control-group {
   display: block;
@@ -2526,6 +3185,22 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 .deleted-by-me .control input ~ .control__indicator:before {
   display: block;
 }
+.deleted-by-me .control--checkbox .control__indicator:after,
+.deleted-by-me .control--checkbox .control__indicator:before {
+  left: 9px;
+  top: 4px;
+  width: 8px;
+  height: 12px;
+  border: solid #1E1B19;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.deleted-by-me .control--checkbox .control__indicator:before{
+  border-color: transparent;
+}
+.deleted-by-me .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
 .deleted-by-me .control--radio .control__indicator:after {
   left: 7px;
   top: 7px;
@@ -2539,6 +3214,10 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
 }
 .deleted-by-me {
   padding-top: 10px;
+}
+.gallery-view-block {
+  float: right;
+  border-left: 1px solid #EFEEE9;
 }
 .buttonCreate img {opacity: 1 !important;width: 18px !important; margin-top: 4px;}
 .deleteRecover {display: inline-block;}
@@ -2640,7 +3319,17 @@ ul.uploadAssetsClassifications li.tollTipWorkspace.addClass .customToolTipWorksp
   border-spacing: 0 10px;
   table-layout: fixed;
 }
-
+.customTableStyle td:first-child,
+.customTableStyle th:first-child {
+  border-radius: 10px 0 0 10px;
+}
+.customTableStyle td:last-child,
+.customTableStyle th:last-child {
+  border-radius: 0 10px 10px 0;
+}
+tr.groupFolder td:first-child {
+  padding-right: 0px !important;
+}
 .createFolder input.errorInput {
   border-bottom: 2px solid #E03C31 !important;
 }
@@ -2787,6 +3476,18 @@ ul.downloadImgLisst li .contentListBlk {
 .internal-use .control input:checked ~ .control__indicator:after {
   display: block;
 }
+.internal-use .control--checkbox .control__indicator:after {
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid #23211E;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.internal-use .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
 .internal-use .control--radio .control__indicator:after {
   left: 7px;
   top: 7px;
@@ -2856,6 +3557,18 @@ ul.downloadImgLisst li .contentListBlk {
 .dropdownCreate .control input:checked ~ .control__indicator:after {
   display: block;
 }
+.dropdownCreate .control--checkbox .control__indicator:after {
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.dropdownCreate .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #fff;
+}
 .dropdownCreate .control--radio .control__indicator:after {
   left: 7px;
   top: 7px;
@@ -2879,8 +3592,18 @@ ul.downloadImgLisst li .contentListBlk {
   width: 22px
 }
 
+.customToolTipWorkspace.infoHover {
+  width: 380px;
+  left: -196px;
+  white-space: normal;
+  font-size: 13px;
+  font-weight: normal;
+}
 .mt-15 {
   margin-top: 15px !important;
+}
+.tollTipWorkspace.workspaceInfoHover .classificationsIcon:hover path {
+  stroke:none;
 }
 
 .header-content .customWidth {
@@ -2949,6 +3672,9 @@ ul.downloadImgLisst li .contentListBlk {
 }
 /* custom checkbox end */
 
+svg.classificationsIcon.disablePermission path {
+  stroke: #bab8b1;
+}
 /* .updateClassificationBlk ::ng-deep .mat-datepicker-popup {
   left: 40% !important;
 } */
@@ -2977,6 +3703,21 @@ ul.downloadImgLisst li .contentListBlk {
   background: #B1AAA1;
   color: #1E1B19;
 }
+.mouseHoverInfo {
+  background: #1E1B19;
+  border-radius: 4px;
+  padding: 4px 12px 7px;
+  width: 290px;
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  position: absolute;
+  top: 32px;
+  left: 0px;
+  z-index: 9;
+  display: none;
+}
 /* .publicUseBlock:hover .mouseHoverInfo {
   display: block;
 } */
@@ -3001,6 +3742,11 @@ ul.downloadImgLisst li .contentListBlk {
   cursor: auto;
   margin-top: 10px;
 }
+.classificationsIcon.manageUsers:hover path {
+  fill: #DAAA00;
+  stroke: none;
+}
+/* custom checkbox end */
 
 a.downloadDisbable {
     color: gray!important;
@@ -3035,6 +3781,9 @@ a.downloadDisbable path {
 }
 .pt-15.removeMarginTop {
   padding-top: 0px !important;
+}
+.classificationsIcon-disabled.manageUsers path {
+  fill: #bab8b1;
 }
 ul.uploadAssetsClassifications li:hover path,
 .buttonCreate:hover path {
@@ -3084,6 +3833,26 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
   padding: 3px 10px 5px;
   float: right;
 }
+.copyHover {
+  position: relative;
+  margin-left: 0px;
+  cursor: pointer;
+}
+.copyHoverInfo {
+  display: none;
+  top: 31px;
+  right: 0px;
+  background: #413E3C;
+  padding: 2px 7px;
+  color: #fff !important;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  width: 75px;
+}
+.copyHover:hover .copyHoverInfo {
+  display: block;
+}
 .deleteRecover .workspaceInfo {
   display: none;
 }
@@ -3127,8 +3896,29 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
 .workspaceInfo .workspaceHeading, .workspaceInfo .workspaceHeading {
   font-family: 'brownregular';
 }
+.renameAssets {
+  border-radius: 10px;
+  background: #ebe9e3;
+  padding: 2px 10px 4px 10px;
+  line-height: normal;
+  border: 0px;
+}
 
-
+div#dropzone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999999999;
+  width: 100%;
+  min-height: 300px;
+  height: 100%;
+  transition: visibility 175ms, opacity 175ms;
+  display: table;
+  color: #fff;
+  background: rgba(249, 247, 242, 0.85);
+  border: 2px dashed #937206;
+  border-radius: 8px;
+}
 div#textnode {
   display: table-cell;
   text-align: center;
@@ -3153,6 +3943,23 @@ div#textnode p {
   vertical-align: middle;
   z-index: 999;
 }
+.zoomImgBlock {
+  max-width: 200px;
+  position: absolute;
+  left: 0px;
+  bottom: 34px;
+  display: none;
+  z-index: 9;
+  background: #fff;
+  width: 250px;
+}
+.zoomImg:hover .zoomImgBlock {
+  display: block;
+}
+.zoomImgBlock img {
+  max-width: 100%;
+  width: 100%;
+}
 img.noPreviewImg {
   width: 20px !important;
 }
@@ -3166,9 +3973,9 @@ img.noPreviewImg {
   background: transparent;
   color: #040404;
 }
-/* li.hoverPin.active-tab a {
+li.hoverPin.active-tab a {
   color: #040404 !important;
-} */
+}
 .folderType {
   padding-top: 20px;
 }
@@ -3323,6 +4130,27 @@ img.closeIcon {
   display: block;
   margin: 0px auto 40px;
   max-width: 70px;
+}
+.publicUseBlk.published {
+  background-color: #E9E0C1;
+}
+.publicUseBlk.published img{
+  width: 10px;
+  display: inline-block;
+  height: 23px;
+}
+.publicUseBlock.publishedBlock .mouseHoverInfo {
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  color: #040404;
+  width: 450px;
+  right: 0px;
+  left: auto;
+  padding: 12px 15px;
+  cursor: auto;
+}
+.publicUseBlk.published::after {
+  z-index: -1;
 }
 .collapse{
   cursor: pointer;
@@ -3788,4 +4616,16 @@ button.sendRequest {
 span.clickEvent.textDIsable {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.pointer-events {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.disablePagi ::ng-deep mat-form-field {
+  pointer-events: none;
+  opacity: 0.5;
+}
+::ng-deep .mat-paginator-container {
+  align-items: center !important;
+  justify-content: center !important;
 }

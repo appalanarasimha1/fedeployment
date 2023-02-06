@@ -105,7 +105,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.sortedData = this.searchList?.slice();
     this.sortedDataList.emit(this.sortedData)
-    this.fetchUserData()
+    this.fetchUserData();
+    this.createDynamicSidebarScroll();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -172,9 +173,10 @@ export class DataTableComponent implements OnInit, OnChanges {
     return new Date(date).toDateString();
   }
 
-  rightClickMove(){
-    if (this.count > 0) return this.openMoveModal(true);
-     this.openMoveModal(true);
+  rightClickMove(move=true){
+    if (this.count >0) return this.openMoveModal(move);
+    // this.selectAsset({checked:true , from:"rightClick"}, this.rightClickedItem,  this.rightClickedIndex)
+    this.openMoveModal(move);
     this.removeAssets()
     this.contextMenu.closeMenu();
     return $(".availableActions").hide();
@@ -1026,6 +1028,35 @@ export class DataTableComponent implements OnInit, OnChanges {
     if (!this.downloadEnable) {
       this.downloadErrorShow = true;
     }
+  }
+
+  unSelectEnable(){
+    let checkGen = false
+    for (let i = 0; i < this.sortedData.length; i++) {
+      if(this.checkGeneralFolder( this.sortedData[i])) {
+        checkGen=true
+        break;
+      }
+    }
+
+    if (checkGen) return this.count ==this.sortedData.length-1
+    return this.count ==this.sortedData.length
+  }
+
+  createDynamicSidebarScroll() {
+    setTimeout(() => {
+      var storeHeight = $(".main-content").outerHeight();
+      $(".leftPanel.insideScroll").css("height", storeHeight - 80);
+
+      var getWidth1 = $('.getWidth1').outerWidth();
+      var getWidth2 = $('.getWidth2').outerWidth();
+      var getWidth3 = $('.getWidth3').outerWidth();
+      var totalWidth = getWidth1 + getWidth2 + getWidth3;
+      console.log('getWidth2', getWidth2);
+      $('.chkbox.width1600').css("width", totalWidth - 60);
+
+      // $('.itemTitleContent').css("width", getWidth2 - 30 )
+    }, 0);
   }
 
 }
