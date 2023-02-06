@@ -15,7 +15,6 @@ export class ApiService {
     return {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Expose-Headers": "X-TOKEN",
-      accept: "text/plain,application/json, application/json",
       "Access-Control-Allow-Methods": "PUT,DELETE,POST,GET,OPTIONS",
       "nuxeo-virtual-host": environment.apiServiceBaseUrl,
       // "Access-Control-Expose-Headers": "mintargetapiversion",

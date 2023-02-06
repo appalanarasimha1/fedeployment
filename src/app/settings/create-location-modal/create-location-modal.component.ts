@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NuxeoService } from "src/app/services/nuxeo.service";
-import { adminPanelWorkspacePath } from "src/app/common/constant";
+import { ApiService } from "../../services/api.service";
 
 @Component({
   selector: 'app-create-location-modal',
@@ -16,7 +15,7 @@ export class CreateLocationModalComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CreateLocationModalComponent>,
-    private nuxeo: NuxeoService,
+    private apiService: ApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
    }
@@ -27,18 +26,12 @@ export class CreateLocationModalComponent implements OnInit {
 
   async createRegion() {
     this.loading = true;
-    const createdRegion = await this.nuxeo.nuxeoClient.operation('Document.Create')
-    .params({
-      type: "Region",
-      name: this.regionName,
-      properties: {
-        "region:initial": this.regionInitial,
-        "dc:title": this.regionName
-      }
-    })
-    .input(adminPanelWorkspacePath + '/RegionFolder')
-    .execute();
-    this.closeModal(createdRegion);
+    const payload = {
+      code: this.regionInitial,
+      title: this.regionName,
+    }
+    await this.apiService.post('/settings/area', payload, {responseType: 'text'}).toPromise();
+    this.closeModal(true);
   }
 
   closeModal(result?) {

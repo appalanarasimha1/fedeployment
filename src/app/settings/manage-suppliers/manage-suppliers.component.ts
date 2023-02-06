@@ -55,7 +55,6 @@ export class ManageSuppliersComponent implements OnInit {
   adminPanelWorkspace = null;
   supplierList = [];
   users = [];
-  regionList = [];
   regionMap = {};
   selectedSupplier = null;
   filteredUsers: Observable<string[]>;
@@ -99,7 +98,6 @@ export class ManageSuppliersComponent implements OnInit {
       map(value => this._userFilter(value || '')),
     );
     //init admin panel folder structure if not exist
-    this.getOrCreateAdminPanelWorkspace();
     this.getAllUsers();
     this.getSupplierList();
     this.getRegionList();
@@ -152,9 +150,7 @@ export class ManageSuppliersComponent implements OnInit {
 
   updateSuppilerUsers(id, users) {
     const params = {
-      properties: {
-        "supplier:supplierUsers": JSON.stringify(users),
-      }
+      "supplierUsers": users,
     }
     this.updateDocument(id, params);
   }
@@ -207,34 +203,7 @@ export class ManageSuppliersComponent implements OnInit {
       "user": user,
     })
     .execute();
-  }
-
-  async getOrCreateAdminPanelWorkspace() {
-    if (!this.nuxeo || !this.nuxeo.nuxeoClient) return;
-    try {
-      const folder = await this.nuxeo.nuxeoClient.repository().fetch(adminPanelWorkspacePath);
-      if (!folder) return this.createAdminPanelFolderStructure();
-    } catch (err) {
-      this.createAdminPanelFolderStructure();
-    }
-  }
-
-  createFolder(type, name, path) {
-    return this.nuxeo.nuxeoClient.operation('Document.Create')
-    .params({
-      type,
-      name,
-    })
-    .input(path)
-    .execute();
-  }
-
-  async createAdminPanelFolderStructure() {
-    // create AdminPanelWorkspace
-    this.adminPanelWorkspace = await this.createFolder("MiscFolder", "AdminPanelWorkspace", "/default-domain/workspaces");
-    await this.createFolder("Folder", "SupplierFolder", adminPanelWorkspacePath);
-    await this.createFolder("Folder", "RegionFolder", adminPanelWorkspacePath);
-    await this.createFolder("Folder", "LocationFolder", adminPanelWorkspacePath);
+    this.getSupplierList();
   }
 
   async getAllUsers() {
@@ -246,19 +215,19 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async getSupplierList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const url = '/settings/supplier';
     const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
+      .get(url, {}).toPromise() as any;
 
     if (!res) return;
-    this.supplierList = res["entries"].map(supplier => ({
-      name: supplier.title,
-      uid: supplier.uid,
-      regions: supplier.properties["supplier:regions"],
-      users: supplier.properties["supplier:supplierUsers"],
-      activated: supplier.properties["supplier:activated"],
-      supportEmail: supplier.properties["supplier:supportEmail"],
-      expiry: supplier.properties["supplier:expiry"],
+    this.supplierList = res.map(supplier => ({
+      name: supplier.name,
+      uid: supplier.id,
+      regions: supplier.regions,
+      users: supplier.supplierUsers,
+      activated: supplier.activated,
+      supportEmail: supplier.supportEmail,
+      expiry: supplier.expiry,
       renameEmail : false,
     }));
     this.filteredSuppliers = this.supplierList;
@@ -267,15 +236,15 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async getRegionList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const url = '/settings/area';
     const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } }).toPromise();
+      .get(url, {}).toPromise() as any;
 
-    if (res) this.regionList = res["entries"] || [];
-    this.suppliersRegion = this.regionList.map(region => ({
-      id: region.properties["region:initial"],
+    const regions = res || [];
+    this.suppliersRegion = regions.map((region) => ({
+      initial: region.code,
       name: region.title,
-      uid: region.uid,
+      uid: region.id,
     }));
     this.computeRegionMap();
 
@@ -317,7 +286,7 @@ export class ManageSuppliersComponent implements OnInit {
     if (removedIndex < 0) return;
     regions.splice(removedIndex, 1);
     this.supplierList[index].regions = regions;
-    this.updateDocument(this.supplierList[index].uid, {properties: {"supplier:regions": regions}})
+    this.updateDocument(this.supplierList[index].uid, {"regions": regions})
   }
 
   selected(event: MatAutocompleteSelectedEvent, index): void {
@@ -331,7 +300,7 @@ export class ManageSuppliersComponent implements OnInit {
       }
     });
     this.supplierList[index].regions = regions;
-    this.updateDocument(this.supplierList[index].uid, {properties: {"supplier:regions": regions}})
+    this.updateDocument(this.supplierList[index].uid, {"regions": regions})
   }
 
   private _filter(value: any): any[] {
@@ -341,23 +310,20 @@ export class ManageSuppliersComponent implements OnInit {
   renameEmailClick(saved=false, email?, index?){
     // this.renameEmail = !this.renameEmail;
     if (!saved) return;
-    this.updateDocument(this.supplierList[index].uid, {properties: {"supplier:supportEmail": email}})
+    this.updateDocument(this.supplierList[index].uid, {"supportEmail": email})
   }
 
   updateDocument(id, params) {
-    return this.nuxeo.nuxeoClient.operation('Document.Update')
-    .params(params)
-    .input(id)
-    .execute();
+    return this.apiService.post(`/settings/supplier/${id}`, params, {responseType: 'text'}).toPromise();
   }
 
   async updateSupplierExpiry(event, supplier) {
-    await this.updateDocument(supplier.uid, {properties: {"supplier:expiry": event.value}});
+    await this.updateDocument(supplier.uid, {"expiry": event.value});
     this.getSupplierList();
   }
 
   async toggleActivated(event, supplier, allNotifactionContent) {
-    await this.updateDocument(supplier.uid, {properties: {"supplier:activated": event.checked}});
+    await this.updateDocument(supplier.uid, {"activated": event.checked});
     if(event.checked) {
       this.modalOpen = true;
       this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {

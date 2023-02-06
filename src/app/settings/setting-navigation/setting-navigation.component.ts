@@ -20,26 +20,26 @@ export class SettingNavigationComponent implements OnInit {
   }
 
   async getSupplierList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService.get(url, { headers: {} }).toPromise();
+    const url = '/settings/supplier/count';
+    const res = await this.apiService.get(url, { headers: {} }).toPromise() as any;
 
     if (!res) return;
-    this.supplierCount = res["resultsCount"];
+    this.supplierCount = res || 0;
   }
 
   async getRegionList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService.get(url, { headers: {} }).toPromise();
+    const url = '/settings/area/count';
+    const res = await this.apiService.get(url, { headers: {} }).toPromise() as any;
 
     if (!res) return;
-    this.regionCount = res["resultsCount"];
+    this.regionCount = res || 0;
   }
 
   async getDeviceList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Device' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService.get(url, { headers: {} }).toPromise();
+    const url = '/settings/camera/count';
+    const res = await this.apiService.get(url, { headers: {} }).toPromise() as any;
 
     if (!res) return;
-    this.deviceCount = res["resultsCount"];
+    this.deviceCount = res || 0;
   }
 }
