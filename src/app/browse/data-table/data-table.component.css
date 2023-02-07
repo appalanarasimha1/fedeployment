@@ -491,7 +491,7 @@ tr.groupFolder td:first-child {
   .checkAll .control--checkbox .control__indicator:after,
   .checkAll .control--checkbox .control__indicator:before {
     left: 7px;
-    top: 3px;
+    top: 4px;
     width: 5px;
     height: 10px;
     border: solid #fff;
@@ -533,8 +533,8 @@ tr.groupFolder td:first-child {
     top: 4px;
     opacity: 0;
     transition: transform 0.3s;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
   .groupFolder:hover .delete-folder-action {
     opacity: 1;
@@ -584,4 +584,54 @@ tr.groupFolder td:first-child {
 }
 .permissionRequired {
   text-align: center;
+}
+
+.availableActions {
+  /* position: absolute; */
+  /* background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 12px 14px; */
+  /* width: 304px;
+  left: 40px;
+  top: 45px;
+  z-index: 9; */
+}
+.availableActions ul li {
+  margin-bottom: 10px;
+}
+
+.availableActions ul:last-child {
+  border-top: 1px solid #f0efea;
+  margin-top: 15px;
+  padding-top: 15px;
+}
+.availableActions ul:last-child li:last-child {
+  margin-bottom: 0px;
+}
+
+.availableActions ul li span {
+  width: 25px;
+  display: inline-block;
+  height: 25px;
+  margin-right: 10px;
+}
+.availableActions ul li span svg.action-rename-icon {
+  width: 84%;
+  height: 75%;
+}
+.availableActions ul li span svg.action-file-share-icon {
+  width: 80%;
+  height: 100%;
+}
+.availableActions ul li a {
+   color: #212529;
+   text-decoration: none;
+}
+::ng-deep .mat-menu-panel {
+  width: 304px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%) !important;
+  border-radius: 8px !important;
+  padding: 12px 14px !important;
 }

@@ -598,3 +598,100 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:h
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:last-child {
   margin-bottom: 0px;
 }
+.createNew {
+  margin-left: 0px;
+}
+.createNew, .deleteFolder, .recoverFolder {
+  font-size: 15px;
+  line-height: 31px;
+  color: #937206;
+  font-weight: normal;
+  vertical-align: middle;
+}
+img, svg {
+  display: inline-block;
+}
+.tollTipWorkspace {
+  position: relative;
+  line-height: normal;
+}
+
+.buttonCreate {
+  padding-top: 3px;
+  display: inline-block;
+  margin-right: 0px;
+  vertical-align: top;
+}
+.selectedItemBlock img {
+  opacity: 1;
+  height: 11px;
+  margin-left: 5px;
+  width: 11px;
+  vertical-align: 0px;
+}
+ul.uploadAssetsClassifications li img {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  vertical-align: 0px;
+  line-height: normal;
+}
+.selectedItemBlock {
+  display: inline-block;
+  background: #F4E6B3;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: #937206;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  line-height: 24px;
+  margin-top: 1px;
+}
+.moveFolderBlock,
+.downloadFileWorkspace {
+  display: inline-block;
+}
+.moveFolderBlock img, .downloadFileWorkspace img {
+  opacity: 1;
+  height: 18px;
+  margin-left: 15px;
+  width: 18px;
+  vertical-align: -3px;
+  margin-right: 6px;
+}
+.downloadFileWorkspace img {
+  height: 26px;
+  width: 26px;
+  vertical-align: -8px;
+  margin-right: 0px;
+}
+.errorMessage {
+  color: #E03C31;
+  font-size: 14px;
+  float: left;
+  line-height: 35px;
+}
+.dropdownCreate .btn:disabled {
+  background: #E8E6DF;
+  color: #BAB8B2;
+  opacity: 1;
+}
+.deleteRecover {
+  position: relative;
+  z-index: 2;
+  vertical-align: -5px;
+  display: inline-block;
+}
+.deleteFolder {
+  margin-right: 0px;
+  position: relative;
+  z-index: 2;
+  line-height: normal;
+  display: inline-block;
+  vertical-align: 2px;
+}
+.deleteFolder svg {
+  width: 20px;
+  height: 22px;
+  vertical-align: -5px;
+}
