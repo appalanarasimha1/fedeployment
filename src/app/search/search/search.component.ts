@@ -662,4 +662,13 @@ export class SearchComponent implements OnInit {
     this.selectedTab = tab;
   }
 
+  checkShowTabSelection() {
+    let isOtherPage = false;
+    if (this.documentsView) {
+      isOtherPage = !!this.documentsView.detailView || !!this.searchValue.ecm_fulltext;
+    }
+
+    return !this.isDroneUploader && !isOtherPage;
+  }
+
 }
