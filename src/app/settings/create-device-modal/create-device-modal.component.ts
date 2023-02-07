@@ -101,7 +101,7 @@ export class CreateDeviceModalComponent implements OnInit {
 
   checkEnableCreateDeviceButton() {
     if (!this.installationID) return false;
-    if (isNaN(this.latitude) || isNaN(this.longitude)) return false;
+    if (isNaN(this.latitude) || isNaN(this.longitude) ||!this.selectedSubArea || !this.selectedRegions) return false;
     if (this.directionShow) {
       if (!this.direction || this.direction.length !== 3 || isNaN(parseFloat(this.direction))) return false;
     }
