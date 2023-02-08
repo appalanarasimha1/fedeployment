@@ -57,12 +57,14 @@
   }
   
 .folderListview .tollTipCustom .tolltipContent {
-    top: 45px;
+    top: 35px;
     left: 0px;
     background: #413E3C;
-    padding: 2px 20px;
+    padding: 0px 5px;
     color: #fff !important;
     border-radius: 4px;
+    text-align: left;
+    line-height: 23px;
 }
 
 .tollTipCustom{
@@ -567,7 +569,7 @@ tr.groupFolder td:first-child {
     display: inline-block;
     vertical-align: middle;
     position: relative;
-    z-index: 99;
+    z-index: 1;
     max-width: calc(100% - 30px);
 }
 .itemTitleContent {

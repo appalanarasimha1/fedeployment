@@ -73,6 +73,13 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   selectedMoveListNew = {};
   canNotDelete=[]
 
+  selectedFolder = null;
+  selectedFolder2 = null;
+  selectedFolderList: any = {};
+  whiteLoader: boolean = false;
+  transparentLoader: boolean = false;
+  onlyPrivate:boolean = false;
+
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
@@ -492,23 +499,29 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   
   async openAddUserModal() {
     if (!this.isAdmin) return;
+    this.whiteLoader = true;
+    this.transparentLoader = true;
+    // this.loading = true;
     const folderCollaborators = this.getFolderCollaborators();
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.width = "640px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
-    const folder = this.currentWorkspace;// await this.fetchFolder(this.selectedFolder.uid);
+    const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {
-      selectedFolder: this.currentWorkspace,
-      folderId: this.currentWorkspace.uid,
+      selectedFolder: this.selectedFolder,
+      folderId: this.selectedFolder.uid,
       folderCollaborators
     }
 
     const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
-
+    this.whiteLoader = false;
+    this.transparentLoader = false;
+    // this.loading = false;
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
+        this.onlyPrivate = false
         this.saveState(result);
       }
     });
@@ -821,5 +834,81 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
   checkAssetLength(){
     return Object.keys(this.selectedMoveListNew).length == 1
+  }
+
+  onInput(event) {
+    const input = event.target;
+    input.parentNode.dataset.value = input.value;
+  }
+
+  async fetchFolder(id) {
+    const result = await this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
+      {headers: { "fetch-document": "properties"}}).toPromise();
+    return result;
+  }
+
+  checkCollabAndPrivateFolder(cancel?:boolean){
+    // if(!this.isAdmin) return this.onlyPrivate =  false
+    let collabs = this.getFolderCollaborators()
+    let checkCollabs
+    if (!collabs) {
+      checkCollabs = true
+    } else {
+       checkCollabs = Object.keys(collabs)?.length < 2
+    }
+    let isPrvt = this.isPrivateFolder()
+    // let checkCollabs = Object.keys(collabs)?.length < 2
+    this.onlyPrivate = checkCollabs && isPrvt && this.isAdmin
+   }
+
+  onlyPrivateFolder() {
+    this.onlyPrivate = !this.onlyPrivate;
+  }
+
+  datePickerDefaultAction() {
+    this.showCreateFolderPopup = true;
+    $( ".createNew.flexible" ).focus(() => {
+      // alert( "Handler for .focus() called." );
+      setTimeout(() => {
+        $('#autoFocusElement').focus();
+      }, 500);
+    });
+    $(".buttonCreate").on("click", function (e) {
+      // $(".dropdownCreate").toggle();
+      $(".dropdownCreate").show();
+      $(".buttonCreate").addClass("createNewFolderClick");
+      setTimeout(() => {
+        $('#autoFocusElement').focus();
+      }, 500);
+      e.stopPropagation();
+    });
+    $(".buttonCreate.createNewFolderClick").on("click", function (e) {
+      $(".dropdownCreate").hide();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+
+    $(".dropdownCreate, .mat-datepicker-content").click(function (e) {
+      e.stopPropagation();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+    });
+
+    $(document).click(function () {
+      $(".dropdownCreate").hide();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+    });
+
+    $(".mat-icon-button").click(function () {
+      $(".dropdownCreate, .mat-datepicker-content").click(function (e) {
+        $(".buttonCreate").removeClass("createNewFolderClick");
+        e.stopPropagation();
+      });
+    });
+
+    $(".closeIcon").on("click", function (e) {
+      $(".dropdownCreate").hide();
+      e.stopPropagation();
+    });
+    // this.getAllFolders(this.selectedFolder)
   }
 }

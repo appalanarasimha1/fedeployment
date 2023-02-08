@@ -43,8 +43,8 @@
   }
   
 .folder-structure{
-    height: 129px;
-    width: 197px;
+    height: 139px;
+    width: 214px;
     /* background: url(~/../../../assets/images/yellow-background.svg); */
     background: url(~/../../../assets/images/folder-workspace.svg) no-repeat left top / cover;
     display: flex;
@@ -180,12 +180,12 @@
 .delete-folder-action .control__indicator,
 .checkAll .control__indicator {
   position: absolute;
-  top: 0px;
+  top: 5px;
   left: 0;
   height: 20px;
   width: 20px;
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 4px;
 }
 .delete-folder-action .control--radio .control__indicator,
 .checkAll .control--radio .control__indicator {
@@ -289,9 +289,9 @@
     color: #000000;
     font-weight: normal;
     padding-bottom: 5px;
-  }
-  .folder-content span{
-    font-size: 13px;
+}
+.folder-content span{
+    font-size: 14px;
     line-height: 13px;
     color: #737373;
     text-overflow: ellipsis;
@@ -299,13 +299,48 @@
     white-space: nowrap;
     width: 100%;
     display: inline-block;
-  }
+    font-family: 'brownlight';
+}
   
 .folderListview .tollTipCustom .tolltipContent {
-    top: 45px;
-    left: 0px;
-    background: #413E3C;
-    padding: 2px 20px;
-    color: #fff !important;
-    border-radius: 4px;
-  }
+  top: 45px;
+  left: 0px;
+  background: #413E3C;
+  padding: 2px 20px;
+  color: #fff !important;
+  border-radius: 4px;
+}
+.tollTipCustom .tolltipContent {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.80);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #fff !important;
+  font-weight: normal;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  border-radius: 4px;
+  line-height: 15px;
+  white-space: nowrap;
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  width: max-content;
+  display: none;
+  text-align: center;
+  z-index: 99;
+  line-height: normal;
+}
+.tollTipCustom:hover .tolltipContent {
+  display: block;
+}
+.tollTipCustom {
+  position: relative;
+}
+/* .all-sectors li:nth-child(4n+4) .tollTipCustom .tolltipContent {
+  left: auto !important;
+  right: 0px !important;
+} */

@@ -37,12 +37,13 @@ div#dropzone {
   top: 30px;
   left: 0px;
   background: rgba(0, 0, 0, 0.80);
-  padding: 3px 10px;
-  font-size: 13px;
+  padding: 4px 10px;
+  font-size: 12px;
   color: #fff !important;
   font-weight: normal;
   width: max-content;
-  border-radius: 40px;
+  border-radius: 4px;
+  line-height: 15px;
   white-space: nowrap;
   max-width: max-content;
   width: max-content;
@@ -442,6 +443,20 @@ ul.uploadAssetsClassifications li.edit-icon:hover path {
 .input-renamer::after {
   height: 1px;
 }
+.input-sizer input {
+  border-radius: 10px;
+  background: #FBF7E6;
+  padding: 2px 10px 4px 10px;
+  line-height: normal;
+  font-weight: normal;
+}
+.dateFileSize {
+  padding-top: 10px;
+  overflow: hidden;
+}
+.tollTipCustom {
+  position: relative;
+}
 
 .input-renamer::after,
 .input-renamer input {
@@ -694,4 +709,47 @@ ul.uploadAssetsClassifications li img {
   width: 20px;
   height: 22px;
   vertical-align: -5px;
+}
+
+.blackTetx {
+  color: #333;
+}
+.actionIcon {
+  width: 30px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: -15px;
+  display: inline-block;
+  margin: 5px 0px 0px 5px;
+}
+.customRenameBlock.input-sizer {
+  margin: -8px 0px 0px -11.8px;
+}
+.customWidth:hover path, .downloadFileWorkspace:hover path, .deleteFolder:hover path {
+  stroke: #DAAA00;
+}
+.invitePeople > span {
+  display: inline-block;
+  background: #E6F2FF;
+  border-radius: 8px;
+  line-height: 31px;
+  padding: 0px 11px;
+  color: #0072A2;
+  font-family: 'brownregular';
+  margin-top: 10px;
+}
+
+.invitePeople > span img {
+  display: inline-block;
+  vertical-align: 0px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.clickEvent {
+  text-decoration: underline;
+  cursor: pointer;
+  position: relative;
+}
+.views img.active {
+  opacity: 1;
 }
