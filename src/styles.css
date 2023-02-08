@@ -4553,3 +4553,46 @@ ul.all-sectors img.noPreviewItem {
   transform: translate(-50%, -50%) !important;
   top: 50% !important;
 }
+
+::ng-deep .mat-datepicker-popup {
+  width: 296px !important;
+  position: absolute !important;
+  /* right: 0px !important; */
+  box-shadow: 2px 2px 6px 3px rgb(0 0 0 / 25%);
+  border-radius: 8px;
+  /* left: 725px !important;
+  bottom: 83px !important; */
+  overflow: hidden;
+  height: max-content !important;
+}
+::ng-deep .mat-calendar-body-today.mat-calendar-body-selected{
+  box-shadow: unset !important;
+}
+::ng-deep .mat-calendar-body-selected {
+  background-color: #EDD580;
+  color: #000;
+}
+::ng-deep th.mat-header-cell, ::ng-deep th.mat-header-cell button, ::ng-deep th{
+  border-bottom: unset !important;
+}
+::ng-deep .mat-calendar-arrow{
+  background-image: url(./assets/images/down.png);
+  border: unset !important;
+  height: 6px !important;
+  width: 12px !important;
+  right: 0px;
+  z-index: 99;
+  position: relative;
+  background-size: 11px;
+  background-repeat: no-repeat;
+  /* top: 4px; */
+}
+::ng-deep .mat-calendar-table-header-divider::after{
+  display: none !important;
+}
+/* ::ng-deep .mat-calendar-body-label{
+  opacity: 0;
+} */
+::ng-deep .cdk-text-field-autofill-monitored:not(:-webkit-autofill){
+  animation:  unset !important
+}
