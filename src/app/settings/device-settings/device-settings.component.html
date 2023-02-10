@@ -83,7 +83,7 @@
             <tr *ngFor="let device of filteredDeviceList; let i = index">
                 <td><div class="height32"></div></td>
                 <td>{{device.installationId}}</td>
-                <td><div class="itemTitleContent">{{subAreaMap[device.subArea]?.name}}</div></td>
+                <td><div class="itemTitleContent">{{device.subArea}}</div></td>
                 <td>{{formatDirection(device.direction)}}</td>
                 <td>{{device.cameraPole}}</td>
                 <td>{{capitalizeFirstLetter(device.deviceType)}}</td>
