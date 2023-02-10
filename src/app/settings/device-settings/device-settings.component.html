@@ -82,11 +82,11 @@
             </tr>
             <tr *ngFor="let device of filteredDeviceList; let i = index">
                 <td><div class="height32"></div></td>
-                <td>{{device.name}}</td>
+                <td>{{device.installationId}}</td>
                 <td><div class="itemTitleContent">{{subAreaMap[device.subArea]?.name}}</div></td>
                 <td>{{formatDirection(device.direction)}}</td>
-                <td>{{device.poleId}}</td>
-                <td>{{capitalizeFirstLetter(device.deviceTyp)}}</td>
+                <td>{{device.cameraPole}}</td>
+                <td>{{capitalizeFirstLetter(device.deviceType)}}</td>
                 <td>
                     <ul>
                         <li class="nav-item dropdown">

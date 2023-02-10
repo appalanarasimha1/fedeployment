@@ -1,20 +1,19 @@
-import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter } from "@angular/core";
 import { HttpEventType, HttpResponse } from "@angular/common/http";
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { concat, Observable, of, Subject } from "rxjs";
 import Nuxeo from "nuxeo";
-import { apiRoutes } from 'src/app/common/config';
+import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "../services/shared.service";
-import { WHITELIST_EXTENSIONS,} from "../upload-modal/constant";
+import { WHITELIST_EXTENSIONS } from "../upload-modal/constant";
 import { ApiService } from "../services/api.service";
 
 @Component({
-  selector: 'app-upload-drone',
-  templateUrl: './upload-drone.component.html',
-  styleUrls: ['./upload-drone.component.css']
+  selector: "app-upload-drone",
+  templateUrl: "./upload-drone.component.html",
+  styleUrls: ["./upload-drone.component.css"],
 })
 export class UploadDroneComponent implements OnInit {
-
   userWorkspaceInput$ = new Subject<string>();
 
   searchPopup: boolean = false;
@@ -25,7 +24,7 @@ export class UploadDroneComponent implements OnInit {
   dates = [];
   showInfo: boolean = false;
   cancleBlock: boolean = false;
-  countFile:boolean = true;
+  countFile: boolean = true;
   installationIdList = [];
   selectedDevice = null;
   batchId = null;
@@ -45,8 +44,8 @@ export class UploadDroneComponent implements OnInit {
     public dialogRef: MatDialogRef<UploadDroneComponent>,
     public sharedService: SharedService,
     private apiService: ApiService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit(): void {
     this.showUpload = false;
@@ -62,9 +61,7 @@ export class UploadDroneComponent implements OnInit {
     this.dialogRef.close(done);
   }
 
-  onSearchBarChange(e) {
-
-  }
+  onSearchBarChange(e) {}
   blurOnSearch() {
     console.log("this.searchText", this.searchText);
 
@@ -103,7 +100,9 @@ export class UploadDroneComponent implements OnInit {
         location: this.selectedDevice.initial,
       },
     };
-    const res = await this.apiService.post(apiRoutes.GET_DRONE_UPLOAD_PATH, body).toPromise();
+    const res = await this.apiService
+      .post(apiRoutes.GET_DRONE_UPLOAD_PATH, body)
+      .toPromise();
     if (!res) return null;
     return res["value"];
   }
@@ -159,7 +158,7 @@ export class UploadDroneComponent implements OnInit {
       },
       (err) => {
         console.log("Upload Error:", err);
-        this.filesMap[index]['isVirus'] = true;
+        this.filesMap[index]["isVirus"] = true;
         // delete this.filesMap[index];
       },
       () => {
@@ -172,7 +171,10 @@ export class UploadDroneComponent implements OnInit {
 
   setUploadProgressBar(index, percent) {
     this.fileUploadProgress[index] = percent || 0;
-    const sum = this.fileUploadProgress.reduce((partialSum, a) => partialSum + a, 0);
+    const sum = this.fileUploadProgress.reduce(
+      (partialSum, a) => partialSum + a,
+      0
+    );
     this.totalPercent = Math.ceil(sum / this.fileUploadProgress.length);
     if (this.totalPercent === 100) {
       this.loading = false;
@@ -180,13 +182,16 @@ export class UploadDroneComponent implements OnInit {
     }
   }
 
-
   async publishAssets() {
     this.loading = true;
     // this.publishing = true;
     const folderToAdd = await this.getUploadFolderPath();
-    for(let key in this.filesMap) {
-      const asset = await this.createAsset(this.filesMap[key], key, folderToAdd);
+    for (let key in this.filesMap) {
+      const asset = await this.createAsset(
+        this.filesMap[key],
+        key,
+        folderToAdd
+      );
     }
 
     this.sharedService.showSnackbar(
@@ -241,15 +246,24 @@ export class UploadDroneComponent implements OnInit {
       properties: {
         "dc:title": file.name,
         "dc:assetTimeTaken": "",
-        "dc:assetDateTaken": date?.toISOString().slice(0,10).replace(/-/g,"") || "",
+        "dc:assetDateTaken":
+          date?.toISOString().slice(0, 10).replace(/-/g, "") || "",
         "dc:installationId": this.selectedDevice.installationId,
         "dc:timeZone": "Asia/Riyadh",
         "dc:deviceType": this.selectedDevice.type,
         "dc:vendor": this.companyId,
-        "drone_asset:region": this.selectedDevice.locationId,
-        "drone_asset:area": this.selectedDevice.areaId,
-        "drone_asset:device": this.selectedDevice.installationId,
-        "drone_asset:supplier": this.companyId,
+        // "drone_asset:region": this.selectedDevice.locationId,
+        // "drone_asset:area": this.selectedDevice.areaId,
+        // "drone_asset:device": this.selectedDevice.deviceId,
+        // "drone_asset:supplier": this.companyId,
+        // "drone_asset:assetTimeTaken": "",
+        // "drone_asset:cameraId": this.selectedDevice.installationId,
+        // "drone_asset:latitude": this.selectedDevice.latitude,
+        // "drone_asset:longitude": this.selectedDevice.longitude,
+        // "drone_asset:areaName": this.selectedDevice.initial,
+        // "drone_asset:subAreaName": this.selectedDevice.area,
+        // "drone_asset:direction": this.selectedDevice.direction,
+        // "drone_asset:supplierCompany": this.company,
       },
       facets: [
         "Versionable",
@@ -294,8 +308,10 @@ export class UploadDroneComponent implements OnInit {
     payload.properties["file:content"] = {
       "upload-batch": this.batchId,
       "upload-fileId": `${index}`,
-    }
-    const res = await this.apiService.post(url, payload, {headers: {'X-Batch-No-Drop': 'true'}}).toPromise();
+    };
+    const res = await this.apiService
+      .post(url, payload, { headers: { "X-Batch-No-Drop": "true" } })
+      .toPromise();
     return {
       uid: res["uid"],
       title: res["title"],
@@ -317,11 +333,14 @@ export class UploadDroneComponent implements OnInit {
   filterWhitelistFiles(files: any) {
     const filteredFile = [];
     for (const file of files) {
-      const filenameSplit = file.name.split('.');
-      if (filenameSplit.length > 2) {}
-      else if (WHITELIST_EXTENSIONS.includes(file.type)) {
+      const filenameSplit = file.name.split(".");
+      if (filenameSplit.length > 2) {
+      } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
-      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[1].toLowerCase())) {
+      } else if (
+        filenameSplit[1] &&
+        WHITELIST_EXTENSIONS.includes(filenameSplit[1].toLowerCase())
+      ) {
         filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
@@ -384,7 +403,6 @@ export class UploadDroneComponent implements OnInit {
     this.cancleBlock = !this.cancleBlock;
   }
 
-
   //TODO: pass data from document-assets component
   async initData() {
     this.user = JSON.parse(localStorage.getItem("user"))["username"];
@@ -404,41 +422,35 @@ export class UploadDroneComponent implements OnInit {
   supplierList = [];
 
   async getDeviceList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Device' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } })
-      .toPromise();
+    const url = "/settings/camera";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
 
     if (!res) return;
-    const devices = res["entries"];
+    const devices = res;
     this.deviceList = devices.map((device) => ({
-      deviceTyp: device.properties["device:deviceTyp"],
-      latitude: device.properties["device:latitude"],
-      longitude: device.properties["device:longitude"],
-      initial: device.properties["device:initial"],
-      direction: device.properties["device:direction"],
-      poleId: device.properties["device:poleId"],
-      region: device.properties["device:region"],
-      subArea: device.properties["device:subArea"],
-      status: device.properties["device:status"],
-      name: device.title,
-      uid: device.uid,
+      deviceType: device.deviceType,
+      latitude: device.latitude,
+      longitude: device.longitude,
+      initial: device.initial,
+      direction: device.direction,
+      cameraPole: device.cameraPole,
+      region: device.region,
+      subArea: device.subArea,
+      status: device.status,
+      installationId: device.installationId,
+      uid: device.id,
     }));
   }
 
   async getRegionList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } })
-      .toPromise();
+    const url = "/settings/area";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
 
-    if (!res) return;
-    const regions = res["entries"];
+    const regions = res || [];
     this.regionList = regions.map((region) => ({
-      initial: region.properties["region:initial"],
+      initial: region.code,
       name: region.title,
-      uid: region.uid,
-      locations: region.properties["region:locations"],
+      uid: region.id,
     }));
     this.computeRegionMap();
   }
@@ -451,19 +463,18 @@ export class UploadDroneComponent implements OnInit {
   }
 
   async getSubAreaList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'SubArea' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } })
-      .toPromise();
+    const url = "/settings/subarea";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
 
     if (!res) {
       this.subAreaList = [];
       return;
     }
-    this.subAreaList = res["entries"].map((area) => ({
-      locationId: area.properties["subArea:locationId"],
-      name: area.title,
-      uid: area.uid,
+    this.subAreaList = res.map((area) => ({
+      locationId: area.locationId,
+      name: area.name,
+      uid: area.id,
+      parentArea: area.parentArea,
     }));
     this.computeSubAreaMap();
   }
@@ -476,39 +487,40 @@ export class UploadDroneComponent implements OnInit {
   }
 
   computeInstallationIdList() {
-    this.installationIdList = this.deviceList.map(device => ({
-      installationId: device.name,
+    this.installationIdList = this.deviceList.map((device) => ({
+      installationId: device.installationId,
       area: this.subAreaMap[device.subArea]?.name,
       location: this.regionMap[device.region]?.name,
       areaId: device.subArea,
       locationId: device.region,
       initial: this.regionMap[device.region]?.initial,
-      type: device.deviceTyp,
+      type: device.deviceType,
+      direction: device.direction,
+      latitude: device.latitude,
+      longitude: device.longitude,
+      deviceId: device.uid,
     }));
   }
 
   async getSupplierList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } })
-      .toPromise();
+    const url = "/settings/supplier";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
 
     if (!res) return;
-    this.supplierList = res["entries"].map((supplier) => ({
-      name: supplier.title,
-      uid: supplier.uid,
-      regions: supplier.properties["supplier:regions"],
-      users: supplier.properties["supplier:supplierUsers"],
-      activated: supplier.properties["supplier:activated"],
-      supportEmail: supplier.properties["supplier:supportEmail"],
-      expiry: supplier.properties["supplier:expiry"],
+    this.supplierList = res.map((supplier) => ({
+      name: supplier.name,
+      uid: supplier.id,
+      regions: supplier.regions,
+      users: supplier.supplierUsers,
+      activated: supplier.activated,
+      supportEmail: supplier.supportEmail,
+      expiry: supplier.expiry,
       renameEmail: false,
     }));
     const currentUserSupplier = this.supplierList.find((supplier) =>
-      supplier.users?.find(user => user.user == this.user)
+      supplier.users?.find((user) => user.user == this.user)
     );
     this.company = currentUserSupplier?.name || "";
     this.companyId = currentUserSupplier?.uid || "";
   }
-
 }

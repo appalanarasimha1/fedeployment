@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { NuxeoService } from "src/app/services/nuxeo.service";
-import { adminPanelWorkspacePath } from "src/app/common/constant";
+import { ApiService } from "../../services/api.service";
 
 @Component({
   selector: 'app-create-supplie-modal',
@@ -52,7 +51,7 @@ export class CreateSupplieModalComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CreateSupplieModalComponent>,
-    private nuxeo: NuxeoService,
+    private apiService: ApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.filteredFruits = this.suppliersCtrl.valueChanges.pipe(
@@ -105,20 +104,15 @@ export class CreateSupplieModalComponent implements OnInit {
   async createSupplier() {
     this.loading = true;
     const regions = this.selectedRegion.map(region => region.uid);
-    const result = await this.nuxeo.nuxeoClient.operation('Document.Create')
-    .params({
-      type: "Supplier",
+    const payload = {
       name: this.suppliersName,
-      properties: {
-        "supplier:supportEmail": this.supportEmail,
-        "supplier:regions": regions,
-        "supplier:activated": true,
-        "supplier:expiry": this.selectedMonth || new Date(),
-      }
-    })
-    .input(adminPanelWorkspacePath + '/SupplierFolder')
-    .execute();
-    this.closeModal(result);
+      supportEmail: this.supportEmail,
+      regions: regions,
+      activated: true,
+      expiry: this.selectedMonth || new Date(),
+    }
+    await this.apiService.post('/settings/supplier', payload, {responseType: 'text'}).toPromise();
+    this.closeModal(true);
   }
 
   private _filter(value: any): any[] {

@@ -34,17 +34,12 @@ export class InviteUserModalComponent implements OnInit {
   }
 
   updateDocument(id, params) {
-    return this.nuxeo.nuxeoClient.operation('Document.Update')
-    .params(params)
-    .input(id)
-    .execute();
+    return this.apiService.post(`/settings/supplier/${id}`, params, {responseType: 'text'}).toPromise();
   }
 
   updateSuppilerUsers(id, users) {
     const params = {
-      properties: {
-        "supplier:supplierUsers": JSON.stringify(users),
-      }
+      supplierUsers: users,
     }
     this.updateDocument(id, params);
   }
@@ -85,9 +80,9 @@ export class InviteUserModalComponent implements OnInit {
       "user": this.userEmail,
     })
     .execute();
-    const res = await this.updateSuppilerUsers(this.supplier.uid, users);
+    await this.updateSuppilerUsers(this.supplier.uid, users);
 
-    this.closeModal(res);
+    this.closeModal(true);
   }
 
   closeModal(result?) {
