@@ -7,8 +7,15 @@ import {
 } from "@angular/core";
 import { ApiService } from "../../services/api.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { adminPanelWorkspacePath } from "src/app/common/constant";
 
+const typePrefix = {
+  "timelapse": "T",
+  "drone": "D",
+  "360": "O",
+  "live": "L",
+  "underwater": "U",
+  "weather": "W",
+}
 @Component({
   selector: "app-create-device-modal",
   templateUrl: "./create-device-modal.component.html",
@@ -31,6 +38,7 @@ export class CreateDeviceModalComponent implements OnInit {
     { id: 4, name: "Sub-area 4" },
     { id: 5, name: "Sub-area 5" },
   ];
+  supplierPrefix = ["TLP", "TME", "URE"];
   filteredSubAreaList = [];
   loading = false;
   directionShow: boolean = true;
@@ -44,9 +52,11 @@ export class CreateDeviceModalComponent implements OnInit {
   direction: string;
   poleId = "";
   selectedRegion: string;
+  selectedRegionInitial: string;
   selectedSubArea: string;
   isCreate = true;
   selectedDevice = null;
+  selectedSupplier = null;
 
   constructor(
     public dialogRef: MatDialogRef<CreateDeviceModalComponent>,
@@ -55,7 +65,7 @@ export class CreateDeviceModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.installationID = this.data.deviceInput;
+    // this.installationID = this.data.deviceInput;
     this.regionList = this.data.regionList;
     this.subAreaList = this.data.subAreaList;
     this.isCreate = this.data.isCreate;
@@ -98,13 +108,20 @@ export class CreateDeviceModalComponent implements OnInit {
       this.poleIdShow = false;
       this.directionShow = false;
     }
+    this.generateDeviceId();
   }
 
   onSelectRegion(event) {
     this.selectedRegion = event.uid;
+    this.selectedRegionInitial = event.initial;
     this.filteredSubAreaList = this.subAreaList.filter((subArea) =>
       subArea.parentArea = this.selectedRegion
     );
+    this.generateDeviceId();
+  }
+
+  onSelectedSupplier(event) {
+    this.generateDeviceId();
   }
 
   checkEnableCreateDeviceButton() {
@@ -118,6 +135,8 @@ export class CreateDeviceModalComponent implements OnInit {
       )
         return false;
     }
+    if (!this.selectedRegion) return false;
+    if (!this.selectedSubArea) return false;
     return true;
   }
 
@@ -140,6 +159,37 @@ export class CreateDeviceModalComponent implements OnInit {
     }
     await this.apiService.post('/settings/camera', payload, {responseType: 'text'}).toPromise();
     this.closeModal(true);
+  }
+
+  buildDevicePrefix() {
+    const type = this.selectedType ? typePrefix[this.selectedType] : "";
+    const supplier = this.selectedType === 'timelapse' ? this.selectedSupplier : "";
+    if (supplier) {
+      return `${type}-${supplier}-${this.selectedRegionInitial}`;
+    }
+    return `${type}-${this.selectedRegionInitial}`;
+  }
+
+  async generateDeviceId() {
+    if (this.selectedType && this.selectedRegion) {
+      const prefix = this.buildDevicePrefix();
+      const lastId = await this.getLastDeviceId(prefix) as any;
+      if (!lastId || lastId === 'null') {
+        this.installationID = `${prefix}-0001`;
+        return;
+      }
+      const latestNumber = lastId.split("-").pop();
+      if (isNaN(latestNumber)) {
+        this.installationID = `${prefix}-0001`;
+        return;
+      }
+      const nextNumber = parseInt(latestNumber) + 1;
+      this.installationID = `${prefix}-${("000" + nextNumber).slice(-4)}`
+    }
+  }
+
+  getLastDeviceId(prefix) {
+    return this.apiService.get(`/settings/camera/getLatestDeviceId?prefix=${prefix}`, {responseType: 'text'}).toPromise();
   }
 
   async updateDevice() {

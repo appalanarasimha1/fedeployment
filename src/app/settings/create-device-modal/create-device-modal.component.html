@@ -29,12 +29,6 @@
                 </ol>
             </li>
             <li>
-                <div class="form-group">
-                    <label for="Supplier's Name">Installation ID</label>
-                    <input type="text" placeholder="Installation ID" [(ngModel)]="installationID" />
-                </div>
-            </li>
-            <li>
                 <div class="flex">
                     <div class="form-group">
                         <label for="Latitude / Northing">Latitude / Northing</label>
@@ -61,6 +55,23 @@
                         <label for="Pole ID">Pole ID</label>
                         <input [(ngModel)]="poleId" type="text" placeholder="E.g. A05" />
                     </div>
+                </div>
+            </li>
+            <li *ngIf="selectedType === 'timelapse'" class="regionBlok">
+                <div class="form-group">
+                    <label for="Supplier">Supplier</label>
+                    <ng-select placeholder="Select"
+                        [searchable]="false"
+                        [clearable]="false"
+                        [(ngModel)]="selectedSupplier"
+                        (change)="onSelectedSupplier($event)"
+                        id="supplier"
+                        [ngClass]="{'goldenText': selectedSupplier}"
+                    >
+                        <ng-option *ngFor="let supplier of supplierPrefix" [value]="supplier">
+                            {{supplier}}
+                        </ng-option>
+                    </ng-select>
                 </div>
             </li>
             <li class="regionBlok">
@@ -94,6 +105,12 @@
                             {{subArea.name}}
                         </ng-option>
                     </ng-select>
+                </div>
+            </li>
+            <li *ngIf="!!installationID">
+                <div class="form-group">
+                    <label for="Supplier's Name">Installation ID</label>
+                    <input style="color: #DAAA00;" type="text" placeholder="Installation ID" [(ngModel)]="installationID" readonly/>
                 </div>
             </li>
         </ul>

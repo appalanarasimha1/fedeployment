@@ -201,7 +201,7 @@ export class DeviceSettingsComponent implements OnInit {
       if (this.deviceInput)
         match =
           match &&
-          device.name.toLowerCase().includes(this.deviceInput.toLowerCase());
+          device.installationId.toLowerCase().includes(this.deviceInput.toLowerCase());
       if (this.selectedRegions)
         match = match && device.region.includes(this.selectedRegions.uid);
       if (this.selectedsubAreas)
