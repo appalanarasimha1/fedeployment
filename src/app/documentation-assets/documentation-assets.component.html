@@ -108,6 +108,9 @@
             </document-card>
           </div>
         </ngx-masonry>
+        <div class="no-asset" *ngIf="(!assetList || assetList.length == 0) && !checkNoFilterSelected()">
+          No results found &#8722; Limited access
+        </div>
       </div>
 
       <preview-popup

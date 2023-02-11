@@ -263,3 +263,8 @@
     border-radius: 50%;
     background: #fff;
   }
+  .no-asset {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+  }
