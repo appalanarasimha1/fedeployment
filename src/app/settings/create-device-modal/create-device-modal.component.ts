@@ -71,8 +71,11 @@ export class CreateDeviceModalComponent implements OnInit {
     this.isCreate = this.data.isCreate;
     this.selectedDevice = this.data.selectedDevice;
     if (!this.isCreate) {
-      this.installationID = this.selectedDevice.name;
+      this.installationID = this.selectedDevice.installationId;
       this.selectedRegion = this.selectedDevice.region;
+      if (this.selectedDevice.deviceType === 'timelapse') {
+        this.selectedSupplier = this.installationID.split("-")[1];
+      }
       if (this.selectedDevice.region)
         this.selectedRegions = this.regionList.find(
           (region) => region.uid === this.selectedDevice.region
