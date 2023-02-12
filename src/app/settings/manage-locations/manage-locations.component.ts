@@ -94,6 +94,8 @@ export class ManageLocationsComponent implements OnInit {
 
     dialogConfig.data = {
       regionName: this.regionInput,
+      currentRegions: this.regionList.map(region => region.name),
+      currentInitials: this.regionList.map(region => region.initial),
     };
 
     const modalDialog = this.matDialog.open(

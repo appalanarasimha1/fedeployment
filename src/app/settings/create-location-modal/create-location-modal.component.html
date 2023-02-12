@@ -11,19 +11,21 @@
                 <div class="form-group">
                     <label for="Supplier's Name" >Region's Name</label>
                     <input type="text" placeholder="Drone Experts Ltd" [(ngModel)]="regionName" />
+                    <span *ngIf="regionName && isRegionNameExisted()" style="color: red;">Region name already existed!</span>
                 </div>
             </li>
             <li>
                 <div class="form-group">
                     <label for="Region's initials">Region's initials</label>
                     <input type="email" [(ngModel)]="regionInitial" placeholder="Enter region's initials" />
+                    <span *ngIf="regionInitial && isInitialNameExisted()" style="color: red;">Initial already existed!</span>
                 </div>
             </li>
-        </ul>   
+        </ul>
     </div>
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!regionName || loading" (click)="createRegion()">Create region</button>
+        <button class="upload-btn" [disabled]="!regionName || !regionInitial || loading || isRegionNameExisted() || isInitialNameExisted()" (click)="createRegion()">Create region</button>
     </div>
 </div>

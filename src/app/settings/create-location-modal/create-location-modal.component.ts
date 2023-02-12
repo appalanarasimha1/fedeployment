@@ -12,6 +12,8 @@ export class CreateLocationModalComponent implements OnInit {
   loading = false;
   regionName = "";
   regionInitial = "";
+  currentRegions = [];
+  currentInitials = [];
 
   constructor(
     public dialogRef: MatDialogRef<CreateLocationModalComponent>,
@@ -22,6 +24,16 @@ export class CreateLocationModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.regionName = this.data.regionName;
+    this.currentRegions = this.data.currentRegions;
+    this.currentInitials = this.data.currentInitials;
+  }
+
+  isRegionNameExisted() {
+    return this.currentRegions.includes(this.regionName);
+  }
+
+  isInitialNameExisted() {
+    return this.currentInitials.includes(this.regionInitial);
   }
 
   async createRegion() {
