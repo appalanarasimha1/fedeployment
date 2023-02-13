@@ -79,6 +79,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   whiteLoader: boolean = false;
   transparentLoader: boolean = false;
   onlyPrivate:boolean = false;
+  permissionChange:boolean=false
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -86,7 +87,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   constructor(
     public sharedService: SharedService,
     private router: Router,
-    // private dataService: DataService,
+    private dataService: DataService,
     private apiService: ApiService,
     private route: ActivatedRoute,
     public matDialog: MatDialog,
@@ -340,14 +341,21 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
   
   isPrivateFolder(isButton = true, includeChild = false) {
-    if (!this.hasInheritAcl() && !includeChild) return false;
-    const currentWorkspace = JSON.parse(localStorage.getItem('workspaceState'));
+    this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
+    if(this.permissionChange) return true
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
 
-    const isPrivate = currentWorkspace?.properties && currentWorkspace?.properties["dc:isPrivate"];
-    if (isButton) return isPrivate;
+    const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
     const currentCollaborators = this.getFolderCollaborators();
     this.isAdmin = this.hasAdminPermission(currentCollaborators);
-    return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
+
+    if (isButton && includeChild) return isPrivate;
+    if (isPrivate && !this.hasInheritAcl()) return true;
+    if (this.hasInheritAcl() && includeChild) return isPrivate;
+
+    return false;
+
+    // return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
   
   hasInheritAcl() {
