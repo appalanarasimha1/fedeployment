@@ -2,7 +2,7 @@
   <div class="container">
       <h2>Construction assets</h2>
       <h3>{{company}}</h3>
-      <div *ngIf="!loading && (!assetList || assetList.length == 0)" class="adding-assets">
+      <div *ngIf="!loading && (!assetList || assetList.length == 0) && checkNoFilterSelected()" class="adding-assets">
           <img src="../../assets/images/upload-icon.svg" />
           Start adding assets
           <div class="uploadBtn" (click)="openModal()">Upload</div>
@@ -108,6 +108,9 @@
             </document-card>
           </div>
         </ngx-masonry>
+        <div class="no-asset" *ngIf="(!assetList || assetList.length == 0) && !checkNoFilterSelected()">
+          No results found &#8722; Limited access
+        </div>
       </div>
 
       <preview-popup

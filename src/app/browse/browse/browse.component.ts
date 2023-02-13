@@ -165,9 +165,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUser: string[] = [];
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
-  permissionChange:boolean=false
-  onlyPrivate:boolean = false;
+  permissionChange:boolean=false;
   accessDenied = false;
+  onlyPrivate:boolean = false;
   whiteLoader: boolean = false;
   transparentLoader: boolean = false;
 
@@ -2037,11 +2037,16 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
 
     const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
-    if (isButton) return isPrivate;
-    if (!this.hasInheritAcl() && !includeChild) return false;
     const currentCollaborators = this.getFolderCollaborators();
     this.isAdmin = this.hasAdminPermission(currentCollaborators);
-    return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
+
+    if (isButton && includeChild) return isPrivate;
+    if (isPrivate && !this.hasInheritAcl()) return true;
+    if (this.hasInheritAcl() && includeChild) return isPrivate;
+
+    return false;
+
+    // return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
 
 
@@ -2067,8 +2072,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
     if (selectedFolder?.properties && selectedFolder?.properties['isPrivateUpdated']) return true;
     if (!selectedFolder?.contextParameters?.acls) return false;
-    const inheritAcl = selectedFolder.contextParameters.acls.find(acl => acl.name === 'local');
+    const inheritAcl = selectedFolder.contextParameters.acls.find(acl => acl.name === 'inherited');
     if (!inheritAcl?.aces) return false;
+    return true;
+  }
+
+  hasLocalAcl() {
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (selectedFolder?.properties && selectedFolder?.properties['isPrivateUpdated']) return true;
+    if (!selectedFolder?.contextParameters?.acls) return false;
+    const localAcl = selectedFolder.contextParameters.acls.find(acl => acl.name === 'local');
+    if (!localAcl?.aces) return false;
     return true;
   }
 

@@ -4553,3 +4553,13 @@ ul.all-sectors img.noPreviewItem {
   transform: translate(-50%, -50%) !important;
   top: 50% !important;
 }
+.loginLoader .overlay {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute !important;
+  background: rgb(255 255 255 / 70%) !important;
+  z-index: 9999 !important;
+  opacity: 1;
+}

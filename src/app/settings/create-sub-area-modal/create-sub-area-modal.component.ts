@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NuxeoService } from "src/app/services/nuxeo.service";
-import { adminPanelWorkspacePath } from "src/app/common/constant";
+import { ApiService } from "../../services/api.service";
 
 @Component({
   selector: 'app-create-sub-area-modal',
@@ -13,32 +12,29 @@ export class CreateSubAreaModalComponent implements OnInit {
   loading = false;
   subAreaName = "";
   locationId = "";
+  parentArea = "";
 
   constructor(
     public dialogRef: MatDialogRef<CreateSubAreaModalComponent>,
-    private nuxeo: NuxeoService,
+    private apiService: ApiService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
    }
 
   ngOnInit(): void {
     this.subAreaName = this.data.subAreaInput;
+    this.parentArea = this.data.parentArea;
   }
 
   async createSubArea() {
     this.loading = true;
-    const createdSubArea = await this.nuxeo.nuxeoClient.operation('Document.Create')
-    .params({
-      type: "SubArea",
+    const payload = {
+      locationId: this.locationId,
       name: this.subAreaName,
-      properties: {
-        "subArea:locationId": this.locationId,
-        "dc:title": this.subAreaName
-      }
-    })
-    .input(adminPanelWorkspacePath + '/LocationFolder')
-    .execute();
-    this.closeModal(createdSubArea);
+      parentArea: this.parentArea,
+    }
+    await this.apiService.post('/settings/subarea', payload, {responseType: 'text'}).toPromise();
+    this.closeModal(true);
   }
 
   closeModal(result?) {

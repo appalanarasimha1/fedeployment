@@ -1,3 +1,5 @@
+<!-- <app-loader [show]="loading"></app-loader> -->
+<app-loader class="loginLoader" [show]="loading"></app-loader>
 <header class="updateHeader">
   <div class="container">
     <div class="row flexible">
@@ -209,7 +211,8 @@
                         <!-- <li><a class="dropdown-item favorites"  placement="bottom" (click)="toFavouriteSection(); selectTab('favourite')" [routerLink]="['/']" fragment="favorites">Favourites</a></li>
                         <li *ngIf="checkForUserGroup()"><a class="dropdown-item" [routerLink]="['/report']">Analytics</a></li> -->
                         <!-- remove logout line  class="logout-line" -->
-                        <li><a class="dropdown-item" (click)="logout()" href="javascript:void(0);">Logout</a></li>
+                        <li>
+                          <a class="dropdown-item" (click)="logout()" href="javascript:void(0);">Logout</a></li>
                       </ul>
                     </li>
                   </ul>

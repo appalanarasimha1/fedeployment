@@ -45,7 +45,7 @@ export class DocumentationAssetsComponent implements OnInit {
   assetList = [];
   masoneryItemIndex;
   viewType = "GRID";
-  formats = ['Picture', 'Video'];
+  formats = ["Picture", "Video"];
   selectedRegion;
   selectedsubArea;
   selectedFormat;
@@ -53,14 +53,12 @@ export class DocumentationAssetsComponent implements OnInit {
   selectedEndDate;
   assetByMe = false;
 
-
   onSelectRegions(regions) {
     this.getAssetList();
   }
   onSelectSubArea(area) {
     this.getAssetList();
   }
-
 
   ngOnInit(): void {
     this.loading = true;
@@ -76,41 +74,35 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   async getDeviceList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Device' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } })
-      .toPromise();
+    const url = "/settings/camera";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
 
     if (!res) return;
-    const devices = res["entries"];
+    const devices = res;
     this.deviceList = devices.map((device) => ({
-      deviceTyp: device.properties["device:deviceTyp"],
-      latitude: device.properties["device:latitude"],
-      longitude: device.properties["device:longitude"],
-      initial: device.properties["device:initial"],
-      direction: device.properties["device:direction"],
-      poleId: device.properties["device:poleId"],
-      region: device.properties["device:region"],
-      subArea: device.properties["device:subArea"],
-      status: device.properties["device:status"],
-      name: device.title,
-      uid: device.uid,
+      deviceType: device.deviceType,
+      latitude: device.latitude,
+      longitude: device.longitude,
+      initial: device.initial,
+      direction: device.direction,
+      cameraPole: device.cameraPole,
+      region: device.region,
+      subArea: device.subArea,
+      status: device.status,
+      installationId: device.installationId,
+      uid: device.id,
     }));
   }
 
   async getRegionList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Region' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } })
-      .toPromise();
+    const url = "/settings/area";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
 
-    if (!res) return;
-    const regions = res["entries"];
+    const regions = res || [];
     this.regionList = regions.map((region) => ({
-      initial: region.properties["region:initial"],
+      initial: region.code,
       name: region.title,
-      uid: region.uid,
-      locations: region.properties["region:locations"],
+      uid: region.id,
     }));
     this.computeRegionMap();
   }
@@ -123,19 +115,18 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   async getSubAreaList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'SubArea' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } })
-      .toPromise();
+    const url = "/settings/subarea";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
 
     if (!res) {
       this.subAreaList = [];
       return;
     }
-    this.subAreaList = res["entries"].map((area) => ({
-      locationId: area.properties["subArea:locationId"],
-      name: area.title,
-      uid: area.uid,
+    this.subAreaList = res.map((area) => ({
+      locationId: area.locationId,
+      name: area.name,
+      uid: area.id,
+      parentArea: area.parentArea,
     }));
     this.computeSubAreaMap();
   }
@@ -148,43 +139,46 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   computeInstallationIdList() {
-    this.installationIdList = this.deviceList.map(device => ({
-      installationId: device.name,
+    this.installationIdList = this.deviceList.map((device) => ({
+      installationId: device.installationId,
       area: this.subAreaMap[device.subArea]?.name,
       location: this.regionMap[device.region]?.name,
       areaId: device.subArea,
       locationId: device.region,
       initial: this.regionMap[device.region]?.initial,
-      type: device.deviceTyp,
+      type: device.deviceType,
+      direction: device.direction,
+      latitude: device.latitude,
+      longitude: device.longitude,
+      deviceId: device.uid,
     }));
   }
 
   async getSupplierList() {
-    const url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:primaryType = 'Supplier' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
+    const url = '/settings/supplier';
     const res = await this.apiService
-      .get(url, { headers: { "fetch-document": "properties" } })
-      .toPromise();
+      .get(url, {}).toPromise() as any;
 
     if (!res) return;
-    this.supplierList = res["entries"].map((supplier) => ({
-      name: supplier.title,
-      uid: supplier.uid,
-      regions: supplier.properties["supplier:regions"],
-      users: supplier.properties["supplier:supplierUsers"],
-      activated: supplier.properties["supplier:activated"],
-      supportEmail: supplier.properties["supplier:supportEmail"],
-      expiry: supplier.properties["supplier:expiry"],
-      renameEmail: false,
+    this.supplierList = res.map(supplier => ({
+      name: supplier.name,
+      uid: supplier.id,
+      regions: supplier.regions,
+      users: supplier.supplierUsers,
+      activated: supplier.activated,
+      supportEmail: supplier.supportEmail,
+      expiry: supplier.expiry,
+      renameEmail : false,
     }));
     const currentUserSupplier = this.supplierList.find((supplier) =>
-      supplier.users?.find(user => user.user == this.user)
+      supplier.users?.find((user) => user.user == this.user)
     );
     this.company = currentUserSupplier?.name || "";
     this.companyId = currentUserSupplier?.uid || "";
     this.getAssetList();
   }
 
-  async getAssetList () {
+  async getAssetList() {
     this.loading = true;
     let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND dc:vendor = '${this.companyId}'`;
     url += this.buildFilterAssetQuery();
@@ -193,7 +187,7 @@ export class DocumentationAssetsComponent implements OnInit {
       .toPromise();
     this.loading = false;
     if (!res) return;
-    this.assetList = res['entries'];
+    this.assetList = res["entries"];
   }
 
   dateRangeChange() {
@@ -201,7 +195,7 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   buildFilterAssetQuery() {
-    let query = '';
+    let query = "";
     if (!this.selectedFormat) {
       query += " AND ecm:primaryType IN ('Picture', 'Video')";
     } else {
@@ -214,7 +208,9 @@ export class DocumentationAssetsComponent implements OnInit {
       query += ` AND drone_asset:area = '${this.selectedsubArea}'`;
     }
     if (this.selectedStartDate && this.selectedEndDate) {
-      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(this.selectedStartDate)}' AND DATE '${this.formatDateString(this.selectedEndDate)}'`;
+      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
+        this.selectedStartDate
+      )}' AND DATE '${this.formatDateString(this.selectedEndDate)}'`;
     }
     if (this.assetByMe) {
       query += ` AND dc:creator = '${this.user}'`;
@@ -224,7 +220,7 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   formatDateString(date) {
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   }
 
   openModal() {
@@ -243,7 +239,7 @@ export class DocumentationAssetsComponent implements OnInit {
       installationIdList: this.installationIdList,
       company: this.company,
       companyId: this.companyId,
-    }
+    };
     const modalDialog = this.matDialog.open(UploadDroneComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
@@ -299,8 +295,8 @@ export class DocumentationAssetsComponent implements OnInit {
     }
     this.selectedFileUrl =
       // fileType === "image" ?
-      this.getAssetUrl(null, fileRenditionUrl, {...file, update:true })
-        // : fileRenditionUrl;
+      this.getAssetUrl(null, fileRenditionUrl, { ...file, update: true });
+    // : fileRenditionUrl;
     // if(fileType === 'file') {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
@@ -309,38 +305,50 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
-    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
+    if (
+      document &&
+      this.checkAssetMimeTypes(document) === "nopreview" &&
+      this.viewType === "GRID"
+    ) {
       // return '../../../assets/images/no-preview.png';
       return this.getNoPreview(document);
     }
 
-    const mimeType = document?.properties['file:content']?.['mime-type'];
-    if(mimeType?.includes('pdf') && this.viewType ==="LIST" && !document?.update)
-      return '../../../assets/images/pdf.png';
+    const mimeType = document?.properties["file:content"]?.["mime-type"];
+    if (
+      mimeType?.includes("pdf") &&
+      this.viewType === "LIST" &&
+      !document?.update
+    )
+      return "../../../assets/images/pdf.png";
 
-    if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="LIST") {
+    if (
+      document &&
+      this.checkAssetMimeTypes(document) === "nopreview" &&
+      this.viewType === "LIST"
+    ) {
       // return '../../../assets/images/no-preview-grid.svg';
       return this.getNoPreview(document);
     }
-   return this.sharedService.getAssetUrl(event, url, type);
+    return this.sharedService.getAssetUrl(event, url, type);
     // return this.sharedService.getAssetUrl(event, url, type);
   }
   getNoPreview(item) {
-    const splitedData = item?.title?.split('.');
+    const splitedData = item?.title?.split(".");
     const mimeType = splitedData[splitedData?.length - 1];
     const lowercaseMime = mimeType.toLowerCase();
 
-    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
-      return '../../../assets/images/no-preview-big.png';
+    if (lowercaseMime == "doc" || lowercaseMime == "docx") {
+      return "../../../assets/images/no-preview-big.png";
     }
-    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
-      return '../../../assets/images/no-preview-big.png';
+    if (lowercaseMime == "ppt" || lowercaseMime == "pptx") {
+      return "../../../assets/images/no-preview-big.png";
     }
-    if(item.update) {
-      return '../../../assets/images/no-preview-big.png';
+    if (item.update) {
+      return "../../../assets/images/no-preview-big.png";
     }
 
-    return '../../../assets/images/no-preview-grid.svg';
+    return "../../../assets/images/no-preview-grid.svg";
   }
 
   checkAssetMimeTypes(document: any): string {
@@ -387,5 +395,16 @@ export class DocumentationAssetsComponent implements OnInit {
           this.sharedService.markRecentlyViewed(data);
         }
       });
+  }
+
+  checkNoFilterSelected() {
+    return !(
+      this.selectedEndDate ||
+      this.selectedStartDate ||
+      this.selectedFormat ||
+      this.selectedRegion ||
+      this.selectedsubArea ||
+      this.assetByMe
+    );
   }
 }

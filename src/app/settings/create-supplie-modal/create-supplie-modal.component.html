@@ -26,7 +26,7 @@
                     <mat-form-field class="example-chip-list">
                         <mat-chip-list #chipList>
                             <mat-chip *ngFor="let suppliers of fruits;let indx=index;" [selectable]="selectable" [removable]="removable" (removed)="remove(suppliers,indx)">
-                                {{suppliers.id}}
+                                {{suppliers.initial}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
                             <input placeholder="Add..." #suppliersInput [formControl]="suppliersCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
@@ -34,7 +34,7 @@
                         </mat-chip-list>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                             <mat-option *ngFor="let suppliers of filteredFruits | async" [value]="suppliers">
-                                {{suppliers.id}}
+                                {{suppliers.initial}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>

@@ -1108,3 +1108,10 @@ span.userName {
     font-size: 21px !important;
     color: #DEB31A !important;
 }
+.loginLoader .overlay__content {
+    left: 50%;
+    position: absolute;
+    top: 0px;
+    transform: translate(-50%, -50%) !important;
+    top: 50% !important;
+}
