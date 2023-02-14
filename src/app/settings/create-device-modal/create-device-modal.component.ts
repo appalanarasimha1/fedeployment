@@ -6,6 +6,7 @@ import {
   Inject,
 } from "@angular/core";
 import { ApiService } from "../../services/api.service";
+import { SharedService } from "src/app/services/shared.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 const typePrefix = {
@@ -61,6 +62,7 @@ export class CreateDeviceModalComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<CreateDeviceModalComponent>,
     private apiService: ApiService,
+    public sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -81,6 +83,13 @@ export class CreateDeviceModalComponent implements OnInit {
           (region) => region.uid === this.selectedDevice.region
         );
       this.onSelectRegion(this.selectedRegions);
+      if (this.selectedDevice.subArea) {
+        this.selectedsubAreas = this.subAreaList.find(
+          (subArea) => subArea.name === this.selectedDevice.subArea
+        );
+        console.log(this.selectedsubAreas);
+
+      }
       this.selectedSubArea = this.selectedDevice.subArea;
       this.onSelectdeviceType(null, this.selectedDevice.deviceType);
       this.latitude = this.selectedDevice.latitude;
@@ -111,7 +120,7 @@ export class CreateDeviceModalComponent implements OnInit {
       this.poleIdShow = false;
       this.directionShow = false;
     }
-    this.generateDeviceId();
+    // this.generateDeviceId();
   }
 
   onSelectRegion(event) {
@@ -120,15 +129,19 @@ export class CreateDeviceModalComponent implements OnInit {
     this.filteredSubAreaList = this.subAreaList.filter((subArea) =>
       subArea.parentArea = this.selectedRegion
     );
-    this.generateDeviceId();
+    // this.generateDeviceId();
+  }
+
+  onSelectSubArea(event) {
+    this.selectedSubArea = event.uid;
   }
 
   onSelectedSupplier(event) {
-    this.generateDeviceId();
+    // this.generateDeviceId();
   }
 
   checkEnableCreateDeviceButton() {
-    if (!this.installationID) return false;
+    // if (!this.installationID) return false;
     if (isNaN(this.latitude) || isNaN(this.longitude) ||!this.selectedSubArea || !this.selectedRegions) return false;
     if (this.directionShow) {
       if (
@@ -150,7 +163,6 @@ export class CreateDeviceModalComponent implements OnInit {
     }
 
     const payload = {
-      installationId: this.installationID,
       deviceType: this.selectedType,
       latitude: this.latitude || "",
       longitude: this.longitude || "",
@@ -159,9 +171,22 @@ export class CreateDeviceModalComponent implements OnInit {
       region: this.selectedRegion || "",
       subArea: this.selectedSubArea || "",
       status: "online",
+
+      areaId: this.selectedRegions.initial || "",
+      areaName: this.selectedRegions.name || "",
+      subAreaId: this.selectedsubAreas.locationId || "",
+      subAreaName: this.selectedsubAreas.name || "",
     }
-    await this.apiService.post('/settings/camera', payload, {responseType: 'text'}).toPromise();
-    this.closeModal(true);
+    const id = await this.apiService.post(`/settings/camera/autogen?prefix=${this.buildDevicePrefix()}`, payload, {responseType: 'text'}).toPromise();
+    this.sharedService.showSnackbar(
+      `${id} created`,
+      4000,
+      "top",
+      "center",
+      "snackBarMiddle"
+    );
+    navigator.clipboard.writeText(`${id}`);
+    this.closeModal(id);
   }
 
   buildDevicePrefix() {
@@ -173,32 +198,31 @@ export class CreateDeviceModalComponent implements OnInit {
     return `${type}-${this.selectedRegionInitial}`;
   }
 
-  async generateDeviceId() {
-    if (this.selectedType && this.selectedRegion) {
-      const prefix = this.buildDevicePrefix();
-      const lastId = await this.getLastDeviceId(prefix) as any;
-      if (!lastId || lastId === 'null') {
-        this.installationID = `${prefix}-0001`;
-        return;
-      }
-      const latestNumber = lastId.split("-").pop();
-      if (isNaN(latestNumber)) {
-        this.installationID = `${prefix}-0001`;
-        return;
-      }
-      const nextNumber = parseInt(latestNumber) + 1;
-      this.installationID = `${prefix}-${("000" + nextNumber).slice(-4)}`
-    }
-  }
+  // async generateDeviceId() {
+  //   if (this.selectedType && this.selectedRegion) {
+  //     const prefix = this.buildDevicePrefix();
+  //     const lastId = await this.getLastDeviceId(prefix) as any;
+  //     if (!lastId || lastId === 'null') {
+  //       this.installationID = `${prefix}-0001`;
+  //       return;
+  //     }
+  //     const latestNumber = lastId.split("-").pop();
+  //     if (isNaN(latestNumber)) {
+  //       this.installationID = `${prefix}-0001`;
+  //       return;
+  //     }
+  //     const nextNumber = parseInt(latestNumber) + 1;
+  //     this.installationID = `${prefix}-${("000" + nextNumber).slice(-4)}`
+  //   }
+  // }
 
-  getLastDeviceId(prefix) {
-    return this.apiService.get(`/settings/camera/getLatestDeviceId?prefix=${prefix}`, {responseType: 'text'}).toPromise();
-  }
+  // getLastDeviceId(prefix) {
+  //   return this.apiService.get(`/settings/camera/getLatestDeviceId?prefix=${prefix}`, {responseType: 'text'}).toPromise();
+  // }
 
   async updateDevice() {
     this.loading = true;
     const params = {
-      installationId: this.installationID,
       deviceType: this.selectedType,
       latitude: this.latitude || "",
       longitude: this.longitude || "",
@@ -206,6 +230,11 @@ export class CreateDeviceModalComponent implements OnInit {
       cameraPole: this.poleIdShow ? this.poleId : "",
       region: this.selectedRegion || "",
       subArea: this.selectedSubArea || "",
+
+      areaId: this.selectedRegions.initial || "",
+      areaName: this.selectedRegions.name || "",
+      subAreaId: this.selectedsubAreas.locationId || "",
+      subAreaName: this.selectedsubAreas.name || "",
     }
     await this.apiService.post(`/settings/camera/${this.selectedDevice.uid}`, params, {responseType: 'text'}).toPromise();
     this.closeModal(true);

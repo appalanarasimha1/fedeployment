@@ -71,9 +71,9 @@
         <table class="folderListview pb-5">
             <tr>
                 <th style="width:1%">&nbsp;&nbsp;</th>
-                <th style="width:15%">Installation ID</th>
+                <th style="width:20%">Installation ID</th>
                 <th style="width:25%">Sub-area</th>
-                <th style="width:10%">Direction</th>
+                <th style="width:5%">Direction</th>
                 <th style="width:10%">Pole ID</th>
                 <th style="width:14%">Device type</th>
                 <th style="width:19%">Status</th>
@@ -82,12 +82,17 @@
             </tr>
             <tr *ngFor="let device of filteredDeviceList; let i = index">
                 <td><div class="height32"></div></td>
-                <td>{{device.installationId}}</td>
+                <td>
+                    {{device.installationId}}
+                    <div class="tooltip1" style="cursor: pointer; margin: 10px;">
+                        <img src="../../assets/images/copy-icon.svg" (click)="copyDeviceName(device.installationId)">
+                        <span class="tooltiptext">Copy installation ID</span>
+                    </div>
+                </td>
                 <td><div class="itemTitleContent">{{device.subArea}}</div></td>
                 <td>{{formatDirection(device.direction)}}</td>
                 <td>{{device.cameraPole}}</td>
                 <td>{{capitalizeFirstLetter(device.deviceType)}}</td>
-                <td>{{device.status}}</td>
                 <td>
                     <ul>
                         <li class="nav-item dropdown">

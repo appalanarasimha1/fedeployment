@@ -97,22 +97,23 @@
                     <ng-select placeholder="Select"
                         [searchable]="false"
                         [clearable]="false"
-                        [(ngModel)]="selectedSubArea"
+                        [(ngModel)]="selectedsubAreas"
+                        (change)="onSelectSubArea($event)"
                         id="Sub-area"
                         [ngClass]="{'goldenText': selectedSubArea}"
                     >
-                        <ng-option *ngFor="let subArea of filteredSubAreaList" [value]="subArea.uid">
+                        <ng-option *ngFor="let subArea of filteredSubAreaList" [value]="subArea">
                             {{subArea.name}}
                         </ng-option>
                     </ng-select>
                 </div>
             </li>
-            <li *ngIf="!!installationID">
+            <!-- <li *ngIf="!!installationID">
                 <div class="form-group">
                     <label for="Supplier's Name">Installation ID</label>
                     <input style="color: #DAAA00;" type="text" placeholder="Installation ID" [(ngModel)]="installationID" readonly/>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </div>
 
