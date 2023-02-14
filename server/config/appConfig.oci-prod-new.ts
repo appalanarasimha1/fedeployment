@@ -6,18 +6,18 @@ export class AppConfigOCIProductionNew {
       port: 4001,
       socketPort: 4010,
       mongoDbUrl: `mongodb://${encodeURIComponent(this.userName)}:${encodeURIComponent(this.password)}@10.149.49.34:27017/?authSource=admin`,
-      dbName: 'prodgx',
+      dbName: 'cluster',
       mongodbTables: {
         USER_TABLE: 'userDirectory',
         VIDEO_TABLE: 'personalizedVideoInventory',
         AUDIT_TABLE: 'audit'
       },
       domain: 'https://groundx.neom.com/',
-      elasticDbUrl: 'https://ES1.groundx.com:9200', // 'http://10.149.49.21:9200,10.149.49.22:9200,10.149.49.18:9200',
+      elasticDbUrl: 'https://ES3.groundx.com:9200,https://ES2.groundx.com:9200,https://ES1.groundx.com:9200',
       elsticDbUserName: 'elastic',
       elasticCertificatePath: '/home/opc/rootCA.crt',
-      elasticSearchIndex: "searchindex_v4"
-      // elasticDbUrl: 'https://10.101.21.140:9200'
+      elasticSearchIndex: "searchindex_new",
+      elasticPassword:process.env.ELASTIC_DB_PASSWORD
     };
   
     public static get Config(): any {
