@@ -36,7 +36,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   searchInitialised: any;
   sectorName: string;
   folderId: string;
-  currentWorkspace: IEntry;
+  currentWorkspace: any;
   isExternalView: boolean = false;
   searchBarValue: string;
   showSearchbar: boolean = true;
@@ -180,6 +180,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.apiService.get(`/id/${id}`,
       {headers: { "fetch-document": "properties"}}).subscribe((workspace: any) => {
         this.currentWorkspace = workspace;
+        this.saveState(this.currentWorkspace);
         this.extractBreadcrumb();
     });
   }
@@ -318,8 +319,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
    * @param breadCrumbIndex
    * @returns null
    */
-   async handleGotoBreadcrumb(item: IEntry, index: Number) {
+   async handleGotoBreadcrumb(item, index: Number, breadCrumbIndex?: any) {
     $("body").animate({ scrollTop: 0 }, "slow");
+    this.saveState(item, index, breadCrumbIndex);
     if(!item) {
       this.router.navigateByUrl('workspace');
       return;
@@ -529,13 +531,13 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     // this.loading = false;
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.onlyPrivate = false
+        this.onlyPrivate = false;
         this.saveState(result);
       }
     });
   }
   
-  saveState({uid, title, path, properties, sectorId, type, contextParameters}, index?: number, breadCrumbIndex?: number) {
+  saveState({uid, title, path, properties, sectorId, type, contextParameters}, index?: Number, breadCrumbIndex?: number) {
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
     // this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex);
@@ -850,8 +852,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   async fetchFolder(id) {
-    const result = await this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
+    const result:any = await this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
       {headers: { "fetch-document": "properties"}}).toPromise();
+      this.saveState(result);
     return result;
   }
 

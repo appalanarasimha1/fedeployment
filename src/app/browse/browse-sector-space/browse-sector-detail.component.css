@@ -753,3 +753,27 @@ ul.uploadAssetsClassifications li img {
 .views img.active {
   opacity: 1;
 }
+.publicUseBlk {
+  background: #E6E2DA;
+  border-radius: 4px;
+  color: #645D57;
+  padding: 0px 8px;
+  font-size: 14px;
+  line-height: 25px;
+  font-weight: normal;
+  cursor: pointer;
+  position: relative;
+}
+.publicUseBlk::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 200%;
+  width: 100%;
+}
+.publicUseBlock:hover .publicUseBlk {
+  background: #B1AAA1;
+  color: #1E1B19;
+}
