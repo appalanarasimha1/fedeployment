@@ -1616,7 +1616,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // this.loading = true;
     let query;
     if (this.isExternalView && !this.selectedFolder.uid && !this.selectedFolder.path) {
-      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:mixinType = 'Folderish' AND dc:isPrivate = 1 AND ecm:acl/*1/principal IS NOT NULL AND dc:title ILIKE '%${searchString}%'`;
     } else {
       const path = this.sectorSelected.uid === this.selectedFolder.uid ?
       `/${this.sectorSelected.title}/workspaces/` :
@@ -2126,7 +2126,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   async fetchAllPrivateWorkspaces() {
-    const query = "SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1";
+    const query = "SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:mixinType = 'Folderish' AND dc:isPrivate = 1 AND ecm:acl/*1/principal IS NOT NULL";
     const params = {
       currentPageIndex: 0,
       offset: 0,
