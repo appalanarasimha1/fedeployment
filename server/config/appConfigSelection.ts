@@ -37,7 +37,7 @@ export class AppConfig {
         return AppConfigOCIUat.Config;
       }
       case 'oci-prod-new': {
-        return AppConfigOCIProduction.Config;
+        return AppConfigOCIProductionNew.Config;
       }
       default:
         return AppConfigDevelopment.Config;
