@@ -138,11 +138,12 @@ div#dropzone {
   left: 0px;
   z-index: 99;
   border-radius: 4px;
-  padding: 6px 12px;
+  padding: 0px 9px;
+  font-size: 13px;
+  line-height: 27px;
+  font-size: 13px;
   background: #413E3C;
   color: #fff;
-  font-size: 14px;
-  line-height: 20px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -776,4 +777,10 @@ ul.uploadAssetsClassifications li img {
 .publicUseBlock:hover .publicUseBlk {
   background: #B1AAA1;
   color: #1E1B19;
+}
+.manageAccess {
+  width: 67px;
+  display: inline-block;
+  text-align: right;
+  vertical-align: middle;
 }

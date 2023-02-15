@@ -115,11 +115,7 @@
             <div class="publicUseBlock">
               <div class="tollTipCustom">
                 <img src="../../../assets/images/private-icon.svg" class="private-icon" style="position: relative; z-index: 9; width: 17px;margin-right: 10px;" />
-                <div class="tolltipContent" style="top: 28px;
-                height: auto;
-                white-space: break-spaces;
-                text-align: left;
-                padding: 5px 10px;">
+                <div class="tolltipContent">
                   This is a private folder
                 </div>
               </div>
@@ -242,7 +238,7 @@
           </span>
         </td>
         <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">
-          <p>{{getCreatorName(item)}}</p>
+          <p class="itemTitleContent">{{getCreatorName(item)}}</p>
           <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
         </td>
         <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>

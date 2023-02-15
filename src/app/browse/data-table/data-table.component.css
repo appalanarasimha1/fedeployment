@@ -637,3 +637,36 @@ tr.groupFolder td:first-child {
   border-radius: 8px !important;
   padding: 12px 14px !important;
 }
+.copyedBlock {
+  width: auto;
+  max-width: 100px;
+  line-height: normal;
+  vertical-align: middle;
+  margin-left: 0px;
+  border-radius: 100px;
+  background: #E8E6DF;
+  white-space: nowrap;
+  text-align: left;
+  padding: 3px 10px 5px;
+  float: right;
+}
+.copyHover {
+  position: relative;
+  margin-left: 0px;
+  cursor: pointer;
+}
+.copyHoverInfo {
+  display: none;
+  top: 31px;
+  right: 0px;
+  background: #413E3C;
+  padding: 2px 7px;
+  color: #fff !important;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  width: 75px;
+}
+.copyHover:hover .copyHoverInfo {
+  display: block;
+}

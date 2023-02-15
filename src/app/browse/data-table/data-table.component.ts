@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, SimpleChanges, OnChanges, Output, EventEmitter, HostListener } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ApiService } from '../../services/api.service';
@@ -92,6 +92,14 @@ export class DataTableComponent implements OnInit, OnChanges {
   lastIndexClicked:number
   currentIndexClicked:number
   selectedMoveListNew: any = {};
+
+  // @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    const ESCAPE_KEYCODE = 27;
+    if (event.keyCode === ESCAPE_KEYCODE) {
+      this.contextMenu.closeMenu();
+    }
+  }
   
   constructor(
     public sharedService: SharedService,
@@ -363,7 +371,6 @@ export class DataTableComponent implements OnInit, OnChanges {
     let dataToParse =  data.concat(this.assetCanDelete)
     const listDocs = dataToParse
     .filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
-    console.log({listDocs,data,dataToParse});
     await this.apiService
       .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}`})
       .subscribe((docs: any) => {
@@ -746,7 +753,8 @@ export class DataTableComponent implements OnInit, OnChanges {
       (item) => !listDocs.includes(item["uid"])
     );
     this.sortedData = this.searchList.slice();
-    this.sortedDataList.emit(this.sortedData)
+    this.sortedDataList.emit(this.sortedData);
+    console.log('current uid', this.currentWorkspace.uid, this.fileSelected, this.folderStructure);
     this.hasUpdatedChildren.push(this.currentWorkspace.uid);
     this.selectedFolderList = {};
     deletedFolders.forEach((item) => {
