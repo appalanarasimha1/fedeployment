@@ -5,7 +5,7 @@ export class AppConfigOCIProductionNew {
     private static config: any = { 
       port: 4001,
       socketPort: 4010,
-      mongoDbUrl: `mongodb://${encodeURIComponent(this.userName)}:${encodeURIComponent(this.password)}@10.149.49.34:27017/?authSource=admin`,
+      mongoDbUrl: `mongodb://${encodeURIComponent(this.userName)}:${encodeURIComponent(this.password)}@10.149.49.34:27017,10.149.49.37:27017,10.149.49.38:27017/?authSource=admin&replicaSet=Test&readPreference=nearest&ssl=false`,
       dbName: 'cluster',
       mongodbTables: {
         USER_TABLE: 'userDirectory',
