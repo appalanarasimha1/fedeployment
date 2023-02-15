@@ -92,6 +92,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   lastIndexClicked:number
   currentIndexClicked:number
   selectedMoveListNew: any = {};
+  increaseWidth = false;
 
   // @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -753,9 +754,8 @@ export class DataTableComponent implements OnInit, OnChanges {
       (item) => !listDocs.includes(item["uid"])
     );
     this.sortedData = this.searchList.slice();
-    this.sortedDataList.emit(this.sortedData);
-    console.log('current uid', this.currentWorkspace.uid, this.fileSelected, this.folderStructure);
-    this.hasUpdatedChildren.push(this.currentWorkspace.uid);
+    this.sortedDataList.emit(this.sortedData)
+    // this.hasUpdatedChildren.push(this.currentWorkspace.uid); // Note* this variable may be use for children folders
     this.selectedFolderList = {};
     deletedFolders.forEach((item) => {
       // if (this.folderAssetsResult[item.parentRef]) {
@@ -804,6 +804,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
   
   copyLink(asset: IEntry, assetType: string) {
+    this.increaseWidth = true;
     asset.copy = this.sharedService.copyLink(asset.uid, assetType, asset.properties['dc:sector']);
   }
   

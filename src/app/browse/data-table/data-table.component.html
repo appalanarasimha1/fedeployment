@@ -38,7 +38,7 @@
         >
           Name
         </th>
-        <th width="12%"> <div style="display: block; width: 40px; height: 40px"></div> </th>
+        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div> </th>
         <th mat-sort-header="dc:creator" width="22%">Created by</th>
         <th
           *ngIf="!isTrashView"
