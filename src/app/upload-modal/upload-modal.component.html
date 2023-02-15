@@ -22,7 +22,7 @@
                </div>
                
                <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto" *ngIf="!sizeExeeded">
-                  <div class="upload-label">
+                  <div class="upload-label" *ngIf="!fileLimitExceed">
                      <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
                      <span style="margin-top: 20px; color: #040404; padding-bottom: 10px;"><b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
                      <div *ngIf="data" class="uploadAssetsBlock">
@@ -43,6 +43,7 @@
                   </div> -->
                </div>
             </ngx-dropzone-label>
+            <div class="malware" style="color: red;width: 100%; text-align: center;" *ngIf="fileLimitExceed">You can upload upto 100 files</div>
             <ul class="flexible upload-preview" *ngIf="!sizeExeeded">
                <li *ngFor="let f of filesMap | keyvalue">
                   <ngx-dropzone-preview *ngIf="!f?.value['isVirus']" class="upload-file-preview upload-progress-bar-{{f.key}}" [ngClass]="{'fillbar': filesUploadDone[f.key]}" [removable]="true" (removed)="onRemove(f)">

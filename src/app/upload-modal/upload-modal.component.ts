@@ -232,7 +232,9 @@ export class UploadModalComponent implements OnInit {
   }
 
   whiteListFiles:any;
+  fileLimitExceed;
   onSelect(event) {
+    this.fileLimitExceed = false
     // console.log("event.addedFiles", event.addedFiles);
     if (!event.addedFiles && !this.agreeTerms) {
       this.showError = true;
@@ -244,6 +246,10 @@ export class UploadModalComponent implements OnInit {
       this.whiteListFiles = files
       for (let i = 0; i < files.length; i++) {
         this.filesMap[i] = files[i]
+      }
+      if(Object.keys(this.filesMap).length >100) {
+        this.filesMap ={}
+        return this.fileLimitExceed = true
       }
       this.getTotalFileSize()
 
