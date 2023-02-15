@@ -138,7 +138,7 @@
                   "maximumError": "500kb"
                 }
               ]
-            },
+            }, 
             "oci-uat":{
               "fileReplacements": [
                 {
