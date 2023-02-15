@@ -41,6 +41,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   rejectComment = "";
   modalOpen: boolean = true;
   fullSIzeImg: boolean = false;
+  device;
 
   constructor(
     private router: Router,
@@ -57,6 +58,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     if (this.doc) {
       this.getTags();
       this.getComments();
+      this.getCameraInfo();
     }
   }
 
@@ -64,6 +66,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     if (this.doc) {
       this.getTags();
       this.getComments();
+      this.getCameraInfo();
     }
     this.checkCanDownload();
     this.getRejectComment();
@@ -525,7 +528,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       "q": searchText.toLowerCase(),
       "currentPageIndex": "0",
     };
-    
+
         const response:any = await fetch("/nuxeo/api/v1/"+apiRoutes.SEARCH_USER + "?" +new URLSearchParams(params), {
             method: 'Get', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -538,9 +541,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
           }).then( response => response.json() )
-          
+
           return await response?.entries.map(data=>data.id)
-    
+
   }
   getChoiceLabel(choice: string) {
     return `{{${choice}}} `;
@@ -641,5 +644,17 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     x = offsetX/zoomer.offsetWidth*100;
     y = offsetY/zoomer.offsetHeight*100;
     zoomer.style.backgroundPosition = x + '% ' + y + '%';
+  }
+
+  async getCameraInfo() {
+    const installationId = this.doc.properties["dc:installationId"];
+    if (!installationId) return;
+    const res = (await this.apiService.get(`/settings/camera/byId?installationId=${installationId}`, {}).toPromise()) as any;
+    this.device = res;
+  }
+
+  getTimeTaken() {
+    if (!this.device.installationTime) return "";
+    return this.device.installationTime.match(/.{1,2}/g).join(":");
   }
 }

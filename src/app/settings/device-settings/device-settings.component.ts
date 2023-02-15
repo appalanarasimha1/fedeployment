@@ -60,6 +60,8 @@ export class DeviceSettingsComponent implements OnInit {
   filteredDeviceList = [];
   regionMap = {};
   subAreaMap = {};
+  owners = [];
+  selectedOwner;
 
   deviceTypes = [
     { id: 1, name: "Timelapse" },
@@ -76,18 +78,20 @@ export class DeviceSettingsComponent implements OnInit {
   async getDeviceList() {
     const url = "/settings/camera";
     const res = (await this.apiService.get(url, {}).toPromise()) as any;
+    // const res = data as any;
 
     if (!res) return;
     const devices = res;
     this.deviceList = devices.map((device) => ({
-      deviceType: device.deviceType,
+      deviceType: device.deviceType?.toLowerCase(),
       latitude: device.latitude,
       longitude: device.longitude,
-      initial: device.initial,
       direction: device.cameraDirection,
       cameraPole: device.cameraPole,
       region: device.region,
+      areaId: device.areaId,
       subArea: device.subAreaName,
+      subAreaId: device.subAreaId,
       status: device.status?.toLowerCase(),
       installationId: device.installationId,
       uid: device.id,
@@ -207,10 +211,10 @@ export class DeviceSettingsComponent implements OnInit {
           match &&
           device.installationId.toLowerCase().includes(this.deviceInput.toLowerCase());
       if (this.selectedRegions)
-        match = match && (device.region?.includes(this.selectedRegions.uid) || device.region?.includes(this.selectedRegions.name));
+        match = match && (device.region?.includes(this.selectedRegions.uid) || device.areaId?.includes(this.selectedRegions.initial));
       if (this.selectedsubAreas)
       {
-        match = match && (device.subArea?.includes(this.selectedsubAreas.uid) || device.subArea?.includes(this.selectedsubAreas.name));
+        match = match && (device.subArea?.includes(this.selectedsubAreas.uid) || device.subAreaId?.includes(this.selectedsubAreas.locationId));
       }
       if (this.selecteddeviceTypes)
         match =

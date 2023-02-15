@@ -176,10 +176,7 @@ span.penvilIcon svg {
     clear: both;
     border: 0px;
 }
-.searchBlock button.primary.createSuppliers {
-    position: absolute;
-    top: 5px;
-    right: 10px;
+button.primary.createSuppliers {
     border: 1px solid #BAB8B2;
     border-radius: 100px;
     line-height: 33px;
@@ -699,4 +696,8 @@ input.datePicker:focus::placeholder{
 .tooltip1:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+.device-header {
+    display: flex;
+    justify-content: space-between;
 }

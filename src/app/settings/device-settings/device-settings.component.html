@@ -1,10 +1,12 @@
 <div class="externalUser positionRelative">
-    <h2>Devices</h2>
+    <div class="device-header">
+        <h2>Devices</h2>
+        <button class="primary createSuppliers" (click)="openCreateDeviceModal()">Create device</button>
+    </div>
     <!-- <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p> -->
     <div class="searchBlock">
         <span class="positionRelative">
             <input type="text" placeholder="Search or create devices by typing the installation ID" (input)="searchDevice($event)" [(ngModel)]="deviceInput" class="search-bar" />
-            <button class="primary createSuppliers" *ngIf="deviceInput" (click)="openCreateDeviceModal()">Create device</button>
         </span>
     </div>
     <div class="regionBlok">
@@ -66,12 +68,28 @@
                 </ng-select>
             </li>
         </ul>
+        <ul>
+            <li style="margin-top: 7px;">
+                <ng-select placeholder="Owner"
+                    [searchable]="false"
+                    [clearable]="true"
+                    [(ngModel)]="selectedOwner"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedOwner}"
+                >
+                    <ng-option *ngFor="let owner of owners" [value]="owner.name">
+                        {{owner.name}}
+                    </ng-option>
+                </ng-select>
+            </li>
+        </ul>
     </div>
     <div class="makeAdminBlock customTableStyle">
         <table class="folderListview pb-5">
             <tr>
                 <th style="width:1%">&nbsp;&nbsp;</th>
-                <th style="width:20%">Installation ID</th>
+                <th style="width:13%">Installation ID</th>
+                <th style="width:7%">&nbsp;</th>
                 <th style="width:25%">Sub-area</th>
                 <th style="width:5%">Direction</th>
                 <th style="width:10%">Pole ID</th>
@@ -84,7 +102,9 @@
                 <td><div class="height32"></div></td>
                 <td>
                     {{device.installationId}}
-                    <div class="tooltip1" style="cursor: pointer; margin: 10px;">
+                </td>
+                <td>
+                    <div class="tooltip1" style="cursor: pointer;">
                         <img src="../../assets/images/copy-icon.svg" (click)="copyDeviceName(device.installationId)">
                         <span class="tooltiptext">Copy installation ID</span>
                     </div>
@@ -102,12 +122,6 @@
                                 <div *ngIf="device.status === 'decommissioned'" class="statusTage decommissioned">Decommissioned <span></span></div>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'online')" class="statusTage online">Online <span></span></div>
-                                </li>
-                                <li>
-                                    <div style="cursor: pointer;" (click)="changeStatus(device, 'offline')" class="statusTage inactive">Offline <span></span></div>
-                                </li>
                                 <li>
                                     <div style="cursor: pointer;" (click)="changeStatus(device, 'decommissioned')" class="statusTage decommissioned">Decommissioned <span></span></div>
                                 </li>

@@ -28,6 +28,22 @@
                     </li>
                 </ol>
             </li>
+            <li class="regionBlok">
+                <div class="form-group">
+                    <label for="Region">Owner</label>
+                    <ng-select placeholder="Select"
+                        [searchable]="false"
+                        [clearable]="false"
+                        [(ngModel)]="selectedOwner"
+                        id="region"
+                        [ngClass]="{'goldenText': selectedOwner}"
+                    >
+                        <ng-option *ngFor="let owner of owners" [value]="owner">
+                            {{owner.initial}}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </li>
             <li>
                 <div class="flex">
                     <div class="form-group">

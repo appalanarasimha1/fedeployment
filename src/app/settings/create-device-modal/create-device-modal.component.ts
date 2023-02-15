@@ -39,6 +39,7 @@ export class CreateDeviceModalComponent implements OnInit {
     { id: 4, name: "Sub-area 4" },
     { id: 5, name: "Sub-area 5" },
   ];
+  owners = [];
   supplierPrefix = ["TLP", "TME", "URE"];
   filteredSubAreaList = [];
   loading = false;
@@ -58,6 +59,7 @@ export class CreateDeviceModalComponent implements OnInit {
   isCreate = true;
   selectedDevice = null;
   selectedSupplier = null;
+  selectedOwner;
 
   constructor(
     public dialogRef: MatDialogRef<CreateDeviceModalComponent>,
@@ -74,21 +76,19 @@ export class CreateDeviceModalComponent implements OnInit {
     this.selectedDevice = this.data.selectedDevice;
     if (!this.isCreate) {
       this.installationID = this.selectedDevice.installationId;
-      this.selectedRegion = this.selectedDevice.region;
+      this.selectedRegion = this.selectedDevice.region || this.selectedDevice.areaId;
       if (this.selectedDevice.deviceType === 'timelapse') {
         this.selectedSupplier = this.installationID.split("-")[1];
       }
-      if (this.selectedDevice.region)
+      if (this.selectedRegion)
         this.selectedRegions = this.regionList.find(
-          (region) => region.uid === this.selectedDevice.region
+          (region) => region.uid === this.selectedRegion || region.initial === this.selectedRegion
         );
-      this.onSelectRegion(this.selectedRegions);
+      if (this.selectedRegions) this.onSelectRegion(this.selectedRegions);
       if (this.selectedDevice.subArea) {
         this.selectedsubAreas = this.subAreaList.find(
           (subArea) => subArea.name === this.selectedDevice.subArea
         );
-        console.log(this.selectedsubAreas);
-
       }
       this.selectedSubArea = this.selectedDevice.subArea;
       this.onSelectdeviceType(null, this.selectedDevice.deviceType);
@@ -166,7 +166,7 @@ export class CreateDeviceModalComponent implements OnInit {
       deviceType: this.selectedType,
       latitude: this.latitude || "",
       longitude: this.longitude || "",
-      direction: this.directionShow ? this.direction : "",
+      cameraDirection: this.directionShow ? this.direction : "",
       cameraPole: this.poleIdShow ? this.poleId : "",
       region: this.selectedRegion || "",
       subArea: this.selectedSubArea || "",
@@ -226,7 +226,7 @@ export class CreateDeviceModalComponent implements OnInit {
       deviceType: this.selectedType,
       latitude: this.latitude || "",
       longitude: this.longitude || "",
-      direction: this.directionShow ? this.direction : "",
+      cameraDirection: this.directionShow ? this.direction : "",
       cameraPole: this.poleIdShow ? this.poleId : "",
       region: this.selectedRegion || "",
       subArea: this.selectedSubArea || "",

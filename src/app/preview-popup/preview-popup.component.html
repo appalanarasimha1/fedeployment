@@ -219,7 +219,7 @@
 
                       <li>
                         Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length ? 
+                          doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length ?
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
                           'Contact sector for usage approval'
                           }}</span>
@@ -252,6 +252,48 @@
                       <li>
                         Format <br /><span style="opacity: 0.7; word-break: break-all">{{
                           doc?.properties && doc?.properties["picture:info"]?.format
+                          }}</span>
+                      </li>
+
+                      <li *ngIf="device">
+                        Time taken <br /><span style="opacity: 0.7; word-break: break-all">{{
+                        getTimeTaken()
+                          }}</span>
+                      </li>
+
+                      <li *ngIf="device">
+                        Camera ID <br /><span style="opacity: 0.7; word-break: break-all">{{
+                        device.installationId
+                          }}</span>
+                      </li>
+
+                      <li *ngIf="device">
+                        Latitude <br /><span style="opacity: 0.7; word-break: break-all">{{
+                        device.latitude
+                          }}</span>
+                      </li>
+
+                      <li *ngIf="device">
+                        Longitude <br /><span style="opacity: 0.7; word-break: break-all">{{
+                        device.longitude
+                          }}</span>
+                      </li>
+
+                      <li *ngIf="device">
+                        Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
+                        device.areaName
+                          }}</span>
+                      </li>
+
+                      <li *ngIf="device">
+                        Sub-Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
+                        device.subAreaName
+                          }}</span>
+                      </li>
+
+                      <li *ngIf="device">
+                        Camera Direction <br /><span style="opacity: 0.7; word-break: break-all">{{
+                        device.cameraDirection || device.direction
                           }}</span>
                       </li>
 
@@ -422,19 +464,19 @@
           <!-- <div class="allComments" (click)="showAllcommentClick()" *ngIf="totalComments>comments.length"><span>View all comments</span></div> -->
           <form (submit)="saveComment(commentText)" class="commentTextForm" >
             <mwl-text-input-autocomplete-container>
-                
-              <input 
+
+              <input
                 type="text"
-                [(ngModel)]="commentText" 
+                [(ngModel)]="commentText"
                 class="commentInput"
                 name="comment"
-                placeholder="Write a comment here. Use @ to mention." 
+                placeholder="Write a comment here. Use @ to mention."
                 mwlTextInputAutocomplete
                 [findChoices]="findChoices"
                 [getChoiceLabel]="getChoiceLabel"
                 autocomplete="off"
                 />
-            </mwl-text-input-autocomplete-container> 
+            </mwl-text-input-autocomplete-container>
             <button class="commentBtn" (click)="saveComment(commentText)" autocomplete="off" [disabled]="!commentText" [ngClass]="{'activeBtn' : commentText}">Send</button>
             <!-- <img (click)="saveComment(commentText)" src="../../assets/images/Btnentercomment.svg"
               class="enterComment" style="cursor: pointer" /> -->
@@ -641,7 +683,7 @@
 
                     <li>
                       Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length? 
+                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length?
                         doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
                         '“Contact sector for usage approval'
                         }}</span>
@@ -672,6 +714,48 @@
                     <li>
                       Format <br /><span style="opacity: 0.7; word-break: break-all">{{
                         doc?.properties && doc?.properties["picture:info"]?.format
+                        }}</span>
+                    </li>
+
+                    <li *ngIf="device">
+                      Time taken <br /><span style="opacity: 0.7; word-break: break-all">{{
+                       getTimeTaken()
+                        }}</span>
+                    </li>
+
+                    <li *ngIf="device">
+                      Camera ID <br /><span style="opacity: 0.7; word-break: break-all">{{
+                       device.installationId
+                        }}</span>
+                    </li>
+
+                    <li *ngIf="device">
+                      Latitude <br /><span style="opacity: 0.7; word-break: break-all">{{
+                       device.latitude
+                        }}</span>
+                    </li>
+
+                    <li *ngIf="device">
+                      Longitude <br /><span style="opacity: 0.7; word-break: break-all">{{
+                       device.longitude
+                        }}</span>
+                    </li>
+
+                    <li *ngIf="device">
+                      Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
+                       device.areaName
+                        }}</span>
+                    </li>
+
+                    <li *ngIf="device">
+                      Sub-Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
+                       device.subAreaName
+                        }}</span>
+                    </li>
+
+                    <li *ngIf="device">
+                      Camera Direction <br /><span style="opacity: 0.7; word-break: break-all">{{
+                       device.cameraDirection
                         }}</span>
                     </li>
 
