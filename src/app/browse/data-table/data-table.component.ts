@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { PreviewPopupComponent } from '../../preview-popup/preview-popup.component';
 import { Router } from '@angular/router';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-data-table',
@@ -1066,6 +1067,10 @@ export class DataTableComponent implements OnInit, OnChanges {
 
       // $('.itemTitleContent').css("width", getWidth2 - 30 )
     }, 0);
+  }
+
+  getDateInFormat1(date: string): string {
+    return moment(date).format("DD/MM/YYYY")
   }
 
 }
