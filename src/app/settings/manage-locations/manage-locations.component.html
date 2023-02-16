@@ -7,7 +7,7 @@
     <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>add new regions</strong> by typing their name below:</p>
     <div class="searchBlock">
         <span class="positionRelative">
-            <input type="text" [(ngModel)]="regionInput" placeholder="Search or create region by name" class="search-bar" />
+            <input type="text" [(ngModel)]="regionInput" (input)="searchRegion()" placeholder="Search or create region by name" class="search-bar" />
         </span>
     </div>
     <div class="makeAdminBlock customTableStyle">
@@ -18,7 +18,7 @@
                 <th style="width: 6%;">&nbsp;</th>
                 <th style="width: 6%;">&nbsp;</th>
             </tr>
-            <tr *ngFor="let region of regionList">
+            <tr *ngFor="let region of filteredRegions">
                 <td><div class="height32"></div></td>
                 <td>{{region.initial}} <span class="lightGray">{{region.name}}</span></td>
                 <td style="text-align: center !important;" (click)="removeRegion(region)"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
@@ -59,7 +59,7 @@
     <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>add new sub-areas/activities</strong> by typing their name below:</p>
     <div class="searchBlock">
         <span class="positionRelative">
-            <input type="text" placeholder="Search or add sub-areas/activities by ID or name" [(ngModel)]="subAreaInput" class="search-bar" />
+            <input type="text" (input)="searchSubArea()" placeholder="Search or add sub-areas/activities by ID or name" [(ngModel)]="subAreaInput" class="search-bar" />
         </span>
     </div>
     <div class="makeAdminBlock customTableStyle">
@@ -70,7 +70,7 @@
                 <th style="width: 65%;">Sub-area/activity</th>
                 <th style="width: 6%;">&nbsp;</th>
             </tr>
-            <tr *ngFor="let subArea of subAreaList">
+            <tr *ngFor="let subArea of filteredSubAreas">
                 <td><div class="height32"></div></td>
                 <td>{{subArea.locationId}}</td>
                 <td>{{subArea.name}}</td>
