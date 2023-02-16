@@ -16,6 +16,12 @@
             </li>
             <li>
                 <div class="form-group">
+                    <label for="Supplier ID (three letters)">Supplier ID (three letters)</label>
+                    <input type="text" [(ngModel)]="supplierId" placeholder="Enter supplier ID" />
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
                     <label for="Tech support email (optional)">Tech support email</label>
                     <input type="email" [(ngModel)]="supportEmail" placeholder="Enter a tech support email" />
                 </div>
@@ -34,7 +40,7 @@
                         </mat-chip-list>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                             <mat-option *ngFor="let suppliers of filteredFruits | async" [value]="suppliers">
-                                {{suppliers.initial}}
+                                {{suppliers.initial}} <span style="color: gray;">{{suppliers.name}}</span>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -55,6 +61,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!(suppliersName && validateEmail(supportEmail)) || loading || isSupplierNameExisted()" (click)="createSupplier()">Create supplier</button>
+        <button class="upload-btn" [disabled]="!(suppliersName && validateEmail(supportEmail) && validateSupplierId()) || loading || isSupplierNameExisted()" (click)="createSupplier()">Create supplier</button>
     </div>
 </div>

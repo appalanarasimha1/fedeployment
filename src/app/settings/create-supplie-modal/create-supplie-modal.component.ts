@@ -46,6 +46,7 @@ export class CreateSupplieModalComponent implements OnInit {
   selectedRegion = [];
   selectedMonth;
   currentSuppliers = [];
+  supplierId;
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
 
@@ -110,6 +111,7 @@ export class CreateSupplieModalComponent implements OnInit {
       regions: regions,
       activated: true,
       expiry: this.selectedMonth || new Date(),
+      supplierId: this.supplierId,
     }
     await this.apiService.post('/settings/supplier', payload, {responseType: 'text'}).toPromise();
     this.closeModal(true);
@@ -131,5 +133,10 @@ export class CreateSupplieModalComponent implements OnInit {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
+
+  validateSupplierId() {
+    if (!this.supplierId) return true;
+    return this.supplierId.length === 3;
+  }
 
 }

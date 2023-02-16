@@ -1,10 +1,12 @@
 <div class="externalUser positionRelative" *ngIf="!showExternalUserPage">
-    <h2>Suppliers</h2>
+    <div class="device-header">
+        <h2>Suppliers</h2>
+        <button class="primary createSuppliers" (click)="openCreateSupplierModal()">Create supplier</button>
+    </div>
     <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p>
     <div class="searchBlock">
         <span class="positionRelative">
           <input type="text" placeholder="Search or create suppliers by name" [(ngModel)]="supplierInput" (input)="searchSupplier($event)" class="search-bar" />
-          <button class="primary createSuppliers" *ngIf="supplierInput" (click)="openCreateSupplierModal()">Create supplier</button>
         </span>
     </div>
     <div class="makeAdminBlock customTableStyle">
@@ -12,6 +14,7 @@
             <tr>
                 <th style="width: 1%">&nbsp;&nbsp;</th>
                 <th>Suppliers</th>
+                <th>Supplier ID</th>
                 <th>Assigned region</th>
                 <th>Tech support email</th>
                 <th>Access expiry</th>
@@ -21,6 +24,7 @@
             <tr *ngFor="let supplier of filteredSuppliers; let i = index">
                 <td><div class="height32"></div></td>
                 <td>{{supplier.name}}</td>
+                <td>{{supplier.supplierId.toUpperCase()}}</td>
                 <td>
                     <mat-form-field class="example-chip-list">
                         <mat-chip-list #chipList>
@@ -33,7 +37,7 @@
                         </mat-chip-list>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, i)">
                             <mat-option *ngFor="let suppliers of filteredFruits | async" [value]="suppliers">
-                                {{suppliers.initial}}
+                                {{suppliers.initial}} <span style="color: gray;">{{suppliers.name}}</span>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>

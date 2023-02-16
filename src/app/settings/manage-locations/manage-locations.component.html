@@ -1,11 +1,13 @@
 
 <div class="externalUser positionRelative" *ngIf="!showExternalUserPage">
-    <h2>Regions</h2>
+    <div class="device-header">
+        <h2>Suppliers</h2>
+        <button class="primary createSuppliers" (click)="openCreateLocationModal()">Create region</button>
+    </div>
     <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>add new regions</strong> by typing their name below:</p>
     <div class="searchBlock">
         <span class="positionRelative">
             <input type="text" [(ngModel)]="regionInput" placeholder="Search or create region by name" class="search-bar" />
-            <button class="primary createSuppliers" *ngIf="regionInput" (click)="openCreateLocationModal()">Create region</button>
         </span>
     </div>
     <div class="makeAdminBlock customTableStyle">
@@ -33,7 +35,10 @@
         <path d="M2.828 7.00072L7.778 11.9507L6.364 13.3647L0 7.00072L6.364 0.636719L7.778 2.05072L2.828 7.00072Z" fill="#BAB8B2"/>
         </svg> Back</span>
     </div>
-    <h3>Sub-areas / activities</h3>
+    <div class="device-header">
+        <h3>Sub-areas / activities</h3>
+        <button class="primary createSuppliers" (click)="openCreateSubAreaModal()">Create sub-area</button>
+    </div>
     <h2 [ngClass]="{'removeExtraSpace' : renameUserName}">
         <span *ngIf="!renameUserName">
             {{selectedRegion.initial}} {{selectedRegion.name}}
@@ -55,7 +60,6 @@
     <div class="searchBlock">
         <span class="positionRelative">
             <input type="text" placeholder="Search or add sub-areas/activities by ID or name" [(ngModel)]="subAreaInput" class="search-bar" />
-            <button class="primary createSuppliers" *ngIf="subAreaInput" (click)="openCreateSubAreaModal()">Create sub-area</button>
         </span>
     </div>
     <div class="makeAdminBlock customTableStyle">

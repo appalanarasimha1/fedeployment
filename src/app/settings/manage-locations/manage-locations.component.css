@@ -122,8 +122,8 @@
 }
 /* Table style end */
 .clickArrowAction {
-    transform: rotate(180deg); 
-    margin-right: 16px; 
+    transform: rotate(180deg);
+    margin-right: 16px;
     cursor: pointer;
     margin: -4px auto 0px;
     vertical-align: middle;
@@ -169,10 +169,7 @@ span.penvilIcon svg {
     display: block;
     clear: both;
 }
-.searchBlock button.primary.createSuppliers {
-    position: absolute;
-    top: 5px;
-    right: 10px;
+button.primary.createSuppliers {
     border: 1px solid #BAB8B2;
     border-radius: 100px;
     line-height: 33px;
@@ -303,4 +300,8 @@ span.penvilIcon svg {
 }
 .externalUser h2.removeExtraSpace {
     padding-bottom: 15px;
+}
+.device-header {
+    display: flex;
+    justify-content: space-between;
 }

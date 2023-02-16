@@ -228,6 +228,7 @@ export class ManageSuppliersComponent implements OnInit {
       activated: supplier.activated,
       supportEmail: supplier.supportEmail,
       expiry: supplier.expiry,
+      supplierId: supplier.supplierId || "",
       renameEmail : false,
     }));
     this.filteredSuppliers = this.supplierList;
