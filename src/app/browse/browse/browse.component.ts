@@ -2002,13 +2002,14 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.whiteLoader = true;
     this.transparentLoader = true;
     // this.loading = true;
+    const folder = await this.fetchFolder(this.selectedFolder.uid) as any;
+    this.saveState(folder);
     const folderCollaborators = this.getFolderCollaborators();
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.width = "640px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
-    const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {
       selectedFolder: this.selectedFolder,
       folderId: this.selectedFolder.uid,
