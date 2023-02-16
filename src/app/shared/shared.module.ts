@@ -29,8 +29,12 @@ import { ManageAccessModalComponent } from '../manage-access-modal/manage-access
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill';
 import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
+import { DataTableComponent } from '../browse/data-table/data-table.component';
+import { MatMenuModule } from '@angular/material/menu';
 import { SafePipe } from '../common/pipe/safe.pipe';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MasonryViewComponent } from '../masonry-view/masonry-view.component';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -54,8 +58,11 @@ keyboardEventKeyPolyfill();
     SearchPipe,
     SnackbarComponent,
     AssetViewComponent,
+    ManageAccessModalComponent,
+    DataTableComponent,
     // ManageAccessModalComponent,
-    SafePipe
+    SafePipe,
+    MasonryViewComponent
   ],
   imports: [
     CommonModule,
@@ -64,6 +71,7 @@ keyboardEventKeyPolyfill();
     FormsModule,
     MatDialogModule,
     NgbModule,
+    MatPaginatorModule,
     PdfViewerModule,
     MatStepperModule,
     ChartsModule,
@@ -71,6 +79,7 @@ keyboardEventKeyPolyfill();
     // UploadModalModule,
     // NgxMasonryModule,
     TextInputAutocompleteModule,
+    MatMenuModule,
   ],
   exports: [
     CommonModule,
@@ -85,6 +94,7 @@ keyboardEventKeyPolyfill();
     DocumentCardComponent,
     PreviewPopupComponent,
     MatStepperModule,
+    MatPaginatorModule,
     ReversePipe,
     ChartsModule,
     SearchPipe,
@@ -94,8 +104,12 @@ keyboardEventKeyPolyfill();
     MatSnackBarModule,
     SnackbarComponent,
     AssetViewComponent,
+    MatMenuModule,
+    DataTableComponent,
+    ManageAccessModalComponent,
     // ManageAccessModalComponent,
-    SafePipe
+    SafePipe,
+    MasonryViewComponent
   ]
 })
 export class SharedModule { }

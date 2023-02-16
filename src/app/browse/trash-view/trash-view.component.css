@@ -1,0 +1,220 @@
+
+.gallery-view-block {
+    float: right;
+    border-left: 1px solid #EFEEE9;
+}
+.pb-30 {
+  padding-bottom: 30px !important;
+}
+.search-bar{
+  position: relative;
+  padding: 8px 45px 8px 46px;
+  border-radius: 8px;
+  border: 1px solid #F6F5F2;
+  width: 100%;
+  background-color: #F6F5F2;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 25px;
+  color: #000;
+}
+.search-bar::placeholder{
+  font-weight: 100;
+}
+.search-btn{
+  position: absolute;
+  left: 6px;
+  top: 0px;
+  bottom: 0px;
+  border: unset;
+  padding: 0px 10px;
+  background-color: transparent;
+  z-index: 1;
+}
+.search-btn img{
+  width: 19px;
+}
+.pl-5{
+  padding-left: 3rem!important;
+}
+.placeholder-search{
+  position: absolute;
+  right: 15px;
+  top: 0px;
+  bottom: 0px;
+  margin: auto;
+  width: 18px;
+}
+input.search-bar::placeholder{
+  color: #413E3C !important;
+}
+.deleted-by-me .control-group {
+  display: block;
+}
+.deleted-by-me .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 40px;
+  border: 0px;
+  margin: 0px 0px 0px;
+}
+.deleted-by-me .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.deleted-by-me .control__indicator {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  height: 26px;
+  width: 26px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #1E1B19;
+}
+.deleted-by-me .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.deleted-by-me .control:hover input ~ .control__indicator,
+.deleted-by-me .control input:focus ~ .control__indicator {
+  background: #fff;
+}
+.deleted-by-me .control input:checked ~ .control__indicator {
+  background: transparent;
+}
+.deleted-by-me .control:hover input:not([disabled]):checked ~ .control__indicator,
+.deleted-by-me .control input:checked:focus ~ .control__indicator {
+  background: transparent;
+}
+.deleted-by-me .control input:disabled ~ .control__indicator {
+  background: transparent;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.deleted-by-me .control__indicator:after,
+.deleted-by-me .control__indicator:before {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.deleted-by-me .control input:checked ~ .control__indicator:after,
+.deleted-by-me .control input ~ .control__indicator:before {
+  display: block;
+}
+.deleted-by-me .control--checkbox .control__indicator:after,
+.deleted-by-me .control--checkbox .control__indicator:before {
+  left: 9px;
+  top: 4px;
+  width: 8px;
+  height: 12px;
+  border: solid #1E1B19;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.deleted-by-me .control--checkbox .control__indicator:before{
+  border-color: transparent;
+}
+.deleted-by-me .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.deleted-by-me .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.deleted-by-me .control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b;
+}
+.deleted-by-me {
+  padding-top: 10px;
+}
+.header-content .main-title {
+  font-size: 24px;
+  line-height: 22px;
+  color: #000000;
+  font-weight: normal;
+  margin-bottom: 9px !important;
+  display: block;
+}
+
+.views {
+  /* display: flex;
+  flex-direction: column;
+  align-items: flex-end; */
+  width: 100%;
+  padding-top: 20px;
+  text-align: right;
+  position: relative;
+}
+.update-classifications-btn {
+  color: #E1BB33;
+  font-weight: normal;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.views img {
+  margin-left: 15px;
+  opacity: 0.2;
+  width: 28px;
+  cursor: pointer;
+}
+.views img.active{
+  opacity: 1;
+}
+.deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
+.uploadClassificationDisable {
+  opacity: 0.5;
+}
+.deleteRecover {display: inline-block;}
+.deleteRecover img {opacity: 1 !important;height: 19px !important;margin-left: 0px !important;}
+.deleteRecover .workspaceInfo {
+  display: none;
+}
+.deleteRecover:hover .workspaceInfo {
+  display: block;
+}
+.deleteRecover {
+  position: relative;
+  z-index: 2;
+  vertical-align: -5px;
+}
+.deleteRecover::after {
+  content: '';
+  display: block;
+  height: 60px;
+  width: 100%;
+  z-index: 1;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+ul.uploadAssetsClassifications li:hover .moveIcon path,
+.moveFolderImg .moveIcon:hover path,
+ul.uploadAssetsClassifications .deleteRecover:hover path,
+ul.uploadAssetsClassifications li:hover .downloadIcon path {
+  stroke: #DAAA00 !important;
+  fill: transparent !important;
+}
+ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess.downloadDisbable path {
+  fill: transparent !important;
+  stroke: gray!important;
+}
+
+.download-btn:hover .uncheckAfterSuccess path,
+ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess path,
+ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
+  fill: transparent !important;
+}
+
+.all-sectors .delete-folder-action {
+  position: absolute;
+}

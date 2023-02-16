@@ -17,14 +17,14 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { UploadModalModule } from '../upload-modal/upload-modal.module';
 import { SearchModule } from '../search/search.module';
-import { ManageAccessModalComponent } from '../manage-access-modal/manage-access-modal.component';
 
-import { MatMenuModule } from '@angular/material/menu';
+import { BrowseNavigationComponent } from './browse-navigation/browse-navigation.component';
+import { BrowseHomeComponent } from './browse-home/browse-home.component';
+import { BrowseSectorDetailComponent } from './browse-sector-space/browse-sector-detail.component';
+import { BrowseSectorFolderComponent } from './browse-sector-folder/browse-sector-folder.component';
+import { CreateFolderComponent } from './create-folder/create-folder.component';
+import { TrashViewComponent } from './trash-view/trash-view.component';
 @NgModule({
-  declarations: [
-    BrowseComponent,
-    ManageAccessModalComponent,
-  ],
   imports: [
     SharedModule,
     BrowseRoutingModule,
@@ -36,17 +36,22 @@ import { MatMenuModule } from '@angular/material/menu';
     MatIconModule,
     MatDialogModule,
     FontAwesomeModule,
-    MatPaginatorModule,
     MatTooltipModule,
-    MatPaginatorModule,
     MatExpansionModule,
     MatDatepickerModule,
     UploadModalModule,
     SearchModule,
-    MatMenuModule,
+  ],
+  declarations: [
+    BrowseComponent,
+    BrowseNavigationComponent,
+    BrowseHomeComponent,
+    BrowseSectorDetailComponent,
+    BrowseSectorFolderComponent,
+    CreateFolderComponent,
+    TrashViewComponent,
   ],
   exports: [
-    MatMenuModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

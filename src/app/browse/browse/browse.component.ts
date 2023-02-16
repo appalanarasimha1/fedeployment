@@ -9,7 +9,6 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UpdateModalComponent } from "../../update-modal/update-modal.component";
 import { SharedService } from "src/app/services/shared.service";
 import { environment } from "../../../environments/environment";
-
 import {
   ASSET_TYPE,
   constants,
@@ -50,8 +49,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
   // @ViewChild('uploadModal') uploadModal: UploadModalComponent;
   @ViewChild("paginator") paginator: MatPaginator;
-  @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
+  // moved to data-table
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
   @Input() name: string;
@@ -166,8 +165,23 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   listExternalUserGlobal: string[] = [];
   isExternalView = false;
   permissionChange:boolean=false;
-  accessDenied = false;
+  forInternalUse: any = [];
+  downloadArray: any = [];
+  sizeExeeded: boolean = false;
+  forInternaCheck: boolean = false;
+  downloadFullItem: any = [];
+  needPermissionToDownload: any = [];
+  count: number = 0;
+  copyRightItem: any = [];
+  canNotDelete: any = [];
+  rightClickedItem:any =null;
+  rightClickedIndex:number;
+  rightDownload:boolean=false;
+  lastIndexClicked:number;
+  currentIndexClicked:number;
   onlyPrivate:boolean = false;
+  accessDenied = false;
+  // onlyPrivate:boolean = false;
   whiteLoader: boolean = false;
   transparentLoader: boolean = false;
 
@@ -186,7 +200,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       path: "",
     },
   ];
-  searchInitialised: any;
 
   routeParams = {
     sectorName: "",
@@ -211,7 +224,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     let folderId = this.route.snapshot.paramMap.get('folderId');
 
       this.loading = true;
-      this.searchInitialised = null;
+      // this.searchInitialised = null;
       this.routeParams.sectorName = sectorName;
 
       await this.fetchAllSectors();
@@ -299,27 +312,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  initWorkspaceSearch(initialiseViews?: boolean): void {
-    if(!this.searchInitialised) {
-      this.searchInitialised = fromEvent(this.workspaceSearch.nativeElement,'keyup')
-        .pipe(
-            filter(Boolean),
-            debounceTime(250),
-            distinctUntilChanged(),
-            tap(async (text: Event) => {
-              if(!this.workspaceSearch.nativeElement.value) {
-                this.loading = true;
-                await this.getWorkspaceFolders(this.selectedFolder.uid, 1);
-                this.handleSelectMenu(1, "LIST");
-                this.loading = false;
-                return;
-              }
-              this.searchFolders(this.workspaceSearch.nativeElement.value);
-              this.handleSelectMenu(1, "LIST");
-            })
-        ).subscribe();
-    }
-  }
+  
 
   datePickerDefaultAction() {
     $( ".createNew.flexible" ).focus(() => {
@@ -770,6 +763,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return (this.searchList?.length > 0 && this.selectedFolder?.type.toLowerCase() === ASSET_TYPE.WORKSPACE);
   }
 
+  navigationBarEvent(data: any) {
+    // TODO: handle sidebar/navigation event
+    return;
+  }
+
   async openUpdateClassModal(breadCrumb: any) {
     // NOTE: uncomment below code
     if (!this.upadtePermission(breadCrumb) || this.sortedData.length < 1) {
@@ -913,13 +911,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     this.isShowDivIf = !this.isShowDivIf;
   }
 
-  getSearchPlaceholder(): string {
-    if (this.isTrashView) {
-      return `Search for folder in trash`;
-    }
-    return `Search in ${this.sharedService.stringShortener(this.selectedFolder?.title, 19)}`;
-  }
-
   getDateInFormat(date: string): string {
     return new Date(date).toDateString();
   }
@@ -1025,27 +1016,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     console.log('updatecount', updateCount);
     // this.checkCollabAndPrivateFolder()
 
-    if(this.selectAllClicked) updateCount = true
-
-    // var $chkboxes = $('.chkbox');
-    // var lastChecked = null;
-
-    // $chkboxes.click(function(e) {
-    //   console.log('shift', e.shiftKey);
-    //     if (!lastChecked) {
-    //         lastChecked = this;
-    //         // return;
-    //     }
-
-    //     if (e.shiftKey) {
-    //         var start = $chkboxes.index(this);
-    //         var end = $chkboxes.index(lastChecked);
-    //         $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastChecked.checked);
-    //     }
-
-    //     lastChecked = this;
-    // });
-
+    if(this.selectAllClicked) updateCount = true;
 
     if ($event.target?.checked || $event.checked) {
       if (this.lastIndexClicked ==undefined) {
@@ -1076,6 +1047,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   }
 
+  // moved to data-table
   async deleteFolders() {
     // if (Object.keys(this.selectedFolderList).length == 0 ) return;
     this.loading = true;
@@ -1179,7 +1151,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       // this.searchList = this.deletedByMe;
 
   }
-
+//  moved to data-table
   checkCanDelete(item) {
     return this.user === item.properties["dc:creator"]?.id || this.user === item.properties["dc:creator"];
   }
@@ -1201,6 +1173,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
   dropFilesNew=[];
+  // NOTE: name changed to openUploadModal
   openModal(key?:boolean) {
     if(key) this.dropFilesNew=[]
     const dialogConfig = new MatDialogConfig();
@@ -1389,8 +1362,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
           "top",
           "center",
           "snackBarMiddle"
-          // "Updated folder",
-          // this.getTrashedWS.bind(this)
         );
 
     }else{
@@ -1481,6 +1452,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     await this.fetchCurrentFolderAssets(folderUid);
     this.loading = false;
   }
+  
   initialLoad:Boolean= true
   async getWorkspaceFolders(sectorUid: string, viewType = 1) {
 
@@ -1533,6 +1505,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // console.log("entries",entries)
     this.folderStructure[0]["children"] = entries;
     this.folderStructure[0].isExpand = !isExpand;
+    this.folderStructure = this.folderStructure.slice(); // NOTE: to make change detection in child component
     this.searchList = entries;
     this.selectedMenu = 1;
     this.createDynamicSidebarScroll();
@@ -1612,6 +1585,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
+  
   async searchFolders(searchString: string) {
     // this.loading = true;
     let query;
@@ -1680,11 +1654,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   saveState({uid, title, path, properties, sectorId, type, contextParameters}, index?: number, breadCrumbIndex?: number) {
-    // let breadcrumb;
-    // if(contextParameters) {
-    //   ({breadcrumb} = contextParameters);
-    //   contextParameters = { breadcrumb };
-    // }
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
     const sector = (path) ? path.split('/')[1] : '';
@@ -1762,16 +1731,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     }
   }
 
-  forInternalUse: any = [];
-  downloadArray: any = [];
-  sizeExeeded: boolean = false;
-  forInternaCheck: boolean = false;
-  downloadFullItem: any = [];
-  needPermissionToDownload: any = [];
-  count: number = 0;
   assetCount: number = 0;
-  copyRightItem: any = [];
-  canNotDelete: any = [];
   assetCanDelete:any=[]
 
   selectAsset($event, item, i) {
@@ -2103,7 +2063,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
         end: ace.end,
         id: ace.id,
       }
-
     });
     return folderCollaborators;
   }
@@ -2352,6 +2311,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     // }
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
+  
   markIsPrivate(data: IEntry) {
     this.sortedData.forEach(item => {
       if(item.uid === data.uid) {
@@ -2387,9 +2347,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     });
   }
 
-  rightClickedItem:any =null;
-  rightClickedIndex:number;
-  rightDownload:boolean=false;
   onRightClick(item?:any,i?:number) {
     this.rightClickedItem = item ? item : this.rightClickedItem
     this.rightClickedIndex = i
@@ -2525,9 +2482,6 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   checkFolderContains(){
     return Object.keys(this.selectedFolderList).length <1
   }
-
-  lastIndexClicked:number
-  currentIndexClicked:number
 
   shiftkeyDown(e,item,i){
     // console.log("e",this.lastIndexClicked,this.currentIndexClicked,this.sortedData);

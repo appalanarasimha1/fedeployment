@@ -1,0 +1,362 @@
+
+<div class="row justify-content-between pt-25" style="width: 100%; --bs-gutter-x: 0px">
+   
+
+  <div class="col-xl-12 col-md-12 customTableStyle">
+      <!-- *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )"  -->
+    
+    <table
+      matSort
+      (matSortChange)="sortData($event)"
+      class="folderListview pb-5"
+      >
+      <tr>
+        <th style="width: 3%" class="checkAll positionRelative" [ngClass]="{'showChecked' : selectAllClicked }">
+          <div class="control-group tollTipCustom">
+            <label class="control control--checkbox">
+              <input class="chkbox"
+                id="checkbox-selectAll"
+                type="checkbox"
+                [checked]="selectAllClicked"
+                (change)="selectAllToggle($event)"
+              />
+              <div class="control__indicator"></div>
+            </label>
+            <span class="tolltipContent" style="top: 22px;
+              height: auto;
+              white-space: break-spaces;
+              text-align: left;
+              padding: 5px 10px; max-width: 100vh;">
+              {{selectAllClicked ? 'Unselect all': 'Select all'}}
+            </span>
+          </div>&nbsp;&nbsp;
+        </th>
+        <th
+          mat-sort-header="title"
+          width="38%"
+          style="padding-left: 35px"
+        >
+          Name
+        </th>
+        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div> </th>
+        <th mat-sort-header="dc:creator" width="22%">Created by</th>
+        <th
+          *ngIf="!isTrashView"
+          mat-sort-header="dc:created"
+          width="14%"
+        >
+          Created on
+        </th>
+        <th
+          *ngIf="isTrashView"
+          mat-sort-header="dc:modified"
+          width="18%"
+        >
+          Deleted on
+        </th>
+        <th
+          mat-sort-header="dc:sector"
+          *ngIf="isTrashView"
+          width="20%"
+        >
+          Workspace
+        </th>
+        <th style="width: 3%">&nbsp;&nbsp;</th>
+      </tr>
+      <tr *ngFor="let item of sortedData; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder positionRelative">
+        <td style="position: relative;" class="getWidth1" (contextmenu)="onContextMenu($event, item)">
+          <div
+            class="delete-folder-action"
+            *ngIf="
+              !checkAssetType(item.type) &&
+              checkWSType(item.type) &&
+              !checkGeneralFolder(item)
+            "
+          >
+            <div class="control-group">
+              <label class="control control--checkbox">
+                <input class="chkbox width1600"
+                  id="checkbox-{{ i }}"
+                  type="checkbox"
+                  (change)="selectFolder($event, item, i)"
+                  [checked]="item.isSelected"
+                  [(ngModel)]="item.isSelected"
+                  (keydown.shift)="shiftkeyDown($event,item,i)"
+                  (keyup.shift)="shiftkeyUp($event,item,i)"
+                />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="delete-folder-action"
+            *ngIf="checkAssetType(item.type)"
+            [ngClass]="{ activeHover: item.isSelected }"
+          >
+            <div class="control-group">
+              <label class="control control--checkbox">
+                <input
+                  id="checkbox-{{ i }}"
+                  type="checkbox"
+                  class="chkbox vh width1600"
+                  (change)="selectAsset($event, item, i)"
+                  [checked]="item.isSelected"
+                  [(ngModel)]="item.isSelected"
+                  (keydown.shift)="shiftkeyDown($event,item,i)"
+                  (keyup.shift)="shiftkeyUp($event,item,i)"
+                />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+        </td>
+        <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative getWidth2">
+          <span *ngIf="item.properties['dc:isPrivate']" (click)="openFolder(item);" style="display: inline-block;  vertical-align: top; position: relative;">
+            <div class="publicUseBlock">
+              <div class="tollTipCustom">
+                <img src="../../../assets/images/private-icon.svg" class="private-icon" style="position: relative; z-index: 9; width: 17px;margin-right: 10px;" />
+                <div class="tolltipContent">
+                  This is a private folder
+                </div>
+              </div>
+              <!-- <div class="publicUseBlk">Private</div> -->
+              <!-- <div class="mouseHoverInfo">
+                <p style="color: #fff;">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
+                <div class="manageAccessBtn">
+                  Manage access
+                </div>
+              </div> -->
+            </div>
+          </span>
+          <img *ngIf="!item.properties['dc:isPrivate']" (click)="openFolder(item);" [src]="getIconByType(item.type)" style="width: 15px; margin-right: 10px; object-fit: contain; display: inline-block; vertical-align: -1px; position: relative; z-index: 99;">
+          <p (click)="openFolder(item);" class="workspaeName">
+            <span class="tollTipCustom">
+              <!-- {{sharedService.stringShortener(item?.title, 25)}} -->
+              <div class="itemTitleContent">{{item?.title}}</div>
+              <span class="tolltipContent">
+                {{item.title}}
+              </span>
+            </span>
+            <span *ngIf="showAssetPath" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
+              <span class="tolltipContent" style="width: 100%;
+              height: auto;
+              white-space: break-spaces;
+              text-align: left;
+              padding: 5px 10px;">
+                {{removeWorkspacesFromString(item.path, item.title)}}
+              </span>
+            </span>
+
+          </p>
+        </td>
+        <td *ngIf="checkAssetType(item.type)" class="getWidth2" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
+          <div class="zoomImg" style="display: inline-block;">
+            <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain;">
+            <div class="zoomImgBlock">
+              <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')">
+            </div>
+          </div>
+          <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; max-width: calc(100% - 30px); vertical-align: middle;">
+            <span class="tollTipCustom">
+              {{sharedService.stringShortener(item?.title, 25)}}
+              <span class="tolltipContent" style="top: 28px;
+              height: auto;
+              white-space: break-spaces;
+              text-align: left;
+              padding: 5px 10px;">
+                {{item?.title}}
+              </span>
+            </span>
+            <span *ngIf="showAssetPath" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
+              <span class="tolltipContent" style="width: 100%;
+                height: auto;
+                white-space: break-spaces;
+                text-align: left;
+                padding: 5px 10px;">
+                {{sharedService.removeWorkspacesFromString(item.path)}}
+              </span>
+            </span>
+          </p>
+          <span *ngIf="item.edit" style="display: inline-block; position: relative; z-index: 99;">
+            <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
+            <div class="actionIcon" style="margin-top: 0px;display: inline-block;">
+              <svg
+                width="18"
+                height="13"
+                viewBox="0 0 18 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                (click)="renameFolder(item.title, item.uid); item.edit = false"
+              >
+                <path
+                  d="M6.99974 10.172L16.1917 0.979004L17.6067 2.393L6.99974 13L0.635742 6.636L2.04974 5.222L6.99974 10.172Z"
+                  fill="#DAAA00"
+                />
+              </svg>
+            </div>
+            <div class="actionIcon" style="margin-top: 0px;display: inline-block;">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                (click)="item.edit = false"
+              >
+                <path
+                  d="M6.99974 5.58623L11.9497 0.63623L13.3637 2.05023L8.41374 7.00023L13.3637 11.9502L11.9497 13.3642L6.99974 8.41423L2.04974 13.3642L0.635742 11.9502L5.58574 7.00023L0.635742 2.05023L2.04974 0.63623L6.99974 5.58623Z"
+                  fill="#DAAA00"
+                />
+              </svg>
+            </div>
+          </span>
+        </td>
+        <td *ngIf="!checkAssetType(item.type)" class="getWidth3" (contextmenu)="onContextMenu($event, item)">
+          <span (click)="copyLink(item, 'folder')" style="text-align: right;">
+            <div *ngIf="!item.copy; else other_content" class="copyHover">
+              <img src="../../../assets/images/Link.svg" />
+              <div class="copyHoverInfo">Copy link</div>
+            </div>
+            <ng-template #other_content>
+              <div class="copyedBlock">
+                <img src="../../../assets/images/Tick-box.svg" /> Copied!
+              </div>
+            </ng-template>
+          </span>
+        </td>
+        <td *ngIf="checkAssetType(item.type)"class="getWidth3" (contextmenu)="onContextMenu($event, item)">
+          <span (click)="copyLink(item, 'asset')" style="text-align: right;">
+            <div *ngIf="!item.copy; else other_content" class="copyHover">
+              <img src="../../../assets/images/Link.svg" />
+              <div class="copyHoverInfo">Copy link</div>
+            </div>
+            <ng-template #other_content>
+              <div class="copyedBlock">
+                <img src="../../../assets/images/Tick-box.svg" /> Copied!
+              </div>
+            </ng-template>
+          </span>
+        </td>
+        <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">
+          <p class="itemTitleContent">{{getCreatorName(item)}}</p>
+          <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
+        </td>
+        <td *ngIf="!isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:created'])}}</p></td>
+        <!-- <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{getDateInFormat(item.properties['dc:modified'])}}</p></td> -->
+        <td *ngIf="isTrashView" (contextmenu)="onContextMenu($event, item)"><p>{{item.properties['dc:sector'] || ''}}</p></td>
+        <td>
+          <img *ngIf="!checkAssetType(item.type)" src="../../../assets/images/back-arrow.svg" (click)="openFolder(item);" style="transform: rotate(180deg); margin-right: 16px; cursor: pointer;" />
+          <!-- <img *ngIf="checkAssetType(item.type)" src="../../../assets/images/pencil-write.svg" (click)="item.edit = !item.edit" alt="" class="renameFolderImg" /> -->
+        </td>
+      </tr>
+    </table>
+    <div
+    style="visibility: hidden; position: fixed"
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y"
+    [matMenuTriggerFor]="contextMenu"></div>
+    <mat-menu #contextMenu="matMenu">
+      <ng-template matMenuContent let-item="item">
+        <!-- {{item.title}} -->
+        <div class="availableActions">
+          <ul *ngIf="!isTrashView">
+            <li *ngIf="!isTrashView && !checkCanMove(item)">
+
+                <a href="javascript:void(0);" (click)="rightClickDownload()"> <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-download-icon" >
+                <path d="M11.9727 19.6958V12.9458" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14.7852 17.2095L11.9727 20.022L9.16016 17.2095" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15.9374 14.8125H16.7812C18.3554 14.8152 19.7546 13.8099 20.2544 12.3172C20.7543 10.8244 20.2425 9.17928 18.9841 8.23348C17.7256 7.28768 16.0031 7.25355 14.7082 8.14877C14.1862 5.36953 11.682 3.40988 8.85877 3.5713C6.03554 3.73272 3.77104 5.96503 3.5692 8.78565C3.36737 11.6063 5.29096 14.1383 8.06244 14.7" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg></span> Download</a>
+            </li>
+            <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove(false)">
+              <a href="javascript:void(0);">
+              <span><svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
+                <path d="M4 4V1C4 0.734784 4.10536 0.48043 4.29289 0.292893C4.48043 0.105357 4.73478 0 5 0H17C17.2652 0 17.5196 0.105357 17.7071 0.292893C17.8946 0.48043 18 0.734784 18 1V15C18 15.2652 17.8946 15.5196 17.7071 15.7071C17.5196 15.8946 17.2652 16 17 16H14V19C14 19.552 13.55 20 12.993 20H1.007C0.875127 20.0008 0.744397 19.9755 0.622322 19.9256C0.500247 19.8757 0.389233 19.8022 0.295659 19.7093C0.202084 19.6164 0.127793 19.5059 0.0770543 19.3841C0.0263156 19.2624 0.000129374 19.1319 0 19L0.00300002 5C0.00300002 4.448 0.453 4 1.01 4H4ZM1.5 5.5V18.5H12.5V5.5H1.5ZM5.5 4H13C13.5523 4 14 4.44772 14 5V14.5H16.5V1.5H5.5V4Z" fill="#937206"/>
+                </svg>
+              </span> Copy</a>
+            </li>
+            <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove(true)">
+              <a href="javascript:void(0);">
+              <span><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
+                <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg></span> Move</a>
+            </li>
+            <li *ngIf="!checkCanMove(item) && count < 2">
+              <a href="javascript:void(0);" (click)="rightClickRename(item)">
+              <span><svg
+                width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-rename-icon">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg></span> Rename</a>
+            </li>
+            <li *ngIf="!isTrashView && !checkGeneralFolder(item)">
+              <a href="javascript:void(0);" (click)="rightClickDelete()">
+                <span><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg></span> Delete</a>
+            </li>
+          </ul>
+
+          <ul>
+            <li *ngIf="!isTrashView && !checkGeneralFolder(item) && !unSelectEnable()">
+              <a href="javascript:void(0);" (click)="rightClickSelectAll()">
+                <span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10C20 15.523 15.523 20 10 20ZM10 18C12.1217 18 14.1566 17.1571 15.6569 15.6569C17.1571 14.1566 18 12.1217 18 10C18 7.87827 17.1571 5.84344 15.6569 4.34315C14.1566 2.84285 12.1217 2 10 2C7.87827 2 5.84344 2.84285 4.34315 4.34315C2.84285 5.84344 2 7.87827 2 10C2 12.1217 2.84285 14.1566 4.34315 15.6569C5.84344 17.1571 7.87827 18 10 18ZM9.003 14L4.76 9.757L6.174 8.343L9.003 11.172L14.659 5.515L16.074 6.929L9.003 14Z" fill="#937206"/>
+                </svg></span> Select All</a>
+            </li>
+            <li *ngIf="!isTrashView && unSelectEnable() && !checkGeneralFolder(item)">
+              <a href="javascript:void(0);" (click)="removeAssets()">
+                <span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10C20 15.523 15.523 20 10 20ZM10 18C12.1217 18 14.1566 17.1571 15.6569 15.6569C17.1571 14.1566 18 12.1217 18 10C18 7.87827 17.1571 5.84344 15.6569 4.34315C14.1566 2.84285 12.1217 2 10 2C7.87827 2 5.84344 2.84285 4.34315 4.34315C2.84285 5.84344 2 7.87827 2 10C2 12.1217 2.84285 14.1566 4.34315 15.6569C5.84344 17.1571 7.87827 18 10 18ZM9.003 14L4.76 9.757L6.174 8.343L9.003 11.172L14.659 5.515L16.074 6.929L9.003 14Z" fill="#937206"/>
+                </svg></span> Unselect All</a>
+            </li>
+          </ul>
+
+          <!-- <ul>
+            <li>
+              <a href="javascript:void(0);" (click)="openUpdateClassModal(rightClickedItem)">
+                <span><svg  width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-managefolder-icon">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg></span> Manage Folder</a>
+            </li> -->
+            <!-- <li>
+              <a href="javascript:void(0);" (click)="currentIndexPublished = i;manageAccessPublished()">
+                <span><svg  width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-file-share-icon">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg></span> Convert to a Private folder
+              <div class="mouseHoverInfo manageAccessPopup" >
+                <app-manage-access-modal [input_data]="item" [input_folder_structure]="breadCrumb" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
+              </div></a>
+              </li>
+          </ul> -->
+        </div>
+        <!-- <button mat-menu-item (click)="onContextMenuAction1(item)">Action 1</button>
+        <button mat-menu-item (click)="onContextMenuAction2(item)">Action 2</button> -->
+      </ng-template>
+    </mat-menu>
+    <preview-popup
+      #previewModal
+      [doc]="fileToPreview"
+      [docUrl]="fileToPreviewUrl"
+    ></preview-popup>
+          
+    <mat-paginator
+        *ngIf="searchList?.length"
+        #paginator
+        [length]="resultCount"
+        [pageSize]="defaultPageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="paginatorEvent($event)"
+        aria-label="Select page"
+      >
+    </mat-paginator>
+
+  </div>
+</div>
