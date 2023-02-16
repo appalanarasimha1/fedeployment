@@ -124,8 +124,8 @@
 }
 /* Table style end */
 .clickArrowAction {
-    transform: rotate(180deg); 
-    margin-right: 16px; 
+    transform: rotate(180deg);
+    margin-right: 16px;
     cursor: pointer;
     margin: -4px auto 0px;
     vertical-align: middle;
@@ -171,7 +171,7 @@ span.penvilIcon svg {
     display: block;
     clear: both;
 }
-.searchBlock button.primary.createSuppliers {
+button.primary.createSuppliers {
     position: absolute;
     top: 5px;
     right: 10px;
@@ -414,7 +414,7 @@ input.datePicker:focus::placeholder{
     padding-left: 24px;
     line-height: 17px;
   }
-  .folderListview ul li .broader-access-assets .control--checkbox .control__indicator:after, 
+  .folderListview ul li .broader-access-assets .control--checkbox .control__indicator:after,
   .folderListview ul li .broader-access-assets .control--checkbox .control__indicator:before {
     left: 5px;
     top: 3px;
@@ -585,4 +585,8 @@ input.datePicker:focus::placeholder{
 }
 .removeIcon:hover .removeInfo {
     display: block;
+}
+.device-header {
+    display: flex;
+    justify-content: space-between;
 }
