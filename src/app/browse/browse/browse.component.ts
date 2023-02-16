@@ -37,6 +37,8 @@ import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-asse
 
 import { MatMenuTrigger } from '@angular/material/menu';
 import * as moment from 'moment';
+import { BrowseSectorDetailComponent } from "../browse-sector-space/browse-sector-detail.component";
+import { DataTableComponent } from "../data-table/data-table.component";
 
 @Component({
   selector: "app-browse",
@@ -53,6 +55,8 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   // moved to data-table
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
+  @ViewChild(BrowseSectorDetailComponent) browseSectorDetailComponent: BrowseSectorDetailComponent;
+  @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @Input() name: string;
 
 
@@ -1992,6 +1996,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     return !this.isPrivateFolder();
   }
 
+  isPrivateFolder1(isButton = true, includeChild = false) {
+    if(this.browseSectorDetailComponent) {
+      return this.browseSectorDetailComponent.isPrivateFolder(isButton, includeChild)
+    }
+    return false;
+  }
+
   isPrivateFolder(isButton = true, includeChild = false) {
     this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
     if(this.permissionChange) return true
@@ -2544,5 +2555,11 @@ export class BrowseComponent implements OnInit, AfterViewInit {
 
   onlyPrivateFolder() {
     this.onlyPrivate = !this.onlyPrivate;
+  }
+  checkShowNoTrashItem1() {
+    if(this.dataTableComponent) {
+      return this.dataTableComponent.checkShowNoTrashItem()
+    }
+    return false;
   }
 }

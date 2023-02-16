@@ -97,7 +97,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    
     // this.dataTableComponent = new DataTableComponent(SharedService, ApiService, MatDialog, DataService, Router);
     this.fetchUserData();
     // this.dataService.fetchAssets$.subscribe(async (data) => {
@@ -117,6 +116,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     });
     const fetchAll = false;
     this.fetchExternalUserInfo(fetchAll);
+    this.checkCollabAndPrivateFolder();
   }
 
   ngAfterViewInit(): void {
@@ -364,7 +364,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     const currentWorkspace = JSON.parse(localStorage.getItem('workspaceState'));
     if (currentWorkspace?.properties && currentWorkspace?.properties['isPrivateUpdated']) return true;
     if (!currentWorkspace?.contextParameters?.acls) return false;
-    const inheritAcl = currentWorkspace.contextParameters.acls.find(acl => acl.name === 'local');
+    const inheritAcl = currentWorkspace.contextParameters.acls.find(acl => acl.name === 'inherited');
     if (!inheritAcl?.aces) return false;
     return true;
   }
@@ -378,7 +378,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     localAces.aces.forEach(ace => {
       if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
       if (!ace.granted || ace.username === "Administrator" || ace.username === 'administrators') return;
-      folderCollaborators[ace.username.id] = {
+      folderCollaborators[ace.username.id || ace.username] = {
         user: ace.username,
         permission: ace.permission,
         externalUser: ace.externalUser,
@@ -390,6 +390,10 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
   
   hasAdminPermission(currentCollaborators) {
+    if (localStorage.getItem("user")) {
+      this.user = JSON.parse(localStorage.getItem("user"))["username"];
+    }
+    // console.log('currentCollaborators', currentCollaborators, this.user)
     if (this.user === "Administrator") return true;
     const currentWorkspace = JSON.parse(localStorage.getItem('workspaceState'));
     if (currentWorkspace?.properties && currentWorkspace?.properties['isPrivateUpdated']) return true;
@@ -518,6 +522,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     dialogConfig.id = "modal-component";
     dialogConfig.width = "640px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+    console.log('folder1', this.selectedFolder);
     const folder = await this.fetchFolder(this.selectedFolder.uid);
     dialogConfig.data = {
       selectedFolder: this.selectedFolder,
@@ -869,6 +874,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     }
     let isPrvt = this.isPrivateFolder()
     // let checkCollabs = Object.keys(collabs)?.length < 2
+    console.log('object:', {checkCollabs, isPrvt, admin: this.isAdmin, collabs})
     this.onlyPrivate = checkCollabs && isPrvt && this.isAdmin
    }
 

@@ -1073,4 +1073,8 @@ export class DataTableComponent implements OnInit, OnChanges {
     return moment(date).format("DD/MM/YYYY")
   }
 
+  checkShowNoTrashItem() {
+    return !this.isTrashView && this.searchList && this.searchList.length === 0;
+  }
+
 }
