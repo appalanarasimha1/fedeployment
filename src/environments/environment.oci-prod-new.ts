@@ -4,8 +4,8 @@
 
 export const environment = {
     production: true,
-    nuxeoServerUrl: 'http://10.149.48.88:8080',
-    apiServiceBaseUrl: 'http://10.149.48.88:8080',
+    nuxeoServerUrl: 'https://groundx.oci.sense.neomos.online',
+    apiServiceBaseUrl: 'https://groundx.oci.sense.neomos.online',
     apiVersion: '/nuxeo/api/v1',
     keycloakConfig: {
       url: 'https://groundxkeycloak.oci.sense.neomos.online/auth/',
