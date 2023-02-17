@@ -137,6 +137,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
   
   async fetchAllPrivateWorkspaces() {
+    // this.checkCollabAndPrivateFolder()
     const query = "SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1";
     const params = {
       currentPageIndex: 0,
@@ -196,9 +197,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     // let pageIndex = 1;
     // let offset = 0;
     // let pageSize = 0;
-
+    this.checkCollabAndPrivateFolder()
     this.sharedService.toTop();
-    if(checkCache && this.folderStructure[folderUid]) return this.folderStructure[folderUid];
+    if(checkCache && this.folderStructure[folderUid]) return this.assetList =this.folderStructure[folderUid].entries;
     // let url1 = `/search/pp/nxql_search/execute?currentPage=0&Index=0&offset=0&pageSize=${PAGE_SIZE_20}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${folderUid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${folderUid}&ecm_trashed=false`;
     this.apiService
@@ -322,6 +323,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
    async handleGotoBreadcrumb(item, index: Number, breadCrumbIndex?: any) {
     $("body").animate({ scrollTop: 0 }, "slow");
     this.saveState(item, index, breadCrumbIndex);
+    // this.checkCollabAndPrivateFolder()
     if(!item) {
       this.router.navigateByUrl('workspace');
       return;

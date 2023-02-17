@@ -958,8 +958,8 @@
               </div>
             </div>
 
-            <!-- Start adding collaborators to this private folder -->
-            <div *ngIf="isPrivateFolder1(false) && checkShowNoTrashItem1()" class="addignCollaborators" style="padding-top: 40px;">
+            <!-- 11 Start adding collaborators to this private folder -->
+            <div *ngIf="isPrivateFolder(false) && checkShowNoTrashItem()" class="addignCollaborators" style="padding-top: 40px;">
               <img src="../../../assets/images/adding-collaborators-icon.svg" class="collaboratorsIcon" />
               <!-- <h2>Start adding collaborators to this private folder</h2> -->
               <h2>Start adding collaborators:</h2>
@@ -969,7 +969,7 @@
               <!-- <div class="privateFileshare">Private folder Photoshoot-2022-02-10 created.</div> -->
             </div>
 
-            <div *ngIf="checkShowNoTrashItem1() && isPrivateFolder1(true, true) && !isPrivateFolder1(false)" class="addignCollaborators" style="padding-top: 40px;">
+            <div *ngIf="checkShowNoTrashItem1() && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
               <img src="../../../assets/images/private-fileshare-icon.svg" class="collaboratorsIcon" />
               <!-- <h2>Start adding assets to this private folder</h2> -->
               <h2>Start adding assets to this Private folder:</h2>
