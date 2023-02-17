@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../../services/api.service";
+import { REPORT_ROLE } from '../../common/constant';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: "app-setting-navigation",
@@ -11,7 +13,7 @@ export class SettingNavigationComponent implements OnInit {
   regionCount = 0;
   deviceCount = 0;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private sharedService: SharedService, private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.getSupplierList();
@@ -41,5 +43,10 @@ export class SettingNavigationComponent implements OnInit {
 
     if (!res) return;
     this.deviceCount = res || 0;
+  }
+
+  checkForUserGroup() {
+    const expectedRole = REPORT_ROLE;
+    return this.sharedService.chekForReportRoles(expectedRole);
   }
 }

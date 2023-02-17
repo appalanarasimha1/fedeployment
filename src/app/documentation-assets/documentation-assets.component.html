@@ -14,7 +14,7 @@
             <li>
                 <ng-select placeholder="Region"
                     (change)="onSelectRegions($event)"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="false"
                     [(ngModel)]="selectedRegion"
                     id="confidentiality"
@@ -28,7 +28,7 @@
             <li>
                 <ng-select placeholder="Sub-area"
                     (change)="onSelectSubArea($event)"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="false"
                     [(ngModel)]="selectedsubArea"
                     id="confidentiality"
@@ -52,7 +52,7 @@
             <li>
                 <ng-select placeholder="Format"
                     (change)="getAssetList()"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="false"
                     [(ngModel)]="selectedFormat"
                     id="confidentiality"

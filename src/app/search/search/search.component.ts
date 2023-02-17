@@ -627,24 +627,28 @@ export class SearchComponent implements OnInit {
 
   async fetchUserData() {
     try {
-      if (this.nuxeo.nuxeoClient) {
+      const userString = localStorage.getItem("user");
+      let userData;
+      if (userString) {
+        userData = JSON.parse(userString);
+      } else if (this.nuxeo.nuxeoClient) {
         const res = await this.nuxeo.nuxeoClient.connect();
-        this.user = res.user.id;
-        this.sector = res.user.properties.sector;
         localStorage.setItem("user", JSON.stringify(res.user.properties));
-        const groups = res.user.properties.groups;
-        if (!groups) return;
-        if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
-          this.selectedTab = 'Construction';
-          this.isDroneUploader = true;
-          this.router.navigate(['/'], { fragment: 'documentation-assets' });
-          return;
-        }
-        if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
-        if (groups.includes(EXTERNAL_USER)) {
-          this.router.navigate(['workspace']);
-          return;
-        }
+      }
+      this.user = userData.username;
+      this.sector = userData.sector;
+      const groups = userData.groups;
+      if (!groups) return;
+      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+        this.selectedTab = 'Construction';
+        this.isDroneUploader = true;
+        this.router.navigate(['/'], { fragment: 'documentation-assets' });
+        return;
+      }
+      if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
+      if (groups.includes(EXTERNAL_USER)) {
+        this.router.navigate(['workspace']);
+        return;
       }
     } catch (err) {}
   }

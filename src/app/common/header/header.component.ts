@@ -278,6 +278,10 @@ export class HeaderComponent implements OnInit {
       return this.sharedService.checkExternalUser();
     }
   }
+  checkNeomUser() {
+    if (!this.userData) return !this.checkExternalUser();
+    return this.userData.email?.includes('@neom.com');
+  }
 
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, user: JSON.parse(localStorage.getItem('user'))};
@@ -439,6 +443,15 @@ export class HeaderComponent implements OnInit {
   }
 
   async fetchUserData() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      this.userData = user;
+      const groups = user.groups;
+      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+        this.isDroneUploader = true;
+      }
+      return;
+    }
     if (this.nuxeo.nuxeoClient) {
       const res = await this.nuxeo.nuxeoClient.connect();
       localStorage.setItem("user", JSON.stringify(res.user.properties));

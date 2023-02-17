@@ -9,9 +9,9 @@
         <ul>
             <li>
                 <label for="Device Type">Device Type</label>
-                <ol class="deviceType">
+                <ol *ngIf="isCreate" class="deviceType">
                     <li>
-                        <input type="radio" [checked]="selectedType=='timelapse'" id="timelapse" name="deviceType" (change)="onSelectdeviceType($event, 'timelapse')" checked />
+                        <input  type="radio" [checked]="selectedType=='timelapse'" id="timelapse" name="deviceType" (change)="onSelectdeviceType($event, 'timelapse')" checked />
                         <label for="timelapse">Timelapse</label>
                     </li>
                     <li>
@@ -27,6 +27,12 @@
                         <label for="drone">Drone</label>
                     </li>
                 </ol>
+                <ol *ngIf="!isCreate" class="deviceType">
+                    <li>
+                        <input type="radio" id="timelapse" name="deviceType" checked />
+                        <label for="timelapse">{{capitalizeFirstLetter(selectedType)}}</label>
+                    </li>
+                </ol>
             </li>
             <li class="regionBlok">
                 <div class="form-group">
@@ -37,6 +43,7 @@
                         [(ngModel)]="selectedOwner"
                         id="region"
                         [ngClass]="{'goldenText': selectedOwner}"
+                        [disabled]="!isCreate"
                     >
                         <ng-option *ngFor="let owner of owners" [value]="owner">
                             {{owner.initial}}
@@ -83,6 +90,7 @@
                         (change)="onSelectedSupplier($event)"
                         id="supplier"
                         [ngClass]="{'goldenText': selectedSupplier}"
+                        [disabled]="!isCreate"
                     >
                         <ng-option *ngFor="let supplier of supplierPrefix" [value]="supplier">
                             {{supplier}}
@@ -94,15 +102,16 @@
                 <div class="form-group">
                     <label for="Region">Region</label>
                     <ng-select placeholder="Select"
-                        [searchable]="false"
+                        [searchable]="true"
                         [clearable]="false"
                         [(ngModel)]="selectedRegions"
                         (change)="onSelectRegion($event)"
                         id="region"
                         [ngClass]="{'goldenText': selectedRegions}"
+                        [disabled]="!isCreate"
                     >
                         <ng-option *ngFor="let region of regionList" [value]="region">
-                            {{region.initial}}
+                            {{region.initial}} - {{region.name}}
                         </ng-option>
                     </ng-select>
                 </div>
@@ -111,12 +120,13 @@
                 <div class="form-group">
                     <label for="Sub-area">Sub-area</label>
                     <ng-select placeholder="Select"
-                        [searchable]="false"
+                        [searchable]="true"
                         [clearable]="false"
                         [(ngModel)]="selectedsubAreas"
                         (change)="onSelectSubArea($event)"
                         id="Sub-area"
                         [ngClass]="{'goldenText': selectedSubArea}"
+                        [disabled]="!isCreate"
                     >
                         <ng-option *ngFor="let subArea of filteredSubAreaList" [value]="subArea">
                             {{subArea.name}}
