@@ -172,6 +172,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         if(workspace?.type === "WorkspaceRoot") {
           this.currentWorkspace.title = this.currentWorkspace?.properties?.["dc:sector"];
         }
+        this.saveState(workspace)
         this.extractBreadcrumb();
         this.getAssets(workspace.uid);
       });
@@ -182,6 +183,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       {headers: { "fetch-document": "properties"}}).subscribe((workspace: any) => {
         this.currentWorkspace = workspace;
         this.saveState(this.currentWorkspace);
+        this.checkCollabAndPrivateFolder()
         this.extractBreadcrumb();
     });
   }
@@ -197,7 +199,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     // let pageIndex = 1;
     // let offset = 0;
     // let pageSize = 0;
-    this.checkCollabAndPrivateFolder()
+   
     this.sharedService.toTop();
     if(checkCache && this.folderStructure[folderUid]) return this.assetList =this.folderStructure[folderUid].entries;
     // let url1 = `/search/pp/nxql_search/execute?currentPage=0&Index=0&offset=0&pageSize=${PAGE_SIZE_20}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${folderUid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
