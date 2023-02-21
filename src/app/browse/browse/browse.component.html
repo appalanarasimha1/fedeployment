@@ -959,32 +959,10 @@
             </div>
 
             <!-- 11 Start adding collaborators to this private folder -->
-            <div *ngIf="isPrivateFolder(false) && checkShowNoTrashItem()" class="addignCollaborators" style="padding-top: 40px;">
-              <img src="../../../assets/images/adding-collaborators-icon.svg" class="collaboratorsIcon" />
-              <!-- <h2>Start adding collaborators to this private folder</h2> -->
-              <h2>Start adding collaborators:</h2>
-              <div class="addUsers">
-                <div [ngClass]="isAdmin ? 'addUserBtn' : 'addUserBtn-disabled'" (click)="openAddUserModal()">Add users</div>
-              </div>
-              <!-- <div class="privateFileshare">Private folder Photoshoot-2022-02-10 created.</div> -->
-            </div>
+            
 
-            <div *ngIf="checkShowNoTrashItem1() && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
-              <img src="../../../assets/images/private-fileshare-icon.svg" class="collaboratorsIcon" />
-              <!-- <h2>Start adding assets to this private folder</h2> -->
-              <h2>Start adding assets to this Private folder:</h2>
-              <div class="addUsers">
-                <div class="addUserBtn" (click)="openModal()">Upload</div>
-              </div>
-            </div>
-            <!-- End adding collaborators to this private folder -->
-            <div class="no-items" *ngIf="checkShowNoTrashItem1() && !isPrivateFolder(true, true)">
-              <img
-                src="../../../assets/images/no-items.svg"
-                alt="No items here"
-              />
-              No items here
-            </div>
+            
+            
 
             <div *ngIf="selectedMenu === 0" class="main-content row">
               <div class="col-xl-12 col-md-12" style="padding-right: 0px;" *ngIf="searchList && searchList.length">
