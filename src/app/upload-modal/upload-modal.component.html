@@ -7,7 +7,7 @@
          <ng-template matStepLabel>Select assets</ng-template>
          <!-- <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div> -->
          <div>
-            <ngx-dropzone #drop class="drag-drop" [ngClass]="{'dragDropDate' : !getAssetNumber() }" (change)="onSelect($event)" id="customScrollBar">
+            <ngx-dropzone #drop class="drag-drop" [ngClass]="{'dragDropDate' : !getAssetNumber() }" (change)="onSelect($event, fileLimitExceeded)" id="customScrollBar">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
             <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length" >
                <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto; height: 100%;" *ngIf="sizeExeeded" >
@@ -22,7 +22,7 @@
                </div>
                
                <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto" *ngIf="!sizeExeeded">
-                  <div class="upload-label" *ngIf="!fileLimitExceed">
+                  <div class="upload-label"> <!-- Remove *ngIf="!fileLimitExceed"-->
                      <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
                      <span style="margin-top: 20px; color: #040404; padding-bottom: 10px;"><b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
                      <div *ngIf="data" class="uploadAssetsBlock">
@@ -43,7 +43,7 @@
                   </div> -->
                </div>
             </ngx-dropzone-label>
-            <div class="malware" style="color: red;width: 100%; text-align: center;" *ngIf="fileLimitExceed">You can upload upto 100 files</div>
+            <!-- <div class="malware" style="color: red;width: 100%; text-align: center;" *ngIf="fileLimitExceed">You can upload upto 100 files</div> -->
             <ul class="flexible upload-preview" *ngIf="!sizeExeeded">
                <li *ngFor="let f of filesMap | keyvalue">
                   <ngx-dropzone-preview *ngIf="!f?.value['isVirus']" class="upload-file-preview upload-progress-bar-{{f.key}}" [ngClass]="{'fillbar': filesUploadDone[f.key]}" [removable]="true" (removed)="onRemove(f)">
@@ -838,3 +838,12 @@
    </div>
 </div>
 </div>
+
+
+<ng-template #fileLimitExceeded let-modal>
+   <div class="modal-body fix-notifaction">
+     <h1>You can upload upto 50 files</h1>
+     <div class="cloaseModal" (click)="closeAll()">Ok</div>
+   </div>
+</ng-template>
+

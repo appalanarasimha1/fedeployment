@@ -4553,3 +4553,7 @@ ul.all-sectors img.noPreviewItem {
   transform: translate(-50%, -50%) !important;
   top: 50% !important;
 }
+.custom-modal-uploadLimit .modal-content {
+  width: 500px !important;
+  margin: auto;
+}
