@@ -15,7 +15,6 @@
     <div class="col-xl-5">
     </div>
   </div>
-  
   <div class="header-content">
     <div style="width: 100%"> <!-- *ngIf="currentWorkspace?.uid !== parentId" -->
       <span class="customWidth">
@@ -628,6 +627,24 @@
   </div>
   <div id="text">&nbsp;</div>
 
+  <section>
+    <div *ngIf="isPrivateFolder(false) && !assetList.length" class="addignCollaborators" style="padding-top: 40px;">
+      <img src="../../../assets/images/adding-collaborators-icon.svg" class="collaboratorsIcon" />
+      <!-- <h2>Start adding collaborators to this private folder</h2> -->
+      <h2>Start adding collaborators:</h2>
+      <div class="addUsers">
+        <div [ngClass]="isAdmin ? 'addUserBtn' : 'addUserBtn-disabled'" (click)="openAddUserModal()">Add users</div>
+      </div>
+    </div>
+    <div *ngIf="!assetList.length && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
+      <img src="../../../assets/images/private-fileshare-icon.svg" class="collaboratorsIcon" />
+      <!-- <h2>Start adding assets to this private folder</h2> -->
+      <h2>Start adding assets to this Private folder:</h2>
+      <div class="addUsers">
+        <div class="addUserBtn" (click)="openModal(true)">Upload</div>
+      </div>
+    </div>
+  </section>
   <section *ngIf="!assetList.length && !isPrivateFolder(true, true)">
     <div class="no-items">
       <img
@@ -671,4 +688,5 @@
       (canNotDeleteList)="canNotDeleteList($event)"
     style="position: relative; z-index: 0;"></app-data-table>
   </section>
+  
 

@@ -526,11 +526,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     dialogConfig.id = "modal-component";
     dialogConfig.width = "640px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
-    console.log('folder1', this.selectedFolder);
-    const folder = await this.fetchFolder(this.selectedFolder.uid);
+    console.log('folder1', this.currentWorkspace);
+    const folder = await this.fetchFolderById(this.currentWorkspace.uid);
     dialogConfig.data = {
-      selectedFolder: this.selectedFolder,
-      folderId: this.selectedFolder.uid,
+      selectedFolder: this.currentWorkspace,
+      folderId: this.currentWorkspace.uid,
       folderCollaborators
     }
 

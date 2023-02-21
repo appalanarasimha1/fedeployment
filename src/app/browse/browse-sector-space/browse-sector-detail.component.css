@@ -784,3 +784,40 @@ ul.uploadAssetsClassifications li img {
   text-align: right;
   vertical-align: middle;
 }
+.addignCollaborators img.collaboratorsIcon {
+  display: block;
+  margin: 0px auto 40px;
+  max-width: 70px;
+}
+.addignCollaborators h2{
+  color: #040404;
+  text-align: center;
+  padding-bottom: 40px;
+  font-size: 22px;
+  font-family: 'brownlight';
+}
+.addUsers {
+  text-align: center;
+}
+.addUserBtn {
+  display: inline-block;
+  background: #937206;
+  border-radius: 80px;
+  padding: 9px 38px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24px;
+  color: #fff;
+}
+.addUserBtn-disabled {
+  display: inline-block;
+  background: #937206;
+  border-radius: 80px;
+  padding: 9px 38px;
+  cursor: not-allowed;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24px;
+  color: #fff;
+}
