@@ -1163,7 +1163,7 @@ li .videoBlock  {
   width: unset;
 }
 .search-tags ul{
-  padding: 0px;
+  padding: 15px 0px 0px;
   list-style: none;
   /* justify-content: center; */
 }
@@ -1229,7 +1229,7 @@ color: #C4C4C4;
   left: 0;
   right: 0;
   margin: auto;
-  display: none;
+  /* display: none; */
 }
 .search-tags ul li:nth-child(1) a{
   margin-left: unset;
@@ -1763,7 +1763,7 @@ color: #ACACAC;
 .weight-size-block {
   display: inline-block;
   width: 100%;
-  padding-top: 5px;
+  padding-top: 0px;
 }
 
 .weight-size-block ul {

@@ -1,5 +1,5 @@
 <div class="create-supplier">
-    <h3>Create supplier
+    <h3>Create new supplier
         <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
           <img src="../../assets/images/close-modal.svg" style="width: 20px" />
        </button>
@@ -61,6 +61,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!(suppliersName && validateEmail(supportEmail) && validateSupplierId()) || loading || isSupplierNameExisted()" (click)="createSupplier()">Create supplier</button>
+        <button class="upload-btn" [disabled]="!(suppliersName && validateEmail(supportEmail) && validateSupplierId()) || loading || isSupplierNameExisted()" (click)="createSupplier()">Create new supplier</button>
     </div>
 </div>

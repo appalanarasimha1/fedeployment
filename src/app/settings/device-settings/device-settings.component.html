@@ -1,7 +1,7 @@
 <div class="externalUser positionRelative">
     <div class="device-header">
         <h2>Devices</h2>
-        <button class="primary createSuppliers" (click)="openCreateDeviceModal()">Create device</button>
+        <button class="primary createSuppliers" (click)="openCreateDeviceModal()">Create new device</button>
     </div>
     <!-- <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p> -->
     <div class="searchBlock">
@@ -89,10 +89,10 @@
             <tr>
                 <th style="width:1%">&nbsp;&nbsp;</th>
                 <th style="width:13%">Installation ID</th>
-                <th style="width:7%">&nbsp;</th>
-                <th style="width:25%">Sub-area</th>
-                <th style="width:5%">Direction</th>
-                <th style="width:10%">Pole ID</th>
+                <th style="width:5%">&nbsp;</th>
+                <th style="width:20%">Sub-area</th>
+                <th style="width:10%">Direction</th>
+                <th style="width:12%">Pole ID</th>
                 <th style="width:14%">Device type</th>
                 <th style="width:19%">Status</th>
                 <th style="width:6%">&nbsp;</th>
@@ -105,13 +105,13 @@
                 </td>
                 <td>
                     <div class="tooltip1" style="cursor: pointer;">
-                        <img src="../../assets/images/copy-icon.svg" (click)="copyDeviceName(device.installationId)">
+                        <img src="../../assets/images/copy-icon.svg" (click)="copyDeviceName(device.installationId)" class="copyDeviceIcon">
                         <span class="tooltiptext">Copy installation ID</span>
                     </div>
                 </td>
                 <td><div class="itemTitleContent">{{device.subArea}}</div></td>
                 <td>{{formatDirection(device.direction)}}</td>
-                <td>{{device.cameraPole}}</td>
+                <td><div class="itemTitleContent" title="{{device.cameraPole}}">{{device.cameraPole}}</div></td>
                 <td>{{capitalizeFirstLetter(device.deviceType)}}</td>
                 <td>
                     <ul>

@@ -1,5 +1,5 @@
 <div class="create-supplier">
-    <h3>Create Region
+    <h3>Create new region
         <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
           <img src="../../assets/images/close-modal.svg" style="width: 20px" />
        </button>
@@ -26,6 +26,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!regionName || !regionInitial || loading || isRegionNameExisted() || isInitialNameExisted()" (click)="createRegion()">Create region</button>
+        <button class="upload-btn" [disabled]="!regionName || !regionInitial || loading || isRegionNameExisted() || isInitialNameExisted()" (click)="createRegion()">Create new region</button>
     </div>
 </div>

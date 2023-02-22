@@ -52,6 +52,9 @@ button.upload-btn {
 .create-supplier-form {
     padding-top: 10px;
     min-height: 453px;
+    max-height: 70vh;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 .create-supplier-form ul > li {
     padding-bottom: 10px;
