@@ -4605,3 +4605,7 @@ ul.all-sectors img.noPreviewItem {
 ::ng-deep .cdk-text-field-autofill-monitored:not(:-webkit-autofill){
   animation:  unset !important
 }
+.custom-modal-uploadLimit .modal-content {
+  width: 500px !important;
+  margin: auto;
+}
