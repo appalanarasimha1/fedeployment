@@ -1077,4 +1077,8 @@ export class DataTableComponent implements OnInit, OnChanges {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
 
+  selectedFoldersLength():number{
+    return Object.keys(this.selectedFolderList).length
+  }
+
 }
