@@ -188,7 +188,7 @@ input.search-bar::placeholder{
   vertical-align: -5px;
   cursor: pointer;
 }
-.deleteRecover::after {
+/* .deleteRecover::after {
   content: '';
   display: block;
   height: 60px;
@@ -197,7 +197,7 @@ input.search-bar::placeholder{
   position: absolute;
   top: 0px;
   right: 0px;
-}
+} */
 ul.uploadAssetsClassifications li:hover .moveIcon path,
 .moveFolderImg .moveIcon:hover path,
 ul.uploadAssetsClassifications .deleteRecover:hover path,

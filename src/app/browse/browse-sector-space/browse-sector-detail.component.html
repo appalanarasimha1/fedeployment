@@ -1,4 +1,5 @@
 
+<app-loader [show]="loading"></app-loader>
 <div [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
   <div class="row">
     <div class="col-xl-7">
@@ -647,7 +648,7 @@
       </div>
     </div>
   </section>
-  <section *ngIf="!assetList.length && !isPrivateFolder(true, true)">
+  <section *ngIf="!assetList.length && !isPrivateFolder(true, true) && !loading">
     <div class="no-items">
       <img
         src="../../../assets/images/no-items.svg"

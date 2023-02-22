@@ -25,7 +25,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
-  loading: boolean = false;
+  loading: boolean = true;
   renameFolderName: boolean = false;
   folderNameRef = undefined;
   titleExists: boolean = false;
@@ -193,6 +193,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   getAssets(folderUid: string, checkCache = true, pageSize = 20, pageIndex = 0, offset = 0): void {
+    this.loading = true;
     // this.selectedFile = [];
     // this.selectedFolder = { ...selected, uid: selected.id };
     this.showAssetPath = false;
@@ -211,6 +212,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         let workSpaceIndex = this.assetList.findIndex((res) => res.title === "Workspaces");
         if (workSpaceIndex >= 0) {
           this.getAssets(this.assetList[workSpaceIndex].uid);
+          this.loading = false;
         } else {
           // this.sortedData = this.assetList.slice();
           // if (childIndex !== null && childIndex !== undefined) {
@@ -223,6 +225,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
             this.folderStructure = Object.assign({}, this.folderStructure);
           //   this.folderStructure[index].isExpand = true;
           // }
+          this.loading = false;
         }
       });
   }
@@ -323,19 +326,22 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
    * @returns null
    */
    async handleGotoBreadcrumb(item, index: Number, breadCrumbIndex?: any) {
+    this.loading = true;
     $("body").animate({ scrollTop: 0 }, "slow");
-    this.saveState(item, index, breadCrumbIndex);
+    // this.saveState(item, index, breadCrumbIndex);
     // this.checkCollabAndPrivateFolder()
     if(!item) {
       this.router.navigateByUrl('workspace');
       return;
     }
+    this.saveState(item, index, breadCrumbIndex);
     const sectorName = item.path.split("/")[1];
     let url = `workspace/${sectorName}`;
     if(index) {
       url = `${url}/${item.uid}`;
     }
     this.router.navigateByUrl(url);
+    // this.loading = false;
    }
    
   checkShowManageAccessButton() {
@@ -792,7 +798,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
   deleteFolders() {
     if(this.dataTableComponent){
-    this.dataTableComponent.deleteFolders();
+      // this.loading = true;
+      this.dataTableComponent.deleteFolders();
+      // this.loading = false;
     }
    
     else return;
