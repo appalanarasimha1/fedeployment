@@ -41,6 +41,7 @@
                 *ngFor="let child of item.children; let childIndex = index"
                 style="cursor: pointer"
                 class="hoverPin"
+                [routerLinkActive]="getClass()"
               >
               <!-- [ngClass]="sectorSelected?.uid === child.uid && !isTrashView? 'active-tab' : ''" -->
                 <div

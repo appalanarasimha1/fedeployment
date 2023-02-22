@@ -581,39 +581,6 @@ ul.uploadAssetsClassifications li:hover ul.subDropdownMenu {
   display: block;
   cursor: auto;
 }
-ul.uploadAssetsClassifications li:after {
-  content: '';
-  display: block;
-  height: 20px;
-  width: 100%;
-  position: absolute;
-  bottom: -19px;
-  right: 0;
-}
-ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
-  /* position: absolute; */
-  width: 250px;
-  background: #FFFFFF;
-  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
-  border-radius: 8px;
-  padding: 24px;
-  text-align: left;
-  top: 35px;
-  right: 0px;
-  left: auto;
-  border: 0px;
-}
-ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li {
-  padding-left: 0px;
-  margin-bottom: 20px;
-  cursor: pointer;
-}
-ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:hover {
-  opacity: 0.5;
-}
-ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:last-child {
-  margin-bottom: 0px;
-}
 .createNew {
   margin-left: 0px;
 }
@@ -666,6 +633,7 @@ ul.uploadAssetsClassifications li img {
 .moveFolderBlock,
 .downloadFileWorkspace {
   display: inline-block;
+  position: relative;
 }
 .moveFolderBlock img, .downloadFileWorkspace img {
   opacity: 1;
@@ -697,6 +665,7 @@ ul.uploadAssetsClassifications li img {
   z-index: 2;
   vertical-align: -5px;
   display: inline-block;
+  cursor: pointer;
 }
 .deleteFolder {
   margin-right: 0px;
@@ -820,4 +789,799 @@ ul.uploadAssetsClassifications li img {
   font-size: 15px;
   line-height: 24px;
   color: #fff;
+}
+
+
+/* custom checkbox start */
+.internal-use .control-group {
+  display: block;
+}
+.internal-use .control {
+  display: block;
+  position: relative;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 30px;
+  border: 0px;
+  margin: 25px 0px 0px;
+  color: #fff;
+}
+.internal-use .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.internal-use .control__indicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+.internal-use .control--radio .control__indicator {
+  border-radius: 50%;
+}
+.internal-use .control:hover input ~ .control__indicator,
+.internal-use .control input:focus ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control input:checked ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control:hover input:not([disabled]):checked ~ .control__indicator,
+.internal-use .control input:checked:focus ~ .control__indicator {
+  background: #fff;
+}
+.internal-use .control input:disabled ~ .control__indicator {
+  background: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.internal-use .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.internal-use .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.internal-use .control--checkbox .control__indicator:after {
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid #23211E;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.internal-use .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.internal-use .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #23211E;
+}
+.internal-use .control--radio input:disabled ~ .control__indicator:after {
+  background: #fff;
+}
+
+.dropdownCreate .control-group {
+  display: block;
+}
+.dropdownCreate .control {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 30px;
+  border: 0px;
+  margin: 0px 0px 0px;
+  color: #040404;
+}
+.dropdownCreate .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.dropdownCreate .control__indicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #404040;
+}
+.dropdownCreate .control--radio .control__indicator {
+  border-radius: 50%;
+}
+/* .dropdownCreate .control:hover input ~ .control__indicator, */
+/* .dropdownCreate .control input:focus ~ .control__indicator {
+  background: #006845;
+} */
+.dropdownCreate .control input:checked ~ .control__indicator {
+  background: #006845;
+}
+/* .dropdownCreate .control:hover input:not([disabled]):checked ~ .control__indicator,
+.dropdownCreate .control input:checked:focus ~ .control__indicator {
+  background: #fff;
+} */
+.dropdownCreate .control input:disabled ~ .control__indicator {
+  background: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.dropdownCreate .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.dropdownCreate .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.dropdownCreate .control--checkbox .control__indicator:after {
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.dropdownCreate .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #fff;
+}
+.dropdownCreate .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #23211E;
+}
+.dropdownCreate .control--radio input:disabled ~ .control__indicator:after {
+  background: #fff;
+}
+/* custom checkbox end */
+
+a.downloadDisbable {
+  color: gray!important;
+}
+
+a.downloadDisbable path {
+  stroke: gray;
+}
+
+.delete-folder-action.activeHover {
+opacity: 1;
+}
+.downloadFileWorkspace {
+cursor: pointer;
+z-index: 2;
+}
+.downloadFileWorkspace::after {
+content: '';
+display: block;
+width: 100%;
+height: 200%;
+position: absolute;
+top: 0px;
+left: 0px;
+z-index: -1;
+}
+.downloadFileWorkspace:hover .multiDownloadBlock {
+display: block;
+}
+.removeMarginTop .control, .removeMarginTop {
+margin-top: 0px !important;
+}
+.pt-15.removeMarginTop {
+padding-top: 0px !important;
+}
+.classificationsIcon-disabled.manageUsers path {
+fill: #bab8b1;
+}
+ul.uploadAssetsClassifications li:hover path,
+.buttonCreate:hover path {
+fill: #DAAA00;
+}
+.customWidth:hover path,
+.downloadFileWorkspace:hover path,
+.deleteFolder:hover path {
+stroke: #DAAA00;
+}
+.downloadIcon {
+width: 30px;
+height: 30px;
+}
+.deleteFolder {
+margin-right: 0px;
+position: relative;
+z-index: 2;
+line-height: normal;
+}
+.deleteFolder svg{
+width: 20px;
+height: 22px;
+vertical-align: -5px;
+}
+
+ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
+fill: transparent;
+}
+
+.pb-20 {
+padding-bottom: 20px !important;
+}
+.pb-30 {
+padding-bottom: 30px !important;
+}
+.copyedBlock {
+width: auto;
+max-width: 100px;
+line-height: normal;
+vertical-align: middle;
+margin-left: 0px;
+border-radius: 100px;
+background: #E8E6DF;
+white-space: nowrap;
+text-align: left;
+padding: 3px 10px 5px;
+float: right;
+}
+.copyHover {
+position: relative;
+margin-left: 0px;
+cursor: pointer;
+}
+.copyHoverInfo {
+display: none;
+top: 31px;
+right: 0px;
+background: #413E3C;
+padding: 2px 7px;
+color: #fff !important;
+border-radius: 4px;
+position: absolute;
+z-index: 1;
+width: 75px;
+}
+.copyHover:hover .copyHoverInfo {
+display: block;
+}
+.deleteRecover .workspaceInfo {
+display: none;
+}
+.deleteRecover:hover .workspaceInfo {
+display: block;
+}
+.deleteRecover {
+position: relative;
+z-index: 2;
+vertical-align: -5px;
+cursor: pointer;
+}
+.deleteRecover::after {
+content: '';
+display: block;
+height: 60px;
+width: 100%;
+z-index: 1;
+position: absolute;
+top: 0px;
+right: 0px;
+}
+.document-img ul li {
+display: block;
+padding-bottom: 10px;
+cursor: auto;
+color: #fff;
+}
+.document-img ul li svg {
+display: inline-block;
+margin-right: 10px;
+width: 21px !important;
+vertical-align: -5px;
+}
+.deleteFolder:hover .document-img ul li path {
+fill: #fff !important;
+stroke: none !important;
+}
+.deleteFolder:hover .document-img ul li {
+color: #fff !important;
+}
+.workspaceInfo .workspaceHeading, .workspaceInfo .workspaceHeading {
+font-family: 'brownregular';
+}
+.renameAssets {
+border-radius: 10px;
+background: #ebe9e3;
+padding: 2px 10px 4px 10px;
+line-height: normal;
+border: 0px;
+}
+
+div#dropzone {
+position: absolute;
+top: 0;
+left: 0;
+z-index: 9999999999;
+width: 100%;
+min-height: 300px;
+height: 100%;
+transition: visibility 175ms, opacity 175ms;
+display: table;
+color: #fff;
+background: rgba(249, 247, 242, 0.85);
+border: 2px dashed #937206;
+border-radius: 8px;
+}
+div#textnode {
+display: table-cell;
+text-align: center;
+vertical-align: top;
+padding: 50px;
+}
+div#textnode img {
+margin-bottom: 20px;
+}
+div#textnode h3 {
+color: #937206;
+font-size: 18px;
+padding-bottom: 10px;
+}
+div#textnode p {
+color: #DEB31A;
+font-size: 14px;
+}
+.zoomImg {
+display: inline-block;
+position: relative;
+vertical-align: middle;
+z-index: 999;
+}
+.zoomImgBlock {
+max-width: 200px;
+position: absolute;
+left: 0px;
+bottom: 34px;
+display: none;
+z-index: 9;
+background: #fff;
+width: 250px;
+}
+.zoomImg:hover .zoomImgBlock {
+display: block;
+}
+.zoomImgBlock img {
+max-width: 100%;
+width: 100%;
+}
+img.noPreviewImg {
+width: 20px !important;
+}
+.workspaceLink a {
+display: block;
+padding: 12px 17px;
+color: #3c3c3c;
+padding-left: 50px;
+}
+.workspaceLink a:hover {
+background: transparent;
+color: #040404;
+}
+li.hoverPin.active-tab a {
+color: #040404 !important;
+}
+.folderType {
+padding-top: 20px;
+}
+.folderType label {
+display: block;
+margin-bottom: 10px;
+}
+
+.dropdownCreate .folderType .control input:checked ~ .control__indicator::after {
+color: transparent;
+border: solid transparent;
+}
+.dropdownCreate .folderType .control input:checked ~ .control__indicator::before {
+content: '';
+display: block;
+height: 100%;
+width: 100%;
+border: 2px solid white;
+border-radius: 100px;
+background: #DAAA00;
+}
+.dropdownCreate .folderType .control input:checked ~ .control__indicator {
+background: #DAAA00;
+border: 1px solid #DAAA00;
+}
+.mb-10 {
+margin-bottom: 10px !important;
+}
+.publishingAssets {
+background: #E6F2FF;
+border-radius: 8px;
+padding: 8px 15px;
+color: #0072A2;
+font-weight: 400;
+font-size: 14px;
+line-height: 24px;
+font-family: 'brownlight';
+}
+.publishingAssets::after {
+content: '';
+display: block;
+clear: both;
+}
+.publishingAssets p {
+color: #0072A2;
+font-weight: 400;
+font-size: 14px;
+line-height: 24px;
+font-family: 'brownlight';
+padding-bottom: 10px;
+}
+.publishingAssets p strong {
+font-family: 'brownregular';
+font-weight: normal;
+}
+.publishingAssets ul li {
+display: block;
+width: 100%;
+clear: left;
+padding-bottom: 10px;
+overflow: hidden;
+}
+.publishingAssets ul li span.leftCont {
+float: left;
+font-family: 'brownlight';
+width: 50%;
+}
+.publishingAssets ul li span.rightCont {
+width: 50%;
+font-family: 'brownregular';
+vertical-align: top;
+float: right;
+}
+.publishingAssets ul li:last-child {
+padding-bottom: 0px;
+}
+
+.createBtn ::ng-deep app-loader-small .text-center {
+top: 0px !important;
+left: 0px !important;
+border-radius: 100px !important;
+background: #fff !important;
+}
+.moveFolderImg {
+width: auto;
+position: relative;
+display: inline-block;
+margin: 0px;
+cursor: pointer;
+vertical-align: middle;
+}
+ul.uploadAssetsClassifications li:hover .moveIcon path,
+.moveFolderImg .moveIcon:hover path,
+ul.uploadAssetsClassifications .deleteRecover:hover path,
+ul.uploadAssetsClassifications li:hover .downloadIcon path {
+stroke: #DAAA00 !important;
+fill: transparent !important;
+}
+ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess.downloadDisbable path {
+fill: transparent !important;
+stroke: gray!important;
+}
+
+.download-btn:hover .uncheckAfterSuccess path,
+ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess path,
+ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
+fill: transparent !important;
+}
+
+.all-sectors .delete-folder-action {
+position: absolute;
+}
+
+
+.input-sizer.customRenameBlock input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+color: #000 !important;
+opacity: 1; /* Firefox */
+}
+
+.input-sizer.customRenameBlock input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+color: #000 !important;
+}
+
+.input-sizer.customRenameBlock input::-ms-input-placeholder { /* Microsoft Edge */
+color: #000 !important;
+}
+
+img.closeIcon {
+width: 20px !important;
+float: right;
+opacity: 1 !important;
+}
+.dropdownCreate.createFolder form {
+clear: left;
+width: 100%;
+float: left;
+padding-top: 10px;
+}
+.privateFileshare {
+background: #E5F0EC;
+border-radius: 8px;
+padding: 4px 15px;
+color: #006845;
+font-weight: 400;
+font-size: 14px;
+line-height: 24px;
+display: inline-block;
+margin-top: 100px;
+/* font-family: 'brownlight'; */
+}
+.addignCollaborators img.collaboratorsIcon {
+display: block;
+margin: 0px auto 40px;
+max-width: 70px;
+}
+.publicUseBlk.published {
+background-color: #E9E0C1;
+}
+.publicUseBlk.published img{
+width: 10px;
+display: inline-block;
+height: 23px;
+}
+.publicUseBlock.publishedBlock .mouseHoverInfo {
+background: #FFFFFF;
+box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+color: #040404;
+width: 450px;
+right: 0px;
+left: auto;
+padding: 12px 15px;
+cursor: auto;
+}
+.publicUseBlk.published::after {
+z-index: -1;
+}
+.collapse{
+cursor: pointer;
+display: block;
+background: #cdf;
+}
+.collapse + input{
+display: none; /* hide the checkboxes */
+}
+.collapse + input + div{
+display:none;
+}
+.collapse + input:checked + div{
+display:block;
+}
+.dropdownCreate, .multiDownloadBlock {
+  display:none;
+  text-align: left;
+}
+.btn-disabled, .recover-btn-disabled {
+  cursor: default;
+  color: #E1BB33;
+}
+.btn-disabled {
+  background-image: url(../../../assets/images/delete-disable-icon.svg);
+  background-position: 0px 4px;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  filter: invert(0.5);
+  opacity: 0.6;
+}
+.btn-disabled img, .recover-btn-disabled img {
+  /* filter: invert(0.5); */
+  opacity: 0;
+}
+
+.recover-btn-disabled {
+  background-image: url(../../../assets/images/recover-disable-icon.svg);
+  background-position: 0px 5px;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  filter: invert(0.5);
+  opacity: 0.6;
+}
+.multiDownloadBlock {
+  background: #23211E;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 20px;
+  position: absolute;
+  z-index: 1;
+  width: 300px;
+  right: 0px;
+  top: 40px;
+}
+.multiDownloadBlock p {
+  color: #fff;
+}
+
+.downloadFileWorkspace:hover .multiDownloadBlock {
+  display: block;
+}
+.removeMarginTop .control, .removeMarginTop {
+  margin-top: 0px !important;
+}
+.pt-15.removeMarginTop {
+  padding-top: 0px !important;
+}
+.classificationsIcon-disabled.manageUsers path {
+  fill: #bab8b1;
+}
+ul.uploadAssetsClassifications li:hover path,
+.buttonCreate:hover path {
+  fill: #DAAA00;
+}
+.customWidth:hover path,
+.downloadFileWorkspace:hover path,
+.deleteFolder:hover path {
+  stroke: #DAAA00;
+}
+.downloadIcon {
+  width: 30px;
+  height: 30px;
+}
+.deleteFolder {
+  margin-right: 0px;
+  position: relative;
+  z-index: 2;
+  line-height: normal;
+}
+.deleteFolder svg{
+  width: 20px;
+  height: 22px;
+  vertical-align: -5px;
+}
+
+ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
+  fill: transparent;
+}
+.download-btn {
+  float: right;
+  padding-top: 25px;
+  cursor: pointer;
+  font-weight: 400;
+}
+.download-btn {float: right;padding-top: 25px;cursor: pointer;font-weight: normal;}
+.download-btn a {text-decoration: none;color: #EDD580; outline: none;}
+.download-btn svg {margin-right: 6px;vertical-align: top;}
+
+.download-btn a.download-disabled {color: #BAB8B2 !important;}
+.download-btn a.download-disabled path {
+  stroke: #BAB8B2 !important;
+}
+.download-btn a.cancelDownload {
+  margin-right: 25px;
+}
+
+.download-btn:hover .uncheckAfterSuccess path,
+ul.uploadAssetsClassifications li:hover .uncheckAfterSuccess path,
+ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
+  fill: transparent !important;
+}
+
+.all-sectors .delete-folder-action {
+  position: absolute;
+}
+.downloadFileWorkspace:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+ul.uploadAssetsClassifications li {
+  float: left;
+  margin-right: 25px;
+  vertical-align: middle;
+  position: relative;
+  /* cursor: pointer; */
+}
+ul.uploadAssetsClassifications li:last-child {
+  margin-right: 0px;
+}
+ul.uploadAssetsClassifications li:nth-child(2) .customToolTipWorkspace {
+  left: auto;
+  right: 0px;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu {
+  position: absolute;
+  width: 250px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+  top: 35px;
+  right: 0px;
+  z-index: 99;
+  display: none;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu li {
+  margin: 0 0 20px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #040404;
+  cursor: pointer;
+}
+ul.uploadAssetsClassifications li ul.subDropdownMenu li:last-child {
+  margin-bottom: 0px;
+}
+ul.uploadAssetsClassifications li:hover ul.subDropdownMenu {
+  display: block;
+  cursor: auto;
+}
+ul.uploadAssetsClassifications li:after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  bottom: -19px;
+  right: 0;
+  z-index: -2;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
+  /* position: absolute; */
+  width: 250px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+  top: 35px;
+  right: 0px;
+  left: auto;
+  border: 0px;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li {
+  padding-left: 0px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:hover {
+  opacity: 0.5;
+}
+ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:last-child {
+  margin-bottom: 0px;
+}
+.createNewFolderDropdown {
+  padding: 0px !important; padding: 0px; font-size: 15px; line-height: 24px; color: #937206 !important; font-weight: normal;
+}
+.customNewFolder  .navbar-expand-lg .navbar-nav .dropdown-menu {
+  position: absolute;
+  border: 0px;
+  border-radius: 8px;
+}
+.goldenText{
+  color: #C49900  !important;
+  border-color: #C49900 !important;
+  font-weight: normal;
 }

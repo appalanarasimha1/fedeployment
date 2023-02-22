@@ -3863,6 +3863,7 @@ ul.uploadAssetsClassifications li.manageFolderIcon:hover path{
   position: relative;
   z-index: 2;
   vertical-align: -5px;
+  cursor: pointer;
 }
 .deleteRecover::after {
   content: '';
