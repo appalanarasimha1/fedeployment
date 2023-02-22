@@ -5,6 +5,7 @@ import { AppConfigUat } from './appConfig.uat';
 import { AppConfigLocal } from './appConfig.local';
 import { AppConfigOCIProduction } from './appConfig.oci-prod';
 import {AppConfigOCIUat } from './appConfig.oci-uat';
+import { AppConfigOCIProductionNew } from './appConfig.oci-prod-new';
 
 
 export class AppConfig {
@@ -34,6 +35,9 @@ export class AppConfig {
       }
       case 'oci-uat': {
         return AppConfigOCIUat.Config;
+      }
+      case 'oci-prod-new': {
+        return AppConfigOCIProductionNew.Config;
       }
       default:
         return AppConfigDevelopment.Config;
