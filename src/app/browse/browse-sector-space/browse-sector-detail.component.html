@@ -109,7 +109,7 @@
             </svg>
             <div class="customToolTipWorkspace">Manage Access</div>
           </li>
-          <li *ngIf="isPrivateFolder(true, true)" class="tollTipWorkspace">
+          <li *ngIf="isPrivateFolder(true, true) && isAdmin" class="tollTipWorkspace">
             <div class="positionRelative">
               <!-- <app-loader [show]="whiteLoader" [hasOverlay]="whiteLoader"></app-loader> -->
               <app-loader-small [show]="whiteLoader" [hasOverlay]="whiteLoader"></app-loader-small>
