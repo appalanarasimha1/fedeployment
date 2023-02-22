@@ -50,7 +50,7 @@
     </div>
     <div class="row mt-4">
 
-      <div class="col-xl-12" *ngIf="!isPrivateFolder() && !permissionChange">
+      <div class="col-xl-12" *ngIf="!checkPrivateFolder">
         <div class="folderType">
           <label>Folder type</label>
 

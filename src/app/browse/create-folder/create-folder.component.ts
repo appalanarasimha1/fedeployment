@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,OnChanges} from '@angular/core';
 import { FOLDER_TYPE_WORKSPACE, ORDERED_FOLDER, PAGE_SIZE_1000 } from 'src/app/common/constant';
 import { IEntry } from 'src/app/common/interfaces';
 import { ApiService } from 'src/app/services/api.service';
@@ -9,9 +9,11 @@ import { SharedService } from 'src/app/services/shared.service';
   templateUrl: './create-folder.component.html',
   styleUrls: ['./create-folder.component.css']
 })
-export class CreateFolderComponent implements OnInit {
+export class CreateFolderComponent implements OnInit,OnChanges {
   @Input() currentWorkspace: IEntry;
   @Input() folderAssetsResult;
+  @Input() checkPrivate;
+  @Output() isPrivate: EventEmitter<any> = new EventEmitter();
   @Output() folderCreateEvent: EventEmitter<any> = new EventEmitter();
 
   titleExists: boolean = false;
@@ -34,6 +36,7 @@ export class CreateFolderComponent implements OnInit {
   user: any = null;
   listExternalUser: any[];
   listExternalUserGlobal: any[];
+  checkPrivateFolder:boolean;
 
   constructor(
     public sharedService: SharedService,
@@ -43,6 +46,13 @@ export class CreateFolderComponent implements OnInit {
   ngOnInit(): void {
     this.datePickerDefaultAction();
     // this.getAllFolders()
+    this.isPrivate.emit()
+  }
+  ngOnChanges(changes):void{
+    console.log("changes in create",changes )
+    if (changes.checkPrivate) {
+      this.checkPrivateFolder = changes.checkPrivate.currentValue
+    }
   }
 
   async createFolder(folderName: string, date?: string, description?: string) {

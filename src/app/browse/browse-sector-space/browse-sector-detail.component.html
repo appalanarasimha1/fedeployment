@@ -543,7 +543,9 @@
             <app-create-folder 
               *ngIf="showCreateFolderPopup"
               [currentWorkspace]="currentWorkspace"
-              [folderAssetsResult]="folderStructure" 
+              [folderAssetsResult]="folderStructure"
+              (isPrivate)="checkPrivateFolder()"
+              [checkPrivate]="checkPrivate" 
               (folderCreateEvent)="folderCreateEvent($event)"
             ></app-create-folder>
           </li>
