@@ -201,7 +201,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     // let pageSize = 0;
    
     this.sharedService.toTop();
-    if(checkCache && this.folderStructure[folderUid]) return this.assetList =this.folderStructure[folderUid].entries;
+    // if(checkCache && this.folderStructure[folderUid]) return this.assetList =this.folderStructure[folderUid].entries;
     // let url1 = `/search/pp/nxql_search/execute?currentPage=0&Index=0&offset=0&pageSize=${PAGE_SIZE_20}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${folderUid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
     let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${folderUid}&ecm_trashed=false`;
     this.apiService
@@ -458,7 +458,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     document.execCommand("copy");
     document.body.removeChild(selBox);
   }
-  
+
   renameFolder(title?: string, assetUid?: number) {
     let { newTitle, currentWorkspace } = this;
     if (newTitle?.trim() === currentWorkspace.title) return this.updateFolderAction();
