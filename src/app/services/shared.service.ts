@@ -281,7 +281,8 @@ export class SharedService {
   }
 
   toTop(): void {
-    window.scroll(0,0);
+    $("body").animate({ scrollTop: 0 }, "slow");
+    // window.scroll(0,0);
   }
 
   checkExternalUser() {

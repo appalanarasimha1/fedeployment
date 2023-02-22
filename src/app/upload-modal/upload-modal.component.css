@@ -1788,7 +1788,7 @@ span.showAllClassifications svg.rotateArrow {
   margin-top: 40px;
 }
 .newFolderUi .assetName {
-  width: 180px;
+  width: 180px !important;
   text-align: left;
   display: block;
   white-space: nowrap;

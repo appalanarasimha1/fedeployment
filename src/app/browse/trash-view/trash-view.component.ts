@@ -61,6 +61,7 @@ export class TrashViewComponent implements OnInit {
   }
 
   getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+    this.sharedService.toTop();
     this.searchBarValue = "";
     // offset || this.paginator?.firstPage();
     if (this.folderNotFound) {

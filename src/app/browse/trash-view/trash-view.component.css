@@ -186,6 +186,7 @@ input.search-bar::placeholder{
   position: relative;
   z-index: 2;
   vertical-align: -5px;
+  cursor: pointer;
 }
 .deleteRecover::after {
   content: '';
@@ -217,4 +218,24 @@ ul.uploadAssetsClassifications li:hover .deleteRecover .deleteFolder path {
 
 .all-sectors .delete-folder-action {
   position: absolute;
+}
+.createNew, .deleteFolder, .recoverFolder {
+  font-size: 15px;
+  line-height: 31px;
+  color: #937206;
+  font-weight: 400;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+}
+.recoverFolder {
+  padding-bottom: 5px;
+  margin-right: 10px;
+}
+.deleteRecover img {
+  opacity: 1!important;
+  height: 19px!important;
+  margin-left: 0!important;
+  margin-right: 8px;
+  margin-top: -4px;
 }

@@ -43,11 +43,11 @@
   <div class="views">
     <div class="deleteRecover">
       <span
-        *ngIf="checkEnableDeleteBtn()"
         class="recoverFolder"
         [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"
         (click)="unTrashFolders()"
       >
+      <!-- *ngIf="checkEnableDeleteBtn()" -->
         <img src="../../../assets/images/recover-icon.svg" />Recover selected items
       </span>
     </div>
