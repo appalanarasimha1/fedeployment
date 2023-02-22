@@ -223,20 +223,16 @@ export class CreateDeviceModalComponent implements OnInit {
   async updateDevice() {
     this.loading = true;
     const params = {
-      deviceType: this.selectedType,
       latitude: this.latitude || "",
       longitude: this.longitude || "",
       cameraDirection: this.directionShow ? this.direction : "",
       cameraPole: this.poleIdShow ? this.poleId : "",
-      region: this.selectedRegion || "",
-      subArea: this.selectedSubArea || "",
-
-      areaId: this.selectedRegions.initial || "",
-      areaName: this.selectedRegions.name || "",
-      subAreaId: this.selectedsubAreas.locationId || "",
-      subAreaName: this.selectedsubAreas.name || "",
     }
     await this.apiService.post(`/settings/camera/${this.selectedDevice.uid}`, params, {responseType: 'text'}).toPromise();
     this.closeModal(true);
   }
+
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 }

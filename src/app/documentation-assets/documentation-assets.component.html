@@ -14,7 +14,7 @@
             <li>
                 <ng-select placeholder="Region"
                     (change)="onSelectRegions($event)"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="false"
                     [(ngModel)]="selectedRegion"
                     id="confidentiality"
@@ -28,7 +28,7 @@
             <li>
                 <ng-select placeholder="Sub-area"
                     (change)="onSelectSubArea($event)"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="false"
                     [(ngModel)]="selectedsubArea"
                     id="confidentiality"
@@ -52,7 +52,7 @@
             <li>
                 <ng-select placeholder="Format"
                     (change)="getAssetList()"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="false"
                     [(ngModel)]="selectedFormat"
                     id="confidentiality"
@@ -65,7 +65,7 @@
             </li>
           </ul>
           <div class="row">
-            <div class="col-md-4">
+            <div *ngIf="!isNeomUser()" class="col-md-4">
               <label class="control control--checkbox" style="margin-bottom: 0px;">
                 Only show assets uploaded by me
                 <input (change)="getAssetList()" [(ngModel)]="assetByMe" type="checkbox" checked="checked"/>

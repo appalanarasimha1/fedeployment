@@ -6,7 +6,7 @@
     <!-- <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p> -->
     <div class="searchBlock">
         <span class="positionRelative">
-            <input type="text" placeholder="Search or create devices by typing the installation ID" (input)="searchDevice($event)" [(ngModel)]="deviceInput" class="search-bar" />
+            <input type="text" placeholder="Search devices by typing the installation ID" (input)="searchDevice($event)" [(ngModel)]="deviceInput" class="search-bar" />
         </span>
     </div>
     <div class="regionBlok">
@@ -14,21 +14,21 @@
             <li>
                 <ng-select placeholder="Region"
                     (change)="onSelectRegions($event)"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="true"
                     [(ngModel)]="selectedRegions"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedRegions}"
                 >
                     <ng-option *ngFor="let region of regionList" [value]="region">
-                        {{region.initial}}
+                        {{region.initial}} - {{region.name}}
                     </ng-option>
                 </ng-select>
             </li>
             <li>
                 <ng-select placeholder="Sub-area"
                     (change)="onSelectSubArea($event)"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="true"
                     [(ngModel)]="selectedsubAreas"
                     id="confidentiality"
@@ -42,7 +42,7 @@
             <li>
                 <ng-select placeholder="Device type"
                     (change)="onSelectType($event)"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="true"
                     [(ngModel)]="selecteddeviceTypes"
                     id="confidentiality"
@@ -56,7 +56,7 @@
             <li>
                 <ng-select placeholder="Status"
                     (change)="onSelectStatus($event)"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="true"
                     [(ngModel)]="selectedStatus"
                     id="confidentiality"
@@ -71,7 +71,7 @@
         <ul>
             <li style="margin-top: 7px;">
                 <ng-select placeholder="Owner"
-                    [searchable]="false"
+                    [searchable]="true"
                     [clearable]="true"
                     [(ngModel)]="selectedOwner"
                     id="confidentiality"

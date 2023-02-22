@@ -5,6 +5,7 @@ import Nuxeo from 'nuxeo';
 import { HttpClient } from '@angular/common/http';
 import { SharedService } from '../services/shared.service'
 import { environment } from '../../environments/environment';
+import { DRONE_UPLOADER } from '../common/constant';
 // import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class NuxeoService {
@@ -192,6 +193,9 @@ export class NuxeoService {
     try {
       const res = await this.nuxeoClient.connect();
       localStorage.setItem("user", JSON.stringify(res.user.properties));
+      if (res.user.properties?.groups.includes(DRONE_UPLOADER)) {
+        this.router.navigate(['/'], { fragment: 'documentation-assets' });
+      }
     } catch (err) {
       await this.logout();
       this.router.navigate(['/login']);

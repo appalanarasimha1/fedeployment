@@ -6,7 +6,7 @@
   </div>
   <div class="tree">
     <ul style="list-style: none" class="leftPanel">
-      <li style="padding: 0px;">
+      <li *ngIf="checkForUserGroup()" style="padding: 0px;">
         <div class="d-flex set">
           <div style="z-index: 9; text-align: center; width: 20px;">
             <img src="../../../assets/images/down-arrow.svg" height="9px" />

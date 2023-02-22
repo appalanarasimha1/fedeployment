@@ -407,4 +407,8 @@ export class DocumentationAssetsComponent implements OnInit {
       this.assetByMe
     );
   }
+
+  isNeomUser() {
+    return this.user?.includes('@neom.com');
+  }
 }

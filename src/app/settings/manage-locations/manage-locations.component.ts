@@ -24,7 +24,9 @@ export class ManageLocationsComponent implements OnInit {
   showExternalUserPage: boolean = false;
   renameUserName: boolean = false;
   regionList = [];
+  filteredRegions = [];
   subAreaList = [];
+  filteredSubAreas = [];
   regionInput = "";
   selectedRegion = null;
   subAreaInput = "";
@@ -66,6 +68,7 @@ export class ManageLocationsComponent implements OnInit {
       name: region.title,
       uid: region.id,
     }));
+    this.searchRegion();
   }
 
   async getSubAreaList(areaId) {
@@ -83,6 +86,8 @@ export class ManageLocationsComponent implements OnInit {
       uid: area.id,
       parentArea: area.parentArea,
     }));
+    this.filteredSubAreas = this.subAreaList;
+    this.searchSubArea();
   }
 
   openCreateLocationModal() {
@@ -178,5 +183,25 @@ export class ManageLocationsComponent implements OnInit {
     if (!saved) return;
     this.selectedRegion.name = this.renameRegionInput;
     this.updateDocument('area', this.selectedRegion.uid, { "dc:title": this.renameRegionInput });
+  }
+
+  searchRegion() {
+    if (!this.regionInput) {
+      this.filteredRegions = this.regionList;
+      return;
+    };
+    this.filteredRegions = this.regionList.filter(region =>
+      region.name?.toLowerCase().includes(this.regionInput.toLowerCase()) ||
+      region.initial?.toLowerCase().includes(this.regionInput.toLowerCase()));
+  }
+
+  searchSubArea() {
+    if (!this.subAreaInput) {
+      this.filteredSubAreas = this.subAreaList;
+      return;
+    };
+    this.filteredSubAreas = this.subAreaList.filter(subArea =>
+      subArea.name?.toLowerCase().includes(this.subAreaInput.toLowerCase()) ||
+      subArea.initial?.toLowerCase().includes(this.subAreaInput.toLowerCase()));
   }
 }
