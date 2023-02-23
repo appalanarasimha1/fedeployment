@@ -157,16 +157,21 @@ export class UploadModalComponent implements OnInit {
   showError: boolean = false;
   showErrorCheckbox: boolean = false;
   showErrorUpload: boolean = false;
+  showHideAllAsset: boolean = false;
 
   loading = true;
-
-  showHideAllAsset: boolean = false;
 
   publishingAssets: boolean = true;
   publishingPrivateAssets: boolean = false;
   checkboxIsPrivate: boolean = false;
   opened: boolean;
   chunksFailedToUpload = {};
+
+  overallConfidentiality: string;
+  overallAccess: string;
+  overallDownloadApproval: boolean = false;
+  overallUsers: string[];
+  overallDownloadApprovalUsers: string[];
 
   constructor(
     private apiService: ApiService,
@@ -590,7 +595,7 @@ export class UploadModalComponent implements OnInit {
       await this.createBatchUpload();
     }
     for (let i = 0; i < files.length; i++) {
-      this.uploadFileIndex(this.currentIndex, files[i]);
+      await this.uploadFileIndex(this.currentIndex, files[i]);
       this.currentIndex++;
     }
   }
@@ -693,29 +698,35 @@ export class UploadModalComponent implements OnInit {
           "X-Authentication-Token": localStorage.getItem("token"),
         },
       };
-      this.apiService.post(uploadUrl, blob.content, options).subscribe(
-        (event) => {
-          if (event.type == HttpEventType.UploadProgress) {
-            const percentDone = Math.round((100 * event.loaded) / event.total);
-            console.log(`File is ${percentDone}% loaded.`);
-            this.setUploadProgressBar(index, percentDone);
-          } else if (event instanceof HttpResponse) {
-            this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-            console.log("File is completely loaded!");
-          }
-        },
+      // try {
+      return new Promise<void>((resolve, reject) => {
+        this.apiService.post(uploadUrl, blob.content, options).subscribe(
+          (event) => {
+            if (event.type == HttpEventType.UploadProgress) {
+              const percentDone = Math.round((100 * event.loaded) / event.total);
+              console.log(`File is ${percentDone}% loaded.`);
+              this.setUploadProgressBar(index, percentDone);
+            } else if (event instanceof HttpResponse) {
+              this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+              console.log("File is completely loaded!");
+              resolve();
+            }
+          },
         (err) => {
-          console.log("Upload Error:", err);
-          this.filesMap[index]['isVirus'] = true;
-          // delete this.filesMap[index];
-        },
-        () => {
-          this.setUploadProgressBar(index, 100);
-          this.filesUploadDone[index] = true;
-          $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-          console.log("Upload done");
-        }
-      );
+            console.log("Upload Error:", err);
+            this.filesMap[index]['isVirus'] = true;
+            reject();
+            // delete this.filesMap[index];
+          },
+          () => {
+            this.setUploadProgressBar(index, 100);
+            this.filesUploadDone[index] = true;
+            $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+            console.log("Upload done");
+            resolve();
+          }
+        );
+      });
     }
   }
 
@@ -1315,11 +1326,6 @@ export class UploadModalComponent implements OnInit {
   backBtn() {
     this.showErrorCheckbox = false;
   }
-  overallConfidentiality: string;
-  overallAccess: string;
-  overallDownloadApproval: boolean = false;
-  overallUsers: string[];
-  overallDownloadApprovalUsers: string[];
 
   applyToAll() {
     const len = Object.keys(this.filesMap).length;
