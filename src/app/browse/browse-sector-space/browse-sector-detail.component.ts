@@ -108,6 +108,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.folderId = this.route.snapshot.paramMap.get('folderId');
       if(!this.folderId) {
         if(this.sectorName === 'sharedFolder') {
+          this.checkExternalGlobalUserList();
           this.getAssets(null);
         } else {
           this.fetchWorkspaceByName(this.sectorName);
@@ -125,6 +126,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     
+  }
+
+  checkExternalGlobalUserList() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const externalGlobalUsers: string[] = JSON.parse(localStorage.getItem('listExternalUserGlobal'));
+    if(user.groups.indexOf("external_user") === -1 || (user.groups.indexOf("external_user") > -1 && externalGlobalUsers.indexOf(user.email) > -1)) {
+      this.router.navigate(['workspace']);
+    }
   }
   
   async fetchExternalUserInfo(fetchAll = false) {
