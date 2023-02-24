@@ -43,15 +43,9 @@
                 class="hoverPin"
                 [routerLinkActive]="getClass()"
               >
-              <!-- [ngClass]="sectorSelected?.uid === child.uid && !isTrashView? 'active-tab' : ''" -->
-                <div
-                  class="workspaceLink"
-                  
-                >
+                <div class="workspaceLink">
                   <span style="z-index: 9; display: block;">
                     <a [routerLink]="['/workspace', child.title]" [routerLinkActive]="getClass()">
-                      
-                    <!-- [queryParams]="{ folder: child.uid }" -->
                       {{ child.title }}
                     </a>
                   </span>
@@ -77,6 +71,16 @@
             <span>Trash</span>
           </li>
         </ul>
+      </div>
+      <div class="tree" *ngIf="isExternalView">
+        <li
+          style="cursor: pointer"
+          class="d-flex set"
+          [routerLinkActive]="getClass()"
+          [routerLink]="['/workspace/sharedFolder']"
+        >
+          <span>Shared folders</span>
+        </li>
       </div>
   </div>
 </section>
