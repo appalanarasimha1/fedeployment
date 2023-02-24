@@ -39,6 +39,7 @@ import { MatHorizontalStepper, MatStep, MatVerticalStepper } from '@angular/mate
 import { ORDERED_FOLDER, PAGE_SIZE_200, ROOT_ID, WORKSPACE_ROOT } from "../common/constant";
 import { environment } from '../../environments/environment';
 import { DataService } from "../services/data.service";
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 interface FileByIndex {
   [index: string]: File;
 }
@@ -166,6 +167,7 @@ export class UploadModalComponent implements OnInit {
   checkboxIsPrivate: boolean = false;
   opened: boolean;
   chunksFailedToUpload = {};
+  modalOpen: boolean = true;
 
   overallConfidentiality: string;
   overallAccess: string;
@@ -179,7 +181,8 @@ export class UploadModalComponent implements OnInit {
     private router: Router,
     public sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dataService: DataService
+    private dataService: DataService,
+    private modalService: NgbModal,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -237,7 +240,9 @@ export class UploadModalComponent implements OnInit {
   }
 
   whiteListFiles:any;
-  onSelect(event) {
+  fileLimitExceed;
+  onSelect(event, fileLimitExceeded? : any) {
+    this.fileLimitExceed = false
     // console.log("event.addedFiles", event.addedFiles);
     if (!event.addedFiles && !this.agreeTerms) {
       this.showError = true;
@@ -249,6 +254,11 @@ export class UploadModalComponent implements OnInit {
       this.whiteListFiles = files
       for (let i = 0; i < files.length; i++) {
         this.filesMap[i] = files[i]
+      }
+      if(Object.keys(this.filesMap).length >50) {
+        this.openModal(fileLimitExceeded);
+        this.filesMap ={}
+        return this.fileLimitExceed = true;
       }
       this.getTotalFileSize()
 
@@ -1486,5 +1496,17 @@ export class UploadModalComponent implements OnInit {
     this.sizeExeeded = false;
     this.proceedClicked=true
     this.uploadFile(this.whiteListFiles)
+  }
+
+  openModal(fileLimitExceeded) {
+    this.modalOpen = true;
+    this.modalService.open(fileLimitExceeded, { windowClass: 'custom-modal-uploadLimit', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+    }, (reason) => {
+      // this.closeModal();
+      this.modalService.dismissAll();
+    });
+  }
+  closeAll(){
+    this.modalService.dismissAll();
   }
 }

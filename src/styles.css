@@ -4553,6 +4553,7 @@ ul.all-sectors img.noPreviewItem {
   transform: translate(-50%, -50%) !important;
   top: 50% !important;
 }
+
 .loginLoader .overlay {
   left: 0;
   top: 0;
@@ -4562,4 +4563,8 @@ ul.all-sectors img.noPreviewItem {
   background: rgb(255 255 255 / 70%) !important;
   z-index: 9999 !important;
   opacity: 1;
+ }
+.custom-modal-uploadLimit .modal-content {
+  width: 500px !important;
+  margin: auto;
 }
