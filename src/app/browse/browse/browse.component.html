@@ -10,137 +10,27 @@
     </div>
   </div>
 </section> -->
-<app-sub-header></app-sub-header>
+<!-- <app-sub-header></app-sub-header> -->
+
 <section style="background-color: #fff;" class="lpBAck">
   <section class="lpSecOne ">
     <div class="container">
 
-      <div class="row ">
+      <div class="row">
         <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
-          <!-- Add custom toggle start -->
-
-          <!-- Add custom toggle end -->
-          <div class="pb-5 pl-12">
-            <h2 class="commonHeading main-title" style="font-weight: normal">
-              Workspace
-            </h2>
-          </div>
-          <div class="tree" *ngIf="!isExternalView">
-            <ul style="list-style: none" class="leftPanel">
-              <li
-                *ngFor="let item of folderStructure; let i = index"
-                style="cursor: pointer"
-              >
-                <div
-                  class="d-flex set"
-                  [ngClass]="selectedFolder2?.uid === item.uid && !isTrashView ? 'active-tab' : ''"
-                  (click)="
-                    fetchAllSectors(item.isExpand);
-                    selectedFolder2 = item;
-                    selectedFolder = item;
-                    createBreadCrumb(item.title, item.type, item.path);
-                    initialLoad = true;
-                  "
-                >
-                  <div style="z-index: 9; text-align: center; width: 20px;">
-                    <img
-                      src="../../../assets/images/down-arrow.svg"
-                      height="9px"
-                      *ngIf="item.isExpand"
-                    />
-                    <img
-                      src="../../../assets/images/left-arrow.svg"
-                      height="14px"
-                      *ngIf="!item.isExpand"
-                    />
-                  </div>
-                  <span style="padding-left: 10px; z-index: 9">{{
-                    item.title
-                  }}</span>
-                </div>
-                <ul
-                  *ngIf="item.children?.length && item.isExpand"
-                  class="leftPanel insideScroll"
-                  id="customScrollBar"
-                >
-                  <!-- [ngClass]="loading ? 'pointer-events':''" -->
-
-                  <li
-                    *ngFor="let firstChild of item.children; let fIndex = index"
-                    style="cursor: pointer"
-                    class="hoverPin"
-
-                    [ngClass]="sectorSelected?.uid === firstChild.uid && !isTrashView? 'active-tab' : ''"
-                  >
-                  <!-- remove class "d-flex" -->
-                    <div
-                      class="workspaceLink"
-                      (click)="
-                        handleGotoBreadcrumb(firstChild, fIndex);
-                        selectedFolder2 = firstChild;
-                        selectedFolder = firstChild;
-                        sectorSelected = firstChild;
-                        closeOtherSectore(firstChild, item.children);
-                        initialLoad= false
-                      "
-                    >
-                      <!-- <div style="z-index: 9;"> -->
-
-                      <!-- <img src="../../../assets/images/down-arrow.svg" height="9px" *ngIf="firstChild.isExpand" />
-                          <img src="../../../assets/images/left-arrow.svg" height="14px" *ngIf="!firstChild.isExpand"/> -->
-
-                      <!-- </div> -->
-                      <!-- <div class="hoverTooltip">Pin this sector</div> -->
-                      <span style="z-index: 9; display: block;">
-                        <!-- {{ firstChild.title }} -->
-                        <a [routerLink]="['/workspace', firstChild.title]">
-                          <!-- routerLinkActive="active-tab" -->
-                        <!-- [queryParams]="{ folder: firstChild.uid }" -->
-                          {{ firstChild.title }}
-                        </a>
-                      </span>
-                      <!--  class="pinIcon" -->
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <li
-                style="cursor: pointer"
-                [ngClass]="isTrashView ? 'active-tab' : ''"
-                class="d-flex set"
-                (click)="getTrashedWS()"
-              >
-                <div style="width: 25px;">
-                  <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: -4px;">
-                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M7.16724 13V8" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M10.1672 13V8" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <span style="padding-left: 4px;">Trash</span>
-              </li>
-            </ul>
-          </div>
-          <div *ngIf="isExternalView" class="tree">
-            <ul style="list-style: none" class="leftPanel">
-              <li
-                style="cursor: pointer"
-                [ngClass]="isExternalView ? 'active-tab' : ''"
-                class="d-flex set"
-                (click)="fetchAllPrivateWorkspaces()"
-              >
-                <span>Shared Folders</span>
-              </li>
-            </ul>
-          </div>
-          <!-- </div> -->
+          <app-browse-navigation 
+            [folderStructure]="folderStructure" 
+            [isExternalView]="isExternalView"
+            (navigationBarEvent)="navigationBarEvent($event)"
+          >
+          </app-browse-navigation>
         </div>
-        <div
-          class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"
-          style="min-height: calc(100vh - 76px)"
-        >
+        <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative" style="min-height: calc(100vh - 76px)">
+          <!-- <router-outlet></router-outlet> -->
+        <!-- </div> -->
+        
+
+        <!-- <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"> -->
           <app-loader [show]="loading"></app-loader>
 
           <!-- <div class="permissionRequired">
@@ -182,17 +72,7 @@
 
           <div *ngIf="selectedFolder && !folderNotFound" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
             <div class="row">
-              <div class="col-xl-7">
-                <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
-                  <div style="position: relative;">
-                    <form autocomplete="off" style="position: relative;">
-                      <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
-                      <input #workspaceSearch [(ngModel)]="searchBarValue" name="searchBar" (focus)="initWorkspaceSearch()" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar" autocomplete="off"> <!--[(ngModel)]="searchBarValue" (ngModelChange)="searchFolders($event)"-->
-                      <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; getWorkspaceFolders(selectedFolder.uid, 1)" src="../assets/images/circle-close.png" class="placeholder-search">
-                    </form>
-                  </div>
-                </div>
-              </div>
+              <!--  -->
               <div class="col-xl-5">
                 <div style="float: right; position: relative">
                   <div class="deleted-by-me" *ngIf="isTrashView">
@@ -217,12 +97,13 @@
             </div>
           </div>
 
-          <div *ngIf="selectedFolder && !folderNotFound" class="main-content" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+          <div *ngIf="selectedFolder && !folderNotFound" class="" [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
             <div
               class="header-content"
               *ngIf="!isTrashView"
               style="width: 100%"
             >
+            <router-outlet></router-outlet>
               <div *ngIf="selectedFolder2?.uid !== parentId" style="width: 100%">
                 <!-- <button mat-raised-button
                   matTooltip="{{sharedService.stringShortener(selectedFolder?.title, 1000)}}"
@@ -392,12 +273,12 @@
                   </span>
                 </h6>
 
-                <div *ngIf="onlyPrivate" class="invitePeople" style="position: relative;">
+                <!-- <div *ngIf="onlyPrivate" class="invitePeople" style="position: relative;">
                   <span>You are the only member of this private folder. <span class="clickEvent" (click)="openAddUserModal()" [ngClass]="{'textDIsable' : transparentLoader}">
                     Invite people
                   </span> to join as folder members.
                   <img src="../../../assets/images/close-icon-workspace.svg" alt="" (click)="onlyPrivateFolder()" /></span>
-                </div>
+                </div> -->
 
                 <div class="dateFileSize" *ngIf="showLinkCopy">
                   <ul>
@@ -968,11 +849,6 @@
                     class="tollTipWorkspace workspaceInfoHover"
                     *ngIf="!(!isPrivateFolder(true, true) && checkExternalUser())"
                   >
-                    <!-- <svg width="24" height="24" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
-                      <path d="M15 29.0625V17.8125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M10.3125 22.5L15 17.8125L19.6875 22.5" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M21.5625 19.6874H22.9687C25.5924 19.6918 27.9244 18.0164 28.7575 15.5284C29.5905 13.0405 28.7376 10.2986 26.6402 8.7223C24.5428 7.14597 21.6719 7.08909 19.5137 8.58112C18.6437 3.94906 14.4701 0.682968 9.7647 0.952001C5.05932 1.22103 1.28514 4.94155 0.948751 9.64258C0.612362 14.3436 3.81835 18.5636 8.43748 19.4999" stroke="#937206" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg> -->
                     <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
                       <path
                         d="M0 17H18V19H0V17ZM10 3.828V15H8V3.828L1.929 9.9L0.515 8.486L9 0L17.485 8.485L16.071 9.899L10 3.83V3.828Z"
@@ -1082,39 +958,14 @@
               </div>
             </div>
 
-            <!-- Start adding collaborators to this private folder -->
-            <div *ngIf="isPrivateFolder(false) && checkShowNoTrashItem()" class="addignCollaborators" style="padding-top: 40px;">
-              <img src="../../../assets/images/adding-collaborators-icon.svg" class="collaboratorsIcon" />
-              <!-- <h2>Start adding collaborators to this private folder</h2> -->
-              <h2>Start adding collaborators:</h2>
-              <div class="addUsers">
-                <div [ngClass]="isAdmin ? 'addUserBtn' : 'addUserBtn-disabled'" (click)="openAddUserModal()">Add users</div>
-              </div>
-              <!-- <div class="privateFileshare">Private folder Photoshoot-2022-02-10 created.</div> -->
-            </div>
+            <!-- 11 Start adding collaborators to this private folder -->
+            
 
-            <div *ngIf="checkShowNoTrashItem() && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
-              <img src="../../../assets/images/private-fileshare-icon.svg" class="collaboratorsIcon" />
-              <!-- <h2>Start adding assets to this private folder</h2> -->
-              <h2>Start adding assets to this Private folder:</h2>
-              <div class="addUsers">
-                <div class="addUserBtn" (click)="openModal()">Upload</div>
-              </div>
-            </div>
-            <!-- End adding collaborators to this private folder -->
-            <div class="no-items" *ngIf="checkShowNoTrashItem() && !isPrivateFolder(true, true)">
-              <img
-                src="../../../assets/images/no-items.svg"
-                alt="No items here"
-              />
-              No items here
-            </div>
+            
+            
 
             <div *ngIf="selectedMenu === 0" class="main-content row">
-              <div
-                class="col-xl-12 col-md-12" style="padding-right: 0px;"
-                *ngIf="searchList && searchList.length"
-              >
+              <div class="col-xl-12 col-md-12" style="padding-right: 0px;" *ngIf="searchList && searchList.length">
                 <!-- <ngx-masonry [options]="myOptions" [ordered]="true" (layoutComplete)="completeLoadingMasonry($event)" [updateLayout]="updateMasonryLayout"> -->
 
                 <ul
@@ -1138,8 +989,8 @@
                         selectedFolder = item;
                         createBreadCrumb(item.title, item.type, item.path)
                       "
-                      >{{ item.title }}</span
-                    >
+                      >{{ item.title }}
+                    </span>
 
                     <div
                       class="groupFolder"
@@ -1208,23 +1059,9 @@
                       </div>
                     </div>
 
-                    <!-- <div class="folder-content" style="background-color: #F9F7F2;">
-                        <p class="tollTipCustom" style="    white-space: normal;
-                        width: 100%;
-                        overflow: inherit;
-                        text-overflow: inherit;">
-                          {{sharedService.stringShortener(item.title, 16)}}
-                          <span class="tolltipContent" style="bottom: -20px; top: auto; left: 50%; transform: translate(-50%, 0%);">
-                            {{item.title}}
-                          </span>
-                        </p>
-                        <span>{{ getFolderInfo(item) }}</span>
-                      </div> -->
-
                     <document-card
                       *ngIf="checkAssetType(item.type)"
                       [doc]="item"
-                      [viewType]="viewType"
                       (onOpenPreview)="open(item, item.type)"
                       (onSelect)="selectImage($event, item, i)"
                       (onMarkFavourite)="markFavourite(item, false)"
@@ -1239,12 +1076,12 @@
             </div>
 
             <div *ngIf="selectedMenu === 1" class="row justify-content-between pt-25" style="width: 100%; --bs-gutter-x: 0px">
-              <div *ngIf="selectedFolder.uid === parentId && !isTrashView" class="mb-5 text-center animate__animated animate__fadeIn" >
+              <!-- <div *ngIf="selectedFolder.uid === parentId && !isTrashView" class="mb-5 text-center animate__animated animate__fadeIn" >
                 <img src="../../../assets/images/sectorss.svg" style="margin-top: 48px" />
                 <p class="sectorssText">
                   Choose a workspace on the left to begin
                 </p>
-              </div>
+              </div> -->
 
               <div class="col-xl-12 col-md-12 customTableStyle" *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId || isTrashView ) ">
                 <div style="visibility:hidden; opacity:0" id="dropzone">
@@ -1374,63 +1211,7 @@
                           </label>
                         </div>
                       </div>
-                      <!-- <div class="availableActions" *ngIf="currentIndexRightClick == i && !checkGeneralFolder(item)">
-                        <ul>
-                          <li *ngIf="!isTrashView && !checkCanMove(item)">
-
-                              <a href="javascript:void(0);" (click)="rightClickDownload()"> <span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-download-icon" >
-                              <path d="M11.9727 19.6958V12.9458" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M14.7852 17.2095L11.9727 20.022L9.16016 17.2095" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M15.9374 14.8125H16.7812C18.3554 14.8152 19.7546 13.8099 20.2544 12.3172C20.7543 10.8244 20.2425 9.17928 18.9841 8.23348C17.7256 7.28768 16.0031 7.25355 14.7082 8.14877C14.1862 5.36953 11.682 3.40988 8.85877 3.5713C6.03554 3.73272 3.77104 5.96503 3.5692 8.78565C3.36737 11.6063 5.29096 14.1383 8.06244 14.7" stroke="#937206" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-                              </svg></span> Download</a>
-                          </li>
-                          <li  *ngIf="checkEnableMoveButton() &&  !checkGeneralFolder(item)" (click)="rightClickMove()">
-                            <a href="javascript:void(0);">
-                            <span><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-move-icon">
-                              <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg></span> Move</a>
-                          </li>
-                          <!-- <li >
-                            <a href="javascript:void(0);" (click)="rightClickDelete()">
-                            <span><svg
-                              width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-rename-icon">
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg></span> Rename</a>
-                          </li> -/->
-                          <li *ngIf="!isTrashView && checkEnableDeleteBtn() &&  !checkGeneralFolder(item)">
-                            <a href="javascript:void(0);" (click)="rightClickDelete()">
-                              <span><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
-                              <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg></span> Delete</a>
-                          </li>
-                        </ul>
-
-                        <ul>
-                          <li>
-                            <a href="javascript:void(0);" (click)="openUpdateClassModal(rightClickedItem)">
-                              <span><svg  width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-managefolder-icon">
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg></span> Manage Folder</a>
-                          </li> -->
-                          <!-- <li>
-                            <a href="javascript:void(0);" (click)="currentIndexPublished = i;manageAccessPublished()">
-                              <span><svg  width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-file-share-icon">
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg></span> Convert to a Private folder
-                            <div class="mouseHoverInfo manageAccessPopup" >
-                              <app-manage-access-modal [input_data]="item" [input_folder_structure]="breadCrumb" (markIsPrivate)="markIsPrivate(item)"></app-manage-access-modal>
-                            </div></a>
-                            </li>
-                        </ul> -/->
-                      </div> -->
+                      
                     </td>
                     <td *ngIf="!checkAssetType(item.type)" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)" class="positionRelative getWidth2">
                       <span *ngIf="item.properties['dc:isPrivate']" (click)="handleTest(item);selectedFolder=item;" style="display: inline-block;  vertical-align: top; position: relative;">
@@ -1694,32 +1475,6 @@
                     </ng-template>
                   </mat-menu>
               </div>
-              <!-- <div class="col-xl-6 col-md-6" *ngFor="let item of searchList; let i = $index">
-                <div *ngIf="!checkAssetType(item.type)" class="list-container"  data-toggle="tooltip" data-placement="right" title="{{item.title}}">
-                  <div class="list-image col-xl-2 col-md-2">
-                    <fa-icon [icon]="['fas', 'image']" class="icons"></fa-icon>
-                  </div>
-                  <div class="col-xl-10 col-md-10">
-                    <h5 class="list-title">{{item.title}}</h5>
-                    <h6>Created by {{item.properties['dc:creator']}}</h6>
-                  </div>
-                </div>
-                <ul>
-                  <li *ngIf="checkAssetType(item.type)" style="margin-bottom: 20px;">
-                    <document-card
-                      [doc]="item"
-                      [viewType]="viewType"
-                      (onOpenPreview)="open(item, item.type)"
-                      (onSelect)="selectImage($event, item, i)"
-                      (onMarkFavourite)="markFavourite(item, false)"
-                      >
-                    </document-card>
-                  </li>
-                </ul>
-              </div> -->
-              <!-- <div style="text-align: center;">
-                <button class="" *ngIf="checkWSType(selectedFolder.type) && showMoreButton && (searchList.length != selectedFolder.contextParameters.folderAssetsCount)" class="showMoreBtn" (click)="showMore(selectedFolder.uid)">Show more</button>
-              </div> -->
             </div>
             <div class="main-content row" *ngIf="selectedMenu === 2">
               <div

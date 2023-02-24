@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-xl-7">
+    <div class="pb-30">
+      <div style="position: relative;">
+        <form autocomplete="off" style="position: relative;">
+          <button class="primary search-btn">
+            <img src="../../../assets/images/search.png" />
+          </button>
+          <input #workspaceSearch [(ngModel)]="searchBarValue" name="searchBar" (focus)="initWorkspaceSearch()" type="text" placeholder="Search for folder in trash" class="search-bar" autocomplete="off"> <!--[(ngModel)]="searchBarValue" (ngModelChange)="searchFolders($event)"-->
+          <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; getTrashedWS()" src="../assets/images/circle-close.png" class="placeholder-search"> <!-- searchFolders(currentWorkspace.uid, 1) -->
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-5">
+    <div style="float: right; position: relative">
+      <div class="deleted-by-me">
+        <label
+          class="control control--checkbox"
+          style="margin-bottom: 0px; float: left"
+        >
+          Only show items removed by me
+          <input
+            type="checkbox"
+            checked="checked"
+            (click)="myDeleted($event)"
+          />
+          <div
+            class="control__indicator"
+            style="top: 0px; left: 0px"
+          ></div>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="header-content" style="width: 100%; position: relative; z-index: 1">
+  <div>
+    <span style="overflow: auto">
+      <span class="main-title tollTipCustom">Trash </span>
+    </span>
+  </div>
+  <div class="views">
+    <div class="deleteRecover">
+      <span
+        class="recoverFolder"
+        [ngClass]="checkEnableDeleteBtn() ? '' : 'recover-btn-disabled'"
+        (click)="unTrashFolders()"
+      >
+      <!-- *ngIf="checkEnableDeleteBtn()" -->
+        <img src="../../../assets/images/recover-icon.svg" />Recover selected items
+      </span>
+    </div>
+    <div style="display: inline-block">
+      <img
+        src="../../../assets/images/gallery-view.svg"
+        class="menu-icon"
+        [ngClass]="selectedMenu === 0 ? 'active' : ''"
+        (click)="selectMenuView(VIEW_TYPE.GRID)"
+      />
+      <img
+        src="../../../assets/images/list-view-icon.svg"
+        class="menu-icon"
+        [ngClass]="selectedMenu === 1 ? 'active' : ''"
+        (click)="selectMenuView(VIEW_TYPE.LIST)"
+      />
+    </div>
+  </div>
+</div>
+
+
+<app-masonry-view 
+    *ngIf="selectedMenu === 0"
+
+    [searchList]="assetList"
+    [isTrashView]="isTrashView"
+    [showAssetPath]="showAssetPath"
+    [folderStructure]="trashedData"
+
+    (clickHandle)="dataTableEvent($event)"
+    (assetSelected)="assetSelected($event)"
+    (fetchAssets)="fetchAssetsEvent($event)"
+></app-masonry-view>
+
+<!-- 
+    [currentWorkspace]="currentWorkspace"
+    [folderStructure]="folderStructure"
+    [breadCrumb]="breadCrumb"
+ -->
+
+<app-data-table 
+    *ngIf="selectedMenu === 1"
+
+    [searchList]="assetList"
+    [isTrashView]="isTrashView"
+    [showAssetPath]="showAssetPath"
+    [folderStructure]="trashedData"
+
+    (clickHandle)="dataTableEvent($event)"
+    (selectedAsset)="assetSelected($event)"
+    (fetchAssets)="fetchAssetsEvent($event)"
+></app-data-table>

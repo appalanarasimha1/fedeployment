@@ -1,5 +1,5 @@
 <div class="create-supplier">
-    <h3>{{isCreate ? 'Create' : 'Edit'}} device
+    <h3>{{isCreate ? 'Create' : 'Edit'}} device <span *ngIf="!isCreate"> : {{selectedDevice.installationId}}</span>
         <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
           <img src="../../../assets/images/close-modal.svg" style="width: 20px" />
        </button>
@@ -8,7 +8,7 @@
     <div class="create-supplier-form">
         <ul>
             <li>
-                <label for="Device Type">Device Type</label>
+                <label *ngIf="isCreate" for="Device Type">Device Type</label>
                 <ol *ngIf="isCreate" class="deviceType">
                     <li>
                         <input  type="radio" [checked]="selectedType=='timelapse'" id="timelapse" name="deviceType" (change)="onSelectdeviceType($event, 'timelapse')" checked />
@@ -27,12 +27,12 @@
                         <label for="drone">Drone</label>
                     </li>
                 </ol>
-                <ol *ngIf="!isCreate" class="deviceType">
+                <!-- <ol *ngIf="!isCreate" class="deviceType">
                     <li>
                         <input type="radio" id="timelapse" name="deviceType" checked />
                         <label for="timelapse">{{capitalizeFirstLetter(selectedType)}}</label>
                     </li>
-                </ol>
+                </ol> -->
             </li>
             <li class="regionBlok">
                 <div class="form-group">

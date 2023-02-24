@@ -1,0 +1,142 @@
+
+<div class='dropdownCreate createFolder'>
+    <img src="../../../assets/images/close-modal.svg" class="closeIcon" />
+    
+    <form>
+      <div class="row">
+        <div class="col-xl-12">
+            <label>Folder Name</label><span class="placeholderText">e.g. Title of project or event</span>
+        </div>
+        <div class="col-xl-12">
+          <input id="autoFocusElement" [ngClass]="{'goldenText': folderNameRef, 'errorInput': showError}" [(ngModel)]="folderNameRef" (keyup)="inputChange()" name="folderNameRef" type="text" placeholder="Enter a folder name" autocomplete="off" autofocus />
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-xl-12">
+          <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-description>
+                  Show optional information
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="row mt-4">
+                <div class="col-xl-12">
+                    <label>Description </label><span class="placeholderText">Project or event description</span>
+                </div>
+                <div class="col-xl-12">
+                  <input [ngClass]="{'goldenText': folderDescriptionRef}" autocomplete="off"  [(ngModel)]="folderDescriptionRef" name="folderDescriptionRef" type="text">
+                </div>
+              </div>
+              <div class="row custom-date-picker mt-4">
+                <div class="col-xl-12 col-md-12">
+                  <label for="date">Date</label><span class="placeholderText">Date of project or event</span>
+                </div>
+                <div class="col-xl-12 col-md-12 " >
+                  <mat-form-field appearance="fill">
+                    <div class="flexible">
+                      <input [ngClass]="{'goldenText': folderDateRef}" autocomplete="off" [(ngModel)]="folderDateRef" name="folderDateRef" matInput [matDatepicker]="picker" style="width: 88.2%; border-bottom: 2px solid #000;"
+                      placeholder="Choose a date"  (click)="picker.open(); datePickerDefaultAction()" >
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    </div>
+                      <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+    <div class="row mt-4">
+
+      <div class="col-xl-12" *ngIf="!checkPrivateFolder">
+        <div class="folderType">
+          <label>Folder type</label>
+
+          <div class="row">
+            <div class="col-xl-12 mb-10">
+              <label class="control control--checkbox" (change)="handleChange($event, 'published')" style="margin-bottom: 0px; display: inline-block;">
+                Published
+                <input type="radio" id="Published" name="publishedPrivate" checked/>
+                <div class="control__indicator" for="Published" style="top: 4px;left: 0px; border-radius: 100px;"></div>
+              </label>
+            </div>
+            <div class="col-xl-12 mb-10">
+              <label class="control control--checkbox" (change)="handleChange($event, 'private')" style="margin-bottom: 0px; display: inline-block;">
+                Private fileshare
+                <input type="radio" id="Private" name="publishedPrivate"/>
+                <div class="control__indicator" for="Private" style="top: 4px;left: 0px;border-radius: 100px;"></div>
+              </label>
+            </div>
+            <div class="col-xl-12 mb-10">
+              <div class="publishingAssets" *ngIf="publishingAssets">
+                <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
+                <table class="table table-bordered">
+                  <tbody>
+                     <tr>
+                        <td style="padding-left: 0px; white-space: nowrap;">Discoverable from search</td>
+                        <td style="border-right: 0px; font-family: 'brownregular';">Yes</td>
+                     </tr>
+                     <tr>
+                        <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
+                        <td style="border-right: 0px; font-family: 'brownregular';">Set per asset <br />("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</td>
+                     </tr>
+                     <tr>
+                        <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
+                        <td style="border-right: 0px;font-family: 'brownregular';">No</td>
+                     </tr>
+                  </tbody>
+                </table>
+                <!-- <ul>
+                  <!-- <li>
+                    <span class="leftCont">Discoverable from search:</span> <span class="rightCont">Yes</span>
+                  </li> -/->
+                  <li>
+                    <span class="leftCont">Access and Usage:</span> <span class="rightCont">Set per asset ("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</span>
+                  </li>
+                  <li>
+                    <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">No</span>
+                  </li>
+                </ul> -->
+              </div>
+
+              <div class="publishingAssets" *ngIf="publishingPrivateAssets">
+                <p>Used for restricting files to specific users or receiving files from external users</p>
+                <ul>
+                  <!-- <li>
+                    <span class="leftCont">Discoverable from search:</span> <span class="rightCont">No</span>
+                  </li> -->
+                  <li>
+                    <span class="leftCont">Access and Usage:</span> <span class="rightCont">Folder members only</span>
+                  </li>
+                  <li>
+                    <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">Yes (if folder member)</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col-xl-12 mt-15">
+          <div *ngIf="showError" class="errorMessage">
+            Please complete all mandatory fields.
+          </div>
+          <div *ngIf="titleExists" class="errorMessage">
+            Folder with same name already exists.
+           </div>
+          <button *ngIf="!createFolderLoading" class="createBtn btn tollTipCustom" (click)="createFolder(folderNameRef, folderDateRef, folderDescriptionRef)" style="pointer-events: auto;" [ngClass]="{'disableBtn': !folderNameRef}">
+            Create folder
+          </button>
+          <button *ngIf="createFolderLoading" class="createBtn btn tollTipCustom" style="pointer-events: auto;" [ngClass]="{'disableBtn': true}">
+            Creating folder...
+          </button>
+        </div>
+
+      </div>
+    </div>
+    </form>
+  </div>

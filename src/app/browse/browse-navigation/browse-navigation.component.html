@@ -1,0 +1,82 @@
+
+<section class="">
+  <div class="customToggle animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
+      <!-- Add custom toggle start -->
+
+      <!-- Add custom toggle end -->
+      <div class="pb-5 pl-12">
+        <h2 class="commonHeading main-title" style="font-weight: normal">
+          Workspace
+        </h2>
+      </div>
+      <div class="tree" *ngIf="!isExternalView">
+        <ul style="list-style: none" class="leftPanel">
+          <li *ngFor="let item of folderStructure; let i = index" style="cursor: pointer">
+            <div
+              class="d-flex set"
+              [routerLink]="['/workspace']"
+            >
+              <div style="z-index: 9; text-align: center; width: 20px;">
+                <img
+                  src="../../../assets/images/down-arrow.svg"
+                  height="9px"
+                  *ngIf="item.isExpand"
+                />
+                <img
+                  src="../../../assets/images/left-arrow.svg"
+                  height="14px"
+                  *ngIf="!item.isExpand"
+                />
+              </div>
+              <span style="padding-left: 10px; z-index: 9">{{
+                item.title
+              }}</span>
+            </div>
+            <ul
+              *ngIf="item.children?.length && item.isExpand"
+              class="leftPanel insideScroll"
+              id="customScrollBar"
+            >
+              <li
+                *ngFor="let child of item.children; let childIndex = index"
+                style="cursor: pointer"
+                class="hoverPin"
+                [routerLinkActive]="getClass()"
+              >
+              <!-- [ngClass]="sectorSelected?.uid === child.uid && !isTrashView? 'active-tab' : ''" -->
+                <div
+                  class="workspaceLink"
+                  
+                >
+                  <span style="z-index: 9; display: block;">
+                    <a [routerLink]="['/workspace', child.title]" [routerLinkActive]="getClass()">
+                      
+                    <!-- [queryParams]="{ folder: child.uid }" -->
+                      {{ child.title }}
+                    </a>
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li
+            style="cursor: pointer"
+            class="d-flex set"
+            [routerLinkActive]="getClass()"
+            [routerLink]="['/workspace/trash']"
+          >
+            <div style="width: 25px;">
+              <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: -4px;">
+                <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7.16724 13V8" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.1672 13V8" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#040404" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Trash</span>
+          </li>
+        </ul>
+      </div>
+  </div>
+</section>

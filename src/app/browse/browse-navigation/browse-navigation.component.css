@@ -1,0 +1,128 @@
+.customToggle {
+    padding: 0px;
+  }
+  
+  .header-content .main-title{
+    font-size: 24px;
+    line-height: 22px;
+    color: #000000;
+    font-weight: normal;
+    margin-bottom: 9px !important;
+    display: block;
+    /* display: contents; */
+}
+
+.active-tab {
+    color: #000;
+    font-weight: normal;
+    font-size: 15px;
+    position: relative;
+    background: #E1BB33;
+  }
+  
+  .active-tab:before {
+    content: "";
+    position: absolute;
+    left: -100%;
+    background: #e1bb40;
+    height: 100%;
+    z-index: 9;
+    width: 100%;
+    top: 0px;
+  }
+
+  .active-tab {
+    color: #000;
+    font-weight: normal;
+    font-size: 15px;
+    position: relative;
+    background: #E1BB33;
+  }
+
+  .active-tab:before {
+    content: "";
+    position: absolute;
+    left: -100%;
+    background: #e1bb40;
+    height: 100%;
+    z-index: 9;
+    width: 100%;
+    top: 0px;
+  } 
+
+  li.hoverPin.active-tab a {
+    color: #040404 !important;
+  }
+
+  .insideScroll{
+    padding: 0px;
+    margin-bottom: 20px;
+    /* min-height: 100vh; */
+    overflow: auto;
+    height: 70vh;
+  }
+
+  .leftPanel{
+    padding: 0px;
+  }
+  .leftPanel li span{
+    font-size: 15px !important;
+    word-break: break-word;
+    font-weight: normal;
+  }
+  
+.tree{
+  /* max-height: 100vh; */
+  overflow: auto;
+}
+
+.set{
+  padding: 12px 17px;
+  /* width: max-content; */
+/* max-width: 100%; */
+}
+
+#customScrollBar::-webkit-scrollbar-track{
+	background-color: transparent;
+}
+
+#customScrollBar::-webkit-scrollbar{
+	width: 6px;
+	background-color:transparent;
+}
+
+#customScrollBar::-webkit-scrollbar-thumb{
+	background-color: #E8E6DF;
+  border-radius: 10px;
+}
+
+.hoverPin{
+  transition: .4s;
+  position: relative;
+}
+
+.hoverPin:hover .pinIcon::before, .hoverPin:hover .hoverTooltip{
+  display: block;
+}
+
+.workspaceLink a {
+  display: block;
+  padding: 12px 17px;
+  color: #3c3c3c;
+  padding-left: 50px;
+}
+
+.workspaceLink a:hover {
+  background: transparent;
+  color: #040404;
+}
+
+.pl-12 {
+  padding-left: 12px !important;
+}
+.pt-2 {
+  padding-top: 2.6rem!important;
+}
+.pb-5 {
+  padding-bottom: 10px !important;
+}

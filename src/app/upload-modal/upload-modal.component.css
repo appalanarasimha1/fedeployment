@@ -1048,14 +1048,14 @@ input.copyright-input::placeholder{
   color: #cccac4 !important;
   font-weight: 400 !important;
 }
-::ng-deep .mat-datepicker-popup {
+.upload-form-input ::ng-deep .mat-datepicker-popup {
   width: 296px !important;
   position: absolute !important;
-  right: 0px !important;
+  /* right: 0px !important; */
   box-shadow: 2px 2px 6px 3px rgb(0 0 0 / 25%);
   border-radius: 8px;
-  left: 725px !important;
-  bottom: 83px !important;
+  /* left: 725px !important;
+  bottom: 83px !important; */
   overflow: hidden;
   height: max-content !important;
 }
@@ -1788,7 +1788,7 @@ span.showAllClassifications svg.rotateArrow {
   margin-top: 40px;
 }
 .newFolderUi .assetName {
-  width: 180px;
+  width: 180px !important;
   text-align: left;
   display: block;
   white-space: nowrap;
