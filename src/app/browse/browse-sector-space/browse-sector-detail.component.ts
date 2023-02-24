@@ -107,7 +107,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.sectorName = this.route.snapshot.paramMap.get('sectorName');
       this.folderId = this.route.snapshot.paramMap.get('folderId');
       if(!this.folderId) {
-        this.fetchWorkspaceByName(this.sectorName);
+        if(this.sectorName === 'sharedFolder') {
+          this.getAssets(null);
+        } else {
+          this.fetchWorkspaceByName(this.sectorName);
+        }
         this.onSectorLevel = true;
       } else {
         this.getAssets(this.folderId);
@@ -194,17 +198,15 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
   getAssets(folderUid: string, checkCache = true, pageSize = 20, pageIndex = 0, offset = 0): void {
     this.loading = true;
-    // this.selectedFile = [];
-    // this.selectedFolder = { ...selected, uid: selected.id };
     this.showAssetPath = false;
-    // let pageIndex = 1;
-    // let offset = 0;
-    // let pageSize = 0;
-   
     this.sharedService.toTop();
-    // if(checkCache && this.folderStructure[folderUid]) return this.assetList =this.folderStructure[folderUid].entries;
-    // let url1 = `/search/pp/nxql_search/execute?currentPage=0&Index=0&offset=0&pageSize=${PAGE_SIZE_20}&queryParams=SELECT * FROM Document WHERE ecm:parentId = '${folderUid}' AND ecm:name LIKE '%' AND ecm:mixinType = 'Folderish' AND ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0`;
-    let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${folderUid}&ecm_trashed=false`;
+    let url = '';
+    if(folderUid) {
+      url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${folderUid}&ecm_trashed=false`;
+    } else {
+      this.currentWorkspace = {title: 'Shared folders'};
+      url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:mixinType = %27Folderish%27 AND dc:isPrivate = 1 AND ecm:acl/*1/principal IS NOT NULL`
+    }
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
@@ -214,17 +216,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
           this.getAssets(this.assetList[workSpaceIndex].uid);
           this.loading = false;
         } else {
-          // this.sortedData = this.assetList.slice();
-          // if (childIndex !== null && childIndex !== undefined) {
-          //   this.folderStructure[index].children[childIndex].children = docs.entries;
-          //   this.folderStructure[index].children[childIndex].isExpand = true;
-          //   this.handleTest(selected);
-          // } else {
             this.folderStructure[folderUid] = docs;
             this.folderStructure[folderUid].children = docs.entries;
             this.folderStructure = Object.assign({}, this.folderStructure);
-          //   this.folderStructure[index].isExpand = true;
-          // }
           this.loading = false;
         }
       });
@@ -944,4 +938,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     });
     // this.getAllFolders(this.selectedFolder)
   }
+
+  getPrefixBreadcrumb() {
+    if(this.sectorName === 'sharedFolder') {
+      return 'Shared folders';
+    } else {
+      return 'All Workspace';
+    }
+  }
+
+  
 }

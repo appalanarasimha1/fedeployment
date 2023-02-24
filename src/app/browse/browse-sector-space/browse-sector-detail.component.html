@@ -46,15 +46,6 @@
           </span>
         </span>
         <span *ngIf="renameFolderName" style="align-items: center;">
-          <!-- <div class="input-renamer" #wrapper>
-            <label class="input-sizer customRenameBlock">
-              <input type="text"
-              (input)="onInput($event)" value="{{sharedService.stringShortener(currentWorkspace?.title, 28)}}"
-              [(ngModel)]="newTitle"
-              (keyup.enter)="renameFolder()" autocomplete="off"
-              onInput="this.parentNode.dataset.value = this.value" placeholder="{{sharedService.stringShortener(currentWorkspace?.title, 28)}}">
-            </label>
-          </div> -->
           <div class="input-renamer" #wrapper>
             <input type="text" size="{{newTitle.length}}"
             (input)="onInput($event)" value="{{selectedFolder?.title}}"
@@ -130,7 +121,7 @@
                 ? 'breadcrumb-active'
                 : 'breadcrumb-not-active'
             " (click)="handleGotoBreadcrumb(null, null)"
-            >All Workspace</a>
+            >{{getPrefixBreadcrumb()}}</a>
         </span>
         <span *ngFor="let c of breadCrumb; let i = index">
           /<a
@@ -691,5 +682,3 @@
       (canNotDeleteList)="canNotDeleteList($event)"
     style="position: relative; z-index: 0;"></app-data-table>
   </section>
-  
-
