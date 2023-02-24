@@ -658,33 +658,37 @@ export class UploadModalComponent implements OnInit {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
       console.log('total chunk: ' + totalChunk);
-      try {
-        let promiseArray = [];
-        let chunksToBeSent = totalChunk;
-        let chunkIndex = 0;
-        for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j++) {
-          console.log('value of Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST) = ', Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST));
-          chunksToBeSent = chunksToBeSent % CONCURRENT_UPLOAD_REQUEST === 0 ? CONCURRENT_UPLOAD_REQUEST : totalChunk % CONCURRENT_UPLOAD_REQUEST ;
-          for (let i = 0; i < chunksToBeSent; i++) {
-            const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
-            console.log("i = ", i, " | j = ", j);
-            promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
+      return new Promise<void>(async (resolve, reject) => {
+        try {
+          let promiseArray = [];
+          let chunksToBeSent = totalChunk;
+          let chunkIndex = 0;
+          for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j++) {
+            console.log('value of Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST) = ', Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST));
+            chunksToBeSent = chunksToBeSent % CONCURRENT_UPLOAD_REQUEST === 0 ? CONCURRENT_UPLOAD_REQUEST : totalChunk % CONCURRENT_UPLOAD_REQUEST ;
+            for (let i = 0; i < chunksToBeSent; i++) {
+              const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
+              console.log("i = ", i, " | j = ", j);
+              promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
 
-            console.log("chunkIndex = ", chunkIndex);
-            chunkIndex += 1;
-            if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
+              console.log("chunkIndex = ", chunkIndex);
+              chunkIndex += 1;
+              if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
+            }
+            if(CONCURRENT_UPLOAD_REQUEST - chunksToBeSent > 0)
+              chunksToBeSent = totalChunk - chunksToBeSent;
+            promiseArray = [];
           }
-          if(CONCURRENT_UPLOAD_REQUEST - chunksToBeSent > 0)
-            chunksToBeSent = totalChunk - chunksToBeSent;
-          promiseArray = [];
+          this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+          if (promiseArray.length > 0) await Promise.all(promiseArray);
+          this.filesUploadDone[index] = true;
+          resolve();
+        } catch (err) {
+          console.log("Upload Error:", err);
+          this.filesMap[index]['isVirus'] = true;
+          reject();
         }
-        this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-        if (promiseArray.length > 0) await Promise.all(promiseArray);
-        this.filesUploadDone[index] = true;
-      } catch (err) {
-        console.log("Upload Error:", err);
-        this.filesMap[index]['isVirus'] = true;
-      }
+      });
     } else {
       const options = {
         reportProgress: true,
