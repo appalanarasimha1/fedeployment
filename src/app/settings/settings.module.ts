@@ -11,6 +11,7 @@ import { faBars, faList, faBorderAll, faFolder, faImage, faDownload, faStar, faP
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -86,6 +87,7 @@ import { CreateDeviceModalComponent } from './create-device-modal/create-device-
       useValue: {}
     },
     { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MAT_DATE_LOCALE, useValue: 'fi-FI' },
    ],
 })
 export class SettingsModule {

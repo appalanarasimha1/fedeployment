@@ -226,7 +226,7 @@ export class HeaderComponent implements OnInit {
       dialogConfig.data = workspaceState;
     }
     // https://material.angular.io/components/dialog/overview
-    if (!this.isDroneUploadPage) {
+    if (!this.isDroneUploadPage && !this.isDroneUploader) {
       const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     } else {
       const modalDialog = this.matDialog.open(UploadDroneComponent, dialogConfig);
