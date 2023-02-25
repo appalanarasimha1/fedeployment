@@ -52,8 +52,10 @@ export class DocumentationAssetsComponent implements OnInit {
   selectedStartDate;
   selectedEndDate;
   assetByMe = false;
+  filteredSubAreaList = [];
 
   onSelectRegions(regions) {
+    this.selectedsubArea = null;
     this.getAssetList();
   }
   onSelectSubArea(area) {
@@ -128,6 +130,7 @@ export class DocumentationAssetsComponent implements OnInit {
       uid: area.id,
       parentArea: area.parentArea,
     }));
+    this.filteredSubAreaList = this.subAreaList;
     this.computeSubAreaMap();
   }
 
@@ -181,7 +184,13 @@ export class DocumentationAssetsComponent implements OnInit {
   async getAssetList() {
     this.loading = true;
     let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND dc:vendor = '${this.companyId}'`;
-    url += this.buildFilterAssetQuery();
+    const query = this.buildFilterAssetQuery();
+    if (query === 'NONE') {
+      this.assetList = [];
+      this.loading = false;
+      return;
+    }
+    url += query;
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .toPromise();
@@ -196,16 +205,30 @@ export class DocumentationAssetsComponent implements OnInit {
 
   buildFilterAssetQuery() {
     let query = "";
+    let filteredDevice = null;
     if (!this.selectedFormat) {
       query += " AND ecm:primaryType IN ('Picture', 'Video')";
     } else {
       query += ` AND ecm:primaryType = '${this.selectedFormat}'`;
     }
     if (this.selectedRegion) {
-      query += ` AND drone_asset:region = '${this.selectedRegion}'`;
+      filteredDevice = this.deviceList.filter(device =>
+        (device.region?.includes(this.selectedRegion.uid) || device.areaId?.includes(this.selectedRegion.initial)))
+      this.filteredSubAreaList = this.subAreaList.filter(subArea => (
+        subArea.parentArea === this.selectedRegion.uid
+      ));
+    } else {
+      this.filteredSubAreaList = this.subAreaList;
     }
     if (this.selectedsubArea) {
-      query += ` AND drone_asset:area = '${this.selectedsubArea}'`;
+      filteredDevice = this.deviceList.filter(device =>
+        (device.subArea?.includes(this.selectedsubArea.uid) || device.subAreaId?.includes(this.selectedsubArea.locationId)))
+    }
+    if (filteredDevice != null) {
+      if (filteredDevice.length === 0) return 'NONE';
+      const deviceIds = filteredDevice.map(device => device.installationId);
+      const queryString = deviceIds.join("','");
+      query += ` AND dc:installationId IN ('${queryString}')`;
     }
     if (this.selectedStartDate && this.selectedEndDate) {
       query += ` AND dc:created BETWEEN DATE '${this.formatDateString(

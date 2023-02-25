@@ -53,8 +53,8 @@
             <li class="folderListview">
                 <label for="Permissions">Access Expiry</label>
                 <mat-form-field appearance="fill">
-                    <input matInput class="datePicker" [ngClass]="{'goldenText': selectedMonth}" placeholder="Choose a date" 
-                    [(ngModel)]="selectedMonth" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" 
+                    <input matInput class="datePicker" placeholder="Choose a date"
+                    [(ngModel)]="selectedMonth" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
                     (click)="picker.open()">
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
