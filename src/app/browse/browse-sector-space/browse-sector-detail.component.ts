@@ -119,6 +119,19 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         await this.fetchFolderById(this.folderId);
       }
     });
+    this.dataService.uploadedAssetData$.subscribe((result:any) => {
+      if (!result?.length) return;
+      result.map((asset:any) => {
+        // this.searchList.unshift(asset);
+        this.assetList.unshift(asset);
+      })
+
+      this.assetList = this.assetList.slice();
+      // this.sortedData = this.searchList.slice();
+      // this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
+
+      // this.showMoreButton = false;
+    });
     const fetchAll = false;
     this.fetchExternalUserInfo(fetchAll);
     this.checkCollabAndPrivateFolder();

@@ -280,17 +280,17 @@ export class BrowseComponent implements OnInit, AfterViewInit {
       this.checkCollabAndPrivateFolder()
     });
 
-    this.dataService.uploadedAssetData$.subscribe((result:any) => {
-      if (!result?.length) return;
-      result.map((asset:any)=>{
-        this.searchList.unshift(asset);
-      })
+    // this.dataService.uploadedAssetData$.subscribe((result:any) => {
+    //   if (!result?.length) return;
+    //   result.map((asset:any)=>{
+    //     this.searchList.unshift(asset);
+    //   })
 
-      this.sortedData = this.searchList.slice();
-      this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
+    //   this.sortedData = this.searchList.slice();
+    //   this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
 
-      this.showMoreButton = false;
-    });
+    //   this.showMoreButton = false;
+    // });
 
     $(".acnav__label").click(function () {
       var label = $(this);
