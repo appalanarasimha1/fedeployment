@@ -448,7 +448,7 @@ header.updateHeader .navbar .navbar-collapse {
     background-color: #DEB31A !important;
 }
 ::ng-deep .ng-select-container.ng-has-value .ng-arrow-wrapper .ng-arrow {
-    background-image: url(../../../assets/images/down-arrow-yellow.svg);
+    background-image: url(../../../assets/images/down-arrow-yellow.svg) !important;
 }
 
 ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {

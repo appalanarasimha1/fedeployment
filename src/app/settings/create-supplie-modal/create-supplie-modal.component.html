@@ -10,20 +10,20 @@
             <li>
                 <div class="form-group">
                     <label for="Supplier's Name" >Supplier's Name</label>
-                    <input type="text" placeholder="Drone Experts Ltd" [(ngModel)]="suppliersName" />
+                    <input type="text" placeholder="Drone Experts Ltd" [(ngModel)]="suppliersName" [ngClass]="{'goldenText': suppliersName}" />
                     <span *ngIf="suppliersName && isSupplierNameExisted()" style="color: red;">Supplier already existed!</span>
                 </div>
             </li>
             <li>
                 <div class="form-group">
                     <label for="Supplier ID (three letters)">Supplier ID (three letters)</label>
-                    <input type="text" [(ngModel)]="supplierId" placeholder="Enter supplier ID" />
+                    <input type="text" [(ngModel)]="supplierId" placeholder="Enter supplier ID" [ngClass]="{'goldenText': supplierId}" />
                 </div>
             </li>
             <li>
                 <div class="form-group">
                     <label for="Tech support email (optional)">Tech support email</label>
-                    <input type="email" [(ngModel)]="supportEmail" placeholder="Enter a tech support email" />
+                    <input type="email" [(ngModel)]="supportEmail" placeholder="Enter a tech support email" [ngClass]="{'goldenText': supportEmail}" />
                 </div>
             </li>
             <li>

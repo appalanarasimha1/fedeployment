@@ -101,7 +101,10 @@
             <tr *ngFor="let device of filteredDeviceList; let i = index">
                 <td><div class="height32"></div></td>
                 <td>
-                    {{device.installationId}}
+                    <div class="tollTipCustom">
+                        <div class="itemTitleContent">{{device.installationId}}</div>
+                        <div class="tolltipContent">{{device.installationId}}</div>
+                    </div>
                 </td>
                 <td>
                     <div class="tooltip1" style="cursor: pointer;">
@@ -111,7 +114,12 @@
                 </td>
                 <td><div class="itemTitleContent">{{device.subArea}}</div></td>
                 <td>{{formatDirection(device.direction)}}</td>
-                <td><div class="itemTitleContent" title="{{device.cameraPole}}">{{device.cameraPole}}</div></td>
+                <td>
+                    <div class="tollTipCustom">
+                        <div class="itemTitleContent">{{device.cameraPole}}</div>
+                        <div class="tolltipContent">{{device.cameraPole}}</div>
+                    </div>
+                </td>
                 <td>{{capitalizeFirstLetter(device.deviceType)}}</td>
                 <td>
                     <ul>

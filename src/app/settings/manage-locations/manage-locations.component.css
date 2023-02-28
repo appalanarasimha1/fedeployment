@@ -305,3 +305,16 @@ button.primary.createSuppliers {
     display: flex;
     justify-content: space-between;
 }
+.create-supplier-form ul > li input.goldenText {
+    color: #C49900 !important;
+    border-color: #C49900 !important;
+}
+.regionBlok ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+    font-family: 'brownlight' !important;
+    font-size: 15px !important;
+    color: #040404;
+    line-height: 30px;
+}
+.regionBlok ::ng-deep .ng-select.ng-select-single.goldenText .ng-select-container .ng-value-container {
+    color: #C49900;
+}

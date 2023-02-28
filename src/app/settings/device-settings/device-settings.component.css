@@ -597,23 +597,23 @@ input.datePicker:focus::placeholder{
     border-color: #C49900 !important;
     font-weight: normal;
   }
-  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+.externalUser ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
     max-height: 120px !important;
-  }
-  ::ng-deep .ng-arrow-wrapper .ng-arrow {
+}
+.externalUser ::ng-deep .ng-arrow-wrapper .ng-arrow {
     content: "";
     background-image: url(../../../assets/images/black-downarrow.png) !important;
     background-position: 0px 3px !important;
     right: -6px;
-  }
+}
 .goldenText ::ng-deep .ng-arrow-wrapper .ng-arrow {
     background-image: url(../../../assets/images/golden-arrow.png) !important ;
     height: 10px !important;
 }
-::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+.externalUser ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
     padding: 0px !important;
 }
-::ng-deep .ng-select .ng-arrow-wrapper {
+.externalUser ::ng-deep .ng-select .ng-arrow-wrapper {
     padding-right: 0px;
 }
 .regionBlok .ng-select-focused:focus, .regionBlok .ng-select-focused:active {
@@ -694,4 +694,37 @@ input.datePicker:focus::placeholder{
 }
 .copyDeviceIcon {
     width: 15px;
+}
+.tollTipCustom{
+    position: relative;
+}
+  
+.tollTipCustom .tolltipContent {
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    background: #040404;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #fff !important;
+    font-weight: normal;
+    width: max-content;
+    border-radius: 4px;
+    line-height: 15px;
+    white-space: nowrap;
+    max-width: max-content;
+    width: max-content;
+    display: none;
+    text-align: center;
+    z-index: 99;
+    line-height: normal;
+}
+.tollTipCustom:hover .tolltipContent {
+    display: block;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+    top: 0px !important;
+    left: 0;
+    padding-left: 0px;
+    padding-right: 20px;
 }
