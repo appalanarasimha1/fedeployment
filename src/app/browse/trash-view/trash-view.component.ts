@@ -75,7 +75,11 @@ export class TrashViewComponent implements OnInit {
      this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((recoveredAssets: any) => {
-        this.trashedData = recoveredAssets;
+        this.trashedData = recoveredAssets.entries.sort((item1: any, item2: any) => {
+          const date1: any = new Date(item1.lastModified);
+          const date2: any = new Date(item2.lastModified);
+          return date2 - date1;
+        });
         // this.numberOfPages = docs.numberOfPages;
         // this.resultCount = docs.resultsCount;
         this.assetList = recoveredAssets.entries.filter((sector) => {
