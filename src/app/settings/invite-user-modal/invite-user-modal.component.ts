@@ -18,6 +18,7 @@ export class InviteUserModalComponent implements OnInit {
   delete = false;
   selectedMonth = new Date();
   supplier = null;
+  isExisted = false;
 
   constructor(
     public dialogRef: MatDialogRef<InviteUserModalComponent>,
@@ -31,6 +32,7 @@ export class InviteUserModalComponent implements OnInit {
     this.selectedMonth = new Date(this.selectedMonth.setMonth(this.selectedMonth.getMonth() + 6));
     this.userEmail = this.data.userEmail;
     this.supplier = this.data.supplier;
+    this.isExisted = this.data.isExisted;
   }
 
   updateDocument(id, params) {
@@ -50,18 +52,20 @@ export class InviteUserModalComponent implements OnInit {
       folderName: "",
       groundXUrl: location.protocol + '//' + location.host
     }
-    this.nuxeo.nuxeoClient.operation('Scry.InviteUser')
-    .params(inviteUserParams)
-    .input({
-      "entity-type": "user",
-      "id": "",
-      "properties": {
-        "username": this.userEmail,
-        "email": this.userEmail,
-        "groups": [DRONE_UPLOADER]
-      }
-    })
-    .execute();
+    try {
+      this.nuxeo.nuxeoClient.operation('Scry.InviteUser')
+      .params(inviteUserParams)
+      .input({
+        "entity-type": "user",
+        "id": "",
+        "properties": {
+          "username": this.userEmail,
+          "email": this.userEmail,
+          "groups": [DRONE_UPLOADER]
+        }
+      })
+      .execute();
+    } catch(e) {}
 
     const permissions = [];
     if (this.upload) permissions.push("upload");

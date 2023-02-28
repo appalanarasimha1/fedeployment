@@ -36,7 +36,7 @@
                              [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
                         </mat-chip-list>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, i)">
-                            <mat-option *ngFor="let suppliers of filteredFruits | async" [value]="suppliers">
+                            <mat-option *ngFor="let suppliers of filteredFruits[i] | async" [value]="suppliers">
                                 {{suppliers.initial}} <span style="color: gray;">{{suppliers.name}}</span>
                             </mat-option>
                         </mat-autocomplete>

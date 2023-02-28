@@ -76,6 +76,9 @@ export class DocumentationAssetsComponent implements OnInit {
     this.getSupplierList();
     this.getRegionList();
     this.getSubAreaList();
+    this.sharedService.events$.forEach(event => {
+      if (event === 'Upload done') this.getAssetList();
+    });
   }
 
   async getDeviceList() {

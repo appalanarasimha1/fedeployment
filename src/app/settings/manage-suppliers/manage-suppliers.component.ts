@@ -32,7 +32,7 @@ export class ManageSuppliersComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   suppliersCtrl = new FormControl();
   usersCtrl = new FormControl();
-  filteredFruits: Observable<string[]>;
+  filteredFruits: Observable<string[]>[] = [];
   fruits: any = [];
   suppliersRegion: any = [
     {
@@ -145,7 +145,7 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   checkEnableInviteBtn() {
-    return this.inviteUserInput && !this.users?.includes(this.inviteUserInput);
+    return this.inviteUserInput && !this.selectedSupplier?.users?.find(user => user.user === this.inviteUserInput);
   }
 
   updateSuppilerUsers(id, users) {
@@ -187,23 +187,23 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async selectUser(user) {
-    const permissions = ["upload"];
-    const now = new Date();
-    const newUserProp = {
-      user,
-      permissions,
-      activated: true,
-      expiry: new Date(now.setMonth(now.getMonth() + 6)),
-    }
-    const users = this.selectedSupplier.users || [];
-    users.push(newUserProp);
-    await this.updateSuppilerUsers(this.selectedSupplier.uid, users);
-    this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
-    .params({
-      "user": user,
-    })
-    .execute();
-    this.getSupplierList();
+    // const permissions = ["upload"];
+    // const now = new Date();
+    // const newUserProp = {
+    //   user,
+    //   permissions,
+    //   activated: true,
+    //   expiry: new Date(now.setMonth(now.getMonth() + 6)),
+    // }
+    // const users = this.selectedSupplier.users || [];
+    // users.push(newUserProp);
+    // await this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+    // this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
+    // .params({
+    //   "user": user,
+    // })
+    // .execute();
+    // this.getSupplierList();
   }
 
   async getAllUsers() {
@@ -234,6 +234,17 @@ export class ManageSuppliersComponent implements OnInit {
     this.filteredSuppliers = this.supplierList;
     this.currentSuppliers = this.supplierList.map(supplier => supplier.name);
     this.supplierInput = "";
+    for (let i = 0; i < this.supplierList.length; i++) {
+      this.filteredFruits[i] = this.suppliersCtrl.valueChanges.pipe(
+        startWith(null),
+        map((fruit: string | null) => {
+          const selectedInitials = this.supplierList[i].regions.map(region => this.regionMap[region]?.initial) || [];
+          return fruit ? this._filter(fruit, i) : this.suppliersRegion.filter(region => !selectedInitials.includes(region.initial))
+        }));
+    }
+    if (this.selectedSupplier) {
+      this.selectedSupplier = this.supplierList.find(sup => sup.uid === this.selectedSupplier.uid);
+    }
   }
 
   async getRegionList() {
@@ -248,11 +259,6 @@ export class ManageSuppliersComponent implements OnInit {
       uid: region.id,
     }));
     this.computeRegionMap();
-
-
-    this.filteredFruits = this.suppliersCtrl.valueChanges.pipe(
-      startWith(null),
-      map((fruit: string | null) => fruit ? this._filter(fruit) : this.suppliersRegion.slice()));
   }
 
   computeRegionMap() {
@@ -304,8 +310,12 @@ export class ManageSuppliersComponent implements OnInit {
     this.updateDocument(this.supplierList[index].uid, {"regions": regions})
   }
 
-  private _filter(value: any): any[] {
-    return this.suppliersRegion.filter(fruit => fruit?.name.toLowerCase().includes(value?.name.toLowerCase()));
+  private _filter(value: any, index): any[] {
+    if (typeof value === 'object') return;
+    const selectedInitials = this.supplierList[index].regions.map(region => this.regionMap[region].initial) || [];
+    return this.suppliersRegion.filter(fruit => (fruit?.name?.toLowerCase().includes(value?.toLowerCase())
+      || fruit.initial?.toLowerCase().includes(value?.toLowerCase()))
+      && !selectedInitials.includes(fruit.initial));
   }
 
   renameEmailClick(saved=false, email?, index?){
@@ -376,6 +386,7 @@ export class ManageSuppliersComponent implements OnInit {
     dialogConfig.data = {
       userEmail: this.inviteUserInput,
       supplier: this.selectedSupplier,
+      isExisted: this.users?.includes(this.inviteUserInput),
     }
 
     const modalDialog = this.matDialog.open(InviteUserModalComponent, dialogConfig);
