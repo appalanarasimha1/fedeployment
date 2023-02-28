@@ -57,14 +57,17 @@ export class CreateSupplieModalComponent implements OnInit {
   ) {
     this.filteredFruits = this.suppliersCtrl.valueChanges.pipe(
       startWith(null),
-      map((fruit: string | null) => fruit ? this._filter(fruit) : this.suppliersRegion.slice()));
+      map((fruit: string | null) => {
+        const selectedInitials = this.selectedRegion?.map(region => region.initial) || [];
+        return fruit ? this._filter(fruit) : this.suppliersRegion.filter(region => !selectedInitials.includes(region.initial))
+      }));
    }
 
   ngOnInit(): void {
     this.suppliersName = this.data.supplierInput;
     this.suppliersRegion = this.data.suppliersRegion;
     this.selectedMonth = new Date();
-    this.selectedMonth.setFullYear(this.selectedMonth.getFullYear() + 1);
+    this.selectedMonth.setMonth(this.selectedMonth.getMonth() + 6);
     this.currentSuppliers = this.data.currentSuppliers || [];;
   }
 
@@ -118,7 +121,11 @@ export class CreateSupplieModalComponent implements OnInit {
   }
 
   private _filter(value: any): any[] {
-    return this.suppliersRegion.filter(fruit => fruit?.name?.toLowerCase().includes(value?.name?.toLowerCase()));
+    if (typeof value === 'object') return;
+    const selectedInitials = this.selectedRegion?.map(region => region.initial) || [];
+    return this.suppliersRegion.filter(fruit => (fruit?.name?.toLowerCase().includes(value?.toLowerCase())
+      || fruit.initial?.toLowerCase().includes(value?.toLowerCase()))
+      && !selectedInitials.includes(fruit.initial));
   }
 
   closeModal(result?) {

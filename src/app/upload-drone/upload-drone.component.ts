@@ -164,7 +164,7 @@ export class UploadDroneComponent implements OnInit {
       () => {
         this.setUploadProgressBar(index, 100);
         this.filesUploadDone[index] = true;
-        console.log("Upload done");
+        // console.log("Upload done");
       }
     );
   }
@@ -193,9 +193,10 @@ export class UploadDroneComponent implements OnInit {
         folderToAdd
       );
     }
+    this.sharedService.newEvent('Upload done');
 
     this.sharedService.showSnackbar(
-      "Publish assets successfully.",
+      `${this.files.length} assets uploaded`,
       3000,
       "top",
       "center",

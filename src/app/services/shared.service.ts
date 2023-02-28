@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { Moment } from 'moment'; // for interface
 import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import JSEncrypt from 'jsencrypt';
 import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars } from '../common/constant';
 import { ApiService } from './api.service';
@@ -23,6 +23,7 @@ export class SharedService {
 
   // /* <!-- sprint12-fixes start --> */
   public sidebarToggleResize = new BehaviorSubject(false);
+  private _subject = new Subject<any>();
 
   constructor(
     private router: Router,
@@ -474,5 +475,13 @@ export class SharedService {
   //   localStorage.setItem("logout-once-again", "true");
   //   this.keycloak.logout(window.location.origin + '/login');
   // }
+
+  newEvent(event) {
+    this._subject.next(event);
+  }
+
+  get events$ () {
+    return this._subject.asObservable();
+  }
 
 }
