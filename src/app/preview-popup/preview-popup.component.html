@@ -61,9 +61,11 @@
           <div class="col-xl-5 col-md-5">
             <ul class="flexible">
               <li class="customtooltip">
-                <a placement="bottom" ngbTooltip="Add to Favorites" style="display: inline-block;">
+                <a *ngIf="doc.contextParameters.favorites?.isFavorite" placement="bottom" ngbTooltip="Remove from favorites" style="display: inline-block;">
                   <img *ngIf="doc.contextParameters.favorites?.isFavorite" (click)="markFavourite(doc, false)"
                     src="../../assets/images/yellow-star.svg" />
+                </a>
+                <a *ngIf="!doc.contextParameters.favorites?.isFavorite"  placement="bottom" ngbTooltip="Add to Favorites" style="display: inline-block;">
                   <img *ngIf="!doc.contextParameters.favorites?.isFavorite" (click)="markFavourite(doc, true)"
                     src="../../assets/images/black-star.png" />
                 </a>
