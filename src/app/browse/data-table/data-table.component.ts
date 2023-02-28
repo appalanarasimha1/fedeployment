@@ -738,6 +738,10 @@ export class DataTableComponent implements OnInit, OnChanges {
     });
   }
 
+  navigateToTrash() {
+    this.router.navigate(['workspace', 'trash']);
+  }
+
   deleteModal(listDocs) {
     let deletedFolders = this.searchList.filter((item) =>
       listDocs.includes(item["uid"])
@@ -749,7 +753,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       "center",
       "snackBarMiddle",
       "Deleted items",
-      this.getTrashedWS.bind(this)
+      this.navigateToTrash.bind(this)
     );
     this.searchList = this.searchList.filter(
       (item) => !listDocs.includes(item["uid"])

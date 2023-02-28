@@ -108,6 +108,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.folderId = this.route.snapshot.paramMap.get('folderId');
       if(!this.folderId) {
         if(this.sectorName === 'sharedFolder') {
+          this.checkExternalGlobalUserList();
           this.getAssets(null);
         } else {
           this.fetchWorkspaceByName(this.sectorName);
@@ -118,6 +119,19 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         await this.fetchFolderById(this.folderId);
       }
     });
+    this.dataService.uploadedAssetData$.subscribe((result:any) => {
+      if (!result?.length) return;
+      result.map((asset:any) => {
+        // this.searchList.unshift(asset);
+        this.assetList.unshift(asset);
+      })
+
+      this.assetList = this.assetList.slice();
+      // this.sortedData = this.searchList.slice();
+      // this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
+
+      // this.showMoreButton = false;
+    });
     const fetchAll = false;
     this.fetchExternalUserInfo(fetchAll);
     this.checkCollabAndPrivateFolder();
@@ -125,6 +139,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     
+  }
+
+  checkExternalGlobalUserList() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const externalGlobalUsers: string[] = JSON.parse(localStorage.getItem('listExternalUserGlobal'));
+    if(user.groups.indexOf("external_user") === -1 || (user.groups.indexOf("external_user") > -1 && externalGlobalUsers.indexOf(user.email) > -1)) {
+      this.router.navigate(['workspace']);
+    }
   }
   
   async fetchExternalUserInfo(fetchAll = false) {

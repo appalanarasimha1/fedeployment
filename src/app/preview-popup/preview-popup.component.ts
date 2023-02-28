@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, Input, ViewChild, TemplateRef } from "@an
 import { ActivatedRoute, Router } from "@angular/router";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
-import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions } from "../common/constant";
+import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions, DRONE_UPLOADER } from "../common/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
@@ -42,6 +42,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   modalOpen: boolean = true;
   fullSIzeImg: boolean = false;
   device;
+  isDroneUploader = false;
 
   last_index = 100;
   counter = 100;
@@ -72,6 +73,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.last_index = (this.info.substring(0, 200)).lastIndexOf(' ');
     if(this.last_index > 200) this.last_index = 200;
     this.counter = this.last_index;
+    this.checkDroneUser();
   }
 
   ngOnChanges(): void {
@@ -670,7 +672,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return this.device.installationTime.match(/.{1,2}/g).join(":");
   }
 
-  
+
   toggleSkil(event){
     if(this.counter < 201 )
       {
@@ -690,5 +692,15 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   
   closeDeleteModal(){
     this.nevermindHideMsg = !this.nevermindHideMsg;
+  }
+  checkDroneUser() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      const groups = user.groups;
+      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+        this.isDroneUploader = true;
+      }
+      return;
+    }
   }
 }

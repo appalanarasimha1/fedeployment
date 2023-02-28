@@ -39,6 +39,9 @@ export class UploadDroneComponent implements OnInit {
   publishStep = false;
   totalPercent = 0;
   user = "";
+  filteredInstallationIdList = [];
+  isSelectAll = false;
+  allDate = new Date();
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -50,6 +53,7 @@ export class UploadDroneComponent implements OnInit {
   ngOnInit(): void {
     this.showUpload = false;
     this.installationIdList = this.data?.installationIdList || [];
+    this.filteredInstallationIdList = this.installationIdList;
     this.company = this.data?.company;
     this.companyId = this.data?.companyId;
     if (!this.installationIdList || this.installationIdList.length === 0) {
@@ -61,7 +65,21 @@ export class UploadDroneComponent implements OnInit {
     this.dialogRef.close(done);
   }
 
-  onSearchBarChange(e) {}
+  onSearchBarChange(e) {
+    if (!this.searchText) {
+      this.filteredInstallationIdList = this.installationIdList;
+      return;
+    }
+    const term = this.searchText.toLowerCase();
+    this.filteredInstallationIdList = this.installationIdList.filter(device =>{
+      return device.area?.toLowerCase().includes(term)
+      || device.initial?.toLowerCase().includes(term)
+      || device.installationId?.toLowerCase().includes(term)
+      || device.location?.toLowerCase().includes(term)
+      || device.type?.toLowerCase().includes(term)
+    });
+  }
+
   blurOnSearch() {
     console.log("this.searchText", this.searchText);
 
@@ -71,6 +89,10 @@ export class UploadDroneComponent implements OnInit {
         this.searchPopup = false;
       }, 500);
     }
+  }
+
+  updateSelectAllDate() {
+    
   }
 
   inputClicked() {
@@ -500,6 +522,8 @@ export class UploadDroneComponent implements OnInit {
       longitude: device.longitude,
       deviceId: device.uid,
     }));
+
+    this.filteredInstallationIdList = this.installationIdList;
   }
 
   async getSupplierList() {

@@ -264,7 +264,7 @@
                         <span style="word-break: break-all">{{doc?.title}}</span>
                       </li>
 
-                      <li>
+                      <li *ngIf="!isDroneUploader">
                         <span>Location</span>
                         <span style="word-break: break-all">
                           <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
@@ -752,7 +752,7 @@
                       <span style="word-break: break-all">{{doc?.title}}</span>
                     </li>
 
-                    <li>
+                    <li *ngIf="!isDroneUploader">
                       <span>Location</span>
                       <span style="word-break: break-all">
                         <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
