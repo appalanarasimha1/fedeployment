@@ -100,7 +100,8 @@
         <div class="hover-icon star-icon tollTipWorkspace"
           [ngClass]="{'active': doc?.contextParameters?.favorites?.isFavorite}"
           (click)="markFavourite()">
-          <div class="customToolTipWorkspace">Add to favorites</div>
+          <div class="customToolTipWorkspace" *ngIf="!doc?.contextParameters?.favorites?.isFavorite">Add to favorites</div>
+          <div class="customToolTipWorkspace" *ngIf="doc?.contextParameters?.favorites?.isFavorite">Remove from favorites</div>
         </div>
         
 
