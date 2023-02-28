@@ -7,6 +7,8 @@ import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-documentation-assets",
@@ -15,6 +17,7 @@ import { apiRoutes } from "../common/config";
 })
 export class DocumentationAssetsComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
+  protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     public matDialog: MatDialog,
@@ -193,6 +196,7 @@ export class DocumentationAssetsComponent implements OnInit {
     url += query;
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
+      .pipe( takeUntil(this.ngUnsubscribe) )
       .toPromise();
     this.loading = false;
     if (!res) return;
@@ -392,6 +396,7 @@ export class DocumentationAssetsComponent implements OnInit {
     // this.loading.push(true);
     this.apiService
       .post(apiRoutes.MARK_FAVOURITE, body)
+      .pipe( takeUntil(this.ngUnsubscribe) )
       .subscribe((docs: any) => {
         data.contextParameters.favorites.isFavorite =
           !data.contextParameters.favorites.isFavorite;
@@ -432,6 +437,13 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   isNeomUser() {
-    return this.user?.includes('@neom.com');
+    return !!this.user?.includes('@neom.com');
+  }
+
+  public ngOnDestroy(): void {
+    // This aborts all HTTP requests.
+    this.ngUnsubscribe.next();
+    // This completes the subject properlly.
+    this.ngUnsubscribe.complete();
   }
 }

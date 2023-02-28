@@ -43,8 +43,8 @@
                 <mat-form-field appearance="fill" [ngClass]="{'goldenText': selectedStartDate || selectedEndDate}">
                   <mat-label (click)="picker.open();">Enter a date range</mat-label>
                   <mat-date-range-input (dateChange)="dateRangeChange()" [rangePicker]="picker" (click)="picker.open();">
-                    <input (dateChange)="dateRangeChange()" class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selectedStartDate">
-                    <input (dateChange)="dateRangeChange()" class="customInput" matEndDate placeholder="End date" [(ngModel)]="selectedEndDate">
+                    <input matinput (dateChange)="dateRangeChange()" class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selectedStartDate">
+                    <input matinput (dateChange)="dateRangeChange()" class="customInput" matEndDate placeholder="End date" [(ngModel)]="selectedEndDate">
                   </mat-date-range-input>
                   <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>

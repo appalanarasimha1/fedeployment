@@ -29,7 +29,6 @@ export class DocumentCardComponent implements OnInit, OnChanges {
     ) {}
 
   ngOnInit() {
-    console.log("Init = ", this.doc.type);
   }
 
   ngOnChanges() {}
@@ -37,10 +36,7 @@ export class DocumentCardComponent implements OnInit, OnChanges {
   getFileContent(): string {
     return this.getAssetUrl(null,this.doc?.properties["file:content"]?.data || "");
   }
-  logDoc(){
-    console.log("========================",this.doc);
-    
-  }
+
   openPreview() {
     this.onOpenPreview.emit();
   }
