@@ -84,10 +84,10 @@
     border-color: #C49900 !important;
     font-weight: normal;
   }
-  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+.documentationBlck ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
     max-height: 120px !important;
-  }
-  ::ng-deep .ng-arrow-wrapper .ng-arrow {
+}
+.documentationBlck ::ng-deep .ng-arrow-wrapper .ng-arrow {
     content: "";
     background-image: url(../../assets/images/black-downarrow.png) !important;
     background-position: 0px 3px !important;
@@ -97,10 +97,10 @@
     background-image: url(../../assets/images/golden-arrow.png) !important ;
     height: 10px !important;
 }
-::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+.documentationBlck ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
     padding: 0px !important;
 }
-::ng-deep .ng-select .ng-arrow-wrapper {
+.documentationBlck ::ng-deep .ng-select .ng-arrow-wrapper {
     padding-right: 0px;
 }
 .regionBlok .ng-select-focused:focus, .regionBlok .ng-select-focused:active {
