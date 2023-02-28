@@ -371,7 +371,7 @@ h3.externalUsers {
     opacity: 0;
 }
 
-::ng-deep span.mat-button-wrapper:after {
+.addUserBlock ::ng-deep span.mat-button-wrapper:after {
     content: '';
     display: block;
     height: 30px;
@@ -382,3 +382,35 @@ h3.externalUsers {
     background: url(../../assets/images/calendar-icon.svg)  center center / 20px;
     background-repeat: no-repeat;
 }
+
+.addUserBlock ::ng-deep .mat-datepicker-popup {
+    width: 296px !important;
+    position: absolute !important;
+    box-shadow: 2px 2px 6px 3px rgb(0 0 0 / 25%);
+    border-radius: 8px;
+    overflow: hidden;
+    height: max-content !important;
+  }
+  .addUserBlock ::ng-deep .mat-calendar-body-today.mat-calendar-body-selected{
+    box-shadow: unset !important;
+  }
+  .addUserBlock ::ng-deep th.mat-header-cell, ::ng-deep th.mat-header-cell button, ::ng-deep th{
+    border-bottom: unset !important;
+  }
+  .addUserBlock ::ng-deep .mat-calendar-arrow{
+    background-image: url(../../assets/images/down.png);
+    border: unset !important;
+    height: 6px !important;
+    width: 12px !important;
+    right: 0px;
+    z-index: 99;
+    position: relative;
+    background-size: 11px;
+    background-repeat: no-repeat;
+  }
+  .addUserBlock ::ng-deep .cdk-text-field-autofill-monitored:not(:-webkit-autofill){
+    animation:  unset !important
+  }
+  ::ng-deep .mat-calendar-table-header-divider::after{
+    display: none !important;
+  }
