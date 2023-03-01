@@ -672,7 +672,7 @@ export class SearchComponent implements OnInit {
       isOtherPage = !!this.documentsView.detailView || !!this.searchValue.ecm_fulltext;
     }
 
-    return !this.isDroneUploader && !isOtherPage && !this.isNeomUser();
+    return !this.isDroneUploader && !isOtherPage && this.isNeomUser();
   }
   
   isNeomUser() {

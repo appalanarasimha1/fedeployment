@@ -320,7 +320,7 @@ export class SubHeaderComponent implements OnInit {
   playPersonalizedVideo() {
     const body = {
       sector: this.sectorSelected,
-      username: localStorage.getItem("username"),
+      username: JSON.parse(localStorage.getItem("user"))["username"]
     };
     localStorage.setItem("videoSector", this.sectorSelected);
     this.videoResponse = false;
