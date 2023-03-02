@@ -38,15 +38,14 @@
                 <div class="form-group">
                     <label for="Region">Owner</label>
                     <ng-select placeholder="Select"
-                        [searchable]="false"
-                        [clearable]="false"
+                        [searchable]="true"
+                        [clearable]="true"
                         [(ngModel)]="selectedOwner"
                         id="region"
                         [ngClass]="{'goldenText': selectedOwner}"
-                        [disabled]="!isCreate"
                     >
                         <ng-option *ngFor="let owner of owners" [value]="owner">
-                            {{owner.initial}}
+                            {{owner}}
                         </ng-option>
                     </ng-select>
                 </div>
