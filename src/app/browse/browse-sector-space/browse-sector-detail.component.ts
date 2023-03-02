@@ -678,6 +678,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.selectedAssetCount = Object.keys(selectedAssetList).length;
   }
 
+  /*
+  * checks if selected rows are only assets and not folder type
+  */
+  onlyAssetSelected(): boolean {
+    // if() // TODO: need to complete it
+    return true;
+  }
+
   selectedCount(count:any){
     this.count = count
   }

@@ -665,8 +665,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
     this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
-    this.sortedData.forEach((e) => (e.isSelected = false));
-    this.sortedDataList.emit(this.sortedData)
+    this.removeSelection();
   }
 
   checkDownloadPermission(item){
@@ -993,9 +992,17 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   openFolder(item: IEntry) {
+    this.removeAssets();
     this.router.navigate([window.location.pathname.split('/').splice(1,2).join('/'), item.uid]);
   }
 
+  removeSelection() {
+    this.sortedData.forEach((item) => {
+      item['isSelected'] = false;
+      item['edit'] = false;
+    });
+    this.sortedDataList.emit(this.sortedData);
+  }
   
   cancelDownloadClick(e) {
     e.stopPropagation();

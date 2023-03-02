@@ -5,11 +5,7 @@
   <div class="col-xl-12 col-md-12 customTableStyle">
       <!-- *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )"  -->
     
-    <table
-      matSort
-      (matSortChange)="sortData($event)"
-      class="folderListview pb-5"
-      >
+    <table matSort (matSortChange)="sortData($event)" class="folderListview pb-5">
       <tr>
         <th style="width: 3%" class="checkAll positionRelative" [ngClass]="{'showChecked' : selectAllClicked }">
           <div class="control-group tollTipCustom">
