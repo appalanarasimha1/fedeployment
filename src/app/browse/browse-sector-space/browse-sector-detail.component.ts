@@ -97,13 +97,12 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // this.dataTableComponent = new DataTableComponent(SharedService, ApiService, MatDialog, DataService, Router);
     this.fetchUserData();
     // this.dataService.fetchAssets$.subscribe(async (data) => {
     //   // await this.fetchAssets(data.sectorUid, data.checkCache, data.pageSize, data.pageIndex, data.offset);
     // });
     
-    this.route.paramMap.subscribe( async paramMap => {
+    this.route.paramMap.subscribe( async () => {
       this.sectorName = this.route.snapshot.paramMap.get('sectorName');
       this.folderId = this.route.snapshot.paramMap.get('folderId');
       if(!this.folderId) {
@@ -119,19 +118,13 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         await this.fetchFolderById(this.folderId);
       }
     });
+
     this.dataService.uploadedAssetData$.subscribe((result:any) => {
       if (!result?.length) return;
-      result.map((asset:any) => {
-        // this.searchList.unshift(asset);
-        this.assetList.unshift(asset);
-      })
-
+      result.map((asset:any) => this.assetList.unshift(asset));
       this.assetList = this.assetList.slice();
-      // this.sortedData = this.searchList.slice();
-      // this.folderAssetsResult[this.breadCrumb[this.breadCrumb.length - 1].uid].entries.unshift(result);
-
-      // this.showMoreButton = false;
     });
+
     const fetchAll = false;
     this.fetchExternalUserInfo(fetchAll);
     this.checkCollabAndPrivateFolder();
@@ -678,14 +671,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.selectedAssetCount = Object.keys(selectedAssetList).length;
   }
 
-  /*
-  * checks if selected rows are only assets and not folder type
-  */
-  onlyAssetSelected(): boolean {
-    // if() // TODO: need to complete it
-    return true;
-  }
-
   selectedCount(count:any){
     this.count = count
   }
@@ -820,11 +805,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
    
     else return;
   }
-  deleteFolders() {
+ async deleteFolders() {
     if(this.dataTableComponent){
-      // this.loading = true;
-      this.dataTableComponent.deleteFolders();
-      // this.loading = false;
+      this.loading = true;
+      await this.dataTableComponent.deleteFolders();
+      this.loading = false;
     }
    
     else return;

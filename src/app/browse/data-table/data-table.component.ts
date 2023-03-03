@@ -22,28 +22,23 @@ import * as moment from 'moment';
   styleUrls: ['./data-table.component.css']
 })
 export class DataTableComponent implements OnInit, OnChanges {
-  @Input() searchList: IEntry[] = [];
+  
+  @Input() breadCrumb = [];
+  @Input() currentWorkspace: IEntry;
   @Input() isTrashView: boolean = false;
+  @Input() folderStructure: IBrowseSidebar[] = [];
   @Input() trashedList: IEntry[] = [];
-  // @Input() sortedDataList: IEntry[] = [];
   @Input() searchBarValue;
   @Input() showAssetPath: boolean = false;
-  @Input() currentWorkspace: IEntry;
-  @Input() breadCrumb = [];
+  @Input() searchList: IEntry[] = [];
 
-  // @Input() currentWorkspace: IEntry = null;
-  @Input() folderStructure: IBrowseSidebar[] = [];
-  // @Input() folderAssetsResult: {[key: string]: ISearchResponse} = {};
-  // @Input() fetchFolderStatus = {};
-  
-
+  @Output() canNotDeleteList: EventEmitter<any> = new EventEmitter();
   @Output() clickHandle: EventEmitter<any> = new EventEmitter();
   @Output() fetchAssets: EventEmitter<any> = new EventEmitter();
   @Output() selectedAssetList: EventEmitter<any> = new EventEmitter();
   @Output() sortedDataList: EventEmitter<any> = new EventEmitter();
   @Output() selectedCount: EventEmitter<any> = new EventEmitter();
   @Output() selectedAssetMoveList: EventEmitter<any> = new EventEmitter();
-  @Output() canNotDeleteList: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("paginator") paginator: MatPaginator;
@@ -51,49 +46,61 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   assetCount: number = 0;
   assetCanDelete:any=[]
+  activeTabs = { comments: false, info: false, timeline: false };
+
   count: number = 0;
-  loading: boolean = false;
-  forInternalUse = [];
-  downloadArray = [];
-  sizeExeeded = false;
-  forInternaCheck = false;
-  downloadFullItem = [];
-  needPermissionToDownload = [];
-  fileSelected = [];
   copyRightItem = []
   canNotDelete=[]
-  selectedFolderList={}
-  selectedMoveList={};
-  user = null;
-  sortedData: IEntry[] = [];
-  hasUpdatedChildren;
-  numberOfPages: number= 0;
-  resultCount: number = 0;
-  showLinkCopy: boolean = false;
   currentPageCount: number = 0;
-  permissionChange:boolean = false;
-  initialLoad: boolean = false;
-  myDeletedCheck: boolean = true;
-  folderNotFound: boolean = false;
   contextMenuPosition = { x: '0px', y: '0px' };
-  rightClickedItem:any =null;
-  downloadEnable: boolean = false;
   currentIndexPublished: any;
   currentIndexRightClick: any;
-  activeTabs = { comments: false, info: false, timeline: false };
-  showShadow = false;
-  renameFolderName: boolean = false;
-  newTitle: string;
-  fileToPreview: IEntry;
-  fileToPreviewUrl: string;
+  currentIndexClicked:number
+
+  downloadArray = [];
+  downloadEnable: boolean = false;
   downloadErrorShow: boolean = false;
   defaultPageSize: number = 20;
-  pageSizeOptions = [20, 50, 100];
-  selectAllClicked: boolean = false;
-  lastIndexClicked:number
-  currentIndexClicked:number
-  selectedMoveListNew: any = {};
+  downloadFullItem = [];
+  
+  forInternaCheck = false;
+  forInternalUse = [];
+  fileSelected = [];
+  fileToPreview: IEntry;
+  fileToPreviewUrl: string;
+  folderNotFound: boolean = false;
+  
+  hasUpdatedChildren;
+  
   increaseWidth = false;
+  initialLoad: boolean = false;
+
+  loading: boolean = false;
+  lastIndexClicked:number;
+
+  needPermissionToDownload = [];
+  newTitle: string;
+  numberOfPages: number= 0;
+
+  myDeletedCheck: boolean = true;
+
+  selectedFolderList={}
+  selectedMoveList={};
+  sizeExeeded = false;
+  sortedData: IEntry[] = [];
+  showLinkCopy: boolean = false;
+  showShadow = false;
+  selectedMoveListNew: any = {};
+  selectAllClicked: boolean = false;
+
+  user = null;
+
+  pageSizeOptions = [20, 50, 100];
+  permissionChange:boolean = false;
+  
+  rightClickedItem:any =null;
+  renameFolderName: boolean = false;
+  resultCount: number = 0;
 
   // @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -379,7 +386,8 @@ export class DataTableComponent implements OnInit, OnChanges {
       .subscribe((docs: any) => {
         this.loading = false;
         this.deleteModal(listDocs);
-        this.removeAssets()
+        this.removeAssets();
+        this.fetchAssets.emit({id: this.currentWorkspace.uid});
       }, (err => {
         this.loading = false;
         this.deleteModalFailed();
@@ -435,7 +443,6 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   selectAsset($event, item, i) {
-    // this.checkCollabAndPrivateFolder()
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
       return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
@@ -495,9 +502,8 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.canNotDeleteList.emit(this.canNotDelete)
       delete this.selectedMoveList[i];
       delete this.selectedMoveListNew[i];
+      delete this.selectedFolderList[i];
       this.selectedAssetMoveList.emit(this.selectedMoveListNew)
-
-
 
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
@@ -522,6 +528,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.selectedAssetList.emit(this.selectedFolderList);
     this.getdownloadAssetsSize();
   }
+
   shiftkeyDown(e,item,i){
     // console.log("e",this.lastIndexClicked,this.currentIndexClicked,this.sortedData);
     // let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
@@ -537,6 +544,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       // })
 
   }
+
   shiftkeyUp($event,item,i){
     let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
     this.sortedData.forEach((ele:any,i)=>{
@@ -649,17 +657,17 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.downloadFullItem = [];
     this.needPermissionToDownload = [];
     this.count = 0;
-    this.assetCount=0
-    this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
+    this.assetCount = 0;
+    this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount});
     this.fileSelected = [];
-    this.copyRightItem = []
-    this.canNotDelete=[]
-    this.selectedFolderList={}
+    this.copyRightItem = [];
+    this.canNotDelete=[];
+    this.selectedFolderList={};
     this.selectedMoveList={};
-    this.selectedMoveListNew = {}
+    this.selectedMoveListNew = {};
     
-    this.selectedAssetMoveList.emit(this.selectedMoveListNew)
-    this.canNotDeleteList.emit(this.canNotDelete)
+    this.selectedAssetMoveList.emit(this.selectedMoveListNew);
+    this.canNotDeleteList.emit(this.canNotDelete);
     this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});
     this.clickHandle.emit({eventName: 'copyRightItemEvent', data: this.copyRightItem});
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
@@ -668,7 +676,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.removeSelection();
   }
 
-  checkDownloadPermission(item){
+  checkDownloadPermission(item) {
     if (item.properties["sa:downloadApprovalUsers"]?.length >0 || item.properties["dc:isPrivate"]) return true;
     return false
   }
@@ -812,6 +820,10 @@ export class DataTableComponent implements OnInit, OnChanges {
   copyLink(asset: IEntry, assetType: string) {
     this.increaseWidth = true;
     asset.copy = this.sharedService.copyLink(asset.uid, assetType, asset.properties['dc:sector']);
+    setTimeout(() => {
+      asset.copy = null;
+      this.increaseWidth = false;
+    }, 4000);
   }
   
   updateFolderAction() {
@@ -1052,8 +1064,20 @@ export class DataTableComponent implements OnInit, OnChanges {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
 
-  selectedFoldersLength():number{
+  selectedFoldersLength(): number {
     return Object.keys(this.selectedFolderList).length
+  }
+
+  /**
+   * checks if an asset is selected and edit is true then no other row can be selected
+   */
+  checkForAssetSelectCondition(): boolean {
+    for(let key in this.selectedFolderList) {
+      if(this.selectedFolderList[key].edit) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

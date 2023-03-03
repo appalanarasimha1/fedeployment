@@ -77,6 +77,7 @@
                   (change)="selectFolder($event, item, i)"
                   [checked]="item.isSelected"
                   [(ngModel)]="item.isSelected"
+                  [disabled]="checkForAssetSelectCondition()"
                   (keydown.shift)="shiftkeyDown($event,item,i)"
                   (keyup.shift)="shiftkeyUp($event,item,i)"
                 />
@@ -97,6 +98,7 @@
                   class="chkbox vh width1600"
                   (change)="selectAsset($event, item, i)"
                   [checked]="item.isSelected"
+                  [disabled]="checkForAssetSelectCondition()"
                   [(ngModel)]="item.isSelected"
                   (keydown.shift)="shiftkeyDown($event,item,i)"
                   (keyup.shift)="shiftkeyUp($event,item,i)"
