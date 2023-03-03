@@ -43,6 +43,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   fullSIzeImg: boolean = false;
   device;
   isDroneUploader = false;
+  showCreateFolderPopup: boolean = false;
 
   constructor(
     private router: Router,
@@ -669,5 +670,29 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       }
       return;
     }
+  }
+
+  datePickerDefaultAction() {
+    this.showCreateFolderPopup = true;
+    $(".buttonCreate").on("click", function (e) {
+      $(".dropdownCreate").show();
+      $(".buttonCreate").addClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+    $(".buttonCreate.createNewFolderClick").on("click", function (e) {
+      $(".dropdownCreate").hide();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+
+    $(".dropdownCreate").click(function (e) {
+      e.stopPropagation();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+    });
+
+    $(document).click(function () {
+      $(".dropdownCreate").hide();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+    });
   }
 }
