@@ -123,6 +123,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.sortedData = this.searchList?.slice();
     this.sortedDataList.emit(this.sortedData)
     if(this.isTrashView) {
+      this.selectedFolderList = {};
       this.numberOfPages = changes?.folderStructure?.currentValue?.numberOfPages;
       this.resultCount = changes?.folderStructure?.currentValue?.resultsCount;
       this.currentPageCount = changes?.folderStructure?.currentValue?.currentPageSize;
@@ -459,6 +460,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.canNotDelete.push(item)
         this.canNotDeleteList.emit(this.canNotDelete)
       }else{
+        this.selectedFolderList[i] = item;
         this.assetCanDelete.push(item)
       }
        if (
@@ -663,8 +665,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
     this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
-    this.sortedData.forEach((e) => (e.isSelected = false));
-    this.sortedDataList.emit(this.sortedData)
+    this.removeSelection();
   }
 
   checkDownloadPermission(item){
@@ -966,44 +967,6 @@ export class DataTableComponent implements OnInit, OnChanges {
   clickHandleChild(item) {
     this.clickHandle.emit(item);
   }
-
-  // NOTE: move to trash component
-  // getTrashedWS(pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
-  //   this.initialLoad = false;
-  //   // this.showSearchbar = true; //TODO: to detail controller
-  //   // this.searchBarValue = ""; //TODO: to detail controller
-  //   offset || this.paginator?.firstPage();
-  //   if (this.folderNotFound) {
-  //     this.folderNotFound = false;
-  //     this.currentWorkspace = {};
-  //   }
-  //   this.loading = true;
-  //   const url =this.myDeletedCheck ?
-  //     `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1 AND dc:creator = '${this.user}' `:
-  //     `/search/pp/nxql_search/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&queryParams=SELECT * FROM Document WHERE ecm:isTrashed = 1'`
-  //     this.apiService
-  //     .get(url, { headers: { "fetch-document": "properties" } })
-  //     .subscribe((docs: any) => {
-  //       this.numberOfPages = docs.numberOfPages;
-  //       this.resultCount = docs.resultsCount;
-  //       this.trashedList = docs.entries.filter((sector) => {
-  //         if (UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1) {
-  //           --this.resultCount;
-  //           return true;
-  //         } else {
-  //           return false;
-  //         }
-  //       });
-  //       this.searchList = this.trashedList;
-  //       this.sortedData = this.searchList.slice();
-  //       this.sortedDataList.emit(this.sortedData)
-  //       this.isTrashView = true;
-  //       // this.handleSelectMenu(1,"LIST");
-  //       // this.showMoreButton = false;
-  //       this.loading = false;
-  //     });
-  // }
-
   
   selectAllToggle(e) {
     if(e.target.checked) {
@@ -1029,9 +992,17 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   openFolder(item: IEntry) {
+    this.removeAssets();
     this.router.navigate([window.location.pathname.split('/').splice(1,2).join('/'), item.uid]);
   }
 
+  removeSelection() {
+    this.sortedData.forEach((item) => {
+      item['isSelected'] = false;
+      item['edit'] = false;
+    });
+    this.sortedDataList.emit(this.sortedData);
+  }
   
   cancelDownloadClick(e) {
     e.stopPropagation();
