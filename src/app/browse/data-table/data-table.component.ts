@@ -435,7 +435,6 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   selectAsset($event, item, i) {
-    // this.checkCollabAndPrivateFolder()
     let canDelete = this.checkCanDelete(item)
     if(this.checkCanMove(item)){
       return this.selectFolder($event, item, i, $event?.update == undefined ? false : true);
@@ -495,9 +494,8 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.canNotDeleteList.emit(this.canNotDelete)
       delete this.selectedMoveList[i];
       delete this.selectedMoveListNew[i];
+      delete this.selectedFolderList[i];
       this.selectedAssetMoveList.emit(this.selectedMoveListNew)
-
-
 
       if ($event.from !== "rightClick") {
         this.count = this.count - 1;
@@ -522,6 +520,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.selectedAssetList.emit(this.selectedFolderList);
     this.getdownloadAssetsSize();
   }
+
   shiftkeyDown(e,item,i){
     // console.log("e",this.lastIndexClicked,this.currentIndexClicked,this.sortedData);
     // let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
@@ -537,6 +536,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       // })
 
   }
+
   shiftkeyUp($event,item,i){
     let sortedNumber = [this.lastIndexClicked,this.currentIndexClicked].sort()
     this.sortedData.forEach((ele:any,i)=>{
@@ -668,7 +668,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.removeSelection();
   }
 
-  checkDownloadPermission(item){
+  checkDownloadPermission(item) {
     if (item.properties["sa:downloadApprovalUsers"]?.length >0 || item.properties["dc:isPrivate"]) return true;
     return false
   }
@@ -1052,8 +1052,20 @@ export class DataTableComponent implements OnInit, OnChanges {
     return !this.isTrashView && this.searchList && this.searchList.length === 0;
   }
 
-  selectedFoldersLength():number{
+  selectedFoldersLength(): number {
     return Object.keys(this.selectedFolderList).length
+  }
+
+  /**
+   * checks if an asset is selected and edit is true then no other row can be selected
+   */
+  checkForAssetSelectCondition(): boolean {
+    for(let key in this.selectedFolderList) {
+      if(this.selectedFolderList[key].edit) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

@@ -683,7 +683,12 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   */
   onlyAssetSelected(): boolean {
     // if() // TODO: need to complete it
-    return true;
+    for(let key in this.assetList) {
+      if(this.dataTableComponent && this.dataTableComponent.checkAssetType(this.assetList[key].type)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   selectedCount(count:any){
