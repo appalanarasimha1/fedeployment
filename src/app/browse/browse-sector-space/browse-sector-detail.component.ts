@@ -678,19 +678,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.selectedAssetCount = Object.keys(selectedAssetList).length;
   }
 
-  /*
-  * checks if selected rows are only assets and not folder type
-  */
-  onlyAssetSelected(): boolean {
-    // if() // TODO: need to complete it
-    for(let key in this.assetList) {
-      if(this.dataTableComponent && this.dataTableComponent.checkAssetType(this.assetList[key].type)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   selectedCount(count:any){
     this.count = count
   }
