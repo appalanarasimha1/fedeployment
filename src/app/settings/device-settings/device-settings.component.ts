@@ -22,6 +22,7 @@ export class DeviceSettingsComponent implements OnInit {
     this.getDeviceList();
     this.getRegionList();
     this.getSubAreaList();
+    this.getOwnerList();
   }
   async openCreateDeviceModal(create = true, selectedDevice?) {
     const dialogConfig = new MatDialogConfig();
@@ -36,6 +37,7 @@ export class DeviceSettingsComponent implements OnInit {
       subAreaList: this.subAreaList,
       isCreate: create,
       selectedDevice: selectedDevice,
+      owners: this.owners,
     };
 
     const modalDialog = this.matDialog.open(
@@ -94,6 +96,7 @@ export class DeviceSettingsComponent implements OnInit {
       subAreaId: device.subAreaId,
       status: device.status?.toLowerCase(),
       installationId: device.installationId,
+      owner: device.owner,
       uid: device.id,
     }));
     this.filteredDeviceList = this.deviceList;
@@ -146,6 +149,14 @@ export class DeviceSettingsComponent implements OnInit {
     this.subAreaList?.forEach((subArea) => {
       this.subAreaMap[subArea.uid] = subArea;
     });
+  }
+
+  async getOwnerList() {
+    const url = "/settings/owner";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
+
+    const owners = res || [];
+    this.owners = owners.map(owner => owner.owner);
   }
 
   capitalizeFirstLetter(string) {
@@ -215,6 +226,9 @@ export class DeviceSettingsComponent implements OnInit {
       if (this.selectedsubAreas)
       {
         match = match && (device.subArea?.includes(this.selectedsubAreas.uid) || device.subAreaId?.includes(this.selectedsubAreas.locationId));
+      }
+      if (this.selectedOwner) {
+        match = match && (device.owner === this.selectedOwner);
       }
       if (this.selecteddeviceTypes)
         match =

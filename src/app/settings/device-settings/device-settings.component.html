@@ -71,14 +71,15 @@
         <ul>
             <li style="margin-top: 7px;">
                 <ng-select placeholder="Owner"
+                    (change)="filterDevice()"
                     [searchable]="true"
                     [clearable]="true"
                     [(ngModel)]="selectedOwner"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedOwner}"
                 >
-                    <ng-option *ngFor="let owner of owners" [value]="owner.name">
-                        {{owner.name}}
+                    <ng-option *ngFor="let owner of owners" [value]="owner">
+                        {{owner}}
                     </ng-option>
                 </ng-select>
             </li>
