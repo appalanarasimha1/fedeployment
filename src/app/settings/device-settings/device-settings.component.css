@@ -728,3 +728,6 @@ input.datePicker:focus::placeholder{
     padding-left: 0px;
     padding-right: 20px;
 }
+.externalUser  ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input {
+    color: #DEB31A !important;
+}

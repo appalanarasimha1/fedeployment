@@ -166,7 +166,7 @@
                           <!-- No Notifaction show block end -->
                           <ul>
                             <li *ngFor="let item of notifications | slice:0:10">
-                              <div (click)="goToNotificationLink(item)" style="cursor: pointer;">
+                              <div>
                                 <div *ngIf="item.extended.type === 'rename'" class="notifactionHead">
                                   {{buildRenameNotificationTitle(item)}}
                                 </div>
@@ -177,7 +177,7 @@
                                   {{buildRequestDownloadResponseNotificationTitle(item)}}
                                 </div>
 
-                                <div class="notifactionImgCont">
+                                <div class="notifactionImgCont" (click)="goToNotificationLink(item)" style="cursor: pointer;">
                                   <div class="notifactionImg">
                                     <img src="{{buildNotificationIcon(item)}}" alt="" />
                                   </div>
@@ -185,16 +185,22 @@
                                     {{item.extended.title}}
                                   </div>
                                 </div>
+                                <div class="request-download-btn-group buttonGroup">
+                                  <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
+                                  <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
+                                </div>
+                                <div class="request-download-btn-group buttonGroup downloadBtn">
+                                  <button class="btn approve" (click)="processDownloadRequest(item, true)"><img src="../../../assets/images/download-white-icon.svg"> Download</button>
+                                </div>
                                 <div class="dayWeek">
                                   {{getNotificationSince(item)}}
                                 </div>
                               </div>
                             </li>
                           </ul>
-
-                          <div class="view-all-notifaction">
-                            <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
-                          </div>
+                        </div>
+                        <div class="view-all-notifaction">
+                          <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
                         </div>
                       </div>
                     </li>
