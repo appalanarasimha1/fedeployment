@@ -645,11 +645,11 @@
                               <div *ngIf="openCopyrightMap[file.key]" class="copyright-form">
                                  <ul>
                                     <li>
-                                       <img (click)="closeCopyright(file.key)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
+                                       <img class="copyrightCloseIcon" (click)="closeCopyright(file.key)" src="../../assets/images/add-circle-brown.svg" alt="Copyright Owner" />
                                     </li>
                                     <li [ngClass]="{'goldenText':copyrightUserMap[file.key] }">
                                        <div class="copyright-input-block" >
-                                          Ⓒ <input autocomplete="off" type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
+                                          <span class="copyright-icon" [ngClass]="{'goldenText' : copyrightUserMap[file.key]}">©</span> <input autocomplete="off" type="text" placeholder="Copyright Owner" [(ngModel)]="copyrightUserMap[file.key]" class="copyright-input" >
                                        </div>
                                     </li>
                                     <li>

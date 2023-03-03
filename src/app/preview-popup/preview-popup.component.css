@@ -1572,6 +1572,7 @@ color: #ACACAC;
   position: absolute;
   top: 0px;
   left: 0px;
+  z-index: -1;
 }
 .download-dropdown {
   position: absolute;
@@ -1582,7 +1583,7 @@ color: #ACACAC;
   top: 51px;
   background: #23211E;
   border-radius: 8px;
-  display: none;
+  /* display: none; */
   z-index: 999999;
   color: #fff;
   padding: 30px;
@@ -1830,7 +1831,8 @@ font-weight: normal;
     cursor: pointer;
   }
 }
-.downloadBtn {
+/* .downloadBtn,  */
+.downloadBtn a {
   background: #289569;
   width: 140px;
   padding: 9px 20px;
@@ -1838,7 +1840,8 @@ font-weight: normal;
   color: #fff;
   font-weight: normal;
 }
-.downloadBtn img {
+/* .downloadBtn img,  */
+.downloadBtn a img {
   max-width: 20px;
 }
 
@@ -2264,4 +2267,9 @@ figure.zoom img {
   display: block;
   width: 100%;
   opacity: 0;
+}
+
+.downloadBtn a:-webkit-any-link:focus-visible {
+  outline-offset: 0px;
+  outline: none;
 }

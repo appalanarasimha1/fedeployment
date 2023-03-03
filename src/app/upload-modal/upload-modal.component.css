@@ -695,6 +695,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #C49900;
   border-color: #C49900 !important;
   font-weight: normal;
+  border-bottom: 0px solid;
 }
 select option{
   color: #000;
@@ -784,6 +785,7 @@ select option{
   font-size: 13px;
   font-weight: normal;
   cursor: pointer;
+  min-height: 36px;
 }
 .copyright-information img {
   width: 20px;
@@ -1908,4 +1910,68 @@ ngx-dropzone-label {
 }
 .custom-modal-notifaction .modal-content {
   width: 630px !important;
+}
+
+.copyright-form img.copyrightCloseIcon {
+  width: 20px !important;
+  margin-right: 8px;
+  margin-top: -17px;
+}
+.publish-file-preview-img span.copyright-icon {
+  font-size: 18px !important;
+  font-family: 'brownlight';
+  line-height: 16px !important;
+  vertical-align: middle !important;
+}
+.publish-file-preview-img span.copyright-icon.goldenText {
+  color: #C49900 !important;
+}
+.copyright-form input.copyright-input {
+  border: 0px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px 0px 0px 10px;
+  font-family: 'brownlight';
+  margin-bottom: 5px;
+  width: calc(100% - 20px);
+}
+.copyright-form ::ng-deep .ng-select .ng-select-container:hover {
+  box-shadow: none;
+}
+.copyright-form ::ng-deep .ng-select.ng-select-single .ng-select-container{
+  height: 36px !important;
+  /* border-bottom: 1px solid #000; */
+}
+.copyright-form ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+  top: 5px;
+  left: 0;
+  padding-left: 0px;
+  padding-right: 20px;
+}
+.copyright-form ::ng-deep .ng-select .ng-select-container .ng-value-container {
+  align-items: center;
+  padding-left: 0px;
+}
+.copyright-form ::ng-deep .ng-select .ng-arrow-wrapper {
+  width: 25px;
+  padding-right: 0px;
+}
+.copyright-form ::ng-deep .goldenText .ng-select-container.ng-has-value .ng-arrow-wrapper .ng-arrow {
+  width: 13px !important;
+}
+.publish-assets .copyright-information ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow, 
+.publish-file-preview-img .copyright-information ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {
+  background-position: 0px 11px !important;
+  width: 12px !important;
+  height: 20px !important;
+  margin-left: 12px;
+}
+.copyright-form ::ng-deep .ng-select {
+  border-bottom: 1.5px solid #000;
+  font-family: 'brownlight';
+  height: 34px;
+}
+.copyright-form ::ng-deep .goldenText.ng-select .ng-select-container {
+  border-bottom: 0px solid #DEB31A !important;
 }
