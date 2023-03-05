@@ -140,7 +140,7 @@ export class ManageLocationsComponent implements OnInit {
   }
 
   deleteDocument(type, id) {
-    return this.apiService.delete(`/settings/${type}/${id}`, {responseType: 'text'}).toPromise();
+    return this.apiService.post(`/settings/${type}/delete/${id}`, {}, {responseType: 'text'}).toPromise();
   }
 
   updateDocument(type, id, params) {
