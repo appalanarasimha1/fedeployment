@@ -75,13 +75,16 @@ export class LoginComponent implements OnInit {
             fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, {
               headers: { "X-Authentication-Token": token },
             });
-          } catch (err) {}
-          // console.log({token});
+          } catch (err) {
+            
+            console.log(err);
+          }
 
           // this.nuxeo.createClientWithToken(token);
-          if (token.toLowerCase().includes('doctype')) {
+          if (!token || token.toLowerCase().includes('doctype')) {
             this.error = true;
             this.errorMessage = 'Incorrect credentials!';
+            this.loading = false;
             return;
           }
           localStorage.setItem('token', token);
@@ -95,7 +98,7 @@ export class LoginComponent implements OnInit {
           this.error = true;
           if (err === "ip_lockout") {
             this.errorMessage = 'IP lockout';
-          } else if (err === "username_lockout") {
+          } else if (err?.split(':')[0] === "username_lockout") {
             this.errorMessage = 'User lockout';
           } else this.errorMessage = 'Incorrect credentials!';
           throw err;
