@@ -181,7 +181,7 @@ export class DeviceSettingsComponent implements OnInit {
 
   deleteDocument(id) {
     return this.apiService
-      .delete(`/settings/camera/${id}`, { responseType: "text" })
+      .post(`/settings/camera/delete/${id}`, {}, { responseType: "text" })
       .toPromise();
   }
 
