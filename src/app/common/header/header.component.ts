@@ -393,6 +393,8 @@ export class HeaderComponent implements OnInit {
   }
 
   goToNotificationLink(notification) {
+    // this.loading = true;
+    // debugger;
     let folderName = notification?.docPath?.split("/")[1]
     const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
     if (isAsset) this.router.navigate(['asset-view'], {queryParams : {assetId: notification.docUUID}});
