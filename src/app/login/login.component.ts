@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
           if (err === "ip_lockout") {
             this.errorMessage = 'IP lockout';
           } else if (err?.split(':')[0] === "username_lockout") {
-            this.errorMessage = 'User lockout';
+            this.errorMessage = 'User lockout, please try after sometime';
           } else this.errorMessage = 'Incorrect credentials!';
           throw err;
         });
