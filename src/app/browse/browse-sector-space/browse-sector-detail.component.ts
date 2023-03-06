@@ -92,7 +92,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     public matDialog: MatDialog,
     public nuxeo: NuxeoService,
-  ) { 
+  ) {
     this.selectedMenu = this.VIEW_TYPE.LIST;
   }
 
@@ -101,7 +101,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     // this.dataService.fetchAssets$.subscribe(async (data) => {
     //   // await this.fetchAssets(data.sectorUid, data.checkCache, data.pageSize, data.pageIndex, data.offset);
     // });
-    
+
     this.route.paramMap.subscribe( async () => {
       this.sectorName = this.route.snapshot.paramMap.get('sectorName');
       this.folderId = this.route.snapshot.paramMap.get('folderId');
@@ -131,7 +131,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    
+
   }
 
   checkExternalGlobalUserList() {
@@ -141,7 +141,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.router.navigate(['workspace']);
     }
   }
-  
+
   async fetchExternalUserInfo(fetchAll = false) {
     await this.sharedService.fetchExternalUserInfo();
     this.listExternalUser = JSON.parse(localStorage.getItem("listExternalUser"));
@@ -150,11 +150,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.isExternalView = true;
     if (fetchAll) this.fetchAllPrivateWorkspaces();
   }
-  
+
   isExternalUser() {
     return this.listExternalUser.includes(this.user) && !this.listExternalUserGlobal.includes(this.user);
   }
-  
+
   async fetchAllPrivateWorkspaces() {
     // this.checkCollabAndPrivateFolder()
     const query = "SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1";
@@ -267,7 +267,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     let query;
     // if (!this.folderId) {
     //   query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
-    // } 
+    // }
     // else {
       // const path = this.currentWorkspace.path; //this.folderId ? `${this.currentWorkspace.path}/` : `${this.currentWorkspace.path}/workspaces/`;
       query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${this.currentWorkspace.path}' AND dc:title ILIKE '%${searchString}%'`;
@@ -352,7 +352,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl(url);
     // this.loading = false;
    }
-   
+
   checkShowManageAccessButton() {
     if (this.currentWorkspace?.properties?.['dc:isPrivate']) return false;
     const userData = localStorage.getItem("user");
@@ -381,7 +381,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
     // return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
-  
+
   hasInheritAcl() {
     const currentWorkspace = JSON.parse(localStorage.getItem('workspaceState'));
     if (currentWorkspace?.properties && currentWorkspace?.properties['isPrivateUpdated']) return true;
@@ -410,7 +410,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     });
     return folderCollaborators;
   }
-  
+
   hasAdminPermission(currentCollaborators) {
     if (localStorage.getItem("user")) {
       this.user = JSON.parse(localStorage.getItem("user"))["username"];
@@ -424,14 +424,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     if (!ace) return false;
     return ace.permission === 'Everything';
   }
-  
+
   hasNoOtherCollaborators(currentCollaborators) {
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return true;
     const otherUser = Object.keys(currentCollaborators).find(id => this.user !== id);
     if (otherUser) return false;
     else return true;
   }
-  
+
   getSelectedAssetsSize() {
     let size = 0;
     this.assetList?.forEach((doc) => {
@@ -449,19 +449,19 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       ["B", "kB", "MB", "GB", "TB"][i]
     );
   }
-  
+
   getDateInFormat(date: string): string {
     return new Date(date).toDateString();
   }
-  
+
   checkGeneralFolder(item){
     return item?.type?.toLowerCase() === constants.WORKSPACE && item?.title?.toLowerCase() === constants.GENERAL_FOLDER;
   }
-  
+
   checkExternalUser() {
     return this.listExternalUser?.includes(this.user);
   }
-  
+
   copyToClipboard(val: string) {
     const selBox = document.createElement("textarea");
     selBox.style.position = "fixed";
@@ -511,12 +511,12 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         );
       });
   }
-  
+
   updateFolderAction(folder = this.currentWorkspace) {
     this.renameFolderName = false;
     this.newTitle = folder.title;
   }
-  
+
   renameFolderAction() {
     if (this.currentWorkspace.title === 'General') {
         this.sharedService.showSnackbar(
@@ -532,12 +532,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.renameFolderName = true;
     }
   }
-  
+
   async openAddUserModal() {
     if (!this.isAdmin) return;
     this.whiteLoader = true;
     this.transparentLoader = true;
     // this.loading = true;
+    const folder = await this.fetchFolder(this.currentWorkspace.uid) as any;
+    this.saveState(folder);
     const folderCollaborators = this.getFolderCollaborators();
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
@@ -545,7 +547,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     dialogConfig.width = "640px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     console.log('folder1', this.currentWorkspace);
-    const folder = await this.fetchFolderById(this.currentWorkspace.uid);
     dialogConfig.data = {
       selectedFolder: this.currentWorkspace,
       folderId: this.currentWorkspace.uid,
@@ -563,14 +564,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  
+
   saveState({uid, title, path, properties, sectorId, type, contextParameters}, index?: Number, breadCrumbIndex?: number) {
     const workspaceState = JSON.stringify({title, uid, path, properties, sectorId, type, contextParameters});
     localStorage.setItem('workspaceState', workspaceState);
     // this.navigateToWorkspaceFolder(uid, index, breadCrumbIndex);
     return;
   }
-  
+
   async openManageAccessModal() {
     // this.loading = true;
     const dialogConfig = new MatDialogConfig();
@@ -597,11 +598,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   selectMenuView(viewType: number) {
     this.selectedMenu = viewType;
   }
-  
+
   checkForDescription(): boolean {
     return !!this.currentWorkspace?.properties?.["dc:description"];
   }
-  
+
   upadtePermission(breadcrumb: any) {
     let user: any;
     let checkAvailabity = Departments.hasOwnProperty(this.loggedInUserSector);
@@ -613,7 +614,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     if (breadcrumb?.title?.toLowerCase() === user?.toLowerCase()) return true;
     return false;
   }
-  
+
   async fetchUserData() {
     if (localStorage.getItem("user")) {
       this.user = JSON.parse(localStorage.getItem("user"))["username"];
@@ -626,7 +627,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       localStorage.setItem("user", JSON.stringify(res.user.properties));
     }
   }
-  
+
   async openUpdateClassModal(breadCrumb: any) {
     if (!this.upadtePermission(breadCrumb) || this.assetList.length < 1) {
       return;
@@ -784,7 +785,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.downloadArray = event.data;
     }
   }
-  
+
   onCheckboxChange(e: any) {
     if (e.target.checked) {
       this.downloadErrorShow = false;
@@ -793,7 +794,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.downloadEnable = false;
     }
   }
-  
+
   getUser(item) {
     return item.properties["sa:downloadApprovalUsers"];
   }
@@ -802,7 +803,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     if(this.dataTableComponent){
     this.dataTableComponent.openMoveModal(move);
     }
-   
+
     else return;
   }
  async deleteFolders() {
@@ -811,30 +812,32 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       await this.dataTableComponent.deleteFolders();
       this.loading = false;
     }
-   
+
     else return;
   }
-  
+
 
   checkEnableMoveButton() {
     if(this.dataTableComponent)
     return this.dataTableComponent.checkEnableMoveButton();
+    return false;
   }
   checkEnableDeleteBtn() {
     if(this.dataTableComponent)
     return this.dataTableComponent.checkEnableDeleteBtn();
+    return false;
   }
 
   removeAssets() {
     if(this.dataTableComponent)
     this.dataTableComponent.removeAssets();
   }
-  
+
   downloadClick() {
     if(this.dataTableComponent)
     this.dataTableComponent.downloadClick();
   }
-  
+
   multiDownload() {
     if(this.dataTableComponent)
     this.dataTableComponent.multiDownload();
@@ -962,5 +965,5 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
-  
+
 }
