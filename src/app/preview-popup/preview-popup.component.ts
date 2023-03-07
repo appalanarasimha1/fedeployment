@@ -178,10 +178,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       });
   }
 
-  getAssetUrl(event: any, url: string, type?: string): string {
-    return this.sharedService.getAssetUrl(event, url, type);
-  }
-
   getDownloadFileEstimation(data?: any): string {
     data = data || this.doc?.properties?.["file:content"]?.length;
     if (!data) return '0 Kb';
@@ -370,6 +366,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   // }
 
   hasNoRestriction() {
+    console.log('this.doc', this.checkMimeType(this.doc));
     return (
       !this.doc.properties["sa:allow"] ||
       (this.doc.properties["sa:allow"] === ALLOW.any &&
@@ -695,4 +692,17 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       $(".buttonCreate").removeClass("createNewFolderClick");
     });
   }
+
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+      return '../../../assets/images/no-preview-big.png';
+    }
+    return this.sharedService.getAssetUrl(event, url, type);
+  }
+
+  checkAssetMimeTypes(document: any): string {
+    return this.sharedService.checkMimeType(document);
+  }
+
+
 }

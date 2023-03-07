@@ -429,7 +429,7 @@ export class SharedService {
   }
 
   checkMimeType(document): string {
-    const mimeType = document.properties['file:content']?.['mime-type'];
+    const mimeType = document?.properties?.['file:content']?.['mime-type'];
 
     if(mimeType?.includes('image'))
       return ASSET_TYPE.PICTURE;
@@ -491,6 +491,21 @@ export class SharedService {
 
   get events$ () {
     return this._subject.asObservable();
+  }
+
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData[splitedData?.length - 1];
+    const lowercaseMime = mimeType.toLowerCase();
+
+    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      return '../../../assets/images/word.png';
+    } 
+    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      return '../../../assets/images/ppt.png';
+    }
+    return '../../../assets/images/no-preview.png';
+
   }
 
 }
