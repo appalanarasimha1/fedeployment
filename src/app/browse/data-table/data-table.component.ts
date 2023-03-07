@@ -102,6 +102,10 @@ export class DataTableComponent implements OnInit, OnChanges {
   renameFolderName: boolean = false;
   resultCount: number = 0;
 
+  selectedFile: any;
+  selectedFileUrl: string;
+  openGetNoPreview: boolean = false;
+
   // @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     const ESCAPE_KEYCODE = 27;
@@ -840,8 +844,12 @@ export class DataTableComponent implements OnInit, OnChanges {
       "snackBarMiddle",
     );
   }
-
   open(file, fileType?: string): void {
+    if(this.checkAssetMimeTypes(file) == 'nopreview') {
+      this.openGetNoPreview = true;
+    } else {
+      this.openGetNoPreview = false;
+    }
     this.showShadow = false;
     this.activeTabs.comments = false;
     this.activeTabs.timeline = false;
@@ -878,20 +886,119 @@ export class DataTableComponent implements OnInit, OnChanges {
         ? this.getAssetUrl(null, fileRenditionUrl)
         : fileRenditionUrl;
     if(fileType === 'file') {
-      this.getAssetUrl(true, this.fileToPreviewUrl, 'file');
+      this.getAssetUrl(true, this.fileToPreviewUrl, file);
     }
 
     this.previewModal.open();
+    this.openGetNoPreview = false;
   }
   
-  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+  // getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+  //   if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+  //     return this.sharedService.getNoPreview(document);
+  //     // return '../../../assets/images/no-preview.png';
+  //   }
+  //   if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+  //     return this.sharedService.getNoPreview(document);
+  //     // return '../../../assets/images/no-preview-grid.svg';
+  //   }
+  //  return this.sharedService.getAssetUrl(event, url, type);
+  // }
+
+  
+  // open(file, fileType?: string): void {
+  //   // console.log('item', this.checkAssetMimeTypes(file));
+  //   if(this.checkAssetMimeTypes(file) == 'nopreview') {
+  //     this.openGetNoPreview = true;
+  //   } else {
+  //     this.openGetNoPreview = false;
+  //   }
+
+  //   this.showShadow = false;
+  //   this.activeTabs.comments = false;
+  //   this.activeTabs.timeline = false;
+  //   this.activeTabs.info = false;
+  //   let fileRenditionUrl;
+  //   this.selectedFile = file;
+  //   // if (!fileType) {
+  //   switch (fileType.toLowerCase()) {
+  //     case ASSET_TYPE.PICTURE:
+  //       fileType = "image";
+  //       break;
+  //     case ASSET_TYPE.VIDEO:
+  //       fileType = "video";
+  //       break;
+  //     default:
+  //       fileType = "file";
+  //       break;
+  //   }
+  //   // }
+  //   this.sharedService.markRecentlyViewed(file);
+  //   if (fileType === "image") {
+  //     const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
+  //     fileRenditionUrl = url; // file.properties['file:content'].data;
+  //     // this.favourite = file.contextParameters.favorites.isFavorite;
+  //   } else if (fileType === "video") {
+  //     fileRenditionUrl = file.properties["vid:transcodedVideos"][0]?.content.data || file.properties['file:content'].data;
+  //   } else if (fileType === "file") {
+  //     const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
+  //     // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
+  //     fileRenditionUrl = file.properties["file:content"].data;
+  //     // fileRenditionUrl = url;
+  //   }
+  //   this.selectedFileUrl =
+  //     // fileType === "image"?
+  //       this.getAssetUrl(null, fileRenditionUrl, {...file, update:true } )
+  //       // : fileRenditionUrl;
+  //   // if(fileType === 'file') {
+  //   //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
+  //   // }
+
+  //   this.previewModal.open();
+  //   this.openGetNoPreview = false;
+  // }
+
+  getAssetUrl(event: any, url: string, document?: IEntry, type?: string): string {
+    const mimeType = document?.properties?.['file:content']?.['mime-type'];
+    if(mimeType?.includes('pdf') && !document?.update)
+      return '../../../assets/images/pdf-updateIcon.svg';
+
     if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
-      return '../../../assets/images/no-preview.png';
+      // return '../../../assets/images/no-preview-grid.svg';
+      return this.getNoPreview(document);
     }
-    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+    if(type =="thumbnail" ){
+      let thumbNailUrl = url ? url :document.properties['file:content'].data
+      return this.sharedService.getAssetUrl(event, thumbNailUrl, type);
+    }
+    // if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
+    //   // return '../../../assets/images/no-preview.png';
+    //   return this.getNoPreview(document);
+    // }
+   return this.sharedService.getAssetUrl(event, url, type);
+  }
+
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData?.[splitedData?.length - 1];
+    const lowercaseMime = mimeType?.toLowerCase();
+
+    if(this.openGetNoPreview){
+      return '../../../assets/images/no-preview-big.png';
+    } else {
+      if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+        return '../../../assets/images/doc-updateIcon.svg';
+      }
+      if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+        return '../../../assets/images/ppt-updateIcon.svg';
+      }
+      if(item.update) {
+        // return '../../../assets/images/no-preview.png';
+        return '../../../assets/images/no-preview-big.png';
+      }
+
       return '../../../assets/images/no-preview-grid.svg';
     }
-   return this.sharedService.getAssetUrl(event, url, type);
   }
 
   checkAssetMimeTypes(document: any): string {

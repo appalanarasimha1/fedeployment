@@ -87,7 +87,7 @@ import { CreateDeviceModalComponent } from './create-device-modal/create-device-
       useValue: {}
     },
     { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MAT_DATE_LOCALE, useValue: 'fi-FI' },
+    { provide: MAT_DATE_LOCALE, useValue: {} }, //'fi-FI'
    ],
 })
 export class SettingsModule {
