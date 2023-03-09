@@ -1585,3 +1585,47 @@ ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu li:l
   border-color: #C49900 !important;
   font-weight: normal;
 }
+
+.workspaceInfo {
+  background: #23211E;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  width: 328px;
+  position: absolute;
+  right: 0;
+  z-index: 99;
+  padding: 20px;
+  top: 35px;
+  text-align: left;
+}
+.workspaceInfoBlock {
+  background: #23211E !important;
+  width: 328px !important;
+}
+.workspaceInfo .workspaceHeading, .workspaceInfo p, .workspaceHeading, .workspaceInfoBlock p {
+  color: #fff;
+}
+.workspaceInfo .workspaceHeading, .workspaceInfo .workspaceHeading {
+  font-weight: normal;
+  font-size: 15px;
+  padding-bottom: 10px;
+}
+ul.uploadAssetsClassifications li.workspaceInfoHover .workspaceInfo {
+  display: none;
+}
+ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
+  display: block;
+}
+.tollTipWorkspace.workspaceInfoHover .classificationsIcon:hover path {
+  stroke:none;
+}
+ul.uploadAssetsClassifications li:after {
+  content: '';
+  display: block;
+  height: 20px;
+  width: 100%;
+  position: absolute;
+  bottom: -19px;
+  right: 0;
+  z-index: 9;
+}

@@ -17,7 +17,7 @@
             <li>
                 <div class="form-group">
                     <label for="Supplier ID (three letters)">Supplier ID (three letters)</label>
-                    <input type="text" [(ngModel)]="supplierId" placeholder="Enter supplier ID" [ngClass]="{'goldenText': supplierId}" />
+                    <input type="text" [(ngModel)]="supplierId" placeholder="Enter supplier ID" [ngClass]="{'goldenText upparCase': supplierId}" maxlength="3" appAlphabetOnly />
                 </div>
             </li>
             <li>
