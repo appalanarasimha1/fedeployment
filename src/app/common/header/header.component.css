@@ -920,11 +920,20 @@ ul.sidebarList li .sidebarLink.active {
     cursor: pointer;
 }
 .fix-notifaction {
-    width: 880px;
-    height: 500px;
+    /* width: 880px;
+    height: 500px; */
     background-color: #fff;
     padding: 30px !important;
     border-radius: 8px;
+    width: 1080px !important;
+    max-width: calc(100vw - 120px) !important;
+    max-height: calc(100vh - 50px) !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    position: absolute !important;
+    /* top: 20px !important;*/
+    right: 0px !important;
+    left: 0px !important;
 }
 .fix-notifaction h1 {
     text-align: center;
@@ -932,9 +941,10 @@ ul.sidebarList li .sidebarLink.active {
     padding-bottom: 30px;
 }
 .notificationModal {
-    height: 370px;
+    min-height: 200px;
     overflow: hidden;
     overflow-y: scroll;
+    max-height: calc(100vh - 170px);
 }
 .notifactionList ul li {
     display: block;

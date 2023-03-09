@@ -4455,7 +4455,7 @@ header.updateHeader .container {
   z-index: 1;
 }
 .custom-modal-notifaction .modal-content {
-  width: 880px;
+  /* width: 880px; */
   margin: 0px auto;
   border: 0px;
   border-radius: 10px;
