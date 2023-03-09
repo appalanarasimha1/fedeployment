@@ -670,3 +670,7 @@ tr.groupFolder td:first-child {
 .copyHover:hover .copyHoverInfo {
   display: block;
 }
+.zoomImg {
+  position: relative;
+  z-index: 9;
+}
