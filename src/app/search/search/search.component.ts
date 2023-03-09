@@ -13,6 +13,7 @@ import {
   EXTERNAL_GROUP_GLOBAL,
   EXTERNAL_USER,
   DRONE_UPLOADER,
+  tabs
 } from "src/app/common/constant";
 import { DataService } from "src/app/services/data.service";
 import { SideDrawerComponent } from "src/app/common/sideDrawer/sideDrawer.component";
@@ -68,8 +69,8 @@ export class SearchComponent implements OnInit {
   user: any;
   sector: any;
   favoriteCollectionId: string;
-
-  selectedTab = 'Media';
+  tabs = tabs;
+  selectedTab = tabs.MEDIA;
   isDroneUploader = false;
 
   // TypeScript public modifiers
@@ -84,11 +85,20 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     if (window.location.href.includes("#documentation-assets")) {
-      this.selectedTab = 'Construction';
+      this.selectedTab = tabs.CONSTRUCTION;
     }
     this.fetchMostSearchedTags();
     this.fetchUserData();
     this.fetchFavoriteCollection();
+
+    this.router.events.forEach((event: any) => {
+      if (event.url) {
+        if(event.url === '/') {
+          this.selectedTab = tabs.MEDIA;
+          this.router.navigate(['/'], {fragment: ''})
+        }
+      }
+    })
 
     if (!this.nuxeo.nuxeoClient || !localStorage.getItem("token")) {
       this.sharedService.redirectToLogin();
@@ -640,7 +650,7 @@ export class SearchComponent implements OnInit {
       const groups = userData.groups;
       if (!groups) return;
       if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
-        this.selectedTab = 'Construction';
+        this.selectedTab = tabs.CONSTRUCTION;
         this.isDroneUploader = true;
         this.router.navigate(['/'], { fragment: 'documentation-assets' });
         return;
