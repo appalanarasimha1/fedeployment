@@ -95,3 +95,6 @@ button.upload-btn {
 .regionBlok ::ng-deep .ng-select.ng-select-single.goldenText .ng-select-container .ng-value-container {
     color: #C49900;
 }
+.upparCase {
+    text-transform: uppercase;
+}

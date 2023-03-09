@@ -35,6 +35,7 @@ import { DeviceSettingsComponent } from './device-settings/device-settings.compo
 import { ManageExternalUsersComponent } from './manage-external-users/manage-external-users.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CreateDeviceModalComponent } from './create-device-modal/create-device-modal.component';
+import { AlphabetOnlyDirective } from './create-supplie-modal/alphabet-only.directive';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { CreateDeviceModalComponent } from './create-device-modal/create-device-
     DeviceSettingsComponent,
     ManageExternalUsersComponent,
     CreateDeviceModalComponent,
+    AlphabetOnlyDirective,
   ],
   imports: [
     SharedModule,
