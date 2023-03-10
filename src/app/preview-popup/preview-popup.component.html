@@ -234,28 +234,28 @@
               <div class="info-content">
 
                 <div class="row">
-                  <div class="col-xl-12 col-md-12">
-                    <div class="descriptionHeade">Description 
+                  <div class="col-xl-12 col-md-12" *ngIf="doc?.properties['dc:description']">
+                    <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description 
                       <ul>
                         <li (click)="closeDeleteModal()">Delete</li>
                         <li>Edit</li>
                       </ul>
                     </div>
-                    <div class="addDescriptionBtn"><button>Add description</button></div>
-                    <p class="clearfix">
-                      <span class="collapsable float-left" > {{ (info.length>firstCount) ? (info | slice:0:counter)+'...':(info) }}
-                          <span class="redTxt" *ngIf="info.length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
+                    <div class="addDescriptionBtn"  *ngIf="!doc?.properties['dc:description']"><button (click)="enableInputClick(true)">Add description</button></div>
+                    <p class="clearfix" *ngIf="doc?.properties['dc:description']">
+                      <span class="collapsable float-left" > {{ (description.length>firstCount) ? (description | slice:0:counter)+'...':(description) }}
+                          <span class="redTxt" *ngIf="description.length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
                             {{showTxt}}
                           </span>
                       </span>
                     </p>
-                    <div class="addDescription">
+                    <div class="addDescription"  *ngIf="enableInput">
                       <div class="addDescriptionInput">
                         <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }">
                         <img src="../../assets/images/clear-icon.svg" *ngIf="description" (click)="clearValue()">
                       </div>
-                      <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }"><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
-                      <div class="addDescriptionIcon"><img src="../../assets/images/remove-description.svg" ></div>
+                      <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }" (click)="addUpdateDescription()" ><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
+                      <div class="addDescriptionIcon" (click)="enableInputClick(false)"><img src="../../assets/images/remove-description.svg" ></div>
                     </div>
                     
                   </div>

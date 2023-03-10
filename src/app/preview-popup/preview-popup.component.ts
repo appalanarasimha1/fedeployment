@@ -52,6 +52,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   info = "walking alone with suitcase bag. Travel weekend NEOM vacation trip. Young woman pulling suitcase The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
   description: '';
   nevermindHideMsg: boolean = false;
+  enableInput:boolean=false
 
   constructor(
     private router: Router,
@@ -378,7 +379,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   // }
 
   hasNoRestriction() {
-    console.log('this.doc', this.checkMimeType(this.doc));
     return (
       !this.doc.properties["sa:allow"] ||
       (this.doc.properties["sa:allow"] === ALLOW.any &&
@@ -737,5 +737,25 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return this.sharedService.checkMimeType(document);
   }
 
+  async addUpdateDescription(){
+    let url = `/id/${this.doc?.uid}`
+    let payload = {
+      "entity-type": "document",
+      "uid": this.doc?.uid,
+      "properties": {
+      "dc:description": this.description
+      }
+    }
+    // console.log("doc",this.doc); 
+    this.apiService.put(url,payload).subscribe((res:any)=>{
+      console.log("res",res);
+      
+    })
+    // last 
+    this.enableInput=false
+  }
 
+  enableInputClick(value:boolean){
+    this.enableInput=value
+  }
 }
