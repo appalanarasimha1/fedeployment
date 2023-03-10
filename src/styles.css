@@ -4611,3 +4611,9 @@ ul.all-sectors img.noPreviewItem {
   width: 500px !important;
   margin: auto;
 }
+.mat-expansion-panel-content .custom-date-picker button.mat-focus-indicator.mat-icon-button.mat-button-base:after {
+  background-position: 100% center !important;
+}
+.mat-form-field-wrapper .mat-button-focus-overlay {
+  background: transparent;
+}

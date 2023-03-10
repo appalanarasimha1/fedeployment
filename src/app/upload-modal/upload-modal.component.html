@@ -312,14 +312,26 @@
        
                                     <div class="publishingAssets" *ngIf="publishingPrivateAssets">
                                       <p>Used for restricting files to specific users or receiving files from external users</p>
-                                      <ul>
+                                      <table class="table table-bordered">
+                                          <tbody>
+                                             <tr>
+                                                <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
+                                                <td style="border-right: 0px; font-family: 'brownregular';">Folder members only</td>
+                                             </tr>
+                                             <tr>
+                                                <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
+                                                <td style="border-right: 0px;font-family: 'brownregular';">Yes (if folder member)</td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                      <!-- <ul>
                                         <li>
                                           <span class="leftCont">Access and Usage:</span> <span class="rightCont">Folder members only</span>
                                         </li>
                                         <li>
                                           <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">Yes (if folder member)</span>
                                         </li>
-                                      </ul>
+                                      </ul> -->
                                     </div>
                                   </div>
                               </div>
