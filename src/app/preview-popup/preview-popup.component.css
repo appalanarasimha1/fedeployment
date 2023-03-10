@@ -571,7 +571,7 @@ color: #000000;
 }
 .comment-content, .info-content{
   position: relative;
-  width: calc(100% - 200px);
+  width: calc(100% - 50px);
   margin: auto;
 }
 .comment-content input{
@@ -2273,4 +2273,138 @@ figure.zoom img {
 .downloadBtn a:-webkit-any-link:focus-visible {
   outline-offset: 0px;
   outline: none;
+}
+.redTxt {
+  color: #E1BB33;
+  font-family: 'brownregular';
+  cursor: pointer;
+}
+.collapsable {
+  font-size: 14px;
+  line-height: 22px;
+  color: #FFFFFF;
+  width: 100%;
+  font-family: 'brownlight';
+}
+.float-left {
+  float: left;
+}
+.descriptionHeade {
+  font-family: 'brownregular';
+  color: #fff;
+  padding: 20px 0px 10px;
+}
+span.redTxt.displayBlock {
+  float: right;
+}
+.descriptionHeade ul, .deleteDescription ul {
+  margin: 0px;
+  padding: 0px !important;
+  display: inline-block;
+  margin-left: 40px;
+}
+.descriptionHeade ul li, .deleteDescription ul li {
+  display: inline-block !important;
+  margin: 0px 10px;
+  color: #E1BB33 !important;
+  font-family: 'brownregular';
+  padding-bottom: 0px !important;
+  cursor: pointer;
+}
+p.clearfix {
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+.addDescription {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+.addDescriptionInput {
+  position: relative;
+  width: 100%;
+}
+
+.addDescriptionInput input[type="text"] {
+  width: 100%;
+  background: transparent;
+  border: 0px;
+  border-bottom: 1px solid #fff;
+  line-height: 31px;
+  height: 31px;
+  color: #fff !important;
+}
+
+.addDescriptionInput img {
+  max-width: 20px;
+  position: absolute;
+  right: 0px;
+  top: 6px;
+  background-color: transparent !important;
+  cursor: pointer;
+}
+
+.addDescriptionIcon img {
+  background-color: transparent !important;
+  margin-left: 15px;
+  cursor: pointer;
+  width: 17px;
+}
+
+.addDescriptionInput input[type="text"]::-webkit-input-placeholder { /* Edge */
+  color: #fff !important;
+}
+
+.addDescriptionInput input[type="text"]:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #fff !important;
+}
+
+.addDescriptionInput input[type="text"]::placeholder {
+  color: #fff !important;
+}
+.addDescriptionInput input[type="text"].goldenText {
+  border-bottom: 1px solid #E1BB33;
+  color: #E1BB33 !important;
+}
+.disabledIcon {
+  filter: grayscale(100%);
+}
+.info-content ul li {
+  display: flex;
+}
+.info-content ul li span:first-child {
+  width: 40%;
+}
+.info-content ul li span:last-child {
+  font-family: 'brownlight';
+  width: 60%;
+}
+.addDescriptionBtn button {
+  bottom: 0px;
+  appearance: none;
+  border-radius: 100px;
+  border: 0px;
+  color: #040505;
+  background: #EDD580;
+  line-height: 31px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.deleteDescription {
+  position: absolute;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    text-align: center;
+    z-index: 9;
+    left: 0px;
+    top: 0px;
+    padding: 13px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 32px;
+    color: #fff;
+    font-family: 'brownregular';
 }

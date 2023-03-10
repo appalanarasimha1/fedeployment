@@ -30,7 +30,7 @@ export class NuxeoService {
   private defaultHeader = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-    'enrichers-document': 'thumbnail,permissions,preview',
+    'enrichers-document': 'thumbnail,permissions,preview,audit',
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     properties: '*',
     'CSRF-Token': 'defaults'

@@ -186,6 +186,13 @@
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>
         <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
+          <div class="deleteDescription" *ngIf="nevermindHideMsg">
+            Are you sure you want to delete the description?
+            <ul>
+              <li>Yes</li>
+              <li (click)="closeDeleteModal()">Nevermind</li>
+            </ul>
+          </div>
           <div class="tab-content myTabContent" id="myTabContent">
             <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
               <div class="timeline-content">
@@ -226,19 +233,46 @@
             </div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
               <div class="info-content">
+
+                <div class="row">
+                  <div class="col-xl-12 col-md-12" *ngIf="doc?.properties['dc:description']">
+                    <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description 
+                      <ul>
+                        <li (click)="closeDeleteModal()">Delete</li>
+                        <li>Edit</li>
+                      </ul>
+                    </div>
+                    <div class="addDescriptionBtn"  *ngIf="!doc?.properties['dc:description']"><button (click)="enableInputClick(true)">Add description</button></div>
+                    <p class="clearfix" *ngIf="doc?.properties['dc:description']">
+                      <span class="collapsable float-left" > {{ (description.length>firstCount) ? (description | slice:0:counter)+'...':(description) }}
+                          <span class="redTxt" *ngIf="description.length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
+                            {{showTxt}}
+                          </span>
+                      </span>
+                    </p>
+                    <div class="addDescription"  *ngIf="enableInput">
+                      <div class="addDescriptionInput">
+                        <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }">
+                        <img src="../../assets/images/clear-icon.svg" *ngIf="description" (click)="clearValue()">
+                      </div>
+                      <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }" (click)="addUpdateDescription()" ><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
+                      <div class="addDescriptionIcon" (click)="enableInputClick(false)"><img src="../../assets/images/remove-description.svg" ></div>
+                    </div>
+                    
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="col-xl-6 col-md-6">
                     <ul>
                       <li>
-                        Created
-                        {{ toDateString(doc?.properties) }}
-                        by
-                        <br />
-                        <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
+                        <span>Created</span>
+                        <span>{{ toDateString(doc?.properties) }} by {{getCreator()}}</span>
                       </li>
 
                       <li>
-                        Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
+                        <span>Usage approver</span>
+                        <span style="color: #ebc03f; word-break: break-all">{{
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length ?
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
                           'Consult sector for appropriate use.'
@@ -246,13 +280,12 @@
                       </li>
 
                       <li>
-                        Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.title
-                          }}</span>
+                        <span>Name</span>
+                        <span style="word-break: break-all">{{doc?.title}}</span>
                       </li>
 
                       <li *ngIf="!isDroneUploader">
-                        Location <br />
+                        <span>Location</span>
                         <span style="word-break: break-all">
                           <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
                            class="pointer" style="color: #ebc03f;">
@@ -263,58 +296,48 @@
                       </li>
 
                       <li>
-                        Description <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties["dc:description"] ||
-                          doc?.properties["imd:image_description"]
-                          }}</span>
+                        <span>Description</span>
+                        <span style="word-break: break-all">{{ doc?.properties["dc:description"] || doc?.properties["imd:image_description"] }}</span>
                       </li>
 
                       <li>
-                        Format <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties && doc?.properties["picture:info"]?.format
-                          }}</span>
+                        <span>Format</span>
+                         <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.format}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Time taken <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        getTimeTaken()
-                          }}</span>
+                        <span>Time taken</span>
+                        <span style="word-break: break-all">{{getTimeTaken()}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Camera ID <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.installationId
-                          }}</span>
+                        <span>Camera ID</span>
+                        <span style="word-break: break-all">{{device.installationId}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Latitude <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.latitude
-                          }}</span>
+                        <span>Latitude</span>
+                        <span style="word-break: break-all">{{device.latitude}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Longitude <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.longitude
-                          }}</span>
+                        <span>Longitude</span>
+                        <span style="word-break: break-all">{{device.longitude}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.areaName
-                          }}</span>
+                        <span>Area Name</span>
+                        <span style="word-break: break-all">{{ device.areaName }}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Sub-Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.subAreaName
-                          }}</span>
+                        <span>Sub-Area Name</span>
+                        <span style="word-break: break-all">{{device.subAreaName}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Camera Direction <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.cameraDirection || device.direction
-                          }}</span>
+                        <span>Camera Direction</span>
+                        <span style="word-break: break-all">{{device.cameraDirection || device.direction}}</span>
                       </li>
 
                     </ul>
@@ -323,56 +346,60 @@
                     <ul>
 
                       <li>
-                        Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x
-                          {{ doc?.properties["picture:info"]?.height }}</span>
+                        <span>Dimensions</span>
+                        <span style="word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x {{ doc?.properties["picture:info"]?.height }}</span>
                       </li>
 
                       <li>
-                        Size <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          getDownloadFileEstimation()
-                          }}</span>
+                        <span>Size</span>
+                        <span style="word-break: break-all">{{getDownloadFileEstimation() }}</span>
                       </li>
 
                       <li>
-                        Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties && doc?.properties["picture:info"]?.colorSpace
-                          }}</span>
+                        <span>Colour Profile</span>
+                        <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.colorSpace}}</span>
                       </li>
                       <li>
-                        Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
-                          }}</span>
+                        <span>Bit Depth</span>
+                         <span style="word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth}}</span>
                       </li>
 
                       <li>
-                        EXIF
-                        <br />
-                        Date
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                        <span>EXIF data</span>
+                      </li>
+                      <li>
+                        <span>Date</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties || doc?.properties["dc:created"]
-                          }}</span>
-                        <br />
-                        Orientation
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                        }}</span>
+                      </li>
+                      <li>
+                        <span>Orientation</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:orientation"]
-                          }}</span>
-                        <br />
-                        Aperture
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                        }}</span>
+                      </li>
+                      <li>
+                        <span>Aperture</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:fnumber"]
                           }}</span>
-                        <br />
-                        Exposure
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                      </li>
+                      <li>
+                        <span>Exposure</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:exposure_time"]
                           }}</span>
-                        <br />
-                        ISO
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                      </li>
+                      <li>
+                        <span>ISO</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:iso_speed_ratings"]
                           }}</span>
-                        <br />
-                        Focal Length
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                      </li>
+                      <li>
+                        <span>Focal Length</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:focalLength"]
                           }}</span>
                       </li>
@@ -695,35 +722,62 @@
           </div>
           <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
             <div class="info-content">
+
+              <div class="row">
+                <div class="col-xl-12 col-md-12">
+                  <div class="descriptionHeade">Description 
+                    <ul>
+                      <li (click)="closeDeleteModal()">Delete</li>
+                      <li>Edit</li>
+                    </ul>
+                  </div>
+                  <div class="addDescriptionBtn"><button>Add description</button></div>
+                  <p class="clearfix">
+                    <span class="collapsable float-left" > {{ (info.length>firstCount) ? (info | slice:0:counter)+'...':(info) }}
+                        <span class="redTxt" *ngIf="info.length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
+                          {{showTxt}}
+                        </span>
+                    </span>
+                  </p>
+                  <div class="addDescription">
+                    <div class="addDescriptionInput">
+                      <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }">
+                      <img src="../../assets/images/clear-icon.svg" *ngIf="description" (click)="clearValue()">
+                    </div>
+                    <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }"><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
+                    <div class="addDescriptionIcon"><img src="../../assets/images/remove-description.svg" ></div>
+                  </div>
+                  
+                </div>
+              </div>
+
               <div class="row">
                 <div class="col-xl-6 col-md-6">
                   <ul>
                     <li>
-                      Created
-                      {{ toDateString(doc?.properties) }}
-                      by
-                      <br />
-                      <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
+                      <span>Created</span>
+                      <span>{{ toDateString(doc?.properties) }} by {{getCreator()}}</span>
                     </li>
 
                     <li>
-                      Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length?
+                      <span>Usage approver</span>
+                      <span style="color: #ebc03f; word-break: break-all">{{
+                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length ?
                         doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
                         'Consult sector for appropriate use.'
                         }}</span>
                     </li>
 
                     <li>
-                      Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        doc?.title
-                        }}</span>
+                      <span>Name</span>
+                      <span style="word-break: break-all">{{doc?.title}}</span>
                     </li>
 
                     <li *ngIf="!isDroneUploader">
-                      Location <br />
-                      <span style=" word-break: break-all">
-                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank" class="pointer" style="color: #ebc03f;">
+                      <span>Location</span>
+                      <span style="word-break: break-all">
+                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
+                         class="pointer" style="color: #ebc03f;">
                           {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                         </a>
                         <!-- remove click event (click)="navigateTo(doc?.parentRef)" -->
@@ -731,57 +785,48 @@
                     </li>
 
                     <li>
-                      Description <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       getDescription()
-                        }}</span>
+                      <span>Description</span>
+                      <span style="word-break: break-all">{{ doc?.properties["dc:description"] || doc?.properties["imd:image_description"] }}</span>
                     </li>
 
                     <li>
-                      Format <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        doc?.properties && doc?.properties["picture:info"]?.format
-                        }}</span>
+                      <span>Format</span>
+                       <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.format}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Time taken <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       getTimeTaken()
-                        }}</span>
+                      <span>Time taken</span>
+                      <span style="word-break: break-all">{{getTimeTaken()}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Camera ID <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.installationId
-                        }}</span>
+                      <span>Camera ID</span>
+                      <span style="word-break: break-all">{{device.installationId}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Latitude <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.latitude
-                        }}</span>
+                      <span>Latitude</span>
+                      <span style="word-break: break-all">{{device.latitude}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Longitude <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.longitude
-                        }}</span>
+                      <span>Longitude</span>
+                      <span style="word-break: break-all">{{device.longitude}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.areaName
-                        }}</span>
+                      <span>Area Name</span>
+                      <span style="word-break: break-all">{{ device.areaName }}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Sub-Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.subAreaName
-                        }}</span>
+                      <span>Sub-Area Name</span>
+                      <span style="word-break: break-all">{{device.subAreaName}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Camera Direction <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.cameraDirection
-                        }}</span>
+                      <span>Camera Direction</span>
+                      <span style="word-break: break-all">{{device.cameraDirection || device.direction}}</span>
                     </li>
 
                   </ul>
@@ -790,53 +835,60 @@
                   <ul>
 
                     <li>
-                      Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ getImageDimensions() }}</span>
+                      <span>Dimensions</span>
+                      <span style="word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x {{ doc?.properties["picture:info"]?.height }}</span>
                     </li>
 
                     <li>
-                      Size <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        getDownloadFileEstimation()
-                        }}</span>
+                      <span>Size</span>
+                      <span style="word-break: break-all">{{getDownloadFileEstimation() }}</span>
                     </li>
 
                     <li>
-                      Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        doc?.properties && doc?.properties["picture:info"]?.colorSpace
-                        }}</span>
+                      <span>Colour Profile</span>
+                      <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.colorSpace}}</span>
                     </li>
                     <li>
-                      Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
-                        }}</span>
+                      <span>Bit Depth</span>
+                       <span style="word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth}}</span>
                     </li>
 
                     <li>
-                      EXIF
-                      <br />
-                      Date
-                      <span style="opacity: 0.7; word-break: break-all">{{doc?.properties || doc?.properties["dc:created"]}}</span>
-                      <br />
-                      Orientation
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                      <span>EXIF data</span>
+                    </li>
+                    <li>
+                      <span>Date</span>
+                      <span style="word-break: break-all">{{
+                        doc?.properties || doc?.properties["dc:created"]
+                      }}</span>
+                    </li>
+                    <li>
+                      <span>Orientation</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:orientation"]
-                        }}</span>
-                      <br />
-                      Aperture
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                      }}</span>
+                    </li>
+                    <li>
+                      <span>Aperture</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:fnumber"]
                         }}</span>
-                      <br />
-                      Exposure
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                    </li>
+                    <li>
+                      <span>Exposure</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:exposure_time"]
                         }}</span>
-                      <br />
-                      ISO
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                    </li>
+                    <li>
+                      <span>ISO</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:iso_speed_ratings"]
                         }}</span>
-                      <br />
-                      Focal Length
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                    </li>
+                    <li>
+                      <span>Focal Length</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:focalLength"]
                         }}</span>
                     </li>

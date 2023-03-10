@@ -45,6 +45,15 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   isDroneUploader = false;
   showCreateFolderPopup: boolean = false;
 
+  last_index = 100;
+  counter = 100;
+  showTxt = "Show More";
+  firstCount = 100;
+  info = "walking alone with suitcase bag. Travel weekend NEOM vacation trip. Young woman pulling suitcase The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
+  description: '';
+  nevermindHideMsg: boolean = false;
+  enableInput:boolean=false
+
   constructor(
     private router: Router,
     private apiService: ApiService,
@@ -62,6 +71,10 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.getComments();
       this.getCameraInfo();
     }
+
+    this.last_index = (this.info.substring(0, 200)).lastIndexOf(' ');
+    if(this.last_index > 200) this.last_index = 200;
+    this.counter = this.last_index;
     this.checkDroneUser();
   }
 
@@ -366,7 +379,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   // }
 
   hasNoRestriction() {
-    console.log('this.doc', this.checkMimeType(this.doc));
     return (
       !this.doc.properties["sa:allow"] ||
       (this.doc.properties["sa:allow"] === ALLOW.any &&
@@ -658,6 +670,27 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return this.device.installationTime.match(/.{1,2}/g).join(":");
   }
 
+
+  toggleSkil(event){
+    if(this.counter < 201 )
+      {
+        this.counter = this.info.length;
+        this.showTxt = "View less";
+      }
+
+      else {
+        this.counter = this.last_index;
+        this.showTxt = "View more"
+      }
+  }
+
+  clearValue() {
+    this.description = '';
+  }
+  
+  closeDeleteModal(){
+    this.nevermindHideMsg = !this.nevermindHideMsg;
+  }
   checkDroneUser() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
@@ -704,5 +737,25 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return this.sharedService.checkMimeType(document);
   }
 
+  async addUpdateDescription(){
+    let url = `/id/${this.doc?.uid}`
+    let payload = {
+      "entity-type": "document",
+      "uid": this.doc?.uid,
+      "properties": {
+      "dc:description": this.description
+      }
+    }
+    // console.log("doc",this.doc); 
+    this.apiService.put(url,payload).subscribe((res:any)=>{
+      console.log("res",res);
+      
+    })
+    // last 
+    this.enableInput=false
+  }
 
+  enableInputClick(value:boolean){
+    this.enableInput=value
+  }
 }
