@@ -414,3 +414,9 @@ h3.externalUsers {
   ::ng-deep .mat-calendar-table-header-divider::after{
     display: none !important;
   }
+.makePrivate ::ng-deep .mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: 0;
+}
+.makePrivate ::ng-deep .mat-form-field-infix {
+    border-top: 0 solid transparent;
+}

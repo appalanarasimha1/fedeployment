@@ -14,7 +14,7 @@
       </h3>
       <ul class="mb-20">
         <li>
-          <span class="disableColor pl-10"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Expiry date {{getEndDate(selectedExternalUser.end)}}</span>
+          <span class="disableColor"><span *ngIf="selectedExternalUser.externalUser">Pending - </span>Expiry date {{getEndDate(selectedExternalUser.end)}}</span>
 
           <!-- <span class="disableColor pl-10"><span>Pending - </span>Expiry date </span> -->
         </li>
@@ -49,14 +49,14 @@
         </div>
 
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-3" style="padding-top: 6px;">
             Access expiry
           </div>
           <div class="col-md-9">
             <span style="width: calc(100% - 31px);display: inline-block;">
               <!-- <input type="date" id="birthday" name="birthday"> -->
               <mat-form-field appearance="fill">
-                <input matInput  [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
+                <input matInput  [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000; line-height: 31px;font-size: 14px; font-family: 'brownregular';"
                 [(ngModel)]="selectedMonth" (click)="picker.open()"  [ngClass]="{'goldenText': selectedMonth}">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
