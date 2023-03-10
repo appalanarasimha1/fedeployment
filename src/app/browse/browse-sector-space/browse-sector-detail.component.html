@@ -249,7 +249,6 @@
               </span>
             </div>
           </li>
-          {{count | json}}
           <li *ngIf="(downloadArray?.length > 0 || needPermissionToDownload?.length >0) && count?.assetCount > 0 && count?.assetCount === count?.allCount ">
             <div class="downloadFileWorkspace">
               <a (click)="multiDownload()"
