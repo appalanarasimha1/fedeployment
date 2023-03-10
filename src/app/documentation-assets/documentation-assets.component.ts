@@ -189,7 +189,7 @@ export class DocumentationAssetsComponent implements OnInit {
 
   async getAssetList() {
     this.loading = true;
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND dc:vendor = '${this.companyId}'`;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=40&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND dc:vendor = '${this.companyId}'`;
     const query = this.buildFilterAssetQuery();
     if (query === 'NONE') {
       this.assetList = [];
