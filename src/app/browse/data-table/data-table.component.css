@@ -128,15 +128,17 @@ tr.groupFolder td:first-child {
   }
 
 .zoomImgBlock {
-    max-width: 200px;
-    position: absolute;
-    left: 0px;
-    bottom: 34px;
-    display: none;
-    z-index: 9;
-    background: #fff;
-    width: 250px;
-  }
+  max-width: 120px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: absolute;
+  left: 0px;
+  bottom: 34px;
+  display: none;
+  z-index: 9;
+  background: #fff;
+  width: 250px;
+}
 
   .zoomImg:hover .zoomImgBlock {
     display: block;
