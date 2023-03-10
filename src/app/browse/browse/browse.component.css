@@ -4554,6 +4554,9 @@ button.sendRequest {
 }
 ::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
   color: #040404 !important;
+  background: #E1BB33;
+  font-size: 14px;
+  font-family: 'brownlight';
 }
 .invitePeople > span {
   display: inline-block;
@@ -4629,4 +4632,9 @@ span.clickEvent.textDIsable {
 ::ng-deep .mat-paginator-container {
   align-items: center !important;
   justify-content: center !important;
+}
+::ng-deep .mat-select-panel .mat-optgroup-label, 
+::ng-deep .mat-select-panel .mat-option {
+  font-size: 14px;
+  font-family: 'brownlight';
 }
