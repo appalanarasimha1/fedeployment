@@ -1,0 +1,102 @@
+
+<div class="externalUser positionRelative" *ngIf="!showExternalUserPage">
+    <div class="device-header">
+        <h2>Access lists</h2>
+        <!-- <button class="primary createSuppliers" (click)="openCreateLocationModal()">Create new region</button> -->
+    </div>
+    <p class="externalEditAccess">You can <strong>search for existing access lists</strong> by typing their name below:</p>
+    <div class="searchBlock">
+        <span class="positionRelative">
+            <input type="text" [(ngModel)]="accessInput" (input)="searchAccess()" placeholder="Search access by name" class="search-bar" />
+        </span>
+    </div>
+    <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width: 2%">&nbsp;&nbsp;</th>
+                <th style="width: 80%;">Access lists</th>
+                <th style="width: 6%;">&nbsp;</th>
+                <th style="width: 6%;">&nbsp;</th>
+            </tr>
+            <tr *ngFor="let access of filteredAccessList">
+                <td><div class="height32"></div></td>
+                <td>{{access.name}}</td>
+                <td><mat-slide-toggle [(ngModel)]="access.activated" (change)="toggleAccessActivated($event, access)"></mat-slide-toggle></td>
+                <td style="text-align: center !important;" (click)="openAccess(access)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="externalUser positionRelative" *ngIf="showExternalUserPage">
+    <div class="backBtn" (click)="backExternalUserList()">
+        <span>
+        <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.828 7.00072L7.778 11.9507L6.364 13.3647L0 7.00072L6.364 0.636719L7.778 2.05072L2.828 7.00072Z" fill="#BAB8B2"/>
+        </svg> Back</span>
+    </div>
+    <h3>Users</h3>
+    <h2>
+        <span>
+            {{selectedAccess?.name}}
+        </span>
+    </h2>
+    <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>invite new users</strong> by typing their email address below:</p>
+    <div class="searchBlock">
+        <span class="positionRelative">
+          <form class="example-form">
+            <input type="text"
+              placeholder="Search or invite users by email address"
+              [formControl]="usersCtrl"
+              [matAutocomplete]="auto"
+              [(ngModel)]="inviteUserInput"
+              class="search-bar">
+            <button class="primary createSuppliers" *ngIf="checkEnableInviteBtn()" (click)="openInviteUserModal()">Invite</button>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectUser($event.option.value)'>
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+                {{user}}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+        </span>
+    </div>
+    <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width: 2%">&nbsp;&nbsp;</th>
+                <th>User</th>
+                <th>Permissions</th>
+                <th>Access expiry</th>
+                <th style="width: 3%">&nbsp;&nbsp;</th>
+                <th style="width: 1%">&nbsp;&nbsp;</th>
+            </tr>
+            <tr *ngFor="let user of selectedAccess?.users; let i = index">
+                <td><div class="height32"></div></td>
+                <td>{{user.user}}</td>
+                <td>
+                    <ul>
+                        <li>
+                          <div class="broader-access-assets">
+                            <div class="control-group">
+                              <label class="control control--checkbox">
+                                <input class="chkbox" (change)="onPermissionChange('download', $event, i)" [checked]="hasPermission(user, 'download')" type="checkbox"/>
+                                <div class="control__indicator"></div>
+                                Download
+                              </label>
+                            </div>
+                          </div>
+                        </li>
+                    </ul>
+                </td>
+                <td class="accessExpiryCal">
+                    <mat-form-field appearance="fill">
+                        <input class="datePicker" placeholder="Choose a date" (dateChange)="updateUserExpiry($event, i)" [(ngModel)]="user.expiry" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </td>
+                <td><mat-slide-toggle [(ngModel)]="user.activated" (change)="togglerUserActivated($event, i)"></mat-slide-toggle></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,5 +1,12 @@
 <section class="documentationBlck">
-  <div class="container">
+  <div *ngIf="notAuthorize" class="not-authorize">
+    <p>You are not authorized to view other construction assets.</p>
+    <ul>
+      <li>Click <a href="mailto:Neom.Documentation@neom.com?subject=Ground X Construction Assets Request">here</a> to request viewing access to construction assets.</li>
+      <li>Click <a href="mailto:groundxsupport@neom.com?subject=Ground X API Access Request">here</a> to request API access to construction assets.</li>
+    </ul>
+  </div>
+  <div *ngIf="!notAuthorize" class="container">
       <h2>Construction assets</h2>
       <h3>{{company}}</h3>
       <!-- <div *ngIf="!loading && (!assetList || assetList.length == 0) && checkNoFilterSelected()" class="adding-assets">

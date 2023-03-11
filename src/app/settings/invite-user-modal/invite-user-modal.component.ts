@@ -19,6 +19,7 @@ export class InviteUserModalComponent implements OnInit {
   selectedMonth = new Date();
   supplier = null;
   isExisted = false;
+  accessEntry = false;
 
   constructor(
     public dialogRef: MatDialogRef<InviteUserModalComponent>,
@@ -29,10 +30,12 @@ export class InviteUserModalComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.selectedMonth = new Date(this.selectedMonth.setMonth(this.selectedMonth.getMonth() + 6));
+    this.selectedMonth = new Date(this.selectedMonth.setFullYear(this.selectedMonth.getFullYear() + 1));
     this.userEmail = this.data.userEmail;
     this.supplier = this.data.supplier;
     this.isExisted = this.data.isExisted;
+    this.accessEntry = this.data.accessEntry;
+    if (this.accessEntry) this.download = true;
   }
 
   updateDocument(id, params) {
@@ -61,7 +64,7 @@ export class InviteUserModalComponent implements OnInit {
         "properties": {
           "username": this.userEmail,
           "email": this.userEmail,
-          "groups": [DRONE_UPLOADER]
+          "groups": this.supplier ? [DRONE_UPLOADER] : [],
         }
       })
       .execute();
@@ -77,16 +80,18 @@ export class InviteUserModalComponent implements OnInit {
       activated: true,
       expiry: this.selectedMonth,
     }
-    const users = this.supplier.users || [];
-    users.push(newUserProp);
-    this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
-    .params({
-      "user": this.userEmail,
-    })
-    .execute();
-    await this.updateSuppilerUsers(this.supplier.uid, users);
+    if (this.supplier) {
+      const users = this.supplier.users || [];
+      users.push(newUserProp);
+      this.nuxeo.nuxeoClient.operation('Scry.AddToDroneCapture')
+        .params({
+          "user": this.userEmail,
+        })
+        .execute();
+      this.updateSuppilerUsers(this.supplier.uid, users);
+    }
 
-    this.closeModal(true);
+    this.closeModal(newUserProp);
   }
 
   closeModal(result?) {
