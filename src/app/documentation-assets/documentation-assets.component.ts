@@ -7,6 +7,7 @@ import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
+import { DRONE_UPLOADER } from '../common/constant';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from "rxjs";
 
@@ -40,6 +41,7 @@ export class DocumentationAssetsComponent implements OnInit {
   subAreaList = [];
   subAreaMap = {};
   supplierList = [];
+  accessList = [];
   installationIdList = [];
   user = "";
   company = "";
@@ -56,6 +58,7 @@ export class DocumentationAssetsComponent implements OnInit {
   selectedEndDate;
   assetByMe = false;
   filteredSubAreaList = [];
+  notAuthorize = true;
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -71,14 +74,57 @@ export class DocumentationAssetsComponent implements OnInit {
     this.sharedService.getSidebarToggle().subscribe(() => {
       this.updateMasonryLayout = !this.updateMasonryLayout;
     });
-    this.user = JSON.parse(localStorage.getItem("user"))["username"];
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false
+
+    this.user = userData["username"];
     this.getDeviceList();
     this.getSupplierList();
     this.getRegionList();
     this.getSubAreaList();
+    this.getAccessList();
     this.sharedService.events$.forEach(event => {
       if (event === 'Upload done') this.getAssetList();
     });
+  }
+
+  async getAccessList() {
+    const url = '/settings/accessList';
+    const res = await this.apiService
+      .get(url, {}).toPromise() as any;
+
+    const list = res || [];
+    const sortedAll = [
+      ...list.filter(a => a.name === 'ALL'),
+      ...list.filter(a => a.name !== 'ALL')
+    ]
+    this.accessList = sortedAll
+    .map((entry) => ({
+      name: entry.name,
+      uid: entry.id,
+      activated: entry.activated,
+      users: entry.users || [],
+    }));
+
+    if (this.notAuthorize) {
+      this.checkAuthorizeUser()
+    }
+  }
+
+  checkAuthorizeUser() {
+    console.log(this.user);
+
+    for (const access of this.accessList) {
+      const users = access.users;
+      console.log(users);
+
+      const found = users.find(user => user.activated && user.user === this.user);
+      if (found) {
+        this.notAuthorize = false;
+        this.loading = false;
+        break;
+      }
+    }
   }
 
   async getDeviceList() {
@@ -189,7 +235,7 @@ export class DocumentationAssetsComponent implements OnInit {
 
   async getAssetList() {
     this.loading = true;
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=40&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND dc:vendor = '${this.companyId}'`;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=40&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '/War Room' AND dc:vendor = '${this.companyId}'`;
     const query = this.buildFilterAssetQuery();
     if (query === 'NONE') {
       this.assetList = [];

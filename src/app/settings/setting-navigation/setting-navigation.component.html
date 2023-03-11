@@ -39,8 +39,16 @@
             routerLink="/settings/manage-locations"
             routerLinkActive="'active-tab'"
           >
-            <!-- <span>Manage locations</span> -->
             <span>Regions <span class="counting">{{regionCount}}</span></span>
+          </li>
+
+          <li
+            style="cursor: pointer"
+            class="d-flex set"
+            routerLink="/settings/manage-access-list"
+            routerLinkActive="'active-tab'"
+          >
+            <span>Access lists <span class="counting">{{accessCount}}</span></span>
           </li>
         </ul>
       </li>

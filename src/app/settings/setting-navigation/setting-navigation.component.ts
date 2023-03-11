@@ -12,6 +12,7 @@ export class SettingNavigationComponent implements OnInit {
   supplierCount = 0;
   regionCount = 0;
   deviceCount = 0;
+  accessCount = 0;
 
   constructor(private sharedService: SharedService, private apiService: ApiService) {}
 
@@ -19,6 +20,7 @@ export class SettingNavigationComponent implements OnInit {
     this.getSupplierList();
     this.getRegionList();
     this.getDeviceList();
+    this.getAccessList();
   }
 
   async getSupplierList() {
@@ -43,6 +45,14 @@ export class SettingNavigationComponent implements OnInit {
 
     if (!res) return;
     this.deviceCount = res || 0;
+  }
+
+  async getAccessList() {
+    const url = '/settings/accessList/count';
+    const res = await this.apiService.get(url, { headers: {} }).toPromise() as any;
+
+    if (!res) return;
+    this.accessCount = res || 0;
   }
 
   checkForUserGroup() {

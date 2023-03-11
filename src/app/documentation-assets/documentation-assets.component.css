@@ -268,3 +268,18 @@
       justify-content: center;
       margin-top: 15px;
   }
+
+  .not-authorize {
+    background-color: #e8f2ff;
+    color: #4d8bb3;
+    border-style: hidden;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  .not-authorize ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  .not-authorize a {
+    text-decoration: underline;
+  }

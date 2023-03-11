@@ -32,6 +32,7 @@ import { CreateSubAreaModalComponent } from './create-sub-area-modal/create-sub-
 import { InviteUserModalComponent } from './invite-user-modal/invite-user-modal.component';
 import { SettingNavigationComponent } from './setting-navigation/setting-navigation.component';
 import { DeviceSettingsComponent } from './device-settings/device-settings.component';
+import { ManageAccessListComponent } from './manage-access-list/manage-access-list.component';
 import { ManageExternalUsersComponent } from './manage-external-users/manage-external-users.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CreateDeviceModalComponent } from './create-device-modal/create-device-modal.component';
@@ -48,6 +49,7 @@ import { AlphabetOnlyDirective } from './create-supplie-modal/alphabet-only.dire
     InviteUserModalComponent,
     SettingNavigationComponent,
     DeviceSettingsComponent,
+    ManageAccessListComponent,
     ManageExternalUsersComponent,
     CreateDeviceModalComponent,
     AlphabetOnlyDirective,

@@ -17,7 +17,7 @@
                 <div class="form-group broader-access-assets">
                     <h3 for="Permissions">Permissions</h3>
                     <ul class="permissionsBlock">
-                        <li>
+                        <li *ngIf="supplier">
                             <div class="control-group">
                                 <label class="control control--checkbox">
                                   <input class="chkbox" type="checkbox" [(ngModel)]="upload" />
@@ -35,7 +35,7 @@
                                 </label>
                             </div>
                         </li>
-                        <li>
+                        <li *ngIf="supplier">
                             <div class="control-group">
                                 <label class="control control--checkbox">
                                   <input class="chkbox" type="checkbox" [(ngModel)]="delete" />
