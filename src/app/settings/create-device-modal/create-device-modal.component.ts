@@ -76,8 +76,10 @@ export class CreateDeviceModalComponent implements OnInit {
     this.subAreaList = this.data.subAreaList;
     this.isCreate = this.data.isCreate;
     this.selectedDevice = this.data.selectedDevice;
+    this.supplierPrefix = this.data.supplierIds;
     if (!this.isCreate) {
       this.installationID = this.selectedDevice.installationId;
+      this.selectedSupplier = this.selectedDevice.supplierId;
       this.selectedRegion = this.selectedDevice.region || this.selectedDevice.areaId;
       if (this.selectedDevice.deviceType === 'timelapse') {
         this.selectedSupplier = this.installationID.split("-")[1];
@@ -180,6 +182,7 @@ export class CreateDeviceModalComponent implements OnInit {
       subAreaId: this.selectedsubAreas.locationId || "",
       subAreaName: this.selectedsubAreas.name || "",
       owner: this.selectedOwner || "",
+      supplierId: this.selectedSupplier,
     }
     const id = await this.apiService.post(`/settings/camera/autogen?prefix=${this.buildDevicePrefix()}`, payload, {responseType: 'text'}).toPromise();
     this.sharedService.showSnackbar(
@@ -232,6 +235,7 @@ export class CreateDeviceModalComponent implements OnInit {
       cameraDirection: this.directionShow ? this.direction : "",
       cameraPole: this.poleIdShow ? this.poleId : "",
       owner: this.selectedOwner || "",
+      supplierId: this.selectedSupplier,
     }
     await this.apiService.post(`/settings/camera/${this.selectedDevice.uid}`, params, {responseType: 'text'}).toPromise();
     this.closeModal(true);

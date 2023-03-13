@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from '@angular/router';
 import { ApiService } from "../../services/api.service";
 import { REPORT_ROLE } from '../../common/constant';
 import { SharedService } from 'src/app/services/shared.service';
@@ -14,9 +15,15 @@ export class SettingNavigationComponent implements OnInit {
   deviceCount = 0;
   accessCount = 0;
 
-  constructor(private sharedService: SharedService, private apiService: ApiService) {}
+  constructor(
+    private sharedService: SharedService,
+    private apiService: ApiService,
+    private router: Router,) {}
 
   ngOnInit(): void {
+    if (!this.checkForUserGroup() && !window.location.href.includes('manage-external-users')) {
+      this.router.navigate(['/settings/manage-external-users']);
+    }
     this.getSupplierList();
     this.getRegionList();
     this.getDeviceList();
