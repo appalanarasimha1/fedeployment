@@ -185,12 +185,23 @@
                                     {{item.extended.title}}
                                   </div>
                                 </div>
-                                <div class="request-download-btn-group buttonGroup">
+                                <div
+                                  *ngIf="item.extended.type === 'requestDownload' && 
+                                    !item.extended.processed && 
+                                    !showRejectForm[item.id] && 
+                                    !requestSent[item.id]"
+                                  class="request-download-btn-group buttonGroup"
+                                >
                                   <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
                                   <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
                                 </div>
-                                <div class="request-download-btn-group buttonGroup downloadBtn">
-                                  <button class="btn approve" (click)="processDownloadRequest(item, true)"><img src="../../../assets/images/download-white-icon.svg"> Download</button>
+                                <div 
+                                  *ngIf="item.extended.type === 'requestDownload' && 
+                                    item.extended.processed && 
+                                    item.extended.isApproved" 
+                                  class="request-download-btn-group buttonGroup downloadBtn"
+                                >
+                                  <a class="btn approve"><img src="../../../assets/images/download-white-icon.svg"> Download</a> <!-- href="{{ getAssetUrl(null, item.docPath) }}" -->
                                 </div>
                                 <div class="dayWeek">
                                   {{getNotificationSince(item)}}
@@ -385,8 +396,14 @@
                     <p *ngIf="item.extended.isApproved" class="approved">You approved this request.</p>
                   </div>
                 </div>
-                <div class="request-download-btn-group buttonGroup downloadBtn" style="text-align: right">
-                  <button class="btn approve"><img src="../../../assets/images/download-white-icon.svg"> Download</button>
+                <div 
+                  *ngIf="item.extended.type === 'requestDownload' && 
+                    item.extended.processed && 
+                    item.extended.isApproved"
+                  class="request-download-btn-group buttonGroup downloadBtn" 
+                  style="text-align: right"
+                >
+                  <a class="btn approve"><img src="../../../assets/images/download-white-icon.svg"> Download</a> <!-- href="{{ getAssetUrl(null, item.docPath) }}" -->
                 </div>
               </div>
             </li>
@@ -441,6 +458,17 @@
                     <p *ngIf="!item.extended.isApproved" class="rejection">Rejection submitted.</p>
                     <p *ngIf="item.extended.isApproved" class="approved">You approved this request.</p>
                   </div>
+                </div>
+                <div 
+                  *ngIf="item.extended.type === 'requestDownload' && 
+                    item.extended.processed && 
+                    item.extended.isApproved"
+                  class="request-download-btn-group buttonGroup downloadBtn" 
+                  style="text-align: right"
+                >
+                  <a class="btn approve"> <!-- href="{{ getAssetUrl(null, item.docPath) }}" -->
+                    <img src="../../../assets/images/download-white-icon.svg"> Download
+                  </a>
                 </div>
               </div>
             </li>

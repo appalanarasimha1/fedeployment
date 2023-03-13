@@ -338,6 +338,15 @@ export class HeaderComponent implements OnInit {
     this.computeNotifications();
     this.storeRequestDownloadNotification();
   }
+  
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    // if (!event) {
+    //   return `${window.location.origin}/nuxeo${url}`;
+    // }
+
+    return this.sharedService.getAssetUrl(event, url, document, type);
+  }
+
 
   computeDuplicateRequestDownloadNoti() {
     this.notifications = this.notifications.sort((a, b) => {

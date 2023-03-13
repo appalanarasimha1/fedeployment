@@ -969,13 +969,9 @@ export class DataTableComponent implements OnInit, OnChanges {
     }
     if(type =="thumbnail" ){
       let thumbNailUrl = url ? url :document.properties['file:content'].data
-      return this.sharedService.getAssetUrl(event, thumbNailUrl, type);
+      return this.sharedService.getAssetUrl(event, thumbNailUrl, document, type);
     }
-    // if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
-    //   // return '../../../assets/images/no-preview.png';
-    //   return this.getNoPreview(document);
-    // }
-   return this.sharedService.getAssetUrl(event, url, type);
+   return this.sharedService.getAssetUrl(event, url, document, type);
   }
 
   getNoPreview(item) {

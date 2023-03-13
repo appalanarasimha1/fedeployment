@@ -44,6 +44,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   device;
   isDroneUploader = false;
   showCreateFolderPopup: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private router: Router,
@@ -595,7 +596,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     await this.apiService.post(apiRoutes.REQUEST_DOWNLOAD, body).toPromise();
     this.requestSent = true;
   }
-  loading:boolean=false
+
   showAllcommentClick(){
     this.loading = true
     this.showAllComments = true
@@ -694,15 +695,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
-    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
-      return '../../../assets/images/no-preview-big.png';
-    }
-    return this.sharedService.getAssetUrl(event, url, type);
+    return this.sharedService.getAssetUrl(event, url, document, type);
   }
 
-  checkAssetMimeTypes(document: any): string {
-    return this.sharedService.checkMimeType(document);
-  }
 
 
 }
