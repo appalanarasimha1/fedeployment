@@ -1,4 +1,5 @@
 <section class="documentationBlck">
+  <app-loader [show]="loading"></app-loader>
   <div *ngIf="notAuthorize" class="not-authorize">
     <p>You are not authorized to view other construction assets.</p>
     <ul>

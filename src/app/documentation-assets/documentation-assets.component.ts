@@ -59,6 +59,7 @@ export class DocumentationAssetsComponent implements OnInit {
   assetByMe = false;
   filteredSubAreaList = [];
   notAuthorize = true;
+  userRegionList = [];
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -80,8 +81,6 @@ export class DocumentationAssetsComponent implements OnInit {
     this.user = userData["username"];
     this.getDeviceList();
     this.getSupplierList();
-    this.getRegionList();
-    this.getSubAreaList();
     this.getAccessList();
     this.sharedService.events$.forEach(event => {
       if (event === 'Upload done') this.getAssetList();
@@ -109,21 +108,23 @@ export class DocumentationAssetsComponent implements OnInit {
     if (this.notAuthorize) {
       this.checkAuthorizeUser()
     }
+
+    await this.getRegionList();
+    await this.getSubAreaList();
   }
 
   checkAuthorizeUser() {
-    console.log(this.user);
-
     for (const access of this.accessList) {
       const users = access.users;
-      console.log(users);
-
       const found = users.find(user => user.activated && user.user === this.user);
       if (found) {
         this.notAuthorize = false;
-        this.loading = false;
-        break;
+        this.userRegionList.push(access.name);
       }
+    }
+
+    if (!this.notAuthorize) {
+      this.loading = false;
     }
   }
 
@@ -158,6 +159,9 @@ export class DocumentationAssetsComponent implements OnInit {
       name: region.title,
       uid: region.id,
     }));
+    if (this.userRegionList.length > 0 && !this.userRegionList.includes('ALL')) {
+      this.regionList = this.regionList.filter(region => this.userRegionList.includes(region.initial));
+    }
     this.computeRegionMap();
   }
 
@@ -182,6 +186,8 @@ export class DocumentationAssetsComponent implements OnInit {
       uid: area.id,
       parentArea: area.parentArea,
     }));
+    const regionIds = this.regionList.map(region => region.uid);
+    this.subAreaList = this.subAreaList.filter(subArea => regionIds.includes(subArea.parentArea));
     this.filteredSubAreaList = this.subAreaList;
     this.computeSubAreaMap();
   }

@@ -18,8 +18,8 @@
 
       <div class="row">
         <div class="col-xl-3 col-md-3 pt-2 customToggle pt-5 animate__animated animate__fadeIn animate__delay-2s" style="background-color: #F8F8F5;">
-          <app-browse-navigation 
-            [folderStructure]="folderStructure" 
+          <app-browse-navigation
+            [folderStructure]="folderStructure"
             [isExternalView]="isExternalView"
             (navigationBarEvent)="navigationBarEvent($event)"
           >
@@ -28,7 +28,7 @@
         <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative" style="min-height: calc(100vh - 76px)">
           <!-- <router-outlet></router-outlet> -->
         <!-- </div> -->
-        
+
 
         <!-- <div class="col-xl-9 col-md-9 pl-5 pt-5 pb-5 bg-white positionRelative"> -->
           <app-loader [show]="loading"></app-loader>
@@ -114,7 +114,7 @@
                   <span class="main-title" *ngIf="!renameFolderName">
                     <!-- <span class="tollTipCustom">
                       <div class="folderTitle" [ngClass]="{'isPrivateFolderName' : isPrivateFolder(true, true)}">{{selectedFolder?.title}}</div>
-                      
+
                       <div class="tolltipContent">
                         {{selectedFolder?.title}}
                       </div>
@@ -124,7 +124,7 @@
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg> -->
-                    
+
                     <!-- <span *ngIf="showLinkCopy" [ngClass]="{'addVerticalAlignMiddle' : isPrivateFolder(true, true)}" style="display: inline-block; margin-left: 10px; vertical-align: top; position: relative;">
                       <div class="publicUseBlock">
                         <div *ngIf="isPrivateFolder()" class="publicUseBlk">Private</div>
@@ -239,7 +239,7 @@
                       >{{ sharedService.stringShortener(c.title, 40) }}</a
                     >
                   </span>
-                    
+
                   <span *ngIf="showLinkCopy" class="copy-section">
                     <a class="flexible">
                       <img
@@ -318,16 +318,16 @@
                       <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Rename</div>
                     </div>
                   </li>
-                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal(false)"> 
+                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal(false)">
                     <div class="moveFolderImg tollTipWorkspace">
-                      
+
                       <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
                         <path d="M4 4V1C4 0.734784 4.10536 0.48043 4.29289 0.292893C4.48043 0.105357 4.73478 0 5 0H17C17.2652 0 17.5196 0.105357 17.7071 0.292893C17.8946 0.48043 18 0.734784 18 1V15C18 15.2652 17.8946 15.5196 17.7071 15.7071C17.5196 15.8946 17.2652 16 17 16H14V19C14 19.552 13.55 20 12.993 20H1.007C0.875127 20.0008 0.744397 19.9755 0.622322 19.9256C0.500247 19.8757 0.389233 19.8022 0.295659 19.7093C0.202084 19.6164 0.127793 19.5059 0.0770543 19.3841C0.0263156 19.2624 0.000129374 19.1319 0 19L0.00300002 5C0.00300002 4.448 0.453 4 1.01 4H4ZM1.5 5.5V18.5H12.5V5.5H1.5ZM5.5 4H13C13.5523 4 14 4.44772 14 5V14.5H16.5V1.5H5.5V4Z" fill="#937206"/>
                       </svg>
                       <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Copy</div>
                     </div>
                   </li>
-                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal(true)"> 
+                  <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal(true)">
                     <div class="moveFolderImg tollTipWorkspace">
                       <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
                         <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -440,7 +440,7 @@
                             Please check the box to proceed
                           </div>
                           <div class="download-btn" (click)="downloadClick()">
-                           
+
                             <a
                               (click)="downloadAssets($event)"
                               [ngClass]="{ downloadDisbable: !downloadEnable }"
@@ -602,7 +602,7 @@
                             <ul>
                               <li *ngFor="let item of canNotDelete">
                                 <img [src]="!checkAssetType(item.type) ?getIconByType(item.type):getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 20px;margin-right: 10px;object-fit: contain;">
-                                
+
                                 {{item.title}}
                               </li>
                             </ul>
@@ -867,14 +867,14 @@
             </div> -->
 
             <!-- 11 Start adding collaborators to this private folder -->
-            
 
-            
-            
+
+
+
 
             <!-- <div *ngIf="selectedMenu === 0" class="main-content row">
               <div class="col-xl-12 col-md-12" style="padding-right: 0px;" *ngIf="searchList && searchList.length">
-               
+
                 <ul
                   class="all-sectors"
                   *ngIf="selectedFolder.uid !== parentId || isTrashView"
