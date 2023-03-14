@@ -10,9 +10,10 @@
               <a *ngIf="checkExternalUser(true) || isDroneUploader" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
             </div>
             <span class="main-title tollTipCustom">
-              <img class="play-button" src="../../../assets/images/button-play.svg" alt="" (click)="openSm(content)" />
+              <!-- <img class="play-button" src="../../../assets/images/button-play.svg" alt="" (click)="openSm(content)" /> -->
+              <div class="button button-play play-button" (click)="openSm(content)" ></div>
               <div class="tolltipContent">
-                Watch personalized video
+                Watch the Ground X Generative AI in action
               </div>
             </span>
           </nav>
@@ -224,7 +225,12 @@
 
   <ng-template #content let-modal>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); closeModal()">
-      <img src="../../../assets/images/video-close-white-icon.svg" />
+      <!-- <img src="../../../assets/images/video-close-white-icon.svg" /> -->
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25.303 14.6967L14.6963 25.3017" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14.6963 14.6967L25.303 25.3017" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M20 38.75C30.3553 38.75 38.75 30.3553 38.75 20C38.75 9.64466 30.3553 1.25 20 1.25C9.64466 1.25 1.25 9.64466 1.25 20C1.25 30.3553 9.64466 38.75 20 38.75Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
     <div class="modal-body fixx">
       <app-loader-small [show]="modalLoading"></app-loader-small>
@@ -255,35 +261,38 @@
       </div>
 
       <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
-       <div class="ssector">
-        <!-- <span>Change sector</span> -->
-        <ng-select [items]="allSectors" class="sectorsss" [ngClass]="{'goldenText': sectorSelected !== 'general' }"
-        id="customScrollBar"
-          ngDefaultControl
-          placeholder="Select a sector"
-          [(ngModel)]="sectorSelected"
-          bindLabel="label"
-          bindValue="value"
-          (change)="playPersonalizedVideo()"
-          [closeOnSelect]
-          [searchable]="false" [clearable]="false"
-          >
-          <ng-template ng-option-tmp let-item="item">
-            <div title="{{item.label}}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.label}}</div>
-          </ng-template>
-          <!-- <ng-template ng-option-tmp let-item="item">
-            <div title="{{item.label}}" style="position: relative;">
-              <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis; position: relative;">{{item.label}}</div>
-              <div class="videoTooltip">
-                {{item.label}}
-              </div>
-            </div>
-          </ng-template> -->
-        </ng-select>
-       </div>
-          <video *ngIf="videoResponse" style="width: 100%" preload="false" autoplay  controls tabindex="0">
+          <video *ngIf="videoResponse" style="width: 100%; height: calc(95vh - 100px);" preload="false" autoplay  controls tabindex="0">
             <source [src]=defaultVideoSrc type="video/mp4" />
           </video>
+          <div class="vidwoDropdownarea">
+            <p class="videoCaption">Watch the video AI generated for you</p>
+            <div class="ssector">
+              <!-- <span>Change sector</span> -->
+              <ng-select [items]="allSectors" class="sectorsss" [ngClass]="{'goldenText': sectorSelected !== 'general' }"
+              id="customScrollBar"
+                ngDefaultControl
+                placeholder="Select a sector"
+                [(ngModel)]="sectorSelected"
+                bindLabel="label"
+                bindValue="value"
+                (change)="playPersonalizedVideo()"
+                [closeOnSelect]
+                [searchable]="false" [clearable]="false"
+                >
+                <ng-template ng-option-tmp let-item="item">
+                  <div title="{{item.label}}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.label}}</div>
+                </ng-template>
+                <!-- <ng-template ng-option-tmp let-item="item">
+                  <div title="{{item.label}}" style="position: relative;">
+                    <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis; position: relative;">{{item.label}}</div>
+                    <div class="videoTooltip">
+                      {{item.label}}
+                    </div>
+                  </div>
+                </ng-template> -->
+              </ng-select>
+             </div>
+          </div>
       </div>
 
 
