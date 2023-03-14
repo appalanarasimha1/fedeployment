@@ -172,24 +172,25 @@ export class DataTableComponent implements OnInit, OnChanges {
       localStorage.setItem("user", JSON.stringify(res.user.properties));
     }
   }
-  async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
-    this.loading = true;
-    // const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
-    //   sectorUid,
-    //   checkCache,
-    //   pageSize,
-    //   pageIndex,
-    //   offset
-    // );
-    // this.sortedData = entries;
-    // this.searchList = entries;
-    // this.numberOfPages = numberOfPages;
-    // this.resultCount = resultsCount;
-    // this.extractBreadcrumb();
-    // this.showLinkCopy = showLinkCopy;
-    // this.showSearchbar = true;
-    // this.loading = false;
-  }
+
+  // async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+  //   this.loading = true;
+  //   // const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
+  //   //   sectorUid,
+  //   //   checkCache,
+  //   //   pageSize,
+  //   //   pageIndex,
+  //   //   offset
+  //   // );
+  //   // this.sortedData = entries;
+  //   // this.searchList = entries;
+  //   // this.numberOfPages = numberOfPages;
+  //   // this.resultCount = resultsCount;
+  //   // this.extractBreadcrumb();
+  //   // this.showLinkCopy = showLinkCopy;
+  //   // this.showSearchbar = true;
+  //   this.loading = false;
+  // }
 
   getDateInFormat(date: string): string {
     return new Date(date).toDateString();
