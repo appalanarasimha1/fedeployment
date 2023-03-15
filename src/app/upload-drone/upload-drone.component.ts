@@ -164,7 +164,7 @@ export class UploadDroneComponent implements OnInit {
         "X-File-Size": blob.size,
         "X-File-Type": blob.mimeType,
         "Content-Length": blob.size,
-        "X-Authentication-Token": localStorage.getItem("token"),
+        "X-Authentication-Token": localStorage.getItem("token"), // TODO: will alter it to fetch this token from cookies rather than storing it in localstorage
       },
     };
     this.apiService.post(uploadUrl, blob.content, options).subscribe(
@@ -346,10 +346,16 @@ export class UploadDroneComponent implements OnInit {
   onSelect(event) {
     const addedFiles = this.filterWhitelistFiles(event.addedFiles);
     this.files = [...this.files, ...addedFiles];
-    const addedDates = Array(addedFiles.length).fill(this.now);
-    this.dates = [...this.dates, ...addedDates];
-    // this.uploadFile(this.files);
+    // const addedDates = Array(addedFiles.length).fill(event.addedFiles[]);
+    for(let i = 0; i < addedFiles.length; i++) {
+      this.dates.push(addedFiles[i].lastModifiedDate);
+    }
+    // this.dates = [...this.dates, ...addedDates];
 
+
+
+
+    // this.uploadFile(this.files);
     // this.countFile = false;
   }
 
