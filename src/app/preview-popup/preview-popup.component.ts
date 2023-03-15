@@ -83,6 +83,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.getTags();
       this.getComments();
       this.getCameraInfo();
+      this.description = this.doc.properties['dc:description']
     }
     this.checkCanDownload();
     this.getRejectComment();
@@ -738,18 +739,24 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   async addUpdateDescription(){
-    let url = `/id/${this.doc?.uid}`
+    // let url = `/id/${this.doc?.uid}`
+    let url = '/automation/Document.Update'
     let payload = {
-      "entity-type": "document",
-      "uid": this.doc?.uid,
-      "properties": {
-      "dc:description": this.description
+      // "entity-type": "document",
+      "input": this.doc?.uid,
+      "params":{
+        "properties": {
+          "dc:description": this.nevermindHideMsg?"":this.description
+        }
       }
-    }
-    // console.log("doc",this.doc); 
-    this.apiService.put(url,payload).subscribe((res:any)=>{
-      console.log("res",res);
       
+    }
+    this.apiService.post(url,payload).subscribe((res:any)=>{
+      this.doc = res
+      if (this.nevermindHideMsg) {
+        this.description = ""
+        this.nevermindHideMsg = false
+      }
     })
     // last 
     this.enableInput=false
