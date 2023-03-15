@@ -504,4 +504,9 @@ export class DocumentationAssetsComponent implements OnInit {
     // This completes the subject properlly.
     this.ngUnsubscribe.complete();
   }
+
+  clearSelection() {
+    this.selectedStartDate = '';
+    this.selectedEndDate = '';
+  }
 }
