@@ -751,10 +751,12 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       }
       
     }
-    // console.log("doc",this.doc); 
     this.apiService.post(url,payload).subscribe((res:any)=>{
       this.doc = res
-      this.nevermindHideMsg = false
+      if (this.nevermindHideMsg) {
+        this.description = ""
+        this.nevermindHideMsg = false
+      }
     })
     // last 
     this.enableInput=false
