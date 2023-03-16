@@ -72,7 +72,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   sortedData;
   selectedMoveListNew = {};
   canNotDelete=[]
-  checkPrivate:boolean;
+  
   selectedFolder = null;
   selectedFolder2 = null;
   selectedFolderList: any = {};
@@ -360,9 +360,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     return this.currentWorkspace?.properties["dc:creator"].id === JSON.parse(userData).username
      || this.currentWorkspace?.properties["dc:creator"] === JSON.parse(userData).username;
   }
-  checkPrivateFolder(){
-    this.checkPrivate= this.isPrivateFolder()
-  }
+  // checkPrivateFolder(){
+  //   this.checkPrivate= this.isPrivateFolder()
+  // }
 
   isPrivateFolder(isButton = true, includeChild = false) {
     this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
