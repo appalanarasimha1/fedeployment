@@ -53,6 +53,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   description: '';
   nevermindHideMsg: boolean = false;
   enableInput:boolean=false
+  hasDownloadPermission = true
 
   constructor(
     private router: Router,
@@ -110,7 +111,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   //     );
   // }
 
-  open() {
+  open(hasDownloadPermission=true) {
+    this.hasDownloadPermission = hasDownloadPermission;
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -688,7 +690,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   clearValue() {
     this.description = '';
   }
-  
+
   closeDeleteModal(){
     this.nevermindHideMsg = !this.nevermindHideMsg;
   }
@@ -749,7 +751,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
           "dc:description": this.nevermindHideMsg?"":this.description
         }
       }
-      
+
     }
     this.apiService.post(url,payload).subscribe((res:any)=>{
       this.doc = res
@@ -758,7 +760,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         this.nevermindHideMsg = false
       }
     })
-    // last 
+    // last
     this.enableInput=false
   }
 

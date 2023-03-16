@@ -11,6 +11,7 @@ import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
 })
 export class DocumentCardComponent implements OnInit, OnChanges {
   @Input() doc: any;
+  @Input() hasDownloadPermission = true;
   // @Input() viewType: string;
   @Output() onOpenPreview = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
@@ -118,6 +119,7 @@ export class DocumentCardComponent implements OnInit, OnChanges {
   }
 
   hasRequestRestriction() {
+    if (!this.hasDownloadPermission) return true;
     return (
       this.doc.properties["sa:allow"] === ALLOW.request ||
       this.doc.properties["sa:downloadApproval"] === "true"
@@ -208,14 +210,14 @@ export class DocumentCardComponent implements OnInit, OnChanges {
 
   checkMimeType(document): string {
     const mimeType = document.properties['file:content']?.['mime-type'];
-    
+
       if(mimeType?.includes('image'))
         return ASSET_TYPE.PICTURE;
       if(mimeType?.includes('video'))
         return ASSET_TYPE.VIDEO;
       if(mimeType?.includes('pdf'))
         return ASSET_TYPE.FILE;
-      
+
       return 'nopreview';
   }
 
@@ -226,7 +228,7 @@ export class DocumentCardComponent implements OnInit, OnChanges {
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
       return '../../../assets/images/word.png';
-    } 
+    }
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt.png';
     }

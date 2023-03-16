@@ -305,3 +305,6 @@
 ::ng-deep .mat-calendar th.mat-header-cell, ::ng-deep .mat-calendar th.mat-header-cell button, ::ng-deep .mat-calendar th {
     border-bottom: 0px solid !important;
 }
+ng-select input {
+    color: #000;
+}
