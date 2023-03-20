@@ -338,6 +338,15 @@ export class HeaderComponent implements OnInit {
     this.computeNotifications();
     this.storeRequestDownloadNotification();
   }
+  
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    // if (!event) {
+    //   return `${window.location.origin}/nuxeo${url}`;
+    // }
+
+    return this.sharedService.getAssetUrl(event, url, document, type);
+  }
+
 
   computeDuplicateRequestDownloadNoti() {
     this.notifications = this.notifications.sort((a, b) => {
@@ -393,6 +402,8 @@ export class HeaderComponent implements OnInit {
   }
 
   goToNotificationLink(notification) {
+    // this.loading = true;
+    // debugger;
     let folderName = notification?.docPath?.split("/")[1]
     const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
     if (isAsset) this.router.navigate(['asset-view'], {queryParams : {assetId: notification.docUUID}});
