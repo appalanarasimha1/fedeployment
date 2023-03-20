@@ -174,6 +174,8 @@ export class UploadModalComponent implements OnInit {
   overallDownloadApproval: boolean = false;
   overallUsers: string[];
   overallDownloadApprovalUsers: string[];
+  whiteListFiles:any;
+  fileLimitExceed;
 
   constructor(
     private apiService: ApiService,
@@ -239,8 +241,6 @@ export class UploadModalComponent implements OnInit {
     this.dialogRef.close(this.selectedFolder);
   }
 
-  whiteListFiles:any;
-  fileLimitExceed;
   onSelect(event, fileLimitExceeded? : any) {
     this.fileLimitExceed = false
     // console.log("event.addedFiles", event.addedFiles);
