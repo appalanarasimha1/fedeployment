@@ -60,6 +60,7 @@ export class DocumentationAssetsComponent implements OnInit {
   filteredSubAreaList = [];
   notAuthorize = true;
   userRegionList = [];
+  userPermissionMap = {};
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -120,6 +121,7 @@ export class DocumentationAssetsComponent implements OnInit {
       if (found) {
         this.notAuthorize = false;
         this.userRegionList.push(access.name);
+        this.userPermissionMap[access.name] = found.permissions?.includes('download');
       }
     }
 
@@ -241,7 +243,7 @@ export class DocumentationAssetsComponent implements OnInit {
 
   async getAssetList() {
     this.loading = true;
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=40&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '/War Room'`;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '/War Room'`;
     if (this.companyId) {
       url += ` AND dc:vendor = '${this.companyId}'`;
     }
@@ -275,7 +277,9 @@ export class DocumentationAssetsComponent implements OnInit {
     }
     if (this.selectedRegion) {
       filteredDevice = this.deviceList.filter(device =>
-        (device.region?.includes(this.selectedRegion.uid) || device.areaId?.includes(this.selectedRegion.initial)))
+        (device.region?.includes(this.selectedRegion.uid)
+        || device.areaId?.includes(this.selectedRegion.initial)
+        || this.selectedRegion.initial === this.getInstallationIdRegion(device.installationId)))
       this.filteredSubAreaList = this.subAreaList.filter(subArea => (
         subArea.parentArea === this.selectedRegion.uid
       ));
@@ -386,7 +390,7 @@ export class DocumentationAssetsComponent implements OnInit {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
 
-    this.previewModal.open();
+    this.previewModal.open(this.checkAssetDownloadPermission(this.selectedFile));
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
@@ -503,5 +507,30 @@ export class DocumentationAssetsComponent implements OnInit {
     this.ngUnsubscribe.next();
     // This completes the subject properlly.
     this.ngUnsubscribe.complete();
+  }
+
+  clearSelection() {
+    this.selectedStartDate = '';
+    this.selectedEndDate = '';
+    this.getAssetList();
+  }
+
+  checkAssetDownloadPermission(asset) {
+    if (!asset) return false;
+    if (this.userPermissionMap['ALL']) return true;
+    const installationId = asset.properties["dc:installationId"];
+    if (!installationId) return false;
+    const assetRegion = this.getInstallationIdRegion(installationId);
+    if (!assetRegion) return false;
+    return this.userPermissionMap[assetRegion];
+  }
+
+  getInstallationIdRegion(installationId) {
+    try {
+      const split = installationId.split('-');
+      return split[split.length - 2];
+    } catch (e) {
+      return null;
+    }
   }
 }

@@ -7,7 +7,7 @@
       <li>Click <a href="mailto:groundxsupport@neom.com?subject=Ground X API Access Request">here</a> to request API access to construction assets.</li>
     </ul>
   </div>
-  <div *ngIf="!notAuthorize" class="container">
+  <div *ngIf="!notAuthorize" class="container" style="min-height: 250px;">
       <h2>Construction assets</h2>
       <h3>{{company}}</h3>
       <!-- <div *ngIf="!loading && (!assetList || assetList.length == 0) && checkNoFilterSelected()" class="adding-assets">
@@ -48,14 +48,23 @@
                 </ng-select>
             </li>
             <li>
-                <mat-form-field appearance="fill" [ngClass]="{'goldenText': selectedStartDate || selectedEndDate}">
-                  <mat-label (click)="picker.open();">Enter a date range</mat-label>
-                  <mat-date-range-input (dateChange)="dateRangeChange()" [rangePicker]="picker" (click)="picker.open();">
-                    <input matinput (dateChange)="dateRangeChange()" class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selectedStartDate">
-                    <input matinput (dateChange)="dateRangeChange()" class="customInput" matEndDate placeholder="End date" [(ngModel)]="selectedEndDate">
-                  </mat-date-range-input>
-                  <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
+              <mat-form-field appearance="fill" [ngClass]="{'goldenText': selectedStartDate || selectedEndDate}">
+                <mat-label (click)="picker.open();">Enter a date range</mat-label>
+                <mat-date-range-input (dateChange)="dateRangeChange()" [rangePicker]="picker" (click)="picker.open();">
+                  <input matinput (dateChange)="dateRangeChange()" class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selectedStartDate">
+                  <input matinput (dateChange)="dateRangeChange()" class="customInput" matEndDate placeholder="End date" [(ngModel)]="selectedEndDate">
+                </mat-date-range-input>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <span *ngIf="selectedStartDate || selectedEndDate" class="ng-clear-wrapper ng-star-inserted" title="Clear all" (click)="clearSelection()"
+                style="color: #DEB31A !important;
+                font-size: 20px;
+                font-family: 'brownregular';
+                position: absolute;
+                top: -5px;
+                right: 25px;
+                cursor: pointer;"><span aria-hidden="true" class="ng-clear">×</span></span>
+              </mat-form-field>
+              <!-- <button mat-button (click)="clearSelection()">Clear</button> -->
             </li>
             <li>
                 <ng-select placeholder="Format"
@@ -112,6 +121,7 @@
               [viewType]="viewType"
               (onOpenPreview)="open(doc, doc.type)"
               (onMarkFavourite)="markFavourite(doc, 'recent')"
+              [hasDownloadPermission]="checkAssetDownloadPermission(doc)"
             >
             </document-card>
           </div>

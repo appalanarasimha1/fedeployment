@@ -65,7 +65,7 @@ header{
     right: 10px;
     border-radius: 10px;
     padding: 10px 24px;
-    width: 250px;
+    width: 300px;
     top: 44px;
 }
 .dropdown-item.active, .dropdown-item:active{
@@ -825,9 +825,11 @@ ul.sidebarList li .sidebarLink.active {
     font-family: 'brownlight';
     word-break: break-word;
     line-height: normal;
+    width: calc(100% - 25px);
 }
 .notifactionImgCont .notifactionImg {
     margin-right: 10px;
+    width: 25px;
 }
 .notifactionHead {
     line-height: normal;
@@ -855,19 +857,20 @@ ul.sidebarList li .sidebarLink.active {
     padding-bottom: 15px;
     margin-bottom: 10px;
 }
-/* .notificationDropdown ul li:last-child {
+.notificationDropdown ul li:last-child {
     padding-bottom: 0px;
     border: 0px;
-} */
+}
 .notActive{
     color: #040404;
     font-family: 'brownlight' !important;
 }
 .notificationDropdown {
-    height: 200px;
+    min-height: 170px;
     overflow: hidden;
     overflow-y: scroll;
     padding-right: 10px;
+    max-height: 480px;
 }
 #customScrollBar::-webkit-scrollbar-track{
 	background-color: transparent;
@@ -910,8 +913,8 @@ ul.sidebarList li .sidebarLink.active {
     color: #946D00;
     font-family: 'brownregular';
     text-align: center;
-    border-top: 1px solid #EFEEE9;
     margin: 10px 0px;
+    border-top: 1px solid #EFEEE9;
     padding-top: 12px;
 }
 .view-all-notifaction span {
@@ -1268,4 +1271,22 @@ span.userName {
     font-family: 'brownlight';
     font-size: 13px;
     padding-top: 15px;
+}
+.notifactionCont {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dropdown-menu .request-download-btn-group.buttonGroup {
+    text-align: right;
+    margin-top: 20px;
+}
+.dropdown-menu .reject, .dropdown-menu .approve {
+    padding: 0px 20px;
+    line-height: 29px;
+    font-size: 13px;
+    letter-spacing: normal;
+}
+.request-download-btn-group.buttonGroup.downloadBtn .approve {
+    padding: 0px 15px 0px 12px;
 }

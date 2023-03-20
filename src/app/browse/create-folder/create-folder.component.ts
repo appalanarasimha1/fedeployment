@@ -12,8 +12,8 @@ import { SharedService } from 'src/app/services/shared.service';
 export class CreateFolderComponent implements OnInit,OnChanges {
   @Input() currentWorkspace: IEntry;
   @Input() folderAssetsResult;
-  @Input() checkPrivate;
-  @Output() isPrivate: EventEmitter<any> = new EventEmitter();
+  // @Input() checkPrivate;
+  // @Output() isPrivate: EventEmitter<any> = new EventEmitter();
   @Output() folderCreateEvent: EventEmitter<any> = new EventEmitter();
 
   titleExists: boolean = false;
@@ -46,12 +46,12 @@ export class CreateFolderComponent implements OnInit,OnChanges {
   ngOnInit(): void {
     this.datePickerDefaultAction();
     // this.getAllFolders()
-    this.isPrivate.emit()
+    // this.isPrivate.emit()
   }
+
   ngOnChanges(changes):void{
-    console.log("changes in create",changes )
-    if (changes.checkPrivate) {
-      this.checkPrivateFolder = changes.checkPrivate.currentValue
+    if (changes?.currentWorkspace?.currentValue) {
+      this.checkPrivateFolder = changes.currentWorkspace.currentValue.properties['dc:isPrivate'];
     }
   }
 

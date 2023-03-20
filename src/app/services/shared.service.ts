@@ -59,9 +59,18 @@ export class SharedService {
   pluck(data, key) {
     return pluck(data, key);
   }
+  
+  checkAssetMimeTypes(document: any): string {
+    return this.checkMimeType(document);
+  }
 
-  getAssetUrl(event: any, url: string, type?: string): string {
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
     if (!url) return '';
+
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+      return '../../../assets/images/no-preview-big.png';
+    }
+    
     if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('nuxeo/')[1]}`;
     }
