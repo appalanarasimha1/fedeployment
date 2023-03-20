@@ -243,7 +243,9 @@ export class DocumentationAssetsComponent implements OnInit {
 
   async getAssetList() {
     this.loading = true;
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '/War Room'`;
+    const uploadedPath = await this.getDroneUploadPaths() || 'War Room';
+    const pathQuery = this.computeQueryWsPaths(uploadedPath);
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` + pathQuery;
     if (this.companyId) {
       url += ` AND dc:vendor = '${this.companyId}'`;
     }
@@ -261,6 +263,26 @@ export class DocumentationAssetsComponent implements OnInit {
     this.loading = false;
     if (!res) return;
     this.assetList = res["entries"];
+  }
+
+  computeQueryWsPaths(paths) {
+    const split = paths.split(',');
+    if (split.length === 1) return ` AND ecm:path STARTSWITH '/${paths}'`;
+    let query = ' AND (';
+    for (let i = 0; i < split.length; i++) {
+      const path = split[i];
+      if (i === split.length - 1) query += ` ecm:path STARTSWITH '/${path}' )`;
+      else query += ` ecm:path STARTSWITH '/${path}' OR`;
+    }
+    return query;
+  }
+
+  async getDroneUploadPaths() {
+    try {
+      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {}).toPromise();
+      const paths = res['value'];
+      return paths;
+    } catch (err) {return ""}
   }
 
   dateRangeChange() {
