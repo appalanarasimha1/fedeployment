@@ -90,7 +90,7 @@
                     </a>
                   </div>
                   <div *ngIf="showCreateFolderPopup" class='dropdownCreate createFolder'>
-                    <div *ngIf="doc" class="download-dropdown"  [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
+                    <div *ngIf="doc && hasDownloadPermission" class="download-dropdown"  [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
 
                       <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
                         <p  *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
@@ -189,7 +189,7 @@
           <div class="deleteDescription" *ngIf="nevermindHideMsg">
             Are you sure you want to delete the description?
             <ul>
-              <li>Yes</li>
+              <li (click)="addUpdateDescription()">Yes</li>
               <li (click)="closeDeleteModal()">Nevermind</li>
             </ul>
           </div>
@@ -235,17 +235,17 @@
               <div class="info-content">
 
                 <div class="row">
-                  <div class="col-xl-12 col-md-12" *ngIf="doc?.properties['dc:description']">
-                    <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description 
+                  <div class="col-xl-12 col-md-12" >
+                    <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description
                       <ul>
                         <li (click)="closeDeleteModal()">Delete</li>
-                        <li>Edit</li>
+                        <li (click)="enableInputClick(true)">Edit</li>
                       </ul>
                     </div>
                     <div class="addDescriptionBtn"  *ngIf="!doc?.properties['dc:description']"><button (click)="enableInputClick(true)">Add description</button></div>
                     <p class="clearfix" *ngIf="doc?.properties['dc:description']">
-                      <span class="collapsable float-left" > {{ (description.length>firstCount) ? (description | slice:0:counter)+'...':(description) }}
-                          <span class="redTxt" *ngIf="description.length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
+                      <span class="collapsable float-left" > {{ (doc?.properties['dc:description'].length>firstCount) ? (doc?.properties['dc:description'] | slice:0:counter)+'...':(doc?.properties['dc:description']) }}
+                          <span class="redTxt" *ngIf="doc?.properties['dc:description'].length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
                             {{showTxt}}
                           </span>
                       </span>
@@ -258,7 +258,7 @@
                       <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }" (click)="addUpdateDescription()" ><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
                       <div class="addDescriptionIcon" (click)="enableInputClick(false)"><img src="../../assets/images/remove-description.svg" ></div>
                     </div>
-                    
+
                   </div>
                 </div>
 
@@ -725,10 +725,10 @@
 
               <div class="row">
                 <div class="col-xl-12 col-md-12">
-                  <div class="descriptionHeade">Description 
+                  <div class="descriptionHeade">Description
                     <ul>
                       <li (click)="closeDeleteModal()">Delete</li>
-                      <li>Edit</li>
+                      <li (click)="enableInputClick(true)">Edit</li>
                     </ul>
                   </div>
                   <div class="addDescriptionBtn"><button>Add description</button></div>
@@ -747,7 +747,7 @@
                     <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }"><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
                     <div class="addDescriptionIcon"><img src="../../assets/images/remove-description.svg" ></div>
                   </div>
-                  
+
                 </div>
               </div>
 

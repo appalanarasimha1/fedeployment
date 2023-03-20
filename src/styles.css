@@ -3937,7 +3937,8 @@ body { margin: 0; }
   color: #fff;
   text-align: left;
 }
-.select-an-area .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+.select-an-area .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input,
+.regionBlok .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
   padding-left: 0px;
 }
 /* .select-an-area .ng-select-container.ng-has-value {
