@@ -201,7 +201,7 @@
                                     item.extended.isApproved" 
                                   class="request-download-btn-group buttonGroup downloadBtn"
                                 >
-                                  <a class="btn approve"><img src="../../../assets/images/download-white-icon.svg"> Download</a> <!-- href="{{ getAssetUrl(null, item.docPath) }}" -->
+                                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}"><img src="../../../assets/images/download-white-icon.svg"> Download</a> 
                                 </div>
                                 <div class="dayWeek">
                                   {{getNotificationSince(item)}}
@@ -403,7 +403,9 @@
                   class="request-download-btn-group buttonGroup downloadBtn" 
                   style="text-align: right"
                 >
-                  <a class="btn approve"><img src="../../../assets/images/download-white-icon.svg"> Download</a> <!-- href="{{ getAssetUrl(null, item.docPath) }}" -->
+                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}">
+                    <img src="../../../assets/images/download-white-icon.svg"> Download
+                  </a> 
                 </div>
               </div>
             </li>
@@ -466,7 +468,7 @@
                   class="request-download-btn-group buttonGroup downloadBtn" 
                   style="text-align: right"
                 >
-                  <a class="btn approve"> <!-- href="{{ getAssetUrl(null, item.docPath) }}" -->
+                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}">
                     <img src="../../../assets/images/download-white-icon.svg"> Download
                   </a>
                 </div>

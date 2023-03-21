@@ -350,6 +350,10 @@ export class HeaderComponent implements OnInit {
     return this.sharedService.getAssetUrl(event, url, document, type);
   }
 
+  downloadAssetFromNotification(UUID: string) {
+    return `${window.location.origin}/nuxeo/nxfile/default/${UUID}`;
+  }
+
 
   computeDuplicateRequestDownloadNoti() {
     this.notifications = this.notifications.sort((a, b) => {
