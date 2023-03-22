@@ -21,7 +21,7 @@
       <a routerLink="/" fragment="" (click)="selectTab(tabs.MEDIA)" data-toggle="tab">Media</a>
     </li>
     <li [ngClass]="selectedTab === tabs.CONSTRUCTION ? 'pointer active' : 'pointer'">
-      <a routerLink="/" fragment="documentation-assets" (click)="selectTab(tabs.CONSTRUCTION)" data-toggle="tab">Construction</a>
+      <a routerLink="/construction" (click)="selectTab(tabs.CONSTRUCTION)" data-toggle="tab">Construction</a>
     </li>
   </ul>
 </div>
@@ -50,6 +50,8 @@
   (selectDetailViewType)="selectDetailViewType($event)"
 ></app-content>
 
-<app-documentation-assets
+<router-outlet></router-outlet>
+
+<!-- <app-documentation-assets
   *ngIf="selectedTab === tabs.CONSTRUCTION">
-</app-documentation-assets>
+</app-documentation-assets> -->

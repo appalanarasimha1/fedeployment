@@ -120,7 +120,7 @@ export class UploadDroneComponent implements OnInit {
       context: {},
       params: {
         installationId: this.selectedDevice.installationId,
-        location: this.selectedDevice.initial,
+        location: this.selectedDevice.initial || this.getInstallationIdRegion(this.selectedDevice.installationId),
       },
     };
     const res = await this.apiService
@@ -465,7 +465,9 @@ export class UploadDroneComponent implements OnInit {
       direction: device.direction,
       cameraPole: device.cameraPole,
       region: device.region,
+      areaName: device.areaName,
       subArea: device.subArea,
+      subAreaName: device.subAreaName,
       status: device.status,
       installationId: device.installationId,
       uid: device.id,
@@ -535,7 +537,7 @@ export class UploadDroneComponent implements OnInit {
     this.installationIdList = this.deviceList.map((device) => ({
       installationId: device.installationId,
       area: this.subAreaMap[device.subArea]?.name || device.subAreaName,
-      location: this.regionMap[device.region]?.name || device.subAreaId,
+      location: this.regionMap[device.region]?.name || device.areaName,
       areaId: device.subArea,
       locationId: device.region,
       initial: this.regionMap[device.region]?.initial,

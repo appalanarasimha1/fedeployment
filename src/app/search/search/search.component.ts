@@ -84,7 +84,7 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (window.location.href.includes("#documentation-assets")) {
+    if (window.location.href.includes("construction")) {
       this.selectedTab = tabs.CONSTRUCTION;
     }
     this.fetchMostSearchedTags();
@@ -652,7 +652,7 @@ export class SearchComponent implements OnInit {
       if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
         this.selectedTab = tabs.CONSTRUCTION;
         this.isDroneUploader = true;
-        this.router.navigate(['/'], { fragment: 'documentation-assets' });
+        this.router.navigate(['/', 'construction']);
         return;
       }
       if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
