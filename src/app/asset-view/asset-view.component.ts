@@ -26,7 +26,7 @@ export class AssetViewComponent implements OnInit {
 
   async fetchAsset(assetId: string): Promise<void> {
     this.loading = true;
-    const doc: any = await this.apiService.get(`/id/${assetId}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
+    const doc: any = await this.apiService.get(`/id/${assetId}?fetch-acls=username`,
       {headers: { "fetch-document": "properties"}}).toPromise();
     this.file = doc;
     this.fileUrl = `${window.location.origin}/nuxeo/${doc.properties['file:content'].data.split('nuxeo/')[1]}`;
