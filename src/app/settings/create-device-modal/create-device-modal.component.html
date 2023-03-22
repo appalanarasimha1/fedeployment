@@ -1,5 +1,5 @@
 <div class="create-supplier">
-    <h3>{{isCreate ? 'Create' : 'Edit'}} device
+    <h3>{{isCreate ? 'Create' : 'Edit'}} device <span *ngIf="!isCreate"> : {{selectedDevice.installationId}}</span>
         <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
           <img src="../../../assets/images/close-modal.svg" style="width: 20px" />
        </button>
@@ -8,7 +8,7 @@
     <div class="create-supplier-form">
         <ul>
             <li>
-                <label for="Device Type">Device Type</label>
+                <label *ngIf="isCreate" for="Device Type">Device Type</label>
                 <ol *ngIf="isCreate" class="deviceType">
                     <li>
                         <input  type="radio" [checked]="selectedType=='timelapse'" id="timelapse" name="deviceType" (change)="onSelectdeviceType($event, 'timelapse')" checked />
@@ -27,26 +27,25 @@
                         <label for="drone">Drone</label>
                     </li>
                 </ol>
-                <ol *ngIf="!isCreate" class="deviceType">
+                <!-- <ol *ngIf="!isCreate" class="deviceType">
                     <li>
                         <input type="radio" id="timelapse" name="deviceType" checked />
                         <label for="timelapse">{{capitalizeFirstLetter(selectedType)}}</label>
                     </li>
-                </ol>
+                </ol> -->
             </li>
             <li class="regionBlok">
                 <div class="form-group">
                     <label for="Region">Owner</label>
                     <ng-select placeholder="Select"
-                        [searchable]="false"
-                        [clearable]="false"
+                        [searchable]="true"
+                        [clearable]="true"
                         [(ngModel)]="selectedOwner"
                         id="region"
                         [ngClass]="{'goldenText': selectedOwner}"
-                        [disabled]="!isCreate"
                     >
                         <ng-option *ngFor="let owner of owners" [value]="owner">
-                            {{owner.initial}}
+                            {{owner}}
                         </ng-option>
                     </ng-select>
                 </div>
@@ -55,11 +54,11 @@
                 <div class="flex">
                     <div class="form-group">
                         <label for="Latitude / Northing">Latitude / Northing</label>
-                        <input [(ngModel)]="latitude" type="text" placeholder="E.g. 27.480860" />
+                        <input [(ngModel)]="latitude" type="text" placeholder="E.g. 27.480860" [ngClass]="{'goldenText': latitude}"/>
                     </div>
                     <div class="form-group">
                         <label for="Longitude / Easting">Longitude / Easting</label>
-                        <input [(ngModel)]="longitude" type="text" placeholder="E.g. 35.589090" />
+                        <input [(ngModel)]="longitude" type="text" placeholder="E.g. 35.589090" [ngClass]="{'goldenText': longitude}"/>
                     </div>
                 </div>
             </li>
@@ -72,15 +71,15 @@
                                 <div class="copyHoverInfo" style="top: 1px; left: 20px;">3-digit degree value on a 360 degrees scale</div>
                             </div>
                         </label>
-                        <input [(ngModel)]="direction" type="text" placeholder="E.g. 270" />
+                        <input [(ngModel)]="direction" type="text" placeholder="E.g. 270" [ngClass]="{'goldenText': direction}" />
                     </div>
                     <div class="form-group" *ngIf="poleIdShow">
                         <label for="Pole ID">Pole ID</label>
-                        <input [(ngModel)]="poleId" type="text" placeholder="E.g. A05" />
+                        <input [(ngModel)]="poleId" type="text" placeholder="E.g. A05" [ngClass]="{'goldenText': poleId}" />
                     </div>
                 </div>
             </li>
-            <li *ngIf="selectedType === 'timelapse'" class="regionBlok">
+            <li class="regionBlok">
                 <div class="form-group">
                     <label for="Supplier">Supplier</label>
                     <ng-select placeholder="Select"
@@ -145,6 +144,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button (click)="createDevice()" class="upload-btn" [disabled]="!checkEnableCreateDeviceButton() || loading" >{{isCreate ? 'Create device' : 'Save'}}</button>
+        <button (click)="createDevice()" class="upload-btn" [disabled]="!checkEnableCreateDeviceButton() || loading" >{{isCreate ? 'Create new device' : 'Save'}}</button>
     </div>
 </div>

@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, Input, ViewChild, TemplateRef } from "@an
 import { ActivatedRoute, Router } from "@angular/router";
 import { apiRoutes } from "../common/config";
 import { ApiService } from "../services/api.service";
-import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions } from "../common/constant";
+import { localStorageVars, TAG_ATTRIBUTES, unwantedTags, DEFAULT_NUMBER_OF_TAGS_PREVIEW, specialExtensions, DRONE_UPLOADER } from "../common/constant";
 import { NuxeoService } from '../services/nuxeo.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ALLOW, ALLOW_VALUE_MAP } from "../upload-modal/constant";
@@ -42,6 +42,19 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   modalOpen: boolean = true;
   fullSIzeImg: boolean = false;
   device;
+  isDroneUploader = false;
+  showCreateFolderPopup: boolean = false;
+  loading: boolean = false;
+
+  last_index = 100;
+  counter = 100;
+  showTxt = "Show More";
+  firstCount = 100;
+  info = "walking alone with suitcase bag. Travel weekend NEOM vacation trip. Young woman pulling suitcase The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
+  description: '';
+  nevermindHideMsg: boolean = false;
+  enableInput:boolean=false
+  hasDownloadPermission = true
 
   constructor(
     private router: Router,
@@ -60,6 +73,11 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.getComments();
       this.getCameraInfo();
     }
+
+    this.last_index = (this.info.substring(0, 200)).lastIndexOf(' ');
+    if(this.last_index > 200) this.last_index = 200;
+    this.counter = this.last_index;
+    this.checkDroneUser();
   }
 
   ngOnChanges(): void {
@@ -67,6 +85,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.getTags();
       this.getComments();
       this.getCameraInfo();
+      this.description = this.doc.properties['dc:description']
     }
     this.checkCanDownload();
     this.getRejectComment();
@@ -93,7 +112,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   //     );
   // }
 
-  open() {
+  open(hasDownloadPermission=true) {
+    this.hasDownloadPermission = hasDownloadPermission;
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -173,10 +193,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         console.log("get comment error", err);
         this.showAllComments = false
       });
-  }
-
-  getAssetUrl(event: any, url: string, type?: string): string {
-    return this.sharedService.getAssetUrl(event, url, type);
   }
 
   getDownloadFileEstimation(data?: any): string {
@@ -595,7 +611,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     await this.apiService.post(apiRoutes.REQUEST_DOWNLOAD, body).toPromise();
     this.requestSent = true;
   }
-  loading:boolean=false
+
   showAllcommentClick(){
     this.loading = true
     this.showAllComments = true
@@ -656,5 +672,94 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   getTimeTaken() {
     if (!this.device.installationTime) return "";
     return this.device.installationTime.match(/.{1,2}/g).join(":");
+  }
+
+
+  toggleSkil(event){
+    if(this.counter < 201 )
+      {
+        this.counter = this.info.length;
+        this.showTxt = "View less";
+      }
+
+      else {
+        this.counter = this.last_index;
+        this.showTxt = "View more"
+      }
+  }
+
+  clearValue() {
+    this.description = '';
+  }
+
+  closeDeleteModal(){
+    this.nevermindHideMsg = !this.nevermindHideMsg;
+  }
+  checkDroneUser() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      const groups = user.groups;
+      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+        this.isDroneUploader = true;
+      }
+      return;
+    }
+  }
+
+  datePickerDefaultAction() {
+    this.showCreateFolderPopup = true;
+    $(".buttonCreate").on("click", function (e) {
+      $(".dropdownCreate").show();
+      $(".buttonCreate").addClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+    $(".buttonCreate.createNewFolderClick").on("click", function (e) {
+      $(".dropdownCreate").hide();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+
+    $(".dropdownCreate").click(function (e) {
+      e.stopPropagation();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+    });
+
+    $(document).click(function () {
+      $(".dropdownCreate").hide();
+      $(".buttonCreate").removeClass("createNewFolderClick");
+    });
+  }
+
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    return this.sharedService.getAssetUrl(event, url, document, type);
+  }
+
+
+  async addUpdateDescription(){
+    // let url = `/id/${this.doc?.uid}`
+    let url = '/automation/Document.Update'
+    let payload = {
+      // "entity-type": "document",
+      "input": this.doc?.uid,
+      "params":{
+        "properties": {
+          "dc:description": this.nevermindHideMsg?"":this.description
+        }
+      }
+
+    }
+    this.apiService.post(url,payload).subscribe((res:any)=>{
+      this.doc = res
+      if (this.nevermindHideMsg) {
+        this.description = ""
+        this.nevermindHideMsg = false
+      }
+    })
+    // last
+    this.enableInput=false
+  }
+
+  enableInputClick(value:boolean){
+    this.enableInput=value
   }
 }

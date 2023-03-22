@@ -21,6 +21,7 @@ export class DataService {
   private showEverything = new Subject<boolean>();
   private showFooter = new Subject<boolean>();
   private folderPermission = new Subject<boolean>();
+  private fetchAssets = new Subject<any>();
   constructor() {}
 
   // Observable string streams
@@ -39,6 +40,7 @@ export class DataService {
   showEverything$ = this.showEverything.asObservable();
   showFooter$ = this.showFooter.asObservable();
   folderPermission$ = this.folderPermission.asObservable();
+  fetchAssets$ = this.fetchAssets.asObservable();
 
   sectorDataPush(sector) {
     this.sectorChangedSource.next(sector);
@@ -92,5 +94,9 @@ export class DataService {
   }
   folderPermissionInit(data:boolean){
     this.folderPermission.next(data)
+  }
+
+  fetchAssetsInit(data: any) {
+    this.fetchAssets.next(data);
   }
 }

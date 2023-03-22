@@ -7,6 +7,9 @@ import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
+import { DRONE_UPLOADER } from '../common/constant';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-documentation-assets",
@@ -15,6 +18,7 @@ import { apiRoutes } from "../common/config";
 })
 export class DocumentationAssetsComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
+  protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     public matDialog: MatDialog,
@@ -37,6 +41,7 @@ export class DocumentationAssetsComponent implements OnInit {
   subAreaList = [];
   subAreaMap = {};
   supplierList = [];
+  accessList = [];
   installationIdList = [];
   user = "";
   company = "";
@@ -52,8 +57,13 @@ export class DocumentationAssetsComponent implements OnInit {
   selectedStartDate;
   selectedEndDate;
   assetByMe = false;
+  filteredSubAreaList = [];
+  notAuthorize = true;
+  userRegionList = [];
+  userPermissionMap = {};
 
   onSelectRegions(regions) {
+    this.selectedsubArea = null;
     this.getAssetList();
   }
   onSelectSubArea(area) {
@@ -66,11 +76,58 @@ export class DocumentationAssetsComponent implements OnInit {
     this.sharedService.getSidebarToggle().subscribe(() => {
       this.updateMasonryLayout = !this.updateMasonryLayout;
     });
-    this.user = JSON.parse(localStorage.getItem("user"))["username"];
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false
+
+    this.user = userData["username"];
     this.getDeviceList();
     this.getSupplierList();
-    this.getRegionList();
-    this.getSubAreaList();
+    this.getAccessList();
+    this.sharedService.events$.forEach(event => {
+      if (event === 'Upload done') this.getAssetList();
+    });
+  }
+
+  async getAccessList() {
+    const url = '/settings/accessList';
+    const res = await this.apiService
+      .get(url, {}).toPromise() as any;
+
+    const list = res || [];
+    const sortedAll = [
+      ...list.filter(a => a.name === 'ALL'),
+      ...list.filter(a => a.name !== 'ALL')
+    ]
+    this.accessList = sortedAll
+    .map((entry) => ({
+      name: entry.name,
+      uid: entry.id,
+      activated: entry.activated,
+      users: entry.users || [],
+    }));
+
+    if (this.notAuthorize) {
+      this.checkAuthorizeUser()
+    }
+
+    await this.getRegionList();
+    await this.getSubAreaList();
+  }
+
+  checkAuthorizeUser() {
+    for (const access of this.accessList) {
+      const users = access.users;
+      const found = users.find(user => user.activated && user.user === this.user);
+      if (found) {
+        this.notAuthorize = false;
+        this.userRegionList.push(access.name);
+        this.userPermissionMap[access.name] = found.permissions?.includes('download');
+      }
+    }
+
+    if (!this.notAuthorize) {
+      this.loading = false;
+    }
   }
 
   async getDeviceList() {
@@ -104,6 +161,9 @@ export class DocumentationAssetsComponent implements OnInit {
       name: region.title,
       uid: region.id,
     }));
+    if (this.userRegionList.length > 0 && !this.userRegionList.includes('ALL')) {
+      this.regionList = this.regionList.filter(region => this.userRegionList.includes(region.initial));
+    }
     this.computeRegionMap();
   }
 
@@ -128,6 +188,9 @@ export class DocumentationAssetsComponent implements OnInit {
       uid: area.id,
       parentArea: area.parentArea,
     }));
+    const regionIds = this.regionList.map(region => region.uid);
+    this.subAreaList = this.subAreaList.filter(subArea => regionIds.includes(subArea.parentArea));
+    this.filteredSubAreaList = this.subAreaList;
     this.computeSubAreaMap();
   }
 
@@ -180,10 +243,20 @@ export class DocumentationAssetsComponent implements OnInit {
 
   async getAssetList() {
     this.loading = true;
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=1000&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND dc:vendor = '${this.companyId}'`;
-    url += this.buildFilterAssetQuery();
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '/War Room'`;
+    if (this.companyId) {
+      url += ` AND dc:vendor = '${this.companyId}'`;
+    }
+    const query = this.buildFilterAssetQuery();
+    if (query === 'NONE') {
+      this.assetList = [];
+      this.loading = false;
+      return;
+    }
+    url += query;
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
+      .pipe( takeUntil(this.ngUnsubscribe) )
       .toPromise();
     this.loading = false;
     if (!res) return;
@@ -196,16 +269,32 @@ export class DocumentationAssetsComponent implements OnInit {
 
   buildFilterAssetQuery() {
     let query = "";
+    let filteredDevice = null;
     if (!this.selectedFormat) {
       query += " AND ecm:primaryType IN ('Picture', 'Video')";
     } else {
       query += ` AND ecm:primaryType = '${this.selectedFormat}'`;
     }
     if (this.selectedRegion) {
-      query += ` AND drone_asset:region = '${this.selectedRegion}'`;
+      filteredDevice = this.deviceList.filter(device =>
+        (device.region?.includes(this.selectedRegion.uid)
+        || device.areaId?.includes(this.selectedRegion.initial)
+        || this.selectedRegion.initial === this.getInstallationIdRegion(device.installationId)))
+      this.filteredSubAreaList = this.subAreaList.filter(subArea => (
+        subArea.parentArea === this.selectedRegion.uid
+      ));
+    } else {
+      this.filteredSubAreaList = this.subAreaList;
     }
     if (this.selectedsubArea) {
-      query += ` AND drone_asset:area = '${this.selectedsubArea}'`;
+      filteredDevice = this.deviceList.filter(device =>
+        (device.subArea?.includes(this.selectedsubArea.uid) || device.subAreaId?.includes(this.selectedsubArea.locationId)))
+    }
+    if (filteredDevice != null) {
+      if (filteredDevice.length === 0) return 'NONE';
+      const deviceIds = filteredDevice.map(device => device.installationId);
+      const queryString = deviceIds.join("','");
+      query += ` AND dc:installationId IN ('${queryString}')`;
     }
     if (this.selectedStartDate && this.selectedEndDate) {
       query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
@@ -301,7 +390,7 @@ export class DocumentationAssetsComponent implements OnInit {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
 
-    this.previewModal.open();
+    this.previewModal.open(this.checkAssetDownloadPermission(this.selectedFile));
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
@@ -369,6 +458,7 @@ export class DocumentationAssetsComponent implements OnInit {
     // this.loading.push(true);
     this.apiService
       .post(apiRoutes.MARK_FAVOURITE, body)
+      .pipe( takeUntil(this.ngUnsubscribe) )
       .subscribe((docs: any) => {
         data.contextParameters.favorites.isFavorite =
           !data.contextParameters.favorites.isFavorite;
@@ -409,6 +499,38 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   isNeomUser() {
-    return this.user?.includes('@neom.com');
+    return !!this.user?.includes('@neom.com');
+  }
+
+  public ngOnDestroy(): void {
+    // This aborts all HTTP requests.
+    this.ngUnsubscribe.next();
+    // This completes the subject properlly.
+    this.ngUnsubscribe.complete();
+  }
+
+  clearSelection() {
+    this.selectedStartDate = '';
+    this.selectedEndDate = '';
+    this.getAssetList();
+  }
+
+  checkAssetDownloadPermission(asset) {
+    if (!asset) return false;
+    if (this.userPermissionMap['ALL']) return true;
+    const installationId = asset.properties["dc:installationId"];
+    if (!installationId) return false;
+    const assetRegion = this.getInstallationIdRegion(installationId);
+    if (!assetRegion) return false;
+    return this.userPermissionMap[assetRegion];
+  }
+
+  getInstallationIdRegion(installationId) {
+    try {
+      const split = installationId.split('-');
+      return split[split.length - 2];
+    } catch (e) {
+      return null;
+    }
   }
 }

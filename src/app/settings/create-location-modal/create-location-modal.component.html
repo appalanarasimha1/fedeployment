@@ -1,5 +1,5 @@
 <div class="create-supplier">
-    <h3>Create Region
+    <h3>Create new region
         <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
           <img src="../../assets/images/close-modal.svg" style="width: 20px" />
        </button>
@@ -10,14 +10,14 @@
             <li>
                 <div class="form-group">
                     <label for="Supplier's Name" >Region's Name</label>
-                    <input type="text" placeholder="Drone Experts Ltd" [(ngModel)]="regionName" />
+                    <input type="text" placeholder="Drone Experts Ltd" [(ngModel)]="regionName" [ngClass]="{'goldenText': regionName}" />
                     <span *ngIf="regionName && isRegionNameExisted()" style="color: red;">Region name already existed!</span>
                 </div>
             </li>
             <li>
                 <div class="form-group">
                     <label for="Region's initials">Region's initials</label>
-                    <input type="email" [(ngModel)]="regionInitial" placeholder="Enter region's initials" />
+                    <input type="email" [(ngModel)]="regionInitial" placeholder="Enter region's initials" [ngClass]="{'goldenText': regionInitial}" />
                     <span *ngIf="regionInitial && isInitialNameExisted()" style="color: red;">Initial already existed!</span>
                 </div>
             </li>
@@ -26,6 +26,6 @@
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <button class="upload-btn" [disabled]="!regionName || !regionInitial || loading || isRegionNameExisted() || isInitialNameExisted()" (click)="createRegion()">Create region</button>
+        <button class="upload-btn" [disabled]="!regionName || !regionInitial || loading || isRegionNameExisted() || isInitialNameExisted()" (click)="createRegion()">Create new region</button>
     </div>
 </div>

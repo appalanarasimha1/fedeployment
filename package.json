@@ -9,6 +9,7 @@
     "build-uat": "ng build --configuration uat",
     "build-prod": "ng build --configuration production",
     "build-oci-prod": "ng build --configuration oci-prod",
+    "build-oci-prod-new": "ng build --configuration oci-prod-new",
     "build-oci-uat": "ng build --configuration oci-uat",
     "test": "ng test",
     "lint": "ng lint",

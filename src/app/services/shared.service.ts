@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { Moment } from 'moment'; // for interface
 import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import JSEncrypt from 'jsencrypt';
 import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars } from '../common/constant';
 import { ApiService } from './api.service';
@@ -23,6 +23,7 @@ export class SharedService {
 
   // /* <!-- sprint12-fixes start --> */
   public sidebarToggleResize = new BehaviorSubject(false);
+  private _subject = new Subject<any>();
 
   constructor(
     private router: Router,
@@ -58,9 +59,18 @@ export class SharedService {
   pluck(data, key) {
     return pluck(data, key);
   }
+  
+  checkAssetMimeTypes(document: any): string {
+    return this.checkMimeType(document);
+  }
 
-  getAssetUrl(event: any, url: string, type?: string): string {
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
     if (!url) return '';
+
+    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
+      return '../../../assets/images/no-preview-big.png';
+    }
+    
     if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('nuxeo/')[1]}`;
     }
@@ -153,17 +163,25 @@ export class SharedService {
   }
 
   async getExternalGroupUser() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
-    const users = res['entries'];
-    const listExternalUser = users.map(user => user.id);
-    localStorage.setItem("listExternalUser", JSON.stringify(listExternalUser));
+    try {
+      const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_USER)).toPromise();
+      const users = res?.['entries'];
+      const listExternalUser = users?.map(user => user.id);
+      localStorage.setItem("listExternalUser", JSON.stringify(listExternalUser));
+    } catch(e) {
+      console.error('error while fetching external users');
+    }
   }
 
   async getExternalGroupUserGlobal() {
-    const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
-    const users = res['entries'];
-    const listExternalUserGlobal = users.map(user => user.id);
-    localStorage.setItem("listExternalUserGlobal", JSON.stringify(listExternalUserGlobal));
+    try {
+      const res = await this.apiService.get(apiRoutes.GROUP_USER_LIST.replace('[groupName]', EXTERNAL_GROUP_GLOBAL)).toPromise();
+      const users = res?.['entries'];
+      const listExternalUserGlobal = users?.map(user => user.id);
+      localStorage.setItem("listExternalUserGlobal", JSON.stringify(listExternalUserGlobal));
+    } catch (e) {
+      console.error('error while fetching external global users');
+    }
   }
 
   /**
@@ -273,7 +291,8 @@ export class SharedService {
   }
 
   toTop(): void {
-    window.scroll(0,0);
+    $("body").animate({ scrollTop: 0 }, "slow");
+    // window.scroll(0,0);
   }
 
   checkExternalUser() {
@@ -419,7 +438,7 @@ export class SharedService {
   }
 
   checkMimeType(document): string {
-    const mimeType = document.properties['file:content']?.['mime-type'];
+    const mimeType = document?.properties?.['file:content']?.['mime-type'];
 
     if(mimeType?.includes('image'))
       return ASSET_TYPE.PICTURE;
@@ -474,5 +493,28 @@ export class SharedService {
   //   localStorage.setItem("logout-once-again", "true");
   //   this.keycloak.logout(window.location.origin + '/login');
   // }
+
+  newEvent(event) {
+    this._subject.next(event);
+  }
+
+  get events$ () {
+    return this._subject.asObservable();
+  }
+
+  getNoPreview(item) {
+    const splitedData = item?.title?.split('.');
+    const mimeType = splitedData[splitedData?.length - 1];
+    const lowercaseMime = mimeType.toLowerCase();
+
+    if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
+      return '../../../assets/images/word.png';
+    } 
+    if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
+      return '../../../assets/images/ppt.png';
+    }
+    return '../../../assets/images/no-preview.png';
+
+  }
 
 }

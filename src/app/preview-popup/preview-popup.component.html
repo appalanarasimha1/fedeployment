@@ -61,9 +61,11 @@
           <div class="col-xl-5 col-md-5">
             <ul class="flexible">
               <li class="customtooltip">
-                <a placement="bottom" ngbTooltip="Add to Favorites" style="display: inline-block;">
+                <a *ngIf="doc.contextParameters.favorites?.isFavorite" placement="bottom" ngbTooltip="Remove from favorites" style="display: inline-block;">
                   <img *ngIf="doc.contextParameters.favorites?.isFavorite" (click)="markFavourite(doc, false)"
                     src="../../assets/images/yellow-star.svg" />
+                </a>
+                <a *ngIf="!doc.contextParameters.favorites?.isFavorite"  placement="bottom" ngbTooltip="Add to Favorites" style="display: inline-block;">
                   <img *ngIf="!doc.contextParameters.favorites?.isFavorite" (click)="markFavourite(doc, true)"
                     src="../../assets/images/black-star.png" />
                 </a>
@@ -71,63 +73,80 @@
               <li>
                 <div class="downloadBlock">
                   <!-- <div class="download-icon"></div> -->
-                  <div class="downloadBtn">
-                    <img src="../../assets/images/download-white-icon.svg" /> Download
+                  <!-- <div class="buttonCreate tollTipWorkspace" >
+                    <a
+                      href="javascript:void(0)"
+                      *ngIf="!isTrashView"
+                      (click)="datePickerDefaultAction()"
+                      class="createNew flexible">
+                      <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.50857 18.24V1.50857H9.00864L11.2029 3.70286H20.4343V9.18672C20.9668 9.34171 21.4725 9.55954 21.9429 9.83165V3.29143C21.9429 3.00045 21.8273 2.72139 21.6215 2.51563C21.4158 2.30988 21.1367 2.19429 20.8457 2.19429H11.4256L9.23136 0H1.09714C0.806162 0 0.5271 0.115591 0.321346 0.321346C0.115591 0.5271 0 0.806162 0 1.09714V18.6514C0 18.9424 0.115591 19.2215 0.321346 19.4272C0.5271 19.633 0.806162 19.7486 1.09714 19.7486H12.9277C12.5972 19.2852 12.323 18.7791 12.1149 18.24H1.50857ZM18.5143 19.8571C20.7708 19.8571 22.6 18.0279 22.6 15.7714C22.6 13.515 20.7708 11.6857 18.5143 11.6857C16.2578 11.6857 14.4286 13.515 14.4286 15.7714C14.4286 18.0279 16.2578 19.8571 18.5143 19.8571ZM18.5143 21.2571C21.544 21.2571 24 18.8011 24 15.7714C24 12.7418 21.544 10.2857 18.5143 10.2857C15.4846 10.2857 13.0286 12.7418 13.0286 15.7714C13.0286 18.8011 15.4846 21.2571 18.5143 21.2571ZM17.9657 13.0286V15.2229H15.7714V16.32H17.9657V18.5143H19.0629V16.32H21.2571V15.2229H19.0629V13.0286H17.9657Z" fill="#947200"/>
+                      </svg>
+                    </a>
+                  </div> -->
+                  <div class="downloadBtn buttonCreate">
+                    <a href="javascript:void(0)" class="createNew" (click)="datePickerDefaultAction()">
+                      <img src="../../assets/images/download-white-icon.svg" /> Download
+                    </a>
                   </div>
-                  <div *ngIf="doc" class="download-dropdown"  [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
+                  <div *ngIf="showCreateFolderPopup" class='dropdownCreate createFolder'>
+                    <div *ngIf="doc && hasDownloadPermission" class="download-dropdown"  [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
 
-                    <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
-                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
-                    </div>
-
-                    <div *ngIf="hasInternalRestriction() && getApprovalUsers().length<1" class="internal-use">
-                      <p  *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
-
-                      <div class="control-group" [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
-                        <label class="control control--checkbox">I am aware this asset is for internal use only
-                          <input type="checkbox" [(ngModel)]="isAware" checked="isAware" />
-                          <div class="control__indicator"></div>
-                        </label>
+                      <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
+                        <p  *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
                       </div>
-                    </div>
 
-                    <div *ngIf="getApprovalUsers().length>0" class="permission-required">
-                      <p *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
-                      <div *ngIf="!checkCanDownload() && !hasRequestPending() && !checkRejected()">
-                        <p>To download this asset, please send <a href="mailto:{{getCreatorEmail()}}">{{getCreator()}}</a> a message below.</p>
-                        <input type="text" [(ngModel)]="requestComment" class="requesInput" [ngClass]="{'goldenText': requestComment }" name="requestComment"
-                          placeholder="Write a comment here. Use @ to mention." />
-                          <button (click)="sendRequestDownload()" class="btn submitBtn" [disabled]="!requestComment">Submit</button>
-                      </div>
-                      <div class="requestSubmitted" *ngIf="!checkCanDownload() && hasRequestPending()">
-                        <img src="../../assets/images/mail-send-icon.svg" alt="" class="mailSendIcon" />
-                        <h3>Request submitted</h3>
-                        <p>You will be notified when the request has been approved.</p>
-                      </div>
-                      <div class="rejectedRequest" *ngIf="!checkCanDownload() && checkRejected()">
-                        <p><span>{{getCreator()}}</span> has rejected your download request:</p>
-                        <p>{{rejectComment}}</p>
-                      </div>
-                    </div>
+                      <div *ngIf="hasInternalRestriction() && getApprovalUsers().length<1" class="internal-use">
+                        <p  *ngIf=" checkCopyRight()">Always credit copyright owners.</p>
 
-                    <div *ngIf="showDownloadDropdown() || checkCanDownload()" class="sub-dropdown-block">
-                      <div class="downloadIcon"></div> Download
-                      <div class="down-arrow-icon"></div>
-                      <div class="sub-dropdown-menu">
-                        <ul>
-                          <li *ngFor="let view of doc.properties['picture:views']">
-                            <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
-                              {{ view.width }} * {{ view.height }}
-                              <span>{{getDownloadFileEstimation(view.content.length)}}</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
-                              Original File
-                              <span>{{getDownloadFileEstimation()}}</span>
-                            </a>
-                          </li>
-                        </ul>
+                        <div class="control-group" [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
+                          <label class="control control--checkbox">I am aware this asset is for internal use only
+                            <input type="checkbox" [(ngModel)]="isAware" checked="isAware" />
+                            <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div *ngIf="getApprovalUsers().length>0" class="permission-required">
+                        <p *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
+                        <div *ngIf="!checkCanDownload() && !hasRequestPending() && !checkRejected()">
+                          <p>Please always credit copyright owners (where applicable). <br /><br />To download this asset, please send <a href="mailto:{{getCreatorEmail()}}?subject=Permission to download Neom asstes&body=Can I use it in ENOWA presentations?">{{getCreator()}}</a> a message below.</p>
+                          <input type="text" [(ngModel)]="requestComment" class="requesInput" [ngClass]="{'goldenText': requestComment }" name="requestComment"
+                            placeholder="Describe what you would use this for" autocomplete="off" />
+                            <button (click)="sendRequestDownload()" class="btn submitBtn" [disabled]="!requestComment">Submit</button>
+                        </div>
+                        <div class="requestSubmitted" *ngIf="!checkCanDownload() && hasRequestPending()">
+                          <img src="../../assets/images/mail-send-icon.svg" alt="" class="mailSendIcon" />
+                          <h3>Request submitted</h3>
+                          <p>You will be notified when the request has been approved.</p>
+                        </div>
+                        <div class="rejectedRequest" *ngIf="!checkCanDownload() && checkRejected()">
+                          <p><span>{{getCreator()}}</span> has rejected your download request:</p>
+                          <p>"{{rejectComment}}"</p>
+                        </div>
+                      </div>
+
+                      <div *ngIf="showDownloadDropdown() || checkCanDownload()" class="sub-dropdown-block">
+                        <!-- <p><span>{{getCreator()}}</span> has approved your download request:</p>
+                        <p>Always credit copyright owners.</p> -->
+                        <div class="downloadIcon"></div> Download
+                        <div class="down-arrow-icon"></div>
+                        <div class="sub-dropdown-menu">
+                          <ul>
+                            <li *ngFor="let view of doc.properties['picture:views']">
+                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                {{ view.width }} * {{ view.height }}
+                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
+                                Original File
+                                <span>{{getDownloadFileEstimation()}}</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -146,26 +165,34 @@
         <app-loader-small [show]="modalLoading"></app-loader-small>
         <div class="copyright-caption">
           <!-- <img src="../../assets/images/full-screen-button.svg" alt="" class="fullScreenIcon" (click)="clickFullsizeImg()" [ngClass]="{'hideIcone' : checkMimeType(doc) === 'video' || checkMimeType(doc) === 'file'}" />  background-image: url(https://res.cloudinary.com/active-bridge/image/upload/slide1.jpg);-->
-          <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" (click)="clickFullsizeImg($event)" />
+          <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl, doc)" style="width: 100%" (click)="clickFullsizeImg($event)" />
           <figure *ngIf="fullSIzeImg" class="zoom" (click)="clickFullsizeImg($event)" (mousemove)="zoom($event)" style="background-image: url({{docUrl}}); width: 100%; background-repeat: no-repeat;">
-            <img [src]="getAssetUrl(null, docUrl)" />
+            <img [src]="getAssetUrl(null, docUrl, doc)" />
           </figure>
           <!-- ../../../assets/images/no-preview.png -->
-          <img *ngIf="checkMimeType(doc) === 'nopreview'" [ngClass]="{'nopreviewClass' : checkMimeType(doc) === 'nopreview'}" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px;background-color: #fbf7e6;" />
+          <img *ngIf="checkMimeType(doc) === 'nopreview'" [ngClass]="{'nopreviewClass' : checkMimeType(doc) === 'nopreview'}" [src]="getAssetUrl(null, docUrl, doc)" style="width: 100%;height: 190px;margin: 2vh 0px;background-color: #fbf7e6;" />
         </div>
 
         <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
         <div *ngIf="checkMimeType(doc) === 'video'" style="height: 100% !important; position: relative">
-          <video controls style="width: 100%; height: 100%" [src]="getAssetUrl(null, docUrl)"
+          <video controls style="width: 100%; max-height: calc(100vh - 280px) !important;
+          height: 100% !important;" [src]="getAssetUrl(null, docUrl, doc)"
             crossorigin="use-credentials"></video>
         </div>
         <div *ngIf="checkMimeType(doc) === 'file'">
           <!-- <img [src]="docUrl" alt="" /> -->
-          <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true"
+          <pdf-viewer [src]="getAssetUrl(null, docUrl, doc)" [render-text]="true"
             style="display: block; width: 100%; height: 100vh" [original-size]="false" [autoresize]="true"
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>
         <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
+          <div class="deleteDescription" *ngIf="nevermindHideMsg">
+            Are you sure you want to delete the description?
+            <ul>
+              <li (click)="addUpdateDescription()">Yes</li>
+              <li (click)="closeDeleteModal()">Nevermind</li>
+            </ul>
+          </div>
           <div class="tab-content myTabContent" id="myTabContent">
             <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
               <div class="timeline-content">
@@ -206,33 +233,59 @@
             </div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
               <div class="info-content">
+
+                <div class="row">
+                  <div class="col-xl-12 col-md-12" >
+                    <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description
+                      <ul>
+                        <li (click)="closeDeleteModal()">Delete</li>
+                        <li (click)="enableInputClick(true)">Edit</li>
+                      </ul>
+                    </div>
+                    <div class="addDescriptionBtn"  *ngIf="!doc?.properties['dc:description']"><button (click)="enableInputClick(true)">Add description</button></div>
+                    <p class="clearfix" *ngIf="doc?.properties['dc:description']">
+                      <span class="collapsable float-left" > {{ (doc?.properties['dc:description'].length>firstCount) ? (doc?.properties['dc:description'] | slice:0:counter)+'...':(doc?.properties['dc:description']) }}
+                          <span class="redTxt" *ngIf="doc?.properties['dc:description'].length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
+                            {{showTxt}}
+                          </span>
+                      </span>
+                    </p>
+                    <div class="addDescription"  *ngIf="enableInput">
+                      <div class="addDescriptionInput">
+                        <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }">
+                        <img src="../../assets/images/clear-icon.svg" *ngIf="description" (click)="clearValue()">
+                      </div>
+                      <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }" (click)="addUpdateDescription()" ><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
+                      <div class="addDescriptionIcon" (click)="enableInputClick(false)"><img src="../../assets/images/remove-description.svg" ></div>
+                    </div>
+
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="col-xl-6 col-md-6">
                     <ul>
                       <li>
-                        Created
-                        {{ toDateString(doc?.properties) }}
-                        by
-                        <br />
-                        <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
+                        <span>Created</span>
+                        <span>{{ toDateString(doc?.properties) }} by {{getCreator()}}</span>
                       </li>
 
                       <li>
-                        Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
+                        <span>Usage approver</span>
+                        <span style="color: #ebc03f; word-break: break-all">{{
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length ?
                           doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
-                          'Contact sector for usage approval'
+                          'Consult sector for appropriate use.'
                           }}</span>
                       </li>
 
                       <li>
-                        Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.title
-                          }}</span>
+                        <span>Name</span>
+                        <span style="word-break: break-all">{{doc?.title}}</span>
                       </li>
 
-                      <li>
-                        Location <br />
+                      <li *ngIf="!isDroneUploader">
+                        <span>Location</span>
                         <span style="word-break: break-all">
                           <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
                            class="pointer" style="color: #ebc03f;">
@@ -243,58 +296,48 @@
                       </li>
 
                       <li>
-                        Description <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties["dc:description"] ||
-                          doc?.properties["imd:image_description"]
-                          }}</span>
+                        <span>Description</span>
+                        <span style="word-break: break-all">{{ doc?.properties["dc:description"] || doc?.properties["imd:image_description"] }}</span>
                       </li>
 
                       <li>
-                        Format <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties && doc?.properties["picture:info"]?.format
-                          }}</span>
+                        <span>Format</span>
+                         <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.format}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Time taken <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        getTimeTaken()
-                          }}</span>
+                        <span>Time taken</span>
+                        <span style="word-break: break-all">{{getTimeTaken()}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Camera ID <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.installationId
-                          }}</span>
+                        <span>Camera ID</span>
+                        <span style="word-break: break-all">{{device.installationId}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Latitude <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.latitude
-                          }}</span>
+                        <span>Latitude</span>
+                        <span style="word-break: break-all">{{device.latitude}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Longitude <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.longitude
-                          }}</span>
+                        <span>Longitude</span>
+                        <span style="word-break: break-all">{{device.longitude}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.areaName
-                          }}</span>
+                        <span>Area Name</span>
+                        <span style="word-break: break-all">{{ device.areaName }}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Sub-Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.subAreaName
-                          }}</span>
+                        <span>Sub-Area Name</span>
+                        <span style="word-break: break-all">{{device.subAreaName}}</span>
                       </li>
 
                       <li *ngIf="device">
-                        Camera Direction <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        device.cameraDirection || device.direction
-                          }}</span>
+                        <span>Camera Direction</span>
+                        <span style="word-break: break-all">{{device.cameraDirection || device.direction}}</span>
                       </li>
 
                     </ul>
@@ -303,56 +346,60 @@
                     <ul>
 
                       <li>
-                        Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x
-                          {{ doc?.properties["picture:info"]?.height }}</span>
+                        <span>Dimensions</span>
+                        <span style="word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x {{ doc?.properties["picture:info"]?.height }}</span>
                       </li>
 
                       <li>
-                        Size <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          getDownloadFileEstimation()
-                          }}</span>
+                        <span>Size</span>
+                        <span style="word-break: break-all">{{getDownloadFileEstimation() }}</span>
                       </li>
 
                       <li>
-                        Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
-                          doc?.properties && doc?.properties["picture:info"]?.colorSpace
-                          }}</span>
+                        <span>Colour Profile</span>
+                        <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.colorSpace}}</span>
                       </li>
                       <li>
-                        Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
-                          }}</span>
+                        <span>Bit Depth</span>
+                         <span style="word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth}}</span>
                       </li>
 
                       <li>
-                        EXIF
-                        <br />
-                        Date
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                        <span>EXIF data</span>
+                      </li>
+                      <li>
+                        <span>Date</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties || doc?.properties["dc:created"]
-                          }}</span>
-                        <br />
-                        Orientation
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                        }}</span>
+                      </li>
+                      <li>
+                        <span>Orientation</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:orientation"]
-                          }}</span>
-                        <br />
-                        Aperture
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                        }}</span>
+                      </li>
+                      <li>
+                        <span>Aperture</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:fnumber"]
                           }}</span>
-                        <br />
-                        Exposure
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                      </li>
+                      <li>
+                        <span>Exposure</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:exposure_time"]
                           }}</span>
-                        <br />
-                        ISO
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                      </li>
+                      <li>
+                        <span>ISO</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:iso_speed_ratings"]
                           }}</span>
-                        <br />
-                        Focal Length
-                        <span style="opacity: 0.7; word-break: break-all">{{
+                      </li>
+                      <li>
+                        <span>Focal Length</span>
+                        <span style="word-break: break-all">{{
                           doc?.properties["imd:focalLength"]
                           }}</span>
                       </li>
@@ -365,23 +412,7 @@
         </div>
       </div>
 
-      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 20px 25px 20px;">
-        <div class="search-tags">
-          <ul class="flexible">
-            <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
-              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
-                sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
-            </li>
-            <li *ngIf="tags.length > currentTagLength">
-              <button class="btn default" (click)="showMoreTags()">show more</button>
-            </li>
-            <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
-              <button class="btn default" (click)="showLessTags()">show less</button>
-            </li>
-
-          </ul>
-        </div>
-
+      <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 16px 25px 8px;">
         <div class="" style="width: calc(100% - 90px);">
           <span *ngIf="doc.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
 
@@ -415,7 +446,7 @@
             <li class="nav-item customtooltip" role="presentation">
               <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="left" ngbTooltip="Timeline"
                 (click)="openInfo('timeline',this.doc?.contextParameters?.audit)" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline"
-                role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
+                role="tab" aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" style="height: 22px;" /></a>
             </li>
             <!-- <li class="nav-item customtooltip" role="presentation" *ngIf="hasPrivateAccess()">
               <a
@@ -439,6 +470,22 @@
                 aria-controls="contact" aria-selected="false">
                 <img src="../../assets/images/Info.svg" /></a>
             </li>
+          </ul>
+        </div>
+
+        <div class="search-tags">
+          <ul class="flexible">
+            <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
+              <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
+                sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
+            </li>
+            <li *ngIf="tags.length > currentTagLength">
+              <button class="btn default" (click)="showMoreTags()">show more</button>
+            </li>
+            <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
+              <button class="btn default" (click)="showLessTags()">show less</button>
+            </li>
+
           </ul>
         </div>
 
@@ -548,60 +595,64 @@
             <li>
               <div class="downloadBlock">
                 <!-- <div class="download-icon"></div> -->
-                <div class="downloadBtn">
-                  <img src="../../assets/images/download-white-icon.svg" /> Download
+                <div class="downloadBtn buttonCreate">
+                  <a href="javascript:void(0)" class="createNew" (click)="datePickerDefaultAction()">
+                    <img src="../../assets/images/download-white-icon.svg" /> Download
+                  </a>
                 </div>
-                <div *ngIf="doc" class="download-dropdown">
+                <div *ngIf="showCreateFolderPopup" class='dropdownCreate createFolder'>
+                  <div *ngIf="doc" class="download-dropdown"  [ngClass]="{ 'removeMarginTop' : !checkCopyRight()} ">
 
-                  <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
-                    <p>Always credit copyright owners.</p>
-                  </div>
-
-                  <div *ngIf="hasInternalRestriction()" class="internal-use">
-                    <p>Always credit copyright owners.</p>
-
-                    <div class="control-group">
-                      <label class="control control--checkbox">I am aware this asset is for internal use only
-                        <input type="checkbox" [(ngModel)]="isAware" checked="isAware" />
-                        <div class="control__indicator"></div>
-                      </label>
+                    <div *ngIf="hasNoRestriction()" class="no-use-restrictions">
+                      <p>Always credit copyright owners.</p>
                     </div>
-                  </div>
 
-                  <div *ngIf="hasRequestRestriction()" class="permission-required">
-                    <p>Always credit copyright owners. <br /><br />
-                      {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
-                    <ul class="emailList">
-                      <li *ngFor="let userName of getApprovalUsers()">
-                        <div class="nameBlk">{{userName}}</div>
-                        <div class="emailIconBlk">
-                          <a href="mailto:{{userName}}">
-                          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.42171 1H18.5783C18.8115 1 19 1.18265 19 1.40826V12.5917C19 12.8175 18.8113 13 18.5783 13H1.42171C1.18853 13 1 12.8174 1 12.5917V1.40826C1 1.18252 1.18866 1 1.42171 1ZM18.1567 2.22922L10.2544 8.04031C10.0985 8.15476 9.88611 8.14767 9.73921 8.03486L1.84432 2.22929V12.1833H18.1569L18.1567 2.22922ZM2.67189 1.81717L10.0003 7.20578L17.3288 1.81717H2.67155H2.67189Z" fill="#EDD580" stroke="#EDD580" stroke-width="0.5"/>
-                          </svg></a>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+                    <div *ngIf="hasInternalRestriction()" class="internal-use">
+                      <p>Always credit copyright owners.</p>
 
-                  <div *ngIf="showDownloadDropdown()" class="sub-dropdown-block">
-                    <div class="downloadIcon"></div> Download
-                    <div class="down-arrow-icon"></div>
-                    <div class="sub-dropdown-menu">
-                      <ul>
-                        <li *ngFor="let view of doc?.properties['picture:views']">
-                          <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
-                            {{ view.width }} * {{ view.height }}
-                            <span>{{getDownloadFileEstimation(view.content.length)}}</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
-                            Original File
-                            <span>{{getDownloadFileEstimation(doc?.properties["file:content"]?.length)}}</span>
-                          </a>
+                      <div class="control-group">
+                        <label class="control control--checkbox">I am aware this asset is for internal use only
+                          <input type="checkbox" [(ngModel)]="isAware" checked="isAware" />
+                          <div class="control__indicator"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div *ngIf="hasRequestRestriction()" class="permission-required">
+                      <p>Always credit copyright owners. <br /><br />
+                        {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
+                      <ul class="emailList">
+                        <li *ngFor="let userName of getApprovalUsers()">
+                          <div class="nameBlk">{{userName}}</div>
+                          <div class="emailIconBlk">
+                            <a href="mailto:{{userName}}">
+                            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M1.42171 1H18.5783C18.8115 1 19 1.18265 19 1.40826V12.5917C19 12.8175 18.8113 13 18.5783 13H1.42171C1.18853 13 1 12.8174 1 12.5917V1.40826C1 1.18252 1.18866 1 1.42171 1ZM18.1567 2.22922L10.2544 8.04031C10.0985 8.15476 9.88611 8.14767 9.73921 8.03486L1.84432 2.22929V12.1833H18.1569L18.1567 2.22922ZM2.67189 1.81717L10.0003 7.20578L17.3288 1.81717H2.67155H2.67189Z" fill="#EDD580" stroke="#EDD580" stroke-width="0.5"/>
+                            </svg></a>
+                          </div>
                         </li>
                       </ul>
+                    </div>
+
+                    <div *ngIf="showDownloadDropdown()" class="sub-dropdown-block">
+                      <div class="downloadIcon"></div> Download
+                      <div class="down-arrow-icon"></div>
+                      <div class="sub-dropdown-menu">
+                        <ul>
+                          <li *ngFor="let view of doc?.properties['picture:views']">
+                            <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                              {{ view.width }} * {{ view.height }}
+                              <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
+                              Original File
+                              <span>{{getDownloadFileEstimation(doc?.properties["file:content"]?.length)}}</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -614,18 +665,23 @@
     <div class="popupTabSec singleAssets">
       <app-loader-small [show]="modalLoading"></app-loader-small>
       <div class="copyright-caption">
-        <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" />
+        <!-- <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl)" style="width: 100%" /> -->
+        <img *ngIf="checkMimeType(doc) === 'picture'" [src]="getAssetUrl(null, docUrl, doc)" style="width: 100%" (click)="clickFullsizeImg($event)" />
+        <figure *ngIf="fullSIzeImg" class="zoom" (click)="clickFullsizeImg($event)" (mousemove)="zoom($event)" style="background-image: url({{docUrl}}); width: 100%; background-repeat: no-repeat;">
+            <img [src]="getAssetUrl(null, docUrl, doc)" />
+        </figure>
         <!-- ../../../assets/images/no-preview.png -->
-        <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="docUrl" style="width: 100%;height: 190px;margin: 2vh 0px; background-color: #fbf7e6;" />
+        <img *ngIf="checkMimeType(doc) === 'nopreview'" [src]="getAssetUrl(null, docUrl, doc)" style="width: 100%;height: 190px;margin: 2vh 0px; background-color: #fbf7e6;" />
       </div>
 
       <span *ngIf="checkMimeType(doc) === 'picture'" class="picture-copyright">{{getCopyright()}}</span>
       <div *ngIf="checkMimeType(doc) === 'video'" style="height: 600; position: relative">
-        <video controls style="width: 100%; height: 600px" [src]="getAssetUrl(null, docUrl)"
+        <video controls style="width: 100%; max-height: calc(100vh - 280px) !important;
+        height: 100% !important;" [src]="getAssetUrl(null, docUrl, doc)"
           crossorigin="use-credentials"></video>
       </div>
       <div *ngIf="checkMimeType(doc) === 'file'">
-        <pdf-viewer [src]="getAssetUrl(null, docUrl)" [render-text]="true" class="nitin"
+        <pdf-viewer [src]="getAssetUrl(null, docUrl, doc)" [render-text]="true" class="nitin"
           style="display: block; width: 100%; height: 100vh" [original-size]="false" [autoresize]="true"
           [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
       </div>
@@ -670,35 +726,62 @@
           </div>
           <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
             <div class="info-content">
+
+              <div class="row">
+                <div class="col-xl-12 col-md-12">
+                  <div class="descriptionHeade">Description
+                    <ul>
+                      <li (click)="closeDeleteModal()">Delete</li>
+                      <li (click)="enableInputClick(true)">Edit</li>
+                    </ul>
+                  </div>
+                  <div class="addDescriptionBtn"><button>Add description</button></div>
+                  <p class="clearfix">
+                    <span class="collapsable float-left" > {{ (info.length>firstCount) ? (info | slice:0:counter)+'...':(info) }}
+                        <span class="redTxt" *ngIf="info.length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
+                          {{showTxt}}
+                        </span>
+                    </span>
+                  </p>
+                  <div class="addDescription">
+                    <div class="addDescriptionInput">
+                      <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }">
+                      <img src="../../assets/images/clear-icon.svg" *ngIf="description" (click)="clearValue()">
+                    </div>
+                    <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }"><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
+                    <div class="addDescriptionIcon"><img src="../../assets/images/remove-description.svg" ></div>
+                  </div>
+
+                </div>
+              </div>
+
               <div class="row">
                 <div class="col-xl-6 col-md-6">
                   <ul>
                     <li>
-                      Created
-                      {{ toDateString(doc?.properties) }}
-                      by
-                      <br />
-                      <span style="color: #ebc03f; word-break: break-all">{{getCreator()}}</span>
+                      <span>Created</span>
+                      <span>{{ toDateString(doc?.properties) }} by {{getCreator()}}</span>
                     </li>
 
                     <li>
-                      Usage approver <br /><span style="color: #ebc03f; word-break: break-all">{{
-                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length?
+                      <span>Usage approver</span>
+                      <span style="color: #ebc03f; word-break: break-all">{{
+                        doc?.properties && doc?.properties["sa:downloadApprovalUsers"]?.length ?
                         doc?.properties && doc?.properties["sa:downloadApprovalUsers"] :
-                        '“Contact sector for usage approval'
+                        'Consult sector for appropriate use.'
                         }}</span>
                     </li>
 
                     <li>
-                      Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        doc?.title
-                        }}</span>
+                      <span>Name</span>
+                      <span style="word-break: break-all">{{doc?.title}}</span>
                     </li>
 
-                    <li>
-                      Location <br />
-                      <span style=" word-break: break-all">
-                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank" class="pointer" style="color: #ebc03f;">
+                    <li *ngIf="!isDroneUploader">
+                      <span>Location</span>
+                      <span style="word-break: break-all">
+                        <a href="/workspace/{{doc?.properties['dc:sector']}}/{{doc?.parentRef}}" target="_blank"
+                         class="pointer" style="color: #ebc03f;">
                           {{doc?.path?.split('/'+doc.title)[0].replace('/workspaces', '')}}
                         </a>
                         <!-- remove click event (click)="navigateTo(doc?.parentRef)" -->
@@ -706,57 +789,48 @@
                     </li>
 
                     <li>
-                      Description <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       getDescription()
-                        }}</span>
+                      <span>Description</span>
+                      <span style="word-break: break-all">{{ doc?.properties["dc:description"] || doc?.properties["imd:image_description"] }}</span>
                     </li>
 
                     <li>
-                      Format <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        doc?.properties && doc?.properties["picture:info"]?.format
-                        }}</span>
+                      <span>Format</span>
+                       <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.format}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Time taken <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       getTimeTaken()
-                        }}</span>
+                      <span>Time taken</span>
+                      <span style="word-break: break-all">{{getTimeTaken()}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Camera ID <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.installationId
-                        }}</span>
+                      <span>Camera ID</span>
+                      <span style="word-break: break-all">{{device.installationId}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Latitude <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.latitude
-                        }}</span>
+                      <span>Latitude</span>
+                      <span style="word-break: break-all">{{device.latitude}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Longitude <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.longitude
-                        }}</span>
+                      <span>Longitude</span>
+                      <span style="word-break: break-all">{{device.longitude}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.areaName
-                        }}</span>
+                      <span>Area Name</span>
+                      <span style="word-break: break-all">{{ device.areaName }}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Sub-Area Name <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.subAreaName
-                        }}</span>
+                      <span>Sub-Area Name</span>
+                      <span style="word-break: break-all">{{device.subAreaName}}</span>
                     </li>
 
                     <li *ngIf="device">
-                      Camera Direction <br /><span style="opacity: 0.7; word-break: break-all">{{
-                       device.cameraDirection
-                        }}</span>
+                      <span>Camera Direction</span>
+                      <span style="word-break: break-all">{{device.cameraDirection || device.direction}}</span>
                     </li>
 
                   </ul>
@@ -765,53 +839,60 @@
                   <ul>
 
                     <li>
-                      Dimensions <br /><span style="opacity: 0.7; word-break: break-all">{{ getImageDimensions() }}</span>
+                      <span>Dimensions</span>
+                      <span style="word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.width }} x {{ doc?.properties["picture:info"]?.height }}</span>
                     </li>
 
                     <li>
-                      Size <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        getDownloadFileEstimation()
-                        }}</span>
+                      <span>Size</span>
+                      <span style="word-break: break-all">{{getDownloadFileEstimation() }}</span>
                     </li>
 
                     <li>
-                      Colour Profile <br /><span style="opacity: 0.7; word-break: break-all">{{
-                        doc?.properties && doc?.properties["picture:info"]?.colorSpace
-                        }}</span>
+                      <span>Colour Profile</span>
+                      <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.colorSpace}}</span>
                     </li>
                     <li>
-                      Bit Depth <br /><span style="opacity: 0.7; word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth
-                        }}</span>
+                      <span>Bit Depth</span>
+                       <span style="word-break: break-all">{{ doc?.properties && doc?.properties["picture:info"]?.depth}}</span>
                     </li>
 
                     <li>
-                      EXIF
-                      <br />
-                      Date
-                      <span style="opacity: 0.7; word-break: break-all">{{doc?.properties || doc?.properties["dc:created"]}}</span>
-                      <br />
-                      Orientation
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                      <span>EXIF data</span>
+                    </li>
+                    <li>
+                      <span>Date</span>
+                      <span style="word-break: break-all">{{
+                        doc?.properties || doc?.properties["dc:created"]
+                      }}</span>
+                    </li>
+                    <li>
+                      <span>Orientation</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:orientation"]
-                        }}</span>
-                      <br />
-                      Aperture
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                      }}</span>
+                    </li>
+                    <li>
+                      <span>Aperture</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:fnumber"]
                         }}</span>
-                      <br />
-                      Exposure
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                    </li>
+                    <li>
+                      <span>Exposure</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:exposure_time"]
                         }}</span>
-                      <br />
-                      ISO
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                    </li>
+                    <li>
+                      <span>ISO</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:iso_speed_ratings"]
                         }}</span>
-                      <br />
-                      Focal Length
-                      <span style="opacity: 0.7; word-break: break-all">{{
+                    </li>
+                    <li>
+                      <span>Focal Length</span>
+                      <span style="word-break: break-all">{{
                         doc?.properties["imd:focalLength"]
                         }}</span>
                     </li>
@@ -824,21 +905,7 @@
       </div>
     </div>
 
-    <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 20px 25px 20px">
-      <div class="search-tags">
-        <ul class="flexible">
-          <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
-            <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
-              sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
-          </li>
-          <li *ngIf="tags.length > currentTagLength">
-            <button class="btn default" (click)="showMoreTags()">show more</button>
-          </li>
-          <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
-            <button class="btn default" (click)="showLessTags()">show less</button>
-          </li>
-        </ul>
-      </div>
+    <div class="sub-body-modal flexible" style="justify-content: space-between; align-items: unset; padding: 16px 25px 8px">
 
       <div class="mb-4" style="width: calc(100% - 90px);">
         <span *ngIf="doc?.type === 'File'" class="main-heading">{{ doc?.properties["dc:title"] }}</span>
@@ -872,7 +939,7 @@
           <li class="nav-item customtooltip" role="presentation">
             <a class="nav-link" id="home-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Timeline"
               (click)="openInfo('timeline',this.doc?.contextParameters?.audit)" [ngClass]="{ active: activeTabs['timeline'] }" href="#timeline" role="tab"
-              aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" /></a>
+              aria-controls="home" aria-selected="true"><img src="../../assets/images/clock.svg" style="height: 22px;" /></a>
           </li>
           <li class="nav-item customtooltip" role="presentation">
             <a class="nav-link" id="contact-tab" data-bs-toggle="tab" placement="bottom" ngbTooltip="Info"
@@ -882,6 +949,21 @@
           </li>
         </ul>
 
+      </div>
+
+      <div class="search-tags">
+        <ul class="flexible">
+          <li *ngFor="let item of [].constructor(currentTagLength); let i = index">
+            <a *ngIf="tags[i]" class="pointer" (click)="search(tags[i])">{{
+              sharedService.capitaliseSelectiveTags(tags[i]) }}</a>
+          </li>
+          <li *ngIf="tags.length > currentTagLength">
+            <button class="btn default" (click)="showMoreTags()">show more</button>
+          </li>
+          <li *ngIf="tags.length === currentTagLength && tags.length > DEFAULT_NUMBER_OF_TAGS_PREVIEW">
+            <button class="btn default" (click)="showLessTags()">show less</button>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

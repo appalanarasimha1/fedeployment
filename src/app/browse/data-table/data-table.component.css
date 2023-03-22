@@ -1,0 +1,678 @@
+
+.customTableStyle td:first-child,
+.customTableStyle th:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.customTableStyle td:last-child,
+.customTableStyle th:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.folderListview th{
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    color: #BAB8B2;
+    border-bottom: unset;
+  }
+
+  .folderListview td p{
+    /* font-size: 15px; */
+    line-height: 24px;
+    color: #040404;
+    text-align: left;
+  }
+
+  .folderListview td, th{
+    padding: 10px;
+  }
+
+  .folderListview tr td:th-child(1) p{
+    text-align: left !important
+  }
+  
+  .folderListview tr:nth-child(1){
+    background-color:  unset !important
+  }
+
+  .folderListview tr:nth-child(odd){
+    background-color: #F6F5F2;
+    /* border-bottom: 8px solid #fff; */
+  }
+  .folderListview tr:hover:nth-child(odd) {
+    background-color: #EFEEE9;
+  }
+
+  .folderListview tr:nth-child(even){
+    background-color: #FBF7E6;
+    /* border-bottom: 8px solid #fff; */
+  }
+  .folderListview tr:hover:nth-child(even) {
+    background-color: #F8EECC;
+  }
+  
+.folderListview {
+    text-align: left;
+  }
+  
+.folderListview .tollTipCustom .tolltipContent {
+    top: 35px;
+    left: 0px;
+    background: #413E3C;
+    padding: 0px 5px;
+    color: #fff !important;
+    border-radius: 4px;
+    text-align: left;
+    line-height: 23px;
+}
+
+.tollTipCustom{
+    position: relative;
+  }
+  
+  .tollTipCustom .tolltipContent {
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.80);
+    padding: 3px 10px;
+    font-size: 13px;
+    color: #fff !important;
+    font-weight: normal;
+    width: max-content;
+    border-radius: 40px;
+    white-space: nowrap;
+    max-width: max-content;
+    width: max-content;
+    display: none;
+    text-align: center;
+    z-index: 99;
+    line-height: normal;
+  }
+  .tollTipCustom:hover .tolltipContent {
+    display: block;
+  }
+  
+.header-content h6.tollTipCustom span{
+    color: rgba(35, 33, 30, 0.6);
+  }
+.groupFolder {
+    position: relative;
+  }
+  
+.groupFolder:hover .delete-folder-action {
+    opacity: 1;
+    transition: transform 0.3s;
+  }
+  
+.groupFolder.checkDelete .delete-folder-action {
+    opacity: 1;
+  }
+  
+tr.groupFolder td:first-child {
+    padding-right: 0px !important;
+  }
+  
+.groupFolder {
+    position: relative;
+  }
+  
+.groupFolder:hover .delete-folder-action {
+    opacity: 1;
+    transition: transform 0.3s;
+  }
+  
+.groupFolder.checkDelete .delete-folder-action {
+    opacity: 1;
+  }
+
+.zoomImgBlock {
+  max-width: 120px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: absolute;
+  left: 0px;
+  bottom: 34px;
+  display: none;
+  z-index: 9;
+  background: #fff;
+  width: 250px;
+}
+
+  .zoomImg:hover .zoomImgBlock {
+    display: block;
+  }
+
+  .zoomImgBlock img {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .positionRelative input.search-bar::placeholder{
+    color: #413E3C !important;
+  }
+  
+.copyHover {
+    position: relative;
+    margin-left: 0px;
+    cursor: pointer;
+  }
+
+  .copyHoverInfo {
+    display: none;
+    top: 31px;
+    right: 0px;
+    background: #413E3C;
+    padding: 2px 7px;
+    color: #fff !important;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    width: 75px;
+  }
+
+  .copyHover:hover .copyHoverInfo {
+    display: block;
+  }
+  
+.actionIcon {
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: -15px;
+  }
+  
+.renameAssets {
+    border-radius: 10px;
+    background: #ebe9e3;
+    padding: 2px 10px 4px 10px;
+    line-height: normal;
+    border: 0px;
+  }
+  
+.header-content h6.tollTipCustom span{
+    color: rgba(35, 33, 30, 0.6);
+  }
+
+  
+.delete-folder-action .control--checkbox .control__indicator:after,
+.delete-folder-action .control--checkbox .control__indicator:before {
+  left: 10px;
+  top: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.delete-folder-action .control--checkbox .control__indicator:before{
+  border-color: #BAB8B2;
+}
+.delete-folder-action .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+
+
+.deleted-by-me .control--checkbox .control__indicator:after,
+.deleted-by-me .control--checkbox .control__indicator:before {
+  left: 9px;
+  top: 4px;
+  width: 8px;
+  height: 12px;
+  border: solid #1E1B19;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.deleted-by-me .control--checkbox .control__indicator:before{
+  border-color: transparent;
+}
+.deleted-by-me .control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+
+
+.internal-use .control--checkbox .control__indicator:after {
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid #23211E;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .internal-use .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #7b7b7b;
+  }
+
+  
+.dropdownCreate .control--checkbox .control__indicator:after {
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .dropdownCreate .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #fff;
+  }
+
+  .delete-folder-action .control-group {
+    display: block;
+  }
+  .delete-folder-action .control {
+    display: block;
+    position: relative;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 0px;
+    padding-left: 40px;
+    border: 0px;
+    margin: 0px 0px 0px;
+  }
+  .delete-folder-action .control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+  .delete-folder-action .control__indicator {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background: #ffffff;
+    border-radius: 20px;
+  }
+  .delete-folder-action .control--radio .control__indicator {
+    border-radius: 50%;
+  }
+  .delete-folder-action .control:hover input ~ .control__indicator,
+  .delete-folder-action .control input:focus ~ .control__indicator {
+    background: #fff;
+  }
+  .delete-folder-action .control input:checked ~ .control__indicator {
+    background: #C49900;
+  }
+  .delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
+  .delete-folder-action .control input:checked:focus ~ .control__indicator {
+    background: #C49900;
+  }
+  .delete-folder-action .control input:disabled ~ .control__indicator {
+    background: #C49900;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .delete-folder-action .control__indicator:after,
+  .delete-folder-action .control__indicator:before {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+  .delete-folder-action .control input:checked ~ .control__indicator:after,
+  .delete-folder-action .control input ~ .control__indicator:before {
+    display: block;
+  }
+  .delete-folder-action .control--radio .control__indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .delete-folder-action .control--radio input:disabled ~ .control__indicator:after {
+    background: #7b7b7b;
+  }
+  .delete-folder-action:after {
+    clear: both;
+    content: '';
+    display: block;
+  }
+  .delete-folder-action {
+    position: static;
+    left: 10px;
+    top: 4px;
+    opacity: 0;
+    transition: transform 0.3s;
+    width: 24px;
+    height: 24px;
+  }
+  .delete-folder-action.activeHover {
+    opacity: 1;
+  }
+  .folderListview tr.checkDelete:nth-child(odd){
+    background-color: #E8E6DF;
+  }
+  .folderListview tr.checkDelete:nth-child(even){
+    background-color: #F4E6B3;
+  }
+  .customTableStyle table {
+    border-collapse: separate;
+    width: 100%;
+    border: none;
+    border-spacing: 0 10px;
+    table-layout: fixed;
+  }
+  .customTableStyle td:first-child,
+  .customTableStyle th:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+  .customTableStyle td:last-child,
+  .customTableStyle th:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+  tr.groupFolder td:first-child {
+    padding-right: 0px !important;
+  }
+  .checkAll .control {
+    padding-left: 0px;
+  }
+  .checkAll input[type=checkbox] {
+    margin-top: 0px;
+  }
+  .checkAll .control__indicator {
+    border: 1px solid #040404;
+    height: 20px;
+    width: 20px;
+  }
+  .checkAll .control--checkbox .control__indicator:after,
+  .checkAll .control--checkbox .control__indicator:before {
+    left: 6px;
+    top: 3px;
+    width: 6px;
+    height: 10px;
+  } 
+  .checkAll .control input:checked ~ .control__indicator {
+    background: #C49900;
+    border: 1px solid #C49900;
+  }
+  .checkAll .control-group {
+    display: block;
+    opacity: 1;
+  }
+  .checkAll:hover .control-group {
+    opacity: 1;
+  }
+  .width1600 {
+    /* width: 1600px !important; */
+    z-index: 1 !important;
+    top: -25px !important;
+    height: 68px !important;
+  }
+  th.checkAll.positionRelative.showChecked .control-group {
+    opacity: 1;
+  }
+
+  .delete-folder-action .control-group,
+  .checkAll .control-group {
+    display: block;
+  }
+  .delete-folder-action .control,
+  .checkAll .control {
+    display: block;
+    position: relative;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 0px;
+    padding-left: 40px;
+    border: 0px;
+    margin: 0px 0px 0px;
+  }
+  .delete-folder-action .control input,
+  .checkAll .control input {
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    height: 20px;
+    width: 20px;
+    left: 0px;
+    top: -4px;
+  }
+  .delete-folder-action .control__indicator,
+  .checkAll .control__indicator {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: #ffffff;
+    border-radius: 20px;
+  }
+  .delete-folder-action .control--radio .control__indicator,
+  .checkAll .control--radio .control__indicator {
+    border-radius: 50%;
+  }
+  .delete-folder-action .control:hover input ~ .control__indicator,
+  .delete-folder-action .control input:focus ~ .control__indicator,
+  
+  .checkAll .control:hover input ~ .control__indicator,
+  .checkAll .control input:focus ~ .control__indicator {
+    background: #fff;
+  }
+  .delete-folder-action .control input:checked ~ .control__indicator,
+  .checkAll .control input:checked ~ .control__indicator {
+    background: #C49900;
+  }
+  .delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
+  .delete-folder-action .control input:checked:focus ~ .control__indicator,
+  
+  .checkAll .control:hover input:not([disabled]):checked ~ .control__indicator,
+  .checkAll .control input:checked:focus ~ .control__indicator {
+    background: #C49900;
+  }
+  .delete-folder-action .control input:disabled ~ .control__indicator,
+  .checkAll .control input:disabled ~ .control__indicator{
+    background: #C49900;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .delete-folder-action .control__indicator:after,
+  .delete-folder-action .control__indicator:before,
+  
+  .checkAll .control__indicator:after,
+  .checkAll .control__indicator:before{
+    content: '';
+    position: absolute;
+    display: none;
+  }
+  .delete-folder-action .control input:checked ~ .control__indicator:after,
+  .delete-folder-action .control input ~ .control__indicator:before,
+  
+  .checkAll .control input:checked ~ .control__indicator:after,
+  .checkAll .control input ~ .control__indicator:before{
+    display: block;
+  }
+  .delete-folder-action .control--checkbox .control__indicator:after,
+  .delete-folder-action .control--checkbox .control__indicator:before,
+  
+  .checkAll .control--checkbox .control__indicator:after,
+  .checkAll .control--checkbox .control__indicator:before {
+    left: 7px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .delete-folder-action .control--checkbox .control__indicator:before,
+  .checkAll .control--checkbox .control__indicator:before {
+    border-color: #BAB8B2;
+  }
+  .delete-folder-action .control--checkbox input:disabled ~ .control__indicator:after,
+  .checkAll .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #7b7b7b;
+  }
+  .delete-folder-action .control--radio .control__indicator:after,
+  .checkAll .control--radio .control__indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .delete-folder-action .control--radio input:disabled ~ .control__indicator:after,
+  .checkAll .control--radio input:disabled ~ .control__indicator:after {
+    background: #7b7b7b;
+  }
+  .groupFolder {
+    position: relative;
+  }
+  .delete-folder-action:after {
+    clear: both;
+    content: '';
+    display: block;
+  }
+  .delete-folder-action {
+    position: static;
+    left: 10px;
+    top: 4px;
+    opacity: 0;
+    transition: transform 0.3s;
+    width: 20px;
+    height: 20px;
+  }
+  .groupFolder:hover .delete-folder-action {
+    opacity: 1;
+    transition: transform 0.3s;
+  }
+  .deleteFolder, .recoverFolder {
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 0px;
+  }
+  .createNew, .deleteFolder, .recoverFolder{
+    font-size: 15px;
+    line-height: 31px;
+    color: #937206;
+    font-weight: normal;
+    vertical-align: middle;
+  }
+  .recoverFolder img {
+    margin-right: 8px; margin-top: -4px;
+  }
+  .createNew {
+    margin-left: 0px;
+  }
+  .groupFolder.checkDelete .delete-folder-action {
+    opacity: 1;
+  }
+.workspaeName {
+    text-align: left;
+    word-break: break-all;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    z-index: 1;
+    max-width: calc(100% - 30px);
+}
+.itemTitleContent {
+  /* width: calc(100% - 30px); */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 20px;
+  display: inline-block;
+  position: relative;
+  z-index: 9;
+  white-space: nowrap;
+  vertical-align: -2px;
+}
+.permissionRequired {
+  text-align: center;
+}
+
+.availableActions {
+  /* position: absolute; */
+  /* background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 12px 14px; */
+  /* width: 304px;
+  left: 40px;
+  top: 45px;
+  z-index: 9; */
+}
+.availableActions ul li {
+  margin-bottom: 10px;
+}
+
+.availableActions ul:last-child {
+  border-top: 1px solid #f0efea;
+  margin-top: 15px;
+  padding-top: 15px;
+}
+.availableActions ul:last-child li:last-child {
+  margin-bottom: 0px;
+}
+
+.availableActions ul li span {
+  width: 25px;
+  display: inline-block;
+  height: 25px;
+  margin-right: 10px;
+}
+.availableActions ul li span svg.action-rename-icon {
+  width: 84%;
+  height: 75%;
+}
+.availableActions ul li span svg.action-file-share-icon {
+  width: 80%;
+  height: 100%;
+}
+.availableActions ul li a {
+   color: #212529;
+   text-decoration: none;
+}
+::ng-deep .mat-menu-panel {
+  width: 304px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%) !important;
+  border-radius: 8px !important;
+  padding: 12px 14px !important;
+}
+.copyedBlock {
+  width: auto;
+  max-width: 100px;
+  line-height: normal;
+  vertical-align: middle;
+  margin-left: 0px;
+  border-radius: 100px;
+  background: #E8E6DF;
+  white-space: nowrap;
+  text-align: left;
+  padding: 3px 10px 5px;
+  float: right;
+}
+.copyHover {
+  position: relative;
+  margin-left: 0px;
+  cursor: pointer;
+}
+.copyHoverInfo {
+  display: none;
+  top: 31px;
+  right: 0px;
+  background: #413E3C;
+  padding: 2px 7px;
+  color: #fff !important;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  width: 75px;
+}
+.copyHover:hover .copyHoverInfo {
+  display: block;
+}
+.zoomImg {
+  position: relative;
+  z-index: 9;
+}

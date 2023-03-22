@@ -1,12 +1,20 @@
 <section class="documentationBlck">
-  <div class="container">
+  <app-loader [show]="loading"></app-loader>
+  <div *ngIf="notAuthorize" class="not-authorize">
+    <p>You are not authorized to view other construction assets.</p>
+    <ul>
+      <li>Click <a href="mailto:Neom.Documentation@neom.com?subject=Ground X Construction Assets Request">here</a> to request viewing access to construction assets.</li>
+      <li>Click <a href="mailto:groundxsupport@neom.com?subject=Ground X API Access Request">here</a> to request API access to construction assets.</li>
+    </ul>
+  </div>
+  <div *ngIf="!notAuthorize" class="container" style="min-height: 250px;">
       <h2>Construction assets</h2>
       <h3>{{company}}</h3>
-      <div *ngIf="!loading && (!assetList || assetList.length == 0) && checkNoFilterSelected()" class="adding-assets">
+      <!-- <div *ngIf="!loading && (!assetList || assetList.length == 0) && checkNoFilterSelected()" class="adding-assets">
           <img src="../../assets/images/upload-icon.svg" />
           Start adding assets
           <div class="uploadBtn" (click)="openModal()">Upload</div>
-      </div>
+      </div> -->
 
       <div class="masonryBlock">
         <div class="regionBlok">
@@ -15,13 +23,13 @@
                 <ng-select placeholder="Region"
                     (change)="onSelectRegions($event)"
                     [searchable]="true"
-                    [clearable]="false"
+                    [clearable]="true"
                     [(ngModel)]="selectedRegion"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedRegion}"
                 >
-                    <ng-option *ngFor="let region of regionList" [value]="region.uid">
-                        {{region.name}}
+                    <ng-option *ngFor="let region of regionList" [value]="region">
+                      {{region.initial}} - {{region.name}}
                     </ng-option>
                 </ng-select>
             </li>
@@ -29,31 +37,40 @@
                 <ng-select placeholder="Sub-area"
                     (change)="onSelectSubArea($event)"
                     [searchable]="true"
-                    [clearable]="false"
+                    [clearable]="true"
                     [(ngModel)]="selectedsubArea"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedsubArea}"
                 >
-                    <ng-option *ngFor="let subArea of subAreaList" [value]="subArea.uid">
+                    <ng-option *ngFor="let subArea of filteredSubAreaList" [value]="subArea">
                         {{subArea.name}}
                     </ng-option>
                 </ng-select>
             </li>
             <li>
-                <mat-form-field appearance="fill" [ngClass]="{'goldenText': selectedStartDate || selectedEndDate}">
-                  <mat-label (click)="picker.open();">Enter a date range</mat-label>
-                  <mat-date-range-input (dateChange)="dateRangeChange()" [rangePicker]="picker" (click)="picker.open();">
-                    <input (dateChange)="dateRangeChange()" class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selectedStartDate">
-                    <input (dateChange)="dateRangeChange()" class="customInput" matEndDate placeholder="End date" [(ngModel)]="selectedEndDate">
-                  </mat-date-range-input>
-                  <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
+              <mat-form-field appearance="fill" [ngClass]="{'goldenText': selectedStartDate || selectedEndDate}">
+                <mat-label (click)="picker.open();">Enter a date range</mat-label>
+                <mat-date-range-input (dateChange)="dateRangeChange()" [rangePicker]="picker" (click)="picker.open();">
+                  <input matinput (dateChange)="dateRangeChange()" class="customInput" matStartDate placeholder="Start date" [(ngModel)]="selectedStartDate">
+                  <input matinput (dateChange)="dateRangeChange()" class="customInput" matEndDate placeholder="End date" [(ngModel)]="selectedEndDate">
+                </mat-date-range-input>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <span *ngIf="selectedStartDate || selectedEndDate" class="ng-clear-wrapper ng-star-inserted" title="Clear all" (click)="clearSelection()"
+                style="color: #DEB31A !important;
+                font-size: 20px;
+                font-family: 'brownregular';
+                position: absolute;
+                top: -5px;
+                right: 25px;
+                cursor: pointer;"><span aria-hidden="true" class="ng-clear">×</span></span>
+              </mat-form-field>
+              <!-- <button mat-button (click)="clearSelection()">Clear</button> -->
             </li>
             <li>
                 <ng-select placeholder="Format"
                     (change)="getAssetList()"
                     [searchable]="true"
-                    [clearable]="false"
+                    [clearable]="true"
                     [(ngModel)]="selectedFormat"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedFormat}"
@@ -104,6 +121,7 @@
               [viewType]="viewType"
               (onOpenPreview)="open(doc, doc.type)"
               (onMarkFavourite)="markFavourite(doc, 'recent')"
+              [hasDownloadPermission]="checkAssetDownloadPermission(doc)"
             >
             </document-card>
           </div>

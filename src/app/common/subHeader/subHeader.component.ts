@@ -320,7 +320,7 @@ export class SubHeaderComponent implements OnInit {
   playPersonalizedVideo() {
     const body = {
       sector: this.sectorSelected,
-      username: localStorage.getItem("username"),
+      username: JSON.parse(localStorage.getItem("user"))["username"]
     };
     localStorage.setItem("videoSector", this.sectorSelected);
     this.videoResponse = false;
@@ -417,10 +417,11 @@ export class SubHeaderComponent implements OnInit {
   resetSearch() {
     this.searched = false;
     this.showRelatedSearch = false;
-    this.dataService.searchBarClickInit(false);
+    // this.dataService.searchBarClickInit(false);
+    this.searchText = '';
     this.getRecentSearch();
-    this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
-    this.dataService.tagsMetaRealInit([]);
+    // this.dataService.resetFilterInit(TRIGGERED_FROM_SUB_HEADER);
+    // this.dataService.tagsMetaRealInit([]);
   }
 
   focusOnSearch() {
