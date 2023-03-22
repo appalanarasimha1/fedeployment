@@ -7,7 +7,7 @@ import { SearchComponent } from './search/search.component';
 const routes: Routes = [
   {path: '', component: SearchComponent,
   children: [
-    {path: 'documentation-assets', component: DocumentationAssetsComponent}
+    {path: 'construction', component: DocumentationAssetsComponent}
   ]}
 ];
 
