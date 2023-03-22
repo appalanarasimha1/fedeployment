@@ -101,14 +101,12 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        if (event.url.includes('construction')) {
-          // this.isDroneUploadPage = true;
+        if (event.url.includes('documentation-assets')) {
+          this.isDroneUploadPage = true;
           this.showFooter = true;
-          this.isDroneUploader = false;
-        } 
-        // else {
-        //   this.isDroneUploadPage = false;
-        // }
+        } else {
+          this.isDroneUploadPage = false;	
+        }
 
       }
     });
@@ -341,7 +339,7 @@ export class HeaderComponent implements OnInit {
     this.computeNotifications();
     this.storeRequestDownloadNotification();
   }
-  
+
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
     // if (!event) {
     //   return `${window.location.origin}/nuxeo${url}`;
