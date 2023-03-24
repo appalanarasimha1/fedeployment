@@ -101,11 +101,11 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        if (event.url.includes('documentation-assets')) {
+        if (event.url.includes('documentation-assets') || event.url.includes('construction')) {
           this.isDroneUploadPage = true;
           this.showFooter = true;
         } else {
-          this.isDroneUploadPage = false;	
+          this.isDroneUploadPage = false;
         }
 
       }

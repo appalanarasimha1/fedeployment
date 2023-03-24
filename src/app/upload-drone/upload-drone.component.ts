@@ -243,15 +243,18 @@ export class UploadDroneComponent implements OnInit {
 
   async createAsset(file, index, folder) {
     const date = this.dates[index];
-    const url = encodeURI(`/path${folder}`);
     let fileType = "File";
+    let filePath = "";
     if (file.type?.includes("image/")) {
       fileType = "Picture";
+      filePath = "/Photos";
     } else if (file.type?.includes("video/")) {
       fileType = "Video";
+      filePath = "/Videos";
     } else if (file.type?.includes("audio/")) {
       fileType = "Audio";
     }
+    const url = encodeURI(`/path${folder}`) + filePath;
     const payload = {
       "entity-type": "document",
       repository: "default",
