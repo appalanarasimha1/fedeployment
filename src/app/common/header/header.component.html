@@ -268,7 +268,7 @@
           bindLabel="label"
           bindValue="value"
           [closeOnSelect]
-          [searchable]="false" [clearable]="false">
+          [searchable]="true" [clearable]="true">
         </ng-select>
         <div *ngIf="sectorSelected !== 'general'" class="next-arrow">
           <!-- <i (click)="playPersonalizedVideo()" class="fa fa-arrow-circle-o-right" style="cursor: pointer;" aria-hidden="true"></i> -->
@@ -294,7 +294,7 @@
                 bindValue="value"
                 (change)="playPersonalizedVideo()"
                 [closeOnSelect]
-                [searchable]="false" [clearable]="false"
+                [searchable]="true" [clearable]="true"
                 >
                 <ng-template ng-option-tmp let-item="item">
                   <div title="{{item.label}}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.label}}</div>
