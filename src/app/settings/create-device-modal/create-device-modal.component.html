@@ -83,8 +83,8 @@
                 <div class="form-group">
                     <label for="Supplier">Supplier</label>
                     <ng-select placeholder="Select"
-                        [searchable]="false"
-                        [clearable]="false"
+                        [searchable]="true"
+                        [clearable]="true"
                         [(ngModel)]="selectedSupplier"
                         (change)="onSelectedSupplier($event)"
                         id="supplier"

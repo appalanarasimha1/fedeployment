@@ -59,7 +59,7 @@
               <label for="confidentiality" style="margin-bottom: 0px;">Confidentiality</label>
             </div>
             <div class="col-xl-8 col-md-8">
-              <ng-select  placeholder="Specify confidentiality" name="confidentiality" [searchable]="false" [clearable]="false"
+              <ng-select  placeholder="Specify confidentiality" name="confidentiality" [searchable]="true" [clearable]="true"
                 (change)="onSelectConfidentiality()"
                 [(ngModel)]="overallConfidentiality"
                  [ngClass]="{'goldenText': overallConfidentiality}"
@@ -79,7 +79,7 @@
               <ng-select
               placeholder="Specify visibility"
               name="access"
-              (change)="onSelectAccess()" [searchable]="false" [clearable]="false"
+              (change)="onSelectAccess()" [searchable]="true" [clearable]="true"
               [(ngModel)]="overallAccess"
               [ngClass]="{'goldenText': overallAccess}"
               id="access">
@@ -230,7 +230,7 @@
                          </div>
                       </li>
                       <li>
-                          <ng-select [items]="years" [searchable]="false" [clearable]="false"
+                          <ng-select [items]="years" [searchable]="true" [clearable]="true"
                              bindLabel="name"
                              [(ngModel)]="copyrightYearMap[i]"
                              placeholder="Year"  [ngClass]="{'goldenText': copyrightYearMap[i] }" ngDefaultControl>
@@ -253,7 +253,7 @@
                     <option [selected]="customConfidentialityMap[i] === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                   </select> -->
 
-                  <ng-select name="confidentiality" [searchable]="false" [clearable]="false"
+                  <ng-select name="confidentiality" [searchable]="true" [clearable]="true"
                   (change)="onSelectConfidentiality(i)"
                   [(ngModel)]="customConfidentialityMap[i]"
                   id="confidentiality"
@@ -278,7 +278,7 @@
                   <ng-select
                     placeholder="Specify visibility"
                     name="access"
-                    (change)="onSelectAccess(i)" [searchable]="false" [clearable]="false"
+                    (change)="onSelectAccess(i)" [searchable]="true" [clearable]="true"
                     id="access"
                     [(ngModel)]="customAccessMap[i]"
                     [ngClass]="{'goldenText': customAccessMap[i] }">
@@ -324,7 +324,7 @@
                    <label for="allow">Allow use</label>
                 </div>
                 <div class="col-xl-8">
-                  <ng-select placeholder="Specify permissible usage" name="allow" [searchable]="false" [clearable]="false"(change)="onSelectAllow($event.target.value, i)" id="allow" [ngClass]="{'goldenText': customAllowMap[i] }" [(ngModel)]="customAllowMap[i]">
+                  <ng-select placeholder="Specify permissible usage" name="allow" [searchable]="true" [clearable]="true"(change)="onSelectAllow($event.target.value, i)" id="allow" [ngClass]="{'goldenText': customAllowMap[i] }" [(ngModel)]="customAllowMap[i]">
                     <ng-option *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value, i)">{{ ALLOW_LABEL[c.value] }}
                     </ng-option>
                  </ng-select>
