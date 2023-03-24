@@ -105,7 +105,7 @@ export class HeaderComponent implements OnInit {
           this.isDroneUploadPage = true;
           this.showFooter = true;
         } else {
-          this.isDroneUploadPage = false;	
+          this.isDroneUploadPage = false;
         }
 
       }
@@ -281,7 +281,7 @@ export class HeaderComponent implements OnInit {
   }
   checkNeomUser() {
     if (!this.userData) return !this.checkExternalUser();
-    return this.userData.email?.includes('@neom.com');
+    return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');
   }
 
   playPersonalizedVideo() {

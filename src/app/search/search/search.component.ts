@@ -684,9 +684,9 @@ export class SearchComponent implements OnInit {
 
     return !this.isDroneUploader && !isOtherPage && this.isNeomUser();
   }
-  
+
   isNeomUser() {
-    return !!this.user?.includes('@neom.com');
+    return !!this.user?.includes('@neom.com') || !!this.user?.match('@.*neom.com');
   }
 
 }

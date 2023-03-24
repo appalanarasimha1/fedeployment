@@ -521,7 +521,7 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   isNeomUser() {
-    return !!this.user?.includes('@neom.com');
+    return !!this.user?.includes('@neom.com') || !!this.user?.match('@.*neom.com');
   }
 
   public ngOnDestroy(): void {
