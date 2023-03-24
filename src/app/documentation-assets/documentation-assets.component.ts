@@ -77,7 +77,8 @@ export class DocumentationAssetsComponent implements OnInit {
       this.updateMasonryLayout = !this.updateMasonryLayout;
     });
     const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false
+    if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false;
+    if (userData?.groups.includes("Warroom View Access")) this.notAuthorize = false;
 
     this.user = userData["username"];
     this.getDeviceList();
