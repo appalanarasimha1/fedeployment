@@ -1,0 +1,106 @@
+<section class="lpBAck" style="background-color: #fff;">
+    <section class="lpSecOne">
+        <div class="topToggle">
+            <div class="container">
+                Data APIs
+                <mat-slide-toggle (change)="togglerUserActivated($event)"></mat-slide-toggle>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 pt-20 pb-50">
+                    <main class="contents">
+
+                        <!-- acc single -->
+                        <div class="accordion-single js-acc-single">
+                          <div class="accordion-single-item js-acc-item" [ngClass]="{'is-open' :  checkedToggle}">
+                            <h2 class="accordion-single-title js-acc-single-trigger">What are the Ground X Data Services?</h2>
+                            <div class="accordion-single-content">
+                                <div class="contentBlk">
+                                    <p>Packaged datasets, APIs, and data governance rules that facilitate secure access to data from the Ground X Platform. There are two data services:</p>
+                                    <ul>
+                                        <li><strong>The Gepspatial Assets Data Service</strong> provides API access to photos and videos from cameras installed across NEOM regions.</li>
+                                        <li><strong>The Media Assets Data Service</strong> provides API access to data from your Workspace in the Ground X Digital Asset Management (DAM) system. Note that this service is only available to teams using the Ground X DAM</li>
+                                    </ul>
+                                    <img src="../../assets/images/graph-img.jpg" alt="" />
+                                </div>
+                            </div>
+                          </div>
+                          <div class="accordion-single-item js-acc-item" [ngClass]="{'is-open' :  checkedToggle}">
+                            <h2 class="accordion-single-title js-acc-single-trigger">Where are the cameras feeding the Geospatial Assets Data Service?</h2>
+                            <div class="accordion-single-content">
+                                <div class="contentBlk">
+                                    <p>The Ground X Documentation team captures the development progress of NEOM's regions in high quality photos and videos using the following devices:</p>
+                                    <ul>
+                                        
+                                        <li>Timelapse cameras</li>
+                                        <li>Drone-mounted cameras</li>
+                                        <li>Helicopter-mounted cameras</li>
+                                        <li>Live cameras</li>
+                                        <li>360-degree cameras</li>
+                                        <li>Underwater cameras</li>
+                                    </ul>
+                                    <p>These devices record media in a short frequency of 5-30mins (drone and helicopter flights are less frequent) and transmit in real-time into Ground X. The interactive map below shows the locations of these devices.</p>
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.593141741978!2d55.270686914446394!3d25.183212238448927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6833aaaaaaab%3A0x90d2395d7b4b565b!2sNEOM!5e0!3m2!1sen!2sin!4v1679049331326!5m2!1sen!2sin" width="70%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                    <p>Although most devices belong to the Ground X Unit, some cameras are installed and managed by other NEOM teams using Ground X to capture and distribute their camera feeds.</p>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="accordion-single-item js-acc-item" [ngClass]="{'is-open' :  checkedToggle}">
+                            <h2 class="accordion-single-title js-acc-single-trigger">How can I explore sample data?</h2>
+                            <div class="accordion-single-content">
+                                <div class="contentBlk">
+                                    <p>Click <a href="#">here</a> to explore sample data from the Geospatial Assets Data Service.</p>
+                                    <p>Click <a href="#">here</a> to explore sample data from the Media Assets Data Service.</p>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="accordion-single-item js-acc-item" [ngClass]="{'is-open' :  checkedToggle}">
+                            <h2 class="accordion-single-title js-acc-single-trigger">How can I access the data services?</h2>
+                            <div class="accordion-single-content">
+                              <div class="contentBlk">
+                                <p>To access the data services, simply send an email to the Ground X team at <a href="mailto:groundxsupport@neom.com">groundxsupport@neom.com</a> with a description of your use case. We will be in touch to facilitate your data access request and authorization from data owners.</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="accordion-single-item js-acc-item" [ngClass]="{'is-open' :  checkedToggle}">
+                            <h2 class="accordion-single-title js-acc-single-trigger">Where can I find the Ground X Data Service API docs?</h2>
+                            <div class="accordion-single-content">
+                              <div class="contentBlk">
+                                <p>Our API documentation can be found <a href="#">here</a>.</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="accordion-single-item js-acc-item" [ngClass]="{'is-open' :  checkedToggle}">
+                            <h2 class="accordion-single-title js-acc-single-trigger">Where can I get API authorization tokens to test the APIs?</h2>
+                            <div class="accordion-single-content">
+                              <div class="contentBlk">
+                                <p>To request on authorization token for the Ground X Data Service APIs, send an email to <a href="mailto:groundxsupport@neom.com">groundxsupport@neom.com</a> and the ream will provide the token within 24 hours.</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="accordion-single-item js-acc-item" [ngClass]="{'is-open' :  checkedToggle}">
+                            <h2 class="accordion-single-title js-acc-single-trigger">How can I publish my own data to the Ground X Data Services?</h2>
+                            <div class="accordion-single-content">
+                              <div class="contentBlk">
+                                <p>Via the Ground X DAM UI: Simply upload your data into your <a href="#">Workspace</a> in the Ground X DAM.</p>
+                                <p>Via the Ground X Ingestion APIs: To automate your data transfer into Ground X, integrate your application or device with the Ground X Ingestion APIs.</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="accordion-single-item js-acc-item" [ngClass]="{'is-open' :  checkedToggle}">
+                            <h2 class="accordion-single-title js-acc-single-trigger">How can I request the Ground X Ingestion API?</h2>
+                            <div class="accordion-single-content">
+                              <div class="contentBlk">
+                                <p>To request the Ingestion API, send an email to <a href="mailto:groundxsupport@neom.com">groundxsupport@neom.com</a> with a description of your use case.</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div><!-- accordion-single -->
+                          
+                    </main>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

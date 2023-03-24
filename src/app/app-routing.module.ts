@@ -12,6 +12,7 @@ import { AssetViewComponent } from "./asset-view/asset-view.component";
 import { SignupComponent } from "./signup/signup.component";
 import { ForgotPasswordComponent } from "./forgot-password/forgot-password.component";
 import { AssetCannotBeAccessedComponent } from "./asset-cannot-be-accessed/asset-cannot-be-accessed.component";
+import { DataApiComponent } from "./data-api/data-api.component";
 // import { DocumentationAssetsComponent } from "./documentation-assets/documentation-assets.component";
 
 
@@ -55,6 +56,7 @@ const routes: Routes = [
     component: AssetViewComponent,
     canActivate: [AuthGuardService],
   },
+  { path: "data-api", component: DataApiComponent },
   { path: "**", component: NoContent },
 ];
 

@@ -61,5 +61,13 @@
       >
         <span>Manage external users</span>
       </li>
+      <li *ngIf="checkForUserGroup()"
+        style="cursor: pointer"
+        class="d-flex set"
+        routerLink="/report"
+        routerLinkActive="'active-tab'"
+      >
+        <span>Analytics</span>
+      </li>
     </ul>
   </div>

@@ -1,0 +1,190 @@
+section.lpSecOne {
+    position: relative;
+    padding-left: 100px;
+}
+.pt-20 {
+    padding-top: 20px;
+}
+.pb-50 {
+    padding-bottom: 80px;
+}
+.contents{
+    max-width: 100%;
+    margin: 0 auto;
+}
+  
+.accordion-single  {
+    /* border-bottom: 1px solid #efefef; */
+    margin-top: 10px;
+}
+  
+.accordion-single-title {
+    /* border-top: 1px solid #efefef; */
+    padding: 20px 0px;
+    cursor: pointer;
+    position: relative;
+    font-size: 16px;
+    margin: 0;
+}
+.accordion-single-item.js-acc-item {
+    border-bottom: 1px solid #efefef;
+}
+.accordion-single-item.js-acc-item:first-child {
+    border-top: 0px;
+}
+  
+.accordion-single-title::after{
+    content: "";
+    position: absolute;
+    right: 0px;
+    top: 36%;
+    transition: all 0.2s ease-in-out;
+    display: block;
+    width: 20px;
+    height: 20px;
+    /* border-top: solid 2px #999;
+    border-right: solid 2px #999; */
+    /* transform: translateY(-50%) rotate(135deg); */
+    background-image: url(../../assets/images/add-copyright-golden.svg);
+    background-size: contain;
+}
+  
+.accordion-single-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease-in-out;
+}
+  
+.accordion-single-content div.contentBlk {
+    padding: 0px 0px 20px;
+    font-family: 'brownlight';
+    line-height: 26px;
+}
+.accordion-single-content div.contentBlk strong, .accordion-single-content div.contentBlk b {
+    font-family: 'brownregular';
+    font-weight: normal;
+}
+  
+.accordion-single-item.is-open .accordion-single-content  {
+    max-height: 100%;
+    /* height: 100%; */
+}
+  
+.accordion-single-item.is-open .accordion-single-title::after  {
+    /* transform: translateY(-50%) rotate(315deg); */
+    background-image: url(../../assets/images/minus-copyright-golden.svg);
+    background-size: contain;
+}
+.topToggle {
+    background: #f0f0f0;
+    padding: 20px 0px;
+    font-size: 18px;
+    font-family: 'brownregular';
+}
+
+.topToggle ::ng-deep .mat-slide-toggle {
+    float: right !important;
+}
+.topToggle ::ng-deep .mat-slide-toggle-bar {
+    background-color: #D1CFC9;
+    border-radius: 20px !important;
+    height: 17px !important;
+    width: 32px !important;
+}
+.topToggle ::ng-deep .mat-slide-toggle-thumb-container {
+    width: 12px !important;
+    height: 12px !important;
+    top: 2px !important;
+    left: 2px !important;
+}
+.topToggle ::ng-deep .mat-slide-toggle-thumb {
+    height: 12px !important;
+    width: 12px !important;
+}
+.topToggle ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    background-color: #fff;
+}
+.topToggle ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: #0E7A53;
+}
+.topToggle ::ng-deep .mat-slide-toggle-label {
+    margin-bottom: 0px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    height: 20px !important;
+}
+.topToggle ::ng-deep .mat-slide-toggle .mat-slide-toggle-ripple {
+    height: 16px !important;
+    width: 16px !important;
+}
+.topToggle ::ng-deep .example-chip-list ::placeholder{
+    color: #645D57 !important;
+}
+.topToggle ::ng-deep .example-chip-list input:focus::placeholder{
+    opacity: 1 !important;
+}
+.topToggle ::ng-deep input.mat-chip-input {
+    width: 70px !important;
+    flex: auto !important;
+    border: 0px;
+    background: transparent;
+}
+.topToggle ::ng-deep .mat-option {
+    line-height: 38px;
+    height: 38px;
+    padding: 0 10px;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+.topToggle ::ng-deep .mat-autocomplete-panel-above .mat-autocomplete-panel {
+    border-radius: 8px !important;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+.topToggle ::ng-deep .mat-autocomplete-panel:not([class*=mat-elevation-z]) {
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 0%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+.topToggle ::ng-deep .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
+    background: rgb(225 187 52);
+}
+.topToggle ::ng-deep .mat-chip-list-wrapper input.mat-input-element, .mat-chip-list-wrapper .mat-standard-chip {
+    margin: 0px;
+}
+.topToggle ::ng-deep .mat-chip.mat-standard-chip {
+    background-color: #E6E2DA;
+    color: #645D57;
+    font-family: 'brownregular';
+}
+.topToggle ::ng-deep .mat-standard-chip {
+    border-radius: 4px !important;
+}
+.topToggle ::ng-deep .mat-chip.mat-standard-chip .mat-chip-remove {
+    color: #645D57;
+    opacity: 1;
+}
+.accordion-single-content div.contentBlk p, .accordion-single-content div.contentBlk ul li {
+    padding-bottom: 8px;
+}
+.accordion-single-content div.contentBlk ul {
+    list-style: disc;
+    list-style-position: inherit;
+    list-style-type: disc;
+    margin-left: 17px;
+    margin-bottom: 20px;
+}
+.accordion-single-content div.contentBlk img {
+    display: block;
+    margin: 0px 0px 20px;
+    max-width: 100%;
+}
+
+.accordion-single-content div.contentBlk a, .accordion-single-content div.contentBlk p a,
+.accordion-single-content div.contentBlk a:hover, .accordion-single-content div.contentBlk p a:hover,
+.accordion-single-content div.contentBlk a:visited, .accordion-single-content div.contentBlk p a:visited {
+    text-decoration: underline;
+    color: rgb(223 167 0);
+}
+.accordion-single-content iframe {
+    margin: 30px 0px;
+}
