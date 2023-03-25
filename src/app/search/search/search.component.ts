@@ -652,7 +652,7 @@ export class SearchComponent implements OnInit {
       if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
         this.selectedTab = tabs.CONSTRUCTION;
         this.isDroneUploader = true;
-        this.router.navigate(['/', 'construction']);
+        this.router.navigate(['/'], { fragment: 'construction' });
         return;
       }
       if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
