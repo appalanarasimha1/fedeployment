@@ -48,4 +48,8 @@ export class DataApiComponent implements OnInit {
     this.checkedToggle = !this.checkedToggle;
   }
 
+  navigate(route: string) {
+    this.router.navigate([route]);
+  }
+
 }

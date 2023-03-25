@@ -50,8 +50,8 @@
                             <h2 class="accordion-single-title js-acc-single-trigger">How can I explore sample data?</h2>
                             <div class="accordion-single-content">
                                 <div class="contentBlk">
-                                    <p>Click <a href="#">here</a> to explore sample data from the Geospatial Assets Data Service.</p>
-                                    <p>Click <a href="#">here</a> to explore sample data from the Media Assets Data Service.</p>
+                                    <p>Click <a (click)="navigate('construction')">here</a> to explore sample data from the Geospatial Assets Data Service.</p>
+                                    <p>Click <a (click)="navigate('/')">here</a> to explore sample data from the Media Assets Data Service.</p>
                                 </div>
                             </div>
                           </div>
@@ -83,7 +83,7 @@
                             <h2 class="accordion-single-title js-acc-single-trigger">How can I publish my own data to the Ground X Data Services?</h2>
                             <div class="accordion-single-content">
                               <div class="contentBlk">
-                                <p>Via the Ground X DAM UI: Simply upload your data into your <a href="#">Workspace</a> in the Ground X DAM.</p>
+                                <p>Via the Ground X DAM UI: Simply upload your data into your <a (click)="navigate('workspace')">Workspace</a> in the Ground X DAM.</p>
                                 <p>Via the Ground X Ingestion APIs: To automate your data transfer into Ground X, integrate your application or device with the Ground X Ingestion APIs.</p>
                               </div>
                             </div>
