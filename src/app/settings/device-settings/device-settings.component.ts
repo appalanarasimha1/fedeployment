@@ -237,6 +237,13 @@ export class DeviceSettingsComponent implements OnInit {
 
   copyDeviceName(name) {
     navigator.clipboard.writeText(name);
+    this.sharedService.showSnackbar(
+      "Installation ID copied",
+      2000,
+      "bottom",
+      "center",
+      "snackBarMiddle"
+    );
   }
 
   filterDevice() {
