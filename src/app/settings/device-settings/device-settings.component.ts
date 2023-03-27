@@ -240,7 +240,7 @@ export class DeviceSettingsComponent implements OnInit {
     this.sharedService.showSnackbar(
       "Installation ID copied",
       2000,
-      "bottom",
+      "top",
       "center",
       "snackBarMiddle"
     );
