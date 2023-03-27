@@ -7,7 +7,7 @@ import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
-import { DRONE_UPLOADER } from '../common/constant';
+import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from "rxjs";
 
@@ -77,7 +77,7 @@ export class DocumentationAssetsComponent implements OnInit {
       this.updateMasonryLayout = !this.updateMasonryLayout;
     });
     const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false
+    if (userData?.groups.includes(DRONE_UPLOADER) || userData?.groups.includes(WARROOM_VIEW_ACCESS)) this.notAuthorize = false
 
     this.user = userData["username"];
     this.getDeviceList();
