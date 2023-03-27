@@ -30,7 +30,7 @@ export class NuxeoService {
   private defaultHeader = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'PUT,DELETE,POST,GET,OPTIONS',
-    'enrichers-document': 'thumbnail,permissions,preview',
+    'enrichers-document': 'thumbnail,permissions,preview,audit',
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     properties: '*',
     'CSRF-Token': 'defaults'
@@ -194,7 +194,7 @@ export class NuxeoService {
       const res = await this.nuxeoClient.connect();
       localStorage.setItem("user", JSON.stringify(res.user.properties));
       if (res.user.properties?.groups.includes(DRONE_UPLOADER)) {
-        this.router.navigate(['/'], { fragment: 'documentation-assets' });
+        this.router.navigate(['/'], { fragment: 'construction' });
       }
     } catch (err) {
       await this.logout();

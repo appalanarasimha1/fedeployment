@@ -103,8 +103,9 @@ export class HeaderComponent implements OnInit {
         }
         if (event.url.includes('documentation-assets')) {
           this.isDroneUploadPage = true;
+          this.showFooter = true;
         } else {
-          this.isDroneUploadPage = false;
+          this.isDroneUploadPage = false;	
         }
 
       }
@@ -226,7 +227,7 @@ export class HeaderComponent implements OnInit {
       dialogConfig.data = workspaceState;
     }
     // https://material.angular.io/components/dialog/overview
-    if (!this.isDroneUploadPage) {
+    if (!this.isDroneUploadPage && !this.isDroneUploader) {
       const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     } else {
       const modalDialog = this.matDialog.open(UploadDroneComponent, dialogConfig);
@@ -339,6 +340,19 @@ export class HeaderComponent implements OnInit {
     this.storeRequestDownloadNotification();
   }
 
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    // if (!event) {
+    //   return `${window.location.origin}/nuxeo${url}`;
+    // }
+
+    return this.sharedService.getAssetUrl(event, url, document, type);
+  }
+
+  downloadAssetFromNotification(UUID: string) {
+    return `${window.location.origin}/nuxeo/nxfile/default/${UUID}`;
+  }
+
+
   computeDuplicateRequestDownloadNoti() {
     this.notifications = this.notifications.sort((a, b) => {
       if (a.id > b.id) return -1;
@@ -393,6 +407,8 @@ export class HeaderComponent implements OnInit {
   }
 
   goToNotificationLink(notification) {
+    // this.loading = true;
+    // debugger;
     let folderName = notification?.docPath?.split("/")[1]
     const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
     if (isAsset) this.router.navigate(['asset-view'], {queryParams : {assetId: notification.docUUID}});

@@ -64,7 +64,7 @@ button.upload-btn {
 }
 .create-supplier-form ul li input {
     border: 0px;
-    border-bottom: 1px solid #413E3C;
+    border-bottom: 2px solid #413E3C;
     width: 100%;
     font-family: 'brownlight';
     font-size: 15px;

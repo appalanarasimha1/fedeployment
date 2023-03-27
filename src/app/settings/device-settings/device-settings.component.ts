@@ -22,6 +22,8 @@ export class DeviceSettingsComponent implements OnInit {
     this.getDeviceList();
     this.getRegionList();
     this.getSubAreaList();
+    this.getOwnerList();
+    this.getSupplierList();
   }
   async openCreateDeviceModal(create = true, selectedDevice?) {
     const dialogConfig = new MatDialogConfig();
@@ -36,6 +38,9 @@ export class DeviceSettingsComponent implements OnInit {
       subAreaList: this.subAreaList,
       isCreate: create,
       selectedDevice: selectedDevice,
+      owners: this.owners,
+      supplierIds: this.supplierIds,
+      supplierList: this.supplierList,
     };
 
     const modalDialog = this.matDialog.open(
@@ -57,6 +62,8 @@ export class DeviceSettingsComponent implements OnInit {
   deviceList = [];
   regionList = [];
   subAreaList = [];
+  supplierList = [];
+  supplierIds = [];
   filteredDeviceList = [];
   regionMap = {};
   subAreaMap = {};
@@ -94,7 +101,9 @@ export class DeviceSettingsComponent implements OnInit {
       subAreaId: device.subAreaId,
       status: device.status?.toLowerCase(),
       installationId: device.installationId,
+      owner: device.owner,
       uid: device.id,
+      supplierId: device.supplierId,
     }));
     this.filteredDeviceList = this.deviceList;
     this.deviceInput = "";
@@ -102,6 +111,26 @@ export class DeviceSettingsComponent implements OnInit {
     this.selectedStatus = null;
     this.selecteddeviceTypes = null;
     this.selectedsubAreas = null;
+  }
+
+  async getSupplierList() {
+    const url = '/settings/supplier';
+    const res = await this.apiService
+      .get(url, {}).toPromise() as any;
+
+    if (!res) return;
+    this.supplierList = res.map(supplier => ({
+      name: supplier.name,
+      uid: supplier.id,
+      supplierId: supplier.supplierId?.toUpperCase(),
+      regions: supplier.regions,
+      users: supplier.supplierUsers,
+      activated: supplier.activated,
+      supportEmail: supplier.supportEmail,
+      expiry: supplier.expiry,
+      renameEmail : false,
+    }));
+    this.supplierIds = this.supplierList.map(supplier => supplier.supplierId).filter(supplierId => !!supplierId);
   }
 
   async getRegionList() {
@@ -148,6 +177,14 @@ export class DeviceSettingsComponent implements OnInit {
     });
   }
 
+  async getOwnerList() {
+    const url = "/settings/owner";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
+
+    const owners = res || [];
+    this.owners = owners.map(owner => owner.owner);
+  }
+
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -170,7 +207,7 @@ export class DeviceSettingsComponent implements OnInit {
 
   deleteDocument(id) {
     return this.apiService
-      .delete(`/settings/camera/${id}`, { responseType: "text" })
+      .post(`/settings/camera/delete/${id}`, {}, { responseType: "text" })
       .toPromise();
   }
 
@@ -215,6 +252,9 @@ export class DeviceSettingsComponent implements OnInit {
       if (this.selectedsubAreas)
       {
         match = match && (device.subArea?.includes(this.selectedsubAreas.uid) || device.subAreaId?.includes(this.selectedsubAreas.locationId));
+      }
+      if (this.selectedOwner) {
+        match = match && (device.owner === this.selectedOwner);
       }
       if (this.selecteddeviceTypes)
         match =

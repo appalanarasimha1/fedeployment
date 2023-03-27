@@ -1,0 +1,684 @@
+
+<app-loader [show]="loading"></app-loader>
+<div [ngClass]="{ 'animate__animated animate__fadeIn': showSearchbar }" style="position: relative; z-index: 1;">
+  <div class="row">
+    <div class="col-xl-7">
+      <div *ngIf="showSearchbar && !folderNotFound" class="pb-30">
+        <div style="position: relative;">
+          <form autocomplete="off" style="position: relative;">
+            <button class="primary search-btn"><img src="../../../assets/images/search.png" /></button>
+            <input #workspaceSearch [(ngModel)]="searchBarValue" name="searchBar" (focus)="initWorkspaceSearch()" type="text" [placeholder]="getSearchPlaceholder()" class="search-bar" autocomplete="off"> <!--[(ngModel)]="searchBarValue" (ngModelChange)="searchFolders($event)"-->
+            <img *ngIf="searchBarValue"  style="cursor: pointer" (click)="searchBarValue = ''; getAssets(currentWorkspace.uid);" src="../assets/images/circle-close.png" class="placeholder-search"> <!-- searchFolders(currentWorkspace.uid, 1) -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-5">
+    </div>
+  </div>
+  <div class="header-content">
+    <div style="width: 100%"> <!-- *ngIf="currentWorkspace?.uid !== parentId" -->
+      <span class="customWidth">
+        <span class="main-title" *ngIf="!renameFolderName">
+          <span class="tollTipCustom">
+            <div class="folderTitle" [ngClass]="{'isPrivateFolderName' : isPrivateFolder(true, true)}">{{currentWorkspace?.title}}</div>
+            <!-- <div class="folderTitle">{{sharedService.stringShortener(currentWorkspace?.title, 28)}}</div> -->
+            <div class="tolltipContent">
+              {{currentWorkspace?.title}}
+            </div>
+          </span>
+          <svg *ngIf="!onSectorLevel && !checkGeneralFolder(currentWorkspace) && !checkExternalUser()" class="renameFolderImg" (click)="renameFolderAction()"
+            width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <!-- <img src="../../../assets/images/pencil-write.svg" alt="" *ngIf="onSectorLevel" class="renameFolderImg" (click)="renameFolderAction()" /> -->
+          <span *ngIf="!onSectorLevel" style="display: inline-block; margin-left: 10px; vertical-align: 7px; position: relative;">
+            <div class="publicUseBlock">
+              <div *ngIf="isPrivateFolder(true, true)" class="publicUseBlk" style="cursor: auto;">Private</div>
+              <div class="mouseHoverInfo">
+                <p>You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
+                <div (click)="openAddUserModal()" [ngClass]="isAdmin ? 'manageAccessBtn' : 'manageAccessBtn-disabled'">
+                  Manage access
+                </div>
+              </div>
+            </div>
+          </span>
+        </span>
+        <span *ngIf="renameFolderName" style="align-items: center;">
+          <div class="input-renamer" #wrapper>
+            <input type="text" size="{{newTitle.length}}"
+            (input)="onInput($event)" value="{{selectedFolder?.title}}"
+            [(ngModel)]="newTitle"
+            (keyup.enter)="renameFolder()" autocomplete="off"
+            onInput="this.parentNode.dataset.value = this.value" placeholder="{{selectedFolder?.title}}">
+          </div>
+          <div class="actionIcon">
+            <svg
+              width="18"
+              height="13"
+              viewBox="0 0 18 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              (click)="renameFolder()"
+            >
+              <path
+                d="M6.99974 10.172L16.1917 0.979004L17.6067 2.393L6.99974 13L0.635742 6.636L2.04974 5.222L6.99974 10.172Z"
+                fill="#DAAA00"
+              />
+            </svg>
+          </div>
+          <div class="actionIcon">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              (click)="updateFolderAction()"
+            >
+              <path
+                d="M6.99974 5.58623L11.9497 0.63623L13.3637 2.05023L8.41374 7.00023L13.3637 11.9502L11.9497 13.3642L6.99974 8.41423L2.04974 13.3642L0.635742 11.9502L5.58574 7.00023L0.635742 2.05023L2.04974 0.63623L6.99974 5.58623Z"
+                fill="#DAAA00"
+              />
+            </svg>
+          </div>
+        </span>
+      </span>
+      <div *ngIf="!onSectorLevel" class="manageAccess">
+        <ul style="float: right;">
+          <li *ngIf="checkShowManageAccessButton()" class="tollTipWorkspace" (click)="openManageAccessModal()"> <!-- Remove ngif condition *ngIf="checkShowManageAccessButton()" -->
+            <!-- <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#C49900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#C49900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg> -->
+            <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
+              <path d="M15.625 19C13.761 19 12.25 17.489 12.25 15.625C12.25 13.761 13.761 12.25 15.625 12.25C17.489 12.25 19 13.761 19 15.625C19 17.489 17.489 19 15.625 19ZM14.3978 16.0341C14.4417 15.9868 14.5156 15.9841 14.5629 16.028L15.1306 16.5552C15.169 16.5908 15.2296 16.5859 15.2617 16.5446L16.6883 14.7105C16.7279 14.6595 16.8013 14.6504 16.8522 14.69C16.9032 14.7296 16.9124 14.803 16.8727 14.854L15.305 16.8696C15.2646 16.9216 15.1884 16.9277 15.1402 16.883L14.4039 16.1992C14.3566 16.1553 14.3538 16.0814 14.3978 16.0341ZM15.625 18.7955C17.376 18.7955 18.7955 17.376 18.7955 15.625C18.7955 13.874 17.376 12.4545 15.625 12.4545C13.874 12.4545 12.4545 13.874 12.4545 15.625C12.4545 17.376 13.874 18.7955 15.625 18.7955Z" fill="#937206" stroke="#937206" stroke-width="0.8"/>
+              <path d="M17.3124 10.4637V1.35158C17.3124 1.15712 17.1614 1 16.975 1H1.33752C1.15107 1 1 1.15723 1 1.35158V17.5234C1 17.7175 1.15106 17.875 1.33752 17.875H10.0835C10.2702 17.875 10.421 17.7177 10.421 17.5234C10.421 17.3292 10.2701 17.1718 10.0835 17.1718H1.67493V1.70322H16.6376V10.4636C16.6376 10.6577 16.7885 10.8151 16.9751 10.8151C17.1615 10.8153 17.3124 10.6579 17.3124 10.4637Z" fill="#937206" stroke="#937206" stroke-width="0.5"/>
+              <path d="M11.6594 5.5C11.9856 5.5 12.25 5.24787 12.25 4.9375C12.25 4.62695 11.9859 4.375 11.6594 4.375H4.96564C4.63936 4.375 4.375 4.62674 4.375 4.9375C4.375 5.24826 4.63934 5.5 4.96564 5.5H11.6594Z" fill="#937206"/>
+              <path d="M11.6594 8.875C11.9856 8.875 12.25 8.62287 12.25 8.3125C12.25 8.00195 11.9859 7.75 11.6594 7.75H4.96564C4.63936 7.75 4.375 8.00174 4.375 8.3125C4.375 8.62326 4.63934 8.875 4.96564 8.875H11.6594Z" fill="#937206"/>
+              <path d="M8.28436 12.25C8.61064 12.25 8.875 11.9979 8.875 11.6875C8.875 11.377 8.61087 11.125 8.28436 11.125H4.96564C4.63936 11.125 4.375 11.3767 4.375 11.6875C4.375 11.9983 4.63934 12.25 4.96564 12.25H8.28436Z" fill="#937206"/>
+            </svg>
+            <div class="customToolTipWorkspace" style="left: auto;right: 0px;padding: 0px 9px;font-size: 13px;line-height: 27px;">Manage Access</div>
+          </li>
+          <li *ngIf="isPrivateFolder(true, true) && isAdmin" class="tollTipWorkspace">
+            <div class="positionRelative">
+              <!-- <app-loader [show]="whiteLoader" [hasOverlay]="whiteLoader"></app-loader> -->
+              <app-loader-small [show]="whiteLoader" [hasOverlay]="whiteLoader"></app-loader-small>
+              <svg width="23" height="23" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="isAdmin ? 'classificationsIcon manageUsers' : 'classificationsIcon-disabled manageUsers'" (click)="openAddUserModal()">
+                <path d="M0 21C0 18.8783 0.842855 16.8434 2.34315 15.3431C3.84344 13.8429 5.87827 13 8 13C10.1217 13 12.1566 13.8429 13.6569 15.3431C15.1571 16.8434 16 18.8783 16 21H14C14 19.4087 13.3679 17.8826 12.2426 16.7574C11.1174 15.6321 9.5913 15 8 15C6.4087 15 4.88258 15.6321 3.75736 16.7574C2.63214 17.8826 2 19.4087 2 21H0ZM8 12C4.685 12 2 9.315 2 6C2 2.685 4.685 0 8 0C11.315 0 14 2.685 14 6C14 9.315 11.315 12 8 12ZM8 10C10.21 10 12 8.21 12 6C12 3.79 10.21 2 8 2C5.79 2 4 3.79 4 6C4 8.21 5.79 10 8 10ZM16.284 13.703C17.6893 14.3359 18.882 15.3612 19.7186 16.6557C20.5552 17.9502 21.0002 19.4587 21 21H19C19.0002 19.844 18.6666 18.7125 18.0391 17.7416C17.4116 16.7707 16.5171 16.0017 15.463 15.527L16.283 13.703H16.284ZM15.596 2.413C16.6035 2.8283 17.465 3.53354 18.071 4.43923C18.6771 5.34492 19.0004 6.41024 19 7.5C19.0004 8.87233 18.4877 10.1952 17.5625 11.2088C16.6374 12.2224 15.3667 12.8535 14 12.978V10.965C14.7409 10.8589 15.4283 10.518 15.9613 9.99246C16.4943 9.4669 16.8447 8.78432 16.9612 8.04493C17.0776 7.30555 16.954 6.5483 16.6084 5.88435C16.2628 5.22041 15.7134 4.68475 15.041 4.356L15.596 2.413Z" fill="#937206"/>
+              </svg>
+            </div>
+            <!-- <img src="../../../assets/images/user-icon.svg" alt="" /> -->
+            <div class="customToolTipWorkspace" style="left: auto;right: 0px;padding: 0px 9px;font-size: 13px;line-height: 27px;">Manage users</div>
+          </li>
+        </ul>
+      </div>
+      <h6 class="tollTipCustom">
+        <span>/
+          <a [ngClass]="
+                breadCrumb.length !== 0
+                ? 'breadcrumb-active'
+                : 'breadcrumb-not-active'
+            " (click)="handleGotoBreadcrumb(null, null)"
+            >{{getPrefixBreadcrumb()}}</a>
+        </span>
+        <span *ngFor="let c of breadCrumb; let i = index">
+          /<a
+            [ngClass]="
+              i !== breadCrumb.length - 1
+                ? 'breadcrumb-active'
+                : 'breadcrumb-not-active'
+            "
+            (click)="handleGotoBreadcrumb(c, i)"
+            >{{ sharedService.stringShortener(c.title, 40) }}</a
+          >
+        </span>
+
+        <span *ngIf="!onSectorLevel" class="copy-section"> <!--  -->
+          <a class="flexible">
+            <img
+              src="../../../assets/images/copyIcon.png"
+              style="
+                width: 14px;
+                margin-right: 6px;
+                margin-left: 10px;
+              "
+            />
+            <span
+              class="copy-link pointer"
+              (click)="copyToClipboard(sharedService.removeWorkspacesFromString(breadcrrumb))"
+              style="color: #937206; font-size: 15px"
+              >{{ !copiedString ? "Copy Link" : "Copied!" }}</span
+            >
+          </a>
+        </span>
+      </h6>
+
+      <div *ngIf="onlyPrivate" class="invitePeople" style="position: relative;">
+        <span>You are the only member of this private folder. <span class="clickEvent" (click)="openAddUserModal()" [ngClass]="{'textDIsable' : transparentLoader}">
+          Invite people
+        </span> to join as folder members.
+        <img src="../../../assets/images/close-icon-workspace.svg" alt="" (click)="onlyPrivateFolder()" /></span>
+      </div>
+
+      <div *ngIf="!onSectorLevel" class="dateFileSize">
+        <ul>
+          <li *ngIf="currentWorkspace?.start">
+            <img
+              src="../../../assets/images/calendar-icon.svg"
+              alt=""
+            />
+            {{ getDateInFormat(currentWorkspace.start) }}
+          </li>
+          <li>
+            {{ assetList?.length }} assets,
+            {{ getSelectedAssetsSize() }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="views">
+        <ul class="uploadAssetsClassifications">
+          <li *ngIf="count?.allCount > 0">
+            <div class="selectedItemBlock">
+              {{ count?.allCount }} selected
+              <a (click)="removeAssets()"
+                ><img src="../../../assets/images/remove-icon.svg" alt=""
+              /></a>
+            </div>
+          </li>
+          <li class="edit-icon" *ngIf="count?.assetCount === 1 && count?.allCount === 1">
+            <div class="moveFolderImg tollTipWorkspace" (click)="renameAsset()"> <!-- (click)="rightClickRename(item)"(click)="renameAsset()" -->
+              <svg
+                width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-rename-icon">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Rename</div>
+            </div>
+          </li>
+          <li *ngIf="checkEnableMoveButton()" (click)="openMoveModal(false)"> <!-- *ngIf="!isTrashView && count > 0 " -->
+            <div class="moveFolderImg tollTipWorkspace">
+              <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
+                <path d="M4 4V1C4 0.734784 4.10536 0.48043 4.29289 0.292893C4.48043 0.105357 4.73478 0 5 0H17C17.2652 0 17.5196 0.105357 17.7071 0.292893C17.8946 0.48043 18 0.734784 18 1V15C18 15.2652 17.8946 15.5196 17.7071 15.7071C17.5196 15.8946 17.2652 16 17 16H14V19C14 19.552 13.55 20 12.993 20H1.007C0.875127 20.0008 0.744397 19.9755 0.622322 19.9256C0.500247 19.8757 0.389233 19.8022 0.295659 19.7093C0.202084 19.6164 0.127793 19.5059 0.0770543 19.3841C0.0263156 19.2624 0.000129374 19.1319 0 19L0.00300002 5C0.00300002 4.448 0.453 4 1.01 4H4ZM1.5 5.5V18.5H12.5V5.5H1.5ZM5.5 4H13C13.5523 4 14 4.44772 14 5V14.5H16.5V1.5H5.5V4Z" fill="#937206"/>
+              </svg>
+              <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Copy</div>
+            </div>
+          </li>
+          <li  *ngIf="checkEnableMoveButton()" (click)="openMoveModal(true)"> <!-- *ngIf="!isTrashView && selectedAssetCount > 0" -->
+            <!--  -->
+            <div class="moveFolderImg tollTipWorkspace">
+              <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="moveIcon">
+                <path d="M1.5625 9L18.4375 9" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.5625 16.875L18.4375 9L10.5625 1.125" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="customToolTipWorkspace" style="right: 0px; left: 0px; top: 32px;">Move</div>
+            </div>
+          </li>
+          <li *ngIf="!isTrashView && checkEnableDeleteBtn()">
+            <!--  -->
+            <div class="deleteRecover">
+              <span
+                class="deleteFolder"
+                [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"
+                (click)="deleteFolders()"
+                >
+                <!--  -->
+                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div *ngIf="canNotDelete.length>0" class="workspaceInfo" style="right: 12px;padding: 10px 20px;" >
+                  <!--  -->
+                  <div class="workspaceHeading">
+                    You do not have the permission to delete {{canNotDelete.length}} of the selected assets
+                  </div>
+                  <div class="document-img">
+                    <ul>
+                      <li *ngFor="let item of canNotDelete">
+                        <img [src]="!checkAssetType(item.type) ?getIconByType(item.type):getAssetUrl(null, item.contextParameters.thumbnail.url, item)" style="width: 20px;margin-right: 10px;object-fit: contain;">
+                        {{item.title}}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </li>
+          <li *ngIf="(downloadArray?.length > 0 || needPermissionToDownload?.length >0) && count?.assetCount > 0 && count?.assetCount === count?.allCount ">
+            <div class="downloadFileWorkspace">
+              <a (click)="multiDownload()"
+                href="javascript:void(0)"
+                [ngClass]="{'addMarginRight' : count > 0}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="downloadIcon">
+                  <path d="M11.9727 19.6958V12.9458" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14.7852 17.2095L11.9727 20.022L9.16016 17.2095" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M15.9374 14.8125H16.7812C18.3554 14.8152 19.7546 13.8099 20.2544 12.3172C20.7543 10.8244 20.2425 9.17928 18.9841 8.23348C17.7256 7.28768 16.0031 7.25355 14.7082 8.14877C14.1862 5.36953 11.682 3.40988 8.85877 3.5713C6.03554 3.73272 3.77104 5.96503 3.5692 8.78565C3.36737 11.6063 5.29096 14.1383 8.06244 14.7" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <!-- <img src="../../../assets/images/download-workspace.svg"/> -->
+              </a>
+              <div class="multiDownloadBlock"
+              *ngIf="
+              copyRightItem?.length > 0 ||
+              sizeExeeded ||
+              forInternalUse?.length > 0 ||
+              needPermissionToDownload?.length > 0">
+                <!-- forInternalUse.length {{forInternalUse.length}};needPermissionToDownload.length{{needPermissionToDownload.length}} -->
+                <div
+                  class="no-use-restrictions"
+                  *ngIf="
+                    forInternalUse?.length < 1 &&
+                    needPermissionToDownload?.length < 1
+                  "
+                >
+                  <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
+                  <p class="pt-15" *ngIf="sizeExeeded">
+                    Your download exceeds 1 GB. This will likely take some
+                    time.
+                  </p>
+                  <div class="download-btn">
+                    <!-- <a
+                      (click)="cancelDownloadClick($event)"
+                      class="cancelDownload"
+                      >Cancel download</a> -->
+                    <a
+                      (click)="downloadAssets($event)"
+                      class="uncheckAfterSuccess"
+                    >
+                      <svg
+                        width="22"
+                        height="21"
+                        viewBox="0 0 22 21"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.9673 19.5525V12.0525"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      Download
+                    </a>
+                  </div>
+                </div>
+
+                <div
+                  class="internal-use"
+                  *ngIf="
+                    forInternalUse?.length > 0 &&
+                    needPermissionToDownload?.length < 1
+                  "
+                >
+                  <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
+
+                  <p class="pt-15" *ngIf="sizeExeeded" [ngClass]="{'removeMarginTop' : copyRightItem?.length < 1  }">
+                    Your download exceeds 1 GB. This will likely take some
+                    time.
+                  </p>
+
+                  <div class="control-group"
+                    [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : copyRightItem?.length < 1  }"
+                  >
+                    <label class="control control--checkbox"
+                      >I'm aware certain selected asset(s) must NOT be
+                      used in public
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="isAware"
+                        [checked]="isAware"
+                        (change)="onCheckboxChange($event)"
+                      />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </div>
+                  <div
+                    class="error"
+                    *ngIf="downloadErrorShow && !isAware"
+                  >
+                    Please check the box to proceed
+                  </div>
+                  <div class="download-btn" (click)="downloadClick()">
+                    <!-- <a
+                      (click)="cancelDownloadClick($event)"
+                      class="cancelDownload"
+                      >Cancel download</a
+                    > -->
+                    <a
+                      (click)="downloadAssets($event)"
+                      [ngClass]="{ downloadDisbable: !downloadEnable }"
+                      class="uncheckAfterSuccess"
+                    >
+                      <svg
+                        width="22"
+                        height="21"
+                        viewBox="0 0 22 21"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.9673 19.5525V12.0525"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      Download
+                    </a>
+                  </div>
+                </div>
+
+                <div
+                  class="internal-use"
+                  *ngIf="needPermissionToDownload?.length > 0"
+                >
+                  <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
+                  <p class="pt-15" *ngIf="sizeExeeded">
+                    Your download exceeds 1 GB. This will likely take some
+                    time.
+                  </p>
+
+
+                    <p class="pt-15"  [ngClass]="{ 'removeMarginTop' : copyRightItem?.length < 1 }">
+                    {{ needPermissionToDownload?.length }} asset{{ needPermissionToDownload?.length>1?'s':'' }} you
+                    selected require download permission, please reach out
+                    owner(s) via email:
+                  </p>
+
+                  <ul class="downloadImgLisst">
+                    <li *ngFor="let item of needPermissionToDownload">
+                      <div class="imgListBlk">
+                        <img src="../../../assets/images/doc-white.svg" />
+                      </div>
+                      <div class="contentListBlk">{{ item.title }}</div>
+                      <div class="imgMailIcon">
+                        <a href="mailto:{{ getUser(item) }}"
+                          ><img
+                            src="../../../assets/images/mail-icon.svg"
+                        /></a>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <div
+                    class="control-group"
+                    [ngClass]="{'error-disabled' : downloadErrorShow && !isAware }"
+                    *ngIf="forInternalUse?.length > 0"
+                  >
+                    <label class="control control--checkbox"
+                      >I'm aware certain selected asset(s) must NOT be
+                      used in public
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="isAware"
+                        checked="isAware"
+                        (change)="onCheckboxChange($event)"
+                      />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </div>
+                  <div
+                    class="error"
+                    *ngIf="
+                      downloadErrorShow &&
+                      !isAware &&
+                      forInternalUse?.length
+                    "
+                  >
+                    Please check the box to proceed
+                  </div>
+                  <div class="download-btn" (click)="downloadClick()" *ngIf="downloadArray?.length>0">
+                    <a
+                      (click)="downloadAssets($event)"
+                      [ngClass]="{ downloadDisbable: !downloadEnable && forInternalUse?.length > 0 }"
+                      class="uncheckAfterSuccess"
+                    >
+                      <svg
+                        width="22"
+                        height="21"
+                        viewBox="0 0 22 21"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.9673 19.5525V12.0525"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                          stroke="#EDD580"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      Download
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li *ngIf="selectedAssetCount < 1 && !(checkExternalUser() && !isPrivateFolder(true, true))">
+            <!-- <div class="buttonCreate tollTipWorkspace" >
+              <a (click)="showCreateFolderPopup = !showCreateFolderPopup" href="javascript:void(0)" class="createNew flexible">
+                <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M1.50857 18.24V1.50857H9.00864L11.2029 3.70286H20.4343V9.18672C20.9668 9.34171 21.4725 9.55954 21.9429 9.83165V3.29143C21.9429 3.00045 21.8273 2.72139 21.6215 2.51563C21.4158 2.30988 21.1367 2.19429 20.8457 2.19429H11.4256L9.23136 0H1.09714C0.806162 0 0.5271 0.115591 0.321346 0.321346C0.115591 0.5271 0 0.806162 0 1.09714V18.6514C0 18.9424 0.115591 19.2215 0.321346 19.4272C0.5271 19.633 0.806162 19.7486 1.09714 19.7486H12.9277C12.5972 19.2852 12.323 18.7791 12.1149 18.24H1.50857ZM18.5143 19.8571C20.7708 19.8571 22.6 18.0279 22.6 15.7714C22.6 13.515 20.7708 11.6857 18.5143 11.6857C16.2578 11.6857 14.4286 13.515 14.4286 15.7714C14.4286 18.0279 16.2578 19.8571 18.5143 19.8571ZM18.5143 21.2571C21.544 21.2571 24 18.8011 24 15.7714C24 12.7418 21.544 10.2857 18.5143 10.2857C15.4846 10.2857 13.0286 12.7418 13.0286 15.7714C13.0286 18.8011 15.4846 21.2571 18.5143 21.2571ZM17.9657 13.0286V15.2229H15.7714V16.32H17.9657V18.5143H19.0629V16.32H21.2571V15.2229H19.0629V13.0286H17.9657Z" fill="#947200"/>
+                </svg>
+              </a>
+              <div class="customToolTipWorkspace" style="right: 5px; left: auto; top: 32px">Create new folder</div>
+            </div> -->
+
+            <div class="buttonCreate tollTipWorkspace" >
+              <a
+                href="javascript:void(0)"
+                *ngIf="!isTrashView"
+                (click)="datePickerDefaultAction()"
+                class="createNew flexible">
+                <!-- Old Icon <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;width: 20px;height: 20px;margin-top: 3px;" >
+                  <path d="M1 6.25C0.585786 6.25 0.25 6.58579 0.25 7C0.25 7.41421 0.585786 7.75 1 7.75V6.25ZM13 7.75C13.4142 7.75 13.75 7.41421 13.75 7C13.75 6.58579 13.4142 6.25 13 6.25V7.75ZM6.25 13C6.25 13.4142 6.58579 13.75 7 13.75C7.41421 13.75 7.75 13.4142 7.75 13H6.25ZM7.75 1C7.75 0.585786 7.41421 0.25 7 0.25C6.58579 0.25 6.25 0.585786 6.25 1H7.75ZM1 7.75H13V6.25H1V7.75ZM7.75 13V1H6.25V13H7.75Z" fill="#937206"/>
+                </svg> -->
+                <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M1.50857 18.24V1.50857H9.00864L11.2029 3.70286H20.4343V9.18672C20.9668 9.34171 21.4725 9.55954 21.9429 9.83165V3.29143C21.9429 3.00045 21.8273 2.72139 21.6215 2.51563C21.4158 2.30988 21.1367 2.19429 20.8457 2.19429H11.4256L9.23136 0H1.09714C0.806162 0 0.5271 0.115591 0.321346 0.321346C0.115591 0.5271 0 0.806162 0 1.09714V18.6514C0 18.9424 0.115591 19.2215 0.321346 19.4272C0.5271 19.633 0.806162 19.7486 1.09714 19.7486H12.9277C12.5972 19.2852 12.323 18.7791 12.1149 18.24H1.50857ZM18.5143 19.8571C20.7708 19.8571 22.6 18.0279 22.6 15.7714C22.6 13.515 20.7708 11.6857 18.5143 11.6857C16.2578 11.6857 14.4286 13.515 14.4286 15.7714C14.4286 18.0279 16.2578 19.8571 18.5143 19.8571ZM18.5143 21.2571C21.544 21.2571 24 18.8011 24 15.7714C24 12.7418 21.544 10.2857 18.5143 10.2857C15.4846 10.2857 13.0286 12.7418 13.0286 15.7714C13.0286 18.8011 15.4846 21.2571 18.5143 21.2571ZM17.9657 13.0286V15.2229H15.7714V16.32H17.9657V18.5143H19.0629V16.32H21.2571V15.2229H19.0629V13.0286H17.9657Z" fill="#947200"/>
+                </svg>
+                <!-- <img src="../../../assets/images/add.svg" /> -->
+                <!-- Create new folder -->
+              </a>
+              <div class="customToolTipWorkspace" style="right: 5px; left: auto; top: 32px">Create new folder</div>
+            </div>
+            <app-create-folder
+              *ngIf="showCreateFolderPopup"
+              [currentWorkspace]="currentWorkspace"
+              [folderAssetsResult]="folderStructure"
+              
+              
+              (folderCreateEvent)="folderCreateEvent($event)"
+            ></app-create-folder>
+          </li>
+          <li *ngIf="selectedAssetCount < 1" (click)="openModal(true)"  class="tollTipWorkspace workspaceInfoHover">
+            <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon">
+              <path
+                d="M0 17H18V19H0V17ZM10 3.828V15H8V3.828L1.929 9.9L0.515 8.486L9 0L17.485 8.485L16.071 9.899L10 3.83V3.828Z"
+                fill="#937206"
+              />
+            </svg>
+            <div class="customToolTipWorkspace">Upload here</div>
+          </li>
+          <li
+            *ngIf="!isPrivateFolder(true, true) && selectedAssetCount < 1 && breadCrumb?.length > 1"
+            (click)="openUpdateClassModal(breadCrumb[0] ? breadCrumb[0] : null);"
+            class="tollTipWorkspace manageFolderIcon"
+            [ngClass]="{uploadClassificationDisable: breadCrumb[0]
+                ? false || !assetList?.length : true}"
+          >
+            <!-- !upadtePermission(breadCrumb[0]) -->
+            <svg  width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon" [ngClass]="{'disablePermission': breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true}">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !!assetList.length :false">Manage folder</div>
+            <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? upadtePermission(breadCrumb[0]) &&  !assetList.length :false" style="left: auto; right: 0px">There are no assets in the folder to update</div>
+            <div class="customToolTipWorkspace" *ngIf="breadCrumb[0]? !upadtePermission(breadCrumb[0]) :true" style="left: auto; right: 0px">You do not have permissions to manage this folder</div>
+          </li>
+          <li *ngIf="checkForDescription()" class="workspaceInfoHover">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="classificationsIcon" style="cursor: auto;"
+            >
+              <path
+                d="M16 1C7.72381 1 1 7.73207 1 16.0053C1 24.2786 7.72381 31 16 31C24.2762 31 31 24.2786 31 16.0053C31 7.73207 24.2762 1 16 1ZM16 2.37379C23.5392 2.37379 29.6364 8.46875 29.6364 16.0053C29.6364 23.5419 23.5392 29.6262 16 29.6262C8.46077 29.6262 2.36364 23.5419 2.36364 16.0053C2.36364 8.46875 8.46077 2.37379 16 2.37379ZM16 8.50797C15.6234 8.50797 15.3182 8.81311 15.3182 9.18954C15.3182 9.56597 15.6234 9.87113 16 9.87113C16.3766 9.87113 16.6818 9.56597 16.6818 9.18954C16.6818 8.81311 16.3766 8.50797 16 8.50797ZM15.9254 13.1552C15.756 13.1738 15.5996 13.2552 15.4872 13.3834C15.3748 13.5115 15.3145 13.677 15.3182 13.8474V22.8211C15.3169 22.9114 15.3336 23.0011 15.3673 23.0849C15.401 23.1687 15.451 23.245 15.5144 23.3093C15.5779 23.3736 15.6535 23.4247 15.7368 23.4595C15.8202 23.4944 15.9096 23.5124 16 23.5124C16.0904 23.5124 16.1798 23.4944 16.2632 23.4595C16.3465 23.4247 16.4221 23.3736 16.4856 23.3093C16.549 23.245 16.599 23.1687 16.6327 23.0849C16.6664 23.0011 16.6831 22.9114 16.6818 22.8211V13.8474C16.6839 13.7504 16.6652 13.6541 16.6271 13.5648C16.5889 13.4756 16.5321 13.3955 16.4605 13.33C16.3889 13.2645 16.3041 13.215 16.2119 13.1848C16.1196 13.1547 16.0219 13.1446 15.9254 13.1552Z"
+                fill="#937206"
+                stroke="#937206"
+                stroke-width="0.6"
+              />
+            </svg>
+            <div class="workspaceInfo">
+              <div class="workspaceHeading">
+                {{ currentWorkspace.title }}
+              </div>
+              <p>{{ currentWorkspace?.properties["dc:description"] }}</p>
+            </div>
+          </li>
+        </ul>
+        <div class="gallery-view-block">
+          <img
+            src="../../../assets/images/gallery-view.svg"
+            class="menu-icon"
+            [ngClass]="selectedMenu === 0 ? 'active' : ''"
+            (click)="selectMenuView(VIEW_TYPE.GRID)"
+          />
+          <img
+            src="../../../assets/images/list-view-icon.svg"
+            class="menu-icon"
+            [ngClass]="selectedMenu === 1 ? 'active' : ''"
+            (click)="selectMenuView(VIEW_TYPE.LIST)"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div style="visibility:hidden; opacity:0" id="dropzone">
+    <div id="textnode">
+      <img src="../../../assets/images/cloud-upload.png">
+      <h3>Please drop here</h3>
+      <p>Images, videos and PDF documents only</p>
+    </div>
+  </div>
+  <div id="text">&nbsp;</div>
+
+  <section>
+    <div *ngIf="isPrivateFolder(false) && !assetList.length" class="addignCollaborators" style="padding-top: 40px;">
+      <img src="../../../assets/images/adding-collaborators-icon.svg" class="collaboratorsIcon" />
+      <!-- <h2>Start adding collaborators to this private folder</h2> -->
+      <h2>Start adding collaborators:</h2>
+      <div class="addUsers">
+        <div [ngClass]="isAdmin ? 'addUserBtn' : 'addUserBtn-disabled'" (click)="openAddUserModal()">Add users</div>
+      </div>
+    </div>
+    <div *ngIf="!assetList.length && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
+      <img src="../../../assets/images/private-fileshare-icon.svg" class="collaboratorsIcon" />
+      <!-- <h2>Start adding assets to this private folder</h2> -->
+      <h2>Start adding assets to this Private folder:</h2>
+      <div class="addUsers">
+        <div class="addUserBtn" (click)="openModal(true)">Upload</div>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="!assetList.length && !isPrivateFolder(true, true) && !loading">
+    <div class="no-items">
+      <img
+        src="../../../assets/images/no-items.svg"
+        alt="No items here"
+      />
+      No items here
+    </div>
+  </section>
+
+  <section *ngIf="assetList.length">
+    <app-masonry-view
+      *ngIf="selectedMenu === 0"
+
+      [searchList]="assetList"
+      [isTrashView]="isTrashView"
+      [showAssetPath]="showAssetPath"
+      [currentWorkspace]="currentWorkspace"
+      [breadCrumb]="breadCrumb"
+      [folderStructure]="folderStructure"
+
+      (clickHandle)="dataTableEvent($event)"
+      (selectedAssetList)="assetSelectedEvent($event)"
+      (fetchAssets)="fetchAssetsEvent($event)"
+    ></app-masonry-view>
+    <app-data-table
+      *ngIf="selectedMenu === 1"
+
+      [searchList]="assetList"
+      [isTrashView]="isTrashView"
+      [showAssetPath]="showAssetPath"
+      [currentWorkspace]="currentWorkspace"
+      [breadCrumb]="breadCrumb"
+      [folderStructure]="folderStructure"
+      (sortedDataList)="sortedDataList($event)"
+      (clickHandle)="dataTableEvent($event)"
+      (selectedAssetList)="assetSelectedEvent($event)"
+      (fetchAssets)="fetchAssetsEvent($event)"
+      (selectedCount)="selectedCount($event)"
+      (selectedAssetMoveList)="selectedMoveList($event)"
+      (canNotDeleteList)="canNotDeleteList($event)"
+    style="position: relative; z-index: 0;"></app-data-table>
+  </section>

@@ -52,6 +52,10 @@ button.upload-btn {
 .create-supplier-form {
     padding-top: 10px;
     min-height: 453px;
+    max-height: 70vh;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding-right: 10px;
 }
 .create-supplier-form ul > li {
     padding-bottom: 10px;
@@ -66,7 +70,7 @@ button.upload-btn {
 }
 .create-supplier-form ul > li input {
     border: 0px;
-    border-bottom: 1px solid #413E3C;
+    border-bottom: 2px solid #413E3C;
     width: 100%;
     font-family: 'brownlight';
     font-size: 15px;
@@ -86,7 +90,7 @@ button.upload-btn {
 }
 
 ::ng-deep .mat-dialog-container {
-    padding: 20px !important;
+    padding: 20px 10px 20px 20px !important;
     border-radius: 8px !important;
 }
 .deviceType {
@@ -162,10 +166,10 @@ ol.deviceType li {
     border-color: #C49900 !important;
     font-weight: normal;
 }
-::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+.create-supplier ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
     max-height: 120px !important;
 }
-::ng-deep .ng-arrow-wrapper .ng-arrow {
+.create-supplier ::ng-deep .ng-arrow-wrapper .ng-arrow {
     content: "";
     background-image: url(../../../assets/images/black-downarrow.png) !important;
     background-position: 0px 3px !important;
@@ -175,10 +179,10 @@ ol.deviceType li {
     background-image: url(../../../assets/images/golden-arrow.png) !important ;
     height: 10px !important;
 }
-::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+.create-supplier ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
     padding: 0px !important;
 }
-::ng-deep .ng-select .ng-arrow-wrapper {
+.create-supplier ::ng-deep .ng-select .ng-arrow-wrapper {
     padding-right: 0px;
 }
 .regionBlok .ng-select-focused:focus, .regionBlok .ng-select-focused:active {
@@ -192,6 +196,11 @@ ol.deviceType li {
 .regionBlok ::ng-deep .ng-select .ng-select-container{
     background-color: transparent !important;
     border-color: #413E3C !important;
+    border-bottom: 2px solid;
+    font-family: 'brownlight' !important;
+    font-size: 15px !important;
+    color: #040404;
+    line-height: 30px;
 }
 .regionBlok ::ng-deep .ng-select.goldenText .ng-select-container{
     border-color: #DEB31A !important;
@@ -226,4 +235,17 @@ ol.deviceType li {
 }
 .copyHover:hover .copyHoverInfo {
     display: block;
+}
+.create-supplier-form ul > li input.goldenText {
+    color: #C49900 !important;
+    border-color: #C49900 !important;
+}
+.regionBlok ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+    font-family: 'brownlight' !important;
+    font-size: 15px !important;
+    color: #040404;
+    line-height: 30px;
+}
+.regionBlok ::ng-deep .ng-select.ng-select-single.goldenText .ng-select-container .ng-value-container {
+    color: #C49900;
 }

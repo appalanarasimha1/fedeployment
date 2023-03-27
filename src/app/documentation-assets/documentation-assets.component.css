@@ -84,10 +84,10 @@
     border-color: #C49900 !important;
     font-weight: normal;
   }
-  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
+.documentationBlck ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
     max-height: 120px !important;
-  }
-  ::ng-deep .ng-arrow-wrapper .ng-arrow {
+}
+.documentationBlck ::ng-deep .ng-arrow-wrapper .ng-arrow {
     content: "";
     background-image: url(../../assets/images/black-downarrow.png) !important;
     background-position: 0px 3px !important;
@@ -97,10 +97,10 @@
     background-image: url(../../assets/images/golden-arrow.png) !important ;
     height: 10px !important;
 }
-::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+.documentationBlck ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
     padding: 0px !important;
 }
-::ng-deep .ng-select .ng-arrow-wrapper {
+.documentationBlck ::ng-deep .ng-select .ng-arrow-wrapper {
     padding-right: 0px;
 }
 .regionBlok .ng-select-focused:focus, .regionBlok .ng-select-focused:active {
@@ -268,3 +268,43 @@
       justify-content: center;
       margin-top: 15px;
   }
+
+  .not-authorize {
+    background-color: #e8f2ff;
+    color: #4d8bb3;
+    border-style: hidden;
+    padding: 15px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+  .not-authorize ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  .not-authorize a {
+    text-decoration: underline;
+  }
+.regionBlok  ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input {
+    color: #DEB31A !important;
+}
+::ng-deep .ng-dropdown-panel .scroll-host {
+    border-radius: 0px 0px 8px 8px;
+    box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
+    background: #fff;
+}
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+    font-size: 21px !important;
+    color: #DEB31A !important;
+}
+::ng-deep .mat-calendar-table-header-divider::after{
+    display: none !important;
+}
+::ng-deep th.mat-calendar-table-header-divider {
+    display: none !important;
+}
+::ng-deep .mat-calendar th.mat-header-cell, ::ng-deep .mat-calendar th.mat-header-cell button, ::ng-deep .mat-calendar th {
+    border-bottom: 0px solid !important;
+}
+ng-select input {
+    color: #000;
+}

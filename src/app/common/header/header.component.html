@@ -6,8 +6,8 @@
       <div class="col-xl-3 col-xs-3">
           <nav class="navbar navbar-expand-lg navbar-light ">
             <div class="logo-block">
-              <a *ngIf="!checkExternalUser(true)" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
-              <a *ngIf="checkExternalUser(true)" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="!checkExternalUser(true) && !isDroneUploader" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="checkExternalUser(true) || isDroneUploader" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
             </div>
             <span class="main-title tollTipCustom">
               <img class="play-button" src="../../../assets/images/button-play.svg" alt="" (click)="openSm(content)" />
@@ -166,7 +166,7 @@
                           <!-- No Notifaction show block end -->
                           <ul>
                             <li *ngFor="let item of notifications | slice:0:10">
-                              <div (click)="goToNotificationLink(item)" style="cursor: pointer;">
+                              <div>
                                 <div *ngIf="item.extended.type === 'rename'" class="notifactionHead">
                                   {{buildRenameNotificationTitle(item)}}
                                 </div>
@@ -177,7 +177,7 @@
                                   {{buildRequestDownloadResponseNotificationTitle(item)}}
                                 </div>
 
-                                <div class="notifactionImgCont">
+                                <div class="notifactionImgCont" (click)="goToNotificationLink(item)" style="cursor: pointer;">
                                   <div class="notifactionImg">
                                     <img src="{{buildNotificationIcon(item)}}" alt="" />
                                   </div>
@@ -185,16 +185,33 @@
                                     {{item.extended.title}}
                                   </div>
                                 </div>
+                                <div
+                                  *ngIf="item.extended.type === 'requestDownload' && 
+                                    !item.extended.processed && 
+                                    !showRejectForm[item.id] && 
+                                    !requestSent[item.id]"
+                                  class="request-download-btn-group buttonGroup"
+                                >
+                                  <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
+                                  <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
+                                </div>
+                                <div 
+                                  *ngIf="item.extended.type === 'requestDownload' && 
+                                    item.extended.processed && 
+                                    item.extended.isApproved" 
+                                  class="request-download-btn-group buttonGroup downloadBtn"
+                                >
+                                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}"><img src="../../../assets/images/download-white-icon.svg"> Download</a> 
+                                </div>
                                 <div class="dayWeek">
                                   {{getNotificationSince(item)}}
                                 </div>
                               </div>
                             </li>
                           </ul>
-
-                          <div class="view-all-notifaction">
-                            <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
-                          </div>
+                        </div>
+                        <div class="view-all-notifaction">
+                          <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
                         </div>
                       </div>
                     </li>
@@ -302,13 +319,13 @@
   <!-- sprint16 end -->
 
   <ng-template #allNotifactionContent let-modal>
-    <button type="button" class="close closeNotifaction" aria-label="Close" (click)="modal.dismiss('Cross click'); closeModal()">
-      <svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="closeModal()" style="cursor: pointer;width: 30px">
-        <path d="M7.00072 5.58599L11.9507 0.635986L13.3647 2.04999L8.41472 6.99999L13.3647 11.95L11.9507 13.364L7.00072 8.41399L2.05072 13.364L0.636719 11.95L5.58672 6.99999L0.636719 2.04999L2.05072 0.635986L7.00072 5.58599Z" fill="#040404"/>
-      </svg>
-    </button>
     <div class="modal-body fix-notifaction">
       <h1>Notifications</h1>
+      <button type="button" class="close closeNotifaction" aria-label="Close" (click)="modal.dismiss('Cross click'); closeModal()">
+        <svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="closeModal()" style="cursor: pointer;width: 30px">
+          <path d="M7.00072 5.58599L11.9507 0.635986L13.3647 2.04999L8.41472 6.99999L13.3647 11.95L11.9507 13.364L7.00072 8.41399L2.05072 13.364L0.636719 11.95L5.58672 6.99999L0.636719 2.04999L2.05072 0.635986L7.00072 5.58599Z" fill="#040404"/>
+        </svg>
+      </button>
       <div id="customScrollBar" class="notificationModal">
         <div *ngIf="thisWeekNoti.length > 0" class="weekHead">This week</div>
         <div *ngIf="thisWeekNoti.length > 0" class="notifactionList">
@@ -379,6 +396,17 @@
                     <p *ngIf="item.extended.isApproved" class="approved">You approved this request.</p>
                   </div>
                 </div>
+                <div 
+                  *ngIf="item.extended.type === 'requestDownload' && 
+                    item.extended.processed && 
+                    item.extended.isApproved"
+                  class="request-download-btn-group buttonGroup downloadBtn" 
+                  style="text-align: right"
+                >
+                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}">
+                    <img src="../../../assets/images/download-white-icon.svg"> Download
+                  </a> 
+                </div>
               </div>
             </li>
           </ul>
@@ -433,6 +461,17 @@
                     <p *ngIf="item.extended.isApproved" class="approved">You approved this request.</p>
                   </div>
                 </div>
+                <div 
+                  *ngIf="item.extended.type === 'requestDownload' && 
+                    item.extended.processed && 
+                    item.extended.isApproved"
+                  class="request-download-btn-group buttonGroup downloadBtn" 
+                  style="text-align: right"
+                >
+                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}">
+                    <img src="../../../assets/images/download-white-icon.svg"> Download
+                  </a>
+                </div>
               </div>
             </li>
           </ul>
@@ -442,6 +481,7 @@
   </ng-template>
 
 </header>
+
 <section class="left-sidebar" *ngIf="showFooter && !isDroneUploader" >
   <ul class="sidebarList">
     <li>

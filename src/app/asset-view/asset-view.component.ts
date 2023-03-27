@@ -10,6 +10,7 @@ import { ApiService } from '../services/api.service';
 export class AssetViewComponent implements OnInit {
   file = '';
   fileUrl = '';
+  loading = false;
 
   constructor(
     private apiService: ApiService,
@@ -24,10 +25,12 @@ export class AssetViewComponent implements OnInit {
   }
 
   async fetchAsset(assetId: string): Promise<void> {
-    const doc: any = await this.apiService.get(`/id/${assetId}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
+    this.loading = true;
+    const doc: any = await this.apiService.get(`/id/${assetId}?fetch-acls=username`,
       {headers: { "fetch-document": "properties"}}).toPromise();
     this.file = doc;
     this.fileUrl = `${window.location.origin}/nuxeo/${doc.properties['file:content'].data.split('nuxeo/')[1]}`;
+    this.loading = false;
   }
 
 }

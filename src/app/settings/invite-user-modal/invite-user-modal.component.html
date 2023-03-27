@@ -17,7 +17,7 @@
                 <div class="form-group broader-access-assets">
                     <h3 for="Permissions">Permissions</h3>
                     <ul class="permissionsBlock">
-                        <li>
+                        <li *ngIf="supplier">
                             <div class="control-group">
                                 <label class="control control--checkbox">
                                   <input class="chkbox" type="checkbox" [(ngModel)]="upload" />
@@ -35,7 +35,7 @@
                                 </label>
                             </div>
                         </li>
-                        <li>
+                        <li *ngIf="supplier">
                             <div class="control-group">
                                 <label class="control control--checkbox">
                                   <input class="chkbox" type="checkbox" [(ngModel)]="delete" />
@@ -53,8 +53,8 @@
             <li class="folderListview">
                 <label for="Permissions">Access Expiry</label>
                 <mat-form-field appearance="fill">
-                    <input matInput class="datePicker" [ngClass]="{'goldenText': selectedMonth}" placeholder="Choose a date" 
-                    [(ngModel)]="selectedMonth" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" 
+                    <input matInput class="datePicker" placeholder="Choose a date"
+                    [(ngModel)]="selectedMonth" [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;"
                     (click)="picker.open()">
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>

@@ -17,11 +17,11 @@
 
 <div *ngIf="checkShowTabSelection()" class="tab-selection">
   <ul class="nav nav-tabs" style="display: inline-block">
-    <li [ngClass]="selectedTab === 'Media' ? 'pointer active' : 'pointer'">
-      <a routerLink="/" fragment="" (click)="selectTab('Media')" data-toggle="tab">Media</a>
+    <li [ngClass]="selectedTab === tabs.MEDIA ? 'pointer active' : 'pointer'">
+      <a routerLink="/" fragment="" (click)="selectTab(tabs.MEDIA)" data-toggle="tab">Media</a>
     </li>
-    <li [ngClass]="selectedTab === 'Construction' ? 'pointer active' : 'pointer'">
-      <a routerLink="/" fragment="documentation-assets" (click)="selectTab('Construction')" data-toggle="tab">Construction</a>
+    <li [ngClass]="selectedTab === tabs.CONSTRUCTION ? 'pointer active' : 'pointer'">
+      <a routerLink="/construction" (click)="selectTab(tabs.CONSTRUCTION)" data-toggle="tab">Construction</a>
     </li>
   </ul>
 </div>
@@ -36,7 +36,7 @@
      (pageCount)="fetchNextPageResults(1, $event)"></app-content> -->
 
 <app-content
-  *ngIf="selectedTab === 'Media'"
+  *ngIf="selectedTab === tabs.MEDIA"
   #documentsView
   [documents]="documents"
   [searchTerm]="searchValue"
@@ -50,6 +50,8 @@
   (selectDetailViewType)="selectDetailViewType($event)"
 ></app-content>
 
+<router-outlet></router-outlet>
+
 <app-documentation-assets
-  *ngIf="selectedTab === 'Construction'">
+  *ngIf="selectedTab === tabs.CONSTRUCTION">
 </app-documentation-assets>
