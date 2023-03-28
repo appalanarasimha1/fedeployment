@@ -294,7 +294,7 @@
                 bindValue="value"
                 (change)="playPersonalizedVideo()"
                 [closeOnSelect]
-                [searchable]="true" [clearable]="true"
+                [searchable]="false" [clearable]="false"
                 >
                 <ng-template ng-option-tmp let-item="item">
                   <div title="{{item.label}}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.label}}</div>
