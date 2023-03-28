@@ -240,11 +240,13 @@
             </ng-template>
           </span>
         </td>
+    
         <td
-        style="padding-left: 25px"
+        style="padding-left: 25px;"
         >
           <p class="itemTitleContent">{{getFileType(item)}}</p>
         </td>
+        <td></td>
         <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">
           <p class="itemTitleContent">{{getCreatorName(item)}}</p>
           <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>

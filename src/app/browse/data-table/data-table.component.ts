@@ -1108,25 +1108,25 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   getFileType(item) {
-    console.log(item);
+    //console.log(item);
     if(item.type === 'Workspace' || item.type === 'Folder' || item.type === 'OrderedFolder') {
       return '';  
     }
-    const splittedData = item.title.substring(item.title.length - 4).toLowerCase();
+    const splittedData = item.title.substring(item.title.length - 4);
+    console.log(splittedData);
+    var number = 1;
+    
     if (splittedData[0] === '.') {
-      return splittedData.substring(1);
+      number = 1;
     }
     else if(splittedData[1] === '.') {
-      return splittedData.substring(2);
+      number = 2;
     }
     else if(splittedData[2] === '.') {
-      return splittedData.substring(3);
-    }
-    else {
-      return splittedData;
+      number = 3;
     }
 
-    
+    return splittedData.substring(number);
   }
 
 
