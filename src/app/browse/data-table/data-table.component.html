@@ -34,7 +34,11 @@
         >
           Name
         </th>
-        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div> </th>
+        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div>
+         </th>
+        <th mat-sort-header="getFileType(item)"
+            width="10%"
+        >Format</th>
         <th mat-sort-header="dc:creator" width="22%">Created by</th>
         <th
           *ngIf="!isTrashView"
@@ -147,6 +151,7 @@
 
           </p>
         </td>
+        
         <td *ngIf="checkAssetType(item.type)" class="getWidth2" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
           <div class="zoomImg" style="display: inline-block;">
             <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain;">
@@ -209,6 +214,7 @@
             </div>
           </span>
         </td>
+        
         <td *ngIf="!checkAssetType(item.type)" class="getWidth3" (contextmenu)="onContextMenu($event, item)">
           <span (click)="copyLink(item, 'folder')" style="text-align: right;">
             <div *ngIf="!item.copy; else other_content" class="copyHover">
@@ -234,6 +240,11 @@
               </div>
             </ng-template>
           </span>
+        </td>
+        <td
+        style="padding-left: 25px"
+        >
+          <p class="itemTitleContent">{{getFileType(item)}}</p>
         </td>
         <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">
           <p class="itemTitleContent">{{getCreatorName(item)}}</p>

@@ -1107,6 +1107,29 @@ export class DataTableComponent implements OnInit, OnChanges {
       }
   }
 
+  getFileType(item) {
+    console.log(item);
+    if(item.type === 'Workspace' || item.type === 'Folder' || item.type === 'OrderedFolder') {
+      return '';  
+    }
+    const splittedData = item.title.substring(item.title.length - 4).toLowerCase();
+    if (splittedData[0] === '.') {
+      return splittedData.substring(1);
+    }
+    else if(splittedData[1] === '.') {
+      return splittedData.substring(2);
+    }
+    else if(splittedData[2] === '.') {
+      return splittedData.substring(3);
+    }
+    else {
+      return splittedData;
+    }
+
+    
+  }
+
+
   openFolder(item: IEntry) {
     this.removeAssets();
     this.router.navigate([window.location.pathname.split('/').splice(1,2).join('/'), item.uid]);
