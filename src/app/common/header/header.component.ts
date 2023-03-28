@@ -101,7 +101,7 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        if (event.url.includes('documentation-assets')) {
+        if (event.url.includes('documentation-assets') || event.url.includes('construction')) {
           this.isDroneUploadPage = true;
           this.showFooter = true;
         } else {
@@ -281,7 +281,7 @@ export class HeaderComponent implements OnInit {
   }
   checkNeomUser() {
     if (!this.userData) return !this.checkExternalUser();
-    return this.userData.email?.includes('@neom.com');
+    return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');
   }
 
   playPersonalizedVideo() {

@@ -1320,7 +1320,7 @@ input.copyright-input::placeholder{
   width: 436px;
   height: 100px;
   filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
-  padding: 22px 20px 22px 13px;
+  padding: 12px 20px 22px 13px;
   margin: 20px 0 20px;
   text-align: left;
 }
@@ -1335,12 +1335,17 @@ input.copyright-input::placeholder{
   vertical-align: middle;
 }
 .uploadAssetsBlock .folder-content .folderHeading span {
-  display: block;
+  /* display: block; */
   font-size: 12px;
   text-align: left;
   line-height: 20px;
   color: rgba(35, 33, 30, 0.6);
   font-weight: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* .uploadAssetsBlock .folder-content  {
   padding-left: 0px;
@@ -1974,4 +1979,7 @@ ngx-dropzone-label {
 }
 .copyright-form ::ng-deep .goldenText.ng-select .ng-select-container {
   border-bottom: 0px solid #DEB31A !important;
+}
+#myCustomSelect input {
+  padding-right: 30px;
 }
