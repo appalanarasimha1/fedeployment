@@ -408,7 +408,7 @@ header.updateHeader .navbar .navbar-collapse {
     top: 2px;
     z-index: 9; */
     float: right;
-    width: 200px;
+    width: 250px;
     cursor: pointer !important;
 }
 ::ng-deep .ssector .ng-select{
