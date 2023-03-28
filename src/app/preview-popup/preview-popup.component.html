@@ -686,6 +686,13 @@
           [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
       </div>
       <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
+        <div class="deleteDescription" *ngIf="nevermindHideMsg">
+          Are you sure you want to delete the description?
+          <ul>
+            <li (click)="addUpdateDescription()">Yes</li>
+            <li (click)="closeDeleteModal()">Nevermind</li>
+          </ul>
+        </div>
         <div class="tab-content myTabContent" id="myTabContent">
           <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="home-tab">
             <div class="timeline-content">
@@ -737,8 +744,8 @@
                   </div>
                   <div class="addDescriptionBtn" *ngIf="!doc?.properties['dc:description']"><button (click)="enableInputClick(true)">Add description</button></div>
                   <p class="clearfix">
-                    <span class="collapsable float-left" >  {{ (doc?.properties['dc:description'].length>firstCount) ? (doc?.properties['dc:description'] | slice:0:counter)+'...':(doc?.properties['dc:description']) }}
-                        <span class="redTxt" *ngIf="doc?.properties['dc:description'].length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
+                    <span class="collapsable float-left" >  {{ (description?.length>firstCount) ? (doc?.properties['dc:description'] | slice:0:counter)+'...':(doc?.properties['dc:description']) }}
+                        <span class="redTxt" *ngIf="doc?.properties['dc:description']?.length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
                           {{showTxt}}
                         </span>
                     </span>
