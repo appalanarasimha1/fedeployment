@@ -4642,3 +4642,6 @@ ul.all-sectors img.noPreviewItem {
 .slide.slick-slide.slick-active:hover {
   z-index: 1;
 }
+.modal-body.fixx .ng-dropdown-panel .ng-dropdown-panel-items {
+  max-height: 100% !important;
+}
