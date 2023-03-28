@@ -1629,3 +1629,11 @@ ul.uploadAssetsClassifications li:after {
   right: 0;
   z-index: 9;
 }
+.placeholder-search{
+  position: absolute;
+  right: 15px;
+  top: 0px;
+  bottom: 0px;
+  margin: auto;
+  width: 18px;
+}

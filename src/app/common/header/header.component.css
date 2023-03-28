@@ -65,7 +65,7 @@ header{
     right: 10px;
     border-radius: 10px;
     padding: 10px 24px;
-    width: 250px;
+    width: 300px;
     top: 44px;
 }
 .dropdown-item.active, .dropdown-item:active{
@@ -351,19 +351,19 @@ header.updateHeader .navbar .navbar-collapse {
     background-size: 50px;
     cursor: pointer;
   }
-  .fixx{
+  /* .fixx{
     height: 290px;
     width: 476px;
-  }
+  } */
   .modal-body-content img{
       height: 290px;
   }
   video{
-      height: 290px;
+      /* height: 290px; */
       object-fit: cover;
   }
   .select-an-area{
-    height: 290px;
+    /* height: 290px; */
     text-align: center;
     padding: 16px 60px
   }
@@ -397,16 +397,17 @@ header.updateHeader .navbar .navbar-collapse {
     border-radius: 10px;
   }
   video{
-    border-radius: 8px;
+    border-radius: 8px 8px 0px 0px;
 }
 .ssector {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: end;
-    position: absolute;
+    justify-content: end; */
+    /* position: absolute;
     right: 10px;
     top: 2px;
-    z-index: 9;
+    z-index: 9; */
+    float: right;
     width: 148px;
     cursor: pointer !important;
 }
@@ -824,9 +825,11 @@ ul.sidebarList li .sidebarLink.active {
     font-family: 'brownlight';
     word-break: break-word;
     line-height: normal;
+    width: calc(100% - 25px);
 }
 .notifactionImgCont .notifactionImg {
     margin-right: 10px;
+    width: 25px;
 }
 .notifactionHead {
     line-height: normal;
@@ -854,19 +857,20 @@ ul.sidebarList li .sidebarLink.active {
     padding-bottom: 15px;
     margin-bottom: 10px;
 }
-/* .notificationDropdown ul li:last-child {
+.notificationDropdown ul li:last-child {
     padding-bottom: 0px;
     border: 0px;
-} */
+}
 .notActive{
     color: #040404;
     font-family: 'brownlight' !important;
 }
 .notificationDropdown {
-    height: 200px;
+    min-height: 170px;
     overflow: hidden;
     overflow-y: scroll;
     padding-right: 10px;
+    max-height: 480px;
 }
 #customScrollBar::-webkit-scrollbar-track{
 	background-color: transparent;
@@ -909,8 +913,8 @@ ul.sidebarList li .sidebarLink.active {
     color: #946D00;
     font-family: 'brownregular';
     text-align: center;
-    border-top: 1px solid #EFEEE9;
     margin: 10px 0px;
+    border-top: 1px solid #EFEEE9;
     padding-top: 12px;
 }
 .view-all-notifaction span {
@@ -1126,4 +1130,163 @@ span.userName {
     top: 0px;
     transform: translate(-50%, -50%) !important;
     top: 50% !important;
+}
+
+.circle {
+    display: block;
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 120px;
+    height: 120px;
+    stroke-dasharray: 1000px;
+    stroke-dashoffset: 0;
+    transform-origin: 50% 50%;
+    transition: all 0.8s linear 0.2s, opacity 0s linear 0s;
+}
+
+.button-play {
+    display: block;
+    position: relative;
+    border: 2px solid white;
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: transparent;
+    border-radius: 50%;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.465, 1.55) 0.2s, border-width 0.4s cubic-bezier(0.68, -0.55, 0.465, 1.55);
+}
+.button-play:before {
+    display: block;
+    position: absolute;
+    content: "";
+    bottom: 50%;
+    left: 74%;
+    width: 14px;
+    height: 14px;
+    /* border: 30px solid transparent;
+    border-width: 25px 0px 25px 40px;
+    border-radius: 0;
+    border-left-color: white; */
+    transform: translate(-13px, 50%);
+    background: url(../../../assets/images/play-button-animation.svg) no-repeat;
+    background-size: contain;
+}
+.button-play:hover, .button-play.active {
+    border: 2px solid white;
+}
+.button-play:hover .circle, .button-play.active .circle {
+    stroke-dasharray: -1000px;
+    stroke-dashoffset: -500px;
+    opacity: 0;
+    transition: all 2s linear 0.3s, opacity 0.1s linear 2s;
+}
+.button-play:hover:before, .button-play.active:before {
+    -webkit-animation: playJump 0.5s linear infinite;
+            animation: playJump 0.5s linear infinite;
+}
+
+@-webkit-keyframes playJump {
+    0% {
+        transform: translate(-13px, 60%) scale(1.1, 0.7);
+    }
+    10% {
+        transform: translate(-13px, 30%) scale(0.9, 1.2);
+    }
+    20% {
+        transform: translate(-13px, 15%);
+    }
+    40% {
+        transform: translate(-13px, 10%);
+    }
+    50% {
+        transform: translate(-13px, 10%);
+    }
+    55% {
+        transform: translate(-13px, 18%);
+    }
+    60% {
+        transform: translate(-13px, 20%);
+    }
+    65% {
+        transform: translate(-13px, 25%);
+    }
+    70% {
+        transform: translate(-13px, 30%);
+    }
+    90% {
+        transform: translate(-13px, 60%) scale(1.2, 0.7);
+    }
+    100% {
+        transform: translate(-13px, 60%) scale(1.4, 0.7);
+    }
+}
+
+@keyframes playJump {
+    0% {
+        transform: translate(-13px, 60%) scale(1.1, 0.7);
+    }
+    10% {
+        transform: translate(-13px, 30%) scale(0.9, 1.2);
+    }
+    20% {
+        transform: translate(-13px, 15%);
+    }
+    40% {
+        transform: translate(-13px, 10%);
+    }
+    50% {
+        transform: translate(-13px, 10%);
+    }
+    55% {
+        transform: translate(-13px, 18%);
+    }
+    60% {
+        transform: translate(-13px, 20%);
+    }
+    65% {
+        transform: translate(-13px, 25%);
+    }
+    70% {
+        transform: translate(-13px, 30%);
+    }
+    90% {
+        transform: translate(-13px, 60%) scale(1.2, 0.7);
+    }
+    100% {
+        transform: translate(-13px, 60%) scale(1.4, 0.7);
+    }
+}
+.vidwoDropdownarea {
+    padding: 0px 20px 20px;
+}
+.vidwoDropdownarea::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.videoCaption {
+    display: inline-block;
+    color: #fff;
+    font-family: 'brownlight';
+    font-size: 13px;
+    padding-top: 15px;
+}
+.notifactionCont {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dropdown-menu .request-download-btn-group.buttonGroup {
+    text-align: right;
+    margin-top: 20px;
+}
+.dropdown-menu .reject, .dropdown-menu .approve {
+    padding: 0px 20px;
+    line-height: 29px;
+    font-size: 13px;
+    letter-spacing: normal;
+}
+.request-download-btn-group.buttonGroup.downloadBtn .approve {
+    padding: 0px 15px 0px 12px;
 }

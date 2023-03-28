@@ -194,7 +194,7 @@ export class NuxeoService {
       const res = await this.nuxeoClient.connect();
       localStorage.setItem("user", JSON.stringify(res.user.properties));
       if (res.user.properties?.groups.includes(DRONE_UPLOADER)) {
-        this.router.navigate(['/'], { fragment: 'documentation-assets' });
+        this.router.navigate(['/'], { fragment: 'construction' });
       }
     } catch (err) {
       await this.logout();

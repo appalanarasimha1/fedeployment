@@ -42,6 +42,7 @@ export class UploadDroneComponent implements OnInit {
   filteredInstallationIdList = [];
   isSelectAll = false;
   allDate = new Date();
+  supplierRegions = [];
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -92,7 +93,7 @@ export class UploadDroneComponent implements OnInit {
   }
 
   updateSelectAllDate() {
-    
+
   }
 
   inputClicked() {
@@ -119,7 +120,7 @@ export class UploadDroneComponent implements OnInit {
       context: {},
       params: {
         installationId: this.selectedDevice.installationId,
-        location: this.selectedDevice.initial,
+        location: this.selectedDevice.initial || this.getInstallationIdRegion(this.selectedDevice.installationId),
       },
     };
     const res = await this.apiService
@@ -164,7 +165,7 @@ export class UploadDroneComponent implements OnInit {
         "X-File-Size": blob.size,
         "X-File-Type": blob.mimeType,
         "Content-Length": blob.size,
-        "X-Authentication-Token": localStorage.getItem("token"),
+        "X-Authentication-Token": localStorage.getItem("token"), // TODO: will alter it to fetch this token from cookies rather than storing it in localstorage
       },
     };
     this.apiService.post(uploadUrl, blob.content, options).subscribe(
@@ -242,15 +243,18 @@ export class UploadDroneComponent implements OnInit {
 
   async createAsset(file, index, folder) {
     const date = this.dates[index];
-    const url = encodeURI(`/path${folder}`);
     let fileType = "File";
+    let filePath = "";
     if (file.type?.includes("image/")) {
       fileType = "Picture";
+      filePath = "/Photos";
     } else if (file.type?.includes("video/")) {
       fileType = "Video";
+      filePath = "/Videos";
     } else if (file.type?.includes("audio/")) {
       fileType = "Audio";
     }
+    const url = encodeURI(`/path${folder}`) + filePath;
     const payload = {
       "entity-type": "document",
       repository: "default",
@@ -346,10 +350,16 @@ export class UploadDroneComponent implements OnInit {
   onSelect(event) {
     const addedFiles = this.filterWhitelistFiles(event.addedFiles);
     this.files = [...this.files, ...addedFiles];
-    const addedDates = Array(addedFiles.length).fill(this.now);
-    this.dates = [...this.dates, ...addedDates];
-    // this.uploadFile(this.files);
+    // const addedDates = Array(addedFiles.length).fill(event.addedFiles[]);
+    for(let i = 0; i < addedFiles.length; i++) {
+      this.dates.push(addedFiles[i].lastModifiedDate);
+    }
+    // this.dates = [...this.dates, ...addedDates];
 
+
+
+
+    // this.uploadFile(this.files);
     // this.countFile = false;
   }
 
@@ -430,11 +440,11 @@ export class UploadDroneComponent implements OnInit {
   async initData() {
     this.user = JSON.parse(localStorage.getItem("user"))["username"];
     const pormiseArray = [];
-    pormiseArray.push(this.getDeviceList());
-    pormiseArray.push(this.getSupplierList());
     pormiseArray.push(this.getRegionList());
     pormiseArray.push(this.getSubAreaList());
     await Promise.all(pormiseArray);
+    await this.getSupplierList();
+    await this.getDeviceList();
     this.computeInstallationIdList();
   }
   deviceList = [];
@@ -458,11 +468,28 @@ export class UploadDroneComponent implements OnInit {
       direction: device.direction,
       cameraPole: device.cameraPole,
       region: device.region,
+      areaName: device.areaName,
       subArea: device.subArea,
+      subAreaName: device.subAreaName,
       status: device.status,
       installationId: device.installationId,
       uid: device.id,
     }));
+
+    if (this.supplierRegions?.length > 0) {
+      this.deviceList = this.deviceList.filter(device =>
+        this.supplierRegions.includes(this.getInstallationIdRegion(device.installationId))
+      );
+    }
+  }
+
+  getInstallationIdRegion(installationId) {
+    try {
+      const split = installationId.split('-');
+      return split[split.length - 2];
+    } catch (e) {
+      return null;
+    }
   }
 
   async getRegionList() {
@@ -512,8 +539,8 @@ export class UploadDroneComponent implements OnInit {
   computeInstallationIdList() {
     this.installationIdList = this.deviceList.map((device) => ({
       installationId: device.installationId,
-      area: this.subAreaMap[device.subArea]?.name,
-      location: this.regionMap[device.region]?.name,
+      area: this.subAreaMap[device.subArea]?.name || device.subAreaName,
+      location: this.regionMap[device.region]?.name || device.areaName,
       areaId: device.subArea,
       locationId: device.region,
       initial: this.regionMap[device.region]?.initial,
@@ -547,5 +574,8 @@ export class UploadDroneComponent implements OnInit {
     );
     this.company = currentUserSupplier?.name || "";
     this.companyId = currentUserSupplier?.uid || "";
+    if (currentUserSupplier) {
+      currentUserSupplier.regions.forEach(region => this.supplierRegions.push(this.regionMap[region].initial));
+    }
   }
 }

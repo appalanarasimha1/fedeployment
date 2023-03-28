@@ -3808,20 +3808,27 @@ body { margin: 0; }
 .remove-backdrop {
   /* background: transparent !important; */
 }
-.custom-modal .modal-content {
+/* .custom-modal .modal-content {
   width: 476px;
   margin: 0px auto;
   border: 0px;
   border-radius: 10px;
   background: transparent;
-}
+} */
 .custom-modal button.close {
-  position: absolute;
+  /* position: absolute;
   right: -39px;
   top: -2px;
   height: 20px;
   width: 20px;
+  opacity: 1; */
+  position: absolute;
+  right: 25px;
+  top: 8px;
+  height: 20px;
+  width: 20px;
   opacity: 1;
+  z-index: 9;
 }
 .custom-modal .modal-body {
   background: #000;
@@ -3833,9 +3840,9 @@ body { margin: 0; }
   max-width: 100%;
   width: 100%;
 }
-.custom-modal .modal-dialog {
+/* .custom-modal .modal-dialog {
   margin: 17rem auto 1.75rem auto;
-}
+} */
 /* sprint16 end */
 /* sprint16-v1 start */
 .custom-date-picker button.mat-focus-indicator.mat-icon-button.mat-button-base span.mat-button-wrapper svg {
@@ -3938,7 +3945,8 @@ body { margin: 0; }
   text-align: left;
 }
 .select-an-area .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input,
-.regionBlok .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+.regionBlok .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input,
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
   padding-left: 0px;
 }
 /* .select-an-area .ng-select-container.ng-has-value {
@@ -4414,7 +4422,8 @@ body {
   margin-top: 2px;
   padding-left: 0px;
 }
-.addUserBlock .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+.addUserBlock .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input,
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
   padding-left: 0px !important;
 }
 .addUserBlock .ng-select .ng-select-container .ng-value-container {
@@ -4528,7 +4537,7 @@ ul.all-sectors img.noPreviewItem {
   width: 160px !important;
 }
 .slide.slick-slide.slick-current.slick-active {
-  z-index: 1;
+  /* z-index: 1; */
   position: relative;
 }
 ::ng-deep .mat-calendar-body-selected {
@@ -4617,4 +4626,19 @@ ul.all-sectors img.noPreviewItem {
 }
 .mat-form-field-wrapper .mat-button-focus-overlay {
   background: transparent;
+}
+
+.custom-modal button.close svg {
+  max-width: 160%;
+}
+
+.vidwoDropdownarea .goldenText.ng-select .ng-select-container {
+  border-bottom: 1px solid #EDD580;
+  color: #EDD580 !important;
+}
+.vidwoDropdownarea .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+  border-color: #EDD580 !important;
+}
+.slide.slick-slide.slick-active:hover {
+  z-index: 1;
 }

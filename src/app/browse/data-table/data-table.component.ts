@@ -172,24 +172,25 @@ export class DataTableComponent implements OnInit, OnChanges {
       localStorage.setItem("user", JSON.stringify(res.user.properties));
     }
   }
-  async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
-    this.loading = true;
-    // const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
-    //   sectorUid,
-    //   checkCache,
-    //   pageSize,
-    //   pageIndex,
-    //   offset
-    // );
-    // this.sortedData = entries;
-    // this.searchList = entries;
-    // this.numberOfPages = numberOfPages;
-    // this.resultCount = resultsCount;
-    // this.extractBreadcrumb();
-    // this.showLinkCopy = showLinkCopy;
-    // this.showSearchbar = true;
-    // this.loading = false;
-  }
+
+  // async fetchCurrentFolderAssets(sectorUid: string, checkCache = true, pageSize = PAGE_SIZE_20, pageIndex = 0, offset = 0) {
+  //   this.loading = true;
+  //   // const { entries, numberOfPages, resultsCount } = await this.fetchAssets(
+  //   //   sectorUid,
+  //   //   checkCache,
+  //   //   pageSize,
+  //   //   pageIndex,
+  //   //   offset
+  //   // );
+  //   // this.sortedData = entries;
+  //   // this.searchList = entries;
+  //   // this.numberOfPages = numberOfPages;
+  //   // this.resultCount = resultsCount;
+  //   // this.extractBreadcrumb();
+  //   // this.showLinkCopy = showLinkCopy;
+  //   // this.showSearchbar = true;
+  //   this.loading = false;
+  // }
 
   getDateInFormat(date: string): string {
     return new Date(date).toDateString();
@@ -383,12 +384,12 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.loading = true;
     let data = Object.values(this.selectedFolderList)
     let dataToParse =  data.concat(this.assetCanDelete)
-    const listDocs = dataToParse
-    .filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
+    const listDocs = dataToParse.filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
     await this.apiService
       .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}`})
       .subscribe((docs: any) => {
         this.loading = false;
+        this.assetCanDelete = [];
         this.deleteModal(listDocs);
         this.removeAssets();
         this.fetchAssets.emit({id: this.currentWorkspace.uid});
@@ -969,13 +970,9 @@ export class DataTableComponent implements OnInit, OnChanges {
     }
     if(type =="thumbnail" ){
       let thumbNailUrl = url ? url :document.properties['file:content'].data
-      return this.sharedService.getAssetUrl(event, thumbNailUrl, type);
+      return this.sharedService.getAssetUrl(event, thumbNailUrl, document, type);
     }
-    // if(document && this.checkAssetMimeTypes(document) === 'nopreview' && this.viewType ==="GRID") {
-    //   // return '../../../assets/images/no-preview.png';
-    //   return this.getNoPreview(document);
-    // }
-   return this.sharedService.getAssetUrl(event, url, type);
+   return this.sharedService.getAssetUrl(event, url, document, type);
   }
 
   getNoPreview(item) {

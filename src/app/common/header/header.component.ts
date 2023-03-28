@@ -101,8 +101,9 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        if (event.url.includes('documentation-assets')) {
+        if (event.url.includes('documentation-assets') || event.url.includes('construction')) {
           this.isDroneUploadPage = true;
+          this.showFooter = true;
         } else {
           this.isDroneUploadPage = false;
         }
@@ -280,7 +281,7 @@ export class HeaderComponent implements OnInit {
   }
   checkNeomUser() {
     if (!this.userData) return !this.checkExternalUser();
-    return this.userData.email?.includes('@neom.com');
+    return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');
   }
 
   playPersonalizedVideo() {
@@ -339,6 +340,19 @@ export class HeaderComponent implements OnInit {
     this.storeRequestDownloadNotification();
   }
 
+  getAssetUrl(event: any, url: string, document?: any, type?: string): string {
+    // if (!event) {
+    //   return `${window.location.origin}/nuxeo${url}`;
+    // }
+
+    return this.sharedService.getAssetUrl(event, url, document, type);
+  }
+
+  downloadAssetFromNotification(UUID: string) {
+    return `${window.location.origin}/nuxeo/nxfile/default/${UUID}`;
+  }
+
+
   computeDuplicateRequestDownloadNoti() {
     this.notifications = this.notifications.sort((a, b) => {
       if (a.id > b.id) return -1;
@@ -393,6 +407,8 @@ export class HeaderComponent implements OnInit {
   }
 
   goToNotificationLink(notification) {
+    // this.loading = true;
+    // debugger;
     let folderName = notification?.docPath?.split("/")[1]
     const isAsset = ['Picture', 'File', 'Video', 'Audio'].includes(notification.docType);
     if (isAsset) this.router.navigate(['asset-view'], {queryParams : {assetId: notification.docUUID}});

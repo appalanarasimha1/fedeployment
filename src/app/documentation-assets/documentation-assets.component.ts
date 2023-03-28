@@ -60,6 +60,7 @@ export class DocumentationAssetsComponent implements OnInit {
   filteredSubAreaList = [];
   notAuthorize = true;
   userRegionList = [];
+  userPermissionMap = {};
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -76,7 +77,8 @@ export class DocumentationAssetsComponent implements OnInit {
       this.updateMasonryLayout = !this.updateMasonryLayout;
     });
     const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false
+    if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false;
+    if (userData?.groups.includes("Warroom View Access")) this.notAuthorize = false;
 
     this.user = userData["username"];
     this.getDeviceList();
@@ -120,6 +122,7 @@ export class DocumentationAssetsComponent implements OnInit {
       if (found) {
         this.notAuthorize = false;
         this.userRegionList.push(access.name);
+        this.userPermissionMap[access.name] = found.permissions?.includes('download');
       }
     }
 
@@ -241,7 +244,9 @@ export class DocumentationAssetsComponent implements OnInit {
 
   async getAssetList() {
     this.loading = true;
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=40&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:path STARTSWITH '/War Room'`;
+    const uploadedPath = await this.getDroneUploadPaths() || 'War Room';
+    const pathQuery = this.computeQueryWsPaths(uploadedPath);
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` + pathQuery;
     if (this.companyId) {
       url += ` AND dc:vendor = '${this.companyId}'`;
     }
@@ -261,6 +266,26 @@ export class DocumentationAssetsComponent implements OnInit {
     this.assetList = res["entries"];
   }
 
+  computeQueryWsPaths(paths) {
+    const split = paths.split(',');
+    if (split.length === 1) return ` AND ecm:path STARTSWITH '/${paths}'`;
+    let query = ' AND (';
+    for (let i = 0; i < split.length; i++) {
+      const path = split[i];
+      if (i === split.length - 1) query += ` ecm:path STARTSWITH '/${path}' )`;
+      else query += ` ecm:path STARTSWITH '/${path}' OR`;
+    }
+    return query;
+  }
+
+  async getDroneUploadPaths() {
+    try {
+      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {}).toPromise();
+      const paths = res['value'];
+      return paths;
+    } catch (err) {return ""}
+  }
+
   dateRangeChange() {
     if (this.selectedStartDate && this.selectedEndDate) this.getAssetList();
   }
@@ -275,7 +300,9 @@ export class DocumentationAssetsComponent implements OnInit {
     }
     if (this.selectedRegion) {
       filteredDevice = this.deviceList.filter(device =>
-        (device.region?.includes(this.selectedRegion.uid) || device.areaId?.includes(this.selectedRegion.initial)))
+        (device.region?.includes(this.selectedRegion.uid)
+        || device.areaId?.includes(this.selectedRegion.initial)
+        || this.selectedRegion.initial === this.getInstallationIdRegion(device.installationId)))
       this.filteredSubAreaList = this.subAreaList.filter(subArea => (
         subArea.parentArea === this.selectedRegion.uid
       ));
@@ -386,7 +413,7 @@ export class DocumentationAssetsComponent implements OnInit {
     //   this.getAssetUrl(true, this.selectedFileUrl, 'file');
     // }
 
-    this.previewModal.open();
+    this.previewModal.open(this.checkAssetDownloadPermission(this.selectedFile));
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
@@ -495,7 +522,7 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   isNeomUser() {
-    return !!this.user?.includes('@neom.com');
+    return !!this.user?.includes('@neom.com') || !!this.user?.match('@.*neom.com');
   }
 
   public ngOnDestroy(): void {
@@ -508,5 +535,25 @@ export class DocumentationAssetsComponent implements OnInit {
   clearSelection() {
     this.selectedStartDate = '';
     this.selectedEndDate = '';
+    this.getAssetList();
+  }
+
+  checkAssetDownloadPermission(asset) {
+    if (!asset) return false;
+    if (this.userPermissionMap['ALL']) return true;
+    const installationId = asset.properties["dc:installationId"];
+    if (!installationId) return false;
+    const assetRegion = this.getInstallationIdRegion(installationId);
+    if (!assetRegion) return false;
+    return this.userPermissionMap[assetRegion];
+  }
+
+  getInstallationIdRegion(installationId) {
+    try {
+      const split = installationId.split('-');
+      return split[split.length - 2];
+    } catch (e) {
+      return null;
+    }
   }
 }

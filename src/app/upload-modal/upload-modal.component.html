@@ -5,7 +5,6 @@
    <mat-horizontal-stepper *ngIf="step !== 4" [linear]="true" #stepper>
       <mat-step [completed]="!checkUploadStep()">
          <ng-template matStepLabel>Select assets</ng-template>
-         <!-- <div class="upload-modal-step">{{step !== 4 ? stepLabel : '' }}</div> -->
          <div>
             <ngx-dropzone #drop class="drag-drop" [ngClass]="{'dragDropDate' : !getAssetNumber() }" (change)="onSelect($event, fileLimitExceeded)" id="customScrollBar">
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
@@ -32,7 +31,7 @@
                         <div class="folder-content">
                            <div class="folderHeading">
                               {{shortTheString(data.title, 35)}}
-                              <span>/{{WORKSPACE_ROOT}}{{shortTheString(sharedService.removeWorkspacesFromString(data.path), 70)}}</span>
+                              <span>/{{WORKSPACE_ROOT}}{{data.path}}</span>
                            </div>
                         </div>
                      </div>
@@ -104,7 +103,7 @@
             </div>
 
             <div class="button-groups" style="padding-top: 0px; padding-right: 0px; padding-left: 0px; position: relative; bottom: 0px;">
-               <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+               <button (click)="dialogRef.close()" class="cancel-btn">Cancel</button>
                <div class="progress-btns">
                   <button *ngIf="!isPrivateFolder() && !checkboxIsPrivate" mat-button matStepperNext class="upload-btn tollTipCustom" [disabled]="checkUploadStep()">
                      Next
@@ -165,15 +164,6 @@
                                     <div class="workspace-title" [class.ws-selected]="selectedWorkspace.uid === ws.uid" (click)="selectWorkspace(ws)">{{ ws.title }}</div>
                                  </li>
                            </ngx-slick-carousel>
-                           <!-- <div *ngFor="let ws of workspaceList, let i = index">
-                              <div *ngIf="filterWorkspaces(ws.title)"
-                                 class="workspace-title"
-                                 [class.ws-selected]="selectedWorkspace.uid === ws.uid"
-                                 (click)="selectWorkspace(ws)"
-                                 >
-                                 {{ ws.title }}
-                              </div>
-                           </div> -->
                      </div>
                   </div>
                </div>
@@ -405,7 +395,7 @@
          </div>
 
          <div class="button-groups" style="padding-top: 0px;">
-            <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+            <button (click)="dialogRef.close()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button *ngIf="!publishing" mat-button matStepperPrevious class="cancel-btn" (click)="backBtn()">Back</button>
                <button *ngIf="!isPrivateFolder() &&!checkboxIsPrivate" mat-button matStepperNext class="upload-btn tollTipCustom" (click)="copyUserMap()" [disabled]="checkUploadFormStep()">Review
@@ -462,8 +452,8 @@
                      <div class="col-xl-9 col-md-9 flexible">
                         <ng-select placeholder="Specify sensitivity"
                            (change)="onSelectConfidentiality($event)"
-                           [searchable]="false"
-                           [clearable]="false"
+                           [searchable]="true"
+                           [clearable]="true"
                            [(ngModel)]="overallConfidentiality"
                            id="confidentiality"
                            [ngClass]="{'goldenText': overallConfidentiality}"
@@ -472,10 +462,6 @@
                               {{CONFIDENTIALITY_LABEL[c.value]}}
                            </ng-option>
                         </ng-select>
-                        <!-- <div class="tooltip1">
-                           <img src="../../assets/images/Info-icon.svg">
-                           <span class="tooltiptext">Ground X will classify the asset(s) as per the sensitivity specified.</span>
-                        </div> -->
                      </div>
                   </div>
                </div>
@@ -485,15 +471,11 @@
                         <label for="access" style="text-align: right;display: block;">{{ACCESS_TITLE}}</label>
                      </div>
                      <div class="col-xl-8 col-md-8 flexible">
-                        <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="overallAccess" id="access" [ngClass]="{'goldenText': overallAccess}">
+                        <ng-select placeholder="Specify visibility" [searchable]="true" [clearable]="true" (change)="onSelectAccess($event)" [(ngModel)]="overallAccess" id="access" [ngClass]="{'goldenText': overallAccess}">
                            <ng-option *ngFor="let c of ACCESSNEW | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
                            {{ACCESS_LABEL[c.value]}}
                            </ng-option>
                         </ng-select>
-                        <!-- <div class="tooltip1">
-                           <img src="../../assets/images/Info-icon.svg">
-                           <span class="tooltiptext">Ground X will only display the asset(s) to the specified users</span>
-                        </div> -->
                      </div>
                   </div>
                </div>
@@ -518,7 +500,9 @@
                         typeToSearchText="Search users"
                         [typeahead]="userInput$"
                         [(ngModel)]="overallUsers"
-                        [ngClass]="{'goldenText': overallUsers }" >
+                        [ngClass]="{'goldenText': overallUsers }"
+                        [searchable]="true"
+                        [clearable]="true" >
                         <ng-template ng-option-tmp let-item="item">
                            {{item.id}} ({{item.fullname}})
                         </ng-template>
@@ -565,7 +549,9 @@
                         typeToSearchText="Search users"
                         [typeahead]="userInput$"
                         [(ngModel)]="overallDownloadApprovalUsers"
-                        [ngClass]="{'goldenText': overallDownloadApprovalUsers }" >
+                        [ngClass]="{'goldenText': overallDownloadApprovalUsers }"
+                        [searchable]="true"
+                        [clearable]="true" >
                         <ng-template ng-option-tmp let-item="item">
                            {{item.id}} ({{item.fullname}})
                         </ng-template>
@@ -575,36 +561,6 @@
                </div>
             </div>
 
-            <!-- <div class="upload-form-input row mb-10 uploadModalBlk" *ngIf="overallDownloadApproval">
-               <div class="col-xl-6 col-md-6">
-                  <div class="row" >
-                     <div class="col-xl-12 col-md-12">
-                        <label style="margin-bottom: 0px;text-align: left;float: none;color: #040404;">{{OWNER_APPROVAL_LABEL}}</label>
-                        <ng-select style="height: unset !important;"
-                        (change)="dowloadUsers()"
-                        [items]="userList$ | async"
-                        bindLabel="id"
-                        bindValue="id"
-                        [multiple]="true"
-                        [hideSelected]="true"
-                        [trackByFn]="trackByFn"
-                        [minTermLength]="2"
-                        [loading]="userLoading"
-                        typeToSearchText="Search users"
-                        [typeahead]="userInput$"
-                        [(ngModel)]="overallDownloadApprovalUsers"
-                        [ngClass]="{'goldenText': overallDownloadApprovalUsers }" >
-                        <ng-template ng-option-tmp let-item="item">
-                           {{item.id}} ({{item.fullname}})
-                        </ng-template>
-                        </ng-select>
-                     </div>
-                  </div>
-               </div>
-               <!-- <div class="col-xl-6 col-md-6" (click)=" applyToAll()">
-                  <button class="cancel-btn" style="float: right;">Apply to all</button>
-               </div> -/->
-            </div> -->
             <div class="upload-form-input row uploadModalBlk" style="margin-bottom: 20px; margin-right: 3px">
                <div class="col-xl-12 col-md-12">
                   <span class="showAllClassifications" (click)="showAllAsset()">Show all asset classifications 
@@ -615,23 +571,6 @@
                </div>
             </div>
 
-            <!-- <div class="publish-summary">
-               <!-- <span>{{ getSelectedAssetsTitle() }}</span> -/->
-               <div class="assets-details">
-                  <div class="flexible">
-                     <img src="../../assets/images/upload.png">
-                     <!-- <mat-icon>folder</mat-icon> -/->
-                     <span style="margin-left: 10px; display: block;">{{ folderToAdd || selectedFolder?.title || data?.title }}</span>
-                  </div>
-               </div>
-               <div class="publish-summary-location flexible">
-                  <div *ngIf="associatedDate" style="margin-left: 20px;">
-                     <!-- <mat-icon>calendar_today</mat-icon> -/->
-                     <img src="../../assets/images/calendar.png" style="vertical-align: top;">
-                     <span style="margin-left: 6px; display: inline-block;">{{ showLocaleDate(associatedDate) }}</span>
-                  </div>
-               </div>
-            </div> -->
             <div class="newscrollBar fix-scroll" id="customScrollBar">
                <div class="updated-asset-classifications" *ngIf="showHideAllAsset">
                   <div class="publish-file-preview-groups">
@@ -665,7 +604,7 @@
                                        </div>
                                     </li>
                                     <li>
-                                       <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
+                                       <ng-select [items]="years" class="yearssss" [searchable]="true" [clearable]="true"
                                           bindLabel="name"
                                           [(ngModel)]="copyrightYearMap[file.key]"
                                           placeholder="Year" ngDefaultControl
@@ -686,7 +625,7 @@
                                  <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
                                     <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                                     </select> -->
-                                 <ng-select placeholder="Specify sensitivity"  [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
+                                 <ng-select placeholder="Specify sensitivity"  [searchable]="true" [clearable]="true" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
                                  <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                                  </ng-option>
                                  </ng-select>
@@ -699,7 +638,7 @@
                                  <label for="access" style="text-align: right; display: block;">{{ACCESS_TITLE}}</label>
                               </div>
                               <div class="col-xl-8">
-                                 <ng-select placeholder="Specify visibility" name="access"  [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
+                                 <ng-select placeholder="Specify visibility" name="access"  [searchable]="true" [clearable]="true" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
                                     <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESSNEW | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
                                     </ng-option>
                                  </ng-select>
@@ -725,7 +664,9 @@
                                  typeToSearchText="Search users"
                                  [typeahead]="userInput$"
                                  [(ngModel)]="customUsersMap[file.key]"
-                                 [ngClass]="{'goldenText': customUsersMap[file.key] }" >
+                                 [ngClass]="{'goldenText': customUsersMap[file.key] }"
+                                 [searchable]="true"
+                                 [clearable]="true" >
                                  <ng-template ng-option-tmp let-item="item">
                                     {{item.id}} ({{item.fullname}})
                                  </ng-template>
@@ -754,17 +695,6 @@
                               </div>
                            </div>
       
-                           <!-- <div class="upload-form-input row mb-20">
-                              <div class="col-xl-4">
-                                 <label for="allow">Allow use</label>
-                              </div>
-                              <div class="col-xl-8">
-                                 <ng-select placeholder="Specify permissible usage" name="allow" (change)="onSelectAllow($event, file.key)" id="allow" [searchable]="false" [clearable]="false" [(ngModel)]="customAllowMap[file.key]" [ngClass]="{'goldenText': customAllowMap[file.key] }" >
-                                    <ng-option  *ngFor="let c of ALLOW | keyvalue" value="{{c.value}}" [disabled]="checkAccessOptionDisabled(c.value)">{{ ALLOW_LABEL[c.value] }}
-                                    </ng-option>
-                                 </ng-select>
-                              </div>
-                           </div>-->
                            <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalUsersMap[file.key] }" >
                               <div class="col-xl-4">
                                  &nbsp;
@@ -783,7 +713,9 @@
                                  typeToSearchText="Search users"
                                  [typeahead]="userInput$"
                                  [(ngModel)]="customDownloadApprovalUsersMap[file.key]"
-                                 [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }" >
+                                 [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }"
+                                 [searchable]="true"
+                                 [clearable]="true" >
                                  <ng-template ng-option-tmp let-item="item">
                                     {{item.id}} {{item.fullname ? '('+item.fullname+')' : ''}}
                                  </ng-template>
@@ -800,7 +732,7 @@
          </div>
 
          <div class="button-groups" style="padding-top: 0px;">
-            <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+            <button (click)="dialogRef.close()" class="cancel-btn">Cancel</button>
             <div class="progress-btns">
                <button mat-button matStepperPrevious class="cancel-btn">Back</button>
                <button *ngIf="!publishing" [ngClass]="{'btnDisable': checkFormState()}" mat-button matStepperNext class="upload-btn" (click)="publish()">{{(!isPrivateFolder()&& !checkboxIsPrivate)?'Publish':'Upload'}}</button>
@@ -811,14 +743,6 @@
          </div>
       </mat-step>
    </mat-horizontal-stepper>
-<!-- <div class="flexible pt-3">
-   <a>
-      <img src="../../assets/images/addTags.svg" style="width: 20px;margin-right: 8px;">
-   </a>
-   <span class="goldenText">
-      Add more assets
-   </span>
-   </div> -->
 <!-- todo -->
 <div *ngIf="step === 4">
    <div class="finish-screen">
@@ -833,20 +757,6 @@
             <p class="numberAssets">{{ getAssetNumber() }} assets</p>
          </div>
       </div>
-      <!-- <div class="destination-folder-block" (click)="openBrowseRoute()" style="cursor: pointer;">
-         <div class="destination-img-block">
-            <img src="../../../assets/images/yellow-folder.png" style="max-width: 100%;">
-         </div>
-         <div class="destination-content-block">
-            <!-- <span class="assetName">National Day 2021</span> -/->
-            <span class="assetName" style="width: 100%;text-align: left; display: block;">{{ folderToAdd || selectedFolder?.title }}</span>
-            <p class="numberAssets">{{ getAssetNumber() }} assets</p>
-         </div>
-      </div> -->
-      <!-- <div (click)="openBrowseRoute()" class="close-modal">
-         <!-- <mat-icon>close</mat-icon> -/->
-         Close
-      </div> -->
    </div>
 </div>
 </div>

@@ -99,7 +99,7 @@
               <path d="M11.6594 8.875C11.9856 8.875 12.25 8.62287 12.25 8.3125C12.25 8.00195 11.9859 7.75 11.6594 7.75H4.96564C4.63936 7.75 4.375 8.00174 4.375 8.3125C4.375 8.62326 4.63934 8.875 4.96564 8.875H11.6594Z" fill="#937206"/>
               <path d="M8.28436 12.25C8.61064 12.25 8.875 11.9979 8.875 11.6875C8.875 11.377 8.61087 11.125 8.28436 11.125H4.96564C4.63936 11.125 4.375 11.3767 4.375 11.6875C4.375 11.9983 4.63934 12.25 4.96564 12.25H8.28436Z" fill="#937206"/>
             </svg>
-            <div class="customToolTipWorkspace">Manage Access</div>
+            <div class="customToolTipWorkspace" style="left: auto;right: 0px;padding: 0px 9px;font-size: 13px;line-height: 27px;">Manage Access</div>
           </li>
           <li *ngIf="isPrivateFolder(true, true) && isAdmin" class="tollTipWorkspace">
             <div class="positionRelative">
@@ -536,8 +536,8 @@
               *ngIf="showCreateFolderPopup"
               [currentWorkspace]="currentWorkspace"
               [folderAssetsResult]="folderStructure"
-              (isPrivate)="checkPrivateFolder()"
-              [checkPrivate]="checkPrivate"
+              
+              
               (folderCreateEvent)="folderCreateEvent($event)"
             ></app-create-folder>
           </li>

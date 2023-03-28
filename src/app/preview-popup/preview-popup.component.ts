@@ -44,6 +44,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   device;
   isDroneUploader = false;
   showCreateFolderPopup: boolean = false;
+  loading: boolean = false;
 
   last_index = 100;
   counter = 100;
@@ -53,6 +54,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   description: '';
   nevermindHideMsg: boolean = false;
   enableInput:boolean=false
+  hasDownloadPermission = true
 
   constructor(
     private router: Router,
@@ -110,7 +112,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   //     );
   // }
 
-  open() {
+  open(hasDownloadPermission=true) {
+    this.hasDownloadPermission = hasDownloadPermission;
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -608,7 +611,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     await this.apiService.post(apiRoutes.REQUEST_DOWNLOAD, body).toPromise();
     this.requestSent = true;
   }
-  loading:boolean=false
+
   showAllcommentClick(){
     this.loading = true
     this.showAllComments = true
@@ -688,7 +691,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   clearValue() {
     this.description = '';
   }
-  
+
   closeDeleteModal(){
     this.nevermindHideMsg = !this.nevermindHideMsg;
   }
@@ -728,15 +731,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
-    if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
-      return '../../../assets/images/no-preview-big.png';
-    }
-    return this.sharedService.getAssetUrl(event, url, type);
+    return this.sharedService.getAssetUrl(event, url, document, type);
   }
 
-  checkAssetMimeTypes(document: any): string {
-    return this.sharedService.checkMimeType(document);
-  }
 
   async addUpdateDescription(){
     // let url = `/id/${this.doc?.uid}`
@@ -749,7 +746,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
           "dc:description": this.nevermindHideMsg?"":this.description
         }
       }
-      
+
     }
     this.apiService.post(url,payload).subscribe((res:any)=>{
       this.doc = res
@@ -758,7 +755,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
         this.nevermindHideMsg = false
       }
     })
-    // last 
+    // last
     this.enableInput=false
   }
 
