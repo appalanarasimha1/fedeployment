@@ -605,7 +605,7 @@ tr.groupFolder td:first-child {
   margin-bottom: 10px;
 }
 
-.availableActions ul:last-child {
+.availableActions ul:last-child, .availableActions ul:nth-child(2) {
   border-top: 1px solid #f0efea;
   margin-top: 15px;
   padding-top: 15px;
