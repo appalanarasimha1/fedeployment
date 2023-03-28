@@ -103,6 +103,7 @@ export class DeviceSettingsComponent implements OnInit {
       owner: device.owner,
       uid: device.id,
       supplierId: device.supplierId,
+      statusUpdateDate: device?.statusUpdateDate
     }));
     this.filteredDeviceList = this.deviceList;
     this.deviceInput = "";
@@ -269,5 +270,25 @@ export class DeviceSettingsComponent implements OnInit {
             .includes(this.selectedStatus.toLowerCase());
       return match;
     });
+  }
+
+  getStatusDateSince(sinceDate: string, format: string): string {
+    
+    const today = new Date();
+    
+    const year = sinceDate?.substring(0, 4);
+    const month = sinceDate?.substring(4, 6);
+    const date = sinceDate?.substring(6, 8);
+    const fullDate = `${year}/${month}/${date}`;
+
+    if(format === 'daysSince' && sinceDate) {
+      const time = today.getTime();
+      const daysDifference = Math.ceil((time - new Date(fullDate).getTime())/(1000*60*60*24));
+      return `${daysDifference} ${(daysDifference > 1 ? 'days' : 'day')}`;
+    } else if(format === 'dateSince' && sinceDate ) {
+      return `since ${fullDate}`;
+    } else {
+      return 'Data not available';
+    }
   }
 }
