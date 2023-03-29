@@ -48,6 +48,7 @@ export class CreateDeviceModalComponent implements OnInit {
   installationID;
   regionList = [];
   subAreaList = [];
+  supplierList = [];
   selectedType = "timelapse";
   latitude: number;
   longitude: number;
@@ -77,6 +78,7 @@ export class CreateDeviceModalComponent implements OnInit {
     this.isCreate = this.data.isCreate;
     this.selectedDevice = this.data.selectedDevice;
     this.supplierPrefix = this.data.supplierIds;
+    this.supplierList = this.data.supplierList;
     if (!this.isCreate) {
       this.installationID = this.selectedDevice.installationId;
       this.selectedSupplier = this.selectedDevice.supplierId;

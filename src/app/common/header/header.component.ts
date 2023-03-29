@@ -105,7 +105,7 @@ export class HeaderComponent implements OnInit {
           this.isDroneUploadPage = true;
           this.showFooter = true;
         } else {
-          this.isDroneUploadPage = false;
+          this.isDroneUploadPage = false;	
         }
 
       }

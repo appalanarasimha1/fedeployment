@@ -40,6 +40,7 @@ export class DeviceSettingsComponent implements OnInit {
       selectedDevice: selectedDevice,
       owners: this.owners,
       supplierIds: this.supplierIds,
+      supplierList: this.supplierList,
     };
 
     const modalDialog = this.matDialog.open(
