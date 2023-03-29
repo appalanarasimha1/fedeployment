@@ -1126,7 +1126,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       number = 3;
     }
 
-    return splittedData.substring(number);
+    return splittedData.substring(number).toLowerCase();
   }
 
 
