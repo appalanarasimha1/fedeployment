@@ -39,7 +39,7 @@
         <th mat-sort-header="getFileType(item)"
             width="10%"
         >Format</th>
-        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div> </th>
+     
         <th mat-sort-header="dc:creator" width="22%">Created by</th>
         <th
           *ngIf="!isTrashView"
@@ -246,7 +246,7 @@
         >
           <p class="itemTitleContent">{{getFileType(item)}}</p>
         </td>
-        <td></td>
+
         <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">
           <p class="itemTitleContent">{{getCreatorName(item)}}</p>
           <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>
