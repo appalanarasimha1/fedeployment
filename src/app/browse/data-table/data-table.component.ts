@@ -1114,7 +1114,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     }
     const splittedData = item.title.substring(item.title.length - 4);
     console.log(splittedData);
-    var number = 1;
+    var number = 0;
     
     if (splittedData[0] === '.') {
       number = 1;
