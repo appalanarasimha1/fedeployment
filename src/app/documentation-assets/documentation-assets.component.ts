@@ -61,6 +61,7 @@ export class DocumentationAssetsComponent implements OnInit {
   notAuthorize = true;
   userRegionList = [];
   userPermissionMap = {};
+  supplierRegions;
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -81,12 +82,16 @@ export class DocumentationAssetsComponent implements OnInit {
     if (userData?.groups.includes("Warroom View Access")) this.notAuthorize = false;
 
     this.user = userData["username"];
-    this.getDeviceList();
-    this.getSupplierList();
-    this.getAccessList();
+    this.fetchGeneralData();
     this.sharedService.events$.forEach(event => {
       if (event === 'Upload done') this.getAssetList();
     });
+  }
+
+  async fetchGeneralData() {
+    this.getDeviceList();
+    await this.getSupplierList();
+    await this.getAccessList();
   }
 
   async getAccessList() {
@@ -165,6 +170,9 @@ export class DocumentationAssetsComponent implements OnInit {
     if (this.userRegionList.length > 0 && !this.userRegionList.includes('ALL')) {
       this.regionList = this.regionList.filter(region => this.userRegionList.includes(region.initial));
     }
+    if (this.supplierRegions) {
+      this.regionList = this.regionList.filter(region => this.supplierRegions.includes(region.uid));
+    }
     this.computeRegionMap();
   }
 
@@ -239,6 +247,10 @@ export class DocumentationAssetsComponent implements OnInit {
     );
     this.company = currentUserSupplier?.name || "";
     this.companyId = currentUserSupplier?.uid || "";
+    if (currentUserSupplier) {
+      this.supplierRegions = [];
+      currentUserSupplier.regions.forEach(region => this.supplierRegions.push(region));
+    }
     this.getAssetList();
   }
 
