@@ -62,6 +62,7 @@ export class DocumentationAssetsComponent implements OnInit {
   userRegionList = [];
   userPermissionMap = {};
   supplierRegions;
+  supplierUserData;
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -250,6 +251,7 @@ export class DocumentationAssetsComponent implements OnInit {
     if (currentUserSupplier) {
       this.supplierRegions = [];
       currentUserSupplier.regions.forEach(region => this.supplierRegions.push(region));
+      this.supplierUserData = currentUserSupplier.users?.find((user) => user.user == this.user);
     }
     this.getAssetList();
   }
@@ -553,6 +555,9 @@ export class DocumentationAssetsComponent implements OnInit {
   checkAssetDownloadPermission(asset) {
     if (!asset) return false;
     if (this.userPermissionMap['ALL']) return true;
+    if (this.supplierUserData) {
+      return !!this.supplierUserData.user.permissions?.includes('download');
+    }
     const installationId = asset.properties["dc:installationId"];
     if (!installationId) return false;
     const assetRegion = this.getInstallationIdRegion(installationId);
