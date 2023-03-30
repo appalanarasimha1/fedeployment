@@ -105,7 +105,7 @@ export class HeaderComponent implements OnInit {
           this.isDroneUploadPage = true;
           this.showFooter = true;
         } else {
-          this.isDroneUploadPage = false;	
+          this.isDroneUploadPage = false;
         }
 
       }
@@ -463,7 +463,7 @@ export class HeaderComponent implements OnInit {
     if (user) {
       this.userData = user;
       const groups = user.groups;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+      if (groups.includes(DRONE_UPLOADER)) {
         this.isDroneUploader = true;
       }
       return;
@@ -474,7 +474,7 @@ export class HeaderComponent implements OnInit {
       // const user = JSON.parse(localStorage.getItem('user'));
       this.userData = res.user.properties;
       const groups = res.user.properties.groups;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+      if (groups.includes(DRONE_UPLOADER)) {
         this.isDroneUploader = true;
       }
     }

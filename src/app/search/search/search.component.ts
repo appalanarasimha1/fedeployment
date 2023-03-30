@@ -649,7 +649,7 @@ export class SearchComponent implements OnInit {
       this.sector = userData.sector;
       const groups = userData.groups;
       if (!groups) return;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+      if (groups.includes(DRONE_UPLOADER)) {
         this.selectedTab = tabs.CONSTRUCTION;
         this.isDroneUploader = true;
         this.router.navigate(['/', 'construction']);

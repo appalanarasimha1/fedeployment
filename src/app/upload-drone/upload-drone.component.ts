@@ -475,6 +475,7 @@ export class UploadDroneComponent implements OnInit {
       installationId: device.installationId,
       uid: device.id,
     }));
+    this.deviceList = this.deviceList.filter(device => device.status !== "decommissioned");
 
     if (this.supplierRegions?.length > 0) {
       this.deviceList = this.deviceList.filter(device =>
