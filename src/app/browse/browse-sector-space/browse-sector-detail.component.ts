@@ -577,7 +577,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
-    dialogConfig.width = "550px";
+    dialogConfig.panelClass = 'custom-modalbox';
+    // dialogConfig.id = "modal-component";
+    // dialogConfig.width = "550px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
     dialogConfig.data = {
