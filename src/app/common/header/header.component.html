@@ -121,7 +121,7 @@
           <nav class="navbar navbar-expand-lg navbar-light rightNav" style="float: right;">
               <div class=" navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto  mb-lg-0 rightDrop flexible">
-                    <li *ngIf="!checkExternalUser()">
+                    <li *ngIf="isDroneUploader || !checkExternalUser()">
                       <a class="nav-link uploadBtn tooltipCustom" (click)="openModal()">Upload</a>
                     </li>
                     <!-- <li class="nav-item">
@@ -187,22 +187,22 @@
                                   </div>
                                 </div>
                                 <div
-                                  *ngIf="item.extended.type === 'requestDownload' && 
-                                    !item.extended.processed && 
-                                    !showRejectForm[item.id] && 
+                                  *ngIf="item.extended.type === 'requestDownload' &&
+                                    !item.extended.processed &&
+                                    !showRejectForm[item.id] &&
                                     !requestSent[item.id]"
                                   class="request-download-btn-group buttonGroup"
                                 >
                                   <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
                                   <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
                                 </div>
-                                <div 
-                                  *ngIf="item.extended.type === 'requestDownload' && 
-                                    item.extended.processed && 
-                                    item.extended.isApproved" 
+                                <div
+                                  *ngIf="item.extended.type === 'requestDownload' &&
+                                    item.extended.processed &&
+                                    item.extended.isApproved"
                                   class="request-download-btn-group buttonGroup downloadBtn"
                                 >
-                                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}"><img src="../../../assets/images/download-white-icon.svg"> Download</a> 
+                                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}"><img src="../../../assets/images/download-white-icon.svg"> Download</a>
                                 </div>
                                 <div class="dayWeek">
                                   {{getNotificationSince(item)}}
@@ -282,7 +282,7 @@
             <source [src]=defaultVideoSrc type="video/mp4" />
           </video>
           <div class="vidwoDropdownarea">
-            <p class="videoCaption">Watch the video AI generated for you</p>
+            <!-- <p class="videoCaption">Watch the video AI generated for you</p> -->
             <div class="ssector">
               <!-- <span>Change sector</span> -->
               <ng-select [items]="allSectors" class="sectorsss" [ngClass]="{'goldenText': sectorSelected !== 'general' }"
@@ -294,7 +294,7 @@
                 bindValue="value"
                 (change)="playPersonalizedVideo()"
                 [closeOnSelect]
-                [searchable]="true" [clearable]="true"
+                [searchable]="false" [clearable]="false"
                 >
                 <ng-template ng-option-tmp let-item="item">
                   <div title="{{item.label}}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.label}}</div>
@@ -405,16 +405,16 @@
                     <p *ngIf="item.extended.isApproved" class="approved">You approved this request.</p>
                   </div>
                 </div>
-                <div 
-                  *ngIf="item.extended.type === 'requestDownload' && 
-                    item.extended.processed && 
+                <div
+                  *ngIf="item.extended.type === 'requestDownload' &&
+                    item.extended.processed &&
                     item.extended.isApproved"
-                  class="request-download-btn-group buttonGroup downloadBtn" 
+                  class="request-download-btn-group buttonGroup downloadBtn"
                   style="text-align: right"
                 >
                   <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}">
                     <img src="../../../assets/images/download-white-icon.svg"> Download
-                  </a> 
+                  </a>
                 </div>
               </div>
             </li>
@@ -470,11 +470,11 @@
                     <p *ngIf="item.extended.isApproved" class="approved">You approved this request.</p>
                   </div>
                 </div>
-                <div 
-                  *ngIf="item.extended.type === 'requestDownload' && 
-                    item.extended.processed && 
+                <div
+                  *ngIf="item.extended.type === 'requestDownload' &&
+                    item.extended.processed &&
                     item.extended.isApproved"
-                  class="request-download-btn-group buttonGroup downloadBtn" 
+                  class="request-download-btn-group buttonGroup downloadBtn"
                   style="text-align: right"
                 >
                   <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}">

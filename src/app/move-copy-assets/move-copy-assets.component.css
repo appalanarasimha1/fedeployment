@@ -603,3 +603,9 @@ span.folderImgList {
     height: 53px;
     padding: 15px 0px;
 }
+.upload-btn ::ng-deep app-loader-small .text-center {
+    top: 0px !important;
+    left: 0px !important;
+    border-radius: 100px !important;
+    background: #fff !important;
+  }
