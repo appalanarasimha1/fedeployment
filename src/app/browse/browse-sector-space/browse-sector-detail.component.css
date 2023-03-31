@@ -13,7 +13,7 @@ div#dropzone {
     border: 2px dashed #937206;
     border-radius: 8px;
   }
-  
+
 .breadcrumb-active {
   cursor: pointer;
   text-decoration: none;
@@ -384,7 +384,7 @@ display: inline-block;
 } */
 .header-content h6.tollTipCustom span.copy-section {
   max-width: 300em !important;
-} 
+}
 .edit-icon {
   cursor: pointer;
 }
@@ -393,11 +393,11 @@ ul.uploadAssetsClassifications li.edit-icon:hover path {
   stroke: #DAAA00;
 }
 .workspaeName {
-  text-align: left; 
+  text-align: left;
   word-break: break-all;
   display: inline-block;
-  vertical-align: middle; 
-  position: relative; 
+  vertical-align: middle;
+  position: relative;
   z-index: 99;
   max-width: calc(100% - 30px);
 }
@@ -1759,3 +1759,21 @@ ul.downloadImgLisst li .contentListBlk {
   clear: both;
   display: block;
 }
+
+/* ::ng-deep .cdk-overlay-pane.custom-modalbox {
+  width: 1080px !important;
+  max-width: calc(100vw - 120px) !important;
+  max-height: calc(100vh - 80px) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  position: absolute !important;
+  top: 20px !important;
+  right: 0px !important;
+  left: 0px !important;
+}
+::ng-deep .custom-modalbox .mat-dialog-container {
+  padding: 0px !important;
+  min-height: auto !important;
+  max-height: 100% !important;
+  border-radius: 8px !important;
+} */

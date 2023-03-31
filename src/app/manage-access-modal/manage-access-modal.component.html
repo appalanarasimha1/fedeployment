@@ -1,10 +1,11 @@
 <div class="manageAccessBlock">
-
-    <h3>Manage access
-      <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+  <h3>Manage access
+    <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
         <img src="../../assets/images/close-modal.svg" style="width: 20px" />
-     </button>
-    </h3>
+    </button>
+  </h3>
+
+  <div style="display: none;">
     <div class="manageAccessHeader">
         <div class="imgBlock"><img src="../../assets/images/folder-table-list.svg" /></div>
         <div class="nameBlock">{{selectedFolder.title}}</div>
@@ -50,10 +51,352 @@
           <div class="customToolTipWorkspace infoHover">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</div>
         </span> -->
     </div>
-</div>
-<div *ngIf="!!error" style="color: red;">{{error}}</div>
+    <div *ngIf="!!error" style="color: red;">{{error}}</div>
+    </div>
 
-<div class="button-groups">
-    <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-    <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Make private</button>
+    <div class="manageAccessNewUi">
+      <div class="breadcrumbBlock">
+        <span>Marketing / Photos & Videos / <span class="active">Subfolder</span></span> 
+      </div>
+      <div class="lockFolder">
+        <div class="slideToggleBlk"><mat-slide-toggle (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
+        <div class="slideContent">
+          Lock folder
+          <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
+        </div>
+      </div>
+
+      <div *ngIf="!lockInfo" style="display: none;">
+        <div class="lockFolderInfo">
+          This folder can't be locked because it contains locked folders by other users. Please contact the owners to move their folders to a different location in order to lock this folder.
+        </div>
+  
+        <div class="makeAdminBlock customTableStyle">
+          <table class="folderListview pb-5">
+              <tr>
+                  <th style="width:30%">Owner</th>
+                  <th style="width:70%">Location</th>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">ankur.tiwari@neom.com</div>
+                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                  </div>
+                </td>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/MyFolder</div>
+                    <!-- <div class="tolltipContent">Marketing / Subfolder / Photos & Videos/MyFolder</div> -->
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">jing.lin@neom.com</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/ProjectXYZ</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">maha.aljehani@neom.com</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/MahasFolder</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">maha.aljehani@neom.com</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/Random</div>
+                  </div>
+                </td>
+              </tr>
+          </table>
+        </div>
+      </div>
+
+      <div *ngIf="lockInfo">
+        <div class="makeAdminBlock customTableStyle">
+          <div class="whenYouConvert">
+            This folder contains assets from other users. By default, they will have access to this locked folder.
+          </div>
+
+          <h4>People with access</h4>
+          <p>This is the selected group of individual people inside or outside of NEOM. </p>
+
+          <div class="searchBlock">
+            <span class="positionRelative">
+              <input type="text" placeholder="Add users by their email address" [(ngModel)]="peopleInviteInput" class="search-bar" />
+            </span>
+          </div>
+
+          <table class="folderListview" style="width: calc(100% - 6px);">
+            <tr>
+                <th style="width:50%">Users</th>
+                <th style="width:15%">Role</th>
+                <th style="width:30%">Permissions</th>
+                <th style="width:14%">Access expiry</th>
+                <th style="width:40px"></th>
+            </tr>
+          </table>
+          <div class="overflowHidden">
+            <table class="folderListview">
+              <tr>
+                <td style="width:50%">
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">sheriff.shitu@neom.com <span>(You)</span></div>
+                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                  </div>
+                </td>
+                <td class="bold" style="width:15%">
+                  Owner
+                </td>
+                <td class="makePrivate bold" style="width:30%">
+                  &nbsp;
+                </td>
+                <td class="accessExpiryCal bold" style="width:14%">
+                  &nbsp;
+                </td>
+                <td style="width:40px">
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">maha.aljehani@neom.com</div>
+                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                  </div>
+                </td>
+                <td class="bold"> 
+                  Admin <div class="tollTipCustom" style="display: inline-block;">
+                    <div class="itemTitleContent inlineBlock"><img src="../../assets/images/close-makeAdmin.svg" class="makeAdminIcon" /></div>
+                    <div class="tolltipContent alignRight">Remove admin role</div>
+                  </div>
+                </td>
+                <td class="makePrivate bold">
+                  &nbsp;
+                </td>
+                <td class="accessExpiryCal bold">
+                  &nbsp;
+                </td>
+                <td>
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">jing.lin@neom.com</div>
+                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                  </div>
+                </td>
+                <td class="bold">
+                  <span class="makeAdminClick">Make admin</span>
+                </td>
+                <td class="makePrivate bold">
+                  <ul class="permission">
+                    <li>
+                      <label class="control control--checkbox">
+                        Upload
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="control control--checkbox">
+                        Download
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                  </ul>
+                </td>
+                <td class="accessExpiryCal bold">
+                  <mat-form-field appearance="fill">
+                      <input class="datePicker" placeholder="3/29/2023" matInput [matDatepicker]="picker1" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                      <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">ankur.tiwari@neom.com</div>
+                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                  </div>
+                </td>
+                <td class="bold">
+                  Admin <div class="tollTipCustom" style="display: inline-block;">
+                    <div class="itemTitleContent inlineBlock"><img src="../../assets/images/close-makeAdmin.svg" class="makeAdminIcon" /></div>
+                    <div class="tolltipContent alignRight">Remove admin role</div>
+                  </div>
+                </td>
+                <td class="makePrivate bold">
+                  &nbsp;
+                </td>
+                <td class="accessExpiryCal bold">
+                  &nbsp;
+                </td>
+                <td>
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">zimraan.hadi@example.com <span class="accessExpired">Access expired</span></div>
+                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                  </div>
+                </td>
+                <td class="bold">
+                  <span class="makeAdminClick">Make admin</span>
+                </td>
+                <td class="makePrivate bold">
+                  <ul class="permission">
+                    <li>
+                      <label class="control control--checkbox">
+                        Upload
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="control control--checkbox">
+                        Download
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                  </ul>
+                </td>
+                <td class="accessExpiryCal bold accessExpiredDate">
+                  <mat-form-field appearance="fill">
+                      <input class="datePicker" placeholder="3.29.2023" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                      <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tollTipCustom">
+                    <div class="itemTitleContent">azeem.ahmadi@example.com</div>
+                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                  </div>
+                </td>
+                <td class="bold">
+                  <span class="makeAdminClick">Make admin</span>
+                </td>
+                <td class="makePrivate bold">
+                  <ul class="permission">
+                    <li>
+                      <label class="control control--checkbox">
+                        Upload
+                        <input type="checkbox" />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="control control--checkbox">
+                        Download
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                  </ul>
+                </td>
+                <td class="accessExpiryCal bold">
+                  <mat-form-field appearance="fill">
+                      <input class="datePicker" placeholder="3/29/2023" matInput [matDatepicker]="picker3" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                      <mat-datepicker #picker3></mat-datepicker>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="reviewClassifications">
+        <div class="uploadAssetsBlock">
+          <div class="folder-img">
+             <img src="../../assets/images/folder-icon.svg" style="width: 60px;margin: 0 14px 0 0;">
+          </div>
+          <div class="folder-content">
+             <div class="folderHeading">
+                Photos & Videos
+                <span>Marketing / Subfolder / Photos & Videos</span>
+             </div>
+          </div>
+       </div>
+      </div>
+
+    </div>
+
+    <div class="button-groups">
+        <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+        <!-- <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Make private</button> -->
+        <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Save changes</button>
+    </div>
 </div>

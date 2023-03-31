@@ -35,6 +35,10 @@ import { SafePipe } from '../common/pipe/safe.pipe';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MasonryViewComponent } from '../masonry-view/masonry-view.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -80,6 +84,10 @@ keyboardEventKeyPolyfill();
     // NgxMasonryModule,
     TextInputAutocompleteModule,
     MatMenuModule,
+    MatSlideToggleModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   exports: [
     CommonModule,

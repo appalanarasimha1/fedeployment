@@ -21,7 +21,9 @@ export class ManageAccessModalComponent implements OnInit {
   makePrivate: boolean = false;
   docIsPrivate: boolean = false;
   error: string;
-  folderStructure:any =[]
+  folderStructure:any =[];
+  lockInfo:boolean;
+  peopleInviteInput: string = "";
 
   constructor(
     private apiService: ApiService,
@@ -86,4 +88,7 @@ export class ManageAccessModalComponent implements OnInit {
     }
   }
 
+  togglerUserActivated(event) {
+    this.lockInfo = !this.lockInfo;
+  }
 }
