@@ -281,7 +281,7 @@ export class HeaderComponent implements OnInit {
   }
   checkNeomUser() {
     if (!this.userData) return !this.checkExternalUser();
-    return this.userData.email?.includes('@neom.com');
+    return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');
   }
 
   playPersonalizedVideo() {
@@ -463,7 +463,7 @@ export class HeaderComponent implements OnInit {
     if (user) {
       this.userData = user;
       const groups = user.groups;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+      if (groups.includes(DRONE_UPLOADER)) {
         this.isDroneUploader = true;
       }
       return;
@@ -474,7 +474,7 @@ export class HeaderComponent implements OnInit {
       // const user = JSON.parse(localStorage.getItem('user'));
       this.userData = res.user.properties;
       const groups = res.user.properties.groups;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+      if (groups.includes(DRONE_UPLOADER)) {
         this.isDroneUploader = true;
       }
     }

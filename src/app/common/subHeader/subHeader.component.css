@@ -344,11 +344,11 @@ video{
     right: 10px;
     top: 2px;
     z-index: 9;
-    width: 148px;
+    width: 250px;
     cursor: pointer !important;
 }
 ::ng-deep .ssector .ng-select{
-    width: 148px;
+    width: 100%;
     border-color: #DEB31A !important;
 }
 /* .ssector .ng-select:focus{

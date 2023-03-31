@@ -23,8 +23,10 @@ export class ManageAccessListComponent implements OnInit {
   showExternalUserPage: boolean = false;
   accessList = [];
   filteredAccessList = [];
+  regionDict = {};
   accessInput = "";
   selectedAccess = null;
+
 
   showUserManageLocations = true;
   showUserSettingPage = false;
@@ -37,7 +39,7 @@ export class ManageAccessListComponent implements OnInit {
 
   constructor(
     public matDialog: MatDialog,
-    private apiService: ApiService
+    private apiService: ApiService,
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +47,7 @@ export class ManageAccessListComponent implements OnInit {
       startWith(''),
       map(value => this._userFilter(value || '')),
     );
+    // this.getRegionList();
     this.getAccessList();
     this.getAllUsers();
   }
@@ -58,7 +61,10 @@ export class ManageAccessListComponent implements OnInit {
     return value.toLowerCase().replace(/\s/g, '');
   }
 
+  
+
   async getAccessList() {
+    await this.getRegionList();
     const url = '/settings/accessList';
     const res = await this.apiService
       .get(url, {}).toPromise() as any;
@@ -70,12 +76,37 @@ export class ManageAccessListComponent implements OnInit {
     ]
     this.accessList = sortedAll
     .map((entry) => ({
-      name: entry.name,
+      name: {initial: entry.name, full: this.getFullForm(entry.name)},
       uid: entry.id,
       activated: entry.activated,
       users: entry.users || [],
     }));
+    // console.log(this.accessList);
     this.searchAccess();
+  }
+
+  async getRegionList() {
+    const url = '/settings/area';
+    const res = await this.apiService
+      .get(url, {}).toPromise() as any;
+
+    const regions = res || [];
+
+    for (let region of regions) {
+      this.regionDict[region.code] = region.title;
+    }
+
+    // console.log(this.regionDict);
+  }
+  
+  getFullForm(initial: string) {
+    if (this.regionDict[initial]) {
+      return this.regionDict[initial];
+    }
+    else {
+      return initial
+    }
+    
   }
 
   async getAllUsers() {
@@ -106,8 +137,8 @@ export class ManageAccessListComponent implements OnInit {
       return;
     };
     this.filteredAccessList = this.accessList.filter(region =>
-      region.name?.toLowerCase().includes(this.accessInput.toLowerCase()) ||
-      region.initial?.toLowerCase().includes(this.accessInput.toLowerCase()));
+      region.name.full?.toLowerCase().includes(this.accessInput.toLowerCase()) ||
+      region.name.initial?.toLowerCase().includes(this.accessInput.toLowerCase()));
   }
 
   async selectUser(user) {
@@ -182,7 +213,7 @@ export class ManageAccessListComponent implements OnInit {
     const body = {
       context: {},
       params: {
-        location: this.selectedAccess?.name || name,
+        location: this.selectedAccess?.initial || name,
         users: users || [],
         disabled
       },
