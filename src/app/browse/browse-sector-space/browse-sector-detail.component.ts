@@ -17,6 +17,7 @@ import { NuxeoService } from "src/app/services/nuxeo.service";
 import { UpdateModalComponent } from "../../update-modal/update-modal.component";
 import { UploadModalComponent } from "src/app/upload-modal/upload-modal.component";
 import { environment } from 'src/environments/environment';
+import { ShareModalComponent } from "src/app/share-modal/share-modal.component";
 
 @Component({
   selector: 'app-browse-sector-space',
@@ -1115,5 +1116,21 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.nevermindBlock = false;
     this.zippigAssets = true;
   }
+  async openShareModal() {
+    // this.loading = true;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.id = "modal-component";
+    dialogConfig.panelClass = 'custom-modalbox';
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+
+    const modalDialog = this.matDialog.open(ShareModalComponent, dialogConfig);
+
+    modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+
+      }
+    });
+  }
+
 
 }

@@ -39,6 +39,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ShareModalComponent } from '../share-modal/share-modal.component';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -64,9 +66,9 @@ keyboardEventKeyPolyfill();
     AssetViewComponent,
     ManageAccessModalComponent,
     DataTableComponent,
-    // ManageAccessModalComponent,
     SafePipe,
-    MasonryViewComponent
+    MasonryViewComponent,
+    ShareModalComponent,
   ],
   imports: [
     CommonModule,
@@ -88,6 +90,7 @@ keyboardEventKeyPolyfill();
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
+    NgSelectModule
   ],
   exports: [
     CommonModule,
@@ -115,9 +118,9 @@ keyboardEventKeyPolyfill();
     MatMenuModule,
     DataTableComponent,
     ManageAccessModalComponent,
-    // ManageAccessModalComponent,
     SafePipe,
-    MasonryViewComponent
+    MasonryViewComponent,
+    ShareModalComponent
   ]
 })
 export class SharedModule { }

@@ -38,6 +38,8 @@ export class CreateFolderComponent implements OnInit,OnChanges {
   listExternalUserGlobal: any[];
   checkPrivateFolder:boolean;
 
+  makeLockFolder: boolean;
+
   constructor(
     public sharedService: SharedService,
     private apiService: ApiService
@@ -280,6 +282,10 @@ export class CreateFolderComponent implements OnInit,OnChanges {
   
   isExternalUser() {
     return this.listExternalUser.includes(this.user) && !this.listExternalUserGlobal.includes(this.user);
+  }
+
+  togglerUserActivated(event) {
+    this.makeLockFolder = !this.makeLockFolder;
   }
   
   // ================================================================================================= //

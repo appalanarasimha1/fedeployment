@@ -37,6 +37,7 @@ import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-asse
 
 import { MatMenuTrigger } from '@angular/material/menu';
 import * as moment from 'moment';
+import { ShareModalComponent } from "src/app/share-modal/share-modal.component";
 
 @Component({
   selector: "app-browse",
