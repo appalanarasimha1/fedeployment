@@ -1,144 +1,36 @@
 <div class="manageAccessBlock">
-  <h3>Manage access
+  <h3>Share
     <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
         <img src="../../assets/images/close-modal.svg" style="width: 20px" />
     </button>
   </h3>
 
-  <div style="display: none;">
-    <div class="manageAccessHeader">
-        <div class="imgBlock"><img src="../../assets/images/folder-table-list.svg" /></div>
-        <div class="nameBlock">{{selectedFolder.title}}</div>
-        <div *ngIf="docIsPrivate" class="tagBlock">Private</div>
-    </div>
-
-    <div class="breadcrumbBlock">
-        <span  *ngFor="let c of folderStructure; let i = index">/<span [ngClass]="i === folderStructure.length - 1? 'active': ''"> {{c.title}}</span> </span> 
-    </div>
-
-    <div *ngIf="docIsPrivate" class="whenYouConvert">
-        When you convert this folder to published, it's contents will become available for all Ground X users or internal users only. They will appear in Ground X search.
-    </div>
-
-    <!-- <div *ngIf="!docIsPrivate" class="whenYouConvert"> -->
-        <!-- When you make this folder private, it's contents are available only for the folder members and they will not appear in Ground X search anymore. -->
-        <!-- When you make this folder private, it will no longer appear in search results and its contents are will be available only for the folder members -->
-    <!-- </div> -->
-
-    <div *ngIf="!docIsPrivate" class="makePrivate tollTipWorkspace">
-        <label class="control control--checkbox">
-          Make this folder private
-          <input type="checkbox" (click)="getCheckAction($event)" />
-          <div class="control__indicator"></div>
-        </label>
-        <span class="showTollTip">
-          <img src="../../assets/images/Info-icon.svg" alt="" class="infoIcon" />
-          <div class="customToolTipWorkspace infoHover">
-            <!-- You can collaborate with specified users privately. You can invite users to a private folder after you have created it. -->
-            Private folders are commonly used to restrict files to specific users or receive files from external users.
-          </div>
-        </span>
-    </div>
-
-    <div *ngIf="docIsPrivate" class="makePrivate tollTipWorkspace">
-        <label class="control control--checkbox">
-          Publish this folder
-          <input type="checkbox" (click)="getCheckAction($event)" />
-          <div class="control__indicator"></div>
-        </label>
-        <!-- <span class="showTollTip">
-          <img src="../../assets/images/Info-icon.svg" alt="" class="infoIcon" />
-          <div class="customToolTipWorkspace infoHover">You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</div>
-        </span> -->
-    </div>
-    <div *ngIf="!!error" style="color: red;">{{error}}</div>
-    </div>
-
     <div class="manageAccessNewUi">
       <div class="breadcrumbBlock">
-        <span>Marketing / Photos & Videos / <span class="active">Subfolder</span></span> 
-      </div>
-      <div class="lockFolder">
-        <div class="slideToggleBlk"><mat-slide-toggle (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
-        <div class="slideContent">
-          Lock folder
-          <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
-        </div>
-      </div>
-
-      <div *ngIf="!lockInfo">
-        <div class="lockFolderInfo">
-          This folder can't be locked because it contains locked folders by other users. Please contact the owners to move their folders to a different location in order to lock this folder.
-        </div>
-  
-        <div class="makeAdminBlock customTableStyle">
-          <table class="folderListview pb-5">
-              <tr>
-                  <th style="width:30%">Owner</th>
-                  <th style="width:70%">Location</th>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent">ankur.tiwari@neom.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
-                  </div>
-                </td>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/MyFolder</div>
-                    <!-- <div class="tolltipContent">Marketing / Subfolder / Photos & Videos/MyFolder</div> -->
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent">jing.lin@neom.com</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/ProjectXYZ</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent">maha.aljehani@neom.com</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/MahasFolder</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent">maha.aljehani@neom.com</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/Random</div>
-                  </div>
-                </td>
-              </tr>
-          </table>
-        </div>
+        <span class="active">Marketing / Photos & Videos / Subfolder</span> 
+        <span class="copy-section" >
+          <a class="flexible">
+            <img src="../../../assets/images/copyIcon.png" style="width: 14px;margin-right: 6px;margin-left: 0px;">
+            <span class="copy-link pointer" (click)="copyLink()">
+              {{!copiedString ? 'Copy link' : 'Link copied!'}}
+            </span>
+          </a>
+        </span>
       </div>
 
-      <div *ngIf="lockInfo">
+      <div>
         <div class="makeAdminBlock customTableStyle">
+          <p>You can share this folder with people outside of NEOM.  You can invite additional people from the form below. Share is for view only but you can additionally set upload and download permissions.</p>
+          
+          <h4>Owner</h4>
+          <p>sheriff.shitu@neom.com</p>
+
           <div class="whenYouConvert">
-            This folder contains assets from other users. By default, they will have access to this locked folder.
+            Please confirm from the owner that you are allowed to share with people outside of NEOM.
           </div>
 
-          <h4>People with access</h4>
-          <p>This is the selected group of individual people inside or outside of NEOM. </p>
+          <h4>External people with access</h4>
+          <p>These external users have the access to the folder and will be able to view it.</p>
 
           <div class="searchBlock">
             <span class="positionRelative">
@@ -149,7 +41,6 @@
           <table class="folderListview" style="width: calc(100% - 6px);">
             <tr>
                 <th style="width:50%">Users</th>
-                <th style="width:15%">Role</th>
                 <th style="width:30%">Permissions</th>
                 <th style="width:14%">Access expiry</th>
                 <th style="width:40px"></th>
@@ -163,9 +54,6 @@
                     <div class="itemTitleContent">sheriff.shitu@neom.com <span>(You)</span></div>
                     <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
-                </td>
-                <td class="bold" style="width:15%">
-                  Owner
                 </td>
                 <td class="makePrivate bold" style="width:30%">
                   &nbsp;
@@ -190,17 +78,29 @@
                     <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
-                <td class="bold"> 
-                  Admin <div class="tollTipCustom" style="display: inline-block;">
-                    <div class="itemTitleContent inlineBlock"><img src="../../assets/images/close-makeAdmin.svg" class="makeAdminIcon" /></div>
-                    <div class="tolltipContent alignRight">Remove admin role</div>
-                  </div>
-                </td>
                 <td class="makePrivate bold">
-                  &nbsp;
+                  <ul class="permission">
+                    <li>
+                      <label class="control control--checkbox">
+                        Upload
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="control control--checkbox">
+                        Download
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                  </ul>
                 </td>
                 <td class="accessExpiryCal bold">
-                  &nbsp;
+                  <mat-form-field appearance="fill">
+                      <input class="datePicker" placeholder="3/29/2023" matInput [matDatepicker]="picker3" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                      <mat-datepicker #picker3></mat-datepicker>
+                  </mat-form-field>
                 </td>
                 <td>
                   <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
@@ -218,9 +118,6 @@
                     <div class="itemTitleContent">jing.lin@neom.com</div>
                     <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
-                </td>
-                <td class="bold">
-                  <span class="makeAdminClick">Make admin</span>
                 </td>
                 <td class="makePrivate bold">
                   <ul class="permission">
@@ -263,17 +160,29 @@
                     <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
-                <td class="bold">
-                  Admin <div class="tollTipCustom" style="display: inline-block;">
-                    <div class="itemTitleContent inlineBlock"><img src="../../assets/images/close-makeAdmin.svg" class="makeAdminIcon" /></div>
-                    <div class="tolltipContent alignRight">Remove admin role</div>
-                  </div>
-                </td>
                 <td class="makePrivate bold">
-                  &nbsp;
+                  <ul class="permission">
+                    <li>
+                      <label class="control control--checkbox">
+                        Upload
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="control control--checkbox">
+                        Download
+                        <input type="checkbox" checked />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </li>
+                  </ul>
                 </td>
                 <td class="accessExpiryCal bold">
-                  &nbsp;
+                  <mat-form-field appearance="fill">
+                      <input class="datePicker" placeholder="3/29/2023" matInput [matDatepicker]="picker3" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                      <mat-datepicker #picker3></mat-datepicker>
+                  </mat-form-field>
                 </td>
                 <td>
                   <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
@@ -291,9 +200,6 @@
                     <div class="itemTitleContent">zimraan.hadi@example.com <span class="accessExpired">Access expired</span></div>
                     <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
-                </td>
-                <td class="bold">
-                  <span class="makeAdminClick">Make admin</span>
                 </td>
                 <td class="makePrivate bold">
                   <ul class="permission">
@@ -336,15 +242,12 @@
                     <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
-                <td class="bold">
-                  <span class="makeAdminClick">Make admin</span>
-                </td>
                 <td class="makePrivate bold">
                   <ul class="permission">
                     <li>
                       <label class="control control--checkbox">
                         Upload
-                        <input type="checkbox" />
+                        <input type="checkbox" checked />
                         <div class="control__indicator"></div>
                       </label>
                     </li>
@@ -378,82 +281,10 @@
         </div>
       </div>
 
-      <!-- Classifications -->
-      <div class="reviewClassifications" *ngIf="lockInfo" style="display: none;">
-        <div class="whenYouConvert">
-          You're unlocking this folder and publishing its assets. You must review the classifications of its assets below.
-        </div>
-        <div class="uploadAssetsBlock">
-          <div class="folder-img">
-             <img src="../../assets/images/folder-icon.svg" style="width: 60px;margin: 0 14px 0 0;">
-          </div>
-          <div class="folder-content">
-            <div class="folderHeading">
-              Photos & Videos
-              <span>Marketing / Subfolder / Photos & Videos</span>
-              <span class="fileSize">56 assets, 1.21 GB</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="classifications">
-          <h5>Please review the classifications of the uploaded files.</h5>
-          <div class="row">
-            <div class="col-md-6 mb-20">
-              <div class="row">
-                <div class="col-md-3 labelHeading">
-                  Confidentiality
-                </div>
-                <div class="col-md-9">
-                  <ng-select [items]="confidentiality"
-                    bindLabel="name"
-                    placeholder="Specify sensitivity"
-                    [(ngModel)]="selectedCity">
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 mb-20">
-              <div class="row">
-                <div class="col-md-3 labelHeading">
-                  Access right
-                </div>
-                <div class="col-md-9">
-                  <ng-select [items]="accessRight"
-                    bindLabel="name"
-                    placeholder="Specify visibility"
-                    [(ngModel)]="selectedCity">
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6 mb-20">
-              <div class="row">
-                <div class="col-md-3">
-                  Usage right
-                </div>
-                <div class="col-md-9 makePrivate">
-                  <label class="control control--checkbox" style="font-family: 'brownlight';">
-                    <input type="checkbox" (click)="getCheckAction($event)" />
-                    <div class="control__indicator"></div>
-                    Approval required before download
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              &nbsp;
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <!-- <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Make private</button> -->
-        <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Save changes</button>
+        <button (click)="updateRights()" class="upload-btn" >Save changes</button>
     </div>
 </div>

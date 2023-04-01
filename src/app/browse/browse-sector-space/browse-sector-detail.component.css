@@ -1655,3 +1655,8 @@ ul.uploadAssetsClassifications li:after {
   max-height: 100% !important;
   border-radius: 8px !important;
 } */
+
+.share-icon {
+  cursor: pointer;
+  width: 20px;
+}

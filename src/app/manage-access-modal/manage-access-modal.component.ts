@@ -24,6 +24,16 @@ export class ManageAccessModalComponent implements OnInit {
   folderStructure:any =[];
   lockInfo:boolean;
   peopleInviteInput: string = "";
+  selectedCity: any;
+
+  confidentiality = [
+    {id: 1, name: 'Confidential'},
+    {id: 2, name: 'Non-confidential'}
+  ];
+  accessRight = [
+    {id: 1, name: 'Public - external collaborators'},
+    {id: 2, name: 'Internal - employees and contractors with NEOM emails'}
+  ];
 
   constructor(
     private apiService: ApiService,
