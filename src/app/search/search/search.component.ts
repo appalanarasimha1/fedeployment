@@ -679,7 +679,7 @@ export class SearchComponent implements OnInit {
   checkShowTabSelection() {
     let isOtherPage = false;
     if (this.documentsView) {
-      isOtherPage = !!this.documentsView.detailView || !!this.searchValue.ecm_fulltext;
+      isOtherPage = !!this.documentsView.checkShowDetailview()
     }
 
     return !this.isDroneUploader && !isOtherPage && this.isNeomUser();
