@@ -7,7 +7,7 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
-import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL, DRONE_UPLOADER } from '../constant';
+import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL, DRONE_UPLOADER, EXTERNAL_USER } from '../constant';
 import { SharedService } from 'src/app/services/shared.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -69,6 +69,8 @@ export class HeaderComponent implements OnInit {
   isApproved = {};
   isDroneUploadPage = false;
   isDroneUploader = false;
+  isExternalUSer = false;
+  isGlobalExternalUser = false;
 
   loading = false;
 
@@ -191,6 +193,10 @@ export class HeaderComponent implements OnInit {
     this.selectedTab = tab;
     this.sendSelectedTab.emit(tab);
     if (tab === 'search') {
+      if (this.isDroneUploader && !this.isGlobalExternalUser) {
+        this.router.navigate(['/'], { fragment: 'construction' });
+        return;
+      }
       this.router.navigate(['']);
       return;
     }
@@ -458,14 +464,24 @@ export class HeaderComponent implements OnInit {
     return isNaN(name) && !splittedUser?.length ? "":name?.toUpperCase()
   }
 
+  checkUserGroup(groups) {
+    if (groups.includes(DRONE_UPLOADER)) {
+      this.isDroneUploader = true;
+    }
+    if (groups.includes(EXTERNAL_GROUP_GLOBAL)) {
+      this.isGlobalExternalUser = true;
+    }
+    if (groups.includes(EXTERNAL_USER)) {
+      this.isExternalUSer = true;
+    }
+  }
+
   async fetchUserData() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       this.userData = user;
       const groups = user.groups;
-      if (groups.includes(DRONE_UPLOADER)) {
-        this.isDroneUploader = true;
-      }
+      this.checkUserGroup(groups);
       return;
     }
     if (this.nuxeo.nuxeoClient) {
@@ -474,9 +490,7 @@ export class HeaderComponent implements OnInit {
       // const user = JSON.parse(localStorage.getItem('user'));
       this.userData = res.user.properties;
       const groups = res.user.properties.groups;
-      if (groups.includes(DRONE_UPLOADER)) {
-        this.isDroneUploader = true;
-      }
+      this.checkUserGroup(groups);
     }
   }
   onActivate() {

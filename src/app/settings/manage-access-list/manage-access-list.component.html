@@ -57,9 +57,9 @@
               class="search-bar">
             <button class="primary createSuppliers" *ngIf="checkEnableInviteBtn()" (click)="openInviteUserModal()">Invite</button>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectUser($event.option.value)'>
-              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
-                {{user}}
-              </mat-option>
+                <mat-option [hidden]="usersCtrl.value.length == 0" *ngFor="let user of filteredUsers | async" [value]="user">
+                    {{user}}
+                </mat-option>
             </mat-autocomplete>
           </form>
         </span>
