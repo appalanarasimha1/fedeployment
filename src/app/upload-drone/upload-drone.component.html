@@ -39,7 +39,7 @@
         </div>
 
         <div *ngIf="showUpload" class="customScrollBar">
-            <div class="dropzoneContent filesAdded" *ngIf="files.length>0 && !publishStep" ngx-dropzone accept="image/jpeg,image/jpg,image/png, .pdf, .docx, .xlsx" (change)="onSelect($event)">
+            <div class="dropzoneContent filesAdded" *ngIf="files.length>0 && !publishStep" ngx-dropzone (change)="onSelect($event)">
                 <img src="../../assets/images/add-copyright-golden.svg" />
                 <h2>Drag and drop to add your assets <span>or click to select files</span></h2>
             </div>
@@ -56,7 +56,7 @@
                     </mat-form-field>
                 </span>
             </div> -->
-            <div class="uanet_dropzone" [ngClass]="{'addHeight' : countFile }" ngx-dropzone accept="image/jpeg,image/jpg,image/png, .pdf, .docx, .xlsx" [disableClick]="loading || publishStep" [expandable]="true" (change)="onSelect($event)">
+            <div class="uanet_dropzone" [ngClass]="{'addHeight' : countFile }" ngx-dropzone [disableClick]="loading || publishStep" [expandable]="true" (change)="onSelect($event)">
                 <ngx-dropzone-label *ngIf="!publishStep">
                     <div class="dropzoneContent defaultTextUpload">
                         <img src="../../assets/images/add-copyright-golden.svg" />

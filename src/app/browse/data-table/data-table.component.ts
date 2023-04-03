@@ -88,6 +88,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   selectedMoveList={};
   sizeExeeded = false;
   sortedData: IEntry[] = [];
+  arrowisAsc = { "title": true, "fileType": true, "dc:creator": true, "dc:created": true, "dc:modified": true, "dc:sector": true };
+  hoverArrow = { "title": false, "fileType": false, "dc:creator": false, "dc:created": false, "dc:modified": false, "dc:sector": false };
   showLinkCopy: boolean = false;
   showShadow = false;
   selectedMoveListNew: any = {};
@@ -1012,7 +1014,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     );
   }
 
-  sortData(sort: Sort) {
+  sortData(sort: { active: string; direction: string}) {
     const data = this.searchList.slice();
     if (!sort.active || sort.direction === "") {
       this.sortedData = data;
@@ -1022,13 +1024,14 @@ export class DataTableComponent implements OnInit, OnChanges {
 
     this.sortedData = data.sort((a: IEntry, b: IEntry) => {
       const isAsc = sort.direction === "asc";
+      this.arrowisAsc[sort.active] = !isAsc;
       switch (sort.active) {
         case "title":
-          return this.compare(a.title, b.title, isAsc);
+          return this.compare(a.title.toLowerCase(), b.title.toLowerCase(), isAsc);
         case "dc:creator":
           return this.compare(
-            a.properties["dc:creator"].properties?.firstName || a.properties["dc:creator"].id,
-            b.properties["dc:creator"].properties?.firstName || b.properties["dc:creator"].id,
+            this.getCreatorName(a).toLowerCase(),
+            this.getCreatorName(b).toLowerCase(),
             isAsc
           );
         case "dc:created":
@@ -1045,8 +1048,8 @@ export class DataTableComponent implements OnInit, OnChanges {
           );
         case "dc:sector":
           return this.compare(
-            a.properties["dc:sector"],
-            b.properties["dc:sector"],
+            a.properties["dc:sector"].toLowerCase(),
+            b.properties["dc:sector"].toLowerCase(),
             isAsc
           );
         case "dc:modified":
@@ -1055,18 +1058,18 @@ export class DataTableComponent implements OnInit, OnChanges {
             b.properties["dc:modified"],
             isAsc
           );
-        // case "file:content":
-        //   return this.compare(
-        //     a.properties["file:content"],
-        //     b.properties["file:content"],
-        //     isAsc
-        //   );
+        case "fileType":
+          return this.compare(
+            this.getFileType(a),
+            this.getFileType(b),
+            isAsc
+          );
         default:
           return 0;
       }
     });
     this.sortedData.sort(this.assetTypeCompare);
-    this.sortedDataList.emit(this.sortedData)
+    this.sortedDataList.emit(this.sortedData);
   }
 
   /**
@@ -1106,6 +1109,29 @@ export class DataTableComponent implements OnInit, OnChanges {
         return item.properties["dc:creator"];
       }
   }
+
+  getFileType(item) {
+    // console.log(item);
+    if(item.type === 'Workspace' || item.type === 'Folder' || item.type === 'OrderedFolder') {
+      return '';  
+    }
+    const splittedData = item.title.substring(item.title.length - 4);
+    // console.log(splittedData);
+    var number = 0;
+    
+    if (splittedData[0] === '.') {
+      number = 1;
+    }
+    else if(splittedData[1] === '.') {
+      number = 2;
+    }
+    else if(splittedData[2] === '.') {
+      number = 3;
+    }
+
+    return splittedData.substring(number).toLowerCase();
+  }
+
 
   openFolder(item: IEntry) {
     this.removeAssets();

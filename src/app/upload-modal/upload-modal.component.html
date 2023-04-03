@@ -31,7 +31,7 @@
                         <div class="folder-content">
                            <div class="folderHeading">
                               {{shortTheString(data.title, 35)}}
-                              <span>/{{WORKSPACE_ROOT}}{{shortTheString(sharedService.removeWorkspacesFromString(data.path), 70)}}</span>
+                              <span>/{{WORKSPACE_ROOT}}{{data.path}}</span>
                            </div>
                         </div>
                      </div>
@@ -452,8 +452,8 @@
                      <div class="col-xl-9 col-md-9 flexible">
                         <ng-select placeholder="Specify sensitivity"
                            (change)="onSelectConfidentiality($event)"
-                           [searchable]="false"
-                           [clearable]="false"
+                           [searchable]="true"
+                           [clearable]="true"
                            [(ngModel)]="overallConfidentiality"
                            id="confidentiality"
                            [ngClass]="{'goldenText': overallConfidentiality}"
@@ -471,7 +471,7 @@
                         <label for="access" style="text-align: right;display: block;">{{ACCESS_TITLE}}</label>
                      </div>
                      <div class="col-xl-8 col-md-8 flexible">
-                        <ng-select placeholder="Specify visibility" [searchable]="false" [clearable]="false" (change)="onSelectAccess($event)" [(ngModel)]="overallAccess" id="access" [ngClass]="{'goldenText': overallAccess}">
+                        <ng-select placeholder="Specify visibility" [searchable]="true" [clearable]="true" (change)="onSelectAccess($event)" [(ngModel)]="overallAccess" id="access" [ngClass]="{'goldenText': overallAccess}">
                            <ng-option *ngFor="let c of ACCESSNEW | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
                            {{ACCESS_LABEL[c.value]}}
                            </ng-option>
@@ -500,7 +500,9 @@
                         typeToSearchText="Search users"
                         [typeahead]="userInput$"
                         [(ngModel)]="overallUsers"
-                        [ngClass]="{'goldenText': overallUsers }" >
+                        [ngClass]="{'goldenText': overallUsers }"
+                        [searchable]="true"
+                        [clearable]="true" >
                         <ng-template ng-option-tmp let-item="item">
                            {{item.id}} ({{item.fullname}})
                         </ng-template>
@@ -547,7 +549,9 @@
                         typeToSearchText="Search users"
                         [typeahead]="userInput$"
                         [(ngModel)]="overallDownloadApprovalUsers"
-                        [ngClass]="{'goldenText': overallDownloadApprovalUsers }" >
+                        [ngClass]="{'goldenText': overallDownloadApprovalUsers }"
+                        [searchable]="true"
+                        [clearable]="true" >
                         <ng-template ng-option-tmp let-item="item">
                            {{item.id}} ({{item.fullname}})
                         </ng-template>
@@ -600,7 +604,7 @@
                                        </div>
                                     </li>
                                     <li>
-                                       <ng-select [items]="years" class="yearssss" [searchable]="false" [clearable]="false"
+                                       <ng-select [items]="years" class="yearssss" [searchable]="true" [clearable]="true"
                                           bindLabel="name"
                                           [(ngModel)]="copyrightYearMap[file.key]"
                                           placeholder="Year" ngDefaultControl
@@ -621,7 +625,7 @@
                                  <!-- <select name="confidentiality" (change)="onSelectConfidentiality($event.target.value, file.key)" id="confidentiality" [ngClass]="{'goldenText': confidentiality }" >
                                     <option [selected]="confidentiality === c.value" *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ c.value }}</option>
                                     </select> -->
-                                 <ng-select placeholder="Specify sensitivity"  [searchable]="false" [clearable]="false" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
+                                 <ng-select placeholder="Specify sensitivity"  [searchable]="true" [clearable]="true" name="confidentiality" id="confidentiality" [(ngModel)]="customConfidentialityMap[file.key]"  [ngClass]="{'goldenText': customConfidentialityMap[file.key] }">
                                  <ng-option  *ngFor="let c of CONFIDENTIALITY | keyvalue" value="{{c.value}}">{{ CONFIDENTIALITY_LABEL[c.value] }}
                                  </ng-option>
                                  </ng-select>
@@ -634,7 +638,7 @@
                                  <label for="access" style="text-align: right; display: block;">{{ACCESS_TITLE}}</label>
                               </div>
                               <div class="col-xl-8">
-                                 <ng-select placeholder="Specify visibility" name="access"  [searchable]="false" [clearable]="false" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
+                                 <ng-select placeholder="Specify visibility" name="access"  [searchable]="true" [clearable]="true" id="access" [(ngModel)]="customAccessMap[file.key]" [ngClass]="{'goldenText': customAccessMap[file.key] }" >
                                     <ng-option   [disabled]="checkAccessOptionDisabled(c.value, file.key)" *ngFor="let c of ACCESSNEW | keyvalue" value="{{c.value}}">{{ ACCESS_LABEL[c.value] }}
                                     </ng-option>
                                  </ng-select>
@@ -660,7 +664,9 @@
                                  typeToSearchText="Search users"
                                  [typeahead]="userInput$"
                                  [(ngModel)]="customUsersMap[file.key]"
-                                 [ngClass]="{'goldenText': customUsersMap[file.key] }" >
+                                 [ngClass]="{'goldenText': customUsersMap[file.key] }"
+                                 [searchable]="true"
+                                 [clearable]="true" >
                                  <ng-template ng-option-tmp let-item="item">
                                     {{item.id}} ({{item.fullname}})
                                  </ng-template>
@@ -707,7 +713,9 @@
                                  typeToSearchText="Search users"
                                  [typeahead]="userInput$"
                                  [(ngModel)]="customDownloadApprovalUsersMap[file.key]"
-                                 [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }" >
+                                 [ngClass]="{'goldenText': customDownloadApprovalUsersMap[file.key] }"
+                                 [searchable]="true"
+                                 [clearable]="true" >
                                  <ng-template ng-option-tmp let-item="item">
                                     {{item.id}} {{item.fullname ? '('+item.fullname+')' : ''}}
                                  </ng-template>

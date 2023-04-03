@@ -55,6 +55,9 @@
 </div>
 <div class="button-groups">
   <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-  <button [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">{{move ? 'Move' : 'Copy'}} here</button>
+  <button [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn" style="position: relative" >
+    {{move ? 'Move' : 'Copy'}} here
+    <app-loader-small [show]="loading"></app-loader-small>
+  </button>
   <!-- <button *ngIf="!selectedDestination?.properties['dc:isPrivate']" [ngClass]="!selectedDestination ? 'disabled' : ''" (click)="moveAssets()" class="upload-btn">Move here</button> -->
 </div>

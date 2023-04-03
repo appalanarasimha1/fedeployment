@@ -31,35 +31,109 @@
           mat-sort-header="title"
           width="38%"
           style="padding-left: 35px"
-        >
-          Name
+          (mouseover)="this.hoverArrow['title'] = true"
+                 > 
+          Name <span *ngIf="this.arrowisAsc['title'] && this.hoverArrow['title']" 
+          class="material-icons fs-6"
+          (click)="sortData({active: 'title', direction: 'asc'})">
+            arrow_upward
+            </span>
+            <span *ngIf="!this.arrowisAsc['title'] && this.hoverArrow['title']" 
+            class="material-icons fs-6"
+            (click)="sortData({active: 'title', direction: 'desc'})">
+              arrow_downward
+              </span>
         </th>
-        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div> </th>
-        <th mat-sort-header="dc:creator" width="22%">Created by</th>
+        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div>
+         </th>
+        <th mat-sort-header="fileType" 
+            width="15%"   
+            (mouseover)="this.hoverArrow['fileType'] = true"
+        >Format
+        <span *ngIf="this.arrowisAsc['fileType'] && this.hoverArrow['fileType']" 
+          class="material-icons fs-6"
+          (click)="sortData({active: 'fileType', direction: 'asc'})">
+            arrow_upward
+            </span>
+            <span *ngIf="!this.arrowisAsc['fileType'] && this.hoverArrow['fileType']" 
+            class="material-icons fs-6"
+            (click)="sortData({active: 'fileType', direction: 'desc'})">
+              arrow_downward
+              </span> 
+      </th>
+     
+        <th mat-sort-header="dc:creator" 
+            width="20%"
+            (mouseover)="this.hoverArrow['dc:creator'] = true"
+            > Created by
+          <span *ngIf="this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']" 
+          class="material-icons fs-6"
+          (click)="sortData({active: 'dc:creator', direction: 'asc'})">
+            arrow_upward
+            </span>
+            <span *ngIf="!this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']" 
+            class="material-icons fs-6"
+            (click)="sortData({active: 'dc:creator', direction: 'desc'})">
+              arrow_downward
+              </span> 
+        </th>
         <th
           *ngIf="!isTrashView"
           mat-sort-header="dc:created"
-          width="14%"
+          (mouseover)="this.hoverArrow['dc:created'] = true"
+          width="15%"
         >
           Created on
+          <span *ngIf="this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']" 
+          class="material-icons fs-6"
+          (click)="sortData({active: 'dc:created', direction: 'asc'})">
+            arrow_upward
+            </span>
+            <span *ngIf="!this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']" 
+            class="material-icons fs-6"
+            (click)="sortData({active: 'dc:created', direction: 'desc'})">
+              arrow_downward
+              </span> 
         </th>
         <th
           *ngIf="isTrashView"
           mat-sort-header="dc:modified"
           width="18%"
+          (mouseover)="this.hoverArrow['dc:modified'] = true"
         >
           Deleted on
+          <span *ngIf="this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']" 
+          class="material-icons fs-6"
+          (click)="sortData({active: 'dc:modified', direction: 'asc'})">
+            arrow_upward
+            </span>
+            <span *ngIf="!this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']" 
+            class="material-icons fs-6"
+            (click)="sortData({active: 'dc:modified', direction: 'desc'})">
+              arrow_downward
+              </span> 
         </th>
         <th
         *ngIf="isTrashView"
           mat-sort-header="dc:sector"
           width="20%"
+          (mouseover)="this.hoverArrow['dc:sector'] = true"
         >
           Workspace
+          <span *ngIf="this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']"  
+          class="material-icons fs-6"
+          (click)="sortData({active: 'dc:sector', direction: 'asc'})">
+            arrow_upward
+            </span>
+            <span *ngIf="!this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']" 
+            class="material-icons fs-6"
+            (click)="sortData({active: 'dc:sector', direction: 'desc'})">
+              arrow_downward
+              </span> 
         </th>
         <th style="width: 3%">&nbsp;&nbsp;</th>
       </tr>
-      <tr *ngFor="let item of sortedData; let i = index" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder positionRelative">
+      <tr *ngFor="let item of sortedData; let i = indeex;" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder positionRelative">
         <td style="position: relative;" class="getWidth1" (contextmenu)="onContextMenu($event, item)">
           <div
             class="delete-folder-action"
@@ -235,6 +309,13 @@
             </ng-template>
           </span>
         </td>
+    
+        <td
+        style="padding-left: 25px;"
+        >
+          <p class="itemTitleContent">{{getFileType(item)}}</p>
+        </td>
+
         <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">
           <p class="itemTitleContent">{{getCreatorName(item)}}</p>
           <p class="tolltipContent">{{item.properties['dc:creator']?.properties?.email}}</p>

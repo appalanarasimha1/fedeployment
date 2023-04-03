@@ -52,6 +52,8 @@ import { AddUserPrivateFolderModalComponent } from './add-user-private-folder-mo
 import { NgxMasonryModule } from 'ngx-masonry';
 import { UploadDroneComponent } from './upload-drone/upload-drone.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { DataApiComponent } from './data-api/data-api.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -71,6 +73,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     AddUserPrivateFolderModalComponent,
     // DocumentationAssetsComponent,
     UploadDroneComponent,
+    DataApiComponent,
     // AssetViewComponent,
   ],
   imports: [
@@ -96,6 +99,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     MatNativeDateModule,
     NgxMasonryModule,
     NgxDropzoneModule,
+    MatSlideToggleModule,
   ],
   providers: [
     // CookieService,

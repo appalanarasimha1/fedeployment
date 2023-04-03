@@ -101,8 +101,9 @@ export class HeaderComponent implements OnInit {
         } else {
           this.missingHeader = false;
         }
-        if (event.url.includes('documentation-assets')) {
+        if (event.url.includes('documentation-assets') || event.url.includes('construction')) {
           this.isDroneUploadPage = true;
+          this.showFooter = true;
         } else {
           this.isDroneUploadPage = false;
         }
@@ -280,7 +281,7 @@ export class HeaderComponent implements OnInit {
   }
   checkNeomUser() {
     if (!this.userData) return !this.checkExternalUser();
-    return this.userData.email?.includes('@neom.com');
+    return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');
   }
 
   playPersonalizedVideo() {
@@ -338,13 +339,17 @@ export class HeaderComponent implements OnInit {
     this.computeNotifications();
     this.storeRequestDownloadNotification();
   }
-  
+
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
     // if (!event) {
     //   return `${window.location.origin}/nuxeo${url}`;
     // }
 
     return this.sharedService.getAssetUrl(event, url, document, type);
+  }
+
+  downloadAssetFromNotification(UUID: string) {
+    return `${window.location.origin}/nuxeo/nxfile/default/${UUID}`;
   }
 
 
@@ -458,7 +463,7 @@ export class HeaderComponent implements OnInit {
     if (user) {
       this.userData = user;
       const groups = user.groups;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+      if (groups.includes(DRONE_UPLOADER)) {
         this.isDroneUploader = true;
       }
       return;
@@ -469,7 +474,7 @@ export class HeaderComponent implements OnInit {
       // const user = JSON.parse(localStorage.getItem('user'));
       this.userData = res.user.properties;
       const groups = res.user.properties.groups;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
+      if (groups.includes(DRONE_UPLOADER)) {
         this.isDroneUploader = true;
       }
     }

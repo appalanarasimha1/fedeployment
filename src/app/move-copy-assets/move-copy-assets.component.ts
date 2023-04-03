@@ -32,6 +32,8 @@ export class MoveCopyAssetsComponent implements OnInit {
   user:string;
   move = true;
 
+  loading = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<MoveCopyAssetsComponent>,
@@ -148,6 +150,7 @@ export class MoveCopyAssetsComponent implements OnInit {
   }
 
   async moveAssets() {
+    this.loading = true;
     if (!this.selectedDestination) return;
     if (this.selectedDestination.type === 'Domain') {
       this.selectedDestination = await this.getSectorWs(this.selectedDestination.uid)
@@ -165,6 +168,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     res.forEach((response, index) => this.showNoti(response.value, arrayIndex[index], index));
 
     this.closeModal()
+    this.loading = false;
   }
 
   showNoti(message, key, index) {

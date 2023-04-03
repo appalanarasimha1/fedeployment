@@ -113,7 +113,7 @@
                         <span class="tooltiptext">Copy installation ID</span>
                     </div>
                 </td>
-                <td><div class="itemTitleContent">{{device.subArea}}</div></td>
+                <td><div class="itemTitleContent">{{device.subArea}} </div></td>
                 <td>{{formatDirection(device.direction)}}</td>
                 <!-- <td>
                     <div class="tollTipCustom">
@@ -126,9 +126,24 @@
                     <ul>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div *ngIf="device.status === 'online'" class="statusTage online">Online <span></span></div>
-                                <div *ngIf="device.status === 'offline'" class="statusTage inactive">Offline <span></span></div>
-                                <div *ngIf="device.status === 'decommissioned'" class="statusTage decommissioned">Decommissioned <span></span></div>
+                                <div *ngIf="device.status === 'online'" class="statusTage online">
+                                    <div class="tollTipCustom">
+                                        <div class="itemTitleContent">Online <span></span></div>
+                                        <div class="tolltipContent" style="left: -6px;top: 30px;">{{getStatusDateSince(device.statusUpdateDate, 'daysSince')}}</div>
+                                    </div>
+                                </div>
+                                <div *ngIf="device.status === 'offline'" class="statusTage inactive">
+                                    <div class="tollTipCustom">
+                                        <div class="itemTitleContent">Offline <span></span></div>
+                                        <div class="tolltipContent" style="left: -6px;top: 30px;">{{getStatusDateSince(device.statusUpdateDate, 'daysSince')}}</div>
+                                    </div>
+                                </div>
+                                <div *ngIf="device.status === 'decommissioned'" class="statusTage decommissioned">
+                                    <div class="tollTipCustom">
+                                        <div class="itemTitleContent">Decommissioned <span></span></div>
+                                        <div class="tolltipContent" style="left: -6px;top: 30px;">{{getStatusDateSince(device.statusUpdateDate, 'dateSince')}}</div>
+                                    </div>
+                                </div>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>

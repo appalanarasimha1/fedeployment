@@ -120,7 +120,7 @@ export class UploadDroneComponent implements OnInit {
       context: {},
       params: {
         installationId: this.selectedDevice.installationId,
-        location: this.selectedDevice.initial,
+        location: this.selectedDevice.initial || this.getInstallationIdRegion(this.selectedDevice.installationId),
       },
     };
     const res = await this.apiService
@@ -243,15 +243,18 @@ export class UploadDroneComponent implements OnInit {
 
   async createAsset(file, index, folder) {
     const date = this.dates[index];
-    const url = encodeURI(`/path${folder}`);
     let fileType = "File";
+    let filePath = "";
     if (file.type?.includes("image/")) {
       fileType = "Picture";
+      filePath = "/Photos";
     } else if (file.type?.includes("video/")) {
       fileType = "Video";
+      filePath = "/Videos";
     } else if (file.type?.includes("audio/")) {
       fileType = "Audio";
     }
+    const url = encodeURI(`/path${folder}`) + filePath;
     const payload = {
       "entity-type": "document",
       repository: "default",
@@ -465,11 +468,14 @@ export class UploadDroneComponent implements OnInit {
       direction: device.direction,
       cameraPole: device.cameraPole,
       region: device.region,
+      areaName: device.areaName,
       subArea: device.subArea,
+      subAreaName: device.subAreaName,
       status: device.status,
       installationId: device.installationId,
       uid: device.id,
     }));
+    this.deviceList = this.deviceList.filter(device => device.status !== "decommissioned");
 
     if (this.supplierRegions?.length > 0) {
       this.deviceList = this.deviceList.filter(device =>
@@ -535,7 +541,7 @@ export class UploadDroneComponent implements OnInit {
     this.installationIdList = this.deviceList.map((device) => ({
       installationId: device.installationId,
       area: this.subAreaMap[device.subArea]?.name || device.subAreaName,
-      location: this.regionMap[device.region]?.name || device.subAreaId,
+      location: this.regionMap[device.region]?.name || device.areaName,
       areaId: device.subArea,
       locationId: device.region,
       initial: this.regionMap[device.region]?.initial,
