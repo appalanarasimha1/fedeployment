@@ -684,3 +684,9 @@ tr.groupFolder td:first-child {
   position: relative;
   z-index: 9;
 }
+.share-icon {
+  display: inline-block;
+  margin-left: 8px;
+  width: 15px;
+  vertical-align: middle;
+}
