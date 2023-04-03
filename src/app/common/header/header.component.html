@@ -6,8 +6,8 @@
       <div class="col-xl-3 col-xs-3">
           <nav class="navbar navbar-expand-lg navbar-light ">
             <div class="logo-block">
-              <a *ngIf="!checkExternalUser(true) && !isDroneUploader" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
-              <a *ngIf="checkExternalUser(true) || isDroneUploader" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="isDroneUploader === isExternalUSer" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="isDroneUploader !== isExternalUSer" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
             </div>
             <span class="main-title tollTipCustom">
               <!-- <img class="play-button" src="../../../assets/images/button-play.svg" alt="" (click)="openSm(content)" /> -->
@@ -491,14 +491,14 @@
 
 </header>
 
-<section class="left-sidebar" *ngIf="showFooter && !isDroneUploader" >
+<section class="left-sidebar" *ngIf="showFooter && !(isDroneUploader && !isExternalUSer)" >
   <ul class="sidebarList">
     <li>
-      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="!checkExternalUser(true)" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
+      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader === isExternalUSer" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
         <img src="../../../assets/images/discovery-icon.svg" />
         Discovery
       </a>
-      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="checkExternalUser(true)">
+      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader !== isExternalUSer">
         <img src="../../../assets/images/discovery-icon.svg" />
         Discovery
       </a>
