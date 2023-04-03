@@ -482,4 +482,18 @@ export class HeaderComponent implements OnInit {
   onActivate() {
     $("#favorites").animate({ scrollTop: 0 }, "slow");
   }
+
+  async deleteNotiFication(notification?:any){
+    let url = '/automation/Scry.UpdateNotification'
+    let payload = {
+      "params":{
+        "action":"delete",
+        "notificationId":notification.id
+      }
+    }
+    const res = await this.apiService.post(url, payload).toPromise();
+    this.getNotifications()
+    
+
+  }
 }
