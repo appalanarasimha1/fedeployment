@@ -133,7 +133,7 @@
         </th>
         <th style="width: 3%">&nbsp;&nbsp;</th>
       </tr>
-      <tr *ngFor="let item of sortedData; let i = indeex;" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder positionRelative">
+      <tr *ngFor="let item of sortedData; let i = index;" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder positionRelative">
         <td style="position: relative;" class="getWidth1" (contextmenu)="onContextMenu($event, item)">
           <div
             class="delete-folder-action"
