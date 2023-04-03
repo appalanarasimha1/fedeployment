@@ -1279,15 +1279,12 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   afterChangeSector(e){
-    console.log(e);
     if(e.last){
       this.getAssetBySectors(this.sectorSelected,  true,this.sectorOffset,16,true )
 
     }
   }
   afterChangeFav(e){
-    console.log(e);
-
     if(e.last){
       // this.getAssetBySectors("",  true,this.sectorOffset,16,true )
       this.getFavouriteCollection(this.favouriteUID,this.favouriteOffset,  16,true)

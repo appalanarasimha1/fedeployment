@@ -1290,3 +1290,8 @@ span.userName {
 .request-download-btn-group.buttonGroup.downloadBtn .approve {
     padding: 0px 15px 0px 12px;
 }
+.action-delete-icon {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 10px;
+}

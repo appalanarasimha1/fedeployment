@@ -6,8 +6,8 @@
       <div class="col-xl-3 col-xs-3">
           <nav class="navbar navbar-expand-lg navbar-light ">
             <div class="logo-block">
-              <a *ngIf="!checkExternalUser(true) && !isDroneUploader" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
-              <a *ngIf="checkExternalUser(true) || isDroneUploader" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="isDroneUploader === isExternalUSer" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
+              <a *ngIf="isDroneUploader !== isExternalUSer" style="text-decoration: none; color: #fff;"><img src="../../../assets/images/groundx-logo-white.svg" alt="Ground-X" class="header-logo" /></a>
             </div>
             <span class="main-title tollTipCustom">
               <!-- <img class="play-button" src="../../../assets/images/button-play.svg" alt="" (click)="openSm(content)" /> -->
@@ -381,6 +381,15 @@
                 </div>
                 <div class="notifactionListContRight">
                   {{getNotificationSince(item)}}
+                  <svg
+                    *ngIf="item.extended.type === 'requestDownloadResponse'"
+                    width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon" (click)="deleteNotiFication(item)">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
                 </div>
 
                 <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
@@ -447,6 +456,14 @@
                 </div>
                 <div class="notifactionListContRight">
                   {{getNotificationSince(item)}}
+                  <svg *ngIf="item.extended.type === 'requestDownloadResponse'"
+                    width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon" (click)="deleteNotiFication(item)">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
                 </div>
                 <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
                   <div *ngIf="!item.extended.processed">
@@ -491,14 +508,14 @@
 
 </header>
 
-<section class="left-sidebar" *ngIf="showFooter && !isDroneUploader" >
+<section class="left-sidebar" *ngIf="showFooter && !(isDroneUploader && !isExternalUSer)" >
   <ul class="sidebarList">
     <li>
-      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="!checkExternalUser(true)" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
+      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader === isExternalUSer" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
         <img src="../../../assets/images/discovery-icon.svg" />
         Discovery
       </a>
-      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="checkExternalUser(true)">
+      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader !== isExternalUSer">
         <img src="../../../assets/images/discovery-icon.svg" />
         Discovery
       </a>

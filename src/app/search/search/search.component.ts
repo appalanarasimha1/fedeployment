@@ -72,6 +72,8 @@ export class SearchComponent implements OnInit {
   tabs = tabs;
   selectedTab = tabs.MEDIA;
   isDroneUploader = false;
+  isExternalUSer = false;
+  isGlobalExternalUser = false;
 
   // TypeScript public modifiers
   constructor(
@@ -94,6 +96,10 @@ export class SearchComponent implements OnInit {
     this.router.events.forEach((event: any) => {
       if (event.url) {
         if(event.url === '/') {
+          if (this.isDroneUploader && !this.isGlobalExternalUser) {
+            this.selectedTab = tabs.CONSTRUCTION;
+            return;
+          }
           this.selectedTab = tabs.MEDIA;
           this.router.navigate(['/'], {fragment: ''})
         }
@@ -635,6 +641,27 @@ export class SearchComponent implements OnInit {
     this.resetFilter();
   }
 
+  checkUserGroup(groups) {
+    if (groups.includes(DRONE_UPLOADER)) {
+      this.isDroneUploader = true;
+    }
+    if (groups.includes(EXTERNAL_GROUP_GLOBAL)) {
+      this.isGlobalExternalUser = true;
+    }
+    if (groups.includes(EXTERNAL_USER)) {
+      this.isExternalUSer = true;
+    }
+    if (this.isDroneUploader && !this.isGlobalExternalUser) {
+      this.selectedTab = tabs.CONSTRUCTION;
+      this.router.navigate(['/'], { fragment: 'construction' });
+      return;
+    }
+    if (this.isExternalUSer && !this.isGlobalExternalUser && !this.isDroneUploader) {
+      this.router.navigate(['workspace']);
+      return;
+    }
+  }
+
   async fetchUserData() {
     try {
       const userString = localStorage.getItem("user");
@@ -649,17 +676,7 @@ export class SearchComponent implements OnInit {
       this.sector = userData.sector;
       const groups = userData.groups;
       if (!groups) return;
-      if (groups.includes(DRONE_UPLOADER)) {
-        this.selectedTab = tabs.CONSTRUCTION;
-        this.isDroneUploader = true;
-        this.router.navigate(['/', 'construction']);
-        return;
-      }
-      if (groups.includes(EXTERNAL_GROUP_GLOBAL)) return;
-      if (groups.includes(EXTERNAL_USER)) {
-        this.router.navigate(['workspace']);
-        return;
-      }
+      this.checkUserGroup(groups);
     } catch (err) {}
   }
 
@@ -673,15 +690,18 @@ export class SearchComponent implements OnInit {
   }
 
   selectTab(tab) {
+    if (this.isDroneUploader && !this.isGlobalExternalUser) return;
     this.selectedTab = tab;
   }
 
   checkShowTabSelection() {
     let isOtherPage = false;
     if (this.documentsView) {
-      isOtherPage = !!this.documentsView.detailView || !!this.searchValue.ecm_fulltext;
+      isOtherPage = !!this.documentsView.checkShowDetailview()
     }
-
+    if (this.isGlobalExternalUser && this.isDroneUploader && !isOtherPage) {
+      return true;
+    }
     return !this.isDroneUploader && !isOtherPage && this.isNeomUser();
   }
 
