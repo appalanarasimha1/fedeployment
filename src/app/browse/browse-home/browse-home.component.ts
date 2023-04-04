@@ -14,8 +14,7 @@ export class BrowseHomeComponent implements OnInit {
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'));
-    const externalGlobalUsers: string[] = JSON.parse(localStorage.getItem('listExternalUserGlobal'));
-    if(user.groups.indexOf("external_user") != -1 && externalGlobalUsers.indexOf(user.email) === -1) {
+    if(user.groups.includes("external_user") && !user.groups.includes("external_group_global")) {
       this.router.navigate(['workspace', 'sharedFolder']);
     }
   }
