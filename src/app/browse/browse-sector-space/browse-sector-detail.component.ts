@@ -101,6 +101,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     // this.dataService.fetchAssets$.subscribe(async (data) => {
     //   // await this.fetchAssets(data.sectorUid, data.checkCache, data.pageSize, data.pageIndex, data.offset);
     // });
+    
+    this.dataService.folderPermission$.subscribe(data=> this.permissionChange = data )
 
     this.route.paramMap.subscribe( async () => {
       this.sectorName = this.route.snapshot.paramMap.get('sectorName');
@@ -365,7 +367,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   // }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    this.dataService.folderPermission$.subscribe(data=>this.permissionChange=data)
     if(this.permissionChange) return true
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
 
