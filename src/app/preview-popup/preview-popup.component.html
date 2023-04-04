@@ -126,26 +126,29 @@
                         </div>
                       </div>
 
-                      <div *ngIf="showDownloadDropdown() || checkCanDownload()" class="sub-dropdown-block">
-                        <!-- <p><span>{{getCreator()}}</span> has approved your download request:</p>
-                        <p>Always credit copyright owners.</p> -->
-                        <div class="downloadIcon"></div> Download
-                        <div class="down-arrow-icon"></div>
-                        <div class="sub-dropdown-menu">
-                          <ul>
-                            <li *ngFor="let view of doc.properties['picture:views']">
-                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
-                                {{ view.width }} * {{ view.height }}
-                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
-                                Original File
-                                <span>{{getDownloadFileEstimation()}}</span>
-                              </a>
-                            </li>
-                          </ul>
+                      <div *ngIf="showDownloadDropdown() || checkCanDownload()" class="rejectedRequest">
+                        <p style="margin-bottom: 10px;"><span>{{getCreator()}}</span> has approved your download request:</p>
+                        <p style="margin-bottom: 15px;">Always credit copyright owners.</p>
+
+                        <div class="sub-dropdown-block">
+                          <div class="downloadIcon"></div> Download
+                          <div class="down-arrow-icon"></div>
+                          <div class="sub-dropdown-menu">
+                            <ul>
+                              <li *ngFor="let view of doc.properties['picture:views']">
+                                <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                  {{ view.width }} * {{ view.height }}
+                                  <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
+                                  Original File
+                                  <span>{{getDownloadFileEstimation()}}</span>
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -607,7 +610,54 @@
                       <p>Always credit copyright owners.</p>
                     </div>
 
-                    <div *ngIf="hasInternalRestriction()" class="internal-use">
+                    <!-- New rejection design -->
+                    <div *ngIf="getApprovalUsers().length>0" class="permission-required">
+                      <p *ngIf=" checkCopyRight()">Always credit copyright owners. <br /><br /></p>
+                      <div *ngIf="!checkCanDownload() && !hasRequestPending() && !checkRejected()">
+                        <p>Please always credit copyright owners (where applicable). <br /><br />To download this asset, please send <a href="mailto:{{getCreatorEmail()}}?subject=Permission to download Neom asstes&body=Can I use it in ENOWA presentations?">{{getCreator()}}</a> a message below.</p>
+                        <input type="text" [(ngModel)]="requestComment" class="requesInput" [ngClass]="{'goldenText': requestComment }" name="requestComment"
+                          placeholder="Describe what you would use this for" autocomplete="off" />
+                          <button (click)="sendRequestDownload()" class="btn submitBtn" [disabled]="!requestComment">Submit</button>
+                      </div>
+                      <div class="requestSubmitted" *ngIf="!checkCanDownload() && hasRequestPending()">
+                        <img src="../../assets/images/mail-send-icon.svg" alt="" class="mailSendIcon" />
+                        <h3>Request submitted</h3>
+                        <p>You will be notified when the request has been approved.</p>
+                      </div>
+                      <div class="rejectedRequest" *ngIf="!checkCanDownload() && checkRejected()">
+                        <p><span>{{getCreator()}}</span> has rejected your download request:</p>
+                        <p>"{{rejectComment}}"</p>
+                      </div>
+                    </div>
+
+                    <div *ngIf="showDownloadDropdown() || checkCanDownload()" class="rejectedRequest">
+                      <p style="margin-bottom: 10px;"><span>{{getCreator()}}</span> has approved your download request:</p>
+                      <p style="margin-bottom: 15px;">Always credit copyright owners.</p>
+
+                      <div class="sub-dropdown-block">
+                        <div class="downloadIcon"></div> Download
+                        <div class="down-arrow-icon"></div>
+                        <div class="sub-dropdown-menu">
+                          <ul>
+                            <li *ngFor="let view of doc.properties['picture:views']">
+                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                {{ view.width }} * {{ view.height }}
+                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
+                                Original File
+                                <span>{{getDownloadFileEstimation()}}</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Old rejection design -->
+                    <!-- <div *ngIf="hasInternalRestriction()" class="internal-use">
                       <p>Always credit copyright owners.</p>
 
                       <div class="control-group">
@@ -616,9 +666,9 @@
                           <div class="control__indicator"></div>
                         </label>
                       </div>
-                    </div>
+                    </div> -->
 
-                    <div *ngIf="hasRequestRestriction()" class="permission-required">
+                    <!-- <div *ngIf="hasRequestRestriction()" class="permission-required">
                       <p>Always credit copyright owners. <br /><br />
                         {{getApprovalUsers().length === 1 ? 'To download this asset, please reach out to the below user via email:' : 'To download this asset, please reach out to any of the following users via email:'}}</p>
                       <ul class="emailList">
@@ -632,9 +682,9 @@
                           </div>
                         </li>
                       </ul>
-                    </div>
+                    </div> -->
 
-                    <div *ngIf="showDownloadDropdown()" class="sub-dropdown-block">
+                    <!-- <div *ngIf="showDownloadDropdown()" class="sub-dropdown-block">
                       <div class="downloadIcon"></div> Download
                       <div class="down-arrow-icon"></div>
                       <div class="sub-dropdown-menu">
@@ -653,7 +703,8 @@
                           </li>
                         </ul>
                       </div>
-                    </div>
+                    </div> -->
+
                   </div>
                 </div>
               </div>

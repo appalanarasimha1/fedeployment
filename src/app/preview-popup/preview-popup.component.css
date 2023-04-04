@@ -1997,6 +1997,7 @@ input.requesInput::-ms-input-placeholder {
 }
 .rejectedRequest p {
   margin-bottom: 20px;
+  word-wrap: break-word;
 }
 .rejectedRequest p:last-child {
   margin-bottom: 0px;
