@@ -187,7 +187,7 @@
                      *ngIf="opened" (clickOutside)="clickOutside()">
                         <div class="breadcrumb-folder">
                            <span *ngFor="let folder of breadCrumb; let i = index">
-                              <span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title); $event.stopPropagation()">
+                              <span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title); selectFolder(folder); $event.stopPropagation()">
                                  {{sharedService.stringShortener(folder.title,30)}}
                               </a>
                            </span>
