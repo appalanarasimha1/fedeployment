@@ -386,7 +386,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.loading = true;
     let data = Object.values(this.selectedFolderList)
     let dataToParse =  data.concat(this.assetCanDelete)
-    const listDocs = dataToParse.filter((item) => this.checkCanDelete(item)).map(item => item["uid"]);
+    const listDocs = [... new Set(dataToParse.filter((item) => this.checkCanDelete(item)).map(item => item["uid"]))];
     await this.apiService
       .post(apiRoutes.TRASH_DOC, { input: `docs:${listDocs.join()}`})
       .subscribe((docs: any) => {
