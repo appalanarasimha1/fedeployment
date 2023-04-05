@@ -500,26 +500,8 @@ export class HeaderComponent implements OnInit {
 
   notifactionClick () {
     this.showCreateFolderPopup = true;
-    console.log('this.showCreateFolderPopup', this.showCreateFolderPopup);
-    // $(".notifactionClickAction").on("click", function (e) {
-    //   // $(".notificationExpandarea").toggle();
-    //   $(".notificationExpandarea").show();
-    //   $(".notifactionClickAction").addClass("createNotificationClick");
-    //   e.stopPropagation();
-    // });
-    // $(".notifactionClickAction.createNotificationClick").on("click", function (e) {
-    //   $(".notificationExpandarea").hide();
-    //   $(".notifactionClickAction").removeClass("createNotificationClick");
-    //   e.stopPropagation();
-    // });
-
-    // $(document).click(function () {
-    //   $(".notificationExpandarea").hide();
-    //   $(".notifactionClickAction").removeClass("createNotificationClick");
-    // });
     
     $(".notifactionClickAction").on("click", function (e) {
-      // $(".notificationExpandarea").toggle();
       $(".notificationExpandarea").show();
       $(".notifactionClickAction").addClass("createNewFolderClick");
       e.stopPropagation();
@@ -530,26 +512,9 @@ export class HeaderComponent implements OnInit {
       e.stopPropagation();
     });
 
-    $(".notificationExpandarea, .mat-datepicker-content").click(function (e) {
-      e.stopPropagation();
-      $(".notifactionClickAction").removeClass("createNewFolderClick");
-    });
-
     $(document).click(function () {
       $(".notificationExpandarea").hide();
       $(".notifactionClickAction").removeClass("createNewFolderClick");
-    });
-
-    $(".mat-icon-button").click(function () {
-      $(".notificationExpandarea, .mat-datepicker-content").click(function (e) {
-        $(".notifactionClickAction").removeClass("createNewFolderClick");
-        e.stopPropagation();
-      });
-    });
-
-    $(".closeIcon").on("click", function (e) {
-      $(".notificationExpandarea").hide();
-      e.stopPropagation();
     });
   }
 }

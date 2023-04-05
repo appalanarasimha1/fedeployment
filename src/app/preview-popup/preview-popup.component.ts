@@ -721,6 +721,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       e.stopPropagation();
     });
 
+    setTimeout(() => {
+      $(".dropdownCreate").click(function (e) {
+        e.stopPropagation();
+        $(".buttonCreate").removeClass("createNewFolderClick");
+      });
+    }, 300);
+
     $(".dropdownCreate").click(function (e) {
       e.stopPropagation();
       $(".buttonCreate").removeClass("createNewFolderClick");
@@ -770,6 +777,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.doNotBackToDownload = true;
     setTimeout(() => {
       this.dwonloadingMsgInternalUse = false;
+      this.showCreateFolderPopup = false;
     }, 10000);
   }
 }
