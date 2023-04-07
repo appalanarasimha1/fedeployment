@@ -204,7 +204,7 @@ export class UploadModalComponent implements OnInit {
       this.showWsList = false;
       if (this.data.type.toLowerCase() !== "domain") {
         await this.selectWorkspace(this.data, true);
-        this.folderNameParam = (this.selectedWorkspace.uid === this.data.uid && this.selectedWorkspace.title !== this.data.title) ? this.data.title : '';
+        this.folderNameParam = (this.selectedWorkspace.uid !== this.data.uid && this.selectedWorkspace.title !== this.data.title) ? this.data.title : '';
         this.selectedFolder = this.data;
       }
       this.associatedDate = this.data?.properties?.["dc:start"];
