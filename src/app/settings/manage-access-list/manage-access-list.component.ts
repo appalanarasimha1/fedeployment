@@ -58,7 +58,10 @@ export class ManageAccessListComponent implements OnInit {
     const filteredUsers = this.users.filter(user => user[0] !== user[0].toUpperCase());
     // Filter out duplicates
     const uniqueUsers = filteredUsers.filter((user, index) => filteredUsers.indexOf(user) === index);
-    return uniqueUsers.filter(street => this._userNormalizeValue(street).includes(filterValue));
+    // Filter out neom users  
+    const neomUsers = uniqueUsers.filter(user => user.includes('neom'));
+
+    return neomUsers.filter(street => this._userNormalizeValue(street).includes(filterValue));
   }
 
   private _userNormalizeValue(value: string): string {
