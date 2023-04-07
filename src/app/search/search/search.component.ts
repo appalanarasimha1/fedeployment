@@ -75,6 +75,8 @@ export class SearchComponent implements OnInit {
   isExternalUSer = false;
   isGlobalExternalUser = false;
 
+  excludedDroneWorkspaces = "";
+
   // TypeScript public modifiers
   constructor(
     public nuxeo: NuxeoService,
@@ -246,7 +248,10 @@ export class SearchComponent implements OnInit {
     return queryParams;
   }
 
-  fetchApiResult(params, isShowMore: boolean = false) {
+  async fetchApiResult(params, isShowMore: boolean = false) {
+    if (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0) {
+      await this.getDroneUploadWsIds();
+    }
     const headers = {
       "enrichers-document": [
         "thumbnail",
@@ -289,6 +294,7 @@ export class SearchComponent implements OnInit {
       default:
         // params["duplicate_show"] = "1";
     }
+    params["queryParams"] = this.excludedDroneWorkspaces || " ";
     if (!url) return;
 
     if (params["downloadApproval"] !== undefined) {
@@ -707,6 +713,16 @@ export class SearchComponent implements OnInit {
 
   isNeomUser() {
     return !!this.user?.includes('@neom.com') || !!this.user?.match('@.*neom.com');
+  }
+
+  async getDroneUploadWsIds() {
+    try {
+      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
+      const ids = res['value'];
+      if (ids && ids.length > 0) {
+        this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
+      }
+    } catch (err) {}
   }
 
 }

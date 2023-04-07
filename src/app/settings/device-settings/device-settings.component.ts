@@ -101,6 +101,7 @@ export class DeviceSettingsComponent implements OnInit {
       subAreaId: device.subAreaId,
       status: device.status?.toLowerCase(),
       installationId: device.installationId,
+      isIngested: (device?.isIngested && device.isIngested) || false,
       owner: device.owner,
       uid: device.id,
       supplierId: device.supplierId,

@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
   login() {
     if ((this.username && this.username.trim()) && (this.password)) {
       this.loading = true;
-      this.nuxeo.authenticateUser(this.username, this.password)
+      this.nuxeo.authenticateUser(this.username.toLowerCase(), this.password)
         .then(async (token) => {
           try {
             fetch(`/nuxeo/authentication/token?applicationName=My%20App&deviceId=123&deviceDescription=my-device&permission=rw`, {
@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit {
             return;
           }
           localStorage.setItem('token', token);
-          localStorage.setItem('username', this.username);
+          localStorage.setItem('username', this.username.toLowerCase());
           await this.nuxeo.createClientWithToken(token, false);
           this.loading = false;
           this.router.navigateByUrl(this.redirectURL);

@@ -22,7 +22,8 @@
           >{{ item.title }}
         </span>
 
-        <div class="groupFolder" > <!-- [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" -->
+        <div class="groupFolder" 
+        (click)="openFolder(item)"> <!-- [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" -->
           <div
             class="delete-folder-action"
             *ngIf="
