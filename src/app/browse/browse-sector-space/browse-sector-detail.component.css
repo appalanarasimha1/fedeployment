@@ -968,7 +968,6 @@ a.downloadDisbable path {
 opacity: 1;
 }
 .downloadFileWorkspace {
-cursor: pointer;
 z-index: 2;
 }
 .downloadFileWorkspace::after {
@@ -1414,6 +1413,7 @@ display:block;
   width: 300px;
   right: 0px;
   top: 40px;
+  display: block;
 }
 .multiDownloadBlock p {
   color: #fff;
@@ -1538,16 +1538,6 @@ ul.uploadAssetsClassifications li:hover ul.subDropdownMenu {
   display: block;
   cursor: auto;
 }
-ul.uploadAssetsClassifications li:after {
-  content: '';
-  display: block;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  bottom: -19px;
-  right: 0;
-  z-index: -2;
-}
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
   /* position: absolute; */
   width: 250px;
@@ -1620,14 +1610,14 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   stroke:none;
 }
 ul.uploadAssetsClassifications li:after {
-  content: '';
+  /* content: '';
   display: block;
   height: 20px;
   width: 100%;
   position: absolute;
   bottom: -19px;
   right: 0;
-  z-index: 9;
+  z-index: 9; */
 }
 .placeholder-search{
   position: absolute;
@@ -1636,4 +1626,133 @@ ul.uploadAssetsClassifications li:after {
   bottom: 0px;
   margin: auto;
   width: 18px;
+}
+ul.downloadImgLisst {
+  margin-top: 15px;
+}
+ul.downloadImgLisst::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+ul.downloadImgLisst li {
+  padding-bottom: 10px;
+  width: 100%;
+}
+ul.downloadImgLisst li:last-child {
+  padding-bottom: 0px;
+}
+
+ul.downloadImgLisst li .imgListBlk,
+ul.downloadImgLisst li .contentListBlk,
+ul.downloadImgLisst li .imgMailIcon {
+  display: inline-block;
+  vertical-align: middle;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk,
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon {
+  max-width: 20px;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk img,
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
+  margin-left: 0px;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
+  vertical-align: -3px;
+}
+ul.downloadImgLisst li .contentListBlk {
+  padding: 0px 10px;
+  color: #fff;
+  width: calc(100% - 40px);
+  font-size: 13px;
+}
+
+.folderDownload {
+  color: #fff;
+}
+.downloadClose, .downloadClose path {
+  fill: #fff !important;
+  stroke: #fff !important;
+  cursor: pointer;
+  float: right;
+}
+.headingDownload {
+  display: inline-block;
+  width: calc(100% - 30px);
+  font-size: 15px;
+  font-family: 'brownregular';
+  padding-bottom: 15px;
+  line-height: 16px;
+  vertical-align: top;
+  color: #fff;
+}
+.pt-15 {
+  padding-top: 15px;
+}
+.pb-10 {
+  padding-bottom: 10px;
+}
+.continue {
+  display: block;
+  overflow: hidden;
+  padding-top: 15px;
+}
+.continue span {
+  color: #EDD580;
+  float: right;
+  cursor: pointer;
+}
+.continue span path {
+  fill: #EDD580 !important;
+  stroke: none !important;
+}
+.folderDownload:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.imgListBlk img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk img, .downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
+  display: block;
+}
+.flexable {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.flexable .contentListBlk {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  font-family: 'brownregular';
+}
+.cancleDownload {
+  float: left;
+  padding-top: 25px;
+  cursor: pointer;
+  font-weight: normal;
+  color: #EDD580;
+}
+.navermindBtn {
+  text-align: right;
+}
+.navermindBtn span {
+  cursor: pointer;
+  font-weight: normal;
+  color: #EDD580;
+}
+.navermindBtn span.nevermind {
+  margin-left: 15px;
+}
+.navermindBlk {
+  clear: both;
+  display: block;
 }
