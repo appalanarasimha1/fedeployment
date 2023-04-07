@@ -54,7 +54,11 @@ export class ManageAccessListComponent implements OnInit {
 
   private _userFilter(value: string): string[] {
     const filterValue = this._userNormalizeValue(value);
-    return this.users.filter(street => this._userNormalizeValue(street).includes(filterValue));
+    // Filter out entries if first letter is uppercase
+    const filteredUsers = this.users.filter(user => user[0] !== user[0].toUpperCase());
+    // Filter out duplicates
+    const uniqueUsers = filteredUsers.filter((user, index) => filteredUsers.indexOf(user) === index);
+    return uniqueUsers.filter(street => this._userNormalizeValue(street).includes(filterValue));
   }
 
   private _userNormalizeValue(value: string): string {
