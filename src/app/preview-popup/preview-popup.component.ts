@@ -31,7 +31,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   activeTabs = { comments: false, info: false, timeline: false };
   commentText: string;
   comments = [];
-  isAware = false;
+  isAware = true;
   currentTagLength = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   DEFAULT_NUMBER_OF_TAGS_PREVIEW = DEFAULT_NUMBER_OF_TAGS_PREVIEW;
   copiedString;
@@ -54,7 +54,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   description: '';
   nevermindHideMsg: boolean = false;
   enableInput:boolean=false
-  hasDownloadPermission = true
+  hasDownloadPermission = true;
+  dwonloadingMsgInternalUse: boolean = false;
+  doNotBackToDownload: boolean = false;
 
   constructor(
     private router: Router,
@@ -719,6 +721,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       e.stopPropagation();
     });
 
+    setTimeout(() => {
+      $(".dropdownCreate").click(function (e) {
+        e.stopPropagation();
+        $(".buttonCreate").removeClass("createNewFolderClick");
+      });
+    }, 300);
+
     $(".dropdownCreate").click(function (e) {
       e.stopPropagation();
       $(".buttonCreate").removeClass("createNewFolderClick");
@@ -761,5 +770,14 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   enableInputClick(value:boolean){
     this.enableInput=value
+  }
+  
+  dwonloadingMsgBlk() {
+    this.dwonloadingMsgInternalUse = true;
+    this.doNotBackToDownload = true;
+    setTimeout(() => {
+      this.dwonloadingMsgInternalUse = false;
+      this.showCreateFolderPopup = false;
+    }, 10000);
   }
 }

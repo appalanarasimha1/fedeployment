@@ -1277,11 +1277,13 @@ span.userName {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.dropdown-menu .request-download-btn-group.buttonGroup {
+.dropdown-menu .request-download-btn-group.buttonGroup, .notificationExpandarea .request-download-btn-group.buttonGroup {
     text-align: right;
     margin-top: 20px;
 }
-.dropdown-menu .reject, .dropdown-menu .approve {
+.dropdown-menu .reject, .dropdown-menu .approve,
+.notificationExpandarea .reject, .notificationExpandarea .approve
+ {
     padding: 0px 20px;
     line-height: 29px;
     font-size: 13px;
@@ -1294,4 +1296,34 @@ span.userName {
     display: inline-block;
     cursor: pointer;
     margin-left: 10px;
+}
+.notificationExpandarea {
+    left: auto;
+    right: 10px;
+    border-radius: 10px;
+    padding: 10px 9px 10px 17px;
+    width: 300px;
+    top: 44px;
+    position: absolute;
+    background: #fff;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.rejectApproveBlk::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.notificationDropdown .rejectApproveBlk button {
+    padding: 0px 20px;
+    line-height: 29px;
+    font-size: 13px;
+    letter-spacing: normal;
+}
+.notificationDropdown .requesInput {
+    width: 100%;
+    margin-bottom: 15px;
+}
+.notificationDropdown .download-request-reject-form {
+    text-align: right;
 }
