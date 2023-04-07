@@ -117,6 +117,9 @@ export class AddUserModalComponent implements OnInit {
     this.userInputText = null;
     this.selectedCollaborator = null;
     const isExist = this.folderCollaborators[item.id];
+    if (item.id) {
+      item.id = item.id.toLowerCase();
+    }
     if (isExist) return;
     else if (this.listExternalUser.includes(item.id)) {
       const end = new Date();

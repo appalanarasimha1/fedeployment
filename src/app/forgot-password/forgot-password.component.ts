@@ -72,7 +72,7 @@ export class ForgotPasswordComponent implements OnInit {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     const urlencoded = new URLSearchParams();
-    urlencoded.append("EmailAddress", this.emailValue);
+    urlencoded.append("EmailAddress", this.emailValue.toLowerCase());
     urlencoded.append("GroundXUrl", location.protocol + '//' + location.host);
     const requestOptions: RequestInit = {
       method: 'POST',
