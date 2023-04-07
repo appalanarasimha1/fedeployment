@@ -482,7 +482,6 @@ export class HeaderComponent implements OnInit {
       this.userData = user;
       const groups = user.groups;
       this.checkUserGroup(groups);
-      return;
     }
     if (this.nuxeo.nuxeoClient) {
       const res = await this.nuxeo.nuxeoClient.connect();
