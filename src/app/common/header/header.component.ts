@@ -452,9 +452,12 @@ export class HeaderComponent implements OnInit {
   }
 
   checkHomeActive(){
-    if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
+    if (window.location.href==(`${window.location.origin}/`) || window.location.href==(`${window.location.origin}/#`)) {
       return true
     }
+    // if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
+    //   return true
+    // }
   }
 
   getImageName(){
@@ -494,5 +497,31 @@ export class HeaderComponent implements OnInit {
   }
   onActivate() {
     $("#favorites").animate({ scrollTop: 0 }, "slow");
+  }
+
+  checkSetingsActive(){
+    if (window.location.href.includes(`${window.location.origin}/settings`)) {
+      return true
+    }
+  }
+  checkFavoritesActive(){
+    if (window.location.href.includes(`${window.location.origin}/#favorites`) || window.location.href.includes(`${window.location.origin}/favorites`)) {
+      return true
+    }
+  }
+  checkDataApiActive(){
+    if (window.location.href.includes(`${window.location.origin}/data-api`)) {
+      return true
+    }
+  }
+  checkReportActive(){
+    if (window.location.href.includes(`${window.location.origin}/report`)) {
+      return true
+    }
+  }
+  checkUsePolicyActive() {
+    if (window.location.href.includes(`${window.location.origin}/common/terms`)) {
+      return true
+    }
   }
 }

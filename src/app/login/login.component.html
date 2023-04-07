@@ -23,11 +23,11 @@
                     <p class="externalPartner">Login as an external partner or vendor:</p>
                     <div class="">
                       <label for="username" class="form-label">Email</label>
-                      <input type="text" class="form-control" id="username" name="username" placeholder="Email" [(ngModel)]="username" >
+                      <input type="text" class="form-control" id="username" name="username" placeholder="Email" [(ngModel)]="username" [ngClass]="{'errorClass': errorMessage}" />
                     </div>
                     <div class="">
                       <label for="pass" class="form-label">Password</label>
-                      <input type="password" placeholder="Password" name="password" class="form-control" [(ngModel)]="password" id="pass"/>
+                      <input type="password" placeholder="Password" name="password" class="form-control" [(ngModel)]="password" id="pass" [ngClass]="{'errorClass': errorMessage}" />
                     </div>
                     <span *ngIf="error" class="error">{{errorMessage}}</span>
                     <div class="mb-4 overflow-hidden">
