@@ -220,6 +220,8 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   searchNameCLicked = [];
 
+  excludedDroneWorkspaces = "";
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
@@ -483,7 +485,10 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectorOffset:number=0
   sectorPageSize:number=0
 
-  getAssetBySectors(sector = "", dontResetSectors: boolean = true,offset= 0,pageSize= 16,fromEvent=false ) {
+  async getAssetBySectors(sector = "", dontResetSectors: boolean = true,offset= 0,pageSize= 16,fromEvent=false ) {
+    if (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0) {
+      await this.getDroneUploadWsIds();
+    }
     this.sectorOffset = offset + pageSize
     this.sectorPageSize=pageSize
     const queryParams = {
@@ -506,6 +511,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (this.sharedService.checkExternalUser()) {
       queryParams["sa_access"] = "All access";
     }
+    queryParams["queryParams"] = this.excludedDroneWorkspaces || " ";
     !fromEvent? this.loading.push(true):null;
     this.nuxeo.nuxeoClient
       .request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
@@ -1349,7 +1355,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
       return '../../../assets/images/no-preview-big.png';
-    } 
+    }
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/no-preview-big.png';
     }
@@ -1358,5 +1364,15 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
 
     return '../../../assets/images/no-preview-grid.svg';
+  }
+
+  async getDroneUploadWsIds() {
+    try {
+      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
+      const ids = res['value'];
+      if (ids && ids.length > 0) {
+        this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
+      }
+    } catch (err) {}
   }
 }

@@ -100,6 +100,7 @@ export class ReportMainComponent implements OnInit {
       pageSize: 1,
       ecm_fulltext: "",
       highlight: "",
+      queryParams: "",
     };
     this.totalAssets = "loading";
     this.loading = true;
@@ -150,7 +151,7 @@ export class ReportMainComponent implements OnInit {
         // this.dataService.loaderValueChange(false);
       });
 
-      
+
     this.nuxeo.nuxeoClient
       .request(url1, { headers })
       .get()
@@ -274,7 +275,7 @@ export class ReportMainComponent implements OnInit {
     let pictureCount = 0;
 
     uploadAssetCount.map((item) => {
-      let checkName = item.userInfo[0]?.firstName + " " +item.userInfo[0]?.lastName 
+      let checkName = item.userInfo[0]?.firstName + " " +item.userInfo[0]?.lastName
       let finalName = checkName;
       if(checkName.includes('undefined')) finalName = item._id
       if(checkName.includes('null')) finalName = item._id
@@ -320,7 +321,7 @@ export class ReportMainComponent implements OnInit {
       if(this.sectorCount.length < 11){
         this.sectorCount.push(newValue)
       }
-      
+
     })
     this.sectorCount.sort((a,b)=>b.count-a.count)
   }
