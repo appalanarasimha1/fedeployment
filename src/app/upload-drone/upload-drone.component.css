@@ -351,6 +351,7 @@ li.flex span.ellipsis {
 }
 .expandable.addHeight {
     min-height: calc(100vh - 232px) !important;
+    position: relative !important;
 }
 .uploadProgress {
     color: #007BB5;
@@ -367,4 +368,19 @@ li.flex span.ellipsis {
 
 .mat-calendar-table-header-divider {
     display: none !important;
+}
+.whenYouConvert {
+    background: #E6F2FF;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #0072A2;
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 15px;
+    display: inline-block;
+    position: absolute;
+    bottom: 0px;
+    transform: translate(-50%, 0px);
+    left: 50%;
+    white-space: nowrap;
 }
