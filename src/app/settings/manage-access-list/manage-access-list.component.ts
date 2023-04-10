@@ -54,11 +54,25 @@ export class ManageAccessListComponent implements OnInit {
 
   private _userFilter(value: string): string[] {
     const filterValue = this._userNormalizeValue(value);
-    return this.users.filter(street => this._userNormalizeValue(street).includes(filterValue));
+    
+    const filteredUsers = this._filterUsers();
+
+    return filteredUsers.filter(street => this._userNormalizeValue(street).includes(filterValue));
   }
 
   private _userNormalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
+  }
+
+  private _filterUsers(): string[] {
+    // Filter out entries if first letter is uppercase
+    const nonAdminUsers = this.users.filter(user => user[0] !== user[0].toUpperCase());
+    // Filter out duplicates
+    const uniqueUsers = nonAdminUsers.filter((user, index) => nonAdminUsers.indexOf(user) === index);
+    // Filter out non-neom users  
+    const neomUsers = uniqueUsers.filter(user => user.includes('neom'));
+    
+    return neomUsers;
   }
 
   
