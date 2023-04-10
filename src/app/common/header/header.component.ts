@@ -73,6 +73,7 @@ export class HeaderComponent implements OnInit {
   isGlobalExternalUser = false;
 
   loading = false;
+  showCreateFolderPopup: boolean = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -535,5 +536,24 @@ export class HeaderComponent implements OnInit {
     if (window.location.href.includes(`${window.location.origin}/common/terms`)) {
       return true
     }
+  }
+  notifactionClick () {
+    this.showCreateFolderPopup = true;
+    
+    $(".notifactionClickAction").on("click", function (e) {
+      $(".notificationExpandarea").show();
+      $(".notifactionClickAction").addClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+    $(".notifactionClickAction.createNewFolderClick").on("click", function (e) {
+      $(".notificationExpandarea").hide();
+      $(".notifactionClickAction").removeClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+
+    $(document).click(function () {
+      $(".notificationExpandarea").hide();
+      $(".notifactionClickAction").removeClass("createNewFolderClick");
+    });
   }
 }

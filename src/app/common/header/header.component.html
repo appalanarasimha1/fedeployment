@@ -135,14 +135,14 @@
                       </a>
                     </li> -->
 
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <li class="nav-item dropdown notifactionClickAction">
+                      <a href="javascript:void(0)" (click)="notifactionClick();" class="nav-link dropdown-toggle">
                         <div class="notifactionBlk">
                           <img src="../../../assets/images/alarm-bell.svg">
                           <div *ngIf="notifications?.length > 0" class="notifactionCount">{{notifications?.length}}</div>
                         </div>
                       </a>
-                      <div class="dropdown-menu borderNone" aria-labelledby="notificationDropdown">
+                      <div *ngIf="showCreateFolderPopup" class="notificationExpandarea">
                         <div *ngIf="!notifications?.length" style="margin: 15px 20px;" class="empty-notification">
                           <div class="no-notifaction">
                             <img style="width: 22%; padding-top: 0px;" src="../../../assets/images/alarm-bell-1.svg">
@@ -165,6 +165,97 @@
                             </div>
                           </div> -->
                           <!-- No Notifaction show block end -->
+                          <ul>
+                            <li *ngFor="let item of notifications | slice:0:10">
+                              <div>
+                                <div *ngIf="item.extended.type === 'rename'" class="notifactionHead">
+                                  {{buildRenameNotificationTitle(item)}}
+                                </div>
+                                <div *ngIf="item.extended.type === 'requestDownload'" class="notifactionHead">
+                                  {{buildRequestDownloadNotificationTitle(item)}}
+                                </div>
+                                <div *ngIf="item.extended.type === 'requestDownloadResponse'" class="notifactionHead">
+                                  {{buildRequestDownloadResponseNotificationTitle(item)}}
+                                </div>
+
+                                <div class="notifactionImgCont" (click)="goToNotificationLink(item)" style="cursor: pointer;">
+                                  <div class="notifactionImg">
+                                    <img src="{{buildNotificationIcon(item)}}" alt="" />
+                                  </div>
+                                  <div class="notifactionCont">
+                                    {{item.extended.title}}
+                                  </div>
+                                </div>
+                                <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
+                                  <div *ngIf="!item.extended.processed">
+                                    <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group buttonGroup">
+                                      <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
+                                      <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
+                                    </div>
+                                    <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
+                                      <input type="text" [(ngModel)]="rejectComment" class="requesInput" [ngClass]="{'goldenText': rejectComment }" name="rejectComment"
+                                        placeholder="Please describe the rejection reason" />
+                                      <button class="btn submitBtn mr10" [disabled]="!rejectComment" (click)="processDownloadRequest(item, false)">Submit</button>
+                                      <button class="btn cancelBtn" (click)="showRejectForm[item.id] = false">Cancel</button>
+                                    </div>
+                                    <div class="request-download-btn-group" *ngIf="requestSent[item.id]">
+                                      <p *ngIf="!isApproved[item.id]" class="rejected" style="font-size: 13px; padding-top: 10px;">You rejected this request.</p>
+                                      <p *ngIf="isApproved[item.id]" class="approved"style="font-size: 13px; padding-top: 10px;">You approved this request.</p>
+                                    </div>
+                                  </div>
+                                  <div *ngIf="item.extended.processed">
+                                    <p *ngIf="!item.extended.isApproved" class="rejection" style="font-size: 13px; padding-top: 10px;">Rejection submitted.</p>
+                                    <p *ngIf="item.extended.isApproved" class="approved" style="font-size: 13px; padding-top: 10px;">You approved this request.</p>
+                                  </div>
+                                </div>
+                                <div
+                                  *ngIf="item.extended.type === 'requestDownload' &&
+                                    item.extended.processed &&
+                                    item.extended.isApproved"
+                                  class="request-download-btn-group buttonGroup downloadBtn"
+                                >
+                                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}"><img src="../../../assets/images/download-white-icon.svg"> Download</a>
+                                </div>
+                                <div class="dayWeek">
+                                  {{getNotificationSince(item)}}
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="view-all-notifaction">
+                          <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
+                        </div>
+                      </div>
+                      <!-- <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="notifactionBlk">
+                          <img src="../../../assets/images/alarm-bell.svg">
+                          <div *ngIf="notifications?.length > 0" class="notifactionCount">{{notifications?.length}}</div>
+                        </div>
+                      </a> -->
+                      <!-- <div class="dropdown-menu borderNone" aria-labelledby="notificationDropdown">
+                        <div *ngIf="!notifications?.length" style="margin: 15px 20px;" class="empty-notification">
+                          <div class="no-notifaction">
+                            <img style="width: 22%; padding-top: 0px;" src="../../../assets/images/alarm-bell-1.svg">
+                            <div class="no-notifactionContent">
+                              <span>You're all caught up</span>
+                              Check back later for new notifications.
+                            </div>
+                          </div>
+                          <!-- <img style="width: 30%;" src="../../../assets/images/alarm-bell-1.svg">
+                          <div style="margin-top: 20px; font-size: 18px;">You're all caught up</div>
+                          <div style="margin-top: 25px; font-size: 18px">Check back later for new notifications.</div> -/->
+                        </div>
+                        <div *ngIf="notifications?.length > 0" id="customScrollBar" class="notificationDropdown">
+                          <!-- No Notifaction show block start -->
+                          <!-- <div class="no-notifaction">
+                            <img src="../../../assets/images/alarm-bell-1.svg" alt="" />
+                            <div class="no-notifactionContent">
+                              <span>You're all caught up</span>
+                              Check back later for new notifications.
+                            </div>
+                          </div> -/->
+                          <!-- No Notifaction show block end -/->
                           <ul>
                             <li *ngFor="let item of notifications | slice:0:10">
                               <div>
@@ -214,7 +305,7 @@
                         <div class="view-all-notifaction">
                           <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
                         </div>
-                      </div>
+                      </div> -->
                     </li>
 
                     <li class="nav-item dropdown">
