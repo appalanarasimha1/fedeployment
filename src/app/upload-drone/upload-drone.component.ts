@@ -381,6 +381,8 @@ export class UploadDroneComponent implements OnInit {
         filteredFile.push(file);
       } else if (file.type?.includes("audio/")) {
         filteredFile.push(file);
+      } else if (file.name?.toLowerCase().includes(".srt")) {
+        filteredFile.push(file);
       } else {
         // const blockedFile = file;
         // blockedFile['isBlocked'] = true;
