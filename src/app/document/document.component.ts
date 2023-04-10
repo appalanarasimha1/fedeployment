@@ -303,6 +303,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any) {
     this.userIdNew = JSON.parse(localStorage.getItem("user"))?.email;
     if (changes.searchTerm) {
+      this.docSliceInput = 39
       this.searchTerm = changes.searchTerm.currentValue;
       this.getRelatedTags();
     }
