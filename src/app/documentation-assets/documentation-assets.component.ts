@@ -155,6 +155,7 @@ export class DocumentationAssetsComponent implements OnInit {
       status: device.status,
       installationId: device.installationId,
       uid: device.id,
+      subAreaId: device.subAreaId,
     }));
   }
 
