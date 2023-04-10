@@ -1295,3 +1295,10 @@ span.userName {
     cursor: pointer;
     margin-left: 10px;
 }
+.bottomItems ul li a.active path {
+    fill: #fff;
+    transition: all 0.12s ease;
+}
+.bottomItems ul li a.active {
+    background: transparent !important;
+}

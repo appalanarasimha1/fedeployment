@@ -235,10 +235,10 @@ button.primary.createSuppliers {
     background: transparent;
 }
 ::ng-deep .mat-option {
-    line-height: 38px;
-    height: 38px;
-    padding: 0 10px;
-    font-family: inherit;
+    line-height: 34px !important;
+    height: 34px !important;
+    padding: 0 8px !important;
+    font-family: 'brownregular' !important;
     font-size: 13px;
     letter-spacing: 0.5px;
 }
