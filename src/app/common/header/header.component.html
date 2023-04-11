@@ -135,14 +135,14 @@
                       </a>
                     </li> -->
 
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <li class="nav-item dropdown notifactionClickAction">
+                      <a href="javascript:void(0)" (click)="notifactionClick();" class="nav-link dropdown-toggle">
                         <div class="notifactionBlk">
                           <img src="../../../assets/images/alarm-bell.svg">
                           <div *ngIf="notifications?.length > 0" class="notifactionCount">{{notifications?.length}}</div>
                         </div>
                       </a>
-                      <div class="dropdown-menu borderNone" aria-labelledby="notificationDropdown">
+                      <div *ngIf="showCreateFolderPopup" class="notificationExpandarea">
                         <div *ngIf="!notifications?.length" style="margin: 15px 20px;" class="empty-notification">
                           <div class="no-notifaction">
                             <img style="width: 22%; padding-top: 0px;" src="../../../assets/images/alarm-bell-1.svg">
@@ -165,6 +165,97 @@
                             </div>
                           </div> -->
                           <!-- No Notifaction show block end -->
+                          <ul>
+                            <li *ngFor="let item of notifications | slice:0:10">
+                              <div>
+                                <div *ngIf="item.extended.type === 'rename'" class="notifactionHead">
+                                  {{buildRenameNotificationTitle(item)}}
+                                </div>
+                                <div *ngIf="item.extended.type === 'requestDownload'" class="notifactionHead">
+                                  {{buildRequestDownloadNotificationTitle(item)}}
+                                </div>
+                                <div *ngIf="item.extended.type === 'requestDownloadResponse'" class="notifactionHead">
+                                  {{buildRequestDownloadResponseNotificationTitle(item)}}
+                                </div>
+
+                                <div class="notifactionImgCont" (click)="goToNotificationLink(item)" style="cursor: pointer;">
+                                  <div class="notifactionImg">
+                                    <img src="{{buildNotificationIcon(item)}}" alt="" />
+                                  </div>
+                                  <div class="notifactionCont">
+                                    {{item.extended.title}}
+                                  </div>
+                                </div>
+                                <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
+                                  <div *ngIf="!item.extended.processed">
+                                    <div *ngIf="!showRejectForm[item.id] && !requestSent[item.id]" class="request-download-btn-group buttonGroup">
+                                      <button class="btn reject mr10" (click)="showRejectForm[item.id] = true">Reject</button>
+                                      <button class="btn approve" (click)="processDownloadRequest(item, true)">Approve</button>
+                                    </div>
+                                    <div *ngIf="showRejectForm[item.id] && !requestSent[item.id]" class="download-request-reject-form">
+                                      <input type="text" [(ngModel)]="rejectComment" class="requesInput" [ngClass]="{'goldenText': rejectComment }" name="rejectComment"
+                                        placeholder="Please describe the rejection reason" />
+                                      <button class="btn submitBtn mr10" [disabled]="!rejectComment" (click)="processDownloadRequest(item, false)">Submit</button>
+                                      <button class="btn cancelBtn" (click)="showRejectForm[item.id] = false">Cancel</button>
+                                    </div>
+                                    <div class="request-download-btn-group" *ngIf="requestSent[item.id]">
+                                      <p *ngIf="!isApproved[item.id]" class="rejected" style="font-size: 13px; padding-top: 10px;">You rejected this request.</p>
+                                      <p *ngIf="isApproved[item.id]" class="approved"style="font-size: 13px; padding-top: 10px;">You approved this request.</p>
+                                    </div>
+                                  </div>
+                                  <div *ngIf="item.extended.processed">
+                                    <p *ngIf="!item.extended.isApproved" class="rejection" style="font-size: 13px; padding-top: 10px;">Rejection submitted.</p>
+                                    <p *ngIf="item.extended.isApproved" class="approved" style="font-size: 13px; padding-top: 10px;">You approved this request.</p>
+                                  </div>
+                                </div>
+                                <div
+                                  *ngIf="item.extended.type === 'requestDownload' &&
+                                    item.extended.processed &&
+                                    item.extended.isApproved"
+                                  class="request-download-btn-group buttonGroup downloadBtn"
+                                >
+                                  <a class="btn approve" href="{{downloadAssetFromNotification(item.docUUID)}}"><img src="../../../assets/images/download-white-icon.svg"> Download</a>
+                                </div>
+                                <div class="dayWeek">
+                                  {{getNotificationSince(item)}}
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="view-all-notifaction">
+                          <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
+                        </div>
+                      </div>
+                      <!-- <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="notifactionBlk">
+                          <img src="../../../assets/images/alarm-bell.svg">
+                          <div *ngIf="notifications?.length > 0" class="notifactionCount">{{notifications?.length}}</div>
+                        </div>
+                      </a> -->
+                      <!-- <div class="dropdown-menu borderNone" aria-labelledby="notificationDropdown">
+                        <div *ngIf="!notifications?.length" style="margin: 15px 20px;" class="empty-notification">
+                          <div class="no-notifaction">
+                            <img style="width: 22%; padding-top: 0px;" src="../../../assets/images/alarm-bell-1.svg">
+                            <div class="no-notifactionContent">
+                              <span>You're all caught up</span>
+                              Check back later for new notifications.
+                            </div>
+                          </div>
+                          <!-- <img style="width: 30%;" src="../../../assets/images/alarm-bell-1.svg">
+                          <div style="margin-top: 20px; font-size: 18px;">You're all caught up</div>
+                          <div style="margin-top: 25px; font-size: 18px">Check back later for new notifications.</div> -/->
+                        </div>
+                        <div *ngIf="notifications?.length > 0" id="customScrollBar" class="notificationDropdown">
+                          <!-- No Notifaction show block start -->
+                          <!-- <div class="no-notifaction">
+                            <img src="../../../assets/images/alarm-bell-1.svg" alt="" />
+                            <div class="no-notifactionContent">
+                              <span>You're all caught up</span>
+                              Check back later for new notifications.
+                            </div>
+                          </div> -/->
+                          <!-- No Notifaction show block end -/->
                           <ul>
                             <li *ngFor="let item of notifications | slice:0:10">
                               <div>
@@ -214,7 +305,7 @@
                         <div class="view-all-notifaction">
                           <span (click)="allNotifactionOpen(allNotifactionContent)">View all notifications</span>
                         </div>
-                      </div>
+                      </div> -->
                     </li>
 
                     <li class="nav-item dropdown">
@@ -381,6 +472,15 @@
                 </div>
                 <div class="notifactionListContRight">
                   {{getNotificationSince(item)}}
+                  <svg
+                    *ngIf="item.extended.type === 'requestDownloadResponse'"
+                    width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon" (click)="deleteNotiFication(item)">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
                 </div>
 
                 <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
@@ -447,6 +547,14 @@
                 </div>
                 <div class="notifactionListContRight">
                   {{getNotificationSince(item)}}
+                  <svg *ngIf="item.extended.type === 'requestDownloadResponse'"
+                    width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon" (click)="deleteNotiFication(item)">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
                 </div>
                 <div class="rejectApproveBlk" *ngIf="item.extended.type === 'requestDownload'">
                   <div *ngIf="!item.extended.processed">

@@ -133,6 +133,12 @@
                     </ng-select>
                 </div>
             </li>
+            <li class="regionBlok" *ngIf="selectedType=='live'">
+                    <div class="form-group">
+                        <label for="Latitude / Northing">Channel ID</label>
+                        <input [(ngModel)]="channelId" type="text" placeholder="Insert a channel ID" [ngClass]="{'goldenText': channelId}"/>
+                </div>
+            </li>
             <!-- <li *ngIf="!!installationID">
                 <div class="form-group">
                     <label for="Supplier's Name">Installation ID</label>
