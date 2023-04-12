@@ -1983,3 +1983,11 @@ ngx-dropzone-label {
 #myCustomSelect input {
   padding-right: 30px;
 }
+.uploadText {
+  font-size: 20px;
+  padding: 40px 0px;
+}
+.limitExceeded .cancel-btn {
+  padding: 12px 32px;
+  width: 150px;
+}

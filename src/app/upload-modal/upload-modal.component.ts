@@ -177,6 +177,8 @@ export class UploadModalComponent implements OnInit {
   whiteListFiles:any;
   fileLimitExceed;
 
+  uploadLimit:boolean = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -241,8 +243,9 @@ export class UploadModalComponent implements OnInit {
     this.dialogRef.close(this.selectedFolder);
   }
 
-  onSelect(event, fileLimitExceeded? : any) {
-    this.fileLimitExceed = false
+  onSelect(event) { //, fileLimitExceeded? : any
+    this.fileLimitExceed = false;
+    this.uploadLimit = false;
     // console.log("event.addedFiles", event.addedFiles);
     if (!event.addedFiles && !this.agreeTerms) {
       this.showError = true;
@@ -255,9 +258,10 @@ export class UploadModalComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         this.filesMap[i] = files[i]
       }
-      if(Object.keys(this.filesMap).length >50) {
-        this.openModal(fileLimitExceeded);
+      if(Object.keys(this.filesMap).length >50) { //50
+        // this.openModal(fileLimitExceeded);
         this.filesMap ={}
+        this.uploadLimit = true;
         return this.fileLimitExceed = true;
       }
       this.getTotalFileSize()
@@ -1508,5 +1512,6 @@ export class UploadModalComponent implements OnInit {
   }
   closeAll(){
     this.modalService.dismissAll();
+    this.uploadLimit = false;
   }
 }

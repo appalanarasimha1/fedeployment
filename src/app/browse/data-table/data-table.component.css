@@ -129,7 +129,7 @@ tr.groupFolder td:first-child {
   }
 
 .zoomImgBlock {
-  max-width: 107px;
+  max-width: 200px;
   border-radius: 4px;
   overflow: hidden;
   position: absolute;
@@ -137,8 +137,10 @@ tr.groupFolder td:first-child {
   bottom: 34px;
   display: none;
   z-index: 9;
-  background: #fff;
-  width: 250px;
+  background: transparent;
+  text-align: left;
+  width: 200px;
+  height: 164px;
 }
 
   .zoomImg:hover .zoomImgBlock {
@@ -146,8 +148,13 @@ tr.groupFolder td:first-child {
   }
 
   .zoomImgBlock img {
+    /* max-width: 100%;
+    width: 100%; */
     max-width: 100%;
-    width: 100%;
+    width: auto;
+    height: 100%;
+    margin: 0px;
+    border-radius: 4px;
   }
   
   .positionRelative input.search-bar::placeholder{
