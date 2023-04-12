@@ -384,3 +384,22 @@ li.flex span.ellipsis {
     left: 50%;
     white-space: nowrap;
 }
+.customSrtPreview {
+    position: relative;
+}
+.customSrtPreview img {
+    overflow: hidden;
+    border-radius: 4px;
+    max-width: 28px !important;
+    width: 100% !important;
+    height: 20px;
+    position: absolute;
+    top: 8px;
+}
+.customSrtPreview .flex span {
+    font-size: 14px;
+    color: #717386;
+}
+.customSrtPreview .flex {
+    padding: 6px 20px 6px 37px
+}
