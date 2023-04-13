@@ -16,7 +16,7 @@ export class AppConfigOCIProductionNew {
       elasticDbUrl: 'https://ES3.groundx.com:9200,https://ES2.groundx.com:9200,https://ES1.groundx.com:9200',
       elsticDbUserName: 'elastic',
       elasticCertificatePath: '/home/opc/rootCA.crt',
-      elasticSearchIndex: "searchindex_v4",
+      elasticSearchIndex: "searchindex_v5",
       elasticPassword:process.env.ELASTIC_DB_PASSWORD
     };
   
