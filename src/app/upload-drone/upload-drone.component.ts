@@ -22,6 +22,7 @@ export class UploadDroneComponent implements OnInit {
   showUpload: boolean = false;
   files: File[] = [];
   dates = [];
+  srtDates = [];
   showInfo: boolean = false;
   cancleBlock: boolean = false;
   countFile: boolean = true;
@@ -132,7 +133,7 @@ export class UploadDroneComponent implements OnInit {
 
   async startUpload() {
     this.loading = true;
-    await this.uploadFile(this.files);
+    await this.uploadFile([...this.files,...this.srtFiles]);
   }
 
   async uploadFile(files) {
@@ -219,7 +220,7 @@ export class UploadDroneComponent implements OnInit {
     this.sharedService.newEvent('Upload done');
 
     this.sharedService.showSnackbar(
-      `${this.files.length} assets uploaded`,
+      `${this.files.length +this.srtFiles.length} assets uploaded`,
       3000,
       "top",
       "center",
@@ -362,7 +363,7 @@ export class UploadDroneComponent implements OnInit {
     // this.uploadFile(this.files);
     // this.countFile = false;
   }
-
+  srtFiles:any =[]
   filterWhitelistFiles(files: any) {
     const filteredFile = [];
     for (const file of files) {
@@ -382,7 +383,9 @@ export class UploadDroneComponent implements OnInit {
       } else if (file.type?.includes("audio/")) {
         filteredFile.push(file);
       } else if (file.name?.toLowerCase().includes(".srt")) {
-        filteredFile.push(file);
+        // filteredFile.push(file);
+        this.srtFiles.push(file)
+        this.srtDates.push(file.lastModifiedDate);
       } else {
         // const blockedFile = file;
         // blockedFile['isBlocked'] = true;
@@ -580,5 +583,10 @@ export class UploadDroneComponent implements OnInit {
     if (currentUserSupplier) {
       currentUserSupplier.regions.forEach(region => this.supplierRegions.push(this.regionMap[region].initial));
     }
+  }
+  onRemoveSrt(event) {
+    const index = this.srtFiles.indexOf(event);
+    this.srtFiles.splice(index, 1);
+    this.srtDates.splice(index, 1);
   }
 }
