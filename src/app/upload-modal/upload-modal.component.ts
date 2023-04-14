@@ -283,6 +283,8 @@ export class UploadModalComponent implements OnInit {
         filteredFile.push(file);
       } else if (file.type?.includes("audio/")) {
         filteredFile.push(file);
+      } else if (file.name?.toLowerCase().includes(".srt")) {
+        filteredFile.push(file);
       } else {
         // const blockedFile = file;
         // blockedFile['isBlocked'] = true;
@@ -600,7 +602,7 @@ export class UploadModalComponent implements OnInit {
     return this.assetCache[uid]["entries"];
   }
   async uploadFile(files) {
-    console.log('testUpload');
+    console.log('testUpload',files);
     if (!this.batchId) {
       await this.createBatchUpload();
     }

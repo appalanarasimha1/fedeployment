@@ -29,7 +29,7 @@
                 [multiple]="false"
                 typeToSearchText="Search users"
             />
-            <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar">
+            <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar" style="overflow-y: auto;">
                 <ul>
                     <!-- <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>OXAGON</span></li>
                     <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>TROJENA</span></li> -->
@@ -38,8 +38,8 @@
             </div>
         </div>
 
-        <div *ngIf="showUpload" class="customScrollBar">
-            <div class="dropzoneContent filesAdded" *ngIf="files.length>0 && !publishStep" ngx-dropzone (change)="onSelect($event)">
+        <div *ngIf="showUpload" class="customScrollBar" style="overflow-y: auto;">
+            <div class="dropzoneContent filesAdded" *ngIf="(files.length>0 || srtFiles.length) && !publishStep" ngx-dropzone (change)="onSelect($event)">
                 <img src="../../assets/images/add-copyright-golden.svg" />
                 <h2>Drag and drop to add your assets <span>or click to select files</span></h2>
             </div>
@@ -57,7 +57,7 @@
                 </span>
             </div> -->
             <div class="uanet_dropzone" [ngClass]="{'addHeight' : countFile }" ngx-dropzone [disableClick]="loading || publishStep" [expandable]="true" (change)="onSelect($event)">
-                <ngx-dropzone-label *ngIf="!publishStep">
+                <ngx-dropzone-label *ngIf="!publishStep && !srtFiles.length">
                     <div class="dropzoneContent defaultTextUpload">
                         <img src="../../assets/images/add-copyright-golden.svg" />
                         <h2>Drag and drop to add your assets <span>or click to select files</span></h2>
@@ -79,13 +79,37 @@
                          <!-- ({{ f.type }}) -->
                     </ngx-dropzone-label>
                 </ngx-dropzone-image-preview>
+
+                <div class="customSrtPreview" *ngFor="let f of srtFiles; let i = index">
+                    <img src="../../assets/images/srt-icon.svg" alt="" />
+                    <div class="flex">
+                        <span>{{ f.name }}</span>
+                        <span class="custom-date-picker" style="margin-right: 22px;">
+                            <mat-form-field appearance="fill">
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="srtDates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </span>
+                        <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemoveSrt(f)">
+                            <svg>
+                                <line x1="0" y1="0" x2="10" y2="10"></line>
+                                <line x1="0" y1="10" x2="10" y2="0"></line>
+                            </svg>
+                        </ngx-dropzone-remove-badge>
+                    </div>
+                </div>
+
+                <div class="whenYouConvert" *ngIf="checkDroneUploader()">
+                    Please ensure drone videos are uploaded with corresponding .SRT files.
+                </div>
             </div>
         </div>
 
     </div>
     <div class="buttonBlock">
         <button *ngIf="!cancleBlock" class="cancel-btn" (click)="cancleShowHide()">Cancel</button>
-        <button [disabled]="files?.length === 0" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep" class="upload-btn">Start upload</button>
+        <button [disabled]="files?.length === 0 && !srtFiles.length" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep" class="upload-btn">Start upload</button>
         <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep" class="upload-btn">Publish</button>
 
         <div *ngIf="cancleBlock">Are you sure you want to cancel the upload?</div>

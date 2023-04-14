@@ -309,7 +309,7 @@ export class DocumentationAssetsComponent implements OnInit {
     let query = "";
     let filteredDevice = null;
     if (!this.selectedFormat) {
-      query += " AND ecm:primaryType IN ('Picture', 'Video')";
+      // query += " AND ecm:primaryType IN ('Picture', 'Video')";
     } else {
       query += ` AND ecm:primaryType = '${this.selectedFormat}'`;
     }
