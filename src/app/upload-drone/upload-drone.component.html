@@ -29,7 +29,7 @@
                 [multiple]="false"
                 typeToSearchText="Search users"
             />
-            <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar">
+            <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar" style="overflow-y: auto;">
                 <ul>
                     <!-- <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>OXAGON</span></li>
                     <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>TROJENA</span></li> -->
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div *ngIf="showUpload" class="customScrollBar">
+        <div *ngIf="showUpload" class="customScrollBar" style="overflow-y: auto;">
             <div class="dropzoneContent filesAdded" *ngIf="(files.length>0 || srtFiles.length) && !publishStep" ngx-dropzone (change)="onSelect($event)">
                 <img src="../../assets/images/add-copyright-golden.svg" />
                 <h2>Drag and drop to add your assets <span>or click to select files</span></h2>

@@ -403,3 +403,7 @@ li.flex span.ellipsis {
 .customSrtPreview .flex {
     padding: 6px 20px 6px 37px
 }
+
+::ng-deep .addHeight.ngx-dz-hovered {
+    border: 1px dashed #937206 !important;
+}
