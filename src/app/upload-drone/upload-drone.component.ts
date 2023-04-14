@@ -589,4 +589,15 @@ export class UploadDroneComponent implements OnInit {
     this.srtFiles.splice(index, 1);
     this.srtDates.splice(index, 1);
   }
+
+  checkDroneUploader(){
+    let userGroups = JSON.parse(localStorage.getItem("user"))["groups"]
+    let result:boolean=false;
+    if (userGroups.indexOf("drone_uploader") == -1) {
+      result = false
+    }else{
+      result = true
+    }
+    return result
+  }
 }
