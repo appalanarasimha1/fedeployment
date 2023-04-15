@@ -45,4 +45,6 @@ export const apiRoutes = {
   GET_DRONE_UPLOAD_PATH: "/automation/Scry.GetDroneUploadPath",
   UPDATE_DRONE_ACCESS: "/automation/Scry.UpdateDroneAccess",
   GET_DRONE_FOLDER_PATHs: "/automation/Scry.GetDroneFolderPaths",
+  GET_DOWNLOAD_INFO: "/automation/Scry.GetDownloadInfo",
+  BULK_DOWNLOAD: "/automation/Blob.BulkDownload",
 };
