@@ -59,7 +59,7 @@ export class SharedService {
   pluck(data, key) {
     return pluck(data, key);
   }
-  
+
   checkAssetMimeTypes(document: any): string {
     return this.checkMimeType(document);
   }
@@ -70,7 +70,7 @@ export class SharedService {
     if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
       return '../../../assets/images/no-preview-big.png';
     }
-    
+
     if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('nuxeo/')[1]}`;
     }
@@ -509,7 +509,7 @@ export class SharedService {
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
       return '../../../assets/images/word.png';
-    } 
+    }
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt.png';
     }
@@ -519,6 +519,26 @@ export class SharedService {
 
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  getFolderCollaborators() {
+    const currentWorkspace = JSON.parse(localStorage.getItem('workspaceState'));
+    if (!currentWorkspace?.contextParameters?.acls) return [];
+    const localAces = currentWorkspace.contextParameters.acls.find(acl => acl.name === 'local');
+    if (!localAces?.aces) return;
+    const folderCollaborators = {};
+    localAces.aces.forEach(ace => {
+      if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
+      if (!ace.granted || ace.username === "Administrator" || ace.username === 'administrators') return;
+      folderCollaborators[ace.username.id || ace.username] = {
+        user: ace.username,
+        permission: ace.permission,
+        externalUser: ace.externalUser,
+        end: ace.end,
+        id: ace.id,
+      }
+    });
+    return folderCollaborators;
   }
 
 }

@@ -369,7 +369,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
    }
 
   checkShowManageAccessButton() {
-    if (this.currentWorkspace?.properties?.['dc:isPrivate']) return false;
+    //  NOTE: in lock folder functionality, manage access icon wwill be visible to locked folder as well because they can be turned back to public folders
+    // if (this.currentWorkspace?.properties?.['dc:isPrivate']) return false; 
     const userData = localStorage.getItem("user");
 
     return this.currentWorkspace?.properties["dc:creator"].id === JSON.parse(userData).username
@@ -406,23 +407,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   getFolderCollaborators() {
-    const currentWorkspace = JSON.parse(localStorage.getItem('workspaceState'));
-    if (!currentWorkspace?.contextParameters?.acls) return [];
-    const localAces = currentWorkspace.contextParameters.acls.find(acl => acl.name === 'local');
-    if (!localAces?.aces) return;
-    const folderCollaborators = {};
-    localAces.aces.forEach(ace => {
-      if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
-      if (!ace.granted || ace.username === "Administrator" || ace.username === 'administrators') return;
-      folderCollaborators[ace.username.id || ace.username] = {
-        user: ace.username,
-        permission: ace.permission,
-        externalUser: ace.externalUser,
-        end: ace.end,
-        id: ace.id,
-      }
-    });
-    return folderCollaborators;
+    return this.sharedService.getFolderCollaborators();
   }
 
   hasAdminPermission(currentCollaborators) {

@@ -27,10 +27,10 @@ import { UploadModalComponent } from "src/app/upload-modal/upload-modal.componen
 import { Sort } from "@angular/material/sort";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { DataService } from "src/app/services/data.service";
-import { ManageAccessModalComponent } from "src/app/manage-access-modal/manage-access-modal.component";
-import { AddUserModalComponent } from "src/app/add-user-modal/add-user-modal.component";
-import { fromEvent } from "rxjs";
-import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators";
+// import { ManageAccessModalComponent } from "src/app/manage-access-modal/manage-access-modal.component";
+// import { AddUserModalComponent } from "src/app/add-user-modal/add-user-modal.component";
+// import { fromEvent } from "rxjs";
+// import { debounceTime, distinctUntilChanged, filter, tap } from "rxjs/operators";
 import { Departments, Workspace } from "./../../config/sector.config";
 import { IEntry, ISearchResponse } from "src/app/common/interfaces";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
@@ -1933,61 +1933,61 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
 
-  async openManageAccessModal() {
-    // this.loading = true;
-    const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
-    dialogConfig.id = "modal-component";
-    dialogConfig.width = "550px";
-    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
-    // const folder = await this.fetchFolder(this.selectedFolder.uid);
-    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
-    dialogConfig.data = {
-      selectedFolder: selectedFolder || this.selectedFolder,
-    }
+  // async openManageAccessModal() {
+  //   // this.loading = true;
+  //   const dialogConfig = new MatDialogConfig();
+  //   // The user can't close the dialog by clicking outside its body
+  //   dialogConfig.id = "modal-component";
+  //   dialogConfig.width = "550px";
+  //   dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+  //   // const folder = await this.fetchFolder(this.selectedFolder.uid);
+  //   const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+  //   dialogConfig.data = {
+  //     selectedFolder: selectedFolder || this.selectedFolder,
+  //   }
 
-    const modalDialog = this.matDialog.open(ManageAccessModalComponent, dialogConfig);
+  //   const modalDialog = this.matDialog.open(ManageAccessModalComponent, dialogConfig);
 
-    modalDialog.afterClosed().subscribe((result) => {
-      if (result) {
-        this.selectedFolder = result;
-        if (result?.properties && result?.properties["dc:isPrivate"]) result.properties['isPrivateUpdated'] = true;
-        this.saveState(result);
-      }
-      // this.loading = false;
-    });
-  }
+  //   modalDialog.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       this.selectedFolder = result;
+  //       if (result?.properties && result?.properties["dc:isPrivate"]) result.properties['isPrivateUpdated'] = true;
+  //       this.saveState(result);
+  //     }
+  //     // this.loading = false;
+  //   });
+  // }
 
-  async openAddUserModal() {
-    if (!this.isAdmin) return;
-    this.whiteLoader = true;
-    this.transparentLoader = true;
-    // this.loading = true;
-    const folder = await this.fetchFolder(this.selectedFolder.uid) as any;
-    this.saveState(folder);
-    const folderCollaborators = this.getFolderCollaborators();
-    const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
-    dialogConfig.id = "modal-component";
-    dialogConfig.width = "640px";
-    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
-    dialogConfig.data = {
-      selectedFolder: this.selectedFolder,
-      folderId: this.selectedFolder.uid,
-      folderCollaborators
-    }
+  // async openAddUserModal() {
+  //   if (!this.isAdmin) return;
+  //   this.whiteLoader = true;
+  //   this.transparentLoader = true;
+  //   // this.loading = true;
+  //   const folder = await this.fetchFolder(this.selectedFolder.uid) as any;
+  //   this.saveState(folder);
+  //   const folderCollaborators = this.getFolderCollaborators();
+  //   const dialogConfig = new MatDialogConfig();
+  //   // The user can't close the dialog by clicking outside its body
+  //   dialogConfig.id = "modal-component";
+  //   dialogConfig.width = "640px";
+  //   dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+  //   dialogConfig.data = {
+  //     selectedFolder: this.selectedFolder,
+  //     folderId: this.selectedFolder.uid,
+  //     folderCollaborators
+  //   }
 
-    const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
-    this.whiteLoader = false;
-    this.transparentLoader = false;
-    // this.loading = false;
-    modalDialog.afterClosed().subscribe((result) => {
-      if (result) {
-        this.onlyPrivate = false
-        this.saveState(result);
-      }
-    });
-  }
+  //   const modalDialog = this.matDialog.open(AddUserModalComponent, dialogConfig);
+  //   this.whiteLoader = false;
+  //   this.transparentLoader = false;
+  //   // this.loading = false;
+  //   modalDialog.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       this.onlyPrivate = false
+  //       this.saveState(result);
+  //     }
+  //   });
+  // }
 
   canSetAsPrivate() {
     return !this.isPrivateFolder();

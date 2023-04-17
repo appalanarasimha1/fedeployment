@@ -117,12 +117,12 @@ export const PAGE_SIZE_1000 = 1000;
 export const PAGE_SIZE_40 = 40;
 export const PAGE_SIZE_20 = 20;
 export const TOTAL_ASSETS_LABEL = 'Total Assets';
-export const UNWANTED_WORKSPACES = ['domain', 'ground x - data', 'environment - data'];
+export const UNWANTED_WORKSPACES = ['domain'];
 export const DEFAULT_NUMBER_OF_TAGS_PREVIEW = 8;
 
 export const ROOT_ID = '00000000-0000-0000-0000-000000000000';
 export const REPORT_ROLE = 'reportAdmin';
-export const specialExtensions = [ // NOTE: these are extensions of special routes in backend, please connect with "Mudit" before changing it
+export const specialExtensions = [ // NOTE: this is the extensions of special routes in backend, please connect with me before changing it
     '.js',
     '.ico',
     '.css',
@@ -144,3 +144,13 @@ export const tabs = {
     MEDIA: 'media',
     CONSTRUCTION: 'construction'
   };
+export const roles = {
+    lockFolder: {
+        'OWNER': '',
+        'ADMIN': 'everything',
+        'READWRITE': 'readwrite',
+        'UPLOAD': 'upload',
+        'DELETE': 'delete',
+        'DOWNLOAD': 'download'
+    }
+}
