@@ -543,12 +543,6 @@ input.datePicker:focus::placeholder{
     line-height: normal;
     padding-bottom: 8px;
 }
-.makeAdminBlock.customTableStyle p {
-    font-family: 'brownlight';
-    font-size: 14px;
-    color: #000;
-    padding-bottom: 20px;
-}
 
 .searchBlock {
     position: relative;

@@ -26,6 +26,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../common/snackbar/snackbar.component';
 import { AssetViewComponent } from '../asset-view/asset-view.component';
 import { ManageAccessModalComponent } from '../manage-access-modal/manage-access-modal.component';
+import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill';
 import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
@@ -65,6 +66,7 @@ keyboardEventKeyPolyfill();
     SnackbarComponent,
     AssetViewComponent,
     ManageAccessModalComponent,
+    AddUserModalComponent,
     DataTableComponent,
     SafePipe,
     MasonryViewComponent,
@@ -118,6 +120,7 @@ keyboardEventKeyPolyfill();
     MatMenuModule,
     DataTableComponent,
     ManageAccessModalComponent,
+    AddUserModalComponent,
     SafePipe,
     MasonryViewComponent,
     ShareModalComponent

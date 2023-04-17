@@ -56,17 +56,18 @@
 
     <div class="manageAccessNewUi">
       <div class="breadcrumbBlock">
-        <span>Marketing / Photos & Videos / <span class="active">Subfolder</span></span> 
+        <span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} /<span class="active">{{selectedFolder.title}}</span></span> 
       </div>
       <div class="lockFolder">
-        <div class="slideToggleBlk"><mat-slide-toggle (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
+        <div class="slideToggleBlk"><mat-slide-toggle [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
         <div class="slideContent">
           Lock folder
           <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
         </div>
       </div>
 
-      <div *ngIf="!lockInfo">
+      <!-- TODO: this will be done once we have an API to see which folders are locked inside the current folder -->
+      <div *ngIf="false"><!-- <div *ngIf="!docIsPrivate">  -->
         <div class="lockFolderInfo">
           This folder can't be locked because it contains locked folders by other users. Please contact the owners to move their folders to a different location in order to lock this folder.
         </div>
@@ -131,8 +132,9 @@
         </div>
       </div>
 
-      <div *ngIf="lockInfo">
-        <div class="makeAdminBlock customTableStyle">
+      <!-- TODO: might have to move it to access user controller -->
+      <div *ngIf="true"><!-- <div *ngIf="docIsPrivate"> -->
+        <!-- <div class="makeAdminBlock customTableStyle">
           <div class="whenYouConvert">
             This folder contains assets from other users. By default, they will have access to this locked folder.
           </div>
@@ -161,7 +163,6 @@
                 <td style="width:50%">
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">sheriff.shitu@neom.com <span>(You)</span></div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="bold" style="width:15%">
@@ -187,7 +188,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">maha.aljehani@neom.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="bold"> 
@@ -216,7 +216,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">jing.lin@neom.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="bold">
@@ -260,7 +259,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">ankur.tiwari@neom.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="bold">
@@ -289,7 +287,7 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">zimraan.hadi@example.com <span class="accessExpired">Access expired</span></div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                   
                   </div>
                 </td>
                 <td class="bold">
@@ -333,7 +331,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">azeem.ahmadi@example.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="bold">
@@ -375,11 +372,20 @@
               </tr>
             </table>
           </div>
-        </div>
+        </div> -->
+      </div>
+
+      <div *ngIf="docIsPrivate">
+        <app-add-user-modal
+          #addUserModal
+          [selectedFolder]="data.selectedFolder"
+          [folderId]="data.selectedFolder.uid"
+          [folderCollaborators]="folderCollaborators"
+        ></app-add-user-modal>
       </div>
 
       <!-- Classifications -->
-      <div class="reviewClassifications" *ngIf="lockInfo" style="display: none;">
+      <div class="reviewClassifications" *ngIf="docIsPrivate" style="display: none;">
         <div class="whenYouConvert">
           You're unlocking this folder and publishing its assets. You must review the classifications of its assets below.
         </div>
@@ -454,6 +460,6 @@
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
         <!-- <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Make private</button> -->
-        <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Save changes</button>
+        <button (click)="updateRights()" class="upload-btn">Save changes</button>
     </div>
 </div>

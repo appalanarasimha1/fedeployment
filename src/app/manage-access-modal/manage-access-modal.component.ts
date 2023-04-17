@@ -16,15 +16,17 @@ export class ManageAccessModalComponent implements OnInit {
   @Input() input_data: any;
   @Input() input_folder_structure: any;
   @Output() markIsPrivate: EventEmitter<any> = new EventEmitter();
+
   uploadedAsset;
   selectedFolder: any;
   makePrivate: boolean = false;
   docIsPrivate: boolean = false;
   error: string;
   folderStructure:any =[];
-  lockInfo:boolean;
+  lockInfo: boolean;
   peopleInviteInput: string = "";
   selectedCity: any;
+  folderCollaborators = {};
 
   confidentiality = [
     {id: 1, name: 'Confidential'},
@@ -38,7 +40,6 @@ export class ManageAccessModalComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<ManageAccessModalComponent>,
-    private router: Router,
     public sharedService: SharedService,
     public dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -47,8 +48,9 @@ export class ManageAccessModalComponent implements OnInit {
   ngOnInit(): void {
     this.selectedFolder = this.input_data || this.data.selectedFolder;
     this.docIsPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
-    this.folderStructure = this.input_folder_structure
-    console.log("sdfg",this.input_folder_structure);
+    this.folderStructure = this.input_folder_structure;
+    this.folderCollaborators = this.sharedService.getFolderCollaborators();
+    console.log("sdfg",this.data);
   }
 
   async closeModal(isUpdated = false) {
@@ -67,10 +69,10 @@ export class ManageAccessModalComponent implements OnInit {
   }
 
   async updateRights() {
-    if (!this.makePrivate) return;
+    // if (!this.makePrivate) return;
     
     const params = {
-      isPrivate: !this.docIsPrivate
+      isPrivate: this.docIsPrivate
     };
     const payload = {
       params,
@@ -99,6 +101,10 @@ export class ManageAccessModalComponent implements OnInit {
   }
 
   togglerUserActivated(event) {
-    this.lockInfo = !this.lockInfo;
+    this.docIsPrivate = !this.docIsPrivate;
+  }
+
+  removeWorkspacesFromString(value: string) {
+    return this.sharedService.removeWorkspacesFromString(value);
   }
 }

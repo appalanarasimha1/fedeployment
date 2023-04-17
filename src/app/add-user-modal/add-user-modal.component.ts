@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { concat, Observable, of, Subject } from "rxjs";
 import {
@@ -27,14 +27,18 @@ import { EditAccessComponent } from '../edit-access/edit-access.component';
   styleUrls: ['./add-user-modal.component.css']
 })
 export class AddUserModalComponent implements OnInit {
+  @Input() selectedFolder;
+  @Input() folderId;
+  @Input() folderCollaborators;
+
   uploadedAsset;
-  selectedFolder: any;
+  // selectedFolder: any;
   makePrivate: boolean = false;
   userList$: Observable<any>;
   userList = [];
   userInput$ = new Subject<string>();
   userLoading = false;
-  folderCollaborators = {};
+  // folderCollaborators = {};
   internalCollaborators = {};
   externalCollaborators = {};
   selectedCollaborator: any;
@@ -44,7 +48,7 @@ export class AddUserModalComponent implements OnInit {
   updatedCollaborators: {};
   invitedCollaborators: {};
   selectedExternalUser: any;
-  folderId: string;
+  // folderId: string;
   folderUpdated: any;
   closeResult: string;
   userInputText = "";
@@ -66,22 +70,17 @@ export class AddUserModalComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<AddUserModalComponent>,
-    private router: Router,
     public sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dataService: DataService,
-    private modalService: NgbModal,
     public matDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
     this.listExternalUser = [];
     this.listExternalUserGlobal = [];
-    this.getExternalGroupUser();
-    this.getExternalGlobalGroupUser();
-    this.selectedFolder = this.data.selectedFolder;
-    this.folderId = this.data.folderId;
-    this.folderCollaborators = this.data.folderCollaborators || {};
+    // this.selectedFolder = this.data.selectedFolder;
+    // this.folderId = this.data.folderId;
+    // this.folderCollaborators = this.data.folderCollaborators || {};
     this.addedCollaborators = {};
     this.addedExternalUsers = {};
     this.removedCollaborators = {};
@@ -91,8 +90,9 @@ export class AddUserModalComponent implements OnInit {
     this.loadUsers();
     this.sharedService.fetchExternalUserInfo();
     this.getExternalGroupUser();
-    this.sharedService.fetchExternalUserInfo();
-    this.getExternalGroupUser();
+    this.getExternalGlobalGroupUser();
+    // this.sharedService.fetchExternalUserInfo();
+    // this.getExternalGroupUser();
   }
 
   closeModal() {
@@ -370,7 +370,12 @@ export class AddUserModalComponent implements OnInit {
 
   getUsername(item) {
     const name = item.user?.properties?.firstName + " " + (item.user?.properties?.lastName || "");
-    return item.user?.properties?.firstName ? name : item.user?.id;
+    if(item.user?.properties?.firstName)
+      return name;
+    else if(item.user?.id) 
+      return item.user.id;
+    else 
+      return item.user;
   }
 
   getExternalName(item) {
