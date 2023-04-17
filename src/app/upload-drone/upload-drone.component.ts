@@ -43,7 +43,7 @@ export class UploadDroneComponent implements OnInit {
   filteredInstallationIdList = [];
   isSelectAll = false;
   allDate = new Date();
-  supplierRegions = [];
+  supplierRegions = null;
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -55,11 +55,13 @@ export class UploadDroneComponent implements OnInit {
   ngOnInit(): void {
     this.showUpload = false;
     this.installationIdList = this.data?.installationIdList || [];
-    this.filteredInstallationIdList = this.installationIdList;
     this.company = this.data?.company;
     this.companyId = this.data?.companyId;
     if (!this.installationIdList || this.installationIdList.length === 0) {
       this.initData();
+    } else {
+      this.filterDroneInstallationIdList();
+      this.filteredInstallationIdList = this.installationIdList;
     }
   }
 
@@ -482,7 +484,7 @@ export class UploadDroneComponent implements OnInit {
     }));
     this.deviceList = this.deviceList.filter(device => device.status !== "decommissioned");
 
-    if (this.supplierRegions?.length > 0) {
+    if (this.supplierRegions) {
       this.deviceList = this.deviceList.filter(device =>
         this.supplierRegions.includes(this.getInstallationIdRegion(device.installationId))
       );
@@ -556,8 +558,12 @@ export class UploadDroneComponent implements OnInit {
       longitude: device.longitude,
       deviceId: device.uid,
     }));
-
+    this.filterDroneInstallationIdList();
     this.filteredInstallationIdList = this.installationIdList;
+  }
+
+  filterDroneInstallationIdList() {
+    this.installationIdList = this.installationIdList?.filter(device => device.type?.toLowerCase() === 'drone') || [];
   }
 
   async getSupplierList() {
@@ -581,6 +587,7 @@ export class UploadDroneComponent implements OnInit {
     this.company = currentUserSupplier?.name || "";
     this.companyId = currentUserSupplier?.uid || "";
     if (currentUserSupplier) {
+      this.supplierRegions = [];
       currentUserSupplier.regions.forEach(region => this.supplierRegions.push(this.regionMap[region].initial));
     }
   }
