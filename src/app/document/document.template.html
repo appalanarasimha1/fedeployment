@@ -564,28 +564,28 @@
             (click)="selectType('all')"
             class="recentHeading"
           >
-            All <span class="itemCount">{{count()}}</span>
+            All <span class="itemCount">{{sharedService.numberWithCommas(count())}}</span>
           </div>
           <div
             [ngClass]="selectedType === 'Picture' ? 'viewSelected' : ''"
             (click)="selectType('Picture')"
             class="recentHeading"
           >
-            Images <span class="itemCount">{{count('Picture')}}</span>
+            Images <span class="itemCount">{{sharedService.numberWithCommas(count('Picture'))}}</span>
           </div>
           <div
             [ngClass]="selectedType === 'Video' ? 'viewSelected' : ''"
             (click)="selectType('Video')"
             class="recentHeading"
           >
-            Videos <span class="itemCount">{{count('Video')}}</span>
+            Videos <span class="itemCount">{{sharedService.numberWithCommas(count('Video'))}}</span>
           </div>
           <div
             [ngClass]="selectedType === 'File' ? 'viewSelected' : ''"
             (click)="selectType('File')"
             class="recentHeading"
           >
-            Documents <span class="itemCount">{{count('File')}}</span>
+            Documents <span class="itemCount">{{sharedService.numberWithCommas(count('File'))}}</span>
           </div>
         </div>
         <div
