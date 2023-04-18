@@ -181,7 +181,7 @@ export class ManageAccessListComponent implements OnInit {
     if(!event.checked) {
       this.sharedService.showSnackbar(
         "This access list will be disabled and its users unable to access its assets.",
-        1000,
+        3000,
         "top",
         "center",
         "snackBarMiddle"
