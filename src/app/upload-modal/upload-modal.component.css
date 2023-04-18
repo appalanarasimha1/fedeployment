@@ -1991,3 +1991,14 @@ ngx-dropzone-label {
   padding: 12px 32px;
   width: 150px;
 }
+
+li.styled.yellowfix {
+  margin: 0px !important;
+  border-top: 1px solid #ccc !important;
+  border-radius: 0px 0px 4px 4px !important;
+  padding: 4px 0px !important;
+}
+li.styled.yellowfix:hover {
+  background-color: #E1BB33 !important;
+  border-top: 1px solid #E1BB33 !important;
+}
