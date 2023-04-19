@@ -901,6 +901,7 @@ ul.sidebarList li .sidebarLink.active {
 .no-notifaction .no-notifactionContent {
     font-size: 15px;
     font-family: 'brownlight';
+    color: #040404;
 }
 
 .no-notifaction .no-notifactionContent span {
@@ -1333,4 +1334,10 @@ span.userName {
 }
 .notificationDropdown .download-request-reject-form {
     text-align: right;
+}
+.noNotificationYet p {
+    font-size: 15px;
+    text-align: center;
+    line-height: 25px;
+    margin-top: 60px;
 }
