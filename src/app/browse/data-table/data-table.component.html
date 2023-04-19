@@ -44,16 +44,9 @@
               arrow_downward
               </span>
         </th>
-<<<<<<< HEAD
         <th width="8%"> <div style="display: block; width: 40px; height: 40px"></div> <!-- [ngStyle]="{'width': increaseWidth ? '12%' : '8%' }" --></th>
         <th mat-sort-header="fileType" 
             width="12%"   
-=======
-        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div>
-         </th>
-        <th mat-sort-header="fileType"
-            width="15%"
->>>>>>> ece5addffd4b7cf08e0269d1172da080cb99c6f2
             (mouseover)="this.hoverArrow['fileType'] = true"
         >Format
         <span *ngIf="this.arrowisAsc['fileType'] && this.hoverArrow['fileType']"
