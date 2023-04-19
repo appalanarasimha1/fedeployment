@@ -22,7 +22,7 @@ import * as moment from 'moment';
   styleUrls: ['./data-table.component.css']
 })
 export class DataTableComponent implements OnInit, OnChanges {
-  
+
   @Input() breadCrumb = [];
   @Input() currentWorkspace: IEntry;
   @Input() isTrashView: boolean = false;
@@ -39,7 +39,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Output() sortedDataList: EventEmitter<any> = new EventEmitter();
   @Output() selectedCount: EventEmitter<any> = new EventEmitter();
   @Output() selectedAssetMoveList: EventEmitter<any> = new EventEmitter();
-  
+
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("paginator") paginator: MatPaginator;
   @ViewChild("previewModal") previewModal: PreviewPopupComponent;
@@ -62,16 +62,16 @@ export class DataTableComponent implements OnInit, OnChanges {
   downloadErrorShow: boolean = false;
   defaultPageSize: number = 20;
   downloadFullItem = [];
-  
+
   forInternaCheck = false;
   forInternalUse = [];
   fileSelected = [];
   fileToPreview: IEntry;
   fileToPreviewUrl: string;
   folderNotFound: boolean = false;
-  
+
   hasUpdatedChildren;
-  
+
   increaseWidth = false;
   initialLoad: boolean = false;
 
@@ -99,7 +99,7 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   pageSizeOptions = [20, 50, 100];
   permissionChange:boolean = false;
-  
+
   rightClickedItem:any =null;
   renameFolderName: boolean = false;
   resultCount: number = 0;
@@ -115,7 +115,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.contextMenu.closeMenu();
     }
   }
-  
+
   constructor(
     public sharedService: SharedService,
     private apiService: ApiService,
@@ -147,7 +147,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.resultCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.resultsCount;
     this.currentPageCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.currentPageSize;
   }
-  
+
   /**
    * @param event = {previousPageIndex: 0, pageIndex: 1, pageSize: 10, length: 100};
    */
@@ -160,7 +160,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         pageSize: event.pageSize,
         pageIndex: event.pageIndex,
         offset
-      }; 
+      };
       this.fetchAssets.emit(data);
   }
   async fetchUserData() {
@@ -249,7 +249,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   checkEnableMoveButton() {
     return Object.keys(this.selectedMoveList)?.length > 0;
   }
-  
+
   getFileContent(doc) {
     return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
@@ -411,7 +411,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     if (assetTypes.indexOf(assetType.toLowerCase()) !== -1) return true;
     else return false;
   }
-  
+
   checkWSType(assetType: string) {
     return assetType.toLowerCase() === ASSET_TYPE.WORKSPACE || assetType.toLowerCase() === ASSET_TYPE.ORDERED_FOLDER;
   }
@@ -564,7 +564,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       })
       this.sortedDataList.emit(this.sortedData)
   }
-  
+
   rightClickSelectAll(){
     this.removeAssets()
     this.sortedData.forEach((e,i) => {
@@ -614,6 +614,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       };
       this.selectedFolderList[i] = item;
       this.selectedMoveList[i] = item;
+      this.downloadArray.push(item.uid);
     } else {
       if (updateCount){
          this.count = this.count - 1;
@@ -622,6 +623,10 @@ export class DataTableComponent implements OnInit, OnChanges {
         }
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
+      const index = this.downloadArray.indexOf(item.uid);
+      if (index > -1) {
+        this.downloadArray.splice(index, 1);
+      }
         if (this.count==0) {
           this.currentIndexClicked = undefined
           this.lastIndexClicked = undefined
@@ -649,7 +654,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         return "../../../assets/images/folder-table-list.svg";
     }
   }
-  
+
   removeWorkspacesFromString(data: string, title: string): string {
     let dataWithoutWorkspace = this.sharedService.stringShortener(this.sharedService.removeWorkspacesFromString(data), 35);
     return dataWithoutWorkspace.replace('/'+title, '');
@@ -672,7 +677,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.selectedFolderList={};
     this.selectedMoveList={};
     this.selectedMoveListNew = {};
-    
+
     this.selectedAssetMoveList.emit(this.selectedMoveListNew);
     this.canNotDeleteList.emit(this.canNotDelete);
     this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});
@@ -692,7 +697,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   // //   const listDocs = Object.values(this.selectedMoveList)
   // //   .filter( item => !this.checkDownloadPermission(item))
   // //  console.log("listDocslistDocs",listDocs);
-    
+
   //   // if (!listDocs.length) return this.moveModalFailed()
   //   const dialogConfig = new MatDialogConfig();
   //   // The user can't close the dialog by clicking outside its body
@@ -823,7 +828,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       });
       this.removeAssets()
   }
-  
+
   copyLink(asset: IEntry, assetType: string) {
     this.increaseWidth = true;
     asset.copy = this.sharedService.copyLink(asset.uid, assetType, asset.properties['dc:sector']);
@@ -840,7 +845,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     //   this.increaseWidth = false;
     // }, 4000);
   }
-  
+
   updateFolderAction() {
     this.renameFolderName = false;
     this.newTitle =this.currentWorkspace.title
@@ -903,7 +908,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.previewModal.open();
     this.openGetNoPreview = false;
   }
-  
+
   // getAssetUrl(event: any, url: string, document?: any, type?: string): string {
   //   if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
   //     return this.sharedService.getNoPreview(document);
@@ -916,7 +921,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   //  return this.sharedService.getAssetUrl(event, url, type);
   // }
 
-  
+
   // open(file, fileType?: string): void {
   //   // console.log('item', this.checkAssetMimeTypes(file));
   //   if(this.checkAssetMimeTypes(file) == 'nopreview') {
@@ -1094,7 +1099,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   clickHandleChild(item) {
     this.clickHandle.emit(item);
   }
-  
+
   selectAllToggle(e) {
     if(e.target.checked) {
       this.rightClickSelectAll();
@@ -1121,12 +1126,12 @@ export class DataTableComponent implements OnInit, OnChanges {
   getFileType(item) {
     // console.log(item);
     if(item.type === 'Workspace' || item.type === 'Folder' || item.type === 'OrderedFolder') {
-      return '';  
+      return '';
     }
     const splittedData = item.title.substring(item.title.length - 4);
     // console.log(splittedData);
     var number = 0;
-    
+
     if (splittedData[0] === '.') {
       number = 1;
     }
@@ -1153,7 +1158,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     });
     this.sortedDataList.emit(this.sortedData);
   }
-  
+
   cancelDownloadClick(e) {
     e.stopPropagation();
     $(".multiDownloadBlock").hide();

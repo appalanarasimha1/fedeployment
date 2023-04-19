@@ -1,10 +1,10 @@
 <!-- <app-loader [show]="loading"></app-loader> -->
 <div class="row justify-content-between pt-25" style="width: 100%; --bs-gutter-x: 0px">
-   
+
 
   <div class="col-xl-12 col-md-12 customTableStyle">
       <!-- *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )"  -->
-    
+
     <table matSort (matSortChange)="sortData($event)" class="folderListview pb-5">
       <tr>
         <th style="width: 3%" class="checkAll positionRelative" [ngClass]="{'showChecked' : selectAllClicked }">
@@ -32,49 +32,56 @@
           width="35%"
           style="padding-left: 35px"
           (mouseover)="this.hoverArrow['title'] = true"
-                 > 
-          Name <span *ngIf="this.arrowisAsc['title'] && this.hoverArrow['title']" 
+                 >
+          Name <span *ngIf="this.arrowisAsc['title'] && this.hoverArrow['title']"
           class="material-icons fs-6"
           (click)="sortData({active: 'title', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['title'] && this.hoverArrow['title']" 
+            <span *ngIf="!this.arrowisAsc['title'] && this.hoverArrow['title']"
             class="material-icons fs-6"
             (click)="sortData({active: 'title', direction: 'desc'})">
               arrow_downward
               </span>
         </th>
+<<<<<<< HEAD
         <th width="8%"> <div style="display: block; width: 40px; height: 40px"></div> <!-- [ngStyle]="{'width': increaseWidth ? '12%' : '8%' }" --></th>
         <th mat-sort-header="fileType" 
             width="12%"   
+=======
+        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div>
+         </th>
+        <th mat-sort-header="fileType"
+            width="15%"
+>>>>>>> ece5addffd4b7cf08e0269d1172da080cb99c6f2
             (mouseover)="this.hoverArrow['fileType'] = true"
         >Format
-        <span *ngIf="this.arrowisAsc['fileType'] && this.hoverArrow['fileType']" 
+        <span *ngIf="this.arrowisAsc['fileType'] && this.hoverArrow['fileType']"
           class="material-icons fs-6"
           (click)="sortData({active: 'fileType', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['fileType'] && this.hoverArrow['fileType']" 
+            <span *ngIf="!this.arrowisAsc['fileType'] && this.hoverArrow['fileType']"
             class="material-icons fs-6"
             (click)="sortData({active: 'fileType', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
       </th>
-     
-        <th mat-sort-header="dc:creator" 
+
+        <th mat-sort-header="dc:creator"
             width="20%"
             (mouseover)="this.hoverArrow['dc:creator'] = true"
             > Created by
-          <span *ngIf="this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']" 
+          <span *ngIf="this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']"
           class="material-icons fs-6"
           (click)="sortData({active: 'dc:creator', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']" 
+            <span *ngIf="!this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']"
             class="material-icons fs-6"
             (click)="sortData({active: 'dc:creator', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
         </th>
         <th
           *ngIf="!isTrashView"
@@ -83,16 +90,16 @@
           width="12%"
         >
           Created on
-          <span *ngIf="this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']" 
+          <span *ngIf="this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']"
           class="material-icons fs-6"
           (click)="sortData({active: 'dc:created', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']" 
+            <span *ngIf="!this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']"
             class="material-icons fs-6"
             (click)="sortData({active: 'dc:created', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
         </th>
         <th
           *ngIf="isTrashView"
@@ -101,16 +108,16 @@
           (mouseover)="this.hoverArrow['dc:modified'] = true"
         >
           Deleted on
-          <span *ngIf="this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']" 
+          <span *ngIf="this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']"
           class="material-icons fs-6"
           (click)="sortData({active: 'dc:modified', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']" 
+            <span *ngIf="!this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']"
             class="material-icons fs-6"
             (click)="sortData({active: 'dc:modified', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
         </th>
         <th
         *ngIf="isTrashView"
@@ -119,16 +126,16 @@
           (mouseover)="this.hoverArrow['dc:sector'] = true"
         >
           Workspace
-          <span *ngIf="this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']"  
+          <span *ngIf="this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']"
           class="material-icons fs-6"
           (click)="sortData({active: 'dc:sector', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']" 
+            <span *ngIf="!this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']"
             class="material-icons fs-6"
             (click)="sortData({active: 'dc:sector', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
         </th>
         <th style="width: 3%">&nbsp;&nbsp;</th>
       </tr>
@@ -137,9 +144,7 @@
           <div
             class="delete-folder-action"
             *ngIf="
-              !checkAssetType(item.type) &&
-              checkWSType(item.type) &&
-              !checkGeneralFolder(item)
+              !checkAssetType(item.type)
             "
           >
             <div class="control-group">
@@ -308,7 +313,7 @@
             </ng-template> -->
           </span>
         </td>
-    
+
         <td
         style="padding-left: 25px;"
         >
@@ -424,7 +429,7 @@
       [doc]="fileToPreview"
       [docUrl]="fileToPreviewUrl"
     ></preview-popup>
-          
+
     <mat-paginator
         *ngIf="searchList?.length"
         #paginator
