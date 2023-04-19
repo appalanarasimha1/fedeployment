@@ -29,8 +29,8 @@
                 />
               </div>
               <span style="padding-left: 10px; z-index: 9">{{
-                item.title
-              }}</span>
+                item.title 
+              }} {{isExternalView}}</span>
             </div>
             <ul
               *ngIf="item.children?.length && item.isExpand"
@@ -72,7 +72,7 @@
           </li>
         </ul>
       </div>
-      <div class="tree" *ngIf="isExternalView">
+      <div class="tree">
         <li
           style="cursor: pointer"
           class="d-flex set"

@@ -120,7 +120,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.folderId = this.route.snapshot.paramMap.get('folderId');
       if(!this.folderId) {
         if(this.sectorName === 'sharedFolder') {
-          this.checkExternalGlobalUserList();
+          // this.checkExternalGlobalUserList();
           this.getAssets(null);
         } else {
           this.fetchWorkspaceByName(this.sectorName);
@@ -232,8 +232,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     if(folderUid) {
       url = `/search/pp/advanced_document_content/execute?currentPageIndex=${pageIndex}&offset=${offset}&pageSize=${pageSize}&ecm_parentId=${folderUid}&ecm_trashed=false`;
     } else {
+      const user = JSON.parse(localStorage.getItem('user'))["username"];
       this.currentWorkspace = {title: 'Shared folders'};
-      url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:mixinType = %27Folderish%27 AND dc:isPrivate = 1 AND ecm:acl/*1/principal IS NOT NULL`
+      url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=20&queryParams=SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:mixinType = %27Folderish%27 AND dc:isPrivate = 1  AND dc:creator != '${user}' AND ecm:primaryType != 'CommentRoot'`
     }
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
@@ -278,13 +279,13 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.showAssetPath = true;
     // this.loading = true;
     let query;
-    // if (!this.folderId) {
-    //   query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
-    // }
-    // else {
-      // const path = this.currentWorkspace.path; //this.folderId ? `${this.currentWorkspace.path}/` : `${this.currentWorkspace.path}/workspaces/`;
+    if (!this.folderId && this.isExternalView) {
+      query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:primaryType = 'Workspace' AND dc:isPrivate = 1 AND dc:title ILIKE '%${searchString}%'`;
+    }
+    else {
+      const path = this.currentWorkspace.path; //this.folderId ? `${this.currentWorkspace.path}/` : `${this.currentWorkspace.path}/workspaces/`;
       query = `SELECT * FROM Document WHERE ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0  AND ecm:path STARTSWITH '${this.currentWorkspace.path}' AND dc:title ILIKE '%${searchString}%'`;
-    // }
+    }
     const params = {
       currentPageIndex: 0,
       offset: 0,
