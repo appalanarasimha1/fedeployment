@@ -725,6 +725,7 @@ ul.sidebarList img {
 }
 ul.sidebarList li {
     margin-bottom: 10px;
+    position: relative;
 }
 ul.sidebarList li .sidebarLink {
     border-radius: 8px;
@@ -1333,4 +1334,89 @@ span.userName {
 }
 .notificationDropdown .download-request-reject-form {
     text-align: right;
+}
+.hoverDiscovery {
+    position: absolute;
+    left: 110px;
+    width: 300px;
+    top: 0px;
+    background: #23211E;
+    border: 1px solid #413E3C;
+    border-radius: 8px;
+    display: none;
+    color: #fff;
+    padding: 12px;
+    text-align: left;
+    /* opacity: 0; */
+    transition: all 0.3s ease;
+}
+.updateNavigation:hover .hoverDiscovery {
+    display: block;
+    /* opacity: 1; */
+}
+.updateNavigation {
+    position: relative;
+}
+/* .updateNavigation::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 75px;
+    top: 0px;
+} */
+
+ul.sidebarList li .sidebarLink:hover {
+    background: #313131;
+}
+ul.sidebarList li .sidebarLink.active:hover {
+    background: linear-gradient(102.26deg, #E1BB33 27.13%, #DAAA00 68.86%);
+}
+ul.sidebarList li .sidebarLink {
+    position: relative;
+    z-index: 2;
+}
+.hoverDiscovery::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: -27px;
+    top: 0px;
+    z-index: -1;
+}
+.mediaConstruction {
+    display: flex;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    /* transition: all 0.3s ease; */
+    background-color: #23211E;
+}
+.mediaConstruction:last-child {
+    margin-bottom: 0px;
+}
+.mediaConstruction:hover {
+    background: linear-gradient(102.26deg, #E1BB33 27.13%, #DAAA00 68.86%);
+    transition: all 0.3s ease;
+}
+.mediaConstruction .mediaConstructionContent p {
+    font-size: 12px;
+    line-height: 16px;
+    font-family: 'brownlight';
+    padding-top: 0px;
+}
+.mediaConstruction .mediaConstructionContent {
+    font-family: 'brownregular';
+}
+.mediaConstructionIcon {
+    margin-right: 10px;
+}
+ul.sidebarList .mediaConstructionIcon img {
+    display: block;
+    margin: 0px;
+    margin-top: 5px;
 }
