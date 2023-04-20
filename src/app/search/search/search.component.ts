@@ -719,9 +719,9 @@ export class SearchComponent implements OnInit {
     try {
       const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
       const ids = res['value'];
-      if (ids && ids.length > 0) {
-        this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
-      }
+    //  if (ids && ids.length > 0) {
+   //     this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
+    //  }
     } catch (err) {}
   }
 
