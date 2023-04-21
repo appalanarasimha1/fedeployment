@@ -105,7 +105,7 @@
       </div> -->
   
       <div id="exTab1" class="container-fluid pb-50" style="position: relative; z-index: 3;">
-        <span class="commonHeading recentFont">Assets by Sector</span>
+        <span class="commonHeading recentFont">Assets by Function</span>
         <ul class="nav nav-tabs" style="display: inline-block; width: 50%;">
           <li>
             <div ngbDropdown class="d-inline-block sectorsDropdown">
@@ -116,7 +116,7 @@
                   ngbDropdownAnchor
                   ngbDropdownToggle
                 >
-                  {{assetsBySectorSelected || 'All sectors'}}
+                  {{assetsBySectorSelected || 'All functions'}}
                 </button>
                 <div
                   ngbDropdownMenu
@@ -129,7 +129,7 @@
                     class="sectorDropBtn"
                     (click)="assetsBySectorSelect(null)"
                   >
-                    All sectors
+                    All functions
                   </button>
                   <button
                     *ngFor="let sector of sectorsHomepage.sort()"
@@ -526,7 +526,7 @@
               ngbDropdownAnchor
               ngbDropdownToggle
             >
-              {{sectorSelected || 'All sectors'}}
+              {{sectorSelected || 'All functions'}}
             </button>
             <div
               ngbDropdownMenu
@@ -539,7 +539,7 @@
                 class="sectorDropBtn"
                 (click)="sectorSelect(null)"
               >
-                All sectors
+                All functions
               </button>
               <button
                 *ngFor="let sector of sectors.sort()"
@@ -551,7 +551,7 @@
               </button>
             </div>
 
-            <!-- <ng-select placeholder="All sectors"  [ngClass]="{'goldenText': confidentiality}">
+            <!-- <ng-select placeholder="All functions"  [ngClass]="{'goldenText': confidentiality}">
               <ng-option **ngFor="let sector of sectors" [value]="c.value">
                 {{sector}}
               </ng-option>

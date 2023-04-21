@@ -480,7 +480,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     selBox.style.left = "0";
     selBox.style.top = "0";
     selBox.style.opacity = "0";
-    selBox.value = `${window.location.origin}/workspace/${this.currentWorkspace?.properties?.['dc:sector']}/${this.currentWorkspace.uid}`;
+    selBox.value = encodeURI(`${window.location.origin}/workspace/${this.currentWorkspace?.properties?.['dc:sector']}/${this.currentWorkspace.uid}`);
     this.copiedString = selBox.value;
     document.body.appendChild(selBox);
     selBox.focus();
