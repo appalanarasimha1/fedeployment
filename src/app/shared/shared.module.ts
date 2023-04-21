@@ -42,6 +42,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ShareModalComponent } from '../share-modal/share-modal.component';
+import { ArcGisMapComponent } from '../arc-gis-map/arc-gis-map.component';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -71,6 +72,7 @@ keyboardEventKeyPolyfill();
     SafePipe,
     MasonryViewComponent,
     ShareModalComponent,
+    ArcGisMapComponent,
   ],
   imports: [
     CommonModule,
@@ -123,7 +125,8 @@ keyboardEventKeyPolyfill();
     AddUserModalComponent,
     SafePipe,
     MasonryViewComponent,
-    ShareModalComponent
+    ShareModalComponent,
+    ArcGisMapComponent,
   ]
 })
 export class SharedModule { }

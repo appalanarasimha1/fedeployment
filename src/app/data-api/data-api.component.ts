@@ -12,6 +12,11 @@ export class DataApiComponent implements OnInit {
 
   checkedToggle:boolean;
 
+  mapCenter = [-122.4194, 37.7749];
+  basemapType = 'satellite';
+  mapZoomLevel = 12;
+  initialized = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -20,6 +25,10 @@ export class DataApiComponent implements OnInit {
 
   ngOnInit(): void {
     this.accordion();
+  }
+
+  ngAfterViewInit() {
+    this.initialized = true;
   }
 
   accordion() {
@@ -51,5 +60,10 @@ export class DataApiComponent implements OnInit {
   navigate(route: string) {
     this.router.navigate([route]);
   }
+  
+  mapLoadedEvent(status: boolean) {
+    console.log('The map has loaded: ' + status);
+  }
+  
 
 }
