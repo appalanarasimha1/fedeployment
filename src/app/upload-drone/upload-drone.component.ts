@@ -16,16 +16,10 @@ import { ApiService } from "../services/api.service";
 export class UploadDroneComponent implements OnInit {
   userWorkspaceInput$ = new Subject<string>();
 
-  isDroneOperator: boolean = false;
-  isNextButton: boolean = false;
   searchPopup: boolean = false;
   tagClicked: boolean = false;
   searchText: string = "";
-  uploadDate: string = new Date().toISOString().split("T")[0];
-  showDateDropdown: boolean = false;
-  selectedDate = null;
   showUpload: boolean = false;
-  showDatePicker: boolean = false;
   files: File[] = [];
   dates = [];
   srtDates = [];
@@ -60,7 +54,6 @@ export class UploadDroneComponent implements OnInit {
 
   ngOnInit(): void {
     this.showUpload = false;
-    this.checkIsDroneOperator();
     this.installationIdList = this.data?.installationIdList || [];
     this.company = this.data?.company;
     this.companyId = this.data?.companyId;
@@ -71,20 +64,6 @@ export class UploadDroneComponent implements OnInit {
       this.filteredInstallationIdList = this.installationIdList;
     }
   }
-
-  checkIsDroneOperator() {
-    const data = window.localStorage.getItem('user');
-    if (data) {
-      const user = JSON.parse(data);
-      if (user.groups && user.groups.length > 0) {
-        if(user.groups.includes('drone_uploader')) {
-          this.isDroneOperator = true;
-        }
-      }
-    }
-  }
-        
-
 
   closeModal(done?) {
     this.dialogRef.close(done);
@@ -104,7 +83,6 @@ export class UploadDroneComponent implements OnInit {
       || device.type?.toLowerCase().includes(term)
     });
   }
-
 
   blurOnSearch() {
     console.log("this.searchText", this.searchText);
@@ -131,38 +109,13 @@ export class UploadDroneComponent implements OnInit {
   }
 
   showUploadBlock(device) {
-    if(this.isDroneOperator) {
-      this.showDatePicker = true;
-    } else {
-      this.showUpload = true;
-    }
+    this.showUpload = !this.showUpload;
     this.selectedDevice = device;
   }
 
-  selectDate() {
-    this.isNextButton = true;
-  }
-
-  next() {
-    this.showUpload = true;
-    this.selectedDate = this.uploadDate;
-    this.isNextButton = false;
-    this.showDatePicker = false;
-  }
-
   generateUploadHeader() {
-    if(!this.isDroneOperator) {
-      if(!this.selectedDevice ) return "New Installation ID";
-    }
-    else {
-      if(!this.selectedDevice || !this.selectedDate) return "New Installation ID";
-    }
+    if (!this.selectedDevice) return "New Installation ID";
     return `${this.selectedDevice.installationId} ${this.selectedDevice.area} ${this.selectedDevice.location}`;
-  }
-
-  generateUploadDate() {
-    if (!this.selectedDevice || !this.selectedDate) return "";
-    return `${this.selectedDate}`;
   }
 
   async getUploadFolderPath() {

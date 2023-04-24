@@ -229,7 +229,7 @@
           <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; max-width: calc(100% - 30px); vertical-align: middle;">
             <span class="tollTipCustom">
               {{sharedService.stringShortener(item?.title, 25)}}
-              <!--img *ngIf="item.type === 'Picture' && item?.properties['picture:info']?.format === null"  src="../../../assets/images/recover-icon.svg" style="width: 15px; margin-left: 5px; vertical-align: middle;"-->
+              <img *ngIf="item.type === 'Picture' && item?.properties['picture:info']?.format === null"  src="../../../assets/images/recover-icon.svg" style="width: 15px; margin-left: 5px; vertical-align: middle;">
               <span class="tolltipContent" style="top: 28px;
               height: auto;
               white-space: break-spaces;
@@ -256,7 +256,7 @@
             <span class="tollTipCustom">
               <img src="../../../assets/images/recover-icon.svg" style="width: 17px; margin-left: 5px; vertical-align: middle;">
               <span class="tolltipContent" style="top: 28px; height: auto;white-space: break-spaces;text-align: left;padding: 5px 10px;">
-                This asset is in scanning progress
+                {{item?.title}}
               </span>
             </span>
           </span>
