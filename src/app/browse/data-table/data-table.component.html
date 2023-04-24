@@ -44,10 +44,9 @@
               arrow_downward
               </span>
         </th>
-        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div>
-         </th>
-        <th mat-sort-header="fileType"
-            width="15%"
+        <th width="8%"> <div style="display: block; width: 40px; height: 40px"></div> <!-- [ngStyle]="{'width': increaseWidth ? '12%' : '8%' }" --></th>
+        <th mat-sort-header="fileType" 
+            width="12%"   
             (mouseover)="this.hoverArrow['fileType'] = true"
         >Format
         <span *ngIf="this.arrowisAsc['fileType'] && this.hoverArrow['fileType']"
@@ -81,7 +80,7 @@
           *ngIf="!isTrashView"
           mat-sort-header="dc:created"
           (mouseover)="this.hoverArrow['dc:created'] = true"
-          width="15%"
+          width="12%"
         >
           Created on
           <span *ngIf="this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']"
@@ -221,7 +220,7 @@
         </td>
         <td *ngIf="checkAssetType(item.type)" class="getWidth2" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
           <div class="zoomImg" style="display: inline-block;">
-            <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain;">
+            <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain; max-height: 30px;">
             <div class="zoomImgBlock">
               <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')">
             </div>
@@ -286,29 +285,29 @@
           </span>
         </td>
         <td *ngIf="!checkAssetType(item.type)" class="getWidth3" (contextmenu)="onContextMenu($event, item)">
-          <span (click)="copyLink(item, 'folder')" style="text-align: right;">
-            <div *ngIf="!item.copy; else other_content" class="copyHover">
+          <span (click)="copyLink(item, 'folder')" style="text-align: left; display: inline-block; position: relative;">
+            <div class="copyHover"> <!-- *ngIf="!item.copy; else other_content" -->
               <img src="../../../assets/images/Link.svg" />
               <div class="copyHoverInfo">Copy link</div>
             </div>
-            <ng-template #other_content>
+            <!-- <ng-template #other_content>
               <div class="copyedBlock">
                 <img src="../../../assets/images/Tick-box.svg" /> Copied!
               </div>
-            </ng-template>
+            </ng-template> -->
           </span>
         </td>
         <td *ngIf="checkAssetType(item.type)"class="getWidth3" (contextmenu)="onContextMenu($event, item)">
-          <span (click)="copyLink(item, 'asset')" style="text-align: right;">
-            <div *ngIf="!item.copy; else other_content" class="copyHover">
+          <span (click)="copyLink(item, 'asset')" style="text-align: left;display: inline-block; position: relative;">
+            <div class="copyHover"> <!-- *ngIf="!item.copy; else other_content" -->
               <img src="../../../assets/images/Link.svg" />
               <div class="copyHoverInfo">Copy link</div>
             </div>
-            <ng-template #other_content>
+            <!-- <ng-template #other_content>
               <div class="copyedBlock">
                 <img src="../../../assets/images/Tick-box.svg" /> Copied!
               </div>
-            </ng-template>
+            </ng-template> -->
           </span>
         </td>
 

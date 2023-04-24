@@ -1152,14 +1152,17 @@ vertical-align: middle;
 z-index: 999;
 }
 .zoomImgBlock {
-max-width: 200px;
-position: absolute;
-left: 0px;
-bottom: 34px;
-display: none;
-z-index: 9;
-background: #fff;
-width: 250px;
+  max-width: 200px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: absolute;
+  left: 0px;
+  bottom: 34px;
+  display: none;
+  z-index: 9;
+  background: #fff;
+  width: 250px;
+  max-height: 204px;
 }
 .zoomImg:hover .zoomImgBlock {
 display: block;

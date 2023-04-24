@@ -6,10 +6,10 @@
       <mat-step [completed]="!checkUploadStep()">
          <ng-template matStepLabel>Select assets</ng-template>
          <div>
-            <ngx-dropzone #drop class="drag-drop" [ngClass]="{'dragDropDate' : !getAssetNumber() }" (change)="onSelect($event, fileLimitExceeded)" id="customScrollBar">
+            <ngx-dropzone #drop class="drag-drop" [ngClass]="{'dragDropDate' : !getAssetNumber() }" (change)="onSelect($event)" id="customScrollBar"> <!-- (change)="onSelect($event, fileLimitExceeded)"-->
                <!--  [accept]="'application/pdf,image/jpeg,image/jpg,image/png,image/gif,video/x-flv,video/mp4,application/x-mpegURL,video/x-m4v,video/x-msvideo,video/mpeg'" -->
             <ngx-dropzone-label  class="noborder" *ngIf="!data?.dropFilesNew?.length" >
-               <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto; height: 100%;" *ngIf="sizeExeeded" >
+               <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto; height: 100%;" *ngIf="sizeExeeded && !uploadLimit" >
                   <div class="checkUploadLength">
                      <img src="../../assets/images/controller-360.svg" alt="" style="margin: 0px auto;" />
                      <h2>Assets larger than 50GB take too long to upload. Consider breaking into smaller files.</h2>
@@ -20,7 +20,7 @@
                   </div>
                </div>
                
-               <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto" *ngIf="!sizeExeeded">
+               <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto" *ngIf="!sizeExeeded && !uploadLimit">
                   <div class="upload-label"> <!-- Remove *ngIf="!fileLimitExceed"-->
                      <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
                      <span style="margin-top: 20px; color: #040404; padding-bottom: 10px;"><b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
@@ -40,6 +40,12 @@
                   <!-- <div class="errortext">
                      <span class="errorInfotxt goldenText">Images, videos and PDF documents only</span>
                   </div> -->
+               </div>
+
+               <div class="limitExceeded" *ngIf="uploadLimit">
+                  <img src="../../assets/images/file-size-icon.svg" alt="" />
+                  <div class="uploadText">You can only upload 50 assets at a time.</div>
+                  <button class="cancel-btn" (click)="$event.stopPropagation(); closeAll()">OK</button>
                </div>
             </ngx-dropzone-label>
             <!-- <div class="malware" style="color: red;width: 100%; text-align: center;" *ngIf="fileLimitExceed">You can upload upto 100 files</div> -->
@@ -179,7 +185,7 @@
                   <!-- <div *ngIf="data" class="workshaptitle" style="padding-left: 0; margin-left: -2px;">{{folderNameParam}}</div> -->
                   <div  class="custom-select" id="myCustomSelect" [ngClass]="{'goldenText': selectedFolder?.title || folderToAdd || folderNameParam}"> <!-- *ngIf="!data"-->
                      <input autocomplete="off" type="text" id="title" #searchFolderInput value="{{sharedService.stringShortener(folderOrder,30)}}"
-                        [(ngModel)]="folderNameParam" (input)="filterFolder($event)"  (click)="opened = !opened" class="select-css"  placeholder="Enter a folder name or select an existing folder" > <!-- (focusout)="focusOutDropdown()" --> <!-- [disabled]="data"-->
+                        [(ngModel)]="folderNameParam" (input)="filterFolder($event)"  (click)="opened = !opened" class="select-css"  placeholder="Search for a folder or create a new one" > <!-- (focusout)="focusOutDropdown()" --> <!-- [disabled]="data"-->
                      <span class="custom-select-icons" (click)="opened = !opened" ><!-- (focusout)="focusOutDropdown()" -->
                         <i class="fa fa-angle-down"></i>
                      </span>

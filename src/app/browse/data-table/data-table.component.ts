@@ -832,10 +832,18 @@ export class DataTableComponent implements OnInit, OnChanges {
   copyLink(asset: IEntry, assetType: string) {
     this.increaseWidth = true;
     asset.copy = this.sharedService.copyLink(asset.uid, assetType, asset.properties['dc:sector']);
-    setTimeout(() => {
-      asset.copy = null;
-      this.increaseWidth = false;
-    }, 4000);
+
+    this.sharedService.showSnackbar(
+      "Link copied",
+      4000,
+      "top",
+      "center",
+      "snackBarMiddle"
+    );
+    // setTimeout(() => {
+    //   asset.copy = null;
+    //   this.increaseWidth = false;
+    // }, 4000);
   }
 
   updateFolderAction() {
