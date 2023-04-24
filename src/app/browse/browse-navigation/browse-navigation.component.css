@@ -126,3 +126,8 @@
 .pb-5 {
   padding-bottom: 10px !important;
 }
+.sharedWithMe img{
+  width: 18px;
+  vertical-align: -3px;
+  margin-right: 10px;
+}

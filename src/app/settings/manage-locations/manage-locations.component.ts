@@ -24,6 +24,9 @@ export class ManageLocationsComponent implements OnInit {
   showExternalUserPage: boolean = false;
   renameUserName: boolean = false;
   regionList = [];
+  deviceList = [];
+  regionsWithData = {};
+  subAreasWithData = {};
   filteredRegions = [];
   subAreaList = [];
   filteredSubAreas = [];
@@ -57,7 +60,49 @@ export class ManageLocationsComponent implements OnInit {
     this.loading = false;
   }
 
+  async getDeviceList(from?:string) {
+    const url = "/settings/camera";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
+    // const res = data as any;
+
+    if (!res) return;
+    const devices = res;
+    this.deviceList = devices.map((device) => ({
+      deviceType: device.deviceType?.toLowerCase(),
+      latitude: device.latitude,
+      longitude: device.longitude,
+      direction: device.cameraDirection,
+      cameraPole: device.cameraPole,
+      region: device.region,
+      areaId: device.areaId,
+      subArea: device.subAreaName,
+      subAreaId: device.subAreaId,
+      status: device.status?.toLowerCase(),
+      installationId: device.installationId,
+      isIngested: (device?.isIngested && device.isIngested) || false,
+      owner: device.owner,
+      uid: device.id,
+      supplierId: device.supplierId,
+      statusUpdateDate: device?.statusUpdateDate
+    }));
+
+    //console.log(this.deviceList);
+
+    for(let i = 0; i < this.deviceList.length; i++) {
+      let device = this.deviceList[i];
+      // Check if the device is ingested and add the region and subarea to the their respective dictionaries
+      if(device?.isIngested && device.isIngested) {
+        this.regionsWithData[device.areaId] = true;
+        this.subAreasWithData[device.subAreaId] = true;
+      }
+    }
+   
+  }
+
   async getRegionList() {
+    await this.getDeviceList();
+    // console.log(this.regionsWithData);
+    // console.log(this.subAreasWithData);
     const url = '/settings/area';
     const res = await this.apiService
       .get(url, {}).toPromise() as any;
@@ -67,9 +112,13 @@ export class ManageLocationsComponent implements OnInit {
       initial: region.code,
       name: region.title,
       uid: region.id,
+      isIngested: this?.regionsWithData[region.code] && this.regionsWithData[region.code] || false
     }));
+    // console.log(this.regionList);
     this.searchRegion();
   }
+
+  
 
   async getSubAreaList(areaId) {
     const url = `/settings/area/${areaId}/subareas`;
@@ -85,7 +134,9 @@ export class ManageLocationsComponent implements OnInit {
       name: area.name,
       uid: area.id,
       parentArea: area.parentArea,
+      isIngested: this?.subAreasWithData[area.locationId] && this.subAreasWithData[area.locationId] || false
     }));
+    // console.log(this.subAreaList);
     this.filteredSubAreas = this.subAreaList;
     this.searchSubArea();
   }
