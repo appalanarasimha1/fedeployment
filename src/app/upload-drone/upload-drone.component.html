@@ -13,7 +13,7 @@
             </div>
         </div>
         <img src="../../assets/images/Installation-search-icon.svg" class="installation-search-icon" *ngIf="!showUpload" />
-        <div class="searchBar mb-5" *ngIf="!showUpload">
+        <div class="searchBar mb-5 zindex-1" *ngIf="!showUpload">
             <img src="../../assets/images/Iocn_Search.svg" class="searchIcon" />
             <input type="search" placeholder="{{selectedDevice? this?.selectedDevice.installationId + ' ' + this?.selectedDevice.area + ' ' + this.selectedDevice.location:  'Search installation ID, region, location or monthly footage'}}"
                 [(ngModel)]="searchText"
@@ -40,19 +40,27 @@
         </div>
 
         <div *ngIf="selectedDevice && showDatePicker" class="searchBar mb-5">
-            <img src="../../assets/images/calendar-icon.svg" class="searchIcon" />
+            <!-- <img src="../../assets/images/calendar-icon.svg" class="searchIcon" />
             <input *ngIf="!showDateDropdown" 
             type="text" 
             placeholder="Set a date for the upload" 
             (click) = "showDateDropdown = !showDateDropdown"
-            />
-            <input
+            /> -->
+            <!-- <input
             *ngIf="showDateDropdown"
             value="{{uploadDate}}"  
             type="date" 
                 [(ngModel)]="uploadDate" 
                 (click) = "selectDate()"
-            />
+            /> -->
+
+            <span class="custom-date-picker1" style="margin-right: 22px;" (click) = "selectDate()">
+                <mat-form-field appearance="fill">
+                    <input matInput [matDatepicker]="picker" placeholder="Set a date for the upload" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </span>
             
         </div>
 
