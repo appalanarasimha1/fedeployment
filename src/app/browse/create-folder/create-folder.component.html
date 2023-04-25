@@ -1,7 +1,7 @@
 
 <div class='dropdownCreate createFolder'>
     <img src="../../../assets/images/close-modal.svg" class="closeIcon" />
-    
+
     <form>
       <div class="row">
         <div class="col-xl-12">
@@ -50,10 +50,10 @@
     </div>
     <div class="row mt-4">
 
-      <div class="col-xl-12">
+      <div class="col-xl-12" *ngIf="!checkPrivateFolder">
         <div class="lockFolder">
           <div class="slideToggleBlk">
-            <mat-slide-toggle (change)="togglerUserActivated($event)"></mat-slide-toggle>
+            <mat-slide-toggle (change)="toggleLockFolder($event)"></mat-slide-toggle>
           </div>
           <div class="slideContent">
             Lock folder
@@ -66,88 +66,6 @@
         </div>
       </div>
 
-      <div class="col-xl-12" *ngIf="!checkPrivateFolder">
-        <div class="folderType">
-          <label>Folder type</label>
-
-          <div class="row">
-            <div class="col-xl-12 mb-10">
-              <label class="control control--checkbox" (change)="handleChange($event, 'published')" style="margin-bottom: 0px; display: inline-block;">
-                Published
-                <input type="radio" id="Published" name="publishedPrivate" checked/>
-                <div class="control__indicator" for="Published" style="top: 4px;left: 0px; border-radius: 100px;"></div>
-              </label>
-            </div>
-            <div class="col-xl-12 mb-10">
-              <label class="control control--checkbox" (change)="handleChange($event, 'private')" style="margin-bottom: 0px; display: inline-block;">
-                Private fileshare
-                <input type="radio" id="Private" name="publishedPrivate"/>
-                <div class="control__indicator" for="Private" style="top: 4px;left: 0px;border-radius: 100px;"></div>
-              </label>
-            </div>
-            <div class="col-xl-12 mb-10">
-              <div class="publishingAssets" *ngIf="publishingAssets">
-                <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
-                <table class="table table-bordered">
-                  <tbody>
-                     <tr>
-                        <td style="padding-left: 0px; white-space: nowrap;">Discoverable from search</td>
-                        <td style="border-right: 0px; font-family: 'brownregular';">Yes</td>
-                     </tr>
-                     <tr>
-                        <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
-                        <td style="border-right: 0px; font-family: 'brownregular';">Set per asset <br />("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</td>
-                     </tr>
-                     <tr>
-                        <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
-                        <td style="border-right: 0px;font-family: 'brownregular';">No</td>
-                     </tr>
-                  </tbody>
-                </table>
-                <!-- <ul>
-                  <!-- <li>
-                    <span class="leftCont">Discoverable from search:</span> <span class="rightCont">Yes</span>
-                  </li> -/->
-                  <li>
-                    <span class="leftCont">Access and Usage:</span> <span class="rightCont">Set per asset ("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</span>
-                  </li>
-                  <li>
-                    <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">No</span>
-                  </li>
-                </ul> -->
-              </div>
-
-              <div class="publishingAssets" *ngIf="publishingPrivateAssets">
-                <p>Used for restricting files to specific users or receiving files from external users</p>
-                <table class="table table-bordered">
-                  <tbody>
-                     <tr>
-                        <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
-                        <td style="border-right: 0px; font-family: 'brownregular';">Folder members only</td>
-                     </tr>
-                     <tr>
-                        <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
-                        <td style="border-right: 0px;font-family: 'brownregular';">Yes</td>
-                     </tr>
-                  </tbody>
-                </table>
-                <!-- <ul>
-                  <!-- <li>
-                    <span class="leftCont">Discoverable from search:</span> <span class="rightCont">No</span>
-                  </li> -/->
-                  <li>
-                    <span class="leftCont">Access and Usage:</span> <span class="rightCont">Folder members only</span>
-                  </li>
-                  <li>
-                    <span class="leftCont">Can receive files from external users:</span> <span class="rightCont">Yes (if folder member)</span>
-                  </li>
-                </ul> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
       <div class="row mt-4">
         <div class="col-xl-12 mt-15">
           <div *ngIf="showError" class="errorMessage">

@@ -355,7 +355,7 @@ h3.externalUsers {
 ::ng-deep .mat-form-field-ripple {
     background-color: transparent;
 }
-::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple, 
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple,
 ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-ripple {
     display: none;
 }
@@ -441,7 +441,7 @@ h3.externalUsers {
 .itemTitleContent span {
     margin-left: 10px;
 }
-  
+
 .tollTipCustom .tolltipContent {
     position: absolute;
     top: 25px;
@@ -634,7 +634,7 @@ input.datePicker:focus::placeholder{
 .accessExpiredDate ::ng-deep input.mat-input-element {
     color: #CB1B19 !important;
 }
-.folderListview .accessExpiryCal.accessExpiredDate ::ng-deep mat-form-field::after {
+.folderListview .accessExpiryCal ::ng-deep mat-form-field::after {
     background: url(../../assets/images/down-arrow-red.svg) no-repeat center center !important;
 }
 .action-delete-icon {
