@@ -284,8 +284,8 @@
             </div>
           </span>
         </td>
-        <td *ngIf="!checkAssetType(item.type)" class="getWidth3" (contextmenu)="onContextMenu($event, item)">
-          <span (click)="copyLink(item, 'folder')" style="text-align: left; display: inline-block; position: relative;">
+        <td *ngIf="!checkAssetType(item.type)" class="getWidth3" (contextmenu)="onContextMenu($event, item)" style="text-align: center !important;">
+          <span (click)="copyLink(item, 'folder')" style="text-align: left; display: inline-block; position: relative; margin: 0px auto;">
             <div class="copyHover"> <!-- *ngIf="!item.copy; else other_content" -->
               <img src="../../../assets/images/Link.svg" />
               <div class="copyHoverInfo">Copy link</div>
@@ -297,8 +297,8 @@
             </ng-template> -->
           </span>
         </td>
-        <td *ngIf="checkAssetType(item.type)"class="getWidth3" (contextmenu)="onContextMenu($event, item)">
-          <span (click)="copyLink(item, 'asset')" style="text-align: left;display: inline-block; position: relative;">
+        <td *ngIf="checkAssetType(item.type)"class="getWidth3" (contextmenu)="onContextMenu($event, item)" style="text-align: center !important;">
+          <span (click)="copyLink(item, 'asset')" style="text-align: left;display: inline-block; position: relative;margin: 0px auto;">
             <div class="copyHover"> <!-- *ngIf="!item.copy; else other_content" -->
               <img src="../../../assets/images/Link.svg" />
               <div class="copyHoverInfo">Copy link</div>
@@ -311,9 +311,7 @@
           </span>
         </td>
 
-        <td
-        style="padding-left: 25px;"
-        >
+        <td>
           <p class="itemTitleContent">{{getFileType(item)}}</p>
         </td>
 
