@@ -223,7 +223,7 @@ export class SearchComponent implements OnInit {
   hitSearchApi(queryParams: any, pageNumber) {
     this.firstCallResult = true;
     const params: any = this.populateQueryParams(queryParams);
-    this.fetchApiResult(params);
+    this.fetchApiResult(true, params);
     this.insertSearchTerm(params.ecm_fulltext);
   }
   // hitInsert:boolean=false
@@ -248,8 +248,8 @@ export class SearchComponent implements OnInit {
     return queryParams;
   }
 
-  async fetchApiResult(params, isShowMore: boolean = false) {
-    if (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0) {
+  async fetchApiResult(withAncestorId = true, params, isShowMore: boolean = false) {
+    if(withAncestorId && (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0)) {
       await this.getDroneUploadWsIds();
     }
     const headers = {
@@ -326,7 +326,14 @@ export class SearchComponent implements OnInit {
       })
       .catch((error) => {
         console.log("search document error = ", error);
+        
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
+        
+        if(error.status === 403) {
+          this.excludedDroneWorkspaces = "";
+          this.fetchApiResult(true, false);
+          return;
+        }
         if (--this.count === 0) {
           this.getAggregationValues();
           // this.loading = false;
@@ -719,9 +726,9 @@ export class SearchComponent implements OnInit {
     try {
       const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
       const ids = res['value'];
-    //  if (ids && ids.length > 0) {
-   //     this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
-    //  }
+     if (ids && ids.length > 0) {
+       this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
+     }
     } catch (err) {}
   }
 

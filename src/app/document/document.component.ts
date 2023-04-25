@@ -486,8 +486,8 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectorOffset:number=0
   sectorPageSize:number=0
 
-  async getAssetBySectors(sector = "", dontResetSectors: boolean = true,offset= 0,pageSize= 16,fromEvent=false ) {
-    if (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0) {
+  async getAssetBySectors(withAncestorId = true, sector = "", dontResetSectors: boolean = true, offset= 0, pageSize= 16, fromEvent = false) {
+    if (withAncestorId && (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0)) {
       await this.getDroneUploadWsIds();
     }
     this.sectorOffset = offset + pageSize
@@ -536,6 +536,11 @@ export class DocumentComponent implements OnInit, OnChanges {
       })
       .catch((error) => {
         this.loading.pop();
+        if(error.status === 403) {
+          this.excludedDroneWorkspaces = "";
+          this.getAssetBySectors(false);
+          return;
+        }
         if (error && error.message) {
           if (error.message.toLowerCase() === "unauthorized") {
             this.sharedService.redirectToLogin();
@@ -589,7 +594,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   assetsBySectorSelect(value: string) {
     this.assetsBySector = [];
     this.assetsBySectorSelected = value;
-    this.getAssetBySectors(value, false);
+    this.getAssetBySectors(true, value, false);
   }
 
   calculateNoResultScreen() {
@@ -1287,7 +1292,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   afterChangeSector(e){
     if(e.last){
-      this.getAssetBySectors(this.sectorSelected,  true,this.sectorOffset,16,true )
+      this.getAssetBySectors(true, this.sectorSelected,  true, this.sectorOffset, 16, true)
 
     }
   }
@@ -1368,9 +1373,9 @@ export class DocumentComponent implements OnInit, OnChanges {
     try {
       const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
       const ids = res['value'];
-     // if (ids && ids.length > 0) {
-    //    this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
-   //   }
+     if (ids && ids.length > 0) {
+       this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
+     }
     } catch (err) {}
   }
 }
