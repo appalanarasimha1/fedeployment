@@ -9,6 +9,16 @@
           Workspace
         </h2>
       </div>
+      <div class="tree">
+        <li
+          style="cursor: pointer"
+          class="d-flex set"
+          [routerLinkActive]="getClass()"
+          [routerLink]="['/workspace/sharedFolder']"
+        >
+          <span class="sharedWithMe"><img src="../../../assets/images/adding-collaborators-icon.svg" /> Shared with me</span>
+        </li>
+      </div>
       <div class="tree" *ngIf="!isExternalView">
         <ul style="list-style: none" class="leftPanel">
           <li *ngFor="let item of folderStructure; let i = index" style="cursor: pointer">
@@ -29,8 +39,8 @@
                 />
               </div>
               <span style="padding-left: 10px; z-index: 9">{{
-                item.title
-              }}</span>
+                item.title 
+              }} {{isExternalView}}</span>
             </div>
             <ul
               *ngIf="item.children?.length && item.isExpand"
@@ -71,16 +81,6 @@
             <span>Trash</span>
           </li>
         </ul>
-      </div>
-      <div class="tree" *ngIf="isExternalView">
-        <li
-          style="cursor: pointer"
-          class="d-flex set"
-          [routerLinkActive]="getClass()"
-          [routerLink]="['/workspace/sharedFolder']"
-        >
-          <span>Shared folders</span>
-        </li>
       </div>
   </div>
 </section>

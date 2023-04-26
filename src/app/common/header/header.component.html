@@ -427,6 +427,10 @@
         </svg>
       </button>
       <div id="customScrollBar" class="notificationModal">
+        <!-- No notifications yet -->
+        <div class="noNotificationYet" *ngIf="thisWeekNoti.length == 0 && earlierNoti.length == 0">
+          <p>No notifications yet.<br />Check back later for new notifications.</p>
+        </div>
         <div *ngIf="thisWeekNoti.length > 0" class="weekHead">This week</div>
         <div *ngIf="thisWeekNoti.length > 0" class="notifactionList">
           <ul>
@@ -608,7 +612,7 @@
           Discovery
         </a>
         <div class="hoverDiscovery">
-          <div class="mediaConstruction">
+          <div class="mediaConstruction active" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
             <div class="mediaConstructionIcon">
               <img src="../../../assets/images/media-assets-icon.svg" />
             </div>
@@ -617,7 +621,7 @@
               <p>Search and discover a wide range of digital media assets, including images, videos, documents and more.</p>
             </div>
           </div>
-          <div class="mediaConstruction">
+          <div class="mediaConstruction" [routerLink]="['/']">
             <div class="mediaConstructionIcon">
               <img src="../../../assets/images/construction-footage-icon.svg" />
             </div>

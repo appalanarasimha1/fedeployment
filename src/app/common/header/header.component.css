@@ -902,6 +902,7 @@ ul.sidebarList li .sidebarLink.active {
 .no-notifaction .no-notifactionContent {
     font-size: 15px;
     font-family: 'brownlight';
+    color: #040404;
 }
 
 .no-notifaction .no-notifactionContent span {
@@ -1400,6 +1401,10 @@ ul.sidebarList li .sidebarLink {
     margin-bottom: 0px;
 }
 .mediaConstruction:hover {
+    Background: #313131;
+    transition: all 0.3s ease;
+}
+.mediaConstruction.active {
     background: linear-gradient(102.26deg, #E1BB33 27.13%, #DAAA00 68.86%);
     transition: all 0.3s ease;
 }
@@ -1419,4 +1424,10 @@ ul.sidebarList .mediaConstructionIcon img {
     display: block;
     margin: 0px;
     margin-top: 5px;
+}
+.noNotificationYet p {
+    font-size: 15px;
+    text-align: center;
+    line-height: 25px;
+    margin-top: 60px;
 }
