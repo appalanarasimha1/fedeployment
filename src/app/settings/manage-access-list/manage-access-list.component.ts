@@ -6,6 +6,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { apiRoutes } from "src/app/common/config";
 import { ApiService } from "../../services/api.service";
+import { SharedService } from "../../services/shared.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -23,8 +24,10 @@ export class ManageAccessListComponent implements OnInit {
   showExternalUserPage: boolean = false;
   accessList = [];
   filteredAccessList = [];
+  regionDict = {};
   accessInput = "";
   selectedAccess = null;
+
 
   showUserManageLocations = true;
   showUserSettingPage = false;
@@ -37,7 +40,8 @@ export class ManageAccessListComponent implements OnInit {
 
   constructor(
     public matDialog: MatDialog,
-    private apiService: ApiService
+    private apiService: ApiService,
+    public sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
@@ -45,20 +49,38 @@ export class ManageAccessListComponent implements OnInit {
       startWith(''),
       map(value => this._userFilter(value || '')),
     );
+    // this.getRegionList();
     this.getAccessList();
     this.getAllUsers();
   }
 
   private _userFilter(value: string): string[] {
     const filterValue = this._userNormalizeValue(value);
-    return this.users.filter(street => this._userNormalizeValue(street).includes(filterValue));
+    
+    const filteredUsers = this._filterUsers();
+
+    return filteredUsers.filter(street => this._userNormalizeValue(street).includes(filterValue));
   }
 
   private _userNormalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
   }
 
+  private _filterUsers(): string[] {
+    // Filter out entries if first letter is uppercase
+    const nonAdminUsers = this.users.filter(user => user[0] !== user[0].toUpperCase());
+    // Filter out duplicates
+    const uniqueUsers = nonAdminUsers.filter((user, index) => nonAdminUsers.indexOf(user) === index);
+    // Filter out non-neom users  
+    const neomUsers = uniqueUsers.filter(user => user.includes('neom'));
+    
+    return neomUsers;
+  }
+
+  
+
   async getAccessList() {
+    await this.getRegionList();
     const url = '/settings/accessList';
     const res = await this.apiService
       .get(url, {}).toPromise() as any;
@@ -70,12 +92,37 @@ export class ManageAccessListComponent implements OnInit {
     ]
     this.accessList = sortedAll
     .map((entry) => ({
-      name: entry.name,
+      name: {initial: entry.name, full: this.getFullForm(entry.name)},
       uid: entry.id,
       activated: entry.activated,
       users: entry.users || [],
     }));
+    // console.log(this.accessList);
     this.searchAccess();
+  }
+
+  async getRegionList() {
+    const url = '/settings/area';
+    const res = await this.apiService
+      .get(url, {}).toPromise() as any;
+
+    const regions = res || [];
+
+    for (let region of regions) {
+      this.regionDict[region.code] = region.title;
+    }
+
+    // console.log(this.regionDict);
+  }
+  
+  getFullForm(initial: string) {
+    if (this.regionDict[initial]) {
+      return this.regionDict[initial];
+    }
+    else {
+      return initial
+    }
+    
   }
 
   async getAllUsers() {
@@ -106,8 +153,8 @@ export class ManageAccessListComponent implements OnInit {
       return;
     };
     this.filteredAccessList = this.accessList.filter(region =>
-      region.name?.toLowerCase().includes(this.accessInput.toLowerCase()) ||
-      region.initial?.toLowerCase().includes(this.accessInput.toLowerCase()));
+      region.name.full?.toLowerCase().includes(this.accessInput.toLowerCase()) ||
+      region.name.initial?.toLowerCase().includes(this.accessInput.toLowerCase()));
   }
 
   async selectUser(user) {
@@ -131,6 +178,15 @@ export class ManageAccessListComponent implements OnInit {
 
   async toggleAccessActivated(event, access) {
     this.updateDocument(access.uid, {"activated": event.checked});
+    if(!event.checked) {
+      this.sharedService.showSnackbar(
+        "This access list will be disabled and its users unable to access its assets.",
+        3000,
+        "top",
+        "center",
+        "snackBarMiddle"
+      );
+    }
     this.updateRegionPermission(access.users, !event.checked, access.name);
   }
 
@@ -182,7 +238,7 @@ export class ManageAccessListComponent implements OnInit {
     const body = {
       context: {},
       params: {
-        location: this.selectedAccess?.name || name,
+        location: this.selectedAccess?.initial || name,
         users: users || [],
         disabled
       },

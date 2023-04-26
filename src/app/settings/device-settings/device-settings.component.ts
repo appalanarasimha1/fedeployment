@@ -40,6 +40,7 @@ export class DeviceSettingsComponent implements OnInit {
       selectedDevice: selectedDevice,
       owners: this.owners,
       supplierIds: this.supplierIds,
+      supplierList: this.supplierList,
     };
 
     const modalDialog = this.matDialog.open(
@@ -81,7 +82,7 @@ export class DeviceSettingsComponent implements OnInit {
     { id: 3, name: "Decommissioned" },
   ];
 
-  async getDeviceList() {
+  async getDeviceList(from?:string) {
     const url = "/settings/camera";
     const res = (await this.apiService.get(url, {}).toPromise()) as any;
     // const res = data as any;
@@ -100,17 +101,23 @@ export class DeviceSettingsComponent implements OnInit {
       subAreaId: device.subAreaId,
       status: device.status?.toLowerCase(),
       installationId: device.installationId,
+      isIngested: (device?.isIngested && device.isIngested) || false,
       owner: device.owner,
       uid: device.id,
       supplierId: device.supplierId,
       statusUpdateDate: device?.statusUpdateDate
     }));
-    this.filteredDeviceList = this.deviceList;
-    this.deviceInput = "";
-    this.selectedRegions = null;
-    this.selectedStatus = null;
-    this.selecteddeviceTypes = null;
-    this.selectedsubAreas = null;
+    if(from !=='changeStatus'){
+      this.filteredDeviceList = this.deviceList;
+      this.deviceInput = "";
+      this.selectedRegions = null;
+      this.selectedStatus = null;
+      this.selecteddeviceTypes = null;
+      this.selectedsubAreas = null;
+    }else{
+      this.filterDevice()
+    }
+   
   }
 
   async getSupplierList() {
@@ -196,7 +203,7 @@ export class DeviceSettingsComponent implements OnInit {
   async changeStatus(device, status) {
     if (device.status === status) return;
     await this.updateDocument(device.uid, { status });
-    this.getDeviceList();
+    this.getDeviceList('changeStatus');
   }
 
   updateDocument(id, params) {

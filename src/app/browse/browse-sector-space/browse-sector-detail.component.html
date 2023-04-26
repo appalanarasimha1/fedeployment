@@ -35,7 +35,7 @@
           <!-- <img src="../../../assets/images/pencil-write.svg" alt="" *ngIf="onSectorLevel" class="renameFolderImg" (click)="renameFolderAction()" /> -->
           <span *ngIf="!onSectorLevel" style="display: inline-block; margin-left: 10px; vertical-align: 7px; position: relative;">
             <div class="publicUseBlock">
-              <div *ngIf="isPrivateFolder(true, true)" class="publicUseBlk" style="cursor: auto;">Private</div>
+              <div *ngIf="isPrivateFolder(true, true)" class="publicUseBlk" style="cursor: auto;">Locked</div>
               <div class="mouseHoverInfo">
                 <p>You can collaborate with specified users privately. You can invite users to a private folder after you have created it.</p>
                 <div (click)="openAddUserModal()" [ngClass]="isAdmin ? 'manageAccessBtn' : 'manageAccessBtn-disabled'">
@@ -159,7 +159,7 @@
       </h6>
 
       <div *ngIf="onlyPrivate" class="invitePeople" style="position: relative;">
-        <span>You are the only member of this private folder. <span class="clickEvent" (click)="openAddUserModal()" [ngClass]="{'textDIsable' : transparentLoader}">
+        <span>You are the only member of this locked folder. <span class="clickEvent" (click)="openAddUserModal()" [ngClass]="{'textDIsable' : transparentLoader}">
           Invite people
         </span> to join as folder members.
         <img src="../../../assets/images/close-icon-workspace.svg" alt="" (click)="onlyPrivateFolder()" /></span>
@@ -252,10 +252,11 @@
               </span>
             </div>
           </li>
-          <li *ngIf="(downloadArray?.length > 0 || needPermissionToDownload?.length >0) && count?.assetCount > 0 && count?.assetCount === count?.allCount ">
-            <div class="downloadFileWorkspace">
+          <li *ngIf="downloadArray?.length > 0">
+            <div class="downloadFileWorkspace downloadButtonClick">
               <a (click)="multiDownload()"
                 href="javascript:void(0)"
+                (click)="assetsDownloadAction()"
                 [ngClass]="{'addMarginRight' : count > 0}">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="downloadIcon">
                   <path d="M11.9727 19.6958V12.9458" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -264,245 +265,354 @@
                 </svg>
                 <!-- <img src="../../../assets/images/download-workspace.svg"/> -->
               </a>
-              <div class="multiDownloadBlock"
-              *ngIf="
-              copyRightItem?.length > 0 ||
-              sizeExeeded ||
-              forInternalUse?.length > 0 ||
-              needPermissionToDownload?.length > 0">
-                <!-- forInternalUse.length {{forInternalUse.length}};needPermissionToDownload.length{{needPermissionToDownload.length}} -->
-                <div
-                  class="no-use-restrictions"
-                  *ngIf="
-                    forInternalUse?.length < 1 &&
-                    needPermissionToDownload?.length < 1
-                  "
-                >
-                  <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
-                  <p class="pt-15" *ngIf="sizeExeeded">
-                    Your download exceeds 1 GB. This will likely take some
-                    time.
-                  </p>
-                  <div class="download-btn">
-                    <!-- <a
-                      (click)="cancelDownloadClick($event)"
-                      class="cancelDownload"
-                      >Cancel download</a> -->
-                    <a
-                      (click)="downloadAssets($event)"
-                      class="uncheckAfterSuccess"
-                    >
-                      <svg
-                        width="22"
-                        height="21"
-                        viewBox="0 0 22 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M10.9673 19.5525V12.0525"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                      Download
-                    </a>
-                  </div>
-                </div>
+              <div class="multiDownloadBlock" *ngIf="showAssetDownloadPopup">
+                <div *ngIf="copyRightItem?.length > 0 || sizeExeeded || forInternalUse?.length > 0 || needPermissionToDownload?.length > 0">
+                  <svg  class="downloadClose" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.00072 5.58599L11.9507 0.635986L13.3647 2.04999L8.41472 6.99999L13.3647 11.95L11.9507 13.364L7.00072 8.41399L2.05072 13.364L0.636719 11.95L5.58672 6.99999L0.636719 2.04999L2.05072 0.635986L7.00072 5.58599Z" fill="#fff"/>
+                  </svg>
 
-                <div
-                  class="internal-use"
-                  *ngIf="
-                    forInternalUse?.length > 0 &&
-                    needPermissionToDownload?.length < 1
-                  "
-                >
-                  <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
-
-                  <p class="pt-15" *ngIf="sizeExeeded" [ngClass]="{'removeMarginTop' : copyRightItem?.length < 1  }">
-                    Your download exceeds 1 GB. This will likely take some
-                    time.
-                  </p>
-
-                  <div class="control-group"
-                    [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : copyRightItem?.length < 1  }"
-                  >
-                    <label class="control control--checkbox"
-                      >I'm aware certain selected asset(s) must NOT be
-                      used in public
-                      <input
-                        type="checkbox"
-                        [(ngModel)]="isAware"
-                        [checked]="isAware"
-                        (change)="onCheckboxChange($event)"
-                      />
-                      <div class="control__indicator"></div>
-                    </label>
-                  </div>
+                  <!-- forInternalUse.length {{forInternalUse.length}};needPermissionToDownload.length{{needPermissionToDownload.length}} -->
                   <div
-                    class="error"
-                    *ngIf="downloadErrorShow && !isAware"
-                  >
-                    Please check the box to proceed
-                  </div>
-                  <div class="download-btn" (click)="downloadClick()">
-                    <!-- <a
-                      (click)="cancelDownloadClick($event)"
-                      class="cancelDownload"
-                      >Cancel download</a
-                    > -->
-                    <a
-                      (click)="downloadAssets($event)"
-                      [ngClass]="{ downloadDisbable: !downloadEnable }"
-                      class="uncheckAfterSuccess"
-                    >
-                      <svg
-                        width="22"
-                        height="21"
-                        viewBox="0 0 22 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M10.9673 19.5525V12.0525"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                      Download
-                    </a>
-                  </div>
-                </div>
-
-                <div
-                  class="internal-use"
-                  *ngIf="needPermissionToDownload?.length > 0"
-                >
-                  <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
-                  <p class="pt-15" *ngIf="sizeExeeded">
-                    Your download exceeds 1 GB. This will likely take some
-                    time.
-                  </p>
-
-
-                    <p class="pt-15"  [ngClass]="{ 'removeMarginTop' : copyRightItem?.length < 1 }">
-                    {{ needPermissionToDownload?.length }} asset{{ needPermissionToDownload?.length>1?'s':'' }} you
-                    selected require download permission, please reach out
-                    owner(s) via email:
-                  </p>
-
-                  <ul class="downloadImgLisst">
-                    <li *ngFor="let item of needPermissionToDownload">
-                      <div class="imgListBlk">
-                        <img src="../../../assets/images/doc-white.svg" />
-                      </div>
-                      <div class="contentListBlk">{{ item.title }}</div>
-                      <div class="imgMailIcon">
-                        <a href="mailto:{{ getUser(item) }}"
-                          ><img
-                            src="../../../assets/images/mail-icon.svg"
-                        /></a>
-                      </div>
-                    </li>
-                  </ul>
-
-                  <div
-                    class="control-group"
-                    [ngClass]="{'error-disabled' : downloadErrorShow && !isAware }"
-                    *ngIf="forInternalUse?.length > 0"
-                  >
-                    <label class="control control--checkbox"
-                      >I'm aware certain selected asset(s) must NOT be
-                      used in public
-                      <input
-                        type="checkbox"
-                        [(ngModel)]="isAware"
-                        checked="isAware"
-                        (change)="onCheckboxChange($event)"
-                      />
-                      <div class="control__indicator"></div>
-                    </label>
-                  </div>
-                  <div
-                    class="error"
+                    class="no-use-restrictions"
                     *ngIf="
-                      downloadErrorShow &&
-                      !isAware &&
-                      forInternalUse?.length
+                      forInternalUse?.length < 1 &&
+                      needPermissionToDownload?.length < 1
                     "
                   >
-                    Please check the box to proceed
-                  </div>
-                  <div class="download-btn" (click)="downloadClick()" *ngIf="downloadArray?.length>0">
-                    <a
-                      (click)="downloadAssets($event)"
-                      [ngClass]="{ downloadDisbable: !downloadEnable && forInternalUse?.length > 0 }"
-                      class="uncheckAfterSuccess"
-                    >
-                      <svg
-                        width="22"
-                        height="21"
-                        viewBox="0 0 22 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                    <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
+                    <p class="pt-15" *ngIf="sizeExeeded">
+                      Your download exceeds 1 GB. This will likely take some
+                      time.
+                    </p>
+                    <div class="download-btn">
+                      <!-- <a
+                        (click)="cancelDownloadClick($event)"
+                        class="cancelDownload"
+                        >Cancel download</a> -->
+                      <a
+                        (click)="downloadAssets($event)"
+                        class="uncheckAfterSuccess"
                       >
-                        <path
-                          d="M10.9673 19.5525V12.0525"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
-                          stroke="#EDD580"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                      Download
-                    </a>
+                        <svg
+                          width="22"
+                          height="21"
+                          viewBox="0 0 22 21"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.9673 19.5525V12.0525"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        Download
+                      </a>
+                    </div>
                   </div>
+
+                  <!-- <div
+                    class="internal-use"
+                    *ngIf="
+                      forInternalUse?.length > 0 &&
+                      needPermissionToDownload?.length < 1
+                    "
+                  >
+                    <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
+
+                    <p class="pt-15" *ngIf="sizeExeeded" [ngClass]="{'removeMarginTop' : copyRightItem?.length < 1  }">
+                      Your download exceeds 1 GB. This will likely take some
+                      time.
+                    </p>
+
+                    <div class="control-group"
+                      [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : copyRightItem?.length < 1  }"
+                    >
+                      <label class="control control--checkbox"
+                        >I'm aware certain selected asset(s) must NOT be
+                        used in public
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="isAware"
+                          [checked]="isAware"
+                          (change)="onCheckboxChange($event)"
+                        />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </div>
+                    <div
+                      class="error"
+                      *ngIf="downloadErrorShow && !isAware"
+                    >
+                      Please check the box to proceed
+                    </div>
+                    <div class="download-btn" (click)="downloadClick()">
+                      <a
+                        (click)="downloadAssets($event)"
+                        [ngClass]="{ downloadDisbable: !downloadEnable }"
+                        class="uncheckAfterSuccess"
+                      >
+                        <svg
+                          width="22"
+                          height="21"
+                          viewBox="0 0 22 21"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.9673 19.5525V12.0525"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        Download
+                      </a>
+                    </div>
+                  </div> -->
+
+                  <div
+                    class="internal-use"
+                    *ngIf="needPermissionToDownload?.length > 0"
+                  >
+                    <p *ngIf="copyRightItem?.length>0">Always credit copyright owners.</p>
+                    <p class="pt-15" *ngIf="sizeExeeded">
+                      Your download exceeds 1 GB. This will likely take some
+                      time.
+                    </p>
+
+
+                      <p class="pt-15"  [ngClass]="{ 'removeMarginTop' : copyRightItem?.length < 1 }">
+                      {{ needPermissionToDownload?.length }} asset{{ needPermissionToDownload?.length>1?'s':'' }} you
+                      selected require download permission, please reach out
+                      owner(s) via email:
+                    </p>
+
+                    <ul class="downloadImgLisst">
+                      <li *ngFor="let item of needPermissionToDownload">
+                        <div class="imgListBlk">
+                          <img src="../../../assets/images/doc-white.svg" />
+                        </div>
+                        <div class="contentListBlk">{{ item.title }}</div>
+                        <div class="imgMailIcon">
+                          <a href="mailto:{{ getUser(item) }}"
+                            ><img
+                              src="../../../assets/images/mail-icon.svg"
+                          /></a>
+                        </div>
+                      </li>
+                    </ul>
+
+                    <div
+                      class="control-group"
+                      [ngClass]="{'error-disabled' : downloadErrorShow && !isAware }"
+                      *ngIf="forInternalUse?.length > 0"
+                    >
+                      <label class="control control--checkbox"
+                        >I'm aware certain selected asset(s) must NOT be
+                        used in public
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="isAware"
+                          checked="isAware"
+                          (change)="onCheckboxChange($event)"
+                        />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </div>
+                    <div
+                      class="error"
+                      *ngIf="
+                        downloadErrorShow &&
+                        !isAware &&
+                        forInternalUse?.length
+                      "
+                    >
+                      Please check the box to proceed
+                    </div>
+                    <div class="download-btn" (click)="downloadClick()" *ngIf="downloadArray?.length>0">
+                      <a
+                        (click)="downloadAssets($event)"
+                        [ngClass]="{ downloadDisbable: !downloadEnable && forInternalUse?.length > 0 }"
+                        class="uncheckAfterSuccess"
+                      >
+                        <svg
+                          width="22"
+                          height="21"
+                          viewBox="0 0 22 21"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.9673 19.5525V12.0525"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                            stroke="#EDD580"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        Download
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Folder downloads start -->
+                  <div class="folderDownload internal-use">
+                    <div class="prepare-download-block">
+
+                    </div>
+                    <h2 *ngIf="!nevermindBlock" class="headingDownload">Preparing download</h2>
+                    <div *ngIf="alwaysCredit">
+                      <p class="pb-10">Always credit copyright owners.</p>
+                      <!-- <p class="pb-10">
+                        {{ needPermissionToDownload?.length }} assets require download permission, please reach out owner(s) via email:
+                      </p>
+
+                      <ul class="downloadImgLisst">
+                        <li *ngFor="let item of needPermissionToDownload">
+                          <div class="imgListBlk">
+                            <img src="../../../assets/images/doc-white.svg" />
+                          </div>
+                          <div class="contentListBlk">{{ item.title }}</div>
+                          <div class="imgMailIcon">
+                            <a href="mailto:{{ getUser(item) }}"
+                              ><img
+                                src="../../../assets/images/mail-icon.svg"
+                            /></a>
+                          </div>
+                        </li>
+                      </ul> -->
+
+                      <div class="control-group">
+                        <label class="control control--checkbox">
+                          I'm aware certain seleted asset(s) must NOT be used in public
+                          <input
+                            type="checkbox"
+                            [(ngModel)]="isAware"
+                            [checked]="isAware"
+                          />
+                          <div class="control__indicator"></div>
+                        </label>
+                      </div>
+                      <div class="continue">
+                        <span (click)="downloadContinue()">Continue
+                          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.17168 6.99928L0.221679 2.04928L1.63568 0.635281L7.99968 6.99928L1.63568 13.3633L0.22168 11.9493L5.17168 6.99928Z" fill="#EDD580"/>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <div *ngIf="zippigAssets">
+                      <p *ngIf="!zipDownloadUrl" class="pb-10">Zipping {{multiDownloadTotalAssets}} assets ({{formatBytes(multiDownloadTotalSize)}})...</p>
+                      <p *ngIf="zipDownloadUrl" class="pb-10">It will take a while to download {{multiDownloadTotalAssets}} assets ({{formatBytes(multiDownloadTotalSize)}})</p>
+
+                      <ul class="downloadImgLisst">
+                        <li *ngFor="let item of downloadArrayAssets">
+                          <div class="flexable">
+                            <div>
+                              <div class="imgListBlk">
+                                <img *ngIf="multiDownloadInfo[item.uid]?.folder > -1" src="../../../assets/images/folder-delete-icon.svg" />
+                                <img *ngIf="multiDownloadInfo[item.uid]?.folder === -1" src="{{item.contextParameters.thumbnail.url}}" />
+                              </div>
+                              <div class="contentListBlk">{{item.title}}</div>
+                            </div>
+                            <div *ngIf="multiDownloadInfo[item.uid]?.folder > -1">{{multiDownloadInfo[item.uid]?.folder}} sub folder(s)</div>
+                          </div>
+                        </li>
+                      </ul>
+
+                      <div class="cancleDownload" (click)="cancleDownload()">
+                        Cancel
+                      </div>
+                      <div class="download-btn" (click)="downloadClick()">
+                        <a [ngClass]="zipDownloadUrl ? 'uncheckAfterSuccess' : 'uncheckAfterSuccess downloadDisbable'">
+                          <svg
+                            width="22"
+                            height="21"
+                            viewBox="0 0 22 21"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M10.9673 19.5525V12.0525"
+                              stroke="#EDD580"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893"
+                              stroke="#EDD580"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                              stroke="#EDD580"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          Download
+                        </a>
+                      </div>
+                    </div>
+                    <div class="navermindBlk" *ngIf="nevermindBlock">
+                      <p class="pb-10">Do you want to cancel the download?</p>
+                      <div class="navermindBtn">
+                        <span class="yes">Yes</span>
+                        <span class="nevermind" (click)="nevermind()">Nevermind</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Folder downloads end -->
                 </div>
               </div>
             </div>
@@ -539,8 +649,8 @@
               *ngIf="showCreateFolderPopup"
               [currentWorkspace]="currentWorkspace"
               [folderAssetsResult]="folderStructure"
-              
-              
+
+
               (folderCreateEvent)="folderCreateEvent($event)"
             ></app-create-folder>
           </li>
@@ -600,6 +710,15 @@
               <div class="customToolTipWorkspace">Share</div>
             </div>
           </li>
+          <li *ngIf="checkShowManageAccessButtonOnSelect()">
+            <div class="tollTipWorkspace">
+              <svg  width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="classificationsIcon" (click)="openManageAccessModal(true)">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.183 4.04752C14.6469 4.56246 15.3074 4.85645 16.0005 4.85645C16.6936 4.85645 17.3541 4.56246 17.818 4.04752L19.0005 2.75002C19.6949 1.98145 20.7979 1.73297 21.7548 2.1295C22.7117 2.52603 23.3157 3.48177 23.263 4.51627L23.1742 6.26627C23.1395 6.95661 23.3983 7.62945 23.8867 8.11856C24.3751 8.60768 25.0476 8.86748 25.738 8.83377L27.488 8.74502C28.5218 8.69406 29.476 9.29859 29.8715 10.2551C30.267 11.2116 30.0184 12.3135 29.2505 13.0075L27.948 14.1825C27.4337 14.647 27.1402 15.3076 27.1402 16.0006C27.1402 16.6937 27.4337 17.3543 27.948 17.8188L29.2505 18.9938C30.0191 19.6882 30.2675 20.7911 29.871 21.7481C29.4745 22.705 28.5187 23.309 27.4842 23.2563L25.7342 23.1675C25.0423 23.1319 24.3678 23.3913 23.8779 23.8811C23.388 24.371 23.1286 25.0456 23.1642 25.7375L23.253 27.4875C23.2988 28.5166 22.6958 29.4643 21.7442 29.8587C20.7927 30.2531 19.696 30.0098 19.0005 29.25L17.8242 27.9488C17.3599 27.4346 16.6996 27.1411 16.0067 27.1411C15.3139 27.1411 14.6535 27.4346 14.1892 27.9488L13.008 29.25C12.3135 30.0134 11.2149 30.2594 10.2612 29.8652C9.30742 29.4709 8.70323 28.521 8.75049 27.49L8.84049 25.74C8.87608 25.0481 8.61676 24.3735 8.12686 23.8836C7.63697 23.3938 6.96239 23.1344 6.27049 23.17L4.52049 23.2588C3.4864 23.3127 2.53025 22.7101 2.13284 21.7539C1.73543 20.7977 1.98277 19.6949 2.75049 19L4.05174 17.825C4.56601 17.3605 4.85951 16.6999 4.85951 16.0069C4.85951 15.3139 4.56601 14.6533 4.05174 14.1888L2.75049 13.0075C1.98535 12.3135 1.73837 11.2137 2.13327 10.2591C2.52816 9.30456 3.47988 8.7007 4.51174 8.75002L6.26174 8.83877C6.95498 8.87522 7.63109 8.61556 8.12172 8.12445C8.61236 7.63334 8.87136 6.95698 8.83424 6.26377L8.75049 4.51252C8.7021 3.48111 9.30588 2.53017 10.2599 2.13523C11.2139 1.74028 12.3132 1.98621 13.008 2.75002L14.183 4.04752Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21.6262C19.1066 21.6262 21.625 19.1078 21.625 16.0012C21.625 12.8946 19.1066 10.3762 16 10.3762C12.8934 10.3762 10.375 12.8946 10.375 16.0012C10.375 19.1078 12.8934 21.6262 16 21.6262Z" stroke="#937206" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="customToolTipWorkspace">Manage Access</div>
+            </div>
+          </li>
         </ul>
         <div class="gallery-view-block">
           <img
@@ -644,7 +763,7 @@
     <div *ngIf="!assetList.length && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
       <img src="../../../assets/images/private-fileshare-icon.svg" class="collaboratorsIcon" />
       <!-- <h2>Start adding assets to this private folder</h2> -->
-      <h2>Start adding assets to this Private folder:</h2>
+      <h2>Start adding assets to this Locked folder:</h2>
       <div class="addUsers">
         <div class="addUserBtn" (click)="openModal(true)">Upload</div>
       </div>

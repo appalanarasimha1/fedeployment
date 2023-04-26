@@ -138,6 +138,7 @@ export const specialExtensions = [ // NOTE: this is the extensions of special ro
 export const EXTERNAL_GROUP_GLOBAL = 'external_group_global';
 export const EXTERNAL_USER = 'external_user';
 export const DRONE_UPLOADER = 'drone_uploader';
+export const WARROOM_VIEW_ACCESS = 'Warroom View Access'
 export const adminPanelWorkspacePath = '/default-domain/workspaces/AdminPanelWorkspace';
 export const tabs = {
     MEDIA: 'media',

@@ -48,6 +48,7 @@ export class CreateDeviceModalComponent implements OnInit {
   installationID;
   regionList = [];
   subAreaList = [];
+  supplierList = [];
   selectedType = "timelapse";
   latitude: number;
   longitude: number;
@@ -60,6 +61,7 @@ export class CreateDeviceModalComponent implements OnInit {
   selectedDevice = null;
   selectedSupplier = null;
   selectedOwner;
+  channelId;
 
   constructor(
     public dialogRef: MatDialogRef<CreateDeviceModalComponent>,
@@ -72,11 +74,13 @@ export class CreateDeviceModalComponent implements OnInit {
     // this.installationID = this.data.deviceInput;
     this.regionList = this.data.regionList;
     this.owners = this.data.owners;
-
+    console.log("data",this.data);
+    
     this.subAreaList = this.data.subAreaList;
     this.isCreate = this.data.isCreate;
     this.selectedDevice = this.data.selectedDevice;
     this.supplierPrefix = this.data.supplierIds;
+    this.supplierList = this.data.supplierList;
     if (!this.isCreate) {
       this.installationID = this.selectedDevice.installationId;
       this.selectedSupplier = this.selectedDevice.supplierId;
@@ -169,8 +173,8 @@ export class CreateDeviceModalComponent implements OnInit {
 
     const payload = {
       deviceType: this.selectedType,
-      latitude: this.latitude || "",
-      longitude: this.longitude || "",
+      latitude: [this.latitude] || [],
+      longitude: [this.longitude] || [],
       cameraDirection: this.directionShow ? this.direction : "",
       cameraPole: this.poleIdShow ? this.poleId : "",
       region: this.selectedRegion || "",
@@ -183,6 +187,7 @@ export class CreateDeviceModalComponent implements OnInit {
       subAreaName: this.selectedsubAreas.name || "",
       owner: this.selectedOwner || "",
       supplierId: this.selectedSupplier,
+      channelId:this.channelId
     }
     const id = await this.apiService.post(`/settings/camera/autogen?prefix=${this.buildDevicePrefix()}`, payload, {responseType: 'text'}).toPromise();
     this.sharedService.showSnackbar(
@@ -230,8 +235,8 @@ export class CreateDeviceModalComponent implements OnInit {
   async updateDevice() {
     this.loading = true;
     const params = {
-      latitude: this.latitude || "",
-      longitude: this.longitude || "",
+      latitude: [this.latitude] || [],
+      longitude: [this.longitude] || [],
       cameraDirection: this.directionShow ? this.direction : "",
       cameraPole: this.poleIdShow ? this.poleId : "",
       owner: this.selectedOwner || "",

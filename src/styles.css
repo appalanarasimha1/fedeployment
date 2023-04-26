@@ -3833,7 +3833,7 @@ body { margin: 0; }
 .custom-modal .modal-body {
   background: #000;
   padding: 0px !important;
-  border-radius: 10px;
+  border-radius: inherit !important;
 }
 .custom-modal .modal-body img,
 .custom-modal button.close img{

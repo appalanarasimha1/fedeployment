@@ -20,7 +20,8 @@
             </tr>
             <tr *ngFor="let access of filteredAccessList">
                 <td><div class="height32"></div></td>
-                <td>{{access.name}}</td>
+                <td *ngIf="access.name.initial !== access.name.full">{{access.name.initial}} - {{access.name.full}}</td>
+                <td *ngIf="access.name.initial === access.name.full">{{access.name.initial}}</td>
                 <td><mat-slide-toggle [(ngModel)]="access.activated" (change)="toggleAccessActivated($event, access)"></mat-slide-toggle></td>
                 <td style="text-align: center !important;" (click)="openAccess(access)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
             </tr>
@@ -37,8 +38,11 @@
     </div>
     <h3>Users</h3>
     <h2>
-        <span>
-            {{selectedAccess?.name}}
+        <span *ngIf="selectedAccess.name.initial !== selectedAccess.name.full">
+            {{selectedAccess.name.initial}} - {{selectedAccess.name.full}}
+        </span>
+        <span *ngIf="selectedAccess.name.initial === selectedAccess.name.full">
+            {{selectedAccess.name.initial}}
         </span>
     </h2>
     <p class="externalEditAccess">You can <strong>search for existing</strong> or <strong>invite new users</strong> by typing their email address below:</p>
@@ -53,9 +57,9 @@
               class="search-bar">
             <button class="primary createSuppliers" *ngIf="checkEnableInviteBtn()" (click)="openInviteUserModal()">Invite</button>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectUser($event.option.value)'>
-              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
-                {{user}}
-              </mat-option>
+                <mat-option [hidden]="usersCtrl.value.length == 0" *ngFor="let user of filteredUsers | async" [value]="user">
+                    {{user}}
+                </mat-option>
             </mat-autocomplete>
           </form>
         </span>

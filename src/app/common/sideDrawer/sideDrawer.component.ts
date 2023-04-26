@@ -268,7 +268,7 @@ export class SideDrawerComponent implements OnInit, OnChanges {
   getMetaData() {
     this.loading = true;
     this.error = undefined;
-    let queryParams = { currentPageIndex: 0, offset: 0, pageSize: 1 }; //, system_primaryType_agg: '[]', system_mimetype_agg: '[]', asset_width_agg: '[]', asset_height_agg: '[]', color_profile_agg: '[]', color_depth_agg: '[]', video_duration_agg: '[]'
+    let queryParams = { currentPageIndex: 0, offset: 0, pageSize: 1, queryParams: "" }; //, system_primaryType_agg: '[]', system_mimetype_agg: '[]', asset_width_agg: '[]', asset_height_agg: '[]', color_profile_agg: '[]', color_depth_agg: '[]', video_duration_agg: '[]'
 
     this.nuxeo.nuxeoClient.request(apiRoutes.SEARCH_PP_ASSETS, { queryParams })
       .get().then((result) => {

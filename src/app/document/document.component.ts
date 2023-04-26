@@ -220,6 +220,8 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   searchNameCLicked = [];
 
+  excludedDroneWorkspaces = "";
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private modalService: NgbModal,
@@ -303,6 +305,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any) {
     this.userIdNew = JSON.parse(localStorage.getItem("user"))?.email;
     if (changes.searchTerm) {
+      this.docSliceInput = 39
       this.searchTerm = changes.searchTerm.currentValue;
       this.getRelatedTags();
     }
@@ -483,7 +486,10 @@ export class DocumentComponent implements OnInit, OnChanges {
   sectorOffset:number=0
   sectorPageSize:number=0
 
-  getAssetBySectors(sector = "", dontResetSectors: boolean = true,offset= 0,pageSize= 16,fromEvent=false ) {
+  async getAssetBySectors(withAncestorId = true, sector = "", dontResetSectors: boolean = true, offset= 0, pageSize= 16, fromEvent = false) {
+    if (withAncestorId && (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0)) {
+      await this.getDroneUploadWsIds();
+    }
     this.sectorOffset = offset + pageSize
     this.sectorPageSize=pageSize
     const queryParams = {
@@ -506,6 +512,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (this.sharedService.checkExternalUser()) {
       queryParams["sa_access"] = "All access";
     }
+    queryParams["queryParams"] = this.excludedDroneWorkspaces || " ";
     !fromEvent? this.loading.push(true):null;
     this.nuxeo.nuxeoClient
       .request(apiRoutes.SEARCH_PP_ASSETS, { queryParams, headers })
@@ -529,6 +536,11 @@ export class DocumentComponent implements OnInit, OnChanges {
       })
       .catch((error) => {
         this.loading.pop();
+        if(error.status === 403) {
+          this.excludedDroneWorkspaces = "";
+          this.getAssetBySectors(false);
+          return;
+        }
         if (error && error.message) {
           if (error.message.toLowerCase() === "unauthorized") {
             this.sharedService.redirectToLogin();
@@ -582,7 +594,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   assetsBySectorSelect(value: string) {
     this.assetsBySector = [];
     this.assetsBySectorSelected = value;
-    this.getAssetBySectors(value, false);
+    this.getAssetBySectors(true, value, false);
   }
 
   calculateNoResultScreen() {
@@ -1053,7 +1065,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       case "favourite":
         return "Your Favorites";
       case "sectorPage":
-        return "Assets by Sector";
+        return "Assets by Function";
       case "trendingPage":
         return "What’s Trending";
       case "yourFavourites":
@@ -1279,15 +1291,12 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   afterChangeSector(e){
-    console.log(e);
     if(e.last){
-      this.getAssetBySectors(this.sectorSelected,  true,this.sectorOffset,16,true )
+      this.getAssetBySectors(true, this.sectorSelected,  true, this.sectorOffset, 16, true)
 
     }
   }
   afterChangeFav(e){
-    console.log(e);
-
     if(e.last){
       // this.getAssetBySectors("",  true,this.sectorOffset,16,true )
       this.getFavouriteCollection(this.favouriteUID,this.favouriteOffset,  16,true)
@@ -1349,7 +1358,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
       return '../../../assets/images/no-preview-big.png';
-    } 
+    }
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/no-preview-big.png';
     }
@@ -1358,5 +1367,15 @@ export class DocumentComponent implements OnInit, OnChanges {
     }
 
     return '../../../assets/images/no-preview-grid.svg';
+  }
+
+  async getDroneUploadWsIds() {
+    try {
+      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
+      const ids = res['value'];
+     if (ids && ids.length > 0) {
+       this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
+     }
+    } catch (err) {}
   }
 }

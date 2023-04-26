@@ -263,3 +263,12 @@ export interface IBrowseSidebar {
   uid: string,
   children?: IEntry[]
 }
+
+export interface IArrow {
+  "title": boolean,
+  "fileType": boolean,
+  "dc:creator": boolean,
+  "dc:created": boolean,
+  "dc:modified": boolean,
+  "dc:sector": boolean
+}

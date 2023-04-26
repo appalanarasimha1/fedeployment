@@ -7,7 +7,7 @@ import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
-import { DRONE_UPLOADER } from '../common/constant';
+import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from "rxjs";
 
@@ -61,6 +61,8 @@ export class DocumentationAssetsComponent implements OnInit {
   notAuthorize = true;
   userRegionList = [];
   userPermissionMap = {};
+  supplierRegions;
+  supplierUserData;
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -78,15 +80,19 @@ export class DocumentationAssetsComponent implements OnInit {
     });
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false;
-    if (userData?.groups.includes("Warroom View Access")) this.notAuthorize = false;
+    if (userData?.groups.includes(WARROOM_VIEW_ACCESS)) this.notAuthorize = false;
 
     this.user = userData["username"];
-    this.getDeviceList();
-    this.getSupplierList();
-    this.getAccessList();
+    this.fetchGeneralData();
     this.sharedService.events$.forEach(event => {
       if (event === 'Upload done') this.getAssetList();
     });
+  }
+
+  async fetchGeneralData() {
+    this.getDeviceList();
+    await this.getSupplierList();
+    await this.getAccessList();
   }
 
   async getAccessList() {
@@ -149,6 +155,7 @@ export class DocumentationAssetsComponent implements OnInit {
       status: device.status,
       installationId: device.installationId,
       uid: device.id,
+      subAreaId: device.subAreaId,
     }));
   }
 
@@ -164,6 +171,9 @@ export class DocumentationAssetsComponent implements OnInit {
     }));
     if (this.userRegionList.length > 0 && !this.userRegionList.includes('ALL')) {
       this.regionList = this.regionList.filter(region => this.userRegionList.includes(region.initial));
+    }
+    if (this.supplierRegions) {
+      this.regionList = this.regionList.filter(region => this.supplierRegions.includes(region.uid));
     }
     this.computeRegionMap();
   }
@@ -239,6 +249,11 @@ export class DocumentationAssetsComponent implements OnInit {
     );
     this.company = currentUserSupplier?.name || "";
     this.companyId = currentUserSupplier?.uid || "";
+    if (currentUserSupplier) {
+      this.supplierRegions = [];
+      currentUserSupplier.regions.forEach(region => this.supplierRegions.push(region));
+      this.supplierUserData = currentUserSupplier.users?.find((user) => user.user == this.user);
+    }
     this.getAssetList();
   }
 
@@ -294,7 +309,7 @@ export class DocumentationAssetsComponent implements OnInit {
     let query = "";
     let filteredDevice = null;
     if (!this.selectedFormat) {
-      query += " AND ecm:primaryType IN ('Picture', 'Video')";
+      query += " AND ecm:primaryType IN ('Picture', 'Video', 'File')";
     } else {
       query += ` AND ecm:primaryType = '${this.selectedFormat}'`;
     }
@@ -541,6 +556,9 @@ export class DocumentationAssetsComponent implements OnInit {
   checkAssetDownloadPermission(asset) {
     if (!asset) return false;
     if (this.userPermissionMap['ALL']) return true;
+    if (this.supplierUserData) {
+      return !!this.supplierUserData.user.permissions?.includes('download');
+    }
     const installationId = asset.properties["dc:installationId"];
     if (!installationId) return false;
     const assetRegion = this.getInstallationIdRegion(installationId);

@@ -13,10 +13,10 @@ export class AppConfigOCIProductionNew {
         AUDIT_TABLE: 'audit'
       },
       domain: 'https://groundx.neom.com/',
-      elasticDbUrl: 'https://ES3.groundx.com:9200,https://ES2.groundx.com:9200,https://ES1.groundx.com:9200',
+      elasticDbUrl: 'http://localhost:9200',
       elsticDbUserName: 'elastic',
       elasticCertificatePath: '/home/opc/rootCA.crt',
-      elasticSearchIndex: "searchindex_new",
+      elasticSearchIndex: "searchindex_v4",
       elasticPassword:process.env.ELASTIC_DB_PASSWORD
     };
   

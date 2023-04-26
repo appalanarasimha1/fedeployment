@@ -21,7 +21,7 @@
             <tr *ngFor="let region of filteredRegions">
                 <td><div class="height32"></div></td>
                 <td>{{region.initial}} <span class="lightGray">{{region.name}}</span></td>
-                <td style="text-align: center !important;" (click)="removeRegion(region)"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+                <td style="text-align: center !important;"><img [hidden]="region.isIngested" (click)="removeRegion(region)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
                 <td style="text-align: center !important;" (click)="openSubAreaList(region)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
             </tr>
         </table>
@@ -74,7 +74,7 @@
                 <td><div class="height32"></div></td>
                 <td>{{subArea.locationId}}</td>
                 <td>{{subArea.name}}</td>
-                <td (click)="removeSubArea(subArea)" style="text-align: center !important;"><img src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+                <td style="text-align: center !important;"><img [hidden]="subArea.isIngested" (click)="removeSubArea(subArea)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
             </tr>
         </table>
     </div>

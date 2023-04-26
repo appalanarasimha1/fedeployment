@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(async (params) => {
       this.registrationId = params.registrationId;
-      this.email = params.email;
+      this.email = params.email.toLowerCase();
       if (this.email) {
         this.checkNeomEmail();
         this.checkEmail();

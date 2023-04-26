@@ -7,7 +7,7 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
-import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL, DRONE_UPLOADER } from '../constant';
+import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL, DRONE_UPLOADER, EXTERNAL_USER } from '../constant';
 import { SharedService } from 'src/app/services/shared.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -69,8 +69,11 @@ export class HeaderComponent implements OnInit {
   isApproved = {};
   isDroneUploadPage = false;
   isDroneUploader = false;
+  isExternalUSer = false;
+  isGlobalExternalUser = false;
 
   loading = false;
+  showCreateFolderPopup: boolean = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -191,6 +194,10 @@ export class HeaderComponent implements OnInit {
     this.selectedTab = tab;
     this.sendSelectedTab.emit(tab);
     if (tab === 'search') {
+      if (this.isDroneUploader && !this.isGlobalExternalUser) {
+        this.router.navigate(['/'], { fragment: 'construction' });
+        return;
+      }
       this.router.navigate(['']);
       return;
     }
@@ -446,9 +453,12 @@ export class HeaderComponent implements OnInit {
   }
 
   checkHomeActive(){
-    if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
+    if (window.location.href==(`${window.location.origin}/`) || window.location.href==(`${window.location.origin}/#`)) {
       return true
     }
+    // if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
+    //   return true
+    // }
   }
 
   getImageName(){
@@ -458,15 +468,24 @@ export class HeaderComponent implements OnInit {
     return isNaN(name) && !splittedUser?.length ? "":name?.toUpperCase()
   }
 
+  checkUserGroup(groups) {
+    if (groups.includes(DRONE_UPLOADER)) {
+      this.isDroneUploader = true;
+    }
+    if (groups.includes(EXTERNAL_GROUP_GLOBAL)) {
+      this.isGlobalExternalUser = true;
+    }
+    if (groups.includes(EXTERNAL_USER)) {
+      this.isExternalUSer = true;
+    }
+  }
+
   async fetchUserData() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       this.userData = user;
       const groups = user.groups;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
-        this.isDroneUploader = true;
-      }
-      return;
+      this.checkUserGroup(groups);
     }
     if (this.nuxeo.nuxeoClient) {
       const res = await this.nuxeo.nuxeoClient.connect();
@@ -474,12 +493,67 @@ export class HeaderComponent implements OnInit {
       // const user = JSON.parse(localStorage.getItem('user'));
       this.userData = res.user.properties;
       const groups = res.user.properties.groups;
-      if (groups.includes(DRONE_UPLOADER) && groups.length === 1) {
-        this.isDroneUploader = true;
-      }
+      this.checkUserGroup(groups);
     }
   }
   onActivate() {
     $("#favorites").animate({ scrollTop: 0 }, "slow");
+  }
+
+  async deleteNotiFication(notification?:any){
+    let url = '/automation/Scry.UpdateNotification'
+    let payload = {
+      "params":{
+        "action":"delete",
+        "notificationId":notification.id
+      }
+    }
+    const res = await this.apiService.post(url, payload).toPromise();
+    this.getNotifications()
+    
+  }
+  checkSetingsActive(){
+    if (window.location.href.includes(`${window.location.origin}/settings`)) {
+      return true
+    }
+  }
+  checkFavoritesActive(){
+    if (window.location.href.includes(`${window.location.origin}/#favorites`) || window.location.href.includes(`${window.location.origin}/favorites`)) {
+      return true
+    }
+  }
+  checkDataApiActive(){
+    if (window.location.href.includes(`${window.location.origin}/data-api`)) {
+      return true
+    }
+  }
+  checkReportActive(){
+    if (window.location.href.includes(`${window.location.origin}/report`)) {
+      return true
+    }
+  }
+  checkUsePolicyActive() {
+    if (window.location.href.includes(`${window.location.origin}/common/terms`)) {
+      return true
+    }
+  }
+  notifactionClick () {
+    this.showCreateFolderPopup = true;
+    
+    $(".notifactionClickAction").on("click", function (e) {
+      $(".notificationExpandarea").show();
+      $(".notifactionClickAction").addClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+    $(".notifactionClickAction.createNewFolderClick").on("click", function (e) {
+      $(".notificationExpandarea").hide();
+      $(".notifactionClickAction").removeClass("createNewFolderClick");
+      e.stopPropagation();
+    });
+
+    $(document).click(function () {
+      $(".notificationExpandarea").hide();
+      $(".notifactionClickAction").removeClass("createNewFolderClick");
+    });
   }
 }

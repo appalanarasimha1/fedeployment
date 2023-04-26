@@ -232,6 +232,9 @@ export class DocumentCardComponent implements OnInit, OnChanges {
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt.png';
     }
+    if(lowercaseMime == 'srt'){
+      return '../../../assets/images/srt.png';
+    }
     return '../../../assets/images/no-preview.png';
 
   }

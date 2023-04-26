@@ -177,6 +177,8 @@ export class UploadModalComponent implements OnInit {
   whiteListFiles:any;
   fileLimitExceed;
 
+  uploadLimit:boolean = false;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -204,7 +206,7 @@ export class UploadModalComponent implements OnInit {
       this.showWsList = false;
       if (this.data.type.toLowerCase() !== "domain") {
         await this.selectWorkspace(this.data, true);
-        this.folderNameParam = this.data.title;
+        this.folderNameParam = (this.selectedWorkspace.uid !== this.data.uid && this.selectedWorkspace.title !== this.data.title) ? this.data.title : '';
         this.selectedFolder = this.data;
       }
       this.associatedDate = this.data?.properties?.["dc:start"];
@@ -241,8 +243,9 @@ export class UploadModalComponent implements OnInit {
     this.dialogRef.close(this.selectedFolder);
   }
 
-  onSelect(event, fileLimitExceeded? : any) {
-    this.fileLimitExceed = false
+  onSelect(event) { //, fileLimitExceeded? : any
+    this.fileLimitExceed = false;
+    this.uploadLimit = false;
     // console.log("event.addedFiles", event.addedFiles);
     if (!event.addedFiles && !this.agreeTerms) {
       this.showError = true;
@@ -255,9 +258,10 @@ export class UploadModalComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         this.filesMap[i] = files[i]
       }
-      if(Object.keys(this.filesMap).length >50) {
-        this.openModal(fileLimitExceeded);
+      if(Object.keys(this.filesMap).length >50) { //50
+        // this.openModal(fileLimitExceeded);
         this.filesMap ={}
+        this.uploadLimit = true;
         return this.fileLimitExceed = true;
       }
       this.getTotalFileSize()
@@ -282,6 +286,8 @@ export class UploadModalComponent implements OnInit {
       } else if (file.type?.includes("video/")) {
         filteredFile.push(file);
       } else if (file.type?.includes("audio/")) {
+        filteredFile.push(file);
+      } else if (file.name?.toLowerCase().includes(".srt")) {
         filteredFile.push(file);
       } else {
         // const blockedFile = file;
@@ -600,7 +606,7 @@ export class UploadModalComponent implements OnInit {
     return this.assetCache[uid]["entries"];
   }
   async uploadFile(files) {
-    console.log('testUpload');
+    console.log('testUpload',files);
     if (!this.batchId) {
       await this.createBatchUpload();
     }
@@ -1508,5 +1514,6 @@ export class UploadModalComponent implements OnInit {
   }
   closeAll(){
     this.modalService.dismissAll();
+    this.uploadLimit = false;
   }
 }

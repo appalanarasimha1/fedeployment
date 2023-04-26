@@ -13,7 +13,7 @@
     </div>
 
     <div class="breadcrumbBlock">
-        <span  *ngFor="let c of folderStructure; let i = index">/<span [ngClass]="i === folderStructure.length - 1? 'active': ''"> {{c.title}}</span> </span> 
+        <span  *ngFor="let c of folderStructure; let i = index">/<span [ngClass]="i === folderStructure.length - 1? 'active': ''"> {{c.title}}</span> </span>
     </div>
 
     <div *ngIf="docIsPrivate" class="whenYouConvert">
@@ -56,10 +56,10 @@
 
     <div class="manageAccessNewUi">
       <div class="breadcrumbBlock">
-        <span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} /<span class="active">{{selectedFolder.title}}</span></span> 
+<span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} /<span class="active">{{selectedFolder.title}}</span></span> 
       </div>
       <div class="lockFolder">
-        <div class="slideToggleBlk"><mat-slide-toggle [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
+        <div class="slideToggleBlk"><mat-slide-toggle [disabled]="isPrivate || lockedChilds.length > 0" [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
         <div class="slideContent">
           Lock folder
           <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
@@ -67,64 +67,26 @@
       </div>
 
       <!-- TODO: this will be done once we have an API to see which folders are locked inside the current folder -->
-      <div *ngIf="false"><!-- <div *ngIf="!docIsPrivate">  -->
+      <div *ngIf="lockedChilds.length"><!-- <div *ngIf="!docIsPrivate">  -->
         <div class="lockFolderInfo">
           This folder can't be locked because it contains locked folders by other users. Please contact the owners to move their folders to a different location in order to lock this folder.
         </div>
-  
+
         <div class="makeAdminBlock customTableStyle">
           <table class="folderListview pb-5">
               <tr>
                   <th style="width:30%">Owner</th>
                   <th style="width:70%">Location</th>
               </tr>
-              <tr>
+              <tr *ngFor="let data of lockedChilds">
                 <td>
                   <div class="tollTipCustom">
-                    <div class="itemTitleContent">ankur.tiwari@neom.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                    <div class="itemTitleContent">{{data[1]}}</div>
                   </div>
                 </td>
                 <td>
                   <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/MyFolder</div>
-                    <!-- <div class="tolltipContent">Marketing / Subfolder / Photos & Videos/MyFolder</div> -->
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent">jing.lin@neom.com</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/ProjectXYZ</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent">maha.aljehani@neom.com</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/MahasFolder</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent">maha.aljehani@neom.com</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">Marketing / Subfolder / Photos & Videos/Random</div>
+                    <div class="itemTitleContent bold">{{data[0]}}</div>
                   </div>
                 </td>
               </tr>
@@ -190,7 +152,7 @@
                     <div class="itemTitleContent">maha.aljehani@neom.com</div>
                   </div>
                 </td>
-                <td class="bold"> 
+                <td class="bold">
                   Admin <div class="tollTipCustom" style="display: inline-block;">
                     <div class="itemTitleContent inlineBlock"><img src="../../assets/images/close-makeAdmin.svg" class="makeAdminIcon" /></div>
                     <div class="tolltipContent alignRight">Remove admin role</div>
@@ -287,7 +249,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">zimraan.hadi@example.com <span class="accessExpired">Access expired</span></div>
-                   
                   </div>
                 </td>
                 <td class="bold">
