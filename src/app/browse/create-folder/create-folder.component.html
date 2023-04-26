@@ -50,21 +50,6 @@
     </div>
     <div class="row mt-4">
 
-      <div class="col-xl-12">
-        <div class="lockFolder">
-          <div class="slideToggleBlk">
-            <mat-slide-toggle (change)="togglerUserActivated($event)"></mat-slide-toggle>
-          </div>
-          <div class="slideContent">
-            Lock folder
-            <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
-          </div>
-        </div>
-
-        <div class="whenYouConvert" *ngIf="makeLockFolder">
-          You can add users to the locked folder after it's been created. Right-click the folder and click Manage access.
-        </div>
-      </div>
 
       <div class="col-xl-12" *ngIf="!checkPrivateFolder">
         <div class="lockFolder">
