@@ -94,7 +94,7 @@
                         <div class="flex">
                             <span>{{ f.name }}</span>
                             <!-- <span *ngIf="!showInfo" class="gettingInfo" (click)="gettingInfo($event)">Getting info...</span> -->
-                            <span class="custom-date-picker">
+                            <span *ngIf="!isDroneOperator" class="custom-date-picker">
                                 <mat-form-field appearance="fill">
                                     <input matInput [matDatepicker]="picker" [(ngModel)]="dates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
                                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

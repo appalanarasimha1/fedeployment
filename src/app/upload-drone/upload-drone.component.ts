@@ -7,6 +7,7 @@ import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "../services/shared.service";
 import { WHITELIST_EXTENSIONS } from "../upload-modal/constant";
 import { ApiService } from "../services/api.service";
+import * as moment from "moment";
 
 @Component({
   selector: "app-upload-drone",
@@ -21,7 +22,7 @@ export class UploadDroneComponent implements OnInit {
   searchPopup: boolean = false;
   tagClicked: boolean = false;
   searchText: string = "";
-  uploadDate: string = new Date().toISOString().split("T")[0];
+  uploadDate: Date = new Date();
   showDateDropdown: boolean = false;
   selectedDate = null;
   showUpload: boolean = false;
@@ -145,7 +146,8 @@ export class UploadDroneComponent implements OnInit {
 
   next() {
     this.showUpload = true;
-    this.selectedDate = this.uploadDate;
+    this.selectedDate = this.selectedDate || this.uploadDate
+    this.selectedDate = moment(this.selectedDate).toISOString(true).split('T')[0];
     this.isNextButton = false;
     this.showDatePicker = false;
   }
@@ -324,7 +326,7 @@ export class UploadDroneComponent implements OnInit {
         "dc:title": file.name,
         "dc:assetTimeTaken": "",
         "dc:assetDateTaken":
-          date?.toISOString().slice(0, 10).replace(/-/g, "") || "",
+          this.selectedDate?.slice(0, 10).replace(/-/g, "") ||date?.toISOString().slice(0, 10).replace(/-/g, "") || "",
         "dc:installationId": this.selectedDevice.installationId,
         "dc:timeZone": "Asia/Riyadh",
         "dc:deviceType": this.selectedDevice.type,
