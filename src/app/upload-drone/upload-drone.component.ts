@@ -419,13 +419,14 @@ export class UploadDroneComponent implements OnInit {
     const filteredFile = [];
     for (const file of files) {
       const filenameSplit = file.name.split(".");
-      if (filenameSplit.length > 2) {
-      } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
+      // if (filenameSplit.length > 2) {
+      // } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
+        if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
       } else if (
         filenameSplit[1] &&
-        WHITELIST_EXTENSIONS.includes(filenameSplit[1].toLowerCase())
-      ) {
+        WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length() - 1].toLowerCase()))
+         {
         filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
