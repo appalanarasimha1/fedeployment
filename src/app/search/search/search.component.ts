@@ -329,7 +329,7 @@ export class SearchComponent implements OnInit {
         
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         
-        if(error?.message === "Forbidden") {
+        if(error?.response?.status === 403) {
           this.excludedDroneWorkspaces = "";
           this.fetchApiResult(false, false);
           return;
