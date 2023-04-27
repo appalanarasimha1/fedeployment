@@ -535,13 +535,14 @@ export class DocumentComponent implements OnInit, OnChanges {
         this.loading.pop();
       })
       .catch((error) => {
+        console.log('error in getassetbysectors = ', error);
         this.loading.pop();
-        if(error.status === 403) {
+        if(error?.message === "Forbidden") {
           this.excludedDroneWorkspaces = "";
           this.getAssetBySectors(false);
           return;
         }
-        if (error && error.message) {
+        if (error?.message) {
           if (error.message.toLowerCase() === "unauthorized") {
             this.sharedService.redirectToLogin();
           }
