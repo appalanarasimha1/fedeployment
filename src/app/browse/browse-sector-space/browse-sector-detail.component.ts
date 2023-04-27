@@ -79,11 +79,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   whiteLoader: boolean = false;
   transparentLoader: boolean = false;
   onlyPrivate:boolean = false;
-  permissionChange:boolean=false;
-  showAssetDownloadPopup:boolean = false;
-  zippigAssets:boolean = false;
-  nevermindBlock:boolean = false;
-  alwaysCredit:boolean = true;
+  permissionChange:boolean=false
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -971,53 +967,5 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
-  assetsDownloadAction() {
-    this.showAssetDownloadPopup = true;
-    $(".downloadButtonClick").on("click", function (e) {
-      $(".multiDownloadBlock").show();
-      $(".downloadButtonClick").addClass("downloadFolderClick");
-      e.stopPropagation();
-    });
-    $(".downloadButtonClick.downloadFolderClick").on("click", function (e) {
-      $(".multiDownloadBlock").hide();
-      $(".downloadButtonClick").removeClass("downloadFolderClick");
-      e.stopPropagation();
-    });
-
-    $(".multiDownloadBlock").click(function (e) {
-      e.stopPropagation();
-      $(".downloadButtonClick").removeClass("downloadFolderClick");
-    });
-
-    $(document).click(function () {
-      $(".multiDownloadBlock").hide();
-      $(".downloadButtonClick").removeClass("downloadFolderClick");
-    });
-
-    setTimeout(() => {
-      $(".downloadClose").on("click", function (e) {
-        $(".multiDownloadBlock").hide();
-        $(".downloadButtonClick").removeClass("downloadFolderClick");
-      });
-    }, 300);
-
-    
-  }
-
-  downloadClose() {
-    this.showAssetDownloadPopup = false;
-  }
-  downloadContinue() {
-    this.zippigAssets = true;
-    this.alwaysCredit = false;
-  }
-  cancleDownload() {
-    this.nevermindBlock = true;
-    this. zippigAssets = false;
-  }
-  nevermind() {
-    this.nevermindBlock = false;
-    this. zippigAssets = true;
-  }
 
 }
