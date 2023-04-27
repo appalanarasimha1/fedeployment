@@ -535,7 +535,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         this.loading.pop();
       })
       .catch((error) => {
-        console.log('error in getassetbysectors = ', error?.message);
+        console.log('error in getassetbysectors = ', error, '    ======    ', Object.keys(error));
         this.loading.pop();
         if(error?.message === "Forbidden") {
           this.excludedDroneWorkspaces = "";
