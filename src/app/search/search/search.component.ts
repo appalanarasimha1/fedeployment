@@ -325,7 +325,7 @@ export class SearchComponent implements OnInit {
         this.dataService.loaderValueChangeNew(false);
       })
       .catch((error) => {
-        console.log("search document error = ", error);
+        console.log("search document error = ", error?.message);
         
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         
