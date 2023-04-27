@@ -45,8 +45,8 @@
               </span>
         </th>
         <th width="8%"> <div style="display: block; width: 40px; height: 40px"></div> <!-- [ngStyle]="{'width': increaseWidth ? '12%' : '8%' }" --></th>
-        <th mat-sort-header="fileType" 
-            width="12%"   
+        <th mat-sort-header="fileType"
+            width="12%"
             (mouseover)="this.hoverArrow['fileType'] = true"
         >Format
         <span *ngIf="this.arrowisAsc['fileType'] && this.hoverArrow['fileType']"
@@ -137,7 +137,9 @@
           <div
             class="delete-folder-action"
             *ngIf="
-              !checkAssetType(item.type)
+              !checkAssetType(item.type) &&
+              checkWSType(item.type) &&
+              !checkGeneralFolder(item)
             "
           >
             <div class="control-group">
@@ -235,10 +237,10 @@
               text-align: left;
               padding: 5px 10px;">
                 {{item?.title}}
-                
+
 
               </span>
-              
+
             </span>
             <span *ngIf="showAssetPath" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
               <span class="tolltipContent" style="width: 100%;
