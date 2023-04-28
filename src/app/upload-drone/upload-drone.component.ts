@@ -18,7 +18,7 @@ export class UploadDroneComponent implements OnInit {
   userWorkspaceInput$ = new Subject<string>();
 
   isDroneOperator: boolean = false;
-  isNextButton: boolean = true;
+  isNextButton: boolean = false;
   searchPopup: boolean = false;
   tagClicked: boolean = false;
   searchText: string = "";
@@ -80,6 +80,7 @@ export class UploadDroneComponent implements OnInit {
       if (user.groups && user.groups.length > 0) {
         if(user.groups.includes('drone_uploader')) {
           this.isDroneOperator = true;
+          this.isNextButton = true;
         }
       }
     }
