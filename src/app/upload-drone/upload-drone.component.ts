@@ -22,7 +22,7 @@ export class UploadDroneComponent implements OnInit {
   searchPopup: boolean = false;
   tagClicked: boolean = false;
   searchText: string = "";
-  uploadDate: Date = new Date();
+  uploadDate: Date;
   showDateDropdown: boolean = false;
   selectedDate = null;
   showUpload: boolean = false;
