@@ -54,7 +54,7 @@
                 (click) = "selectDate()"
             /> -->
 
-            <span class="custom-date-picker1" style="margin-right: 22px;" (click) = "selectDate()">
+            <span class="custom-date-picker1" style="margin-right: 22px;">
                 <mat-form-field appearance="fill">
                     <input matInput [matDatepicker]="picker" placeholder="Set a date for the upload" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -135,8 +135,8 @@
     </div>
     <div class="buttonBlock">
         <button *ngIf="!cancleBlock" class="cancel-btn" (click)="cancleShowHide()">Cancel</button>
-        <button *ngIf="uploadDate && isNextButton" (click)="next()" class="upload-btn">Next</button>
-        <button [disabled]="files?.length === 0 && !srtFiles.length" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && (!isNextButton || !uploadDate)" class="upload-btn">Start upload</button>
+        <button [disabled]="!uploadDate" *ngIf="isNextButton" (click)="next()" class="upload-btn">Next</button>
+        <button [disabled]="files?.length === 0 && !srtFiles.length" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton" class="upload-btn">Start upload</button>
         <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep" class="upload-btn">Publish</button>
 
         <div *ngIf="cancleBlock">Are you sure you want to cancel the upload?</div>

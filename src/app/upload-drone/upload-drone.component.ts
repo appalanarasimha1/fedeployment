@@ -18,7 +18,7 @@ export class UploadDroneComponent implements OnInit {
   userWorkspaceInput$ = new Subject<string>();
 
   isDroneOperator: boolean = false;
-  isNextButton: boolean = false;
+  isNextButton: boolean = true;
   searchPopup: boolean = false;
   tagClicked: boolean = false;
   searchText: string = "";
@@ -138,10 +138,6 @@ export class UploadDroneComponent implements OnInit {
       this.showUpload = true;
     }
     this.selectedDevice = device;
-  }
-
-  selectDate() {
-    this.isNextButton = true;
   }
 
   next() {
