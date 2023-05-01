@@ -6,6 +6,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { apiRoutes } from "src/app/common/config";
 import { ApiService } from "../../services/api.service";
+import { SharedService } from "../../services/shared.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -40,6 +41,7 @@ export class ManageAccessListComponent implements OnInit {
   constructor(
     public matDialog: MatDialog,
     private apiService: ApiService,
+    public sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
@@ -176,6 +178,15 @@ export class ManageAccessListComponent implements OnInit {
 
   async toggleAccessActivated(event, access) {
     this.updateDocument(access.uid, {"activated": event.checked});
+    if(!event.checked) {
+      this.sharedService.showSnackbar(
+        "This access list will be disabled and its users unable to access its assets.",
+        3000,
+        "top",
+        "center",
+        "snackBarMiddle"
+      );
+    }
     this.updateRegionPermission(access.users, !event.checked, access.name);
   }
 

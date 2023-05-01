@@ -173,8 +173,8 @@ export class CreateDeviceModalComponent implements OnInit {
 
     const payload = {
       deviceType: this.selectedType,
-      latitude: this.latitude || "",
-      longitude: this.longitude || "",
+      latitude: [this.latitude] || [],
+      longitude: [this.longitude] || [],
       cameraDirection: this.directionShow ? this.direction : "",
       cameraPole: this.poleIdShow ? this.poleId : "",
       region: this.selectedRegion || "",
@@ -235,8 +235,8 @@ export class CreateDeviceModalComponent implements OnInit {
   async updateDevice() {
     this.loading = true;
     const params = {
-      latitude: this.latitude || "",
-      longitude: this.longitude || "",
+      latitude: [this.latitude] || [],
+      longitude: [this.longitude] || [],
       cameraDirection: this.directionShow ? this.direction : "",
       cameraPole: this.poleIdShow ? this.poleId : "",
       owner: this.selectedOwner || "",

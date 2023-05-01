@@ -38,7 +38,7 @@
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
                             <input placeholder="Add..." #suppliersInput [formControl]="suppliersCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
-                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" (click)="add($event)">
                         </mat-chip-list>
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, i)">
                             <mat-option *ngFor="let suppliers of filteredFruits[i] | async" [value]="suppliers">

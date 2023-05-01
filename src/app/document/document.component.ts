@@ -535,9 +535,10 @@ export class DocumentComponent implements OnInit, OnChanges {
         this.loading.pop();
       })
       .catch((error) => {
-        console.log('error in getassetbysectors = ', error?.response);
-        this.loading.pop();
         if(error?.response?.status === 403) {
+        this.loading.pop();
+        }
+        if(error?.message === "Forbidden") {
           this.excludedDroneWorkspaces = "";
           this.getAssetBySectors(false);
           return;
@@ -1066,7 +1067,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       case "favourite":
         return "Your Favorites";
       case "sectorPage":
-        return "Assets by Sector";
+        return "Assets by Function";
       case "trendingPage":
         return "What’s Trending";
       case "yourFavourites":

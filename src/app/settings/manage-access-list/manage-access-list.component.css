@@ -590,3 +590,10 @@ input.datePicker:focus::placeholder{
     display: flex;
     justify-content: space-between;
 }
+::ng-deep .cdk-overlay-pane {
+    margin-left: 20% !important;
+}
+::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+    margin-top: 150px !important;
+}

@@ -3,7 +3,7 @@ import { SharedService } from '../../services/shared.service';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ApiService } from '../../services/api.service';
 import { apiRoutes } from '../../common/config';
-import { IBrowseSidebar, IEntry, ISearchResponse } from '../../common/interfaces';
+import { IBrowseSidebar, IEntry, ISearchResponse, IArrow } from '../../common/interfaces';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
 import { ASSET_TYPE, constants, PAGE_SIZE_20, UNWANTED_WORKSPACES } from '../../common/constant';
@@ -88,8 +88,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   selectedMoveList={};
   sizeExeeded = false;
   sortedData: IEntry[] = [];
-  arrowisAsc = { "title": true, "fileType": true, "dc:creator": true, "dc:created": true, "dc:modified": true, "dc:sector": true };
-  hoverArrow = { "title": false, "fileType": false, "dc:creator": false, "dc:created": false, "dc:modified": false, "dc:sector": false };
+  arrowisAsc: IArrow = { "title": true, "fileType": true, "dc:creator": true, "dc:created": true, "dc:modified": true, "dc:sector": true };
+  hoverArrow: IArrow = { "title": false, "fileType": false, "dc:creator": false, "dc:created": false, "dc:modified": false, "dc:sector": false };
   showLinkCopy: boolean = false;
   showShadow = false;
   selectedMoveListNew: any = {};
@@ -827,10 +827,18 @@ export class DataTableComponent implements OnInit, OnChanges {
   copyLink(asset: IEntry, assetType: string) {
     this.increaseWidth = true;
     asset.copy = this.sharedService.copyLink(asset.uid, assetType, asset.properties['dc:sector']);
-    setTimeout(() => {
-      asset.copy = null;
-      this.increaseWidth = false;
-    }, 4000);
+
+    this.sharedService.showSnackbar(
+      "Link copied",
+      4000,
+      "top",
+      "center",
+      "snackBarMiddle"
+    );
+    // setTimeout(() => {
+    //   asset.copy = null;
+    //   this.increaseWidth = false;
+    // }, 4000);
   }
   
   updateFolderAction() {

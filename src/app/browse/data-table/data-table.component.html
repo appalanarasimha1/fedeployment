@@ -1,10 +1,10 @@
 <!-- <app-loader [show]="loading"></app-loader> -->
 <div class="row justify-content-between pt-25" style="width: 100%; --bs-gutter-x: 0px">
-   
+
 
   <div class="col-xl-12 col-md-12 customTableStyle">
       <!-- *ngIf="!initialLoad && (searchList?.length && selectedFolder.uid !== parentId )"  -->
-    
+
     <table matSort (matSortChange)="sortData($event)" class="folderListview pb-5">
       <tr>
         <th style="width: 3%" class="checkAll positionRelative" [ngClass]="{'showChecked' : selectAllClicked }">
@@ -32,68 +32,67 @@
           width="35%"
           style="padding-left: 35px"
           (mouseover)="this.hoverArrow['title'] = true"
-                 > 
-          Name <span *ngIf="this.arrowisAsc['title'] && this.hoverArrow['title']" 
+                 >
+          Name <span *ngIf="this.arrowisAsc['title'] && this.hoverArrow['title']"
           class="material-icons fs-6"
           (click)="sortData({active: 'title', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['title'] && this.hoverArrow['title']" 
+            <span *ngIf="!this.arrowisAsc['title'] && this.hoverArrow['title']"
             class="material-icons fs-6"
             (click)="sortData({active: 'title', direction: 'desc'})">
               arrow_downward
               </span>
         </th>
-        <th [ngStyle]="{'width': increaseWidth ? '12%' : '4%' }"> <div style="display: block; width: 40px; height: 40px"></div>
-         </th>
-        <th mat-sort-header="fileType" 
-            width="15%"   
+        <th width="8%"> <div style="display: block; width: 40px; height: 40px"></div> <!-- [ngStyle]="{'width': increaseWidth ? '12%' : '8%' }" --></th>
+        <th mat-sort-header="fileType"
+            width="12%"
             (mouseover)="this.hoverArrow['fileType'] = true"
         >Format
-        <span *ngIf="this.arrowisAsc['fileType'] && this.hoverArrow['fileType']" 
+        <span *ngIf="this.arrowisAsc['fileType'] && this.hoverArrow['fileType']"
           class="material-icons fs-6"
           (click)="sortData({active: 'fileType', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['fileType'] && this.hoverArrow['fileType']" 
+            <span *ngIf="!this.arrowisAsc['fileType'] && this.hoverArrow['fileType']"
             class="material-icons fs-6"
             (click)="sortData({active: 'fileType', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
       </th>
-     
-        <th mat-sort-header="dc:creator" 
+
+        <th mat-sort-header="dc:creator"
             width="20%"
             (mouseover)="this.hoverArrow['dc:creator'] = true"
             > Created by
-          <span *ngIf="this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']" 
+          <span *ngIf="this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']"
           class="material-icons fs-6"
           (click)="sortData({active: 'dc:creator', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']" 
+            <span *ngIf="!this.arrowisAsc['dc:creator'] && this.hoverArrow['dc:creator']"
             class="material-icons fs-6"
             (click)="sortData({active: 'dc:creator', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
         </th>
         <th
           *ngIf="!isTrashView"
           mat-sort-header="dc:created"
           (mouseover)="this.hoverArrow['dc:created'] = true"
-          width="15%"
+          width="12%"
         >
           Created on
-          <span *ngIf="this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']" 
+          <span *ngIf="this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']"
           class="material-icons fs-6"
           (click)="sortData({active: 'dc:created', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']" 
+            <span *ngIf="!this.arrowisAsc['dc:created'] && this.hoverArrow['dc:created']"
             class="material-icons fs-6"
             (click)="sortData({active: 'dc:created', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
         </th>
         <th
           *ngIf="isTrashView"
@@ -102,16 +101,16 @@
           (mouseover)="this.hoverArrow['dc:modified'] = true"
         >
           Deleted on
-          <span *ngIf="this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']" 
+          <span *ngIf="this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']"
           class="material-icons fs-6"
           (click)="sortData({active: 'dc:modified', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']" 
+            <span *ngIf="!this.arrowisAsc['dc:modified'] && this.hoverArrow['dc:modified']"
             class="material-icons fs-6"
             (click)="sortData({active: 'dc:modified', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
         </th>
         <th
         *ngIf="isTrashView"
@@ -120,16 +119,16 @@
           (mouseover)="this.hoverArrow['dc:sector'] = true"
         >
           Workspace
-          <span *ngIf="this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']"  
+          <span *ngIf="this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']"
           class="material-icons fs-6"
           (click)="sortData({active: 'dc:sector', direction: 'asc'})">
             arrow_upward
             </span>
-            <span *ngIf="!this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']" 
+            <span *ngIf="!this.arrowisAsc['dc:sector'] && this.hoverArrow['dc:sector']"
             class="material-icons fs-6"
             (click)="sortData({active: 'dc:sector', direction: 'desc'})">
               arrow_downward
-              </span> 
+              </span>
         </th>
         <th style="width: 3%">&nbsp;&nbsp;</th>
       </tr>
@@ -223,7 +222,7 @@
         </td>
         <td *ngIf="checkAssetType(item.type)" class="getWidth2" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
           <div class="zoomImg" style="display: inline-block;">
-            <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain;">
+            <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain; max-height: 30px;">
             <div class="zoomImgBlock">
               <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')">
             </div>
@@ -231,13 +230,17 @@
           <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; max-width: calc(100% - 30px); vertical-align: middle;">
             <span class="tollTipCustom">
               {{sharedService.stringShortener(item?.title, 25)}}
+              <!--img *ngIf="item.type === 'Picture' && item?.properties['picture:info']?.format === null"  src="../../../assets/images/recover-icon.svg" style="width: 15px; margin-left: 5px; vertical-align: middle;"-->
               <span class="tolltipContent" style="top: 28px;
               height: auto;
               white-space: break-spaces;
               text-align: left;
               padding: 5px 10px;">
                 {{item?.title}}
+
+
               </span>
+
             </span>
             <span *ngIf="showAssetPath" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
               <span class="tolltipContent" style="width: 100%;
@@ -249,6 +252,16 @@
               </span>
             </span>
           </p>
+
+          <span *ngIf="item.type === 'Picture' && item?.properties['picture:info']?.format === null" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; vertical-align: middle;">
+            <span class="tollTipCustom">
+              <img src="../../../assets/images/recover-icon.svg" style="width: 17px; margin-left: 5px; vertical-align: middle;">
+              <span class="tolltipContent" style="top: 28px; height: auto;white-space: break-spaces;text-align: left;padding: 5px 10px;">
+                This asset is in scanning progress
+              </span>
+            </span>
+          </span>
+
           <span *ngIf="item.edit" style="display: inline-block; position: relative; z-index: 99;">
             <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
             <div class="actionIcon" style="margin-top: 0px;display: inline-block;">
@@ -283,36 +296,34 @@
             </div>
           </span>
         </td>
-        <td *ngIf="!checkAssetType(item.type)" class="getWidth3" (contextmenu)="onContextMenu($event, item)">
-          <span (click)="copyLink(item, 'folder')" style="text-align: right;">
-            <div *ngIf="!item.copy; else other_content" class="copyHover">
+        <td *ngIf="!checkAssetType(item.type)" class="getWidth3" (contextmenu)="onContextMenu($event, item)" style="text-align: center !important;">
+          <span (click)="copyLink(item, 'folder')" style="text-align: left; display: inline-block; position: relative; margin: 0px auto;">
+            <div class="copyHover"> <!-- *ngIf="!item.copy; else other_content" -->
               <img src="../../../assets/images/Link.svg" />
               <div class="copyHoverInfo">Copy link</div>
             </div>
-            <ng-template #other_content>
+            <!-- <ng-template #other_content>
               <div class="copyedBlock">
                 <img src="../../../assets/images/Tick-box.svg" /> Copied!
               </div>
-            </ng-template>
+            </ng-template> -->
           </span>
         </td>
-        <td *ngIf="checkAssetType(item.type)"class="getWidth3" (contextmenu)="onContextMenu($event, item)">
-          <span (click)="copyLink(item, 'asset')" style="text-align: right;">
-            <div *ngIf="!item.copy; else other_content" class="copyHover">
+        <td *ngIf="checkAssetType(item.type)"class="getWidth3" (contextmenu)="onContextMenu($event, item)" style="text-align: center !important;">
+          <span (click)="copyLink(item, 'asset')" style="text-align: left;display: inline-block; position: relative;margin: 0px auto;">
+            <div class="copyHover"> <!-- *ngIf="!item.copy; else other_content" -->
               <img src="../../../assets/images/Link.svg" />
               <div class="copyHoverInfo">Copy link</div>
             </div>
-            <ng-template #other_content>
+            <!-- <ng-template #other_content>
               <div class="copyedBlock">
                 <img src="../../../assets/images/Tick-box.svg" /> Copied!
               </div>
-            </ng-template>
+            </ng-template> -->
           </span>
         </td>
-    
-        <td
-        style="padding-left: 25px;"
-        >
+
+        <td>
           <p class="itemTitleContent">{{getFileType(item)}}</p>
         </td>
 
@@ -425,7 +436,7 @@
       [doc]="fileToPreview"
       [docUrl]="fileToPreviewUrl"
     ></preview-popup>
-          
+
     <mat-paginator
         *ngIf="searchList?.length"
         #paginator
