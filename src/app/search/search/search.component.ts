@@ -248,7 +248,7 @@ export class SearchComponent implements OnInit {
     return queryParams;
   }
 
-  async fetchApiResult(withAncestorId = false, params, isShowMore: boolean = false) {
+  async fetchApiResult(withAncestorId = true, params, isShowMore: boolean = false) {
     if(withAncestorId && (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0)) {
       await this.getDroneUploadWsIds();
     }
