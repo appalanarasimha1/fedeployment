@@ -325,15 +325,14 @@ export class SearchComponent implements OnInit {
         this.dataService.loaderValueChangeNew(false);
       })
       .catch((error) => {
-        console.log("search document error = ", error?.message);
+        console.log("search document error = ", error?.response?.message);
         
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         
+        this.dataService.loaderValueChange(false);
+        this.dataService.loaderValueChangeNew(false);
         if (--this.count === 0) {
           this.getAggregationValues();
-          // this.loading = false;
-          this.dataService.loaderValueChange(false);
-          this.dataService.loaderValueChangeNew(false);
         }
         if(error?.response?.status === 403) {
           this.excludedDroneWorkspaces = "";
