@@ -22,7 +22,7 @@ export class UploadDroneComponent implements OnInit {
   searchPopup: boolean = false;
   tagClicked: boolean = false;
   searchText: string = "";
-  uploadDate: Date = new Date();
+  uploadDate: Date;
   showDateDropdown: boolean = false;
   selectedDate = null;
   showUpload: boolean = false;
@@ -80,6 +80,7 @@ export class UploadDroneComponent implements OnInit {
       if (user.groups && user.groups.length > 0) {
         if(user.groups.includes('drone_uploader')) {
           this.isDroneOperator = true;
+          this.isNextButton = true;
         }
       }
     }
@@ -138,10 +139,6 @@ export class UploadDroneComponent implements OnInit {
       this.showUpload = true;
     }
     this.selectedDevice = device;
-  }
-
-  selectDate() {
-    this.isNextButton = true;
   }
 
   next() {
