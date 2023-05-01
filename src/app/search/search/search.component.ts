@@ -329,16 +329,16 @@ export class SearchComponent implements OnInit {
         
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         
-        if(error?.response?.status === 403) {
-          this.excludedDroneWorkspaces = "";
-          this.fetchApiResult(false, params);
-          return;
-        }
         if (--this.count === 0) {
           this.getAggregationValues();
           // this.loading = false;
           this.dataService.loaderValueChange(false);
           this.dataService.loaderValueChangeNew(false);
+        }
+        if(error?.response?.status === 403) {
+          this.excludedDroneWorkspaces = "";
+          this.fetchApiResult(false, params);
+          return;
         }
       });
   }
