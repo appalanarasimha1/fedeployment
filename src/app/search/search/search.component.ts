@@ -331,7 +331,7 @@ export class SearchComponent implements OnInit {
         
         if(error?.response?.status === 403) {
           this.excludedDroneWorkspaces = "";
-          this.fetchApiResult(false, false);
+          this.fetchApiResult(false, params);
           return;
         }
         if (--this.count === 0) {
