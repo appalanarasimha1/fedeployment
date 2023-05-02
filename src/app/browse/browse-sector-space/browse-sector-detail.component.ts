@@ -967,5 +967,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
+  checkSharedFolderPath(){
+    return window.location.href.includes(`/workspace/sharedFolder`)
+  }
 
 }
