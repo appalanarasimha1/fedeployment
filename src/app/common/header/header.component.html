@@ -368,14 +368,54 @@
 
       </div>
 
-      <div class="" *ngIf="defaultVideoSrc && !videoCompleted">
-          <video *ngIf="videoResponse" style="width: 100%; height: calc(95vh - 100px);" preload="false" autoplay  controls tabindex="0">
+      <div class="generativeVideo" *ngIf="defaultVideoSrc && !videoCompleted">
+        <div class="selectSectorAi" *ngIf="!videoResponseShow">
+          <div class="flex">
+            <div><img src="../../../assets/images/message-icon.svg" alt="" /></div>
+            <div class="aiVideoContent">
+              <h1>Hello Luis,</h1>
+              <p class="pb50">I am Ground X AI and I can generate videos for any sector or region you choose. Please select a sector or region:</p>
+
+              <div class="ssector">
+                <ng-select [items]="allSectors" class="sectorsss" [ngClass]="{'goldenText': sectorSelected !== 'general' }"
+                id="customScrollBar"
+                  ngDefaultControl
+                  placeholder="Select a sector"
+                  [(ngModel)]="sectorSelected"
+                  bindLabel="label"
+                  bindValue="value"
+                  (change)="playPersonalizedVideo()"
+                  [closeOnSelect]
+                  [searchable]="false" [clearable]="false"
+                  >
+                  <ng-template ng-option-tmp let-item="item">
+                    <div title="{{item.label}}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.label}}</div>
+                  </ng-template>
+                </ng-select>
+              </div>
+
+              <div class="generateVideo">
+                <span (click)="generateVideoPlay()"> <app-loader-small [show]="generateVideo"></app-loader-small> Generate video</span>
+              </div>
+
+              <div class="surpriseMe">
+                Just browsing. Surprise me!  >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="videoResponseShow">
+          <video *ngIf="videoResponse" style="width: 100%; height: calc(95vh - 30px); display: block; overflow: hidden; border-radius: 8px;" preload="false" autoplay  controls tabindex="0">
+            <source [src]=defaultVideoSrc type="video/mp4" />
+          </video>
+        </div>
+
+        <!-- <video *ngIf="videoResponse" style="width: 100%; height: calc(95vh - 100px);" preload="false" autoplay  controls tabindex="0">
             <source [src]=defaultVideoSrc type="video/mp4" />
           </video>
           <div class="vidwoDropdownarea">
-            <!-- <p class="videoCaption">Watch the video AI generated for you</p> -->
             <div class="ssector">
-              <!-- <span>Change sector</span> -->
               <ng-select [items]="allSectors" class="sectorsss" [ngClass]="{'goldenText': sectorSelected !== 'general' }"
               id="customScrollBar"
                 ngDefaultControl
@@ -390,17 +430,9 @@
                 <ng-template ng-option-tmp let-item="item">
                   <div title="{{item.label}}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.label}}</div>
                 </ng-template>
-                <!-- <ng-template ng-option-tmp let-item="item">
-                  <div title="{{item.label}}" style="position: relative;">
-                    <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis; position: relative;">{{item.label}}</div>
-                    <div class="videoTooltip">
-                      {{item.label}}
-                    </div>
-                  </div>
-                </ng-template> -->
               </ng-select>
              </div>
-          </div>
+          </div> -->
       </div>
 
 

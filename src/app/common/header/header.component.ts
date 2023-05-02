@@ -74,6 +74,8 @@ export class HeaderComponent implements OnInit {
 
   loading = false;
   showCreateFolderPopup: boolean = false;
+  generateVideo:boolean = false;
+  videoResponseShow:boolean = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -250,6 +252,7 @@ export class HeaderComponent implements OnInit {
     this.modalOpen = true;
     this.hideVideo = true;
     this.selectArea = false;
+    this.videoResponseShow = false;
     // localStorage.removeItem('openVideo');
     this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
       // this.closeResult = `Closed with: ${result}`;
@@ -555,5 +558,11 @@ export class HeaderComponent implements OnInit {
       $(".notificationExpandarea").hide();
       $(".notifactionClickAction").removeClass("createNewFolderClick");
     });
+  }
+
+  generateVideoPlay() {
+    this.generateVideo = true;
+    this.videoResponseShow = true;
+    this.generateVideo = false;
   }
 }
