@@ -580,6 +580,7 @@ tr.groupFolder td:first-child {
     vertical-align: middle;
     position: relative;
     z-index: 1;
+    max-width: calc(100% - 30px);
     /* max-width: calc(100% - 10px); */
 }
 .itemTitleContent {

@@ -201,7 +201,7 @@
           <p (click)="openFolder(item);" class="workspaeName">
             <span class="tollTipCustom">
               <!-- {{sharedService.stringShortener(item?.title, 25)}} -->
-              <div class="itemTitleContent" style="max-width: calc(100% - 25px);">{{item?.title}}</div>
+              <div class="itemTitleContent">{{item?.title}}</div>
               <span class="tolltipContent">
                 {{item.title}}
               </span>
@@ -215,6 +215,8 @@
                 {{removeWorkspacesFromString(item.path, item.title)}}
               </span>
             </span>
+          </p>
+        </td>
         <td *ngIf="checkAssetType(item.type)" class="getWidth2" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
           <div class="zoomImg" style="display: inline-block;">
             <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain; max-height: 30px;">
