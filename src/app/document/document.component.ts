@@ -519,7 +519,6 @@ export class DocumentComponent implements OnInit, OnChanges {
       .get()
       .then((response) => {
         if (response) {
-          console.log('slider1');
           this.assetsBySector = response.entries ? this.assetsBySector.concat(response?.entries) : [];
           if (dontResetSectors) {
             this.sectorsHomepage = [];
@@ -535,9 +534,8 @@ export class DocumentComponent implements OnInit, OnChanges {
         this.loading.pop();
       })
       .catch((error) => {
-        console.log('error in getassetbysectors = ', error);
         this.loading.pop();
-        if(error?.message === "Forbidden") {
+         if(error?.response?.status === 403) {
           this.excludedDroneWorkspaces = "";
           this.getAssetBySectors(false);
           return;
