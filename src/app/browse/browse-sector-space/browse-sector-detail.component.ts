@@ -694,6 +694,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   async openManageAccessModal(isSelected=false) {
+    this.whiteLoader = true;
     console.log("openManageAccessModal");
     const folderId = isSelected ? Object.values(this.dataTableComponent.selectedFolderList)[0]['uid'] : this.currentWorkspace.uid;
 
@@ -722,6 +723,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
           result.properties["isPrivateUpdated"] = true;
         this.saveState(result);
       }
+      
+      this.whiteLoader = false;
     });
   }
 
