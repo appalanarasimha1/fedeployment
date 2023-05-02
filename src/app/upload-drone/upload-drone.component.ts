@@ -170,6 +170,7 @@ export class UploadDroneComponent implements OnInit {
       params: {
         installationId: this.selectedDevice.installationId,
         location: this.selectedDevice.initial || this.getInstallationIdRegion(this.selectedDevice.installationId),
+        selectedDate: this.selectedDate?.slice(0, 10).replace(/-/g, "")
       },
     };
     const res = await this.apiService
