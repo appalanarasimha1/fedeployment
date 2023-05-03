@@ -792,6 +792,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     if (e.target.checked) {
       this.downloadErrorShow = false;
       this.downloadEnable = true;
+      if(this.dataTableComponent) this.dataTableComponent.downloadEnable = true
     } else {
       this.downloadEnable = false;
     }
