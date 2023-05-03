@@ -76,6 +76,7 @@ export class HeaderComponent implements OnInit {
   showCreateFolderPopup: boolean = false;
   generateVideo:boolean = false;
   videoResponseShow:boolean = false;
+  changeSectorShow : boolean = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -564,5 +565,9 @@ export class HeaderComponent implements OnInit {
     this.generateVideo = true;
     this.videoResponseShow = true;
     this.generateVideo = false;
+  }
+
+  changeSectorClick() {
+    this.changeSectorShow = !this.changeSectorShow;
   }
 }

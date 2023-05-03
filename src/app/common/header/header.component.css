@@ -1416,7 +1416,8 @@ span.userName {
     font-size: 14px;
     letter-spacing: 1px;
 }
-::ng-deep .sectorsss .ng-dropdown-panel.ng-select-top {
+::ng-deep .sectorsss .ng-dropdown-panel.ng-select-top,
+::ng-deep .sectorsss .ng-dropdown-panel.ng-select-bottom {
     background: #2D2926 !important;
     /* overflow: hidden;
     overflow-x: scroll; */
@@ -1426,7 +1427,8 @@ span.userName {
     border-radius: 0px 0px 4px 4px !important;
     border-top: 1px solid #EDD580;
 }
-::ng-deep .sectorsss .ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child {
+::ng-deep .sectorsss .ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child,
+::ng-deep .sectorsss .ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:first-child {
     border-radius: 0px !important;
 }
 
@@ -1442,4 +1444,23 @@ span.userName {
 .ssector ::ng-deep .ng-dropdown-panel-items.scroll-host::-webkit-scrollbar-thumb {
 	background-color: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
+}
+.changeSector {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 2;
+}
+.messageIcon svg {
+    max-width: 35px;
+    cursor: pointer;
+}
+/* .messageIcon svg:hover path ,  */
+.messageIcon svg.active path {
+    fill: #EDD580;
+    stroke: #EDD580;
+}
+.generativeVideo ::ng-deep .ng-select.ng-select-single .ng-select-container {
+    height: 35px;
+    min-height: 35px;
 }
