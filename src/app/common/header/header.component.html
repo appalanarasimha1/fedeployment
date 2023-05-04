@@ -398,15 +398,18 @@
                 <span (click)="generateVideoPlay()"> <app-loader-small [show]="generateVideo"></app-loader-small> Generate video</span>
               </div>
 
-              <div class="surpriseMe">
+              <div class="surpriseMe" (click)="generateVideoPlay()">
                 Just browsing. Surprise me!  >
               </div>
             </div>
           </div>
         </div>
 
-        <div *ngIf="videoResponseShow">
-          <div class="changeSector flex">
+        <div *ngIf="videoResponseShow" style="width: 100%; height: calc(95vh - 30px);">
+          <div class="generateVideo sectorChange" *ngIf="sectorChange && !videoResponse">
+            <span><app-loader-small [show]="true"></app-loader-small> Generate video</span>
+          </div>
+          <div class="changeSector flex" *ngIf="!sectorChange">
             <div class="messageIcon">
               <span class="main-title tollTipCustom">
                 <div class="button" (click)="changeSectorClick()">

@@ -294,17 +294,19 @@ export class HeaderComponent implements OnInit {
     if (!this.userData) return !this.checkExternalUser();
     return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');
   }
-
+  sectorChange: boolean = false;
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, user: JSON.parse(localStorage.getItem('user'))};
     localStorage.setItem('videoSector', this.sectorSelected);
     this.videoResponse = false;
-    this.modalLoading = true;
+    // this.modalLoading = true;
+    this.sectorChange = true;
     try {
       this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.user.email)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
+          this.sectorChange = false;
           if(!response?.error && response.videoId) {
             this.videoId = response.videoId;
             this.videoLocation = response.location || null;
@@ -315,6 +317,7 @@ export class HeaderComponent implements OnInit {
       } catch(error) {
         console.log('error = ', error);
         this.modalLoading = false;
+        this.sectorChange = false;
           return;
         }
   }
