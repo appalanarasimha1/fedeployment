@@ -7,6 +7,7 @@ import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "../services/shared.service";
 import { WHITELIST_EXTENSIONS } from "../upload-modal/constant";
 import { ApiService } from "../services/api.service";
+import * as moment from "moment";
 
 @Component({
   selector: "app-upload-drone",
@@ -16,10 +17,16 @@ import { ApiService } from "../services/api.service";
 export class UploadDroneComponent implements OnInit {
   userWorkspaceInput$ = new Subject<string>();
 
+  isDroneOperator: boolean = false;
+  isNextButton: boolean = false;
   searchPopup: boolean = false;
   tagClicked: boolean = false;
   searchText: string = "";
+  uploadDate: Date;
+  showDateDropdown: boolean = false;
+  selectedDate = null;
   showUpload: boolean = false;
+  showDatePicker: boolean = false;
   files: File[] = [];
   dates = [];
   srtDates = [];
@@ -54,6 +61,7 @@ export class UploadDroneComponent implements OnInit {
 
   ngOnInit(): void {
     this.showUpload = false;
+    this.checkIsDroneOperator();
     this.installationIdList = this.data?.installationIdList || [];
     this.company = this.data?.company;
     this.companyId = this.data?.companyId;
@@ -64,6 +72,21 @@ export class UploadDroneComponent implements OnInit {
       this.filteredInstallationIdList = this.installationIdList;
     }
   }
+
+  checkIsDroneOperator() {
+    const data = window.localStorage.getItem('user');
+    if (data) {
+      const user = JSON.parse(data);
+      if (user.groups && user.groups.length > 0) {
+        if(user.groups.includes('drone_uploader')) {
+          this.isDroneOperator = true;
+          this.isNextButton = true;
+        }
+      }
+    }
+  }
+        
+
 
   closeModal(done?) {
     this.dialogRef.close(done);
@@ -83,6 +106,7 @@ export class UploadDroneComponent implements OnInit {
       || device.type?.toLowerCase().includes(term)
     });
   }
+
 
   blurOnSearch() {
     console.log("this.searchText", this.searchText);
@@ -109,13 +133,35 @@ export class UploadDroneComponent implements OnInit {
   }
 
   showUploadBlock(device) {
-    this.showUpload = !this.showUpload;
+    if(this.isDroneOperator) {
+      this.showDatePicker = true;
+    } else {
+      this.showUpload = true;
+    }
     this.selectedDevice = device;
   }
 
+  next() {
+    this.showUpload = true;
+    this.selectedDate = this.selectedDate || this.uploadDate
+    this.selectedDate = moment(this.selectedDate).toISOString(true).split('T')[0];
+    this.isNextButton = false;
+    this.showDatePicker = false;
+  }
+
   generateUploadHeader() {
-    if (!this.selectedDevice) return "New Installation ID";
+    if(!this.isDroneOperator) {
+      if(!this.selectedDevice ) return "New Installation ID";
+    }
+    else {
+      if(!this.selectedDevice || !this.selectedDate) return "New Installation ID";
+    }
     return `${this.selectedDevice.installationId} ${this.selectedDevice.area} ${this.selectedDevice.location}`;
+  }
+
+  generateUploadDate() {
+    if (!this.selectedDevice || !this.selectedDate) return "";
+    return `${this.selectedDate}`;
   }
 
   async getUploadFolderPath() {
@@ -124,6 +170,7 @@ export class UploadDroneComponent implements OnInit {
       params: {
         installationId: this.selectedDevice.installationId,
         location: this.selectedDevice.initial || this.getInstallationIdRegion(this.selectedDevice.installationId),
+        selectedDate: this.selectedDate?.slice(0, 10).replace(/-/g, "")
       },
     };
     const res = await this.apiService
@@ -277,7 +324,7 @@ export class UploadDroneComponent implements OnInit {
         "dc:title": file.name,
         "dc:assetTimeTaken": "",
         "dc:assetDateTaken":
-          date?.toISOString().slice(0, 10).replace(/-/g, "") || "",
+          this.selectedDate?.slice(0, 10).replace(/-/g, "") ||date?.toISOString().slice(0, 10).replace(/-/g, "") || "",
         "dc:installationId": this.selectedDevice.installationId,
         "dc:timeZone": "Asia/Riyadh",
         "dc:deviceType": this.selectedDevice.type,
@@ -370,13 +417,14 @@ export class UploadDroneComponent implements OnInit {
     const filteredFile = [];
     for (const file of files) {
       const filenameSplit = file.name.split(".");
-      if (filenameSplit.length > 2) {
-      } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
+      // if (filenameSplit.length > 2) {
+      // } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
+        if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
       } else if (
         filenameSplit[1] &&
-        WHITELIST_EXTENSIONS.includes(filenameSplit[1].toLowerCase())
-      ) {
+        WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length() - 1].toLowerCase()))
+         {
         filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);

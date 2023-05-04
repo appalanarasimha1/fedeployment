@@ -119,4 +119,16 @@ export class ApiService {
       .get<any>(SERVER_URL + "/nuxeo/site/api/v1" + urlAddress, options)
       .pipe(map((data) => data));
   }
+
+  constructionGet(urlAddress: string, options?: any) {
+    options = options
+      ? Object.assign(options, {
+          headers: this.getHeaders(),
+          observe: "response",
+        })
+      : { headers: this.getHeaders(), observe: "response" };
+    return this.http
+      .get<any>(SERVER_URL + "/nuxeo/site/cameraData" + urlAddress, options)
+      .pipe(map((data) => data));
+  }
 }

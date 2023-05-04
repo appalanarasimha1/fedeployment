@@ -325,20 +325,19 @@ export class SearchComponent implements OnInit {
         this.dataService.loaderValueChangeNew(false);
       })
       .catch((error) => {
-        console.log("search document error = ", error);
+        console.log("search document error = ", error?.response?.message);
         
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         
-        if(error?.message === "Forbidden") {
-          this.excludedDroneWorkspaces = "";
-          this.fetchApiResult(false, false);
-          return;
-        }
+        this.dataService.loaderValueChange(false);
+        this.dataService.loaderValueChangeNew(false);
         if (--this.count === 0) {
           this.getAggregationValues();
-          // this.loading = false;
-          this.dataService.loaderValueChange(false);
-          this.dataService.loaderValueChangeNew(false);
+        }
+        if(error?.response?.status === 403) {
+          this.excludedDroneWorkspaces = "";
+          this.fetchApiResult(false, params);
+          return;
         }
       });
   }
