@@ -406,9 +406,9 @@ header.updateHeader .navbar .navbar-collapse {
     /* position: absolute;
     right: 10px;
     top: 2px;
-    z-index: 9; */
-    float: right;
-    width: 250px;
+    z-index: 9; 
+    float: right; */
+    width: 350px;
     cursor: pointer !important;
 }
 ::ng-deep .ssector .ng-select{
@@ -482,7 +482,10 @@ header.updateHeader .navbar .navbar-collapse {
 ::ng-deep .sectorsss .ng-dropdown-panel .ng-dropdown-panel-items .ng-option{
     color: #fff;
     padding: 8px 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    /* background-color: rgba(0, 0, 0, 0.5);
+    background: #2D2926;*/
+    background: transparent !important;
+    font-family: 'brownlight';
 }
 ::ng-deep .ng-dropdown-panel{
     border: unset;
@@ -1340,4 +1343,137 @@ span.userName {
     text-align: center;
     line-height: 25px;
     margin-top: 60px;
+}
+.generativeVideo {
+    background: url(../../../assets/images/video-background.png) bottom center no-repeat;
+    width: 100%; 
+    /* max-height: 95vh; */
+    border-radius: 8px; 
+    background-size: cover;
+}
+.flex {
+    display: flex;
+    max-width: 700px;
+    margin: 0px auto;
+}
+.selectSectorAi {
+    padding: 100px 0px 6%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.aiVideoContent {
+    width: 100%;
+    padding-left: 20px;
+    color: #fff;
+}
+.aiVideoContent h1 {
+    font-family: 'brownregular';
+    font-weight: normal;
+    font-size: 28px;
+    line-height: 30px;
+    padding-bottom: 30px;
+}
+.aiVideoContent p {
+    font-family: 'brownlight';
+}
+.pb50 {
+    padding-bottom: 50px;
+}
+.generateVideo {
+    padding-top: 50px;
+}
+.generateVideo span{
+    display: inline-block;
+    border: 1px solid #737373;
+    border-radius: 999px;
+    color: #737373;
+    font-family: 'brownregular';
+    position: relative;
+    font-size: 15px;
+    line-height: 40px;
+    padding: 0px 50px;
+    cursor: pointer;
+}
+
+.generateVideo ::ng-deep app-loader-small .text-center {
+    top: 0px !important;
+    left: 27px !important;
+    border-radius: 100px !important;
+    background: transparent;
+    width: auto;
+}
+.surpriseMe {
+    line-height: 24px;
+    color: #fff;
+    padding-top: 20vh;
+    font-family: 'brownlight';
+    font-size: 14px;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+::ng-deep .sectorsss .ng-dropdown-panel.ng-select-top,
+::ng-deep .sectorsss .ng-dropdown-panel.ng-select-bottom {
+    background: #2D2926 !important;
+    /* overflow: hidden;
+    overflow-x: scroll; */
+    height: 170px;
+    bottom: auto;
+    top: 35px;
+    border-radius: 0px 0px 4px 4px !important;
+    border-top: 1px solid #EDD580;
+}
+::ng-deep .sectorsss .ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child,
+::ng-deep .sectorsss .ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:first-child {
+    border-radius: 0px !important;
+}
+
+.ssector ::ng-deep .ng-dropdown-panel-items.scroll-host::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+.ssector ::ng-deep .ng-dropdown-panel-items.scroll-host::-webkit-scrollbar {
+	width: 6px;
+	background-color:transparent;
+}
+
+.ssector ::ng-deep .ng-dropdown-panel-items.scroll-host::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+.changeSector {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 2;
+}
+.messageIcon svg {
+    max-width: 35px;
+    cursor: pointer;
+}
+/* .messageIcon svg:hover path ,  */
+.messageIcon svg.active path {
+    fill: #EDD580;
+    stroke: #EDD580;
+}
+.generativeVideo ::ng-deep .ng-select.ng-select-single .ng-select-container {
+    height: 35px;
+    min-height: 35px;
+}
+.generateVideo.sectorChange {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 2;
+    padding-top: 0px;
+}
+.generateVideo.sectorChange span {
+    border: 0px;
+    color: #fff;
+    padding-left: 36px;
+}
+.generateVideo.sectorChange ::ng-deep app-loader-small .text-center {
+    top: 0px !important;
+    left: 13px !important;
 }

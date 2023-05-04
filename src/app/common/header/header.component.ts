@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit {
   defaultVideoSrc;
   videoCompleted = false;
   searched = false;
-  showItemOnlyOnce = true;
+  showItemOnlyOnce = false;
   readonly adminEmail: string = "groundxfeedback@neom.com";
   notifications: any[];
   thisWeekNoti: any[];
@@ -74,6 +74,9 @@ export class HeaderComponent implements OnInit {
 
   loading = false;
   showCreateFolderPopup: boolean = false;
+  generateVideo:boolean = false;
+  videoResponseShow:boolean = false;
+  changeSectorShow : boolean = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -149,7 +152,7 @@ export class HeaderComponent implements OnInit {
     this.requestSent = {};
     this.isApproved = {};
 
-    this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
+    // this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
     // this.openOnboardingModal(this.onboarding);
     this.dataService.showFooter$.subscribe((data)=>this.showFooter= data)
@@ -250,6 +253,7 @@ export class HeaderComponent implements OnInit {
     this.modalOpen = true;
     this.hideVideo = true;
     this.selectArea = false;
+    this.videoResponseShow = false;
     // localStorage.removeItem('openVideo');
     this.modalService.open(content, { windowClass: 'custom-modal', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
       // this.closeResult = `Closed with: ${result}`;
@@ -290,17 +294,19 @@ export class HeaderComponent implements OnInit {
     if (!this.userData) return !this.checkExternalUser();
     return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');
   }
-
+  sectorChange: boolean = false;
   playPersonalizedVideo() {
     const body = {sector: this.sectorSelected, user: JSON.parse(localStorage.getItem('user'))};
     localStorage.setItem('videoSector', this.sectorSelected);
     this.videoResponse = false;
-    this.modalLoading = true;
+    // this.modalLoading = true;
+    this.sectorChange = true;
     try {
       this.apiService.get(apiRoutes.FETCH_PERSONALIZED_VIDEO + '?sector=' + this.sectorSelected + '&username=' + body.user.email)
         .subscribe((response: any) => {
           this.videoResponse = true;
           this.modalLoading = false;
+          this.sectorChange = false;
           if(!response?.error && response.videoId) {
             this.videoId = response.videoId;
             this.videoLocation = response.location || null;
@@ -311,6 +317,7 @@ export class HeaderComponent implements OnInit {
       } catch(error) {
         console.log('error = ', error);
         this.modalLoading = false;
+        this.sectorChange = false;
           return;
         }
   }
@@ -555,5 +562,15 @@ export class HeaderComponent implements OnInit {
       $(".notificationExpandarea").hide();
       $(".notifactionClickAction").removeClass("createNewFolderClick");
     });
+  }
+
+  generateVideoPlay() {
+    this.generateVideo = true;
+    this.videoResponseShow = true;
+    this.generateVideo = false;
+  }
+
+  changeSectorClick() {
+    this.changeSectorShow = !this.changeSectorShow;
   }
 }
