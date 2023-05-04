@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit {
   defaultVideoSrc;
   videoCompleted = false;
   searched = false;
-  showItemOnlyOnce = true;
+  showItemOnlyOnce = false;
   readonly adminEmail: string = "groundxfeedback@neom.com";
   notifications: any[];
   thisWeekNoti: any[];
@@ -152,7 +152,7 @@ export class HeaderComponent implements OnInit {
     this.requestSent = {};
     this.isApproved = {};
 
-    this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
+    // this.showItemOnlyOnce = !localStorage.getItem('videoPlayed');
     if(!this.showItemOnlyOnce) this.playPersonalizedVideo();
     // this.openOnboardingModal(this.onboarding);
     this.dataService.showFooter$.subscribe((data)=>this.showFooter= data)
