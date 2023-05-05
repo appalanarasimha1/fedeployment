@@ -137,5 +137,15 @@
         [docUrl]="selectedFileUrl"
       ></preview-popup>
   </div>
+  <mat-paginator
+        *ngIf="assetList?.length"
+        #paginator
+        [length]="resultCount"
+        [pageSize]="defaultPageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="paginatorEvent($event)"
+        aria-label="Select page"
+      >
+    </mat-paginator>
 
 </section>

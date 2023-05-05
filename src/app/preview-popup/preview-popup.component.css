@@ -2152,7 +2152,7 @@ form.commentTextForm {
   background-color: #F6F5F2;
 }
 .popupTabSec.notPrivateAccess pdf-viewer {
-  max-height: calc(100vh - 330px) !important;
+  height: calc(100vh - 230px) !important;
   background-color: #F6F5F2;
 }
 @media  screen and (min-width: 1440px) {
@@ -2226,7 +2226,8 @@ form.commentTextForm {
   height: calc(100vh - 260px) !important;
 } */
 ::ng-deep pdf-viewer {
-  height: 100% !important;
+  height: 300px !important;
+  background-color: #F6F5F2;
 }
 .popupTabSec.notPrivateAccess img {
   max-height: calc(100vh - 260px) !important;

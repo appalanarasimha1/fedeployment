@@ -15,45 +15,70 @@
           <span style="padding-left: 10px; z-index: 9">Documentation project</span>
         </div>
         <ul class="leftPanel insideScroll" id="customScrollBar">
-          <li
+
+
+          <!-- 
+            Previous Design
+          -->
+          <!-- 
+
+             <li
             style="cursor: pointer"
             class="d-flex set"
             routerLink="/settings/devices"
-            routerLinkActive="'active-tab'"
+            routerLinkActive="'active-tab'" 
           >
             <span>Devices <span class="counting">{{deviceCount}}</span></span>
           </li>
 
-          <li
+          -->
+
+          <a routerLink="/settings/devices" style="text-decoration: none;">
+            <li
             style="cursor: pointer"
             class="d-flex set"
-            routerLink="/settings/manage-suppliers"
+            routerLinkActive="'active-tab'"
+          >
+            <span>Devices <span class="counting">{{deviceCount}}</span></span>
+          </li>
+          </a>
+          
+
+            <a routerLink="/settings/manage-suppliers" style="text-decoration: none; ">
+              <li
+            class="d-flex set"
             routerLinkActive="'active-tab'"
           >
             <span>Suppliers <span class="counting">{{supplierCount}}</span></span>
           </li>
 
-          <li
+            </a>
+
+          <a routerLink="/settings/manage-locations" style="text-decoration: none;">
+            <li
             style="cursor: pointer"
             class="d-flex set"
-            routerLink="/settings/manage-locations"
             routerLinkActive="'active-tab'"
           >
             <span>Regions <span class="counting">{{regionCount}}</span></span>
           </li>
+          </a>
+          
 
-          <li
+          <a routerLink="/settings/manage-access-list" style="text-decoration: none;">
+            <li
             style="cursor: pointer"
             class="d-flex set"
-            routerLink="/settings/manage-access-list"
             routerLinkActive="'active-tab'"
           >
             <span>Access lists <span class="counting">{{accessCount}}</span></span>
           </li>
+          </a>
+
         </ul>
       </li>
-
-      <li
+      <a routerLink="/settings/manage-external-users" style="text-decoration: none;">
+        <li
         style="cursor: pointer"
         class="d-flex set"
         routerLink="/settings/manage-external-users"
@@ -61,13 +86,17 @@
       >
         <span>Manage external users</span>
       </li>
-      <li *ngIf="checkForUserGroup()"
+      </a>
+      
+      <a *ngIf="checkForUserGroup()" routerLink="/report" style="text-decoration: none;">
+        <li 
         style="cursor: pointer"
         class="d-flex set"
-        routerLink="/report"
         routerLinkActive="'active-tab'"
       >
         <span>Analytics</span>
       </li>
+      </a>
+      
     </ul>
   </div>

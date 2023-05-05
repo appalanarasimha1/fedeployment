@@ -211,7 +211,7 @@
         <div *ngIf="checkMimeType(doc) === 'file'">
           <!-- <img [src]="docUrl" alt="" /> -->
           <pdf-viewer [src]="getAssetUrl(null, docUrl, doc)" [render-text]="true"
-            style="display: block; width: 100%; height: 100vh" [original-size]="false" [autoresize]="true"
+            style="display: block; width: 100%;" [original-size]="false" [autoresize]="true"
             [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
         </div>
         <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
@@ -747,7 +747,7 @@
       </div>
       <div *ngIf="checkMimeType(doc) === 'file'">
         <pdf-viewer [src]="getAssetUrl(null, docUrl, doc)" [render-text]="true" class="nitin"
-          style="display: block; width: 100%; height: 100vh" [original-size]="false" [autoresize]="true"
+          style="display: block; width: 100%;" [original-size]="false" [autoresize]="true"
           [show-borders]="false" (on-progress)="onFileProgress($event)"></pdf-viewer>
       </div>
       <div class="myTabContentMain" [ngClass]="{ hide: !showShadow }">
