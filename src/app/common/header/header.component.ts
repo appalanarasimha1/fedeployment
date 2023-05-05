@@ -573,4 +573,11 @@ export class HeaderComponent implements OnInit {
   changeSectorClick() {
     this.changeSectorShow = !this.changeSectorShow;
   }
+
+  getAiName(){
+    let {userData} = this
+    let splittedUser = userData?.email.split(".")
+    let name = splittedUser?.[0]
+    return isNaN(name) && !splittedUser?.length ? "":name
+  }
 }
