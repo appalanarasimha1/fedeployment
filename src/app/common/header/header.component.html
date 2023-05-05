@@ -405,7 +405,7 @@
           </div>
         </div>
 
-        <div *ngIf="videoResponseShow" style="width: 100%; height: calc(95vh - 30px);">
+        <div *ngIf="videoResponseShow" style="width: 100%; height: 595px;">
           <div class="generateVideo sectorChange" *ngIf="sectorChange && !videoResponse">
             <span><app-loader-small [show]="true"></app-loader-small> Generate video</span>
           </div>
@@ -445,7 +445,7 @@
               </div>
             </div>
           </div>
-          <video *ngIf="videoResponse" style="width: 100%; height: calc(95vh - 30px); display: block; overflow: hidden; border-radius: 8px;" preload="false" autoplay  controls tabindex="0">
+          <video *ngIf="videoResponse" style="width: 100%; height: 595px; display: block; overflow: hidden; border-radius: 8px;" preload="false" autoplay  controls tabindex="0">
             <source [src]=defaultVideoSrc type="video/mp4" />
           </video>
         </div>
