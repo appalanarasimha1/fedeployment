@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EXTERNAL_GROUP_GLOBAL, EXTERNAL_USER } from "../common/constant";
+import { EXTERNAL_GROUP_GLOBAL, EXTERNAL_USER, ROOT_ID } from "../common/constant";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -121,11 +121,11 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   goBack() {
     if (!this.checkCanGoBack()) return;
-    if (this.prevParent?.type === 'Domain') {
-      this.folderList = this.sectorList || [];
-    } else {
-      this.fetchAssets(this.currentFolder?.parentRef || this.prevParent.uid);
-    }
+    // if (this.prevParent?.type === 'Domain') {
+    //   this.folderList = this.sectorList || [];
+    // } else {
+      this.fetchAssets(this.currentFolder?.parentRef || ROOT_ID);
+    // }
     this.currentFolder = null;
   }
 
@@ -207,7 +207,7 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   checkEnableCheckbox(item) {
     if (item.type === 'Domain') return false;
-    if (this.getSectorFromPath(item) !== this.currentSector && !item.properties['dc:isPrivate']) return false;
+    // if (this.getSectorFromPath(item) !== this.currentSector && !item.properties['dc:isPrivate']) return false;
     return true;
   }
 
