@@ -447,11 +447,12 @@ color: #000000;
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.7);
 }
 .myTabContent{
-  width: 98%;
+  width: calc(100% - 6px);
   position: relative;
   overflow: hidden;
   overflow-y: scroll;
-  height: 100%;
+  height: calc(100% - 20px);
+  margin: 10px 10px 10px 0px;
 }
 .myTabContentMain{
   position: absolute;
@@ -570,9 +571,16 @@ color: #000000;
   opacity: 0.6;
 }
 .comment-content, .info-content{
-  position: relative;
+  /* position: relative;
   width: calc(100% - 50px);
+  margin: auto; */
+
+  position: relative;
+  width: calc(100% - 0px);
   margin: auto;
+  padding-left: 25px;
+  padding-top: 10px;
+  padding-right: 20px;
 }
 .comment-content input{
   font-size: 15px;
@@ -2280,6 +2288,9 @@ figure.zoom img {
   color: #E1BB33;
   font-family: 'brownregular';
   cursor: pointer;
+  display: block;
+  float: right;
+  clear: both;
 }
 .collapsable {
   font-size: 14px;
@@ -2316,9 +2327,11 @@ span.redTxt.displayBlock {
 p.clearfix {
   font-weight: normal;
   margin-bottom: 20px;
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+  padding-bottom: 0px;
 }
 .addDescription {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
   padding-bottom: 20px;
   display: flex;
   align-items: center;
@@ -2342,7 +2355,7 @@ p.clearfix {
   max-width: 20px;
   position: absolute;
   right: 0px;
-  top: 6px;
+  bottom: 10px;
   background-color: transparent !important;
   cursor: pointer;
 }
@@ -2368,6 +2381,7 @@ p.clearfix {
 .addDescriptionInput input[type="text"].goldenText {
   border-bottom: 1px solid #E1BB33;
   color: #E1BB33 !important;
+  padding-right: 30px;
 }
 .disabledIcon {
   filter: grayscale(100%);
@@ -2435,4 +2449,55 @@ p.clearfix {
   padding-left: 15px;
   line-height: 24px;
   font-family: 'brownlight';
+}
+.editIconClick {
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+img.editIconClick {
+  background-color: transparent !important;
+  width: 18px;
+}
+/* Track */
+.myTabContentMain ::-webkit-scrollbar-track{
+	background-color: transparent;
+}
+
+.myTabContentMain ::-webkit-scrollbar{
+	width: 6px;
+	background-color:transparent;
+}
+
+.myTabContentMain ::-webkit-scrollbar-thumb{
+	background-color: #645D57;
+  border-radius: 10px;
+}
+.borderTop {
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding-top: 10px;
+}
+
+
+.addDescriptionInput textarea {
+  border-radius: 0px;
+  color: #E1BB33;
+  border: none;
+  display: block;
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  height: auto;
+  padding: 0px 30px 0px 0px;
+  font-size: 14px;
+  outline: none;
+  background: transparent;
+  border: 0px;
+  border-bottom: 1px solid #fff;
+}
+
+.addDescriptionInput textarea.goldenText {
+  border-bottom: 1px solid #E1BB33;
+  color: #E1BB33 !important;
 }

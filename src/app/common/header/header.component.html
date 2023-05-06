@@ -677,14 +677,37 @@
 <section class="left-sidebar" *ngIf="showFooter && !(isDroneUploader && !isExternalUSer)" >
   <ul class="sidebarList">
     <li>
-      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader === isExternalUSer" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
-        <img src="../../../assets/images/discovery-icon.svg" />
-        Discovery
-      </a>
-      <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader !== isExternalUSer">
-        <img src="../../../assets/images/discovery-icon.svg" />
-        Discovery
-      </a>
+      <div class="updateNavigation">
+        <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader === isExternalUSer" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
+          <img src="../../../assets/images/discovery-icon.svg" />
+          Discovery
+        </a>
+        <!-- <div class="hoverDiscovery">
+          <div class="mediaConstruction active" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
+            <div class="mediaConstructionIcon">
+              <img src="../../../assets/images/media-assets-icon.svg" />
+            </div>
+            <div class="mediaConstructionContent">
+              Media Assets
+              <p>Search and discover a wide range of digital media assets, including images, videos, documents and more.</p>
+            </div>
+          </div>
+          <div class="mediaConstruction" [routerLink]="['/']">
+            <div class="mediaConstructionIcon">
+              <img src="../../../assets/images/construction-footage-icon.svg" />
+            </div>
+            <div class="mediaConstructionContent">
+              Construction Footage
+              <p>Experience NEOM's development evolution through a captivating series of drone and timelapse footage.</p>
+            </div>
+          </div>
+        </div> -->
+
+        <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader !== isExternalUSer">
+          <img src="../../../assets/images/discovery-icon.svg" />
+          Discovery
+        </a>
+      </div>
     </li>
     <li>
       <a class="sidebarLink" [ngClass]="{'active':checkWorkspaceActive()}" [routerLink]="['/workspace']">

@@ -265,23 +265,25 @@
 
                 <div class="row">
                   <div class="col-xl-12 col-md-12" >
-                    <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description
+                    <!-- <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description
                       <ul>
                         <li (click)="closeDeleteModal()">Delete</li>
                         <li (click)="enableInputClick(true)">Edit</li>
                       </ul>
-                    </div>
+                    </div> -->
                     <div class="addDescriptionBtn"  *ngIf="!doc?.properties['dc:description']"><button (click)="enableInputClick(true)">Add description</button></div>
-                    <p class="clearfix" *ngIf="doc?.properties['dc:description']">
+                    <p class="clearfix" *ngIf="doc?.properties['dc:description'] && !enableInput">
                       <span class="collapsable float-left" > {{ (doc?.properties['dc:description'].length>firstCount) ? (doc?.properties['dc:description'] | slice:0:counter)+'...':(doc?.properties['dc:description']) }}
-                          <span class="redTxt" *ngIf="doc?.properties['dc:description'].length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
-                            {{showTxt}}
-                          </span>
+                        <img (click)="enableInputClick(true)" src="../../assets/images/pencil-write-icon.svg" alt="Edit" class="editIconClick" />  
+                        <div *ngIf="doc?.properties['dc:description'].length>100">
+                          <span (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }" class="redTxt">{{showTxt}}</span>
+                        </div>
                       </span>
                     </p>
                     <div class="addDescription"  *ngIf="enableInput">
                       <div class="addDescriptionInput">
-                        <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }">
+                        <textarea id="txt" placeholder="Add description" (click)="autoHeightTextarea()" [(ngModel)]="description" [ngClass]="{'goldenText': description }"></textarea>
+                        <!-- <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }"> -->
                         <img src="../../assets/images/clear-icon.svg" *ngIf="description" (click)="clearValue()">
                       </div>
                       <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }" (click)="addUpdateDescription()" ><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
@@ -291,7 +293,7 @@
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row borderTop">
                   <div class="col-xl-6 col-md-6">
                     <ul>
                       <li>
@@ -324,10 +326,10 @@
                         </span>
                       </li>
 
-                      <li>
+                      <!-- <li>
                         <span>Description</span>
                         <span style="word-break: break-all">{{ doc?.properties["dc:description"] || doc?.properties["imd:image_description"] }}</span>
-                      </li>
+                      </li> -->
 
                       <li>
                         <span>Format</span>
@@ -799,18 +801,19 @@
 
               <div class="row">
                 <div class="col-xl-12 col-md-12">
-                  <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description 
+                  <!-- <div class="descriptionHeade" *ngIf="doc?.properties['dc:description']">Description 
                     <ul>
                       <li (click)="closeDeleteModal()">Delete</li>
                       <li (click)="enableInputClick(true)">Edit</li>
                     </ul>
-                  </div>
+                  </div> -->
                   <div class="addDescriptionBtn" *ngIf="!doc?.properties['dc:description']"><button (click)="enableInputClick(true)">Add description</button></div>
-                  <p class="clearfix">
-                    <span class="collapsable float-left" >  {{ (description?.length>firstCount) ? (doc?.properties['dc:description'] | slice:0:counter)+'...':(doc?.properties['dc:description']) }}
-                        <span class="redTxt" *ngIf="doc?.properties['dc:description']?.length>100" (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }">
-                          {{showTxt}}
-                        </span>
+                  <p class="clearfix" *ngIf="doc?.properties['dc:description'] && !enableInput">
+                    <span class="collapsable float-left" >  {{ (description?.length>firstCount) ? (doc?.properties['dc:description'] | slice:0:counter)+'...':(doc?.properties['dc:description']) }} 
+                      <img (click)="enableInputClick(true)" src="../../assets/images/pencil-write-icon.svg" alt="Edit" class="editIconClick" />
+                      <div *ngIf="doc?.properties['dc:description'].length>100">
+                        <span (click)="toggleSkil($event)" [ngClass]="{'displayBlock': showTxt == 'View less' }" class="redTxt">{{showTxt}}</span>
+                      </div>
                     </span>
                   </p>
                   <div class="addDescription" *ngIf="enableInput">
@@ -825,7 +828,7 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row borderTop">
                 <div class="col-xl-6 col-md-6">
                   <ul>
                     <li>
@@ -858,10 +861,10 @@
                       </span>
                     </li>
 
-                    <li>
+                    <!-- <li>
                       <span>Description</span>
                       <span style="word-break: break-all">{{ doc?.properties["dc:description"] || doc?.properties["imd:image_description"] }}</span>
-                    </li>
+                    </li> -->
 
                     <li>
                       <span>Format</span>
