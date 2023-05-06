@@ -234,7 +234,6 @@ export class DocumentComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    // this.downloadAssets1();
     this.route.fragment.subscribe((f) => {
       setTimeout(() => {
         const element = document.getElementById(f);
@@ -331,38 +330,6 @@ export class DocumentComponent implements OnInit, OnChanges {
     return;
   }
 
-  downloadAssets1() {
-    let r = Math.random().toString().substring(7);
-    let input = "docs:6713a207-bb97-45e3-84ac-0a8fb11f0ab8"
-    let uid: any;
-    this.apiService
-    .downloaPost("/automation/Blob.BulkDownload/@async", {
-      params: {
-        filename: `selection-${r}.zip`,
-      },
-      context: {},
-      input,
-    })
-    .subscribe((res: any) => {
-      let splittedLocation = res.headers.get("location").split("/");
-      let newUID = splittedLocation[splittedLocation.length - 2];
-      uid = newUID;
-      this.apiService
-        .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-        .subscribe((resp: any) => {
-          let locationForDownload = resp.headers.get("location");
-        });
-
-      setTimeout(() => {
-        window.open(
-          environment.apiServiceBaseUrl +
-            "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-            uid
-        );
-        this.removeAssets();
-      }, 1000);
-    });
-}
   public async getRelatedTags() {
     this.dataService.termSearchForHide$.subscribe((searchTerm: string) => {
       this.searchTem = searchTerm;
@@ -1227,10 +1194,22 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   downloadAssets(e?:any) {
+    // this.uncheckAll1()
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length > 0) {
+      if (this.downloadArray.length == 1) {
+        window.location.href =this.getFileContent(this.downloadFullItem[0])
+        this.removeAssets()
+      }
+      if (this.downloadArray.length > 1) {
+        this.sharedService.showSnackbar(
+          "Your download is being prepared do not close your browser",
+          6000,
+          "bottom",
+          "center",
+          "snackBarMiddle"
+        );
         $(".multiDownloadBlock").hide();
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
@@ -1247,23 +1226,33 @@ export class DocumentComponent implements OnInit, OnChanges {
             let splittedLocation = res.headers.get("location").split("/");
             let newUID = splittedLocation[splittedLocation.length - 2];
             uid = newUID;
-            this.apiService
-              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-              .subscribe((resp: any) => {
-                let locationForDownload = resp.headers.get("location");
-              });
+            let checkZipCompleted=(newUID) =>{
+                  this.apiService
+                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID +"/status")
+                .toPromise().then((resp: any) => {
+                  if(resp.status === 200){
+                    checkZipCompleted(newUID)
+                  }else{
+                    window.open(
+                      environment.apiServiceBaseUrl +
+                        "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                        uid
+                    );
+                    this.removeAssets();
+                  }
+                }).catch(e=>{
+                  this.removeAssets();
+                });
 
-            setTimeout(() => {
-              window.open(
-                environment.apiServiceBaseUrl +
-                  "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-                  uid
-              );
-              this.removeAssets();
-            }, 1000);
+            }
+            checkZipCompleted(uid)
           });
       }
     }
+  }
+
+  getFileContent(doc) {
+    return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
 
   removeAssets() {
