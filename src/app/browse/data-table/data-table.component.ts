@@ -264,6 +264,13 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.removeAssets()
       }
       if (this.downloadArray.length > 1) {
+        this.sharedService.showSnackbar(
+          "Your download is being prepared do not close your browser",
+          6000,
+          "top",
+          "center",
+          "snackBarMiddle"
+        );
         $(".multiDownloadBlock").hide();
         let r = Math.random().toString().substring(7);
         let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
@@ -280,26 +287,14 @@ export class DataTableComponent implements OnInit, OnChanges {
             let splittedLocation = res.headers.get("location").split("/");
             let newUID = splittedLocation[splittedLocation.length - 2];
             uid = newUID;
-            // setTimeout(() => {
-            //   window.open(
-            //     environment.apiServiceBaseUrl +
-            //       "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-            //       uid
-            //   );
-            //   this.removeAssets();
-            // }, 10000);
             let counter = 0
             let checkZipCompleted=(newUID) =>{
                   this.loading = true
                   this.apiService
-                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
+                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID +"/status")
                 .toPromise().then((resp: any) => {
-                }).catch(e=>{
-                  console.error("2222222222222",e)
-                  counter += 1
-
-                  if (e.status ==404) {
-                     checkZipCompleted(newUID)
+                  if(resp.status === 200){
+                    checkZipCompleted(newUID)
                   }else{
                     this.loading = false
                     window.open(
@@ -309,6 +304,20 @@ export class DataTableComponent implements OnInit, OnChanges {
                     );
                     this.removeAssets();
                   }
+                }).catch(e=>{
+                  counter += 1
+                  this.removeAssets();
+                  // if (e.status ==404) {
+                  //   //  checkZipCompleted(newUID)
+                  // }else{
+                  //   // this.loading = false
+                  //   // window.open(
+                  //   //   environment.apiServiceBaseUrl +
+                  //   //     "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                  //   //     uid
+                  //   // );
+                  //   this.removeAssets();
+                  // }
 
                 });
 
@@ -672,7 +681,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.selectedFolderList={};
     this.selectedMoveList={};
     this.selectedMoveListNew = {};
-    
+    this.selectAllClicked =false;
     this.selectedAssetMoveList.emit(this.selectedMoveListNew);
     this.canNotDeleteList.emit(this.canNotDelete);
     this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});
