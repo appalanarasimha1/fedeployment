@@ -1198,56 +1198,58 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length == 1) {
-        window.location.href =this.getFileContent(this.downloadFullItem[0])
-        this.removeAssets()
+      if (this.downloadArray.length) {
+        for(let i = 0; i < this.downloadArray.length; i++) {
+          window.open(this.getFileContent(this.downloadFullItem[i]));
+        }
+        return this.removeAssets();
       }
-      if (this.downloadArray.length > 1) {
-        this.sharedService.showSnackbar(
-          "Your download is being prepared do not close your browser",
-          6000,
-          "bottom",
-          "center",
-          "snackBarMiddle"
-        );
-        $(".multiDownloadBlock").hide();
-        let r = Math.random().toString().substring(7);
-        let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
-        let uid: any;
-        let data = this.apiService
-          .downloaPost("/automation/Blob.BulkDownload/@async", {
-            params: {
-              filename: `selection-${r}.zip`,
-            },
-            context: {},
-            input,
-          })
-          .subscribe((res: any) => {
-            let splittedLocation = res.headers.get("location").split("/");
-            let newUID = splittedLocation[splittedLocation.length - 2];
-            uid = newUID;
-            let checkZipCompleted=(newUID) =>{
-                  this.apiService
-                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID +"/status")
-                .toPromise().then((resp: any) => {
-                  if(resp.status === 200){
-                    checkZipCompleted(newUID)
-                  }else{
-                    window.open(
-                      environment.apiServiceBaseUrl +
-                        "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-                        uid
-                    );
-                    this.removeAssets();
-                  }
-                }).catch(e=>{
-                  this.removeAssets();
-                });
+      // if (this.downloadArray.length > 1) {
+      //   this.sharedService.showSnackbar(
+      //     "Your download is being prepared do not close your browser",
+      //     6000,
+      //     "bottom",
+      //     "center",
+      //     "snackBarMiddle"
+      //   );
+      //   $(".multiDownloadBlock").hide();
+      //   let r = Math.random().toString().substring(7);
+      //   let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
+      //   let uid: any;
+      //   let data = this.apiService
+      //     .downloaPost("/automation/Blob.BulkDownload/@async", {
+      //       params: {
+      //         filename: `selection-${r}.zip`,
+      //       },
+      //       context: {},
+      //       input,
+      //     })
+      //     .subscribe((res: any) => {
+      //       let splittedLocation = res.headers.get("location").split("/");
+      //       let newUID = splittedLocation[splittedLocation.length - 2];
+      //       uid = newUID;
+      //       let checkZipCompleted=(newUID) =>{
+      //             this.apiService
+      //           .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID +"/status")
+      //           .toPromise().then((resp: any) => {
+      //             if(resp.status === 200){
+      //               checkZipCompleted(newUID)
+      //             }else{
+      //               window.open(
+      //                 environment.apiServiceBaseUrl +
+      //                   "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+      //                   uid
+      //               );
+      //               this.removeAssets();
+      //             }
+      //           }).catch(e=>{
+      //             this.removeAssets();
+      //           });
 
-            }
-            checkZipCompleted(uid)
-          });
-      }
+      //       }
+      //       checkZipCompleted(uid)
+      //     });
+      // }
     }
   }
 
