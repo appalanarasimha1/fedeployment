@@ -792,4 +792,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     });
   }
 
+  toDateStringStart(date: string): string {
+    if (!date?.["dc:start"]) return "-";
+    return `${new Date(date["dc:created"]).toDateString()}`;
+  }
+  
 }

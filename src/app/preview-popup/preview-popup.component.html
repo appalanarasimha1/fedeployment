@@ -401,7 +401,7 @@
                       <li>
                         <span>Date</span>
                         <span style="word-break: break-all">{{
-                          doc?.properties || doc?.properties["dc:created"]
+                          toDateStringStart(doc?.properties)
                         }}</span>
                       </li>
                       <li>
