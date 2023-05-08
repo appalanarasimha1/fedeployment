@@ -90,25 +90,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   sortedData;
   selectedMoveListNew = {};
   canNotDelete=[]
-
+  
   selectedFolder = null;
   selectedFolder2 = null;
   selectedFolderList: any = {};
   whiteLoader: boolean = false;
   transparentLoader: boolean = false;
   onlyPrivate:boolean = false;
-  permissionChange:boolean=false;
-  showAssetDownloadPopup:boolean = false;
-  zippigAssets:boolean = false;
-  nevermindBlock:boolean = false;
-  alwaysCredit:boolean = true;
-
-  multiDownloadStep = 0;
-  multiDownloadInfo = {};
-  multiDownloadTotalSize = 0;
-  multiDownloadTotalAssets = 0;
-  downloadArrayAssets = [];
-  zipDownloadUrl = "";
+  permissionChange:boolean=false
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -130,7 +119,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     // this.dataService.fetchAssets$.subscribe(async (data) => {
     //   // await this.fetchAssets(data.sectorUid, data.checkCache, data.pageSize, data.pageIndex, data.offset);
     // });
-
+    
     this.dataService.folderPermission$.subscribe(data=> this.permissionChange = data )
 
     this.route.paramMap.subscribe( async () => {
@@ -927,6 +916,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     if (e.target.checked) {
       this.downloadErrorShow = false;
       this.downloadEnable = true;
+      if(this.dataTableComponent) this.dataTableComponent.downloadEnable = true
     } else {
       this.downloadEnable = false;
     }
@@ -945,6 +935,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     if (this.dataTableComponent) {
       this.loading = true;
       await this.dataTableComponent.deleteFolders();
+      await this.getAssets(this.currentWorkspace?.uid)
       this.loading = false;
     } else return;
   }
@@ -965,17 +956,13 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   downloadClick() {
-    if (!this.zipDownloadUrl) return;
-    this.showAssetDownloadPopup = false;
-    window.open(this.zipDownloadUrl);
+    if(this.dataTableComponent)
+    this.dataTableComponent.downloadClick();
   }
 
   multiDownload() {
-    this.isAware = false;
-    this.zipDownloadUrl = "";
-    this.multiDownloadInfo = {};
-    // if(this.dataTableComponent)
-    // this.dataTableComponent.multiDownload();
+    if(this.dataTableComponent)
+    this.dataTableComponent.multiDownload();
   }
 
   checkAssetType(e?: any) {
@@ -1107,136 +1094,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
-  assetsDownloadAction() {
-    this.multiDownloadStep = 1;
-    this.showAssetDownloadPopup = true;
-    $(".downloadButtonClick").on("click", function (e) {
-      $(".multiDownloadBlock").show();
-      $(".downloadButtonClick").addClass("downloadFolderClick");
-      e.stopPropagation();
-    });
-    $(".downloadButtonClick.downloadFolderClick").on("click", function (e) {
-      $(".multiDownloadBlock").hide();
-      $(".downloadButtonClick").removeClass("downloadFolderClick");
-      e.stopPropagation();
-    });
-
-    $(".multiDownloadBlock").click(function (e) {
-      e.stopPropagation();
-      $(".downloadButtonClick").removeClass("downloadFolderClick");
-    });
-
-    $(document).click(function () {
-      $(".multiDownloadBlock").hide();
-      $(".downloadButtonClick").removeClass("downloadFolderClick");
-    });
-
-    setTimeout(() => {
-      $(".downloadClose").on("click", function (e) {
-        $(".multiDownloadBlock").hide();
-        $(".downloadButtonClick").removeClass("downloadFolderClick");
-      });
-    }, 300);
-
-
-  }
-
-  computeDownloadArrayAssets() {
-    this.downloadArrayAssets = [];
-    for (const id of this.downloadArray) {
-      const asset  = this.assetList.find(a => a.uid === id);
-      this.downloadArrayAssets.push(asset);
-    }
-  }
-
-  async getDownloadInfo() {
-    this.multiDownloadTotalSize = 0;
-    this.multiDownloadTotalAssets = 0;
-    const params = {
-    };
-    const result: any = await this.apiService
-      .post(apiRoutes.GET_DOWNLOAD_INFO, {
-        params,
-        input: `docs:${this.downloadArray.join()}`
-      })
-      .toPromise();
-
-    if (!result) return;
-    this.multiDownloadInfo = result['value'] || {};
-    for (const key in this.multiDownloadInfo) {
-      this.multiDownloadTotalSize += this.multiDownloadInfo[key]["size"];
-      this.multiDownloadTotalAssets += this.multiDownloadInfo[key]["totalAssets"];
-    }
-  }
-
-  async processingZipUrl() {
-    this.zipDownloadUrl = "";
-    const params = {
-      "filename": `${this.currentWorkspace?.title}-${new Date().getTime()}.zip`
-    };
-    let uid: any;
-    this.apiService
-      .downloaPost(apiRoutes.BULK_DOWNLOAD + "/@async", {
-        params,
-        input: `docs:${this.downloadArray.join()}`
-      })
-      .subscribe((res: any) => {
-        console.log(res.headers.keys);
-
-        let splittedLocation = res.headers.get("location").split("/");
-        let newUID = splittedLocation[splittedLocation.length - 2];
-        uid = newUID;
-        let checkZipCompleted=(newUID) =>{
-          this.apiService
-            .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-            .toPromise().then((resp: any) => {
-            }).catch(e=>{
-              if (e.status ==404) {
-                setTimeout(() => {
-                  checkZipCompleted(newUID);
-                }, 1000);
-              }else{
-                this.zipDownloadUrl = environment.apiServiceBaseUrl + "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" + uid;
-                // this.removeAssets();
-              }
-
-            });
-        }
-        checkZipCompleted(uid)
-      });
-  }
-
-  formatBytes(bytes, decimals = 2) {
-    if (!+bytes) return '0 Bytes'
-
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
-  }
-
-  downloadClose() {
-    this.showAssetDownloadPopup = false;
-  }
-  downloadContinue() {
-    if (!this.isAware) return;
-    this.getDownloadInfo();
-    this.computeDownloadArrayAssets();
-    this.processingZipUrl();
-    this.zippigAssets = true;
-    this.alwaysCredit = false;
-  }
-  cancleDownload() {
-    this.nevermindBlock = true;
-    this.zippigAssets = false;
-    this.showAssetDownloadPopup = false;
-  }
-  nevermind() {
-    this.nevermindBlock = false;
-    this.zippigAssets = true;
+  checkSharedFolderPath(){
+    return window.location.href.includes(`/workspace/sharedFolder`)
   }
   async openShareModal() {
     if (!this.isAdmin) return;

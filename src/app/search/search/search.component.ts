@@ -325,20 +325,19 @@ export class SearchComponent implements OnInit {
         this.dataService.loaderValueChangeNew(false);
       })
       .catch((error) => {
-        console.log("search document error = ", error);
+        console.log("search document error = ", error?.response?.message);
         
         this.error = `${error}. Ensure Nuxeo is running on port 8080.`;
         
-        if(error.status === 403) {
-          this.excludedDroneWorkspaces = "";
-          this.fetchApiResult(true, false);
-          return;
-        }
+        this.dataService.loaderValueChange(false);
+        this.dataService.loaderValueChangeNew(false);
         if (--this.count === 0) {
           this.getAggregationValues();
-          // this.loading = false;
-          this.dataService.loaderValueChange(false);
-          this.dataService.loaderValueChangeNew(false);
+        }
+        if(error?.response?.status === 403) {
+          this.excludedDroneWorkspaces = "";
+          this.fetchApiResult(false, params);
+          return;
         }
       });
   }
@@ -363,7 +362,7 @@ export class SearchComponent implements OnInit {
         pageSize: 40,
       };
     }
-    this.fetchApiResult(queryParams, true);
+    this.fetchApiResult(true, queryParams, true);
     return;
   }
 

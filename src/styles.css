@@ -3612,8 +3612,9 @@ li.breadcrumb-item {
 }
 @media (min-width: 576px){
    .modal-dialog {
-    max-width: 80vw !important;
+    /* max-width: 80vw !important; */
     /* margin: 1.75rem auto; */
+    max-width: 1000px !important;
 }
 }
 

@@ -47,7 +47,7 @@ export const GROUPS = {
   "all": "All_Application_Users"
 }
 
-export const UNWANTED_WORKSPACES = ['domain', 'ground x - data', 'environment - data'];
+export const UNWANTED_WORKSPACES = ['domain'];
 
 export const SPECIFIC_USER_LABEL = "Please specify who can access";
 
@@ -124,5 +124,5 @@ export const WHITELIST_EXTENSIONS = [
   "bmp",
   "gif",
   "zip",
-  "rar"
+  "rar",
 ]

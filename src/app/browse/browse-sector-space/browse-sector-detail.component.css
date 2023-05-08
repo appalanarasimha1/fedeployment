@@ -968,6 +968,7 @@ a.downloadDisbable path {
 opacity: 1;
 }
 .downloadFileWorkspace {
+cursor: pointer;
 z-index: 2;
 }
 .downloadFileWorkspace::after {
@@ -1416,7 +1417,6 @@ display:block;
   width: 300px;
   right: 0px;
   top: 40px;
-  display: block;
 }
 .multiDownloadBlock p {
   color: #fff;
@@ -1541,6 +1541,16 @@ ul.uploadAssetsClassifications li:hover ul.subDropdownMenu {
   display: block;
   cursor: auto;
 }
+ul.uploadAssetsClassifications li:after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  bottom: -19px;
+  right: 0;
+  z-index: -2;
+}
 ul.uploadAssetsClassifications .navbar-expand-lg .navbar-nav .dropdown-menu {
   /* position: absolute; */
   width: 250px;
@@ -1613,14 +1623,14 @@ ul.uploadAssetsClassifications li.workspaceInfoHover:hover .workspaceInfo {
   stroke:none;
 }
 ul.uploadAssetsClassifications li:after {
-  /* content: '';
+  content: '';
   display: block;
   height: 20px;
   width: 100%;
   position: absolute;
   bottom: -19px;
   right: 0;
-  z-index: 9; */
+  z-index: 9;
 }
 .placeholder-search{
   position: absolute;
