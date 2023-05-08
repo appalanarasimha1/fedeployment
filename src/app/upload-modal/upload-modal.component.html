@@ -19,10 +19,10 @@
                      </div>
                   </div>
                </div>
-               
+
                <div class="flexible" style="justify-content: center;position: relative;margin: 0px auto" *ngIf="!sizeExeeded && !uploadLimit">
                   <div class="upload-label"> <!-- Remove *ngIf="!fileLimitExceed"-->
-                     <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" /> 
+                     <img src="../../assets/images/private-fileshare-icon.svg" alt="" style="margin: 0px auto;" />
                      <span style="margin-top: 20px; color: #040404; padding-bottom: 10px;"><b>{{ !data ? 'Drag and drop assets to upload' : 'Drag and drop to upload assets to '}} </b></span>
                      <div *ngIf="data" class="uploadAssetsBlock">
                         <div class="folder-img">
@@ -193,9 +193,9 @@
                      *ngIf="opened" (clickOutside)="clickOutside()">
                         <div class="breadcrumb-folder">
                            <span *ngFor="let folder of breadCrumb; let i = index">
-                              <!-- span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title); selectFolder(folder); $event.stopPropagation()" <i>Go back to starting folder</i>--> 
+                              <!-- span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title); selectFolder(folder); $event.stopPropagation()" <i>Go back to starting folder</i>-->
                               <span *ngIf="i > 0">/</span><a [ngClass]="i !== breadCrumb.length - 1 ? 'breadcrumb-active' : 'breadcrumb-not-active'" (click)="getFolderByParentId(folder.uid, folder.path, i); removeBreadcrumb(folder.title); $event.stopPropagation()">
-                                 
+
                                  {{sharedService.stringShortener(folder.title,30)}}
                               </a>
                            </span>
@@ -280,7 +280,7 @@
                                  <div class="col-xl-12 mb-10">
                                     <div class="publishingAssets" *ngIf="publishingAssets">
                                        <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
-                                       
+
                                        <table class="table table-bordered">
                                           <tbody>
                                              <tr>
@@ -297,7 +297,7 @@
                                              </tr>
                                           </tbody>
                                        </table>
-                                      
+
                                       <!-- <ul>
                                         <li>
                                           <span class="leftCont">Access and Usage:</span> <span class="rightCont">Set per asset ("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</span>
@@ -307,7 +307,7 @@
                                         </li>
                                       </ul> -->
                                     </div>
-       
+
                                     <div class="publishingAssets" *ngIf="publishingPrivateAssets">
                                       <p>Used for restricting files to specific users or receiving files from external users</p>
                                       <table class="table table-bordered">
@@ -495,7 +495,7 @@
                   <div class="row">
                      <div class="col-xl-12 col-md-12">
                         <label for="{{SPECIFIC_USER_LABEL}}" style="text-align: right;display: block;">{{SPECIFIC_USER_LABEL}}</label>
-                        <ng-select style="height: unset !important;" 
+                        <ng-select style="height: unset !important;"
                         (change)="userOverall()"
                         [items]="userList$ | async"
                         bindLabel="id"
@@ -571,7 +571,7 @@
 
             <div class="upload-form-input row uploadModalBlk" style="margin-bottom: 20px; margin-right: 3px">
                <div class="col-xl-12 col-md-12">
-                  <span class="showAllClassifications" (click)="showAllAsset()">Show all asset classifications 
+                  <span class="showAllClassifications" (click)="showAllAsset()">Show all asset classifications
                      <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotateArrow' : showHideAllAsset}">
                         <path d="M5.17168 7.00026L0.221679 2.05026L1.63568 0.636257L7.99968 7.00026L1.63568 13.3643L0.22168 11.9503L5.17168 7.00026Z" fill="#937206"/>
                      </svg>
@@ -640,7 +640,7 @@
                                  <div class="showErrorMessage" *ngIf="showErrorUpload && !customConfidentialityMap[file.key] ">Please complete all mandatory fields</div>
                               </div>
                            </div>
-      
+
                            <div class="upload-form-input row mb-20" [ngClass]="{'validationMsg': showErrorUpload && !customAccessMap[file.key] }">
                               <div class="col-xl-4">
                                  <label for="access" style="text-align: right; display: block;">{{ACCESS_TITLE}}</label>
@@ -653,7 +653,7 @@
                                  <div class="showErrorMessage" *ngIf="showErrorUpload && !customAccessMap[file.key] ">Please complete all mandatory fields</div>
                               </div>
                            </div>
-      
+
                            <div *ngIf="checkShowUserDropdown(file.key)" class="upload-form-input row mb-20" style="display: flex;">
                               <div class="col-xl-4">
                                 &nbsp; <!-- <label for="user" style="text-align: right;">Please specify who can access</label> -->
@@ -681,7 +681,7 @@
                                  </ng-select>
                               </div>
                            </div>
-      
+
                            <div class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalMap[file.key] }">
                               <div class="col-xl-4">
                                  <label>Usage right</label>
@@ -702,7 +702,7 @@
                                  <!-- <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalMap[file.key] ">Please complete all mandatory fields</div> -->
                               </div>
                            </div>
-      
+
                            <div *ngIf="checkOwnerDropdown(file.key)" class="upload-form-input row mb-20"  [ngClass]="{'validationMsg': showErrorUpload && !customDownloadApprovalUsersMap[file.key] }" >
                               <div class="col-xl-4">
                                  &nbsp;
@@ -731,7 +731,7 @@
                                  <div class="showErrorMessage" *ngIf="showErrorUpload && !customDownloadApprovalUsersMap[file.key] ">Please complete all mandatory fields</div>
                               </div>
                            </div>
-      
+
                         </div>
                      </div>
                   </div>
@@ -756,7 +756,7 @@
    <div class="finish-screen">
       <!-- <mat-icon>upload</mat-icon> -->
       <span>Your assets have been successfully {{isPrivateFolder() || checkboxIsPrivate?'uploaded':'published'}} on Ground X.</span>
-      <p style="padding-top: 20px;" *ngIf="checkboxIsPrivate">You are the only member of this private folder. You can manage the folder and invite people to join as folder members.</p>
+      <p style="padding-top: 20px;" *ngIf="checkboxIsPrivate">You are the only member of this locked folder. You can manage the folder and invite people to join as folder members.</p>
       <!-- remove this condition *ngIf="showRedirectUrl()" -->
       <div class="newFolderUi" (click)="openBrowseRoute($event)" style="cursor: pointer;">
          <div class="destination-content-block">

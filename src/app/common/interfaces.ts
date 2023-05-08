@@ -272,3 +272,12 @@ export interface IArrow {
   "dc:modified": boolean,
   "dc:sector": boolean
 }
+
+export interface IChildAssetACL {
+    "primaryDocID": string,
+    "path": string,
+    "acl": string,
+    "isPrivate": string,
+    "title": string,
+    "creator": string
+}

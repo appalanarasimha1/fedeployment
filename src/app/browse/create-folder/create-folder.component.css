@@ -391,3 +391,68 @@ button.createBtn.btn.tollTipCustom.disableBtn {
   background: #E8E6DF;
   color: #BAB8B2;
 }
+
+.lockFolder {
+  display: flex;
+  font-family: 'brownregular';
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 20px;
+}
+.lockFolder .slideToggleBlk {margin-right: 15px;}
+.lockFolder .slideContent p {
+  font-family: 'brownlight';
+}
+.lockFolderInfo {
+  color: #CB1B19;
+  background: #FDE8E8;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+::ng-deep .mat-slide-toggle-bar {
+  background-color: #D1CFC9;
+  border-radius: 20px !important;
+  height: 17px !important;
+  width: 32px !important;
+}
+::ng-deep .mat-slide-toggle-thumb-container {
+  width: 12px !important;
+  height: 12px !important;
+  top: 2px !important;
+  left: 2px !important;
+}
+::ng-deep .mat-slide-toggle-thumb {
+  height: 12px !important;
+  width: 12px !important;
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #fff;
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: #0E7A53;
+}
+::ng-deep .mat-slide-toggle-label {
+  margin-bottom: 0px !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  height: 20px !important;
+}
+::ng-deep .mat-slide-toggle .mat-slide-toggle-ripple {
+  height: 16px !important;
+  width: 16px !important;
+}
+
+.whenYouConvert {
+  background: #E6F2FF;
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: #0072A2;
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 15px;
+  display: inline-block;
+}
