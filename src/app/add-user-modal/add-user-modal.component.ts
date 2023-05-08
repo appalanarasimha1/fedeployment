@@ -31,6 +31,7 @@ export class AddUserModalComponent implements OnInit {
   @Input() selectedFolder;
   @Input() folderId;
   @Input() folderCollaborators;
+  @Input() childAssetOwners;
 
   uploadedAsset;
   // selectedFolder: any;
@@ -79,7 +80,7 @@ export class AddUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.folderCollaborators);
+    console.log('this.folderCollaborators = ', this.folderCollaborators);
 
     this.user = JSON.parse(localStorage.getItem("user"))["username"];
     this.listExternalUser = [];
@@ -727,6 +728,9 @@ export class AddUserModalComponent implements OnInit {
   async removeAllPermissions() {
     const arr = [];
     for (const key in this.folderCollaborators) {
+      if(key.toLowerCase() === this.selectedFolder.properties["dc:creator"].id.toLowerCase()) {
+        continue;
+      }
       const ids = this.folderCollaborators[key].ids;
       for (const id of ids) {
         this.folderCollaborators[key].id = id;

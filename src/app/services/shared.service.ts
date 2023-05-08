@@ -11,6 +11,7 @@ import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { NuxeoService } from './nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
+import { IChildAssetACL } from '../common/interfaces';
 
 
 @Injectable({
@@ -20,6 +21,7 @@ export class SharedService {
   public todaysDateUTC = new Date().toUTCString();
   public todayDateKSAInMilli = new Date().getTime() + 3 * 60 * 60 * 1000;
   public MeterType;
+  public user = JSON.parse(localStorage.getItem('user')) || null;
 
   // /* <!-- sprint12-fixes start --> */
   public sidebarToggleResize = new BehaviorSubject(false);
@@ -286,7 +288,7 @@ export class SharedService {
   // }
 
   chekForReportRoles(role: string): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = this.user ? JSON.parse(localStorage.getItem('user')) : null;
     return ["ceo's office", "ground x"].includes(user?.sector?.toLowerCase()) || user?.groups.indexOf(role) != -1;
   }
 
@@ -295,8 +297,10 @@ export class SharedService {
     // window.scroll(0,0);
   }
 
-  checkExternalUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
+  checkExternalUser(user = JSON.parse(localStorage.getItem('user'))) {
+    if(typeof user == "string") {
+      return user.includes('neom') ? false : true;
+    }
     if (!user?.groups) return false;
     return user?.groups.includes(EXTERNAL_USER);
   }
@@ -545,6 +549,22 @@ export class SharedService {
       }
     });
     return folderCollaborators;
+  }
+
+  createAdminCollaborator(data: IChildAssetACL) {
+    const user = this.user ? JSON.parse(localStorage.getItem('user')) : null;
+    return {
+        "user": data.creator,
+        "permission": [
+            "Everything"
+        ],
+        "externalUser": this.checkExternalUser(data.creator),
+        "end": null,
+        "id": `${data.creator}:Everything:true:${user.id}::`,
+        "ids": [
+          `${data.creator}:Everything:true:${user.id}::`
+        ]
+    }
   }
 
 }

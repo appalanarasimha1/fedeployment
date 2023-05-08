@@ -59,7 +59,7 @@
 <span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} /<span class="active">{{selectedFolder.title}}</span></span> 
       </div>
       <div class="lockFolder">
-        <div class="slideToggleBlk"><mat-slide-toggle [disabled]="isPrivate || lockedChilds.length > 0" [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
+        <div class="slideToggleBlk"><mat-slide-toggle [disabled]="lockedChildren.length > 0" [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
         <div class="slideContent">
           Lock folder
           <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
@@ -67,7 +67,7 @@
       </div>
 
       <!-- TODO: this will be done once we have an API to see which folders are locked inside the current folder -->
-      <div *ngIf="lockedChilds.length"><!-- <div *ngIf="!docIsPrivate">  -->
+      <div *ngIf="lockedChildren.length"><!-- <div *ngIf="!docIsPrivate">  -->
         <div class="lockFolderInfo">
           This folder can't be locked because it contains locked folders by other users. Please contact the owners to move their folders to a different location in order to lock this folder.
         </div>
@@ -78,15 +78,15 @@
                   <th style="width:30%">Owner</th>
                   <th style="width:70%">Location</th>
               </tr>
-              <tr *ngFor="let data of lockedChilds">
+              <tr *ngFor="let data of lockedChildren">
                 <td>
                   <div class="tollTipCustom">
-                    <div class="itemTitleContent">{{data[1]}}</div>
+                    <div class="itemTitleContent">{{data.creator}}</div>
                   </div>
                 </td>
                 <td>
                   <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">{{data[0]}}</div>
+                    <div class="itemTitleContent bold">{{data.path+'/'+data.title}}</div>
                   </div>
                 </td>
               </tr>
@@ -421,6 +421,6 @@
     <div class="button-groups">
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
         <!-- <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Make private</button> -->
-        <button (click)="updateRights()" class="upload-btn">Save changes</button>
+        <button (click)="updateRights()" [disabled]="lockedChildren.length" class="upload-btn">Save changes</button>
     </div>
 </div>

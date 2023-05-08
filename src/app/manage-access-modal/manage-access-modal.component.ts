@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
 import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
+import { IChildAssetACL } from '../common/interfaces';
 
 @Component({
   selector: 'app-manage-access-modal',
@@ -30,8 +31,9 @@ export class ManageAccessModalComponent implements OnInit {
   peopleInviteInput: string = "";
   selectedCity: any;
   folderCollaborators = {};
-  lockedChilds = [];
+  lockedChildren = [];
   user = "";
+  childAssetOwners: IChildAssetACL[];
 
   confidentiality = [
     {id: 1, name: 'Confidential'},
@@ -51,6 +53,7 @@ export class ManageAccessModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // this.getfolderAcl();
     this.user = JSON.parse(localStorage.getItem("user"))["username"];
     this.selectedFolder = this.input_data || this.data.selectedFolder;
     this.isPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
@@ -75,15 +78,29 @@ export class ManageAccessModalComponent implements OnInit {
     return result;
   }
 
+  async getfolderAcl(): Promise<IChildAssetACL[]> {
+    const result: any = await this.apiService.get(`/folderACL/${this.selectedFolder.uid}`,
+      {headers: { }}).toPromise();
+      console.log('result = ', result);
+    return result;
+  }
+
   async getLockedChild() {
     const payload = {
       params: {},
       context: {},
       input: this.selectedFolder.uid,
     };
-    const res = await this.apiService.post(apiRoutes.GET_CHILD_LOCK_FOLDERS, payload).toPromise();
-    const locked = res['value'] || [];
-    this.lockedChilds = locked.filter(data => data[1] !== this.user);
+    // const res = await this.apiService.post(apiRoutes.GET_CHILD_LOCK_FOLDERS, payload).toPromise();
+    const res: IChildAssetACL[] = await this.getfolderAcl();
+    this.childAssetOwners = res || [];
+    this.lockedChildren = this.childAssetOwners.filter((data: IChildAssetACL) => data.isPrivate === "true");
+    this.childAssetOwners.forEach((data: any) => {
+      if(this.folderCollaborators[data.creator]) {
+        return;
+      }
+      this.folderCollaborators[data.creator] = this.sharedService.createAdminCollaborator(data);
+    })
   }
 
   async updateRights() {

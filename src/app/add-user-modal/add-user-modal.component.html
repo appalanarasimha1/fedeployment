@@ -157,7 +157,7 @@
                 </div>
               </td>
               <td class="makePrivate bold" style="width:30%">
-                <ul class="permission">
+                <ul *ngIf="!collaborator.value.permissions.isAdmin" class="permission">
                   <li>
                     <label class="control control--checkbox">
                       Upload
@@ -175,7 +175,7 @@
                 </ul>
               </td>
               <td [ngClass]="!checkExpired(collaborator.value.end) ? 'accessExpiryCal bold' : 'accessExpiryCal bold accessExpiredDate'" style="width:14%">
-                <mat-form-field *ngIf="!!collaborator.value.end" appearance="fill">
+                <mat-form-field *ngIf="!!collaborator.value.end && !collaborator.value.permissions.isAdmin" appearance="fill">
                   <input class="datePicker" (dateChange)="onExpiryDateChange($event, collaborator.value)" [ngModel]="collaborator.value.end" placeholder="3.29.2023" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
