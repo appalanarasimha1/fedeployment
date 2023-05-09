@@ -278,10 +278,11 @@ export class DataTableComponent implements OnInit, OnChanges {
       else {
         this.sharedService.showSnackbar(
           "Your download is being prepared do not close your browser",
-          6000,
+          0,
           "top",
           "center",
-          "snackBarMiddle"
+          "snackBarMiddle",
+          "Close"
         );
         $(".multiDownloadBlock").hide();
         let randomString = Math.random().toString().substring(7);
