@@ -254,14 +254,12 @@ export class DataTableComponent implements OnInit, OnChanges {
     return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
 
-  downloadAssets(e?:any) {
-    // this.uncheckAll1()
+  async downloadAssets(e?:any) {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
       let newDownloadArray = []
       let newDownloadArrayFullItem = []
-     
       for (let i = 0; i < this.downloadFullItem.length; i++) {
         if (this.downloadFullItem[i].type==='Video') {
           window.open(this.getFileContent(this.downloadFullItem[i]));
@@ -272,11 +270,11 @@ export class DataTableComponent implements OnInit, OnChanges {
         }
         
       }
-      if (newDownloadArray.length == 1) {
+      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !=="OrderedFolder") {
         window.location.href =this.getFileContent(newDownloadArrayFullItem[0])
         this.removeAssets()
       }
-      if (newDownloadArray.length > 1) {
+      else {
         this.sharedService.showSnackbar(
           "Your download is being prepared do not close your browser",
           6000,
@@ -291,6 +289,59 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.downloadAsZip(input, uid, randomString)
       }
     }
+  }
+
+  //TODO: this function not getting used as of now, 
+  //will be used for multi download in future once the client clarification comes.
+  async downloadAsZip(input, uid, randomString: string) {
+    new Promise((resolve, reject) => {
+      this.apiService.downloaPost("/automation/Blob.BulkDownload/@async", {
+        params: {
+          filename: `selection-${randomString}.zip`,
+        },
+        context: {},
+        input,
+      })
+      .subscribe((res: any) => {
+        let splittedLocation = res.headers.get("location").split("/");
+        let newUID = splittedLocation[splittedLocation.length - 2];
+        uid = newUID;
+        let checkZipCompleted=(newUID) =>{
+              this.loading = true
+              this.apiService
+            .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID +"/status")
+            .toPromise().then((resp: any) => {
+              if(resp.status === 200){
+                checkZipCompleted(newUID)
+              }else{
+                this.loading = false
+                window.open(
+                  environment.apiServiceBaseUrl +
+                    "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                    uid
+                );
+                this.removeAssets();
+              }
+            }).catch(e=>{
+              this.removeAssets();
+              // if (e.status ==404) {
+              //   //  checkZipCompleted(newUID)
+              // }else{
+              //   // this.loading = false
+              //   // window.open(
+              //   //   environment.apiServiceBaseUrl +
+              //   //     "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+              //   //     uid
+              //   // );
+              //   this.removeAssets();
+              // }
+
+            });
+
+        }
+        checkZipCompleted(uid)
+      });
+    })
   }
 
 
@@ -586,6 +637,8 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
 
       };
+      this.downloadArray.push(item.uid);
+        this.downloadFullItem.push(item);
       this.selectedFolderList[i] = item;
       this.selectedMoveList[i] = item;
     } else {
@@ -594,6 +647,10 @@ export class DataTableComponent implements OnInit, OnChanges {
          this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
 
         }
+        this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+        this.downloadFullItem = this.downloadFullItem.filter(
+          (m) => m.uid !== item.uid
+        );
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
         if (this.count==0) {
@@ -606,6 +663,7 @@ export class DataTableComponent implements OnInit, OnChanges {
           this.currentIndexClicked = undefined
         }
     }
+    this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
   }
 
