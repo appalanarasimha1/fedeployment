@@ -259,62 +259,36 @@ export class DataTableComponent implements OnInit, OnChanges {
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length == 1) {
-        window.location.href =this.getFileContent(this.downloadFullItem[0])
+      let newDownloadArray = []
+      let newDownloadArrayFullItem = []
+     
+      for (let i = 0; i < this.downloadFullItem.length; i++) {
+        if (this.downloadFullItem[i].type==='Video') {
+          window.open(this.getFileContent(this.downloadFullItem[i]));
+          
+        }else{
+          newDownloadArray.push(this.downloadFullItem[i].uid)
+          newDownloadArrayFullItem.push(this.downloadFullItem[i])
+        }
+        
+      }
+      if (newDownloadArray.length == 1) {
+        window.location.href =this.getFileContent(newDownloadArrayFullItem[0])
         this.removeAssets()
       }
-      if (this.downloadArray.length > 1) {
+      if (newDownloadArray.length > 1) {
+        this.sharedService.showSnackbar(
+          "Your download is being prepared do not close your browser",
+          6000,
+          "top",
+          "center",
+          "snackBarMiddle"
+        );
         $(".multiDownloadBlock").hide();
-        let r = Math.random().toString().substring(7);
-        let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
+        let randomString = Math.random().toString().substring(7);
+        let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
         let uid: any;
-        let data = this.apiService
-          .downloaPost("/automation/Blob.BulkDownload/@async", {
-            params: {
-              filename: `selection-${r}.zip`,
-            },
-            context: {},
-            input,
-          })
-          .subscribe((res: any) => {
-            let splittedLocation = res.headers.get("location").split("/");
-            let newUID = splittedLocation[splittedLocation.length - 2];
-            uid = newUID;
-            // setTimeout(() => {
-            //   window.open(
-            //     environment.apiServiceBaseUrl +
-            //       "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-            //       uid
-            //   );
-            //   this.removeAssets();
-            // }, 10000);
-            let counter = 0
-            let checkZipCompleted=(newUID) =>{
-                  this.loading = true
-                  this.apiService
-                .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID)
-                .toPromise().then((resp: any) => {
-                }).catch(e=>{
-                  console.error("2222222222222",e)
-                  counter += 1
-
-                  if (e.status ==404) {
-                     checkZipCompleted(newUID)
-                  }else{
-                    this.loading = false
-                    window.open(
-                      environment.apiServiceBaseUrl +
-                        "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
-                        uid
-                    );
-                    this.removeAssets();
-                  }
-
-                });
-
-            }
-            checkZipCompleted(uid)
-          });
+        this.downloadAsZip(input, uid, randomString)
       }
     }
   }
