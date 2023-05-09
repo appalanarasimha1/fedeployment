@@ -1261,19 +1261,14 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   async openManageAccessModal(folderId) {
-    console.log("openManageAccessModal");
-
     // this.loading = true;
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.panelClass = "custom-modalbox";
-    // dialogConfig.id = "modal-component";
-    // dialogConfig.width = "550px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const folder = (await this.fetchFolder(folderId)) as any;
     if (!this.checkHasAdminPermission(folder)) return;
-    console.log(folder);
 
     dialogConfig.data = {
       selectedFolder: folder
@@ -1291,6 +1286,7 @@ export class DataTableComponent implements OnInit, OnChanges {
           result.properties["isPrivateUpdated"] = true;
         // this.saveState(result);
       }
+      this.removeSelection();
     });
   }
 

@@ -79,9 +79,7 @@ export class ManageAccessModalComponent implements OnInit {
   }
 
   async getfolderAcl(): Promise<IChildAssetACL[]> {
-    const result: any = await this.apiService.get(`/folderACL/${this.selectedFolder.uid}`,
-      {headers: { }}).toPromise();
-      console.log('result = ', result);
+    const result: any = await this.apiService.get(`/folderACL/${this.selectedFolder.uid}`).toPromise();
     return result;
   }
 
@@ -147,5 +145,9 @@ export class ManageAccessModalComponent implements OnInit {
 
   removeWorkspacesFromString(value: string) {
     return this.sharedService.removeWorkspacesFromString(value);
+  }
+
+  acknowledgeParent(event: boolean) {
+   
   }
 }
