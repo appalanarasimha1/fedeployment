@@ -256,15 +256,11 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   async downloadAssets(e?:any) {
-    // this.uncheckAll1()
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
       let newDownloadArray = []
       let newDownloadArrayFullItem = []
-      console.log(this.downloadFullItem);
-      
-     
       for (let i = 0; i < this.downloadFullItem.length; i++) {
         if (this.downloadFullItem[i].type==='Video') {
           window.open(this.getFileContent(this.downloadFullItem[i]));
@@ -275,11 +271,11 @@ export class DataTableComponent implements OnInit, OnChanges {
         }
         
       }
-      if (newDownloadArray.length == 1) {
+      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !=="OrderedFolder") {
         window.location.href =this.getFileContent(newDownloadArrayFullItem[0])
         this.removeAssets()
       }
-      if (newDownloadArray.length > 1) {
+      else {
         this.sharedService.showSnackbar(
           "Your download is being prepared do not close your browser",
           6000,
@@ -311,7 +307,6 @@ export class DataTableComponent implements OnInit, OnChanges {
         let splittedLocation = res.headers.get("location").split("/");
         let newUID = splittedLocation[splittedLocation.length - 2];
         uid = newUID;
-        let counter = 0
         let checkZipCompleted=(newUID) =>{
               this.loading = true
               this.apiService
@@ -329,7 +324,6 @@ export class DataTableComponent implements OnInit, OnChanges {
                 this.removeAssets();
               }
             }).catch(e=>{
-              counter += 1
               this.removeAssets();
               // if (e.status ==404) {
               //   //  checkZipCompleted(newUID)
@@ -644,6 +638,8 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
 
       };
+      this.downloadArray.push(item.uid);
+        this.downloadFullItem.push(item);
       this.selectedFolderList[i] = item;
       this.selectedMoveList[i] = item;
     } else {
@@ -652,6 +648,10 @@ export class DataTableComponent implements OnInit, OnChanges {
          this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
 
         }
+        this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+        this.downloadFullItem = this.downloadFullItem.filter(
+          (m) => m.uid !== item.uid
+        );
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
         if (this.count==0) {
@@ -664,6 +664,7 @@ export class DataTableComponent implements OnInit, OnChanges {
           this.currentIndexClicked = undefined
         }
     }
+    this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
   }
 

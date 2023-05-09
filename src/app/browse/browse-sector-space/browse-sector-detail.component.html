@@ -253,7 +253,7 @@
               </span>
             </div>
           </li>
-          <li *ngIf="(downloadArray?.length > 0 || needPermissionToDownload?.length >0) && count?.assetCount > 0 && count?.assetCount === count?.allCount ">
+          <li *ngIf="(downloadArray?.length > 0 || needPermissionToDownload?.length >0)">
             <div class="downloadFileWorkspace">
               <a (click)="multiDownload()"
                 href="javascript:void(0)"
