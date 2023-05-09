@@ -704,7 +704,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.selectedFolderList={};
     this.selectedMoveList={};
     this.selectedMoveListNew = {};
-    
+    this.selectAllClicked =false;
     this.selectedAssetMoveList.emit(this.selectedMoveListNew);
     this.canNotDeleteList.emit(this.canNotDelete);
     this.clickHandle.emit({eventName: 'forInternalUseList', data: this.forInternalUse});

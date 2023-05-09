@@ -64,6 +64,12 @@ export class DocumentationAssetsComponent implements OnInit {
   supplierRegions;
   supplierUserData;
 
+  //New
+  resultCount: number = 0;
+  defaultPageSize: number = 20;
+  pageSizeOptions = [20, 50, 100];
+
+
   onSelectRegions(regions) {
     this.selectedsubArea = null;
     this.getAssetList();
@@ -74,6 +80,7 @@ export class DocumentationAssetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    this.getConstructionData()
     // this.masonryImages = this.dummyPictures.slice(0);
     this.sharedService.getSidebarToggle().subscribe(() => {
       this.updateMasonryLayout = !this.updateMasonryLayout;
@@ -573,5 +580,24 @@ export class DocumentationAssetsComponent implements OnInit {
     } catch (e) {
       return null;
     }
+  }
+
+
+  paginatorEvent(event: any) {
+    const offset = event.pageIndex * event.pageSize;
+      // let uid = this.currentWorkspace.uid;
+      const data = {
+        // id: uid,
+        checkCache: false,
+        pageSize: event.pageSize,
+        pageIndex: event.pageIndex,
+        offset
+      };
+      // this.fetchAssets.emit(data);
+  }
+
+  getConstructionData(){
+    let url = "/latestData?pageNumber=1&pageSize=5&assetType="
+    this.apiService.constructionGet(url).subscribe((res:any)=>console.log("resss",res))
   }
 }
