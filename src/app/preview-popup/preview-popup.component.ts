@@ -80,6 +80,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     if(this.last_index > 200) this.last_index = 200;
     this.counter = this.last_index;
     this.checkDroneUser();
+
+    this.autoHeightTextarea();
   }
 
   ngOnChanges(): void {
@@ -636,6 +638,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     this.activeTabs.info = false;
     this.matDialog.closeAll();
     this.fullSIzeImg = false;
+    this.enableInputClick(false);
   }
 
   getCommentStr(str){
@@ -780,4 +783,18 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
       this.showCreateFolderPopup = false;
     }, 10000);
   }
+
+  autoHeightTextarea() {
+    const textarea = document.getElementById("txt");
+    textarea.addEventListener("input", function (e) {
+      this.style.height = "auto";
+      this.style.height = this.scrollHeight + "px";
+    });
+  }
+
+  toDateStringStart(date: string): string {
+    if (!date?.["dc:start"]) return "-";
+    return `${new Date(date["dc:created"]).toDateString()}`;
+  }
+  
 }

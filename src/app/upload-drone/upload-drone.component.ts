@@ -421,11 +421,6 @@ export class UploadDroneComponent implements OnInit {
       // } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
         if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
-      } else if (
-        filenameSplit[1] &&
-        WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length() - 1].toLowerCase()))
-         {
-        filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
       } else if (file.type?.includes("video/")) {
@@ -436,6 +431,11 @@ export class UploadDroneComponent implements OnInit {
         // filteredFile.push(file);
         this.srtFiles.push(file)
         this.srtDates.push(file.lastModifiedDate);
+      } else if (
+        filenameSplit[1] &&
+        WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase()))
+         {
+        filteredFile.push(file);
       } else {
         // const blockedFile = file;
         // blockedFile['isBlocked'] = true;

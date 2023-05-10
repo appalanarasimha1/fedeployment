@@ -362,7 +362,7 @@ export class SearchComponent implements OnInit {
         pageSize: 40,
       };
     }
-    this.fetchApiResult(queryParams, true);
+    this.fetchApiResult(true, queryParams, true);
     return;
   }
 

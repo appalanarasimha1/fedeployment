@@ -289,6 +289,20 @@ export class DataTableComponent implements OnInit, OnChanges {
         let uid: any;
         this.downloadAsZip(input, uid, randomString)
       }
+      // if (this.downloadArray.length > 1) {
+      //   this.sharedService.showSnackbar(
+      //     "Your download is being prepared do not close your browser",
+      //     6000,
+      //     "top",
+      //     "center",
+      //     "snackBarMiddle"
+      //   );
+      //   $(".multiDownloadBlock").hide();
+      //   let randomString = Math.random().toString().substring(7);
+      //   let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
+      //   let uid: any;
+      //   this.downloadAsZip(input, uid, randomString)
+      // }
     }
   }
 

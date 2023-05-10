@@ -124,5 +124,5 @@ export const WHITELIST_EXTENSIONS = [
   "bmp",
   "gif",
   "zip",
-  "rar"
+  "rar",
 ]
