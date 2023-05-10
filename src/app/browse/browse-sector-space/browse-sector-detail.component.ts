@@ -720,8 +720,10 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
             item.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
           }
         });
-        this.assetList = this.sortedData;
-        this.dataTableComponent.removeAssets();
+        if(this.sortedData?.lengthh) {
+          this.assetList = this.sortedData;
+        }
+        this.dataTableComponent?.removeAssets();
       }
       
       this.whiteLoader = false;
