@@ -342,6 +342,7 @@
           [selectedFolder]="data.selectedFolder"
           [folderId]="data.selectedFolder.uid"
           [folderCollaborators]="folderCollaborators"
+          (parentOutput)="acknowledgeParent($event)"
         ></app-add-user-modal>
       </div>
 

@@ -79,9 +79,7 @@ export class ManageAccessModalComponent implements OnInit {
   }
 
   async getfolderAcl(): Promise<IChildAssetACL[]> {
-    const result: any = await this.apiService.get(`/folderACL/${this.selectedFolder.uid}`,
-      {headers: { }}).toPromise();
-      console.log('result = ', result);
+    const result: any = await this.apiService.get(`/folderACL/${this.selectedFolder.uid}`).toPromise();
     return result;
   }
 
@@ -119,7 +117,7 @@ export class ManageAccessModalComponent implements OnInit {
       input: this.selectedFolder.uid,
     };
     const res = await this.apiService.post(apiRoutes.UPDATE_FOLDER_RIGHTS, payload).toPromise();
-    if (res['value'] !== 'OK') {
+    if (res['value'] !== this.apiService.API_RESPONSE_MESSAGE.OK) {
       this.error = res['value'];
     } else  {
       this.dataService.folderPermissionInit(true)
@@ -129,8 +127,8 @@ export class ManageAccessModalComponent implements OnInit {
       } else
         this.closeModal(true);
     }
-
-    this.addUserModal.saveChanges();
+    
+    this?.addUserModal?.saveChanges() || this.closeModal(true);
   }
 
   getCheckAction(event) {
@@ -147,5 +145,9 @@ export class ManageAccessModalComponent implements OnInit {
 
   removeWorkspacesFromString(value: string) {
     return this.sharedService.removeWorkspacesFromString(value);
+  }
+
+  acknowledgeParent(event: boolean) {
+   
   }
 }

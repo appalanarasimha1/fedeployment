@@ -707,10 +707,17 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.currentWorkspace = result;
-        if (result?.properties && result?.properties["dc:isPrivate"])
+        // this.currentWorkspace = result;
+        if (result?.properties && result?.properties?.["dc:isPrivate"])
           result.properties["isPrivateUpdated"] = true;
         this.saveState(result);
+        this.sortedData.forEach((item: IEntry) => {
+          if(result.uid === item.uid) {
+            item.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
+          }
+        });
+        this.assetList = this.sortedData;
+        this.dataTableComponent.removeAssets();
       }
       
       this.whiteLoader = false;

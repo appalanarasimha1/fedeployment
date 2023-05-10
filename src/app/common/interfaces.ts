@@ -134,6 +134,7 @@ export interface IEntry {
   "common:icon-expanded": string,
   "common:icon": string,
   "files:files":any[],
+  "dc:isPrivate"?: boolean,
   "dc:description": string,
   "dc:language": string,
   "dc:start": string,
