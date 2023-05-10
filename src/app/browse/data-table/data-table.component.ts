@@ -313,9 +313,9 @@ export class DataTableComponent implements OnInit, OnChanges {
             .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID +"/status")
             .toPromise().then((resp: any) => {
               if(resp.status === 200){
-                setTimeout(() => {
+                // setTimeout(() => {
                   checkZipCompleted(newUID)
-                }, 1000);
+                // }, 1000);
                 
               }else{
                 this.loading = false
