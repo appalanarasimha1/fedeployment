@@ -104,7 +104,7 @@ export class ManageAccessModalComponent implements OnInit {
   async updateRights() {
     // if (!this.makePrivate) return;
     if (this.isPrivate === this.docIsPrivate) {
-      this.addUserModal.saveChanges();
+      this.addUserModal?.saveChanges();
       this.closeModal(true);
       return;
     }
@@ -120,7 +120,7 @@ export class ManageAccessModalComponent implements OnInit {
     if (res['value'] !== this.apiService.API_RESPONSE_MESSAGE.OK) {
       this.error = res['value'];
     } else  {
-      this.dataService.folderPermissionInit(true)
+      this.dataService.folderPermissionInit(this.docIsPrivate)
       if(this.input_data) {
         this.input_data.properties['dc:isPrivate'] = true;
         this.markIsPrivate.emit(this.input_data);

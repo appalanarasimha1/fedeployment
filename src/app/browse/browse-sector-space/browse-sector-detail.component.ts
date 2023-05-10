@@ -120,7 +120,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     //   // await this.fetchAssets(data.sectorUid, data.checkCache, data.pageSize, data.pageIndex, data.offset);
     // });
     
-    this.dataService.folderPermission$.subscribe(data=> this.permissionChange = data )
+    this.dataService.folderPermission$.subscribe(data=> 
+      this.permissionChange = data
+      )
 
     this.route.paramMap.subscribe( async () => {
       this.sectorName = this.route.snapshot.paramMap.get('sectorName');
@@ -448,9 +450,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   // }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    this.dataService.folderPermission$.subscribe(
-      (data) => (this.permissionChange = data)
-    );
+    // this.dataService.folderPermission$.subscribe(
+    //   (data) => (this.permissionChange = data)
+    // );
     if (this.permissionChange) return true;
     const selectedFolder = JSON.parse(localStorage.getItem("workspaceState"));
 
@@ -707,11 +709,13 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-        // this.currentWorkspace = result;
+        if(this.currentWorkspace.uid === result.uid) {
+          this.currentWorkspace.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
+        }
         if (result?.properties && result?.properties?.["dc:isPrivate"])
           result.properties["isPrivateUpdated"] = true;
         this.saveState(result);
-        this.sortedData.forEach((item: IEntry) => {
+        this.sortedData?.forEach((item: IEntry) => {
           if(result.uid === item.uid) {
             item.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
           }
