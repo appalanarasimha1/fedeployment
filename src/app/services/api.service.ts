@@ -11,6 +11,14 @@ const apiVersion1 = environment.apiVersion;
   providedIn: "root",
 })
 export class ApiService {
+  readonly API_RESPONSE_MESSAGE = {
+    OK: "OK",
+    SUCCESS: "SUCCESS",
+    FAILURE: "FAILURE",
+  };
+
+  constructor(private http: HttpClient) {}
+
   private getHeaders(customHeader: any = {}) {
     return {
       "Access-Control-Allow-Origin": "*",
@@ -25,8 +33,6 @@ export class ApiService {
       ...customHeader
     };
   }
-
-  constructor(private http: HttpClient) {}
 
   get(urlAddress: string, options?: any) {
     const customHeader = options?.headers || {};

@@ -117,7 +117,7 @@ export class ManageAccessModalComponent implements OnInit {
       input: this.selectedFolder.uid,
     };
     const res = await this.apiService.post(apiRoutes.UPDATE_FOLDER_RIGHTS, payload).toPromise();
-    if (res['value'] !== 'OK') {
+    if (res['value'] !== this.apiService.API_RESPONSE_MESSAGE.OK) {
       this.error = res['value'];
     } else  {
       this.dataService.folderPermissionInit(true)
@@ -127,8 +127,8 @@ export class ManageAccessModalComponent implements OnInit {
       } else
         this.closeModal(true);
     }
-
-    this.addUserModal.saveChanges();
+    
+    this?.addUserModal?.saveChanges() || this.closeModal(true);
   }
 
   getCheckAction(event) {
