@@ -813,7 +813,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     if(this.dataTableComponent){
       this.loading = true;
       await this.dataTableComponent.deleteFolders();
-      await this.getAssets(this.currentWorkspace?.uid)
+      // await this.getAssets(this.currentWorkspace?.uid)
       this.loading = false;
     }
 
