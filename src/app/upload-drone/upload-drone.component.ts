@@ -51,6 +51,7 @@ export class UploadDroneComponent implements OnInit {
   isSelectAll = false;
   allDate = new Date();
   supplierRegions = null;
+  dateHiideSrt: boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -268,13 +269,7 @@ export class UploadDroneComponent implements OnInit {
     }
     this.sharedService.newEvent('Upload done');
 
-    this.sharedService.showSnackbar(
-      `${this.files.length +this.srtFiles.length} assets uploaded`,
-      3000,
-      "top",
-      "center",
-      "snackBarMiddle"
-    );
+    this.sharedService.showSnackbar(`${this.files.length +this.srtFiles.length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
     this.closeModal(true);
     // if(!this.showRedirectUrl()) {
     //   this.publishing = false;
@@ -428,6 +423,8 @@ export class UploadDroneComponent implements OnInit {
       } else if (file.type?.includes("audio/")) {
         filteredFile.push(file);
       } else if (file.name?.toLowerCase().includes(".srt")) {
+        console.log('file.name', file.name?.toLowerCase().includes(".srt"))
+        this.dateHiideSrt = false;
         // filteredFile.push(file);
         this.srtFiles.push(file)
         this.srtDates.push(file.lastModifiedDate);

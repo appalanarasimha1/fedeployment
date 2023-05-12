@@ -502,3 +502,32 @@ li.flex span.ellipsis {
     border-top: 0px solid transparent;
     border-bottom: 2px solid #040404;
 }
+
+::ng-deep .mat-snack-bar-container.snackBarMiddle {
+    /* transform: translate(-50%, -50%) !important;
+    top: 50% !important;
+    position: absolute !important;
+    left: 50% !important; */
+    background: #2D2926 !important;
+    /* margin: 67% 24px !important; */
+    font-size: 12px;
+    font-weight: normal;
+    color: #fff;
+    border-radius: 50px;
+    box-shadow: none !important;
+    height: 30px !important;
+    text-align: center;
+  }
+  ::ng-deep .mat-simple-snackbar {
+    font-size: 13px !important;
+    font-weight: normal !important;
+    text-align: center !important;
+    font-family: 'brownregular' !important;
+    justify-content: center !important;
+  }
+  ::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+  ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+    text-align: center !important;
+    margin: 100px auto !important;
+    min-width: 100%;
+  }
