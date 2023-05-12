@@ -32,7 +32,7 @@
   .folderListview tr td:th-child(1) p{
     text-align: left !important
   }
-  
+
   .folderListview tr:nth-child(1){
     background-color:  unset !important
   }
@@ -52,11 +52,11 @@
   .folderListview tr:hover:nth-child(even) {
     background-color: #F8EECC;
   }
-  
+
 .folderListview {
     text-align: left;
   }
-  
+
 .folderListview .tollTipCustom .tolltipContent {
     top: 35px;
     left: 0px;
@@ -71,7 +71,7 @@
 .tollTipCustom{
     position: relative;
   }
-  
+
   .tollTipCustom .tolltipContent {
     position: absolute;
     top: 30px;
@@ -94,36 +94,36 @@
   .tollTipCustom:hover .tolltipContent {
     display: block;
   }
-  
+
 .header-content h6.tollTipCustom span{
     color: rgba(35, 33, 30, 0.6);
   }
 .groupFolder {
     position: relative;
   }
-  
+
 .groupFolder:hover .delete-folder-action {
     opacity: 1;
     transition: transform 0.3s;
   }
-  
+
 .groupFolder.checkDelete .delete-folder-action {
     opacity: 1;
   }
-  
+
 tr.groupFolder td:first-child {
     padding-right: 0px !important;
   }
-  
+
 .groupFolder {
     position: relative;
   }
-  
+
 .groupFolder:hover .delete-folder-action {
     opacity: 1;
     transition: transform 0.3s;
   }
-  
+
 .groupFolder.checkDelete .delete-folder-action {
     opacity: 1;
   }
@@ -156,11 +156,11 @@ tr.groupFolder td:first-child {
     margin: 0px;
     border-radius: 4px;
   }
-  
+
   .positionRelative input.search-bar::placeholder{
     color: #413E3C !important;
   }
-  
+
 .copyHover {
     position: relative;
     margin-left: 0px;
@@ -183,14 +183,14 @@ tr.groupFolder td:first-child {
   .copyHover:hover .copyHoverInfo {
     display: block;
   }
-  
+
 .actionIcon {
     width: 30px;
     text-align: center;
     cursor: pointer;
     margin-top: -15px;
   }
-  
+
 .renameAssets {
     border-radius: 10px;
     background: #ebe9e3;
@@ -198,12 +198,12 @@ tr.groupFolder td:first-child {
     line-height: normal;
     border: 0px;
   }
-  
+
 .header-content h6.tollTipCustom span{
     color: rgba(35, 33, 30, 0.6);
   }
 
-  
+
 .delete-folder-action .control--checkbox .control__indicator:after,
 .delete-folder-action .control--checkbox .control__indicator:before {
   left: 10px;
@@ -253,7 +253,7 @@ tr.groupFolder td:first-child {
     border-color: #7b7b7b;
   }
 
-  
+
 .dropdownCreate .control--checkbox .control__indicator:after {
     left: 6px;
     top: 2px;
@@ -394,7 +394,7 @@ tr.groupFolder td:first-child {
     top: 3px;
     width: 6px;
     height: 10px;
-  } 
+  }
   .checkAll .control input:checked ~ .control__indicator {
     background: #C49900;
     border: 1px solid #C49900;
@@ -459,7 +459,7 @@ tr.groupFolder td:first-child {
   }
   .delete-folder-action .control:hover input ~ .control__indicator,
   .delete-folder-action .control input:focus ~ .control__indicator,
-  
+
   .checkAll .control:hover input ~ .control__indicator,
   .checkAll .control input:focus ~ .control__indicator {
     background: #fff;
@@ -470,7 +470,7 @@ tr.groupFolder td:first-child {
   }
   .delete-folder-action .control:hover input:not([disabled]):checked ~ .control__indicator,
   .delete-folder-action .control input:checked:focus ~ .control__indicator,
-  
+
   .checkAll .control:hover input:not([disabled]):checked ~ .control__indicator,
   .checkAll .control input:checked:focus ~ .control__indicator {
     background: #C49900;
@@ -483,7 +483,7 @@ tr.groupFolder td:first-child {
   }
   .delete-folder-action .control__indicator:after,
   .delete-folder-action .control__indicator:before,
-  
+
   .checkAll .control__indicator:after,
   .checkAll .control__indicator:before{
     content: '';
@@ -492,14 +492,14 @@ tr.groupFolder td:first-child {
   }
   .delete-folder-action .control input:checked ~ .control__indicator:after,
   .delete-folder-action .control input ~ .control__indicator:before,
-  
+
   .checkAll .control input:checked ~ .control__indicator:after,
   .checkAll .control input ~ .control__indicator:before{
     display: block;
   }
   .delete-folder-action .control--checkbox .control__indicator:after,
   .delete-folder-action .control--checkbox .control__indicator:before,
-  
+
   .checkAll .control--checkbox .control__indicator:after,
   .checkAll .control--checkbox .control__indicator:before {
     left: 7px;
@@ -581,6 +581,7 @@ tr.groupFolder td:first-child {
     position: relative;
     z-index: 1;
     max-width: calc(100% - 30px);
+    /* max-width: calc(100% - 10px); */
 }
 .itemTitleContent {
   /* width: calc(100% - 30px); */
@@ -613,7 +614,7 @@ tr.groupFolder td:first-child {
   margin-bottom: 10px;
 }
 
-.availableActions ul:last-child {
+.availableActions ul:last-child, .availableActions ul:nth-child(2) {
   border-top: 1px solid #f0efea;
   margin-top: 15px;
   padding-top: 15px;
@@ -683,4 +684,10 @@ tr.groupFolder td:first-child {
 .zoomImg {
   position: relative;
   z-index: 9;
+}
+.share-icon {
+  display: inline-block;
+  margin-left: 8px;
+  width: 15px;
+  vertical-align: middle;
 }

@@ -1,11 +1,11 @@
 <div class="addUserBlock">
-  <h3>Who can have private access to this folder?
-    <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+  <!-- <h3>Who can have private access to this folder? -->
+    <!-- <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
       <img src="../../assets/images/close-modal.svg" style="width: 20px" />
-   </button>
-  </h3>
+   </button> -->
+  <!-- </h3> -->
   <!-- <div (click)="openEditAccessModal()">test modal</div> -->
-  <div class="addUsers" style="margin-bottom: 30px">
+  <!-- <div class="addUsers" style="margin-bottom: 30px">
     <ng-select
       style="height: unset !important"
       [items]="userList$ | async"
@@ -24,12 +24,12 @@
         {{ item.id }} ({{ item.fullname }})
       </ng-template>
     </ng-select>
-    <!-- <button class="addBtn">Add</button> -->
+    <button class="addBtn">Add</button>
     <button (click)="sendInvite()" *ngIf="checkInviteExternal() && !checkNeomEmail()" class="sendInviteBtn">Send invite</button>
     <button (click)="sendInvite(true)" *ngIf="checkInviteExternal() && checkNeomEmail()" class="sendInviteBtn">Add</button>
-  </div>
+  </div> -->
 
-  <div class="makeAdminBlock">
+  <!-- <div class="makeAdminBlock">
     <ul>
       <li *ngFor="let c of addedCollaborators | keyvalue">
         {{ c.value.user.fullname || c.value.user.id }}
@@ -78,7 +78,210 @@
         </span>
       </li>
     </ul>
-  </div>
+  </div> -->
+
+
+
+  <!-- NOTE: new UI for lock folder -->
+    <div>
+      <div class="makeAdminBlock customTableStyle">
+        <div class="whenYouConvert">
+          This folder contains assets from other users. By default, they will have access to this locked folder.
+        </div>
+
+        <h4>People with access</h4>
+        <p>This is the selected group of individual people inside or outside of NEOM. </p>
+
+        <div class="searchBlock">
+          <span class="positionRelative">
+            <ng-select
+              style="height: unset !important"
+              [items]="userList$ | async"
+              [multiple]="false"
+              [hideSelected]="true"
+              [trackByFn]="trackByFn"
+              [minTermLength]="2"
+              [loading]="userLoading"
+              [(ngModel)]="selectedCollaborator"
+              [typeahead]="userInput$"
+              (change)="selectChange(selectedCollaborator)"
+              placeholder="Add users by their name or email address"
+              notFoundText="No user found"
+            >
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.id }} ({{ item.fullname }})
+              </ng-template>
+            </ng-select>
+          </span>
+          <button (click)="sendInvite()" *ngIf="checkInviteExternal() && !checkNeomEmail()" class="sendInviteBtn">Send invite</button>
+          <button (click)="sendInvite(true)" *ngIf="checkInviteExternal() && checkNeomEmail()" class="sendInviteBtn">Add</button>
+        </div>
+
+        <table class="folderListview" style="width: calc(100% - 6px);">
+          <tr>
+              <th style="width:45%">Users</th>
+              <th style="width:20%">Role</th>
+              <th style="width:30%">Permissions</th>
+              <th style="width:14%">Access expiry</th>
+              <th style="width:40px"></th>
+          </tr>
+        </table>
+        <div class="overflowHidden">
+          <table class="folderListview">
+            <tr *ngFor="let collaborator of computedCollaborators | keyvalue">
+              <td style="width:45%">
+                <div class="tollTipCustom">
+                  <div class="itemTitleContent">{{ getUsername(collaborator.value) }}
+                    <span *ngIf="collaborator.value.user === user">(You)</span>
+                    <span *ngIf="checkExpired(collaborator.value.end)" class="accessExpired">Access expired</span>
+                  </div>
+                </div>
+              </td>
+              <td class="bold" style="width:20%">
+                <span *ngIf="collaborator.value.permissions.isOwner">Owner</span>
+                <span
+                  *ngIf="!collaborator.value.permissions.isOwner && !collaborator.value.permissions.isAdmin"
+                  (click)="makeAdmin(collaborator.value)"
+                  class="makeAdminClick">
+                  Make admin
+                </span>
+                <span
+                  *ngIf="!collaborator.value.permissions.isOwner && collaborator.value.permissions.isAdmin">Admin</span>
+                <div
+                  *ngIf="!collaborator.value.permissions?.isOwner && collaborator.value.permissions?.isAdmin && canRemoveAdmin(collaborator.value)"
+                  (click)="removeAdmin(collaborator.value)"
+                  class="tollTipCustom"
+                  style="display: inline-block">
+                  <div class="itemTitleContent inlineBlock"><img src="../../assets/images/close-makeAdmin.svg" class="makeAdminIcon" /></div>
+                  <div class="tolltipContent alignRight">Remove admin role</div>
+                </div>
+              </td>
+              <td class="makePrivate bold" style="width:30%">
+                <ul *ngIf="!collaborator.value.permissions.isAdmin" class="permission">
+                  <li>
+                    <label class="control control--checkbox">
+                      Upload
+                      <input type="checkbox" (change)="onPermissionChange($event, collaborator.value, 'canUpload')" [checked]="collaborator.value.permissions?.canUpload || collaborator.value.permissions?.isOwner" />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="control control--checkbox">
+                      Download
+                      <input type="checkbox" (change)="onPermissionChange($event, collaborator.value, 'canDownload')" [checked]="collaborator.value.permissions?.canDownload || collaborator.value.permissions?.isOwner" />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </li>
+                </ul>
+              </td>
+              <td [ngClass]="!checkExpired(collaborator.value.end) ? 'accessExpiryCal bold' : 'accessExpiryCal bold accessExpiredDate'" style="width:14%">
+                <mat-form-field *ngIf="!!collaborator.value.end && !collaborator.value.permissions.isAdmin" appearance="fill">
+                  <input class="datePicker" (dateChange)="onExpiryDateChange($event, collaborator.value)" [ngModel]="collaborator.value.end" placeholder="3.29.2023" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </td>
+              <td style="width:40px">
+                <svg
+                  *ngIf="!collaborator.value.permissions?.isOwner"
+                  (click)="removeUser(collaborator.key)" width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                  <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </td>
+            </tr>
+            <!-- <tr>
+              <td>
+                <div class="tollTipCustom">
+                  <div class="itemTitleContent">zimraan.hadi@example.com <span class="accessExpired">Access expired</span></div>
+                </div>
+              </td>
+              <td class="bold">
+                <span class="makeAdminClick">Make admin</span>
+              </td>
+              <td class="makePrivate bold">
+                <ul class="permission">
+                  <li>
+                    <label class="control control--checkbox">
+                      Upload
+                      <input type="checkbox" checked />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="control control--checkbox">
+                      Download
+                      <input type="checkbox" checked />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </li>
+                </ul>
+              </td>
+              <td class="accessExpiryCal bold accessExpiredDate">
+                <mat-form-field appearance="fill">
+                    <input class="datePicker" placeholder="3.29.2023" matInput [matDatepicker]="picker" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </td>
+              <td>
+                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                  <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </td>
+            </tr> -->
+            <!-- <tr>
+              <td>
+                <div class="tollTipCustom">
+                  <div class="itemTitleContent">azeem.ahmadi@example.com</div>
+                </div>
+              </td>
+              <td class="bold">
+                <span class="makeAdminClick">Make admin</span>
+              </td>
+              <td class="makePrivate bold">
+                <ul class="permission">
+                  <li>
+                    <label class="control control--checkbox">
+                      Upload
+                      <input type="checkbox" />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="control control--checkbox">
+                      Download
+                      <input type="checkbox" checked />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </li>
+                </ul>
+              </td>
+              <td class="accessExpiryCal bold">
+                <mat-form-field appearance="fill">
+                    <input class="datePicker" placeholder="3/29/2023" matInput [matDatepicker]="picker3" style="width: 100%; border-bottom: 1.5px solid #000;" (click)="picker.open()">
+                    <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+              </td>
+              <td>
+                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                  <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </td>
+            </tr> -->
+          </table>
+        </div>
+      </div>
+    </div>
 
     <div class="makeAdminBlock" *ngIf="checkShowExternalUser()">
       <h3 style="color: grey;">External users</h3>
@@ -88,7 +291,7 @@
           <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
           <span class="makeAdminAction">
             <span  (click)="open(mymodal, c.value)">Edit Access</span><!-- open(mymodal, c.value) -->
-            <span (click)="removeUser(c.key, 'invited')" class="removeIcon">
+            <span (click)="removeUser(c.key)" class="removeIcon">
               <svg
                 width="20"
                 height="20"
@@ -110,7 +313,7 @@
           <span class="disableColor pl-10"><span *ngIf="c.value.externalUser">Pending - </span>Access expires {{getEndDate(c.value.end)}}</span>
           <span class="makeAdminAction">
             <span (click)="open(mymodal, c.value)">Edit Access</span>
-            <span (click)="removeUser(c.key, 'added')" class="removeIcon">
+            <span (click)="removeUser(c.key)" class="removeIcon">
               <svg
                 width="20"
                 height="20"
@@ -132,7 +335,7 @@
           <span class="disableColor pl-10"><span *ngIf="c.value.externalUser">Pending - </span>Access expires {{getEndDate(c.value.end)}}</span>
           <span class="makeAdminAction">
             <span (click)="open(mymodal, c.value)">Edit Access</span>
-            <span (click)="removeUser(c.key, 'removed')" class="removeIcon">
+            <span (click)="removeUser(c.key)" class="removeIcon">
               <svg
                 width="20"
                 height="20"
@@ -172,14 +375,15 @@
       </label>
     </div> -->
   <!-- </div> -->
-  <div class="button-groups">
+
+  <!-- <div class="button-groups">
     <button (click)="closeModal()" class="cancel-btn">Cancel</button>
     <button *ngIf="!doneLoading" (click)="updateCollaborators()" [ngClass]="canSave() ? 'upload-btn' : 'upload-btn disabled'" class="upload-btn">Done</button>
     <button *ngIf="doneLoading" class="upload-btn" style="position: relative;     position: relative;
     height: 36px;
     padding: 0px;
     overflow: hidden;"><app-loader-small [show]="loading"></app-loader-small></button>
-  </div>
+  </div> -->
 
 
   <ng-template #mymodal let-modal>
@@ -252,9 +456,9 @@
         </div>
       </div>
 
-      <div class="button-groups">
+      <!-- <div class="button-groups">
         <button (click)="modal.close('cancel')" class="cancel-btn">Cancel</button>
         <button (click)="modal.close('done')" class="upload-btn">Done</button>
-      </div>
+      </div> -->
     </div>
   </ng-template>

@@ -10,7 +10,7 @@
     display: inline-block;
     position: relative;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: normal;
     padding: 0px;
     padding-left: 30px;
@@ -164,7 +164,7 @@ button.upload-btn {
 
 .nameBlock, .manageAccessBlock h3 {
     font-weight: normal;
-    font-size: 15px;
+    font-size: 18px;
     letter-spacing: 0.5px;
     color: #040404;
     line-height: normal;
@@ -210,6 +210,7 @@ button.upload-btn {
     font-size: 14px;
     font-weight: normal;
     margin-bottom: 15px;
+    display: inline-block;
 }
 
 .button-groups button.upload-btn.disabled {
@@ -218,5 +219,518 @@ button.upload-btn {
     border: 1px solid #ccc;
 }
 .manageAccessBlock {
-    width: 510px !important;
+    /* width: 510px !important; */
+    padding: 20px;
+}
+.manageAccessNewUi {
+    /* font-family: 'brownregular';
+    height: 100%;
+    max-height: 470px;
+    overflow: hidden;
+    overflow-y: scroll; */
+    
+    font-family: 'brownregular';
+    height: 100%;
+    max-height: 100%;
+    /* overflow: hidden;
+    overflow-y: scroll; */
+}
+
+.manageAccessNewUi ::ng-deep .mat-slide-toggle-bar {
+    background-color: #D1CFC9;
+    border-radius: 20px !important;
+    height: 17px !important;
+    width: 32px !important;
+}
+.manageAccessNewUi ::ng-deep .mat-slide-toggle-thumb-container {
+    width: 12px !important;
+    height: 12px !important;
+    top: 2px !important;
+    left: 2px !important;
+}
+.manageAccessNewUi ::ng-deep .mat-slide-toggle-thumb {
+    height: 12px !important;
+    width: 12px !important;
+}
+.manageAccessNewUi ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    background-color: #fff;
+}
+.manageAccessNewUi ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: #0E7A53;
+}
+.manageAccessNewUi ::ng-deep .mat-slide-toggle-label {
+    margin-bottom: 0px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    height: 20px !important;
+}
+.manageAccessNewUi ::ng-deep .mat-slide-toggle .mat-slide-toggle-ripple {
+    height: 16px !important;
+    width: 16px !important;
+}
+.manageAccessNewUi ::ng-deep .example-chip-list ::placeholder{
+    color: #645D57 !important;
+}
+.manageAccessNewUi ::ng-deep .example-chip-list input:focus::placeholder{
+    opacity: 1 !important;
+}
+.manageAccessNewUi ::ng-deep input.mat-chip-input {
+    width: 70px !important;
+    flex: auto !important;
+    border: 0px;
+    background: transparent;
+}
+.manageAccessNewUi ::ng-deep .mat-option {
+    line-height: 38px;
+    height: 38px;
+    padding: 0 10px;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+.manageAccessNewUi ::ng-deep .mat-autocomplete-panel-above .mat-autocomplete-panel {
+    border-radius: 8px !important;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+.manageAccessNewUi ::ng-deep .mat-autocomplete-panel:not([class*=mat-elevation-z]) {
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 0%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+.manageAccessNewUi ::ng-deep .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
+    background: rgb(225 187 52);
+}
+.manageAccessNewUi ::ng-deep .mat-chip-list-wrapper input.mat-input-element, .mat-chip-list-wrapper .mat-standard-chip {
+    margin: 0px;
+}
+.manageAccessNewUi ::ng-deep .mat-chip.mat-standard-chip {
+    background-color: #E6E2DA;
+    color: #645D57;
+    font-family: 'brownregular';
+}
+.manageAccessNewUi ::ng-deep .mat-standard-chip {
+    border-radius: 4px !important;
+}
+.manageAccessNewUi ::ng-deep .mat-chip.mat-standard-chip .mat-chip-remove {
+    color: #645D57;
+    opacity: 1;
+}
+.lockFolder {
+    display: flex;
+    font-family: 'brownregular';
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+.lockFolder .slideToggleBlk {margin-right: 15px;}
+
+.lockFolder .slideContent p {
+    font-family: 'brownlight';
+}
+.lockFolderInfo {
+    color: #CB1B19;
+    background: #FDE8E8;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+/* Table style start */
+.folderListview {
+    text-align: left;
+}
+.folderListview th{
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    color: #BAB8B2;
+    border-bottom: unset;
+}
+.folderListview td {
+    font-family: 'brownlight';
+}
+.folderListview td p{
+    line-height: 24px;
+    color: #040404;
+    text-align: left;
+}
+.folderListview td, th{
+    padding: 10px 0px;
+    white-space: nowrap;
+}
+.folderListview tr td:th-child(1) p{
+    text-align: left !important
+}
+.folderListview tr:nth-child(1){
+    background-color:  unset !important
+}
+/* .folderListview tr:nth-child(odd){
+    background-color: #F6F5F2;
+}
+.folderListview tr:nth-child(even){
+    background-color: #FBF7E6;
+} */
+.customTableStyle table {
+    border-collapse: separate;
+    width: 100%;
+    border: none;
+    border-spacing: 0 0px;
+    table-layout: fixed;
+}
+.customTableStyle td:first-child,
+.customTableStyle th:first-child {
+    border-radius: 10px 0 0 10px;
+}
+.customTableStyle td:last-child,
+.customTableStyle th:last-child {
+    border-radius: 0 10px 10px 0;
+}
+/* Table style end */
+.itemTitleContent {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+.tollTipCustom{
+    position: relative;
+}
+.itemTitleContent span {
+    margin-left: 10px;
+}
+  
+.tollTipCustom .tolltipContent {
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    background: #040404;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #fff !important;
+    font-weight: normal;
+    width: max-content;
+    border-radius: 4px;
+    line-height: 15px;
+    white-space: nowrap;
+    max-width: max-content;
+    width: max-content;
+    display: none;
+    text-align: center;
+    z-index: 99;
+    line-height: normal;
+}
+.tollTipCustom:hover .tolltipContent {
+    display: block;
+}
+.bold {
+    font-family: 'brownregular' !important;
+}
+
+.folderListview ::ng-deep mat-form-field::after {
+    background: transparent !important;
+}
+.renameEmail {
+    min-width: 270px;
+}
+.folderListview .accessExpiryCal ::ng-deep mat-form-field::after {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(../../assets/images/down-arrow.svg) no-repeat center center !important;
+    background-size: 100%;
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    z-index: -1;
+}
+
+::ng-deep .mat-calendar-body-selected {
+    background-color: #EDD580 !important;
+    color: #000;
+}
+ul.permission {
+    display: flex;
+}
+ul.permission li {
+    margin-right: 15px;
+}
+.folderListview > input {
+    outline: none;
+    border: 0px !important;
+    background: transparent;
+    appearance: none;
+    width: 120px !important;
+    font-family: 'brownregular' !important;
+}
+.folderListview ::ng-deep mat-form-field {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    width: 84px !important;
+}
+.folderListview ::ng-deep mat-form-field::after {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(../../assets/images/down-arrow.svg) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 1px !important;
+    right: 0px;
+    z-index: -1;
+}
+.datePicker::placeholder{
+    color: #645D57 !important;
+}
+input.datePicker:focus::placeholder{
+    opacity: 1 !important;
+}
+.folderListview ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 0 !important;
+    padding: 0px !important;
+    background: transparent;
+}
+::ng-deep .mat-calendar-table-header-divider::after{
+    display: none !important;
+  }
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: 0;
+}
+::ng-deep .mat-form-field-infix {
+    border-top: 0 solid transparent;
+}
+::ng-deep input.mat-input-element {
+    margin-top: 0px !important;
+}
+::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0px !important;
+}
+::ng-deep .mat-form-field-underline {
+    display: none !important;
+}
+::ng-deep .cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
+    border-bottom: 0px !important;
+    animation:  unset !important;
+    width: 120px !important;
+    font-family: 'brownregular' !important;
+    color: #000 !important;
+    border-bottom: 0px !important;
+}
+::ng-deep .mat-calendar-table-header-divider {
+    position: relative;
+    height: 0px !important;
+    display: none !important;
+}
+::ng-deep .presentation th {
+    border-bottom: 0px solid transparent !important;
+}
+.overflowHidden {
+    /* height: 140px; */
+    max-height: 22vh;
+    overflow: hidden;
+    overflow-y: scroll;
+    width: 100%;
+}
+.manageAccessBlock h4 {
+    font-weight: normal;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    color: #040404;
+    line-height: normal;
+    padding-bottom: 8px;
+}
+
+.searchBlock {
+    position: relative;
+    margin-bottom: 20px;
+}
+.searchBlock .search-bar {
+    width: 100%;
+    padding: 8px 15px;
+}
+.search-bar{
+    position: relative;
+    padding: 8px 45px 8px 46px;
+    border-radius: 8px;
+    border: 1px solid #F6F5F2;
+    width: 100%;
+    background-color: #F6F5F2;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 25px;
+    color: #000;
+}
+.search-bar::placeholder{
+    font-weight: 100;
+}
+.search-btn{
+    position: absolute;
+    left: 6px;
+    top: 0px;
+    bottom: 0px;
+    border: unset;
+    padding: 0px 10px;
+    background-color: transparent;
+    z-index: 1;
+}
+.search-btn img{
+    width: 19px;
+}
+.input-sizer ::-webkit-input-placeholder,
+.input-sizer ::-webkit-input-placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.input-sizer :-ms-input-placeholder,
+.input-sizer :-ms-input-placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.input-sizer ::placeholder,
+.input-sizer ::placeholder:focus {
+  color: #000;
+  opacity: 1;
+}
+.positionRelative input.search-bar::placeholder{
+    color: #413E3C !important;
+}
+.searchBlock span.positionRelative {
+    width: 75%;
+    display: inline-block;
+}
+.makeAdminIcon {
+    display: inline-block;
+    margin-left: 0px;
+    cursor: pointer;
+}
+.makeAdminClick {
+    cursor: pointer;
+    color: #937206;
+}
+.accessExpired {
+    color: #CB1B19;
+}
+.inlineBlock {
+    display: inline-block !important;
+    line-height: 10px; vertical-align: -3px; width: auto; margin-left: 5px;
+}
+.tolltipContent.alignRight {
+    right: 0px;
+    left: auto !important;
+}
+.accessExpiredDate ::ng-deep input.mat-input-element {
+    color: #CB1B19 !important;
+}
+.folderListview .accessExpiryCal.accessExpiredDate ::ng-deep mat-form-field::after {
+    background: url(../../assets/images/down-arrow-red.svg) no-repeat center center !important;
+}
+.action-delete-icon {
+    cursor: pointer;
+}
+::ng-deep .cdk-global-overlay-wrapper{
+    overflow: auto !important;
+    pointer-events: auto !important;
+}
+
+.uploadAssetsBlock {
+    width: 100%;
+    padding: 0px;
+    margin: 20px 0px;
+    text-align: left;
+}
+.folderHeading {
+    font-size: 15px;
+    line-height: 22px;
+    color: #040404;
+    font-weight: normal;
+}
+.folderHeading span.fileSize {
+    display: block;
+}
+.uploadAssetsBlock .folder-img, .uploadAssetsBlock .folder-content {
+    display: inline-block;
+    vertical-align: top;
+}
+.uploadAssetsBlock .folder-content .folderHeading span {
+    /* display: block; */
+    font-size: 12px;
+    text-align: left;
+    line-height: 20px;
+    color: #413E3C;
+    font-weight: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'brownlight';
+}
+/* .uploadAssetsBlock .folder-content  {
+padding-left: 0px;
+} */
+  
+.disableDiv {
+    pointer-events:none;
+    opacity: 0.4;
+}
+.uploadAssetsBlock  .folder-img {
+    width: 74px;
+}
+.uploadAssetsBlock .folder-content {
+    width: calc(100% - 74px);
+    text-align: left;
+}
+.flex {
+    display: flex;
+    align-items: center;
+}
+.mb-20 {
+    margin-bottom: 20px;
+}
+.classifications h5 {
+    margin-bottom: 20px;
+    font-family: 'brownregular';
+    font-size: 15px;
+    color: #040404;
+}
+.classifications ::ng-deep .ng-select .ng-select-container {
+    color: #C49900 !important;
+    border-bottom: 2px solid #C49900;
+    min-height: 36px;
+    align-items: center;
+    font-family: 'brownregular';
+}
+.labelHeading {
+    font-family: 'brownregular';
+    font-size: 15px;
+    line-height: 32px;
+    color: #040404;
+}
+.classifications ::ng-deep .ng-select.ng-select-single .ng-select-container .ng-value-container {
+    padding-left: 0px;
+}
+.classifications ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {
+    background-image: url('../../assets/images/down-arrow-yellow.svg') !important;
+    background-size: 16px;
+    width: 26px !important;
+    height: 22px !important;
+    background-position: 90% 80%;
+}
+.classifications ::ng-deep .ng-select .ng-arrow-wrapper {
+    padding-right: 0px;
+}
+.classifications ::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+    color: #C49900 !important;
+}
+.classifications ::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+    /* border-color: transparent; */
+    box-shadow: none;
+}
+.classifications ::ng-deep .ng-dropdown-panel {
+    box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
+    border-radius: 4px;
 }

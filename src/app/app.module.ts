@@ -32,7 +32,7 @@ import { initializer } from './AppInit';
 import { RoleGuardService } from './services/roleGaurd';
 import { AuthGuardService } from './services/authGaurd';
 import { ManageAccessModalComponent } from './manage-access-modal/manage-access-modal.component';
-import { AddUserModalComponent } from './add-user-modal/add-user-modal.component';
+// import { AddUserModalComponent } from './add-user-modal/add-user-modal.component';
 // import { AssetViewComponent } from './asset-view/asset-view.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { SignupComponent } from './signup/signup.component';
@@ -64,7 +64,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     FooterComponent,
     LoaderYellowComponent,
     // ManageAccessModalComponent,
-    AddUserModalComponent,
+    // AddUserModalComponent,
     SignupComponent,
     ForgotPasswordComponent,
     MoveCopyAssetsComponent,
