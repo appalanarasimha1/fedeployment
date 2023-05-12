@@ -72,7 +72,10 @@ export class ApiService {
   }
 
   put(urlAddress: string, payload: any, options?: any) {
-    options = options || { headers: this.getHeaders() };
+    const customHeader = options?.headers || {"Accept": "*/*", 'Content-Type': 'application/json'};
+    options = options
+      ? Object.assign(options, { headers: this.getHeaders(customHeader) })
+      : { headers: this.getHeaders() };
     return this.http
       .put<any>(SERVER_URL + apiVersion1 + urlAddress, payload, options)
       .pipe(map((data) => data));

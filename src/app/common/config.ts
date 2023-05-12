@@ -48,4 +48,5 @@ export const apiRoutes = {
   GET_DOWNLOAD_INFO: "/automation/Scry.GetDownloadInfo",
   BULK_DOWNLOAD: "/automation/Blob.BulkDownload",
   GET_CHILD_LOCK_FOLDERS: "/automation/Scry.GetChildLockedFolders",
+  SET_UNLOCK_ASSET_ACL: "/folderACL/unlockFolder/addParameters"
 };
