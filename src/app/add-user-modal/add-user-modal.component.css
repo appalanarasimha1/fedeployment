@@ -174,7 +174,7 @@ button.upload-btn {
     padding: 0px 0px 20px;
     margin-top: 10px;
 }
-/* .makeAdminBlock ul li {
+.makeAdminBlock ul li {
     line-height: 40px;
     padding: 0px 10px;
     margin-bottom: 0px;
@@ -193,7 +193,7 @@ button.upload-btn {
 }
 .makeAdminBlock ul li:hover, .makeAdminBlock ul li.active {
     background: #F8EECC;
-} */
+}
 span.makeAdminAction {
     float: right;
     cursor: pointer;
@@ -339,7 +339,7 @@ h3.externalUsers {
     padding-bottom: 10px;
 }
 .addUserBlock {
-    width: 100% !important;
+    width: 600px !important;
 }
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
     border-radius: 0px;
@@ -355,7 +355,7 @@ h3.externalUsers {
 ::ng-deep .mat-form-field-ripple {
     background-color: transparent;
 }
-::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple,
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple, 
 ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-ripple {
     display: none;
 }
@@ -370,286 +370,4 @@ h3.externalUsers {
 }
 .addUsers ::ng-deep .ng-select .ng-has-value .ng-placeholder {
     display: block;
-}
-
-.makeAdminBlock.customTableStyle p {
-    font-family: 'brownlight';
-    font-size: 14px;
-    color: #000;
-    padding-bottom: 20px;
-}
-/* Table style start */
-.folderListview {
-    text-align: left;
-}
-.folderListview th{
-    font-size: 14px;
-    line-height: 20px;
-    text-align: left;
-    color: #BAB8B2;
-    border-bottom: unset;
-}
-.folderListview td {
-    font-family: 'brownlight';
-}
-.folderListview td p{
-    line-height: 24px;
-    color: #040404;
-    text-align: left;
-}
-.folderListview td, th{
-    padding: 10px 0px;
-    white-space: nowrap;
-}
-.folderListview tr td:th-child(1) p{
-    text-align: left !important
-}
-.folderListview tr:nth-child(1){
-    background-color:  unset !important
-}
-/* .folderListview tr:nth-child(odd){
-    background-color: #F6F5F2;
-}
-.folderListview tr:nth-child(even){
-    background-color: #FBF7E6;
-} */
-.customTableStyle table {
-    border-collapse: separate;
-    width: 100%;
-    border: none;
-    border-spacing: 0 0px;
-    table-layout: fixed;
-}
-.customTableStyle td:first-child,
-.customTableStyle th:first-child {
-    border-radius: 10px 0 0 10px;
-}
-.customTableStyle td:last-child,
-.customTableStyle th:last-child {
-    border-radius: 0 10px 10px 0;
-}
-/* Table style end */
-.itemTitleContent {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
-}
-.tollTipCustom{
-    position: relative;
-}
-.itemTitleContent span {
-    margin-left: 10px;
-}
-.tollTipCustom .tolltipContent {
-    position: absolute;
-    top: 25px;
-    left: 0px;
-    background: #040404;
-    padding: 4px 10px;
-    font-size: 12px;
-    color: #fff !important;
-    font-weight: normal;
-    width: max-content;
-    border-radius: 4px;
-    line-height: 15px;
-    white-space: nowrap;
-    max-width: max-content;
-    width: max-content;
-    display: none;
-    text-align: center;
-    z-index: 99;
-    line-height: normal;
-}
-.tollTipCustom:hover .tolltipContent {
-    display: block;
-}
-.bold {
-    font-family: 'brownregular' !important;
-}
-
-.folderListview ::ng-deep mat-form-field::after {
-    background: transparent !important;
-}
-.renameEmail {
-    min-width: 270px;
-}
-ul.permission {
-    display: flex;
-}
-ul.permission li {
-    margin-right: 15px;
-}
-.folderListview > input {
-    outline: none;
-    border: 0px !important;
-    background: transparent;
-    appearance: none;
-    width: 120px !important;
-    font-family: 'brownregular' !important;
-}
-.folderListview ::ng-deep mat-form-field {
-    position: relative;
-    z-index: 2;
-    cursor: pointer;
-    width: 84px !important;
-}
-.folderListview ::ng-deep mat-form-field::after {
-    content: '';
-    display: block;
-    width: 13px;
-    height: 13px;
-    background: url(../../assets/images/down-arrow.svg) no-repeat center center;
-    background-size: 100%;
-    position: absolute;
-    top: 1px !important;
-    right: 0px;
-    z-index: -1;
-}
-.datePicker::placeholder{
-    color: #645D57 !important;
-}
-input.datePicker:focus::placeholder{
-    opacity: 1 !important;
-}
-.folderListview ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-    border-radius: 0 !important;
-    padding: 0px !important;
-    background: transparent;
-}
-::ng-deep .mat-calendar-table-header-divider::after{
-    display: none !important;
-  }
-::ng-deep .mat-form-field-appearance-fill .mat-form-field-infix {
-    padding: 0;
-}
-::ng-deep .mat-form-field-infix {
-    border-top: 0 solid transparent;
-}
-::ng-deep input.mat-input-element {
-    margin-top: 0px !important;
-}
-::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0px !important;
-}
-::ng-deep .mat-form-field-underline {
-    display: none !important;
-}
-::ng-deep .cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
-    border-bottom: 0px !important;
-    animation:  unset !important;
-    width: 120px !important;
-    font-family: 'brownregular' !important;
-    color: #000 !important;
-    border-bottom: 0px !important;
-}
-::ng-deep .mat-calendar-table-header-divider {
-    position: relative;
-    height: 0px !important;
-    display: none !important;
-}
-::ng-deep .presentation th {
-    border-bottom: 0px solid transparent !important;
-}
-
-.searchBlock {
-    position: relative;
-    margin-bottom: 20px;
-}
-.searchBlock .search-bar {
-    width: 100%;
-    padding: 8px 15px;
-}
-.search-bar{
-    position: relative;
-    padding: 8px 45px 8px 46px;
-    border-radius: 8px;
-    border: 1px solid #F6F5F2;
-    width: 100%;
-    background-color: #F6F5F2;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: 25px;
-    color: #000;
-}
-.search-bar::placeholder{
-    font-weight: 100;
-}
-.search-btn{
-    position: absolute;
-    left: 6px;
-    top: 0px;
-    bottom: 0px;
-    border: unset;
-    padding: 0px 10px;
-    background-color: transparent;
-    z-index: 1;
-}
-.search-btn img{
-    width: 19px;
-}
-.input-sizer ::-webkit-input-placeholder,
-.input-sizer ::-webkit-input-placeholder:focus {
-  color: #000;
-  opacity: 1;
-}
-.input-sizer :-ms-input-placeholder,
-.input-sizer :-ms-input-placeholder:focus {
-  color: #000;
-  opacity: 1;
-}
-.input-sizer ::placeholder,
-.input-sizer ::placeholder:focus {
-  color: #000;
-  opacity: 1;
-}
-.positionRelative input.search-bar::placeholder{
-    color: #413E3C !important;
-}
-.searchBlock span.positionRelative {
-    width: 75%;
-    display: inline-block;
-}
-.makeAdminIcon {
-    display: inline-block;
-    margin-left: 0px;
-    cursor: pointer;
-}
-.makeAdminClick {
-    cursor: pointer;
-    color: #937206;
-}
-.accessExpired {
-    color: #CB1B19;
-}
-.inlineBlock {
-    display: inline-block !important;
-    line-height: 10px; vertical-align: -3px; width: auto; margin-left: 5px;
-}
-.tolltipContent.alignRight {
-    right: 0px;
-    left: auto !important;
-}
-.accessExpiredDate ::ng-deep input.mat-input-element {
-    color: #CB1B19 !important;
-}
-.folderListview .accessExpiryCal ::ng-deep mat-form-field::after {
-    background: url(../../assets/images/down-arrow-red.svg) no-repeat center center !important;
-}
-.action-delete-icon {
-    cursor: pointer;
-}
-::ng-deep .cdk-global-overlay-wrapper{
-    overflow: auto !important;
-    pointer-events: auto !important;
-}
-.whenYouConvert {
-    background: #E6F2FF;
-    border-radius: 8px;
-    padding: 8px 16px;
-    color: #0072A2;
-    font-size: 14px;
-    font-weight: normal;
-    margin-bottom: 15px;
-    display: inline-block;
 }

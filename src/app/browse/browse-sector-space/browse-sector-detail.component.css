@@ -13,7 +13,7 @@ div#dropzone {
     border: 2px dashed #937206;
     border-radius: 8px;
   }
-
+  
 .breadcrumb-active {
   cursor: pointer;
   text-decoration: none;
@@ -384,7 +384,7 @@ display: inline-block;
 } */
 .header-content h6.tollTipCustom span.copy-section {
   max-width: 300em !important;
-}
+} 
 .edit-icon {
   cursor: pointer;
 }
@@ -393,11 +393,11 @@ ul.uploadAssetsClassifications li.edit-icon:hover path {
   stroke: #DAAA00;
 }
 .workspaeName {
-  text-align: left;
+  text-align: left; 
   word-break: break-all;
   display: inline-block;
-  vertical-align: middle;
-  position: relative;
+  vertical-align: middle; 
+  position: relative; 
   z-index: 99;
   max-width: calc(100% - 30px);
 }
@@ -1639,156 +1639,4 @@ ul.uploadAssetsClassifications li:after {
   bottom: 0px;
   margin: auto;
   width: 18px;
-}
-ul.downloadImgLisst {
-  margin-top: 15px;
-}
-ul.downloadImgLisst::after {
-  content: '';
-  display: block;
-  clear: both;
-}
-ul.downloadImgLisst li {
-  padding-bottom: 10px;
-  width: 100%;
-}
-ul.downloadImgLisst li:last-child {
-  padding-bottom: 0px;
-}
-
-ul.downloadImgLisst li .imgListBlk,
-ul.downloadImgLisst li .contentListBlk,
-ul.downloadImgLisst li .imgMailIcon {
-  display: inline-block;
-  vertical-align: middle;
-}
-.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk,
-.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon {
-  max-width: 20px;
-}
-.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk img,
-.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
-  margin-left: 0px;
-  width: auto;
-  height: auto;
-  vertical-align: middle;
-}
-.downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
-  vertical-align: -3px;
-}
-ul.downloadImgLisst li .contentListBlk {
-  padding: 0px 10px;
-  color: #fff;
-  width: calc(100% - 40px);
-  font-size: 13px;
-}
-
-.folderDownload {
-  color: #fff;
-}
-.downloadClose, .downloadClose path {
-  fill: #fff !important;
-  stroke: #fff !important;
-  cursor: pointer;
-  float: right;
-}
-.headingDownload {
-  display: inline-block;
-  width: calc(100% - 30px);
-  font-size: 15px;
-  font-family: 'brownregular';
-  padding-bottom: 15px;
-  line-height: 16px;
-  vertical-align: top;
-  color: #fff;
-}
-.pt-15 {
-  padding-top: 15px;
-}
-.pb-10 {
-  padding-bottom: 10px;
-}
-.continue {
-  display: block;
-  overflow: hidden;
-  padding-top: 15px;
-}
-.continue span {
-  color: #EDD580;
-  float: right;
-  cursor: pointer;
-}
-.continue span path {
-  fill: #EDD580 !important;
-  stroke: none !important;
-}
-.folderDownload:after {
-  content: '';
-  display: block;
-  clear: both;
-}
-.imgListBlk img {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-}
-.downloadFileWorkspace ul.downloadImgLisst li .imgListBlk img, .downloadFileWorkspace ul.downloadImgLisst li .imgMailIcon img {
-  display: block;
-}
-.flexable {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-.flexable .contentListBlk {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-  font-family: 'brownregular';
-}
-.cancleDownload {
-  float: left;
-  padding-top: 25px;
-  cursor: pointer;
-  font-weight: normal;
-  color: #EDD580;
-}
-.navermindBtn {
-  text-align: right;
-}
-.navermindBtn span {
-  cursor: pointer;
-  font-weight: normal;
-  color: #EDD580;
-}
-.navermindBtn span.nevermind {
-  margin-left: 15px;
-}
-.navermindBlk {
-  clear: both;
-  display: block;
-}
-
-/* ::ng-deep .cdk-overlay-pane.custom-modalbox {
-  width: 1080px !important;
-  max-width: calc(100vw - 120px) !important;
-  max-height: calc(100vh - 80px) !important;
-  margin-right: auto !important;
-  margin-left: auto !important;
-  position: absolute !important;
-  top: 20px !important;
-  right: 0px !important;
-  left: 0px !important;
-}
-::ng-deep .custom-modalbox .mat-dialog-container {
-  padding: 0px !important;
-  min-height: auto !important;
-  max-height: 100% !important;
-  border-radius: 8px !important;
-} */
-
-.share-icon {
-  cursor: pointer;
-  width: 20px;
 }

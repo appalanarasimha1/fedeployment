@@ -1,12 +1,10 @@
-import { Component, OnInit, Inject, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
 import { ActivatedRoute, Router } from "@angular/router";
 import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
-import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
-import { IChildAssetACL } from '../common/interfaces';
 
 @Component({
   selector: 'app-manage-access-modal',
@@ -18,49 +16,27 @@ export class ManageAccessModalComponent implements OnInit {
   @Input() input_data: any;
   @Input() input_folder_structure: any;
   @Output() markIsPrivate: EventEmitter<any> = new EventEmitter();
-  @ViewChild('addUserModal') addUserModal: AddUserModalComponent;
-
   uploadedAsset;
   selectedFolder: any;
   makePrivate: boolean = false;
   docIsPrivate: boolean = false;
-  isPrivate: boolean = false;
   error: string;
-  folderStructure:any =[];
-  lockInfo: boolean;
-  peopleInviteInput: string = "";
-  selectedCity: any;
-  folderCollaborators = {};
-  lockedChildren = [];
-  user = "";
-  childAssetOwners: IChildAssetACL[];
-
-  confidentiality = [
-    {id: 1, name: 'Confidential'},
-    {id: 2, name: 'Non-confidential'}
-  ];
-  accessRight = [
-    {id: 1, name: 'Public - external collaborators'},
-    {id: 2, name: 'Internal - employees and contractors with NEOM emails'}
-  ];
+  folderStructure:any =[]
 
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<ManageAccessModalComponent>,
+    private router: Router,
     public sharedService: SharedService,
     public dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
-    // this.getfolderAcl();
-    this.user = JSON.parse(localStorage.getItem("user"))["username"];
     this.selectedFolder = this.input_data || this.data.selectedFolder;
-    this.isPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
-    this.docIsPrivate = this.isPrivate;
-    this.folderStructure = this.input_folder_structure;
-    this.folderCollaborators = this.sharedService.getFolderCollaborators(this.selectedFolder) || {};
-    if (!this.isPrivate) this.getLockedChild();
+    this.docIsPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
+    this.folderStructure = this.input_folder_structure
+    console.log("sdfg",this.input_folder_structure);
   }
 
   async closeModal(isUpdated = false) {
@@ -73,45 +49,16 @@ export class ManageAccessModalComponent implements OnInit {
   }
 
   async fetchFolder(id) {
-    const result = await this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended`,
+    const result = await this.apiService.get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended&depth=children`,
       {headers: { "fetch-document": "properties"}}).toPromise();
     return result;
   }
 
-  async getfolderAcl(): Promise<IChildAssetACL[]> {
-    const result: any = await this.apiService.get(`/folderACL/${this.selectedFolder.uid}`,
-      {headers: { }}).toPromise();
-      console.log('result = ', result);
-    return result;
-  }
-
-  async getLockedChild() {
-    const payload = {
-      params: {},
-      context: {},
-      input: this.selectedFolder.uid,
-    };
-    // const res = await this.apiService.post(apiRoutes.GET_CHILD_LOCK_FOLDERS, payload).toPromise();
-    const res: IChildAssetACL[] = await this.getfolderAcl();
-    this.childAssetOwners = res || [];
-    this.lockedChildren = this.childAssetOwners.filter((data: IChildAssetACL) => data.isPrivate === "true");
-    this.childAssetOwners.forEach((data: any) => {
-      if(this.folderCollaborators[data.creator]) {
-        return;
-      }
-      this.folderCollaborators[data.creator] = this.sharedService.createAdminCollaborator(data);
-    })
-  }
-
   async updateRights() {
-    // if (!this.makePrivate) return;
-    if (this.isPrivate === this.docIsPrivate) {
-      this.addUserModal.saveChanges();
-      this.closeModal(true);
-      return;
-    }
+    if (!this.makePrivate) return;
+    
     const params = {
-      isPrivate: this.docIsPrivate
+      isPrivate: !this.docIsPrivate
     };
     const payload = {
       params,
@@ -124,13 +71,11 @@ export class ManageAccessModalComponent implements OnInit {
     } else  {
       this.dataService.folderPermissionInit(true)
       if(this.input_data) {
-        this.input_data.properties['dc:isPrivate'] = true;
+        this.input_data.properties['dc:isPrivate'] = true;``
         this.markIsPrivate.emit(this.input_data);
-      } else
+      } else 
         this.closeModal(true);
     }
-
-    this.addUserModal.saveChanges();
   }
 
   getCheckAction(event) {
@@ -141,11 +86,4 @@ export class ManageAccessModalComponent implements OnInit {
     }
   }
 
-  togglerUserActivated(event) {
-    this.docIsPrivate = !this.docIsPrivate;
-  }
-
-  removeWorkspacesFromString(value: string) {
-    return this.sharedService.removeWorkspacesFromString(value);
-  }
 }

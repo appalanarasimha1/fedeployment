@@ -11,7 +11,6 @@ import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { NuxeoService } from './nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
-import { IChildAssetACL } from '../common/interfaces';
 
 
 @Injectable({
@@ -21,7 +20,6 @@ export class SharedService {
   public todaysDateUTC = new Date().toUTCString();
   public todayDateKSAInMilli = new Date().getTime() + 3 * 60 * 60 * 1000;
   public MeterType;
-  public user = JSON.parse(localStorage.getItem('user')) || null;
 
   // /* <!-- sprint12-fixes start --> */
   public sidebarToggleResize = new BehaviorSubject(false);
@@ -61,7 +59,7 @@ export class SharedService {
   pluck(data, key) {
     return pluck(data, key);
   }
-
+  
   checkAssetMimeTypes(document: any): string {
     return this.checkMimeType(document);
   }
@@ -72,7 +70,7 @@ export class SharedService {
     if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
       return '../../../assets/images/no-preview-big.png';
     }
-
+    
     if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('nuxeo/')[1]}`;
     }
@@ -288,7 +286,7 @@ export class SharedService {
   // }
 
   chekForReportRoles(role: string): boolean {
-    const user = this.user ? JSON.parse(localStorage.getItem('user')) : null;
+    const user = JSON.parse(localStorage.getItem('user'));
     return ["ceo's office", "ground x"].includes(user?.sector?.toLowerCase()) || user?.groups.indexOf(role) != -1;
   }
 
@@ -297,10 +295,8 @@ export class SharedService {
     // window.scroll(0,0);
   }
 
-  checkExternalUser(user = JSON.parse(localStorage.getItem('user'))) {
-    if(typeof user == "string") {
-      return user.includes('neom') ? false : true;
-    }
+  checkExternalUser() {
+    const user = JSON.parse(localStorage.getItem('user'));
     if (!user?.groups) return false;
     return user?.groups.includes(EXTERNAL_USER);
   }
@@ -513,7 +509,7 @@ export class SharedService {
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
       return '../../../assets/images/word.png';
-    }
+    } 
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt.png';
     }
@@ -523,48 +519,6 @@ export class SharedService {
 
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
-  getFolderCollaborators(selectedFolder?) {
-    const currentWorkspace = selectedFolder ? selectedFolder : JSON.parse(localStorage.getItem('workspaceState'));
-    if (!currentWorkspace?.contextParameters?.acls) return [];
-    const localAces = currentWorkspace.contextParameters.acls.find(acl => acl.name === 'local');
-    if (!localAces?.aces) return;
-    const folderCollaborators = {};
-    localAces.aces.forEach(ace => {
-      if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
-      if (!ace.granted || ace.username === "Administrator" || ace.username === 'administrators') return;
-      if (folderCollaborators[ace.username.id || ace.username]) {
-        folderCollaborators[ace.username.id || ace.username].permission.push(ace.permission);
-        folderCollaborators[ace.username.id || ace.username].ids.push(ace.id);
-        return;
-      }
-      folderCollaborators[ace.username.id || ace.username] = {
-        user: ace.username,
-        permission: [ace.permission],
-        externalUser: ace.externalUser,
-        end: ace.end,
-        id: ace.id,
-        ids: [ace.id],
-      }
-    });
-    return folderCollaborators;
-  }
-
-  createAdminCollaborator(data: IChildAssetACL) {
-    const user = this.user ? JSON.parse(localStorage.getItem('user')) : null;
-    return {
-        "user": data.creator,
-        "permission": [
-            "Everything"
-        ],
-        "externalUser": this.checkExternalUser(data.creator),
-        "end": null,
-        "id": `${data.creator}:Everything:true:${user.id}::`,
-        "ids": [
-          `${data.creator}:Everything:true:${user.id}::`
-        ]
-    }
   }
 
 }

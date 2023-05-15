@@ -26,7 +26,6 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../common/snackbar/snackbar.component';
 import { AssetViewComponent } from '../asset-view/asset-view.component';
 import { ManageAccessModalComponent } from '../manage-access-modal/manage-access-modal.component';
-import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { polyfill as keyboardEventKeyPolyfill } from 'keyboardevent-key-polyfill';
 import { TextInputAutocompleteModule } from 'angular-text-input-autocomplete';
@@ -36,13 +35,6 @@ import { SafePipe } from '../common/pipe/safe.pipe';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MasonryViewComponent } from '../masonry-view/masonry-view.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { ShareModalComponent } from '../share-modal/share-modal.component';
-import { ArcGisMapComponent } from '../arc-gis-map/arc-gis-map.component';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -67,12 +59,10 @@ keyboardEventKeyPolyfill();
     SnackbarComponent,
     AssetViewComponent,
     ManageAccessModalComponent,
-    AddUserModalComponent,
     DataTableComponent,
+    // ManageAccessModalComponent,
     SafePipe,
-    MasonryViewComponent,
-    ShareModalComponent,
-    ArcGisMapComponent,
+    MasonryViewComponent
   ],
   imports: [
     CommonModule,
@@ -90,11 +80,6 @@ keyboardEventKeyPolyfill();
     // NgxMasonryModule,
     TextInputAutocompleteModule,
     MatMenuModule,
-    MatSlideToggleModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    NgSelectModule
   ],
   exports: [
     CommonModule,
@@ -122,11 +107,9 @@ keyboardEventKeyPolyfill();
     MatMenuModule,
     DataTableComponent,
     ManageAccessModalComponent,
-    AddUserModalComponent,
+    // ManageAccessModalComponent,
     SafePipe,
-    MasonryViewComponent,
-    ShareModalComponent,
-    ArcGisMapComponent,
+    MasonryViewComponent
   ]
 })
 export class SharedModule { }

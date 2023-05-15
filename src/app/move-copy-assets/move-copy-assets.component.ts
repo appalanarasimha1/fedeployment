@@ -149,10 +149,6 @@ export class MoveCopyAssetsComponent implements OnInit {
     return false
   }
 
-  checkMovePermission(item){
-    return item.contextParameters?.permissions?.includes('ReadWrite');
-  }
-
   async moveAssets() {
     this.loading = true;
     if (!this.selectedDestination) return;
@@ -162,7 +158,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     const arrayCall = [];
     const arrayIndex = [];
     for (const key in this.selectedList) {
-      if(this.checkMovePermission(this.selectedList[key])){
+      if(!this.checkDownloadPermission(this.selectedList[key])){
         arrayCall.push(this.moveAsset(this.selectedList[key]));
         arrayIndex.push(key)
       }
