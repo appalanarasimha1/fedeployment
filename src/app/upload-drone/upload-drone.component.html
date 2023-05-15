@@ -110,7 +110,7 @@
                     <img src="../../assets/images/srt-icon.svg" alt="" />
                     <div class="flex">
                         <span>{{ f.name }}</span>
-                        <span class="custom-date-picker" style="margin-right: 22px;">
+                        <span class="custom-date-picker" style="margin-right: 22px;" *ngIf="dateHiideSrt">
                             <mat-form-field appearance="fill">
                                 <input matInput [matDatepicker]="picker" [(ngModel)]="srtDates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
                                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
