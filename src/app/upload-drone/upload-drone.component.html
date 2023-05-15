@@ -56,7 +56,7 @@
 
             <span class="custom-date-picker1" style="margin-right: 22px;">
                 <mat-form-field appearance="fill">
-                    <input matInput [matDatepicker]="picker" placeholder="Set a date for the upload" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
+                    <input matInput [matDatepicker]="picker" placeholder="Set the date the media assets were captured" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -136,8 +136,10 @@
     <div class="buttonBlock">
         <button *ngIf="!cancleBlock" class="cancel-btn" (click)="cancleShowHide()">Cancel</button>
         <button [disabled]="!uploadDate" *ngIf="isNextButton" (click)="next()" class="upload-btn">Next</button>
-        <button [disabled]="files?.length === 0 && !srtFiles.length" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton" class="upload-btn">Start upload</button>
-        <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep" class="upload-btn">Publish</button>
+        <button [disabled]="files?.length === 0 && !srtFiles.length" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton && !allowPublish" class="upload-btn"  style="position: relative">
+            <app-loader-small [show]="startUpLoading"></app-loader-small> Start upload
+        </button>
+        <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep && allowPublish" class="upload-btn">Publish</button>
 
         <div *ngIf="cancleBlock">Are you sure you want to cancel the upload?</div>
         <div *ngIf="cancleBlock" class="cancleUpload">

@@ -51,6 +51,8 @@ export class UploadDroneComponent implements OnInit {
   isSelectAll = false;
   allDate = new Date();
   supplierRegions = null;
+  dateHiideSrt: boolean = true;
+  startUpLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -147,6 +149,7 @@ export class UploadDroneComponent implements OnInit {
     this.selectedDate = moment(this.selectedDate).toISOString(true).split('T')[0];
     this.isNextButton = false;
     this.showDatePicker = false;
+    this.startUpLoading = false;
   }
 
   generateUploadHeader() {
@@ -181,16 +184,18 @@ export class UploadDroneComponent implements OnInit {
   }
 
   async startUpload() {
-    this.loading = true;
+    // this.loading = true;
+    this.startUpLoading = true;
     await this.uploadFile([...this.files,...this.srtFiles]);
+    // console.log("upload done")
   }
-
+  allowPublish:boolean=false
   async uploadFile(files) {
     if (!this.batchId) {
       await this.createBatchUpload();
     }
     for (let i = 0; i < files.length; i++) {
-      this.uploadFileIndex(this.currentIndex, files[i]);
+      await this.uploadFileIndex(this.currentIndex, files[i],i);
       this.currentIndex++;
     }
   }
@@ -200,7 +205,7 @@ export class UploadDroneComponent implements OnInit {
     this.batchId = res["batchId"];
   }
 
-  async uploadFileIndex(index, file) {
+  async uploadFileIndex(index, file,length?:number) {
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
     const totalSize = blob.size;
@@ -226,6 +231,13 @@ export class UploadDroneComponent implements OnInit {
           this.setUploadProgressBar(index, percentDone);
         } else if (event instanceof HttpResponse) {
           // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+          // console.log("this.currentIndex",this.currentIndex,length);
+          
+          if (this.currentIndex-1 == length) {
+            this.allowPublish = true;
+            this.startUpLoading = false;
+            this.publishStep = true;
+          }
           console.log("File is completely loaded!");
         }
       },
@@ -233,12 +245,23 @@ export class UploadDroneComponent implements OnInit {
         console.log("Upload Error:", err);
         this.filesMap[index]["isVirus"] = true;
         // delete this.filesMap[index];
+        if (this.currentIndex-1 == length) {
+          this.allowPublish = true;
+          this.startUpLoading = false;
+          this.publishStep = true;
+        }
       },
       () => {
         this.setUploadProgressBar(index, 100);
         this.filesUploadDone[index] = true;
         // console.log("Upload done");
+        if (this.currentIndex-1 == length) {
+          this.allowPublish = true;
+          this.startUpLoading = false;
+          this.publishStep = true;
+        }
       }
+
     );
   }
 
@@ -251,7 +274,7 @@ export class UploadDroneComponent implements OnInit {
     this.totalPercent = Math.ceil(sum / this.fileUploadProgress.length);
     if (this.totalPercent === 100) {
       this.loading = false;
-      this.publishStep = true;
+      // this.publishStep = true;
     }
   }
 
@@ -268,13 +291,15 @@ export class UploadDroneComponent implements OnInit {
     }
     this.sharedService.newEvent('Upload done');
 
-    this.sharedService.showSnackbar(
-      `${this.files.length +this.srtFiles.length} assets uploaded`,
-      3000,
-      "top",
-      "center",
-      "snackBarMiddle"
-    );
+    this.sharedService.showSnackbar(`${this.files.length +this.srtFiles.length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
+
+    // this.sharedService.showSnackbar(
+    //   `${this.files.length +this.srtFiles.length} assets uploaded`,
+    //   3000,
+    //   "top",
+    //   "center",
+    //   "snackBarMiddle"
+    // );
     this.closeModal(true);
     // if(!this.showRedirectUrl()) {
     //   this.publishing = false;
@@ -428,6 +453,7 @@ export class UploadDroneComponent implements OnInit {
       } else if (file.type?.includes("audio/")) {
         filteredFile.push(file);
       } else if (file.name?.toLowerCase().includes(".srt")) {
+        this.dateHiideSrt = false;
         // filteredFile.push(file);
         this.srtFiles.push(file)
         this.srtDates.push(file.lastModifiedDate);
