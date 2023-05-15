@@ -53,6 +53,7 @@ export class UploadDroneComponent implements OnInit {
   supplierRegions = null;
   dateHiideSrt: boolean = true;
   startUpLoading = false;
+  maxDate= new Date()
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
