@@ -6,11 +6,11 @@
         <div class="uploadHeading">
             <span>{{generateUploadHeader()}}</span>
             <span>{{generateUploadDate()}}</span>
-            <div *ngIf="loading && totalPercent < 100" class="uploadProgress">Uploading... {{totalPercent}}%</div>
+            <!-- <div *ngIf="loading && totalPercent < 100" class="uploadProgress">Uploading... {{totalPercent}}%</div>
             <div *ngIf="totalPercent == 100" class="uploadProgressDone">
                 <img src="../../assets/images/Tick-box.svg" />
                 Uploaded
-            </div>
+            </div> -->
         </div>
         <img src="../../assets/images/Installation-search-icon.svg" class="installation-search-icon" *ngIf="!showUpload" />
         <div class="searchBar mb-5 zindex-1" *ngIf="!showUpload">
@@ -56,8 +56,8 @@
 
             <span class="custom-date-picker1" style="margin-right: 22px;">
                 <mat-form-field appearance="fill">
-                    <input matInput [matDatepicker]="picker" placeholder="Set a date for the upload" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Set the date the media assets were captured" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
+                    <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
             </span>
@@ -96,7 +96,7 @@
                             <!-- <span *ngIf="!showInfo" class="gettingInfo" (click)="gettingInfo($event)">Getting info...</span> -->
                             <span *ngIf="!isDroneOperator" class="custom-date-picker">
                                 <mat-form-field appearance="fill">
-                                    <input matInput [matDatepicker]="picker" [(ngModel)]="dates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
+                                    <input matInput [matDatepicker]="picker" [max]="maxDate" [(ngModel)]="dates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
                                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
@@ -110,9 +110,9 @@
                     <img src="../../assets/images/srt-icon.svg" alt="" />
                     <div class="flex">
                         <span>{{ f.name }}</span>
-                        <span class="custom-date-picker" style="margin-right: 22px;">
+                        <span *ngIf="!isDroneOperator" class="custom-date-picker" style="margin-right: 22px;">
                             <mat-form-field appearance="fill">
-                                <input matInput [matDatepicker]="picker" [(ngModel)]="srtDates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
+                                <input matInput [matDatepicker]="picker" [max]="maxDate" [(ngModel)]="srtDates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
                                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
@@ -136,8 +136,10 @@
     <div class="buttonBlock">
         <button *ngIf="!cancleBlock" class="cancel-btn" (click)="cancleShowHide()">Cancel</button>
         <button [disabled]="!uploadDate" *ngIf="isNextButton" (click)="next()" class="upload-btn">Next</button>
-        <button [disabled]="files?.length === 0 && !srtFiles.length" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton" class="upload-btn">Start upload</button>
-        <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep" class="upload-btn">Publish</button>
+        <button [disabled]="files?.length === 0 && !srtFiles.length" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton && !allowPublish" class="upload-btn"  style="position: relative">
+            <app-loader-small [show]="startUpLoading"></app-loader-small> Start upload
+        </button>
+        <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep && allowPublish" class="upload-btn">Publish</button>
 
         <div *ngIf="cancleBlock">Are you sure you want to cancel the upload?</div>
         <div *ngIf="cancleBlock" class="cancleUpload">
