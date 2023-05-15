@@ -7,6 +7,7 @@ import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
 import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
 import { IChildAssetACL } from '../common/interfaces';
+import { ACCESS, ALLOW } from '../upload-modal/constant';
 
 @Component({
   selector: 'app-manage-access-modal',
@@ -29,20 +30,22 @@ export class ManageAccessModalComponent implements OnInit {
   folderStructure:any =[];
   lockInfo: boolean;
   peopleInviteInput: string = "";
-  selectedCity: any;
   folderCollaborators = {};
   lockedChildren = [];
   user = "";
   childAssetOwners: IChildAssetACL[];
 
-  confidentiality = [
-    {id: 1, name: 'Confidential'},
-    {id: 2, name: 'Non-confidential'}
+  confidentiality;
+  confidentialityDropdown = [
+    {id: "Confidential", name: 'Confidential'},
+    {id: "Not Confidential", name: 'Non-confidential'}
   ];
-  accessRight = [
-    {id: 1, name: 'Public - external collaborators'},
-    {id: 2, name: 'Internal - employees and contractors with NEOM emails'}
+  accessRight;
+  accessRightDropdown = [
+    {id: "All access", name: 'Public - external collaborators'},
+    {id: "Internal access only", name: 'Internal - employees and contractors with NEOM emails'}
   ];
+  downloadApproval: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -79,9 +82,7 @@ export class ManageAccessModalComponent implements OnInit {
   }
 
   async getfolderAcl(): Promise<IChildAssetACL[]> {
-    const result: any = await this.apiService.get(`/folderACL/${this.selectedFolder.uid}`,
-      {headers: { }}).toPromise();
-      console.log('result = ', result);
+    const result: any = await this.apiService.get(`/folderACL/${this.selectedFolder.uid}`).toPromise();
     return result;
   }
 
@@ -105,8 +106,9 @@ export class ManageAccessModalComponent implements OnInit {
 
   async updateRights() {
     // if (!this.makePrivate) return;
+    // TODO: check for permission in context-parameter, open only if user if admin i.e permission = 'Everything
     if (this.isPrivate === this.docIsPrivate) {
-      this.addUserModal.saveChanges();
+      this.addUserModal?.saveChanges();
       this.closeModal(true);
       return;
     }
@@ -119,18 +121,44 @@ export class ManageAccessModalComponent implements OnInit {
       input: this.selectedFolder.uid,
     };
     const res = await this.apiService.post(apiRoutes.UPDATE_FOLDER_RIGHTS, payload).toPromise();
-    if (res['value'] !== 'OK') {
+    if (res['value'] !== this.apiService.API_RESPONSE_MESSAGE.OK) {
       this.error = res['value'];
     } else  {
-      this.dataService.folderPermissionInit(true)
+      if(this.isPrivate && !this.docIsPrivate) {
+        await this.setAccessRights();
+      }
+      this.dataService.folderPermissionInit(this.docIsPrivate)
       if(this.input_data) {
         this.input_data.properties['dc:isPrivate'] = true;
         this.markIsPrivate.emit(this.input_data);
       } else
         this.closeModal(true);
     }
+    
+    this?.addUserModal?.saveChanges() || this.closeModal(true);
+  }
 
-    this.addUserModal.saveChanges();
+  async setAccessRights() {
+    try {
+      const allow = this.accessRight.id === ACCESS.all ? ALLOW.any : ALLOW.internal;
+      const payload = {
+        "uid": this.selectedFolder.uid,
+        "parameters": {
+            "sa:access": this.accessRight.id,
+            "sa:allow": allow,
+            "sa:confidentiality": this.confidentiality.id,
+            "sa:copyrightName": null,
+            "sa:copyrightYear": null,
+            "sa:downloadApproval": this.downloadApproval
+        }
+      }
+      const res = await this.apiService.post(apiRoutes.SET_UNLOCK_ASSET_ACL, payload).toPromise();
+      if (res['value'] === this.apiService.API_RESPONSE_MESSAGE.SUCCESS) {
+        this.error = res['value'];
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   getCheckAction(event) {
@@ -147,5 +175,9 @@ export class ManageAccessModalComponent implements OnInit {
 
   removeWorkspacesFromString(value: string) {
     return this.sharedService.removeWorkspacesFromString(value);
+  }
+
+  acknowledgeParent(event: boolean) {
+   
   }
 }

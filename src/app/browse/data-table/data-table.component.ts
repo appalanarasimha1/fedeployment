@@ -256,30 +256,40 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   async downloadAssets(e?:any) {
-    // this.uncheckAll1()
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length) {
-        for(let i = 0; i < this.downloadArray.length; i++) {
+      let newDownloadArray = []
+      let newDownloadArrayFullItem = []
+      for (let i = 0; i < this.downloadFullItem.length; i++) {
+        if (this.downloadFullItem[i].type==='Video') {
           window.open(this.getFileContent(this.downloadFullItem[i]));
+          
+        }else{
+          newDownloadArray.push(this.downloadFullItem[i].uid)
+          newDownloadArrayFullItem.push(this.downloadFullItem[i])
         }
-        return this.removeAssets();
+        
       }
-      // if (this.downloadArray.length > 1) {
-      //   this.sharedService.showSnackbar(
-      //     "Your download is being prepared do not close your browser",
-      //     6000,
-      //     "top",
-      //     "center",
-      //     "snackBarMiddle"
-      //   );
-      //   $(".multiDownloadBlock").hide();
-      //   let randomString = Math.random().toString().substring(7);
-      //   let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
-      //   let uid: any;
-      //   this.downloadAsZip(input, uid, randomString)
-      // }
+      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !=="OrderedFolder") {
+        window.location.href =this.getFileContent(newDownloadArrayFullItem[0])
+        this.removeAssets()
+      }
+      else {
+        this.sharedService.showSnackbar(
+          "Your download is being prepared do not close your browser",
+          0,
+          "top",
+          "center",
+          "snackBarMiddle",
+          "Close"
+        );
+        $(".multiDownloadBlock").hide();
+        let randomString = Math.random().toString().substring(7);
+        let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
+        let uid: any;
+        this.downloadAsZip(input, uid, randomString)
+      }
     }
   }
 
@@ -298,14 +308,16 @@ export class DataTableComponent implements OnInit, OnChanges {
         let splittedLocation = res.headers.get("location").split("/");
         let newUID = splittedLocation[splittedLocation.length - 2];
         uid = newUID;
-        let counter = 0
         let checkZipCompleted=(newUID) =>{
               this.loading = true
               this.apiService
             .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID +"/status")
             .toPromise().then((resp: any) => {
               if(resp.status === 200){
-                checkZipCompleted(newUID)
+                setTimeout(() => {
+                  checkZipCompleted(newUID)
+                }, 1000);
+                
               }else{
                 this.loading = false
                 window.open(
@@ -316,7 +328,6 @@ export class DataTableComponent implements OnInit, OnChanges {
                 this.removeAssets();
               }
             }).catch(e=>{
-              counter += 1
               this.removeAssets();
               // if (e.status ==404) {
               //   //  checkZipCompleted(newUID)
@@ -631,6 +642,8 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
 
       };
+      this.downloadArray.push(item.uid);
+        this.downloadFullItem.push(item);
       this.selectedFolderList[i] = item;
       this.selectedMoveList[i] = item;
     } else {
@@ -639,6 +652,10 @@ export class DataTableComponent implements OnInit, OnChanges {
          this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
 
         }
+        this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+        this.downloadFullItem = this.downloadFullItem.filter(
+          (m) => m.uid !== item.uid
+        );
       delete this.selectedFolderList[i];
       delete this.selectedMoveList[i];
         if (this.count==0) {
@@ -651,6 +668,7 @@ export class DataTableComponent implements OnInit, OnChanges {
           this.currentIndexClicked = undefined
         }
     }
+    this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
   }
 
@@ -1247,19 +1265,14 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   async openManageAccessModal(folderId) {
-    console.log("openManageAccessModal");
-
     // this.loading = true;
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
     dialogConfig.panelClass = "custom-modalbox";
-    // dialogConfig.id = "modal-component";
-    // dialogConfig.width = "550px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const folder = (await this.fetchFolder(folderId)) as any;
     if (!this.checkHasAdminPermission(folder)) return;
-    console.log(folder);
 
     dialogConfig.data = {
       selectedFolder: folder
@@ -1273,10 +1286,18 @@ export class DataTableComponent implements OnInit, OnChanges {
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
         this.currentWorkspace = result;
-        if (result?.properties && result?.properties["dc:isPrivate"])
+        if (result?.properties && result?.properties["dc:isPrivate"]) {
           result.properties["isPrivateUpdated"] = true;
+        }
         // this.saveState(result);
+        this.sortedData.forEach((item: IEntry) => {
+          if(result.uid === item.uid) {
+            item.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
+          }
+        });
       }
+      this.sortedData = this.sortedData.slice();
+      this.removeAssets();
     });
   }
 
