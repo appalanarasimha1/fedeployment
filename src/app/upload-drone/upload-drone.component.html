@@ -56,7 +56,7 @@
 
             <span class="custom-date-picker1" style="margin-right: 22px;">
                 <mat-form-field appearance="fill">
-                    <input matInput [matDatepicker]="picker" placeholder="Set a date for the upload" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
+                    <input matInput [matDatepicker]="picker" placeholder="Set the date the media assets were captured" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
