@@ -183,14 +183,15 @@ export class UploadDroneComponent implements OnInit {
   async startUpload() {
     this.loading = true;
     await this.uploadFile([...this.files,...this.srtFiles]);
+    console.log("upload done")
   }
-
+allowPublish:boolean=false
   async uploadFile(files) {
     if (!this.batchId) {
       await this.createBatchUpload();
     }
     for (let i = 0; i < files.length; i++) {
-      this.uploadFileIndex(this.currentIndex, files[i]);
+      await this.uploadFileIndex(this.currentIndex, files[i],i);
       this.currentIndex++;
     }
   }
@@ -200,7 +201,7 @@ export class UploadDroneComponent implements OnInit {
     this.batchId = res["batchId"];
   }
 
-  async uploadFileIndex(index, file) {
+  async uploadFileIndex(index, file,length?:number) {
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
     const totalSize = blob.size;
@@ -226,6 +227,11 @@ export class UploadDroneComponent implements OnInit {
           this.setUploadProgressBar(index, percentDone);
         } else if (event instanceof HttpResponse) {
           // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+          // console.log("this.currentIndex",this.currentIndex,length);
+          
+          if (this.currentIndex-1 == length) {
+            this.allowPublish = true
+          }
           console.log("File is completely loaded!");
         }
       },
@@ -233,12 +239,19 @@ export class UploadDroneComponent implements OnInit {
         console.log("Upload Error:", err);
         this.filesMap[index]["isVirus"] = true;
         // delete this.filesMap[index];
+        if (this.currentIndex == length-1) {
+          this.allowPublish = true
+        }
       },
       () => {
         this.setUploadProgressBar(index, 100);
         this.filesUploadDone[index] = true;
         // console.log("Upload done");
+        if (this.currentIndex == length-1) {
+          this.allowPublish = true
+        }
       }
+
     );
   }
 
