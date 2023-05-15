@@ -56,8 +56,8 @@
 
             <span class="custom-date-picker1" style="margin-right: 22px;">
                 <mat-form-field appearance="fill">
-                    <input matInput [matDatepicker]="picker" placeholder="Set the date the media assets were captured" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Set the date the media assets were captured" [(ngModel)]="uploadDate" style="width: 100%; border-bottom: 0px solid #000; line-height: 34px; padding-bottom: 0px;" (click)="picker.open()" >
+                    <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
             </span>
@@ -96,7 +96,7 @@
                             <!-- <span *ngIf="!showInfo" class="gettingInfo" (click)="gettingInfo($event)">Getting info...</span> -->
                             <span *ngIf="!isDroneOperator" class="custom-date-picker">
                                 <mat-form-field appearance="fill">
-                                    <input matInput [matDatepicker]="picker" [(ngModel)]="dates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
+                                    <input matInput [matDatepicker]="picker" [max]="maxDate" [(ngModel)]="dates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
                                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
@@ -112,7 +112,7 @@
                         <span>{{ f.name }}</span>
                         <span *ngIf="!isDroneOperator" class="custom-date-picker" style="margin-right: 22px;">
                             <mat-form-field appearance="fill">
-                                <input matInput [matDatepicker]="picker" [(ngModel)]="srtDates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
+                                <input matInput [matDatepicker]="picker" [max]="maxDate" [(ngModel)]="srtDates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
                                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
