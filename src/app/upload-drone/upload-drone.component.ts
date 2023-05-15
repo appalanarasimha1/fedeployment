@@ -51,6 +51,7 @@ export class UploadDroneComponent implements OnInit {
   isSelectAll = false;
   allDate = new Date();
   supplierRegions = null;
+  startUpLoading = true;
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -147,6 +148,7 @@ export class UploadDroneComponent implements OnInit {
     this.selectedDate = moment(this.selectedDate).toISOString(true).split('T')[0];
     this.isNextButton = false;
     this.showDatePicker = false;
+    this.startUpLoading = false;
   }
 
   generateUploadHeader() {
@@ -181,11 +183,12 @@ export class UploadDroneComponent implements OnInit {
   }
 
   async startUpload() {
-    this.loading = true;
+    // this.loading = true;
     await this.uploadFile([...this.files,...this.srtFiles]);
+    this.startUpLoading = true;
     console.log("upload done")
   }
-allowPublish:boolean=false
+  allowPublish:boolean=false
   async uploadFile(files) {
     if (!this.batchId) {
       await this.createBatchUpload();
@@ -230,7 +233,8 @@ allowPublish:boolean=false
           // console.log("this.currentIndex",this.currentIndex,length);
           
           if (this.currentIndex-1 == length) {
-            this.allowPublish = true
+            this.allowPublish = true;
+            this.startUpLoading = true;
           }
           console.log("File is completely loaded!");
         }
@@ -240,7 +244,8 @@ allowPublish:boolean=false
         this.filesMap[index]["isVirus"] = true;
         // delete this.filesMap[index];
         if (this.currentIndex == length-1) {
-          this.allowPublish = true
+          this.allowPublish = true;
+          this.startUpLoading = true;
         }
       },
       () => {
@@ -248,7 +253,8 @@ allowPublish:boolean=false
         this.filesUploadDone[index] = true;
         // console.log("Upload done");
         if (this.currentIndex == length-1) {
-          this.allowPublish = true
+          this.allowPublish = true;
+          this.startUpLoading = true;
         }
       }
 
