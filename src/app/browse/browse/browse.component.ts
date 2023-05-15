@@ -690,9 +690,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   ) {
     this.currentPageCount = 0;
     this.showMoreButton = true;
-    this.dataService.folderPermission$.subscribe(
-      (data) => (this.permissionChange = data)
-    );
+    // this.dataService.folderPermission$.subscribe(
+    //   (data) => (this.permissionChange = data)
+    // );
     if (checkCache && this.folderAssetsResult[id] && !this.permissionChange) {
       return this.folderAssetsResult[id];
     }
@@ -2125,9 +2125,9 @@ export class BrowseComponent implements OnInit, AfterViewInit {
   }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    this.dataService.folderPermission$.subscribe(
-      (data) => (this.permissionChange = data)
-    );
+    // this.dataService.folderPermission$.subscribe(
+    //   (data) => (this.permissionChange = data)
+    // );
     if (this.permissionChange) return true;
     const selectedFolder = JSON.parse(localStorage.getItem("workspaceState"));
 

@@ -97,7 +97,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   whiteLoader: boolean = false;
   transparentLoader: boolean = false;
   onlyPrivate:boolean = false;
-  permissionChange:boolean=false
+  permissionChange:boolean=false;
+  assetSize = { count: 0, size: null};
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -120,7 +121,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     //   // await this.fetchAssets(data.sectorUid, data.checkCache, data.pageSize, data.pageIndex, data.offset);
     // });
     
-    this.dataService.folderPermission$.subscribe(data=> this.permissionChange = data )
+    this.dataService.folderPermission$.subscribe(data=> this.permissionChange = data)
 
     this.route.paramMap.subscribe( async () => {
       this.sectorName = this.route.snapshot.paramMap.get('sectorName');
@@ -448,9 +449,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   // }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    this.dataService.folderPermission$.subscribe(
-      (data) => (this.permissionChange = data)
-    );
+    // this.dataService.folderPermission$.subscribe(
+    //   (data) => (this.permissionChange = data)
+    // );
     if (this.permissionChange) return true;
     const selectedFolder = JSON.parse(localStorage.getItem("workspaceState"));
 
@@ -521,7 +522,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.assetList?.forEach((doc) => {
       size += +doc.properties?.["file:content"]?.length || 0;
     });
-    return this.humanFileSize(size);
+    this.assetSize.size = this.humanFileSize(size);
+    return this.assetSize.size;
   }
 
   humanFileSize(size) {
@@ -696,8 +698,10 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     // dialogConfig.width = "550px";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const folder = (await this.fetchFolder(folderId)) as any;
+    this.assetSize.count = folder?.contextParameters?.folderAssetsCount;
     dialogConfig.data = {
-      selectedFolder: folder
+      selectedFolder: folder,
+      countAndSize: this.assetSize
     };
 
     const modalDialog = this.matDialog.open(
@@ -707,10 +711,21 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.currentWorkspace = result;
-        if (result?.properties && result?.properties["dc:isPrivate"])
+        if(this.currentWorkspace.uid === result.uid) {
+          this.currentWorkspace.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
+        }
+        if (result?.properties && result?.properties?.["dc:isPrivate"])
           result.properties["isPrivateUpdated"] = true;
         this.saveState(result);
+        this.sortedData?.forEach((item: IEntry) => {
+          if(result.uid === item.uid) {
+            item.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
+          }
+        });
+        if(this.sortedData?.lengthh) {
+          this.assetList = this.sortedData;
+        }
+        this.dataTableComponent?.removeAssets();
       }
       
       this.whiteLoader = false;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, Output } from "@angular/core";
+import { Component, OnInit, Inject, Input, Output, EventEmitter } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { concat, Observable, of, Subject } from "rxjs";
 import {
@@ -10,7 +10,7 @@ import {
   map,
   filter,
 } from "rxjs/operators";
-import { EXTERNAL_GROUP_GLOBAL, EXTERNAL_USER } from "../common/constant";
+import { EXTERNAL_GROUP_GLOBAL, EXTERNAL_USER, permissions } from "../common/constant";
 import { ApiService } from "../services/api.service";
 import { apiRoutes } from "../common/config";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -20,7 +20,6 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { EditAccessComponent } from "../edit-access/edit-access.component";
-import { E } from "@angular/cdk/keycodes";
 
 @Component({
   selector: "app-add-user-modal",
@@ -32,6 +31,7 @@ export class AddUserModalComponent implements OnInit {
   @Input() folderId;
   @Input() folderCollaborators;
   @Input() childAssetOwners;
+  @Output() parentOutput = new EventEmitter<boolean>();
 
   uploadedAsset;
   // selectedFolder: any;
@@ -608,6 +608,7 @@ export class AddUserModalComponent implements OnInit {
       return true;
   }
 
+  // todo: move following function to shared service
   checkNeomEmail(email = "") {
     if (!email) email = this.userInputText;
     return (
@@ -616,6 +617,7 @@ export class AddUserModalComponent implements OnInit {
     );
   }
 
+  // todo: move following function to shared service
   checkTransientNeomEmail(email) {
     if (email.includes("transient/"))
       return this.checkNeomEmail(email.split("/")[1]);
@@ -669,6 +671,7 @@ export class AddUserModalComponent implements OnInit {
     this.updateComputedCollaborators(newItem);
   }
 
+  // todo: move following function to shared service
   getEndDate(end) {
     if (!end) return "";
     const date = new Date(end);
@@ -688,6 +691,7 @@ export class AddUserModalComponent implements OnInit {
     this.isGlobal = e.target.checked && checkedGlobal;
   }
 
+  // todo: following does not make sense.
   checkShowExternalUser() {
     return false;
     return (
@@ -752,21 +756,22 @@ export class AddUserModalComponent implements OnInit {
           await this.sendInviteInternal(item);
         }
         if (item.permissions.canDownload) {
-          item.permission = 'CanDownload';
+          item.permission = permissions.lockFolderPermissions.DOWNLOAD;
           await this.addPermission(item);
         }
         if (item.permissions.canUpload) {
-          item.permission = 'CanUpload';
+          item.permission = permissions.lockFolderPermissions.UPLOAD;
           await this.addPermission(item);
         }
         if (item.permissions.isAdmin) {
-          item.permission = 'Everything';
+          item.permission = permissions.lockFolderPermissions.ADMIN;
           await this.addPermission(item);
         }
         if (!item.permissions.isAdmin && !item.permissions.canDownload && !item.permissions.canUpload) {
-          item.permission = 'Read';
+          item.permission = permissions.lockFolderPermissions.READ;
           await this.addPermission(item);
         }
+        this.parentOutput.emit(true);
       } catch (e) {}
     }
   }
