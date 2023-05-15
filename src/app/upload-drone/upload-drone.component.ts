@@ -52,7 +52,7 @@ export class UploadDroneComponent implements OnInit {
   allDate = new Date();
   supplierRegions = null;
   dateHiideSrt: boolean = true;
-  startUpLoading = true;
+  startUpLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -185,9 +185,9 @@ export class UploadDroneComponent implements OnInit {
 
   async startUpload() {
     // this.loading = true;
-    await this.uploadFile([...this.files,...this.srtFiles]);
     this.startUpLoading = true;
-    console.log("upload done")
+    await this.uploadFile([...this.files,...this.srtFiles]);
+    // console.log("upload done")
   }
   allowPublish:boolean=false
   async uploadFile(files) {
@@ -235,7 +235,8 @@ export class UploadDroneComponent implements OnInit {
           
           if (this.currentIndex-1 == length) {
             this.allowPublish = true;
-            this.startUpLoading = true;
+            this.startUpLoading = false;
+            this.publishStep = true;
           }
           console.log("File is completely loaded!");
         }
@@ -244,18 +245,20 @@ export class UploadDroneComponent implements OnInit {
         console.log("Upload Error:", err);
         this.filesMap[index]["isVirus"] = true;
         // delete this.filesMap[index];
-        if (this.currentIndex == length-1) {
+        if (this.currentIndex-1 == length) {
           this.allowPublish = true;
-          this.startUpLoading = true;
+          this.startUpLoading = false;
+          this.publishStep = true;
         }
       },
       () => {
         this.setUploadProgressBar(index, 100);
         this.filesUploadDone[index] = true;
         // console.log("Upload done");
-        if (this.currentIndex == length-1) {
+        if (this.currentIndex-1 == length) {
           this.allowPublish = true;
-          this.startUpLoading = true;
+          this.startUpLoading = false;
+          this.publishStep = true;
         }
       }
 
@@ -271,7 +274,7 @@ export class UploadDroneComponent implements OnInit {
     this.totalPercent = Math.ceil(sum / this.fileUploadProgress.length);
     if (this.totalPercent === 100) {
       this.loading = false;
-      this.publishStep = true;
+      // this.publishStep = true;
     }
   }
 
