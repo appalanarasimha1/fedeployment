@@ -53,6 +53,7 @@ export class UploadDroneComponent implements OnInit {
   supplierRegions = null;
   dateHiideSrt: boolean = true;
   startUpLoading = false;
+  maxDate= new Date()
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -195,7 +196,7 @@ export class UploadDroneComponent implements OnInit {
       await this.createBatchUpload();
     }
     for (let i = 0; i < files.length; i++) {
-      await this.uploadFileIndex(this.currentIndex, files[i],i);
+      await this.uploadFileIndex(this.currentIndex, files[i],files.length);
       this.currentIndex++;
     }
   }
@@ -223,46 +224,82 @@ export class UploadDroneComponent implements OnInit {
         "X-Authentication-Token": localStorage.getItem("token"), // TODO: will alter it to fetch this token from cookies rather than storing it in localstorage
       },
     };
-    this.apiService.post(uploadUrl, blob.content, options).subscribe(
-      (event) => {
-        if (event.type == HttpEventType.UploadProgress) {
-          const percentDone = Math.round((100 * event.loaded) / event.total);
-          console.log(`File is ${percentDone}% loaded.`);
-          this.setUploadProgressBar(index, percentDone);
-        } else if (event instanceof HttpResponse) {
-          // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-          // console.log("this.currentIndex",this.currentIndex,length);
+    // this.apiService.post(uploadUrl, blob.content, options).subscribe(
+    //   (event) => {
+    //     if (event.type == HttpEventType.UploadProgress) {
+    //       const percentDone = Math.round((100 * event.loaded) / event.total);
+    //       console.log(`File is ${percentDone}% loaded.`);
+    //       this.setUploadProgressBar(index, percentDone);
+    //     } else if (event instanceof HttpResponse) {
+    //       // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+    //       // console.log("this.currentIndex",this.currentIndex,length);
           
-          if (this.currentIndex-1 == length) {
+    //       if (this.currentIndex-1 == length) {
+    //         this.allowPublish = true;
+    //         this.startUpLoading = false;
+    //         this.publishStep = true;
+    //       }
+    //       console.log("File is completely loaded!");
+    //     }
+    //   },
+    //   (err) => {
+    //     console.log("Upload Error:", err);
+    //     this.filesMap[index]["isVirus"] = true;
+    //     // delete this.filesMap[index];
+    //     if (this.currentIndex-1 == length) {
+    //       this.allowPublish = true;
+    //       this.startUpLoading = false;
+    //       this.publishStep = true;
+    //     }
+    //   },
+    //   () => {
+    //     this.setUploadProgressBar(index, 100);
+    //     this.filesUploadDone[index] = true;
+    //     // console.log("Upload done");
+    //     if (this.currentIndex-1 == length) {
+    //       this.allowPublish = true;
+    //       this.startUpLoading = false;
+    //       this.publishStep = true;
+    //     }
+    //   }
+
+    // );
+    return new Promise<void>((resolve, reject) => {
+      this.apiService.post(uploadUrl, blob.content, options).subscribe(
+        (event) => {
+          console.log("this.currentIndex",this.currentIndex,length);
+          if (event.type == HttpEventType.UploadProgress) {
+            const percentDone = Math.round((100 * event.loaded) / event.total);
+            console.log(`File is ${percentDone}% loaded.`);
+            this.setUploadProgressBar(index, percentDone);
+          } else if (event instanceof HttpResponse) {
+            // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+            console.log("File is completely loaded!");
+            resolve();
+          }
+        },
+      (err) => {
+          console.log("Upload Error:", err);
+          this.filesMap[index]['isVirus'] = true;
+          reject();
+          // delete this.filesMap[index];
+        },
+        () => {
+          console.log("this.currentIndex",this.currentIndex,length);
+          this.setUploadProgressBar(index, 100);
+          this.filesUploadDone[index] = true;
+          $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+          console.log("Upload done");
+          
+          if (this.currentIndex == length-1) {
             this.allowPublish = true;
             this.startUpLoading = false;
             this.publishStep = true;
           }
-          console.log("File is completely loaded!");
+          resolve();
         }
-      },
-      (err) => {
-        console.log("Upload Error:", err);
-        this.filesMap[index]["isVirus"] = true;
-        // delete this.filesMap[index];
-        if (this.currentIndex-1 == length) {
-          this.allowPublish = true;
-          this.startUpLoading = false;
-          this.publishStep = true;
-        }
-      },
-      () => {
-        this.setUploadProgressBar(index, 100);
-        this.filesUploadDone[index] = true;
-        // console.log("Upload done");
-        if (this.currentIndex-1 == length) {
-          this.allowPublish = true;
-          this.startUpLoading = false;
-          this.publishStep = true;
-        }
-      }
-
-    );
+      );
+    });
   }
 
   setUploadProgressBar(index, percent) {
