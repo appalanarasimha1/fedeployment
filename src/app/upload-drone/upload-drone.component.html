@@ -92,7 +92,7 @@
                 <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files; let i = index" [file]="f" [removable]="!loading && !publishStep" (removed)="onRemove(f)">
                     <ngx-dropzone-label>
                         <div class="flex">
-                            <span>{{ f.name }}</span>
+                            <span>{{ f.name }}-1</span>
                             <!-- <span *ngIf="!showInfo" class="gettingInfo" (click)="gettingInfo($event)">Getting info...</span> -->
                             <span *ngIf="!isDroneOperator" class="custom-date-picker">
                                 <mat-form-field appearance="fill">
