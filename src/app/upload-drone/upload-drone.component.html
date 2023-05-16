@@ -122,8 +122,8 @@
                             </mat-form-field>
                         </span>
 
-                        <span  class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
-                        <span  class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) ">Uploading ...</span>
+                        <span style="width: 99px;" class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
+                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) ">Uploading ...</span>
 
                         <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemove(f)">
                             <svg>
@@ -145,8 +145,8 @@
                             </mat-form-field>
                         </span>
 
-                        <span style="padding-right: 23px; width: 99px;" class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
-                        <span style="padding-right: 23px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep)">Uploading ...</span>
+                        <span style="width: 99px;" class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
+                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep)">Uploading ...</span>
 
                         <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemoveSrt(f)">
                             <svg>
