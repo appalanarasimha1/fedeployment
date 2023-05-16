@@ -83,17 +83,17 @@
                 </span>
             </div> -->
             <div class="uanet_dropzone" [ngClass]="{'addHeight' : countFile }" ngx-dropzone [disableClick]="loading || publishStep" [expandable]="true" (change)="onSelect($event)">
-                <ngx-dropzone-label *ngIf="!publishStep && !srtFiles.length">
+                <ngx-dropzone-label *ngIf="!publishStep && !( files.length || srtFiles.length)">
                     <div class="dropzoneContent defaultTextUpload">
                         <img src="../../assets/images/add-copyright-golden.svg" />
                         <h2>Drag and drop to add your assets <span>or click to select files</span></h2>
                     </div>
                 </ngx-dropzone-label>
-                <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files; let i = index" [file]="f" [removable]="!loading && !publishStep" (removed)="onRemove(f)">
+                <!-- <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files; let i = index" [file]="f" [removable]="!loading && !publishStep" (removed)="onRemove(f)">
                     <ngx-dropzone-label>
                         <div class="flex">
                             <span>{{ f.name }}</span>
-                            <!-- <span *ngIf="!showInfo" class="gettingInfo" (click)="gettingInfo($event)">Getting info...</span> -->
+                            <span *ngIf="!showInfo" class="gettingInfo" (click)="gettingInfo($event)">Getting info...</span>
                             <span *ngIf="!isDroneOperator" class="custom-date-picker">
                                 <mat-form-field appearance="fill">
                                     <input matInput [matDatepicker]="picker" [max]="maxDate" [(ngModel)]="dates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
@@ -101,13 +101,40 @@
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
                             </span>
-                        </div>
-                         <!-- ({{ f.type }}) -->
-                    </ngx-dropzone-label>
-                </ngx-dropzone-image-preview>
 
+                            <span style="padding-right: 23px; width: 99px;" class="uploadProgressDone"><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Upload</span>
+                            <span class="uploadProgress">Uploading</span>
+                            
+                        </div>
+                         ({{ f.type }})
+                    </ngx-dropzone-label>
+                </ngx-dropzone-image-preview> -->
+
+                <div class="customSrtPreview" *ngFor="let f of files; let i = index">
+                    <!-- <img src="../../assets/images/srt-icon.svg" alt="" /> -->
+                    <div class="flex">
+                        <span>{{ f.name }}</span>
+                        <span *ngIf="!isDroneOperator" class="custom-date-picker" style="margin-right: 22px;">
+                            <mat-form-field appearance="fill">
+                                <input matInput [matDatepicker]="picker" [max]="maxDate" [(ngModel)]="dates[i]" style="width: 100%; border-bottom: 0px solid #000;" (click)="$event.stopPropagation(); picker.open()" >
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </span>
+
+                        <span  class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
+                        <span  class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) ">Uploading ...</span>
+
+                        <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemove(f)">
+                            <svg>
+                                <line x1="0" y1="0" x2="10" y2="10"></line>
+                                <line x1="0" y1="10" x2="10" y2="0"></line>
+                            </svg>
+                        </ngx-dropzone-remove-badge>
+                    </div>
+                </div>
                 <div class="customSrtPreview" *ngFor="let f of srtFiles; let i = index">
-                    <img src="../../assets/images/srt-icon.svg" alt="" />
+                    <!-- <img src="../../assets/images/srt-icon.svg" alt="" /> -->
                     <div class="flex">
                         <span>{{ f.name }}</span>
                         <span *ngIf="!isDroneOperator" class="custom-date-picker" style="margin-right: 22px;">
@@ -117,6 +144,10 @@
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </span>
+
+                        <span style="padding-right: 23px; width: 99px;" class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
+                        <span style="padding-right: 23px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep)">Uploading ...</span>
+
                         <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemoveSrt(f)">
                             <svg>
                                 <line x1="0" y1="0" x2="10" y2="10"></line>
