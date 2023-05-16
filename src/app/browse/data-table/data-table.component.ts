@@ -424,7 +424,10 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.assetCanDelete = [];
         this.deleteModal(listDocs);
         this.removeAssets();
-        this.fetchAssets.emit({id: this.currentWorkspace.uid});
+        setTimeout(() => {
+          this.fetchAssets.emit({id: this.currentWorkspace.uid});
+        }, 1000);
+        
       }, (err => {
         this.loading = false;
         this.deleteModalFailed();
