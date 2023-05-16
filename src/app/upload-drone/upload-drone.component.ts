@@ -511,6 +511,7 @@ export class UploadDroneComponent implements OnInit {
 
   onRemove(event) {
     // console.log(event);]
+    if(this.publishStep) return 
     const index = this.files.indexOf(event);
     this.files.splice(index, 1);
     this.dates.splice(index, 1);
@@ -703,6 +704,7 @@ export class UploadDroneComponent implements OnInit {
     }
   }
   onRemoveSrt(event) {
+    if(this.publishStep) return 
     const index = this.srtFiles.indexOf(event);
     this.srtFiles.splice(index, 1);
     this.srtDates.splice(index, 1);
