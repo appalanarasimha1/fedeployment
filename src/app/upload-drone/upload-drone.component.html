@@ -101,6 +101,10 @@
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
                             </span>
+
+                            <span style="padding-right: 23px; width: 99px;" class="uploadProgressDone"><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Upload</span>
+                            <span class="uploadProgress">Uploading</span>
+                            
                         </div>
                          <!-- ({{ f.type }}) -->
                     </ngx-dropzone-label>
@@ -117,6 +121,10 @@
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </span>
+
+                        <span style="padding-right: 23px; width: 99px;" class="uploadProgressDone"><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Upload</span>
+                        <span style="padding-right: 23px;" class="uploadProgress">Uploading</span>
+
                         <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemoveSrt(f)">
                             <svg>
                                 <line x1="0" y1="0" x2="10" y2="10"></line>

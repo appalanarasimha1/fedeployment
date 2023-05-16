@@ -350,14 +350,15 @@ li.flex span.ellipsis {
     margin-right: 20px;
 }
 .expandable.addHeight {
-    min-height: calc(100vh - 232px) !important;
+    min-height: calc(100vh - 282px) !important;
     position: relative !important;
+    padding-bottom: 60px;
 }
 .uploadProgress {
-    color: #007BB5;
+    color: #007BB5 !important;
 }
 .uploadProgressDone {
-    color: green;
+    color: green !important;
 }
 
 .select-all {
@@ -397,8 +398,10 @@ li.flex span.ellipsis {
     top: 8px;
 }
 .customSrtPreview .flex span {
-    font-size: 14px;
+    font-size: 13px;
     color: #717386;
+    font-family: 'brownregular';
+    line-height: 24px;
 }
 .customSrtPreview .flex {
     padding: 6px 20px 6px 37px
