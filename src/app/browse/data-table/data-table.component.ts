@@ -270,7 +270,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         }
         
       }
-      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !=="OrderedFolder") {
+      if (newDownloadArray.length == 1 && ( newDownloadArrayFullItem[0].type !=="OrderedFolder" ||  newDownloadArrayFullItem[0].type !=="Workspace")) {
         window.location.href =this.getFileContent(newDownloadArrayFullItem[0])
         this.removeAssets()
       }
