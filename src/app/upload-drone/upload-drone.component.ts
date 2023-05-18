@@ -360,10 +360,14 @@ export class UploadDroneComponent implements OnInit {
     if (file.type?.includes("image/")) {
       fileType = "Picture";
       filePath = "/Photos";
-    } else if (file.type?.includes("video/")) {
+    } else if (file.type?.includes("video/")|| file.name?.toLowerCase().includes(".srt")) {
       fileType = "Video";
       filePath = "/Videos";
-    } else if (file.type?.includes("audio/")) {
+    } else if (file.name?.toLowerCase().includes(".srt")) {
+      fileType = "Srt";
+      filePath = "/Videos";
+    } 
+    else if (file.type?.includes("audio/")) {
       fileType = "Audio";
     }
     const url = encodeURI(`/path${folder}`) + filePath;
