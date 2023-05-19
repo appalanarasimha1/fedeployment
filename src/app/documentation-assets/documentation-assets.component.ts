@@ -278,7 +278,7 @@ export class DocumentationAssetsComponent implements OnInit {
       this.loading = false;
       return;
     }
-    url += query;
+    url += query + " ORDER BY dc:created DESC";
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .pipe( takeUntil(this.ngUnsubscribe) )
