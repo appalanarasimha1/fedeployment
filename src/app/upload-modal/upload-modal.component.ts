@@ -281,7 +281,7 @@ export class UploadModalComponent implements OnInit {
       // else if (WHITELIST_EXTENSIONS.includes(file.type)) {
         if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
-      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length() - 1].toLowerCase())) {
+      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase())) {
         filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
@@ -292,6 +292,8 @@ export class UploadModalComponent implements OnInit {
       } else if (file.name?.toLowerCase().includes(".srt")) {
         filteredFile.push(file);
       } else {
+        console.log("No criteria found");
+        
         // const blockedFile = file;
         // blockedFile['isBlocked'] = true;
         // filteredFile.push(blockedFile);
