@@ -268,7 +268,7 @@ export class DocumentationAssetsComponent implements OnInit {
     this.loading = true;
     const uploadedPath = await this.getDroneUploadPaths() || 'War Room';
     const pathQuery = this.computeQueryWsPaths(uploadedPath);
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` + pathQuery;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` //+ pathQuery;
     if (this.companyId) {
       url += ` AND dc:vendor = '${this.companyId}'`;
     }
@@ -278,7 +278,7 @@ export class DocumentationAssetsComponent implements OnInit {
       this.loading = false;
       return;
     }
-    url += query;
+    url += query + " ORDER BY dc:created DESC";
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .pipe( takeUntil(this.ngUnsubscribe) )
@@ -341,10 +341,17 @@ export class DocumentationAssetsComponent implements OnInit {
       const queryString = deviceIds.join("','");
       query += ` AND dc:installationId IN ('${queryString}')`;
     }
+    console.log("this.selectedStartDate",this.selectedStartDate,new Date(Date.now() + 1*24*60*60*1000));
+    
     if (this.selectedStartDate && this.selectedEndDate) {
       query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
         this.selectedStartDate
       )}' AND DATE '${this.formatDateString(this.selectedEndDate)}'`;
+    }else{
+      let date = new Date()
+      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
+        date
+      )}' AND DATE '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
     }
     if (this.assetByMe) {
       query += ` AND dc:creator = '${this.user}'`;
