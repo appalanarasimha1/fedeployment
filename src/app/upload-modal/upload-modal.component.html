@@ -44,7 +44,7 @@
 
                <div class="limitExceeded" *ngIf="uploadLimit">
                   <img src="../../assets/images/file-size-icon.svg" alt="" />
-                  <div class="uploadText">You can only upload 50 assets at a time.</div>
+                  <div class="uploadText">You can only upload 500 assets at a time.</div>
                   <button class="cancel-btn" (click)="$event.stopPropagation(); closeAll()">OK</button>
                </div>
             </ngx-dropzone-label>
@@ -772,7 +772,7 @@
 
 <ng-template #fileLimitExceeded let-modal>
    <div class="modal-body fix-notifaction">
-     <h1>You can upload upto 50 files</h1>
+     <h1>You can upload upto 500 files</h1>
      <div class="cloaseModal" (click)="closeAll()">Ok</div>
    </div>
 </ng-template>
