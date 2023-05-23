@@ -54,6 +54,9 @@ export class UploadDroneComponent implements OnInit {
   dateHiideSrt: boolean = true;
   startUpLoading = false;
   maxDate= new Date()
+  recReqCount:number=0
+  filesRetry ={}
+  uploadFailedRetry ={}
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
@@ -183,20 +186,21 @@ export class UploadDroneComponent implements OnInit {
     if (!res) return null;
     return res["value"];
   }
-
+  allFiles;
   async startUpload() {
     // this.loading = true;
     this.startUpLoading = true;
-    await this.uploadFile([...this.files,...this.srtFiles]);
+    this.allFiles =[...this.files,...this.srtFiles]
+    await this.uploadFile(this.allFiles);
     // console.log("upload done")
   }
   allowPublish:boolean=false
-  async uploadFile(files) {
+  async uploadFile(files,index?:number) {
     if (!this.batchId) {
       await this.createBatchUpload();
     }
-    for (let i = 0; i < files.length; i++) {
-      await this.uploadFileIndex(this.currentIndex, files[i],files.length);
+    for (let i = index?index+1:0; i < files.length; i++) {
+      await this.uploadFileIndex(this.currentIndex, files[this.currentIndex],files.length , i);
       this.currentIndex++;
     }
   }
@@ -206,7 +210,7 @@ export class UploadDroneComponent implements OnInit {
     this.batchId = res["batchId"];
   }
 
-  async uploadFileIndex(index, file,length?:number) {
+  async uploadFileIndex(index, file,length?:number,currentItration?:number) {
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
     const totalSize = blob.size;
@@ -267,21 +271,45 @@ export class UploadDroneComponent implements OnInit {
     return new Promise<void>((resolve, reject) => {
       this.apiService.post(uploadUrl, blob.content, options).subscribe(
         (event) => {
-          console.log("this.currentIndex",this.currentIndex,length);
+          // console.log("this.currentIndex",this.currentIndex,length,event);
           if (event.type == HttpEventType.UploadProgress) {
             const percentDone = Math.round((100 * event.loaded) / event.total);
-            console.log(`File is ${percentDone}% loaded.`);
+            // console.log(`File is ${percentDone}% loaded.`);
             this.setUploadProgressBar(index, percentDone);
           } else if (event instanceof HttpResponse) {
             // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-            console.log("File is completely loaded!");
+            // console.log("File is completely loaded!");
             resolve();
           }
         },
       (err) => {
           console.log("Upload Error:", err);
-          this.filesMap[index]['isVirus'] = true;
-          reject();
+          // this.filesMap[index]['isVirus'] = true;
+          this.recReqCount = this.recReqCount +1
+          this.filesRetry[index] = this.recReqCount
+          
+          if(this.recReqCount >2){
+            // this.onRemove(file)
+            if (this.currentIndex == length-1) {
+              if(length !==1){
+                this.allowPublish = true;
+                this.publishStep = true;
+              }
+              this.startUpLoading = false;
+            }
+            this.recReqCount = 0
+            console.log({currentItration});
+            this.uploadFailedRetry[index] = true
+            this.filesRetry[index] = null
+            this.uploadFile(this.allFiles,this.currentIndex++)
+            // reject("eeoee");
+          }else{
+            setTimeout(() => {
+              this.uploadFileIndex(index, file,length,currentItration)
+            }, 5000);
+            
+          }
+          
           // delete this.filesMap[index];
         },
         () => {
@@ -298,7 +326,7 @@ export class UploadDroneComponent implements OnInit {
           }
           resolve();
         }
-      );
+      )
     });
   }
 
