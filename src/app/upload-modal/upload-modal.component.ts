@@ -258,7 +258,7 @@ export class UploadModalComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         this.filesMap[i] = files[i]
       }
-      if(Object.keys(this.filesMap).length >50) { //50
+      if(Object.keys(this.filesMap).length >500) { //500
         // this.openModal(fileLimitExceeded);
         this.filesMap ={}
         this.uploadLimit = true;
