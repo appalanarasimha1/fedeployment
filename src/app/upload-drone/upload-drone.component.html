@@ -123,7 +123,9 @@
                         </span>
 
                         <span style="width: 99px;" class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
-                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) ">Uploading ...</span>
+                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) && !filesRetry[i] && !uploadFailedRetry[i] ">Uploading ...</span>
+                        <span style="width: 99px;" class="uploadProgress" *ngIf="filesRetry[i]">Retrying ...{{this.filesRetry[i]}}</span>
+                        <span style="width: 99px;" class="uploadProgress" *ngIf="uploadFailedRetry[i]">Failed</span>
 
                         <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemove(f)">
                             <svg>
@@ -167,7 +169,7 @@
     <div class="buttonBlock">
         <button *ngIf="!cancleBlock" class="cancel-btn" (click)="cancleShowHide()">Cancel</button>
         <button [disabled]="!uploadDate" *ngIf="isNextButton" (click)="next()" class="upload-btn">Next</button>
-        <button [disabled]="files?.length === 0 && !srtFiles.length" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton && !allowPublish" class="upload-btn"  style="position: relative">
+        <button [disabled]="(files?.length === 0 && !srtFiles.length) || startUpLoading" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton && !allowPublish" class="upload-btn"  style="position: relative">
             <app-loader-small [show]="startUpLoading"></app-loader-small> Start upload
         </button>
         <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep && allowPublish" class="upload-btn">Publish</button>
