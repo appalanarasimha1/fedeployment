@@ -45,8 +45,10 @@ export class DocumentCardComponent implements OnInit, OnChanges {
   selectImage(event: any): void {
     if (event.target.checked) {
       this.onSelect.emit({ checked: true });
+      $('.float').addClass('addMargin');
     } else {
       this.onSelect.emit({ checked: false });
+      $('.float').removeClass('addMargin');
     }
   }
 
