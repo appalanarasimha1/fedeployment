@@ -541,3 +541,10 @@ li.flex span.ellipsis {
     margin: 100px auto !important;	
     min-width: 100%;	
 }
+.failedFile {
+    color: red !important;
+}
+
+.retryingFile{
+    color: #937206 !important;
+}
