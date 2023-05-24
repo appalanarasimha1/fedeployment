@@ -9,6 +9,7 @@ import { WHITELIST_EXTENSIONS } from "../upload-modal/constant";
 import { ApiService } from "../services/api.service";
 import { environment } from '../../environments/environment';
 import * as moment from "moment";
+import {Clipboard} from '@angular/cdk/clipboard';
 
 
 const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
@@ -70,6 +71,7 @@ export class UploadDroneComponent implements OnInit {
     public dialogRef: MatDialogRef<UploadDroneComponent>,
     public sharedService: SharedService,
     private apiService: ApiService,
+    private clipboard: Clipboard,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -106,7 +108,7 @@ export class UploadDroneComponent implements OnInit {
     this.dialogRef.close(done);
   }
 
-  onSearchBarChange(e) {
+  onSearchBarChange(e) {  
     if (!this.searchText) {
       this.filteredInstallationIdList = this.installationIdList;
       return;
@@ -197,6 +199,7 @@ export class UploadDroneComponent implements OnInit {
   allFiles;
   async startUpload() {
     // this.loading = true;
+    this.failedFiles = []
     this.startUpLoading = true;
     this.allFiles =[...this.files,...this.srtFiles]
     await this.uploadFile(this.allFiles);
@@ -217,7 +220,7 @@ export class UploadDroneComponent implements OnInit {
     const res = await this.apiService.post(apiRoutes.UPLOAD, {}).toPromise();
     this.batchId = res["batchId"];
   }
-
+  failedFiles =[]
   async uploadFileIndex(index, file,length?:number,currentItration?:number) {
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
@@ -335,7 +338,6 @@ export class UploadDroneComponent implements OnInit {
           this.filesRetry[index] = this.recReqCount
           
           if(this.recReqCount >2){
-            // this.onRemove(file)
             if (this.currentIndex == length-1) {
               if(length !==1){
                 this.allowPublish = true;
@@ -346,11 +348,13 @@ export class UploadDroneComponent implements OnInit {
             this.recReqCount = 0
             this.uploadFailedRetry[index] = true
             this.filesRetry[index] = null
+            this.failedFiles.push(file)
+            delete this.filesMap[index];
             if(this.allFiles.length-1 > this.currentIndex){
               this.uploadFile(this.allFiles,this.currentIndex++)
             }
             
-            // reject("eeoee");
+            // reject();
           }else{
             setTimeout(() => {
               this.uploadFileIndex(index, file,length,currentItration)
@@ -407,7 +411,7 @@ export class UploadDroneComponent implements OnInit {
     }
     this.sharedService.newEvent('Upload done');
 
-    this.sharedService.showSnackbar(`${this.files.length +this.srtFiles.length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
+    this.sharedService.showSnackbar(`${Object.keys(this.filesMap).length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
 
     // this.sharedService.showSnackbar(
     //   `${this.files.length +this.srtFiles.length} assets uploaded`,
@@ -869,5 +873,11 @@ export class UploadDroneComponent implements OnInit {
       await Promise.all(promiseArray.map(p => p.catch(e => e)));
     }
     return fileStatus;
+  }
+  
+  copyHeroName() {
+    let files = this.failedFiles.map(file=>file.name);
+    this.clipboard.copy(files.toString());
+    this.sharedService.showSnackbar(`Copied`, 4000, 'top', 'center', 'snackBarMiddle');
   }
 }
