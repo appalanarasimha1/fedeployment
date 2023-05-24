@@ -178,7 +178,9 @@ export class UploadModalComponent implements OnInit {
   fileLimitExceed;
 
   uploadLimit:boolean = false;
-
+  recReqCount:number=0
+  filesRetry ={}
+  uploadFailedRetry ={}
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -193,6 +195,7 @@ export class UploadModalComponent implements OnInit {
     console.log("incoming data = ", this.data);
     this.description = this.data?.properties['dc:description'];
     if(this.data?.dropFilesNew?.length){
+      this.whiteListFiles = this.data.dropFilesNew
       this.uploadFile(this.data.dropFilesNew)
     }
 
@@ -281,7 +284,7 @@ export class UploadModalComponent implements OnInit {
       // else if (WHITELIST_EXTENSIONS.includes(file.type)) {
         if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
-      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length() - 1].toLowerCase())) {
+      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase())) {
         filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
@@ -607,13 +610,12 @@ export class UploadModalComponent implements OnInit {
     this.assetCache[uid]["contextParameters"] = contextParameters;
     return this.assetCache[uid]["entries"];
   }
-  async uploadFile(files) {
-    console.log('testUpload',files);
+  async uploadFile(files,index?:number) {
     if (!this.batchId) {
       await this.createBatchUpload();
     }
-    for (let i = 0; i < files.length; i++) {
-      await this.uploadFileIndex(this.currentIndex, files[i]);
+    for (let i = index?index+1:0; i < files.length; i++) {
+      await this.uploadFileIndex(this.currentIndex, files[this.currentIndex],files.length , i);
       this.currentIndex++;
     }
   }
@@ -662,7 +664,7 @@ export class UploadModalComponent implements OnInit {
     await this.uploadChunks(index, chunkIndex, chunkCount, apiUrl, options);
   }
 
-  async uploadFileIndex(index, file) {
+  async uploadFileIndex(index, file,length?:number,currentItration?:number) {
     $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
 
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
@@ -721,34 +723,57 @@ export class UploadModalComponent implements OnInit {
         },
       };
       // try {
-      return new Promise<void>((resolve, reject) => {
-        this.apiService.post(uploadUrl, blob.content, options).subscribe(
-          (event) => {
-            if (event.type == HttpEventType.UploadProgress) {
-              const percentDone = Math.round((100 * event.loaded) / event.total);
-              console.log(`File is ${percentDone}% loaded.`);
-              this.setUploadProgressBar(index, percentDone);
-            } else if (event instanceof HttpResponse) {
-              this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-              console.log("File is completely loaded!");
+        return new Promise<void>((resolve, reject) => {
+          this.apiService.post(uploadUrl, blob.content, options).subscribe(
+            (event) => {
+              // console.log("this.currentIndex",this.currentIndex,length,event);
+              if (event.type == HttpEventType.UploadProgress) {
+                const percentDone = Math.round((100 * event.loaded) / event.total);
+                // console.log(`File is ${percentDone}% loaded.`);
+                this.setUploadProgressBar(index, percentDone);
+              } else if (event instanceof HttpResponse) {
+                // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+                // console.log("File is completely loaded!");
+                resolve();
+              }
+            },
+            (err) => {
+              console.log("Upload Error:", err);
+              // this.filesMap[index]['isVirus'] = true;
+              this.recReqCount = this.recReqCount +1
+              this.filesRetry[index] = this.recReqCount
+              
+              if(this.recReqCount >2){  
+                this.recReqCount = 0
+                this.uploadFailedRetry[index] = true
+                this.filesRetry[index] = null
+                if(this.whiteListFiles.length-1 > this.currentIndex){
+                  this.uploadFile(this.whiteListFiles,this.currentIndex++)
+                }
+                
+                // reject();
+              }else{
+                setTimeout(() => {
+                  this.uploadFileIndex(index, file,length,currentItration)
+                }, 5000);
+                
+              }
+              
+              // delete this.filesMap[index];
+            },
+            () => {
+              console.log("this.currentIndex",this.currentIndex,length);
+              this.setUploadProgressBar(index, 100);
+              this.filesUploadDone[index] = true;
+              this.filesRetry[index] = null
+              this.uploadFailedRetry[index] = null
+              $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+              console.log("Upload done");
+             
               resolve();
             }
-          },
-        (err) => {
-            console.log("Upload Error:", err);
-            this.filesMap[index]['isVirus'] = true;
-            reject();
-            // delete this.filesMap[index];
-          },
-          () => {
-            this.setUploadProgressBar(index, 100);
-            this.filesUploadDone[index] = true;
-            $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-            console.log("Upload done");
-            resolve();
-          }
-        );
-      });
+          )
+        });
     }
   }
 
