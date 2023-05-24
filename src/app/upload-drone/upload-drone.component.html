@@ -123,9 +123,15 @@
                         </span>
 
                         <span style="width: 99px;" class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
-                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) && !filesRetry[i] && !uploadFailedRetry[i] ">Uploading ...</span>
-                        <span style="width: 99px;" class="uploadProgress" *ngIf="filesRetry[i]">Retrying ...{{this.filesRetry[i]}}</span>
-                        <span style="width: 99px;" class="uploadProgress" *ngIf="uploadFailedRetry[i]">Failed</span>
+                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) && !filesRetry[i] && !uploadFailedRetry[i] ">Uploading...</span>
+                        <span style="width: 99px;" class="uploadProgress retryingFile" *ngIf="filesRetry[i]">Retrying... {{this.filesRetry[i]}}</span>
+                        <span style="width: 99px;" class="uploadProgress failedFile" *ngIf="uploadFailedRetry[i]">
+                            <svg style="position: static; display: inline-block; height: 17px;vertical-align: -4px;" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.6517 8.34814L8.34839 13.6506" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8.34839 8.34814L13.6517 13.6506" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M11 20.375C16.1777 20.375 20.375 16.1777 20.375 11C20.375 5.82233 16.1777 1.625 11 1.625C5.82233 1.625 1.625 5.82233 1.625 11C1.625 16.1777 5.82233 20.375 11 20.375Z" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg> Failed
+                        </span>
 
                         <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemove(f)">
                             <svg>
@@ -168,6 +174,7 @@
     </div>
     <div class="buttonBlock">
         <button *ngIf="!cancleBlock" class="cancel-btn" (click)="cancleShowHide()">Cancel</button>
+        <span class="failedFile">10 files have failed to upload. Please <span style="text-decoration: underline; cursor: pointer;">click here</span> to copy the file names.</span>
         <button [disabled]="!uploadDate" *ngIf="isNextButton" (click)="next()" class="upload-btn">Next</button>
         <button [disabled]="(files?.length === 0 && !srtFiles.length) || startUpLoading" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton && !allowPublish" class="upload-btn"  style="position: relative">
             <app-loader-small [show]="startUpLoading"></app-loader-small> Start upload
