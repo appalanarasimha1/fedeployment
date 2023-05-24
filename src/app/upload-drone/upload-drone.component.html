@@ -174,7 +174,7 @@
     </div>
     <div class="buttonBlock">
         <button *ngIf="!cancleBlock" class="cancel-btn" (click)="cancleShowHide()">Cancel</button>
-        <span class="failedFile">10 files have failed to upload. Please <span style="text-decoration: underline; cursor: pointer;">click here</span> to copy the file names.</span>
+        <span  *ngIf="failedFiles.length && !cancleBlock && publishStep && allowPublish"class="failedFile">{{failedFiles.length}} {{failedFiles.length==1?'file':'files'}} have failed to upload. Please <span style="text-decoration: underline; cursor: pointer;" (click)="copyHeroName()">click here</span> to copy the file names.</span>
         <button [disabled]="!uploadDate" *ngIf="isNextButton" (click)="next()" class="upload-btn">Next</button>
         <button [disabled]="(files?.length === 0 && !srtFiles.length) || startUpLoading" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton && !allowPublish" class="upload-btn"  style="position: relative">
             <app-loader-small [show]="startUpLoading"></app-loader-small> Start upload

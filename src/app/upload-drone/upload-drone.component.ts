@@ -8,6 +8,7 @@ import { SharedService } from "../services/shared.service";
 import { WHITELIST_EXTENSIONS } from "../upload-modal/constant";
 import { ApiService } from "../services/api.service";
 import * as moment from "moment";
+import {Clipboard} from '@angular/cdk/clipboard';
 
 @Component({
   selector: "app-upload-drone",
@@ -62,6 +63,7 @@ export class UploadDroneComponent implements OnInit {
     public dialogRef: MatDialogRef<UploadDroneComponent>,
     public sharedService: SharedService,
     private apiService: ApiService,
+    private clipboard: Clipboard,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -98,7 +100,7 @@ export class UploadDroneComponent implements OnInit {
     this.dialogRef.close(done);
   }
 
-  onSearchBarChange(e) {
+  onSearchBarChange(e) {  
     if (!this.searchText) {
       this.filteredInstallationIdList = this.installationIdList;
       return;
@@ -189,6 +191,7 @@ export class UploadDroneComponent implements OnInit {
   allFiles;
   async startUpload() {
     // this.loading = true;
+    this.failedFiles = []
     this.startUpLoading = true;
     this.allFiles =[...this.files,...this.srtFiles]
     await this.uploadFile(this.allFiles);
@@ -209,7 +212,7 @@ export class UploadDroneComponent implements OnInit {
     const res = await this.apiService.post(apiRoutes.UPLOAD, {}).toPromise();
     this.batchId = res["batchId"];
   }
-
+  failedFiles =[]
   async uploadFileIndex(index, file,length?:number,currentItration?:number) {
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
@@ -289,7 +292,6 @@ export class UploadDroneComponent implements OnInit {
           this.filesRetry[index] = this.recReqCount
           
           if(this.recReqCount >2){
-            // this.onRemove(file)
             if (this.currentIndex == length-1) {
               if(length !==1){
                 this.allowPublish = true;
@@ -300,12 +302,13 @@ export class UploadDroneComponent implements OnInit {
             this.recReqCount = 0
             this.uploadFailedRetry[index] = true
             this.filesRetry[index] = null
+            this.failedFiles.push(file)
             delete this.filesMap[index];
             if(this.allFiles.length-1 > this.currentIndex){
               this.uploadFile(this.allFiles,this.currentIndex++)
             }
             
-            // reject("eeoee");
+            // reject();
           }else{
             setTimeout(() => {
               this.uploadFileIndex(index, file,length,currentItration)
@@ -758,4 +761,9 @@ export class UploadDroneComponent implements OnInit {
     return result
   }
 
+  copyHeroName() {
+    let files = this.failedFiles.map(file=>file.name);
+    this.clipboard.copy(files.toString());
+    this.sharedService.showSnackbar(`Copied`, 4000, 'top', 'center', 'snackBarMiddle');
+  }
 }
