@@ -257,11 +257,44 @@ export class UploadDroneComponent implements OnInit {
           this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
           if (promiseArray.length > 0) await Promise.all(promiseArray);
           this.filesUploadDone[index] = true;
+          if (this.currentIndex == length-1) {
+            this.allowPublish = true;
+            this.startUpLoading = false;
+            this.publishStep = true;
+          }
+          // this.filesUploadDone[index] = true;
+          this.filesRetry[index] = null
+          this.uploadFailedRetry[index] = null
           resolve();
         } catch (err) {
           console.log("Upload Error:", err);
-          this.filesMap[index]['isVirus'] = true;
-          reject();
+          this.recReqCount = this.recReqCount +1
+          this.filesRetry[index] = this.recReqCount
+          
+          if(this.recReqCount >2){
+            if (this.currentIndex == length-1) {
+              if(length !==1){
+                this.allowPublish = true;
+                this.publishStep = true;
+              }
+              this.startUpLoading = false;
+            }
+            this.recReqCount = 0
+            this.uploadFailedRetry[index] = true
+            this.filesRetry[index] = null
+            this.failedFiles.push(file)
+            delete this.filesMap[index];
+            if(this.allFiles.length-1 > this.currentIndex){
+              this.uploadFile(this.allFiles,this.currentIndex++)
+            }
+            
+            // reject();
+          }else{
+            setTimeout(() => {
+              this.uploadFileIndex(index, file,length,currentItration)
+            }, 5000);
+            
+          }
         }
       });
     } else {
@@ -874,7 +907,7 @@ export class UploadDroneComponent implements OnInit {
     }
     return fileStatus;
   }
-  
+
   copyHeroName() {
     let files = this.failedFiles.map(file=>file.name);
     this.clipboard.copy(files.toString());

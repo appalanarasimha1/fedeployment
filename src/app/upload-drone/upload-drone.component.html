@@ -179,7 +179,7 @@
         <button [disabled]="(files?.length === 0 && !srtFiles.length) || startUpLoading" (click)="startUpload()" *ngIf="!cancleBlock && !publishStep && !isNextButton && !allowPublish" class="upload-btn"  style="position: relative">
             <app-loader-small [show]="startUpLoading"></app-loader-small> Start upload
         </button>
-        <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep && allowPublish" class="upload-btn">Publish</button>
+        <button [disabled]="loading" (click)="publishAssets()" *ngIf="!cancleBlock && publishStep && allowPublish" class="upload-btn" style="position: relative"><app-loader-small [show]="loading"></app-loader-small>Publish</button>
 
         <div *ngIf="cancleBlock">Are you sure you want to cancel the upload?</div>
         <div *ngIf="cancleBlock" class="cancleUpload">
