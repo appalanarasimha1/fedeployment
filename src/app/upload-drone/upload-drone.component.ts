@@ -300,6 +300,7 @@ export class UploadDroneComponent implements OnInit {
             this.recReqCount = 0
             this.uploadFailedRetry[index] = true
             this.filesRetry[index] = null
+            delete this.filesMap[index];
             if(this.allFiles.length-1 > this.currentIndex){
               this.uploadFile(this.allFiles,this.currentIndex++)
             }
@@ -360,7 +361,7 @@ export class UploadDroneComponent implements OnInit {
     }
     this.sharedService.newEvent('Upload done');
 
-    this.sharedService.showSnackbar(`${this.files.length +this.srtFiles.length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
+    this.sharedService.showSnackbar(`${Object.keys(this.filesMap).length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
 
     // this.sharedService.showSnackbar(
     //   `${this.files.length +this.srtFiles.length} assets uploaded`,
