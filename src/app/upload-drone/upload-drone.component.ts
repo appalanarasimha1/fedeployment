@@ -298,10 +298,12 @@ export class UploadDroneComponent implements OnInit {
               this.startUpLoading = false;
             }
             this.recReqCount = 0
-            console.log({currentItration});
             this.uploadFailedRetry[index] = true
             this.filesRetry[index] = null
-            this.uploadFile(this.allFiles,this.currentIndex++)
+            if(this.allFiles.length-1 > this.currentIndex){
+              this.uploadFile(this.allFiles,this.currentIndex++)
+            }
+            
             // reject("eeoee");
           }else{
             setTimeout(() => {
@@ -316,6 +318,8 @@ export class UploadDroneComponent implements OnInit {
           console.log("this.currentIndex",this.currentIndex,length);
           this.setUploadProgressBar(index, 100);
           this.filesUploadDone[index] = true;
+          this.filesRetry[index] = null
+          this.uploadFailedRetry[index] = null
           $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
           console.log("Upload done");
           
@@ -752,4 +756,5 @@ export class UploadDroneComponent implements OnInit {
     }
     return result
   }
+
 }
