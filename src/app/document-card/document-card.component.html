@@ -89,7 +89,7 @@
       <div class="mouse-hover-bg" (click)="openPreview()"></div>
       <div class="form-group-custom">
         <input class ="vh" type="checkbox" id="html-{{doc.uid}}" [checked]="doc.isSelected" [(ngModel)]="doc.isSelected"
-          (change)="selectImage($event)">
+          (change)="selectImage($event, doc)" >
         <label for="html-{{doc.uid}}"></label>
       </div>
       <div class="hover-icon-group">

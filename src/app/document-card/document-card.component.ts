@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ASSET_TYPE, MONTH_MAP_SHORT } from '../common/constant';
 import { SharedService } from '../services/shared.service';
 import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
+import { DataService } from '../services/data.service';
+import { IEntry } from '../common/interfaces';
 
 @Component({
   selector: "document-card",
@@ -26,7 +28,8 @@ export class DocumentCardComponent implements OnInit, OnChanges {
 
   constructor(
     private router: Router,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private dataService: DataService
     ) {}
 
   ngOnInit() {
@@ -42,14 +45,15 @@ export class DocumentCardComponent implements OnInit, OnChanges {
     this.onOpenPreview.emit();
   }
 
-  selectImage(event: any): void {
+  selectImage(event: any, doc: IEntry): void {
     if (event.target.checked) {
       this.onSelect.emit({ checked: true });
-      $('.float').addClass('addMargin');
+      // $('.float').addClass('addMargin');
     } else {
       this.onSelect.emit({ checked: false });
-      $('.float').removeClass('addMargin');
+      // $('.float').removeClass('addMargin');
     }
+    this.dataService.cardSelectionInit({isChecked : event.target.checked, doc});
   }
 
   markFavourite() {
