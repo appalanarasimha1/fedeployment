@@ -80,7 +80,7 @@ export class DocumentationAssetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.getConstructionData()
+    // this.getConstructionData()
     // this.masonryImages = this.dummyPictures.slice(0);
     this.sharedService.getSidebarToggle().subscribe(() => {
       this.updateMasonryLayout = !this.updateMasonryLayout;
@@ -268,7 +268,7 @@ export class DocumentationAssetsComponent implements OnInit {
     this.loading = true;
     const uploadedPath = await this.getDroneUploadPaths() || 'War Room';
     const pathQuery = this.computeQueryWsPaths(uploadedPath);
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` //+ pathQuery;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` + pathQuery;
     if (this.companyId) {
       url += ` AND dc:vendor = '${this.companyId}'`;
     }

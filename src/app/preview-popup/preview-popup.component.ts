@@ -797,4 +797,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return `${new Date(date["dc:created"]).toDateString()}`;
   }
   
+  getFormat(doc){
+    return doc.properties['file:content']?.['mime-type']?.split("/")[1]
+  }
 }
