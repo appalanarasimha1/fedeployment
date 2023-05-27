@@ -80,8 +80,6 @@ export class AddUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('this.folderCollaborators = ', this.folderCollaborators);
-
     this.user = JSON.parse(localStorage.getItem("user"))["username"];
     this.listExternalUser = [];
     this.listExternalUserGlobal = [];
@@ -724,7 +722,7 @@ export class AddUserModalComponent implements OnInit {
   checkExpired(end) {
     if (!end) return false;
     try {
-      return new Date(end) < new Date();
+      return new Date(end).getTime() < new Date().getTime();
     } catch (e) {return false;}
   }
 

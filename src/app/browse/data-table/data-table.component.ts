@@ -450,7 +450,11 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   checkCanDelete(item) {
-    return this.user === item.properties["dc:creator"]?.id || this.user === item.properties["dc:creator"];
+    return (this.user === item.properties["dc:creator"]?.id || 
+    this.user === item.properties["dc:creator"] || 
+    item.contextParameters.acls[0].aces.filter(acl => 
+      this.user === acl.username && acl.permission.toLowerCase() === 'everything'
+    ).length);
   }
 
   checkGeneralFolder(item){

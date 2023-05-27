@@ -158,7 +158,12 @@ export class ManageAccessModalComponent implements OnInit {
         this.error = res['value'];
       }
     } catch (err) {
-      throw new Error(err);
+      this.sharedService.showSnackbar(
+        err?.error?.error?.message,
+        5000,
+        "top",
+        "center",
+        "snackBarMiddle")
     }
   }
 
