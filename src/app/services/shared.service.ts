@@ -537,6 +537,7 @@ export class SharedService {
       if (folderCollaborators[ace.username.id || ace.username]) {
         folderCollaborators[ace.username.id || ace.username].permission.push(ace.permission);
         folderCollaborators[ace.username.id || ace.username].ids.push(ace.id);
+        folderCollaborators[ace.username.id || ace.username].end = this.getLatestEndDate(folderCollaborators[ace.username.id || ace.username].end, ace.end)
         return;
       }
       folderCollaborators[ace.username.id || ace.username] = {
@@ -549,6 +550,14 @@ export class SharedService {
       }
     });
     return folderCollaborators;
+  }
+
+  getLatestEndDate(date1: string, date2: string) {
+    if(new Date(date1).getTime() > new Date(date2).getTime()) {
+      return date1;
+    } else {
+      return date2;
+    }
   }
 
   createAdminCollaborator(data: IChildAssetACL) {

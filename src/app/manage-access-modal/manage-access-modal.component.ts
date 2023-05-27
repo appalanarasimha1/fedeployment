@@ -46,6 +46,7 @@ export class ManageAccessModalComponent implements OnInit {
     {id: "Internal access only", name: 'Internal - employees and contractors with NEOM emails'}
   ];
   downloadApproval: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -108,8 +109,8 @@ export class ManageAccessModalComponent implements OnInit {
     // if (!this.makePrivate) return;
     // TODO: check for permission in context-parameter, open only if user if admin i.e permission = 'Everything
     if (this.isPrivate === this.docIsPrivate) {
+      this.loading = true;
       this.addUserModal?.saveChanges();
-      this.closeModal(true);
       return;
     }
     const params = {
@@ -157,7 +158,12 @@ export class ManageAccessModalComponent implements OnInit {
         this.error = res['value'];
       }
     } catch (err) {
-      throw new Error(err);
+      this.sharedService.showSnackbar(
+        err?.error?.error?.message,
+        5000,
+        "top",
+        "center",
+        "snackBarMiddle")
     }
   }
 
@@ -177,7 +183,8 @@ export class ManageAccessModalComponent implements OnInit {
     return this.sharedService.removeWorkspacesFromString(value);
   }
 
-  acknowledgeParent(event: boolean) {
-   
+  acknowledgeParent(event: {[id: string]: boolean}) {
+    event?.closeModal ? this.closeModal(true) : this.loading = false;
+    return;
   }
 }
