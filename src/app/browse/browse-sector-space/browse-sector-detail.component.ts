@@ -11,6 +11,7 @@ import {
   constants,
   PAGE_SIZE_1000,
   PAGE_SIZE_20,
+  permissions,
   UNWANTED_WORKSPACES,
   WORKSPACE_ROOT,
 } from "src/app/common/constant";
@@ -1112,6 +1113,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   checkSharedFolderPath(){
     return window.location.href.includes(`/workspace/sharedFolder`)
   }
+  
   async openShareModal() {
     if (!this.isAdmin) return;
     this.whiteLoader = true;
@@ -1145,4 +1147,20 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  isFolderAdmin() {
+    const currentWorkspace = JSON.parse(localStorage.getItem("workspaceState"));
+    let adminAcl = null;
+    currentWorkspace?.contextParameters?.acls?.[0].name === 'local' && currentWorkspace?.contextParameters?.acls?.[0].aces?.forEach(element => {
+      if(element.username === this.user && element.permission === permissions.lockFolderPermissions.ADMIN) {
+        adminAcl = element;
+      }
+    });
+
+    if(adminAcl && (adminAcl.end && new Date(adminAcl.end).getTime() > new Date().getTime() || !adminAcl.end)) {
+      return true;
+    }
+    return false;
+  }
+
 }

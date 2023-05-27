@@ -140,13 +140,12 @@
               <td class="bold" style="width:20%">
                 <span *ngIf="collaborator.value.permissions.isOwner">Owner</span>
                 <span
-                  *ngIf="!collaborator.value.permissions.isOwner && !collaborator.value.permissions.isAdmin"
+                  *ngIf="!collaborator.value.permissions.isOwner && !collaborator.value.permissions.isAdmin && collaborator.value.user != user"
                   (click)="makeAdmin(collaborator.value)"
                   class="makeAdminClick">
                   Make admin
                 </span>
-                <span
-                  *ngIf="!collaborator.value.permissions.isOwner && collaborator.value.permissions.isAdmin">Admin</span>
+                <span *ngIf="!collaborator.value.permissions.isOwner && collaborator.value.permissions.isAdmin">Admin</span>
                 <div
                   *ngIf="!collaborator.value.permissions?.isOwner && collaborator.value.permissions?.isAdmin && canRemoveAdmin(collaborator.value)"
                   (click)="removeAdmin(collaborator.value)"
@@ -182,7 +181,7 @@
               </td>
               <td style="width:40px">
                 <svg
-                  *ngIf="!collaborator.value.permissions?.isOwner"
+                  *ngIf="!collaborator.value.permissions?.isOwner && collaborator.value.user != user"
                   (click)="removeUser(collaborator.key)" width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
                   <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
