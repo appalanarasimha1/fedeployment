@@ -246,7 +246,7 @@ export class AddUserModalComponent implements OnInit {
     this.doneLoading = true;
     if (!this.canSave()) return;
     for (const key in this.removedCollaborators) {
-      await this.removePermission(this.removedCollaborators[key]);
+      await this.sharedService.removePermission(this.removedCollaborators[key].id, this.folderId);
     }
     for (const key in this.updatedCollaborators) {
       await this.updatePermission(this.updatedCollaborators[key]);
@@ -341,21 +341,6 @@ export class AddUserModalComponent implements OnInit {
       input: this.folderId,
     };
     return this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
-  }
-
-  removePermission(item) {
-    const params = {
-      acl: "local",
-      id: item.id,
-    };
-    const payload = {
-      params,
-      context: {},
-      input: this.folderId,
-    };
-    return this.apiService
-      .post(apiRoutes.REMOVE_PERMISSION, payload)
-      .toPromise();
   }
 
   async updateExternalUserGroup(email, isAdded) {
@@ -726,20 +711,6 @@ export class AddUserModalComponent implements OnInit {
     } catch (e) {return false;}
   }
 
-  async removeAllPermissions() {
-    const arr = [];
-    for (const key in this.folderCollaborators) {
-      if(key.toLowerCase() === this.selectedFolder.properties["dc:creator"].id.toLowerCase() || key.toLowerCase() === this.user.toLowerCase()) {
-        continue;
-      }
-      const ids = this.folderCollaborators[key].ids;
-      for (const id of ids) {
-        this.folderCollaborators[key].id = id;
-        await this.removePermission(this.folderCollaborators[key]);
-      }
-    }
-  }
-
   async saveChanges() {
     await this.removePermissions();
     // await this.removeAllPermissions();
@@ -803,7 +774,7 @@ export class AddUserModalComponent implements OnInit {
 
         if(!this.computedCollaborators[key]) {
           for(let i = 0; i < this.folderCollaborators[key].ids.length; i++)
-          await  this.removePermission({id: this.folderCollaborators[key].ids[i]});
+          await  this.sharedService.removePermission(this.folderCollaborators[key].ids[i], this.folderId);
         }
         const collab = this.computedCollaborators[key];
         const item = Object.assign({}, collab);
@@ -811,19 +782,19 @@ export class AddUserModalComponent implements OnInit {
         if (!item.permissions?.canDownload) {
           const alreadyHave = item.ids?.filter(item => item.includes("CanDownload"));
           if(alreadyHave?.length) {
-            await  this.removePermission({id: alreadyHave[0]});
+            await  this.sharedService.removePermission(alreadyHave[0], this.folderId);
           }
         }
         if (!item.permissions?.canUpload) {
           const alreadyHave = item.ids?.filter(item => item.includes("CanUpload"));
           if(alreadyHave?.length) {
-            await this.removePermission({id: alreadyHave[0]});
+            await this.sharedService.removePermission(alreadyHave[0], this.folderId);
           }
         }
         if (!item.permissions?.isAdmin) {
           const alreadyHave = item.ids?.filter(item => item.includes("Everything"));
           if(alreadyHave?.length) {
-            await this.removePermission({id: alreadyHave[0]});
+            await this.sharedService.removePermission(alreadyHave[0], this.folderId);
           }
         }
       } catch (e) {
