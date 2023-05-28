@@ -685,7 +685,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async openManageAccessModal(isSelected=false) {
+  async openManageAccessModal(isSelected = false) {
     this.whiteLoader = true;
     console.log("openManageAccessModal");
     const folderId = isSelected ? Object.values(this.dataTableComponent.selectedFolderList)[0]['uid'] : this.currentWorkspace.uid;
@@ -723,11 +723,12 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
             item.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
           }
         });
-        if(this.sortedData?.lengthh) {
+        if(this.sortedData?.length) {
           this.assetList = this.sortedData;
         }
         this.dataTableComponent?.removeAssets();
       }
+      this.getAssets(this.folderId);
       
       this.whiteLoader = false;
     });

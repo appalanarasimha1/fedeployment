@@ -575,5 +575,34 @@ export class SharedService {
         ]
     }
   }
+  
+  public async removeAllPermissions(folderCollaborators, creator: string, currentUserId: string, folderId: string) {
+    const arr = [];
+    for (const key in folderCollaborators) {
+      if(key.toLowerCase() === creator.toLowerCase() || key.toLowerCase() === currentUserId.toLowerCase()) {
+        continue;
+      }
+      const ids = folderCollaborators[key].ids;
+      for (const id of ids) {
+        folderCollaborators[key].id = id;
+        await this.removePermission(folderCollaborators[key].id, folderId);
+      }
+    }
+  }
+
+  public removePermission(id: string, folderId: string) {
+    const params = {
+      acl: "local",
+      id: id,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: folderId,
+    };
+    return this.apiService
+      .post(apiRoutes.REMOVE_PERMISSION, payload)
+      .toPromise();
+  }
 
 }
