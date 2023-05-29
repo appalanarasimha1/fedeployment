@@ -1308,19 +1308,8 @@ export class DataTableComponent implements OnInit, OnChanges {
     });
   }
 
-  isFolderAdmin() {
-    const currentWorkspace = JSON.parse(localStorage.getItem("workspaceState"));
-    let adminAcl = null;
-    currentWorkspace?.contextParameters?.acls?.[0].name === 'local' && currentWorkspace?.contextParameters?.acls?.[0].aces?.forEach(element => {
-      if(element.username === this.user && element.permission === permissions.lockFolderPermissions.ADMIN) {
-        adminAcl = element;
-      }
-    });
-
-    if(adminAcl && (adminAcl.end && new Date(adminAcl.end).getTime() > new Date().getTime() || !adminAcl.end)) {
-      return true;
-    }
-    return false;
+  isFolderAdmin(item: IEntry): boolean {
+    return this.sharedService.isFolderAdmin(item);
   }
 
   checkHasAdminPermission(folder) {

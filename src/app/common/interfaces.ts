@@ -111,6 +111,7 @@ export interface IEntry {
      }
   ],
   "contextParameters"?:{
+    "acls": {};
      "permissions"?:[];
      "breadcrumb"?: {
         "entity-type":string,

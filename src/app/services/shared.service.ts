@@ -5,13 +5,13 @@ import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import JSEncrypt from 'jsencrypt';
-import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars } from '../common/constant';
+import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars, permissions } from '../common/constant';
 import { ApiService } from './api.service';
 import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { NuxeoService } from './nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
-import { IChildAssetACL } from '../common/interfaces';
+import { IChildAssetACL, IEntry } from '../common/interfaces';
 
 
 @Injectable({
@@ -603,6 +603,21 @@ export class SharedService {
     return this.apiService
       .post(apiRoutes.REMOVE_PERMISSION, payload)
       .toPromise();
+  }
+
+  isFolderAdmin(item?: IEntry): boolean {
+    const currentWorkspace = item || JSON.parse(localStorage.getItem("workspaceState"));
+    let adminAcl = null;
+    currentWorkspace?.contextParameters?.acls?.[0].name === 'local' && currentWorkspace?.contextParameters?.acls?.[0].aces?.forEach(element => {
+      if(element.username === this.user.username && element.permission.toLowerCase() === permissions.lockFolderPermissions.ADMIN.toLowerCase()) {
+        adminAcl = element;
+      }
+    });
+
+    if(adminAcl && (adminAcl.end && new Date(adminAcl.end).getTime() > new Date().getTime() || !adminAcl.end)) {
+      return true;
+    }
+    return false;
   }
 
 }
