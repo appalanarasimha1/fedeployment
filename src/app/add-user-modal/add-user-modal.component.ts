@@ -543,29 +543,22 @@ export class AddUserModalComponent implements OnInit {
     // end.setMonth(new Date().getMonth() + this.selectedExternalUser.duration);
     if (this.externalCollaborators[this.selectedExternalUser.user.id]) {
       if (!this.updatedCollaborators[this.selectedExternalUser.user.id])
-        this.updatedCollaborators[this.selectedExternalUser.user.id] =
-          this.externalCollaborators[this.selectedExternalUser.user.id];
+        this.updatedCollaborators[this.selectedExternalUser.user.id] = this.externalCollaborators[this.selectedExternalUser.user.id];
       this.updatedCollaborators[this.selectedExternalUser.user.id].end = end;
-      this.updatedCollaborators[this.selectedExternalUser.user.id].isAdmin =
-        this.selectedExternalUser.isAdmin;
+      this.updatedCollaborators[this.selectedExternalUser.user.id].isAdmin = this.selectedExternalUser.isAdmin;
       if (this.selectedExternalUser.isGlobal !== undefined)
-        this.updatedCollaborators[this.selectedExternalUser.user.id].isGlobal =
-          this.selectedExternalUser.isGlobal;
+        this.updatedCollaborators[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     } else if (this.addedExternalUsers[this.selectedExternalUser.user.id]) {
       this.addedExternalUsers[this.selectedExternalUser.user.id].end = end;
-      this.addedExternalUsers[this.selectedExternalUser.user.id].isAdmin =
-        this.selectedExternalUser.isAdmin;
+      this.addedExternalUsers[this.selectedExternalUser.user.id].isAdmin = this.selectedExternalUser.isAdmin;
 
       if (this.selectedExternalUser.isGlobal !== undefined)
-        this.addedExternalUsers[this.selectedExternalUser.user.id].isGlobal =
-          this.selectedExternalUser.isGlobal;
+        this.addedExternalUsers[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     } else {
       this.invitedCollaborators[this.selectedExternalUser.user.id].end = end;
-      this.invitedCollaborators[this.selectedExternalUser.user.id].isAdmin =
-        this.selectedExternalUser.isAdmin;
+      this.invitedCollaborators[this.selectedExternalUser.user.id].isAdmin = this.selectedExternalUser.isAdmin;
       if (this.selectedExternalUser.isGlobal !== undefined)
-        this.invitedCollaborators[this.selectedExternalUser.user.id].isGlobal =
-          this.selectedExternalUser.isGlobal;
+        this.invitedCollaborators[this.selectedExternalUser.user.id].isGlobal = this.selectedExternalUser.isGlobal;
     }
 
     this.selectedExternalUser = undefined;
@@ -623,7 +616,7 @@ export class AddUserModalComponent implements OnInit {
       this.selectChange(existedUser);
       return;
     }
-    this.userInputText = "";
+    // this.userInputText = "";
     const end = new Date();
     end.setMonth(new Date().getMonth() + 12);
     let newItem;
@@ -719,7 +712,7 @@ export class AddUserModalComponent implements OnInit {
         const collab = this.computedCollaborators[key];
         const item = Object.assign({}, collab);
         if (item.notExisted && !this.checkNeomEmail(item.user)) {
-          await this.sendInvite(item);
+          await this.inviteUser(item);
         }
         if (this.addedCollaborators[key] || this.addedExternalUsers[key]) {
           await this.sendInviteInternal(item);
