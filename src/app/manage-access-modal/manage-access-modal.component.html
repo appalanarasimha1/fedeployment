@@ -5,6 +5,7 @@
     </button>
   </h3>
 
+  <!-- NOTE: Following block is hidden, because this is old code and we will remiove it once locked folder is deployed on prod -->
   <div style="display: none;">
     <div class="manageAccessHeader">
         <div class="imgBlock"><img src="../../assets/images/folder-table-list.svg" /></div>
@@ -52,134 +53,133 @@
         </span> -->
     </div>
     <div *ngIf="!!error" style="color: red;">{{error}}</div>
+  </div>
+
+  <div class="manageAccessNewUi">
+    <div class="breadcrumbBlock">
+      <span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} /<span class="active">{{selectedFolder.title}}</span></span> 
+    </div>
+    <div class="lockFolder">
+      <div class="slideToggleBlk"><mat-slide-toggle [disabled]="lockedChildren.length > 0" [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
+      <div class="slideContent">
+        Lock folder
+        <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
+      </div>
     </div>
 
-    <div class="manageAccessNewUi">
-      <div class="breadcrumbBlock">
-        <span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} /<span class="active">{{selectedFolder.title}}</span></span> 
-      </div>
-      <div class="lockFolder">
-        <div class="slideToggleBlk"><mat-slide-toggle [disabled]="lockedChildren.length > 0" [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
-        <div class="slideContent">
-          Lock folder
-          <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
-        </div>
+    <div *ngIf="lockedChildren.length"><!-- <div *ngIf="!docIsPrivate">  -->
+      <div class="lockFolderInfo">
+        This folder can't be locked because it contains locked folders by other users. Please contact the owners to move their folders to a different location in order to lock this folder.
       </div>
 
-      <!-- TODO: this will be done once we have an API to see which folders are locked inside the current folder -->
-      <div *ngIf="lockedChildren.length"><!-- <div *ngIf="!docIsPrivate">  -->
-        <div class="lockFolderInfo">
-          This folder can't be locked because it contains locked folders by other users. Please contact the owners to move their folders to a different location in order to lock this folder.
-        </div>
-
-        <div class="makeAdminBlock customTableStyle">
-          <table class="folderListview pb-5">
-              <tr>
-                  <th style="width:30%">Owner</th>
-                  <th style="width:70%">Location</th>
-              </tr>
-              <tr *ngFor="let data of lockedChildren">
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent">{{data.creator}}</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="tollTipCustom">
-                    <div class="itemTitleContent bold">{{data.path+'/'+data.title}}</div>
-                  </div>
-                </td>
-              </tr>
-          </table>
-        </div>
+      <div class="makeAdminBlock customTableStyle">
+        <table class="folderListview pb-5">
+            <tr>
+                <th style="width:30%">Owner</th>
+                <th style="width:70%">Location</th>
+            </tr>
+            <tr *ngFor="let data of lockedChildren">
+              <td>
+                <div class="tollTipCustom">
+                  <div class="itemTitleContent">{{data.creator}}</div>
+                </div>
+              </td>
+              <td>
+                <div class="tollTipCustom">
+                  <div class="itemTitleContent bold">{{data.path+'/'+data.title}}</div>
+                </div>
+              </td>
+            </tr>
+        </table>
       </div>
+    </div>
 
-      <div *ngIf="docIsPrivate">
-        <app-add-user-modal
-          #addUserModal
-          [selectedFolder]="data.selectedFolder"
-          [folderId]="data.selectedFolder.uid"
-          [folderCollaborators]="folderCollaborators"
-          (parentOutput)="acknowledgeParent($event)"
-        ></app-add-user-modal>
+    <div *ngIf="docIsPrivate">
+      <app-add-user-modal
+        #addUserModal
+        [selectedFolder]="data.selectedFolder"
+        [folderId]="data.selectedFolder.uid"
+        [folderCollaborators]="folderCollaborators"
+        (parentOutput)="acknowledgeParent($event)"
+      ></app-add-user-modal>
+    </div>
+
+    <!-- Classifications -->
+    <div class="reviewClassifications" *ngIf="isPrivate && !docIsPrivate">
+      <div class="whenYouConvert">
+        You're unlocking this folder and publishing its assets. You must review the classifications of its assets below.
       </div>
-
-      <!-- Classifications -->
-      <div class="reviewClassifications" *ngIf="isPrivate && !docIsPrivate">
-        <div class="whenYouConvert">
-          You're unlocking this folder and publishing its assets. You must review the classifications of its assets below.
+      <div class="uploadAssetsBlock">
+        <div class="folder-img">
+            <img src="../../assets/images/folder-icon.svg" style="width: 60px;margin: 0 14px 0 0;">
         </div>
-        <div class="uploadAssetsBlock">
-          <div class="folder-img">
-             <img src="../../assets/images/folder-icon.svg" style="width: 60px;margin: 0 14px 0 0;">
-          </div>
-          <div class="folder-content">
-            <div class="folderHeading">
-              {{selectedFolder?.title}}
-              <span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} / {{selectedFolder.title}}</span> 
-              <span class="fileSize">{{data?.countAndSize?.count}} assets, {{data?.countAndSize?.size}}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="classifications">
-          <h5>Please review the classifications of the uploaded files.</h5>
-          <div class="row">
-            <div class="col-md-6 mb-20">
-              <div class="row">
-                <div class="col-md-3 labelHeading">
-                  Confidentiality
-                </div>
-                <div class="col-md-9">
-                  <ng-select [items]="confidentialityDropdown"
-                    bindLabel="name"
-                    placeholder="Specify sensitivity"
-                    [(ngModel)]="confidentiality">
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 mb-20">
-              <div class="row">
-                <div class="col-md-3 labelHeading">
-                  Access right
-                </div>
-                <div class="col-md-9">
-                  <ng-select [items]="accessRightDropdown"
-                    bindLabel="name"
-                    placeholder="Specify visibility"
-                    [(ngModel)]="accessRight">
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6 mb-20">
-              <div class="row">
-                <div class="col-md-3">
-                  Usage right
-                </div>
-                <div class="col-md-9 makePrivate">
-                  <label class="control control--checkbox" style="font-family: 'brownlight';">
-                    <input type="checkbox" [(ngModel)]="downloadApproval" />
-                    <div class="control__indicator"></div>
-                    Approval required before download
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              &nbsp;
-            </div>
+        <div class="folder-content">
+          <div class="folderHeading">
+            {{selectedFolder?.title}}
+            <span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} / {{selectedFolder.title}}</span> 
+            <span class="fileSize">{{data?.countAndSize?.count}} assets, {{data?.countAndSize?.size}}</span>
           </div>
         </div>
       </div>
 
+      <div class="classifications">
+        <h5>Please review the classifications of the uploaded files.</h5>
+        <div class="row">
+          <div class="col-md-6 mb-20">
+            <div class="row">
+              <div class="col-md-3 labelHeading">
+                Confidentiality
+              </div>
+              <div class="col-md-9">
+                <ng-select [items]="confidentialityDropdown"
+                  bindLabel="name"
+                  placeholder="Specify sensitivity"
+                  [(ngModel)]="confidentiality">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-20">
+            <div class="row">
+              <div class="col-md-3 labelHeading">
+                Access right
+              </div>
+              <div class="col-md-9">
+                <ng-select [items]="accessRightDropdown"
+                  bindLabel="name"
+                  placeholder="Specify visibility"
+                  [(ngModel)]="accessRight">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-20">
+            <div class="row">
+              <div class="col-md-3">
+                Usage right
+              </div>
+              <div class="col-md-9 makePrivate">
+                <label class="control control--checkbox" style="font-family: 'brownlight';">
+                  <input [(ngModel)]="downloadApproval" type="checkbox"/>
+                  <div class="control__indicator"></div>
+                  Approval required before download
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            &nbsp;
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="button-groups">
-        <button (click)="closeModal()" class="cancel-btn">Cancel</button>
-        <!-- <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Make private</button> -->
-        <button (click)="updateRights()" [disabled]="lockedChildren.length" class="upload-btn">Save changes</button>
-    </div>
+  </div>
+
+  <div class="button-groups">
+      <button (click)="closeModal()" class="cancel-btn">Cancel</button>
+      <!-- <button (click)="updateRights()" class="upload-btn" [disabled]="!makePrivate" [ngClass]="{'disabled': !makePrivate}">Make private</button>  -->
+      <button (click)="updateRights()" [disabled]="lockedChildren.length || loading" [ngClass]="{'disabled': loading || lockedChildren.length}" class="upload-btn">Save changes</button>
+  </div>
 </div>

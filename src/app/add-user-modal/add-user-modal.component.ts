@@ -31,7 +31,7 @@ export class AddUserModalComponent implements OnInit {
   @Input() folderId;
   @Input() folderCollaborators;
   @Input() childAssetOwners;
-  @Output() parentOutput = new EventEmitter<boolean>();
+  @Output() parentOutput = new EventEmitter<{[id: string]: boolean}>();
 
   uploadedAsset;
   // selectedFolder: any;
@@ -80,8 +80,6 @@ export class AddUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('this.folderCollaborators = ', this.folderCollaborators);
-
     this.user = JSON.parse(localStorage.getItem("user"))["username"];
     this.listExternalUser = [];
     this.listExternalUserGlobal = [];
@@ -248,7 +246,7 @@ export class AddUserModalComponent implements OnInit {
     this.doneLoading = true;
     if (!this.canSave()) return;
     for (const key in this.removedCollaborators) {
-      await this.removePermission(this.removedCollaborators[key]);
+      await this.sharedService.removePermission(this.removedCollaborators[key].id, this.folderId);
     }
     for (const key in this.updatedCollaborators) {
       await this.updatePermission(this.updatedCollaborators[key]);
@@ -311,7 +309,6 @@ export class AddUserModalComponent implements OnInit {
 
   addPermission(item) {
     this.doneLoading = true;
-    console.log("this.doneLoading = true;", this.doneLoading);
     // if (this.listExternalUser.includes(item.user.id) && !item.end) {
     //   const end = new Date();
     //   end.setMonth(new Date().getMonth() + 1);
@@ -344,21 +341,6 @@ export class AddUserModalComponent implements OnInit {
       input: this.folderId,
     };
     return this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
-  }
-
-  removePermission(item) {
-    const params = {
-      acl: "local",
-      id: item.id,
-    };
-    const payload = {
-      params,
-      context: {},
-      input: this.folderId,
-    };
-    return this.apiService
-      .post(apiRoutes.REMOVE_PERMISSION, payload)
-      .toPromise();
   }
 
   async updateExternalUserGroup(email, isAdded) {
@@ -725,26 +707,13 @@ export class AddUserModalComponent implements OnInit {
   checkExpired(end) {
     if (!end) return false;
     try {
-      return new Date(end) < new Date();
+      return new Date(end).getTime() < new Date().getTime();
     } catch (e) {return false;}
   }
 
-  async removeAllPermissions() {
-    const arr = [];
-    for (const key in this.folderCollaborators) {
-      if(key.toLowerCase() === this.selectedFolder.properties["dc:creator"].id.toLowerCase()) {
-        continue;
-      }
-      const ids = this.folderCollaborators[key].ids;
-      for (const id of ids) {
-        this.folderCollaborators[key].id = id;
-        await this.removePermission(this.folderCollaborators[key]);
-      }
-    }
-  }
-
   async saveChanges() {
-    await this.removeAllPermissions();
+    await this.removePermissions();
+    // await this.removeAllPermissions();
     for (const key in this.computedCollaborators) {
       try {
         const collab = this.computedCollaborators[key];
@@ -756,23 +725,89 @@ export class AddUserModalComponent implements OnInit {
           await this.sendInviteInternal(item);
         }
         if (item.permissions.canDownload) {
-          item.permission = permissions.lockFolderPermissions.DOWNLOAD;
-          await this.addPermission(item);
+          const alreadyHave = item?.ids?.filter(item => item.includes("CanDownload"));
+          if(!alreadyHave?.length) {
+            item.permission = permissions.lockFolderPermissions.DOWNLOAD;
+            await this.addPermission(item);
+          }
         }
         if (item.permissions.canUpload) {
-          item.permission = permissions.lockFolderPermissions.UPLOAD;
-          await this.addPermission(item);
+          const alreadyHave = item?.ids?.filter(item => item.includes("CanUpload"));
+          if(!alreadyHave?.length) {
+            item.permission = permissions.lockFolderPermissions.UPLOAD;
+            await this.addPermission(item);
+          }
         }
         if (item.permissions.isAdmin) {
-          item.permission = permissions.lockFolderPermissions.ADMIN;
-          await this.addPermission(item);
+          const alreadyHave = item?.ids?.filter(item => item.includes("Everything"));
+          if(!alreadyHave?.length) {
+            item.permission = permissions.lockFolderPermissions.ADMIN;
+            await this.addPermission(item);
+          }
         }
         if (!item.permissions.isAdmin && !item.permissions.canDownload && !item.permissions.canUpload) {
           item.permission = permissions.lockFolderPermissions.READ;
           await this.addPermission(item);
         }
-        this.parentOutput.emit(true);
-      } catch (e) {}
+      } catch (e) {
+        //NOTE: show the toaster and do not close the modal window.
+        this.sharedService.showSnackbar(
+          "Error while adding folder permissions", 
+          5000, 
+          'top', 
+          'center', 
+          "snackBarMiddle"
+        );
+        this.parentOutput.emit({disableButton: false});
+        return;
+      }
+    }
+    this.parentOutput.emit({closeModal: true});
+  }
+
+  async removePermissions() {
+    for (const key in this.folderCollaborators) {
+      try {
+        if(key.toLowerCase() === this.selectedFolder.properties["dc:creator"].id.toLowerCase() || key.toLowerCase() === this.user.toLowerCase()) {
+          continue;
+        }
+
+        if(!this.computedCollaborators[key]) {
+          for(let i = 0; i < this.folderCollaborators[key].ids.length; i++)
+          await  this.sharedService.removePermission(this.folderCollaborators[key].ids[i], this.folderId);
+        }
+        const collab = this.computedCollaborators[key];
+        const item = Object.assign({}, collab);
+        
+        if (!item.permissions?.canDownload) {
+          const alreadyHave = item.ids?.filter(item => item.includes("CanDownload"));
+          if(alreadyHave?.length) {
+            await  this.sharedService.removePermission(alreadyHave[0], this.folderId);
+          }
+        }
+        if (!item.permissions?.canUpload) {
+          const alreadyHave = item.ids?.filter(item => item.includes("CanUpload"));
+          if(alreadyHave?.length) {
+            await this.sharedService.removePermission(alreadyHave[0], this.folderId);
+          }
+        }
+        if (!item.permissions?.isAdmin) {
+          const alreadyHave = item.ids?.filter(item => item.includes("Everything"));
+          if(alreadyHave?.length) {
+            await this.sharedService.removePermission(alreadyHave[0], this.folderId);
+          }
+        }
+      } catch (e) {
+        //NOTE: show the toaster and do not close the modal window.
+        this.sharedService.showSnackbar(
+          "Error while removing folder permissions", 
+          5000, 
+          'top', 
+          'center', 
+          "snackBarMiddle"
+        );
+        return;
+      }
     }
   }
 

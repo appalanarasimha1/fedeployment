@@ -537,6 +537,7 @@ export class SharedService {
       if (folderCollaborators[ace.username.id || ace.username]) {
         folderCollaborators[ace.username.id || ace.username].permission.push(ace.permission);
         folderCollaborators[ace.username.id || ace.username].ids.push(ace.id);
+        folderCollaborators[ace.username.id || ace.username].end = this.getLatestEndDate(folderCollaborators[ace.username.id || ace.username].end, ace.end)
         return;
       }
       folderCollaborators[ace.username.id || ace.username] = {
@@ -549,6 +550,14 @@ export class SharedService {
       }
     });
     return folderCollaborators;
+  }
+
+  getLatestEndDate(date1: string, date2: string) {
+    if(new Date(date1).getTime() > new Date(date2).getTime()) {
+      return date1;
+    } else {
+      return date2;
+    }
   }
 
   createAdminCollaborator(data: IChildAssetACL) {
@@ -565,6 +574,35 @@ export class SharedService {
           `${data.creator}:Everything:true:${user.id}::`
         ]
     }
+  }
+  
+  public async removeAllPermissions(folderCollaborators, creator: string, currentUserId: string, folderId: string) {
+    const arr = [];
+    for (const key in folderCollaborators) {
+      if(key.toLowerCase() === creator.toLowerCase() || key.toLowerCase() === currentUserId.toLowerCase()) {
+        continue;
+      }
+      const ids = folderCollaborators[key].ids;
+      for (const id of ids) {
+        folderCollaborators[key].id = id;
+        await this.removePermission(folderCollaborators[key].id, folderId);
+      }
+    }
+  }
+
+  public removePermission(id: string, folderId: string) {
+    const params = {
+      acl: "local",
+      id: id,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: folderId,
+    };
+    return this.apiService
+      .post(apiRoutes.REMOVE_PERMISSION, payload)
+      .toPromise();
   }
 
 }
