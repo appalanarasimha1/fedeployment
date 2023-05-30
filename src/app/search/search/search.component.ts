@@ -295,7 +295,7 @@ export class SearchComponent implements OnInit {
         // params["duplicate_show"] = "1";
     }
     if(this.excludedDroneWorkspaces){
-      params["queryParams"] = params["queryParams"] + (this.excludedDroneWorkspaces || " ");
+      params["queryParams"] = params["queryParams"] + this.excludedDroneWorkspaces;
     }
     if (!url) return;
 
