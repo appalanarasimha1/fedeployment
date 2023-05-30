@@ -679,7 +679,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
   checkShowManageAccessButtonOnSelect() {
     try {
-      return this.dataTableComponent.selectedFoldersLength() === 1;
+      return this.selectedAssetCount === 1  &&
+              this.sharedService.isFolderAdmin(Object.values(this.dataTableComponent.selectedMoveList)[0]);
     } catch (error) {
       return false;
     }
@@ -1149,19 +1150,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-  isFolderAdmin() {
-    const currentWorkspace = JSON.parse(localStorage.getItem("workspaceState"));
-    let adminAcl = null;
-    currentWorkspace?.contextParameters?.acls?.[0].name === 'local' && currentWorkspace?.contextParameters?.acls?.[0].aces?.forEach(element => {
-      if(element.username === this.user && element.permission === permissions.lockFolderPermissions.ADMIN) {
-        adminAcl = element;
-      }
-    });
-
-    if(adminAcl && (adminAcl.end && new Date(adminAcl.end).getTime() > new Date().getTime() || !adminAcl.end)) {
-      return true;
-    }
-    return false;
+  isFolderAdmin(): boolean {
+    return this.sharedService.isFolderAdmin();
   }
 
 }
