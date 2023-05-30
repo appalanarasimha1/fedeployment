@@ -6,7 +6,7 @@ import { apiRoutes } from '../../common/config';
 import { IBrowseSidebar, IEntry, ISearchResponse, IArrow } from '../../common/interfaces';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
-import { ASSET_TYPE, constants, PAGE_SIZE_20, UNWANTED_WORKSPACES } from '../../common/constant';
+import { ASSET_TYPE, constants, PAGE_SIZE_20, permissions, UNWANTED_WORKSPACES } from '../../common/constant';
 import { Sort } from "@angular/material/sort";
 import { DataService } from '../../services/data.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -450,7 +450,11 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   checkCanDelete(item) {
-    return this.user === item.properties["dc:creator"]?.id || this.user === item.properties["dc:creator"];
+    return (this.user === item.properties["dc:creator"]?.id || 
+    this.user === item.properties["dc:creator"] || 
+    item.contextParameters.acls[0].aces.filter(acl => 
+      this.user === acl.username && acl.permission.toLowerCase() === 'everything'
+    ).length);
   }
 
   checkGeneralFolder(item){
@@ -1302,6 +1306,21 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.sortedData = this.sortedData.slice();
       this.removeAssets();
     });
+  }
+
+  isFolderAdmin() {
+    const currentWorkspace = JSON.parse(localStorage.getItem("workspaceState"));
+    let adminAcl = null;
+    currentWorkspace?.contextParameters?.acls?.[0].name === 'local' && currentWorkspace?.contextParameters?.acls?.[0].aces?.forEach(element => {
+      if(element.username === this.user && element.permission === permissions.lockFolderPermissions.ADMIN) {
+        adminAcl = element;
+      }
+    });
+
+    if(adminAcl && (adminAcl.end && new Date(adminAcl.end).getTime() > new Date().getTime() || !adminAcl.end)) {
+      return true;
+    }
+    return false;
   }
 
   checkHasAdminPermission(folder) {

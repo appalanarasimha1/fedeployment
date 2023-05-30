@@ -34,6 +34,7 @@ export class ManageAccessModalComponent implements OnInit {
   lockedChildren = [];
   user = "";
   childAssetOwners: IChildAssetACL[];
+  computedCollaborators = {};
 
   confidentiality;
   confidentialityDropdown = [
@@ -46,6 +47,7 @@ export class ManageAccessModalComponent implements OnInit {
     {id: "Internal access only", name: 'Internal - employees and contractors with NEOM emails'}
   ];
   downloadApproval: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -63,6 +65,10 @@ export class ManageAccessModalComponent implements OnInit {
     this.docIsPrivate = this.isPrivate;
     this.folderStructure = this.input_folder_structure;
     this.folderCollaborators = this.sharedService.getFolderCollaborators(this.selectedFolder) || {};
+    
+    Object.keys(this.folderCollaborators).forEach((key) => {
+      this.updateComputedCollaborators(this.folderCollaborators[key]);
+    });
     if (!this.isPrivate) this.getLockedChild();
   }
 
@@ -107,8 +113,9 @@ export class ManageAccessModalComponent implements OnInit {
   async updateRights() {
     // if (!this.makePrivate) return;
     // TODO: check for permission in context-parameter, open only if user if admin i.e permission = 'Everything
+    this.loading = true;
     if (this.isPrivate === this.docIsPrivate) {
-      this.addUserModal?.saveChanges();
+      await this.addUserModal?.saveChanges();
       this.closeModal(true);
       return;
     }
@@ -120,22 +127,44 @@ export class ManageAccessModalComponent implements OnInit {
       context: {},
       input: this.selectedFolder.uid,
     };
+    // NOTE: check for classification when unlocking the folder
+    if(this.isPrivate && !this.docIsPrivate) {
+      if(!this.accessRight?.id || !this.confidentiality?.id) {
+        this.sharedService.showSnackbar(
+          "Please select classification settings before moving ahead",
+          2500,
+          "top",
+          "center",
+          "snackBarMiddle"
+        );
+        this.loading = false;
+        return;
+      }
+    }
     const res = await this.apiService.post(apiRoutes.UPDATE_FOLDER_RIGHTS, payload).toPromise();
-    if (res['value'] !== this.apiService.API_RESPONSE_MESSAGE.OK) {
-      this.error = res['value'];
+    const responseMessage = JSON.parse(res['value']);
+    if (responseMessage?.status !== this.apiService.API_RESPONSE_MESSAGE.OK) {
+      this.error = responseMessage?.status;
     } else  {
       if(this.isPrivate && !this.docIsPrivate) {
         await this.setAccessRights();
+        await this.removeAllPermission();
       }
       this.dataService.folderPermissionInit(this.docIsPrivate)
       if(this.input_data) {
         this.input_data.properties['dc:isPrivate'] = true;
         this.markIsPrivate.emit(this.input_data);
-      } else
-        this.closeModal(true);
+      } else {
+        this?.addUserModal?.saveChanges() || this.closeModal(true);
+        return;
+      }
     }
+
     
-    this?.addUserModal?.saveChanges() || this.closeModal(true);
+  }
+
+  async removeAllPermission() {
+    await this.sharedService.removeAllPermissions(this.computedCollaborators, this.selectedFolder.properties['dc:creator'].id, this.user, this.selectedFolder.uid);
   }
 
   async setAccessRights() {
@@ -157,7 +186,12 @@ export class ManageAccessModalComponent implements OnInit {
         this.error = res['value'];
       }
     } catch (err) {
-      throw new Error(err);
+      this.sharedService.showSnackbar(
+        err?.error?.error?.message,
+        5000,
+        "top",
+        "center",
+        "snackBarMiddle")
     }
   }
 
@@ -177,7 +211,34 @@ export class ManageAccessModalComponent implements OnInit {
     return this.sharedService.removeWorkspacesFromString(value);
   }
 
-  acknowledgeParent(event: boolean) {
-   
+  acknowledgeParent(event: {[id: string]: boolean}) {
+    event?.closeModal ? this.closeModal(true) : this.loading = false;
+    return;
+  }
+  
+  updateComputedCollaborators(item) {
+    const permission = item.permission;
+    const key = item.user;
+    if (!this.computedCollaborators[key]) {
+      this.computedCollaborators[key] = {...item};
+      delete this.computedCollaborators[key].permission;
+      this.computedCollaborators[key].permissions = {};
+    }
+    if (item.notExisted) this.computedCollaborators[key].notExisted = true;
+    this.computedCollaborators[key].end = item.end;
+    if (item.permissions) {
+      this.computedCollaborators[key].permissions = item.permissions;
+    }
+    if (permission?.includes('CanUpload')) {
+      this.computedCollaborators[key].permissions.canUpload = true;
+    }
+    if (permission?.includes('CanDownload')) {
+      this.computedCollaborators[key].permissions.canDownload = true;
+    }
+    if (permission?.includes('Everything')) {
+      this.computedCollaborators[key].permissions.isAdmin = true;
+    }
+    if (item.user === this.selectedFolder?.properties["dc:creator"] || item.user === this.selectedFolder?.properties["dc:creator"].id)
+      this.computedCollaborators[key].permissions.isOwner = true;
   }
 }
