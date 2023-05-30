@@ -1006,6 +1006,16 @@ export class DocumentComponent implements OnInit, OnChanges {
     if (page === "sectorPage") {
       this.sectorSelected = this.assetsBySectorSelected;
     }
+
+    if(page === 'favourite') { 
+      this.documents = this.createStaticDocumentResults(this.favourites);
+    }
+
+    if(page === 'recentView') { 
+      this.documents = this.createStaticDocumentResults(this.recentlyViewed);
+      this.documents["entity-type"] = {};
+    }
+
     this.selectDetailViewType.emit(page);
   }
 
