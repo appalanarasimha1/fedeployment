@@ -786,10 +786,12 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
 
   autoHeightTextarea() {
     const textarea = document.getElementById("txt");
-    textarea.addEventListener("input", function (e) {
-      this.style.height = "auto";
-      this.style.height = this.scrollHeight + "px";
-    });
+    if(textarea) {
+      textarea.addEventListener("input", function (e) {
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
+      });
+    }
   }
 
   toDateStringStart(date: string): string {
