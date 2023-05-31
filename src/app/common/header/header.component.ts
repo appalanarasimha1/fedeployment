@@ -198,7 +198,7 @@ export class HeaderComponent implements OnInit {
     this.sendSelectedTab.emit(tab);
     if (tab === 'search') {
       if (this.isDroneUploader && !this.isGlobalExternalUser) {
-        this.router.navigate(['/'], { fragment: 'construction' });
+        this.router.navigate(['/', 'construction']);
         return;
       }
       this.router.navigate(['']);
@@ -546,6 +546,11 @@ export class HeaderComponent implements OnInit {
       $(".notificationExpandarea").hide();
       $(".notifactionClickAction").removeClass("createNewFolderClick");
     });
+  }
+
+  get isHomeUrlActive() { 
+    const url = this.router.url;
+    return (url === '/' || url.includes('/?') || url.includes('/#') || url.includes('/construction')) 
   }
 
   checkShowTabSelection() {
