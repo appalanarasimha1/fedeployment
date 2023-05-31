@@ -798,3 +798,6 @@ padding-left: 0px;
     padding: 3px 14px;
     border: 1px solid #EDD580;
 }
+.accessExpiredDate ::ng-deep input.mat-input-element::placeholder {
+    color: #CB1B19 !important;
+}
