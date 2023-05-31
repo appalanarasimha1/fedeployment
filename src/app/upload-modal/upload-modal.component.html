@@ -479,9 +479,15 @@
                         <label for="access" style="text-align: right;display: block;">{{ACCESS_TITLE}}</label>
                      </div>
                      <div class="col-xl-8 col-md-8 flexible">
-                        <ng-select placeholder="Specify visibility" [searchable]="true" [clearable]="true" (change)="onSelectAccess($event)" [(ngModel)]="overallAccess" id="access" [ngClass]="{'goldenText': overallAccess}">
+                        <ng-select placeholder="Specify visibility" 
+                           [searchable]="true" 
+                           [clearable]="true" 
+                           (change)="onSelectAccess($event)" 
+                           [(ngModel)]="overallAccess" 
+                           id="access" 
+                           [ngClass]="{'goldenText': overallAccess}">
                            <ng-option *ngFor="let c of ACCESSNEW | keyvalue" [value]="c.value" [disabled]="checkAccessOptionDisabled(c.value)">
-                           {{ACCESS_LABEL[c.value]}}
+                              {{ACCESS_LABEL[c.value]}}
                            </ng-option>
                         </ng-select>
                      </div>

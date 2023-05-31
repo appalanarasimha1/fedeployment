@@ -131,10 +131,16 @@
                 Confidentiality
               </div>
               <div class="col-md-9">
-                <ng-select [items]="confidentialityDropdown"
+                <ng-select 
                   bindLabel="name"
                   placeholder="Specify sensitivity"
                   [(ngModel)]="confidentiality">
+                  <ng-option 
+                    *ngFor="let c of confidentialityDropdown | keyvalue" 
+                    [value]="c.value" 
+                    [disabled]="checkConfidentialityOptionDisabled(c.value)">
+                      {{c.value.name}}
+                   </ng-option>
                 </ng-select>
               </div>
             </div>
@@ -145,10 +151,16 @@
                 Access right
               </div>
               <div class="col-md-9">
-                <ng-select [items]="accessRightDropdown"
+                <ng-select 
                   bindLabel="name"
                   placeholder="Specify visibility"
                   [(ngModel)]="accessRight">
+                  <ng-option 
+                    *ngFor="let c of accessRightDropdown | keyvalue" 
+                    [value]="c.value" 
+                    [disabled]="checkAccessOptionDisabled(c.value)">
+                      {{c.value.name}}
+                   </ng-option>
                 </ng-select>
               </div>
             </div>

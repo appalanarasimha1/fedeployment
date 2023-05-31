@@ -7,7 +7,7 @@ import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
 import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
 import { IChildAssetACL } from '../common/interfaces';
-import { ACCESS, ALLOW } from '../upload-modal/constant';
+import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
 
 @Component({
   selector: 'app-manage-access-modal',
@@ -127,6 +127,7 @@ export class ManageAccessModalComponent implements OnInit {
       context: {},
       input: this.selectedFolder.uid,
     };
+
     // NOTE: check for classification when unlocking the folder
     if(this.isPrivate && !this.docIsPrivate) {
       if(!this.accessRight?.id || !this.confidentiality?.id) {
@@ -149,6 +150,14 @@ export class ManageAccessModalComponent implements OnInit {
       if(this.isPrivate && !this.docIsPrivate) {
         await this.setAccessRights();
         await this.removeAllPermission();
+        this.sharedService.showSnackbar(
+          "Folder unlocked successfully",
+          3000,
+          "top",
+          "center",
+          "snackBarMiddle"
+        );
+        
       }
       this.dataService.folderPermissionInit(this.docIsPrivate)
       if(this.input_data) {
@@ -240,5 +249,29 @@ export class ManageAccessModalComponent implements OnInit {
     }
     if (item.user === this.selectedFolder?.properties["dc:creator"] || item.user === this.selectedFolder?.properties["dc:creator"].id)
       this.computedCollaborators[key].permissions.isOwner = true;
+  }
+
+  checkAccessOptionDisabled(value: {[id: string]: string}) {
+    if (!this.confidentiality || this.confidentiality.id === CONFIDENTIALITY.not)
+      return false;
+    if (value.id === ACCESS.all) {
+      return true;
+    }
+    if (value.id === ALLOW.any) {
+      return true;
+    }
+    return false;
+  }
+
+  checkConfidentialityOptionDisabled(value: {[id: string]: string}) {
+    // if (!this.confidentiality || this.confidentiality.id === CONFIDENTIALITY.not)
+    //   return false;
+    if (this.accessRight?.id === ACCESS.all && value.id === CONFIDENTIALITY.confidential) {
+      return true;
+    }
+    // if (value.id === ALLOW.any) {
+    //   return true;
+    // }
+    return false;
   }
 }
