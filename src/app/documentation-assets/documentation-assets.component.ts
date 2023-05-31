@@ -10,6 +10,7 @@ import { apiRoutes } from "../common/config";
 import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from "rxjs";
+import { ISearchResponse } from "../common/interfaces";
 
 @Component({
   selector: "app-documentation-assets",
@@ -47,6 +48,7 @@ export class DocumentationAssetsComponent implements OnInit {
   company = "";
   companyId = "";
   loading = false;
+  assetListDocument: Partial<ISearchResponse> = {entries: []};
   assetList = [];
   masoneryItemIndex;
   viewType = "GRID";
@@ -264,11 +266,19 @@ export class DocumentationAssetsComponent implements OnInit {
     this.getAssetList();
   }
 
-  async getAssetList() {
-    this.loading = true;
+  showMore() { 
+    this.getAssetList(true);
+  }
+
+  async getAssetList(loadMore = false) {
+    if(!loadMore) {
+      this.loading = true;
+    }
+    let currentPageIndex = loadMore ? this.assetListDocument.currentPageIndex + 1 : 0;
     const uploadedPath = await this.getDroneUploadPaths() || 'War Room';
     const pathQuery = this.computeQueryWsPaths(uploadedPath);
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` + pathQuery;
+    const offset = currentPageIndex * 40;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=${currentPageIndex}&offset=${offset}&pageSize=40&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` + pathQuery;
     if (this.companyId) {
       url += ` AND dc:vendor = '${this.companyId}'`;
     }
@@ -285,7 +295,8 @@ export class DocumentationAssetsComponent implements OnInit {
       .toPromise();
     this.loading = false;
     if (!res) return;
-    this.assetList = res["entries"];
+    this.assetListDocument = res as unknown as ISearchResponse;
+    this.assetList = loadMore ? this.assetList.concat(res["entries"]) :  res["entries"];
   }
 
   computeQueryWsPaths(paths) {
