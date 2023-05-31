@@ -835,7 +835,7 @@ export class DocumentComponent implements OnInit, OnChanges {
       input: data.uid,
       params: {},
     };
-    this.loading.push(true);
+    // this.loading.push(true);
     this.apiService
       .post(apiRoutes.UNMARK_FAVOURITE, body)
       .subscribe((docs: any) => {
@@ -846,7 +846,7 @@ export class DocumentComponent implements OnInit, OnChanges {
         if (favouriteValue === "recent") {
           this.recentDataShow = this.sharedService.markRecentlyViewed(data);
         }
-        this.loading.pop();
+        // this.loading.pop();
       });
   }
 

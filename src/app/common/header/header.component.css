@@ -1399,6 +1399,7 @@ ul.sidebarList li .sidebarLink {
     margin-bottom: 10px;
     /* transition: all 0.3s ease; */
     background-color: #23211E;
+    color: white;
 }
 .mediaConstruction:last-child {
     margin-bottom: 0px;
