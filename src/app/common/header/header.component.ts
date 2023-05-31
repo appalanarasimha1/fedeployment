@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
 import { UploadDroneComponent } from "../../upload-drone/upload-drone.component";
@@ -452,22 +452,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-
-  checkWorkspaceActive(){
-    if (window.location.href.includes(`${window.location.origin}/workspace`)) {
-      return true
-    }
-  }
-
-  checkHomeActive(){
-    if (window.location.href==(`${window.location.origin}/`) || window.location.href==(`${window.location.origin}/#`)) {
-      return true
-    }
-    // if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
-    //   return true
-    // }
-  }
-
   getImageName(){
     let {userData} = this
     let splittedUser = userData?.email.split(".")
@@ -562,6 +546,17 @@ export class HeaderComponent implements OnInit {
       $(".notificationExpandarea").hide();
       $(".notifactionClickAction").removeClass("createNewFolderClick");
     });
+  }
+
+  checkShowTabSelection() {
+    let isOtherPage = false;
+    // if (this.documentsView) {
+    //   isOtherPage = !!this.documentsView.checkShowDetailview()
+    // }
+    if (this.isGlobalExternalUser && this.isDroneUploader && !isOtherPage) {
+      return true;
+    }
+    return !this.isDroneUploader && !isOtherPage && this.checkNeomUser();
   }
 
   generateVideoPlay() {
