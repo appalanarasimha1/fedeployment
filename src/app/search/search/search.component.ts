@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { NuxeoService } from "../../services/nuxeo.service";
 import { IHeaderSearchCriteria } from "../../common/subHeader/interface";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { apiRoutes } from "src/app/common/config";
 // import { ApiService } from '../services/http.service';
 import { SharedService } from "../../services/shared.service";
@@ -81,32 +81,52 @@ export class SearchComponent implements OnInit {
   constructor(
     public nuxeo: NuxeoService,
     private router: Router,
+    private route: ActivatedRoute,
     private sharedService: SharedService,
     private dataService: DataService,
     private apiService: ApiService,
     protected readonly keycloak: KeycloakService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    let params = { tab: '' }
     if (window.location.href.includes("construction")) {
+      params['tab'] = tabs.CONSTRUCTION
       this.selectedTab = tabs.CONSTRUCTION;
     }
     this.fetchMostSearchedTags();
-    this.fetchUserData();
+    await this.fetchUserData();
     this.fetchFavoriteCollection();
 
-    this.router.events.forEach((event: any) => {
-      if (event.url) {
-        if(event.url === '/') {
+    // this.route.queryParams.subscribe((params) => {
+      // if(params) { 
+        if(params['tab'] === tabs.CONSTRUCTION) { 
+            this.selectedTab = tabs.CONSTRUCTION;   
+        }else{
           if (this.isDroneUploader && !this.isGlobalExternalUser) {
-            this.selectedTab = tabs.CONSTRUCTION;
-            return;
+            this.selectedTab = tabs.CONSTRUCTION;   
+            this.router.navigate(['/', tabs.CONSTRUCTION])
+            // , {queryParams: {tab : tabs.CONSTRUCTION}}
+          }else{
+            this.selectedTab = tabs.MEDIA;
           }
-          this.selectedTab = tabs.MEDIA;
-          this.router.navigate(['/'], {fragment: ''})
         }
-      }
-    })
+    //   }
+    // })
+
+    // this.router.events.forEach((event) => {
+    //   console.log('event', event)
+    //   if (event.url) {
+    //     if(event.url === '/') {
+    //       if (this.isDroneUploader && !this.isGlobalExternalUser) {
+    //         this.selectedTab = tabs.CONSTRUCTION;
+    //         return;
+    //       }
+    //       this.selectedTab = tabs.MEDIA;
+    //       this.router.navigate(['/'], {fragment: ''})
+    //     }
+    //   }
+    // })
 
     if (!this.nuxeo.nuxeoClient || !localStorage.getItem("token")) {
       this.sharedService.redirectToLogin();
@@ -170,8 +190,9 @@ export class SearchComponent implements OnInit {
       this.detailViewType = null;
     }
 
-    this.searchValue = Object.assign({}, data);
 
+    this.router.navigate(['/'])
+    this.searchValue = Object.assign({}, data);
     this.searchDocuments(data);
   }
 
@@ -188,7 +209,7 @@ export class SearchComponent implements OnInit {
     this.filtersParams["sortBy"] = dataParam["sortBy"] || "";
     this.filtersParams["sortOrder"] = dataParam["sortOrder"] || "";
 
-    if (this.documentsView.sectorSelected) {
+    if (this.documentsView?.sectorSelected) {
       this.filtersParams[
         "sectors"
       ] = `["${this.documentsView.sectorSelected}"]`;
@@ -667,7 +688,7 @@ export class SearchComponent implements OnInit {
     }
     if (this.isDroneUploader && !this.isGlobalExternalUser) {
       this.selectedTab = tabs.CONSTRUCTION;
-      this.router.navigate(['/'], { fragment: 'construction' });
+      this.router.navigate(['/', tabs.CONSTRUCTION]);
       return;
     }
     if (this.isExternalUSer && !this.isGlobalExternalUser && !this.isDroneUploader) {
