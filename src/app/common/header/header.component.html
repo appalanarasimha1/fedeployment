@@ -678,12 +678,12 @@
   <ul class="sidebarList">
     <li>
       <div class="updateNavigation">
-        <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader === isExternalUSer" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
+        <a class="sidebarLink" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" [queryParamsHandling]="'merge'" *ngIf="isDroneUploader === isExternalUSer" routerLink="/" (click)="resetFilter(); selectTab('search')">
           <img src="../../../assets/images/discovery-icon.svg" />
           Discovery
         </a>
-        <!-- <div class="hoverDiscovery">
-          <div class="mediaConstruction active" [routerLink]="['/']" (click)="resetFilter(); selectTab('search')">
+        <div class="hoverDiscovery" *ngIf="checkShowTabSelection()">
+          <a class="mediaConstruction" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" routerLink="/"  (click)="resetFilter(); selectTab('search')">
             <div class="mediaConstructionIcon">
               <img src="../../../assets/images/media-assets-icon.svg" />
             </div>
@@ -691,8 +691,8 @@
               Media Assets
               <p>Search and discover a wide range of digital media assets, including images, videos, documents and more.</p>
             </div>
-          </div>
-          <div class="mediaConstruction" [routerLink]="['/']">
+          </a>
+          <a class="mediaConstruction" [routerLinkActive]="'active'" [queryParams]="{tab:'construction'}"  [routerLinkActiveOptions]="{exact: true}" routerLink="/" >
             <div class="mediaConstructionIcon">
               <img src="../../../assets/images/construction-footage-icon.svg" />
             </div>
@@ -700,17 +700,17 @@
               Construction Footage
               <p>Experience NEOM's development evolution through a captivating series of drone and timelapse footage.</p>
             </div>
-          </div>
-        </div> -->
+          </a>
+        </div>
 
-        <a class="sidebarLink" [ngClass]="{'active':checkHomeActive()}" *ngIf="isDroneUploader !== isExternalUSer">
+        <a class="sidebarLink" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" *ngIf="isDroneUploader !== isExternalUSer">
           <img src="../../../assets/images/discovery-icon.svg" />
           Discovery
         </a>
       </div>
     </li>
     <li>
-      <a class="sidebarLink" [ngClass]="{'active':checkWorkspaceActive()}" [routerLink]="['/workspace']">
+      <a class="sidebarLink" [routerLinkActive]="'active'" [routerLink]="['/workspace']">
         <img src="../../../assets/images/workspace-icon.svg" />
         Workspace
       </a>
