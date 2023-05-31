@@ -126,6 +126,15 @@
             </document-card>
           </div>
         </ngx-masonry>
+
+        <div
+          *ngIf="assetListDocument.isNextPageAvailable"
+          (click)="showMore()"
+          class="showMoreBtn"
+        >
+          Show more
+        </div>
+
         <div class="no-asset" *ngIf="(!assetList || assetList.length == 0) && !checkNoFilterSelected()">
           No results found &#8722; Limited access
         </div>

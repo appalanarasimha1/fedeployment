@@ -308,3 +308,23 @@
 ng-select input {
     color: #000;
 }
+
+.showMoreBtn {
+    display: block;
+    margin: 30px auto;
+    width: fit-content;
+    background: #937206;
+    color: #fff;
+    border-radius: 50px;
+    padding: 8px 20px 10px;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 22px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    border: 0px;
+  }
