@@ -14,7 +14,7 @@ import {Clipboard} from '@angular/cdk/clipboard';
 
 const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
-const CONCURRENT_UPLOAD_REQUEST = 5;
+const CONCURRENT_UPLOAD_REQUEST = 1;
 const apiVersion1 = environment.apiVersion;
 
 @Component({
@@ -356,7 +356,7 @@ export class UploadDroneComponent implements OnInit {
           // console.log("this.currentIndex",this.currentIndex,length,event);
           if (event.type == HttpEventType.UploadProgress) {
             const percentDone = Math.round((100 * event.loaded) / event.total);
-            // console.log(`File is ${percentDone}% loaded.`);
+            console.log(`File is ${percentDone}% loaded.`);
             this.setUploadProgressBar(index, percentDone);
           } else if (event instanceof HttpResponse) {
             // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
@@ -419,6 +419,7 @@ export class UploadDroneComponent implements OnInit {
   }
 
   setUploadProgressBar(index, percent) {
+    console.log({index, percent});
     this.fileUploadProgress[index] = percent || 0;
     const sum = this.fileUploadProgress.reduce(
       (partialSum, a) => partialSum + a,
@@ -877,7 +878,7 @@ export class UploadDroneComponent implements OnInit {
       } else if (res.status === 202) {
         // retryCount = 1;
         const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
-        console.log(`File is ${percentDone}% loaded.`);
+        console.log(`File is ${percentDone}% loaded.`,100 * (chunkIndex + 1),chunkCount);
         this.setUploadProgressBar(index, percentDone);
       }  else {
         // retry upload failed chunk
@@ -895,6 +896,7 @@ export class UploadDroneComponent implements OnInit {
   }
   async checkUploadedFileStatusAndUploadFailedChunks(uploadUrl: string) {
     const fileStatus: any = await this.apiService.get(uploadUrl).toPromise();
+    console.log({fileStatus});
     if(Object.keys(this.chunksFailedToUpload).length) {
       let promiseArray = [];
       for(const key in this.chunksFailedToUpload) {

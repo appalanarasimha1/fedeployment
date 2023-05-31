@@ -700,7 +700,9 @@ export class UploadModalComponent implements OnInit {
             promiseArray = [];
           }
           this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-          if (promiseArray.length > 0) await Promise.all(promiseArray);
+          if (promiseArray.length > 0) await Promise.all(promiseArray).then(res=>{
+            console.log("===============",res)
+          });
           this.filesUploadDone[index] = true;
           resolve();
         } catch (err) {
@@ -756,6 +758,8 @@ export class UploadModalComponent implements OnInit {
 
   async checkUploadedFileStatusAndUploadFailedChunks(uploadUrl: string) {
     const fileStatus: any = await this.apiService.get(uploadUrl).toPromise();
+    console.log({fileStatus});
+    
     if(Object.keys(this.chunksFailedToUpload).length) {
       let promiseArray = [];
       for(const key in this.chunksFailedToUpload) {

@@ -123,7 +123,7 @@
                         </span>
 
                         <span style="width: 99px;" class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
-                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) && !filesRetry[i] && !uploadFailedRetry[i] ">Uploading...</span>
+                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep) && !filesRetry[i] && !uploadFailedRetry[i] ">Uploading...{{fileUploadProgress[i]}}%</span>
                         <span style="width: 99px;" class="uploadProgress retryingFile" *ngIf="filesRetry[i]">Retrying... {{this.filesRetry[i]}}</span>
                         <span style="width: 99px;" class="uploadProgress failedFile" *ngIf="uploadFailedRetry[i] && !filesRetry[i]">
                             <svg style="position: static; display: inline-block; height: 17px;vertical-align: -4px;" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -154,7 +154,7 @@
                         </span>
 
                         <span style="width: 99px;" class="uploadProgressDone" *ngIf="this.filesUploadDone[i] &&( startUpLoading || publishStep) "><img src="../../assets/images/Tick-box.svg" style="position: static; display: inline-block; height: 17px;" /> Uploaded</span>
-                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep)">Uploading ...</span>
+                        <span style="width: 99px;" class="uploadProgress" *ngIf="!this.filesUploadDone[i] &&( startUpLoading || publishStep)">Uploading ...{{fileUploadProgress[i]}}%</span>
 
                         <ngx-dropzone-remove-badge class="ng-star-inserted" style="margin-top: 3px;" (click)="$event.stopPropagation();onRemoveSrt(f)">
                             <svg>
