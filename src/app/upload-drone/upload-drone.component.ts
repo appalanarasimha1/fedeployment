@@ -12,7 +12,7 @@ import * as moment from "moment";
 import {Clipboard} from '@angular/cdk/clipboard';
 
 
-const MAX_CHUNK_SIZE = 2 * 100 * 1000 * 1000; // NOTE: this denotes to 700MB
+const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 700MB
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
 const CONCURRENT_UPLOAD_REQUEST = 1;
 const apiVersion1 = environment.apiVersion;
