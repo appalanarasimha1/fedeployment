@@ -193,9 +193,9 @@ export class NuxeoService {
     try {
       const res = await this.nuxeoClient.connect();
       localStorage.setItem("user", JSON.stringify(res.user.properties));
-      if (res.user.properties?.groups.includes(DRONE_UPLOADER)) {
-        this.router.navigate(['/'], { fragment: 'construction' });
-      }
+      // if (res.user.properties?.groups.includes(DRONE_UPLOADER)) {
+      //   this.router.navigate(['/construction']);
+      // }
     } catch (err) {
       await this.logout();
       this.router.navigate(['/login']);

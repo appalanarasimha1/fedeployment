@@ -89,27 +89,30 @@ export class SearchComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    let params = { tab: '' }
     if (window.location.href.includes("construction")) {
+      params['tab'] = tabs.CONSTRUCTION
       this.selectedTab = tabs.CONSTRUCTION;
     }
     this.fetchMostSearchedTags();
     await this.fetchUserData();
     this.fetchFavoriteCollection();
 
-    this.route.queryParams.subscribe((params) => {
-      if(params) { 
+    // this.route.queryParams.subscribe((params) => {
+      // if(params) { 
         if(params['tab'] === tabs.CONSTRUCTION) { 
             this.selectedTab = tabs.CONSTRUCTION;   
         }else{
           if (this.isDroneUploader && !this.isGlobalExternalUser) {
             this.selectedTab = tabs.CONSTRUCTION;   
-            this.router.navigate(['/'], {queryParams: {tab : tabs.CONSTRUCTION}})
+            this.router.navigate(['/', tabs.CONSTRUCTION])
+            // , {queryParams: {tab : tabs.CONSTRUCTION}}
           }else{
             this.selectedTab = tabs.MEDIA;
           }
         }
-      }
-    })
+    //   }
+    // })
 
     // this.router.events.forEach((event) => {
     //   console.log('event', event)
@@ -685,7 +688,7 @@ export class SearchComponent implements OnInit {
     }
     if (this.isDroneUploader && !this.isGlobalExternalUser) {
       this.selectedTab = tabs.CONSTRUCTION;
-      this.router.navigate(['/'], { queryParams: {tab: tabs.CONSTRUCTION} });
+      this.router.navigate(['/', tabs.CONSTRUCTION]);
       return;
     }
     if (this.isExternalUSer && !this.isGlobalExternalUser && !this.isDroneUploader) {

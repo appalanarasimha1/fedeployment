@@ -309,7 +309,8 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <a class="nav-link dropdown-toggle positionRelative" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                      [title]="userData.email">
                         <span class="userName">{{getImageName()}}</span>
                         <img src="../../../assets/images/greenUser.png" style="border-radius: 50%;border: 2px solid #fff;" width="30" height="30">
                       </a>
@@ -678,7 +679,10 @@
   <ul class="sidebarList">
     <li>
       <div class="updateNavigation">
-        <a class="sidebarLink" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" [queryParamsHandling]="'merge'" *ngIf="isDroneUploader === isExternalUSer" routerLink="/" (click)="resetFilter(); selectTab('search')">
+        <a class="sidebarLink" *ngIf="isDroneUploader === isExternalUSer" 
+        [routerLink]="checkShowTabSelection() ? '/': '/construction'" (click)="resetFilter(); selectTab('search')"
+        [ngClass]="isHomeUrlActive?  'active': ''"
+        >
           <img src="../../../assets/images/discovery-icon.svg" />
           Discovery
         </a>
@@ -692,7 +696,7 @@
               <p>Search and discover a wide range of digital media assets, including images, videos, documents and more.</p>
             </div>
           </a>
-          <a class="mediaConstruction" [routerLinkActive]="'active'" [queryParams]="{tab:'construction'}"  [routerLinkActiveOptions]="{exact: true}" routerLink="/" >
+          <a class="mediaConstruction" [routerLinkActive]="'active'"  [routerLinkActiveOptions]="{exact: true}" routerLink="/construction" >
             <div class="mediaConstructionIcon">
               <img src="../../../assets/images/construction-footage-icon.svg" />
             </div>
