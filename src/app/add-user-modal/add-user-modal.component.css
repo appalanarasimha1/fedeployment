@@ -633,7 +633,7 @@ input.datePicker:focus::placeholder{
 .accessExpiredDate ::ng-deep input.mat-input-element {
     color: #CB1B19 !important;
 }
-.folderListview .accessExpiryCal ::ng-deep mat-form-field::after {
+.folderListview .accessExpiryCal.accessExpiredDate ::ng-deep mat-form-field::after {
     background: url(../../assets/images/down-arrow-red.svg) no-repeat center center !important;
 }
 .action-delete-icon {
@@ -652,4 +652,17 @@ input.datePicker:focus::placeholder{
     font-weight: normal;
     margin-bottom: 15px;
     display: inline-block;
+}
+
+.folderListview .accessExpiryCal ::ng-deep mat-form-field::after {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(../../assets/images/down-arrow.svg) no-repeat center center !important;
+    background-size: 100%;
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    z-index: -1;
 }
