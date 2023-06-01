@@ -254,13 +254,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     );
   }
 
-  getAssets(
-    folderUid: string,
-    checkCache = true,
-    pageSize = 20,
-    pageIndex = 0,
-    offset = 0
-  ): void {
+  getAssets(folderUid: string, checkCache = true, pageSize = 20, pageIndex = 0, offset = 0): void {
     this.loading = true;
     this.showAssetPath = false;
     this.sharedService.toTop();
@@ -730,6 +724,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         this.dataTableComponent?.removeAssets();
       }
       this.getAssets(this.folderId);
+      this.checkCollabAndPrivateFolder();
       
       this.whiteLoader = false;
     });
