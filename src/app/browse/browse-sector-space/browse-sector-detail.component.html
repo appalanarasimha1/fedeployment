@@ -650,7 +650,7 @@
       <!-- <h2>Start adding collaborators to this private folder</h2> -->
       <h2>Start adding collaborators:</h2>
       <div class="addUsers">
-        <div [ngClass]="isAdmin ? 'addUserBtn' : 'addUserBtn-disabled'" (click)="openAddUserModal()">Add users</div>
+        <div [ngClass]="isAdmin ? 'addUserBtn' : 'addUserBtn-disabled'" (click)="openManageAccessModal()">Add users</div>
       </div>
     </div>
     <div *ngIf="!assetList.length && isPrivateFolder(true, true) && !isPrivateFolder(false)" class="addignCollaborators" style="padding-top: 40px;">
