@@ -3652,6 +3652,10 @@ li.breadcrumb-item {
   margin-right: 5px !important;
 }
 
+.download-permission-tooltip .tooltip-inner{
+  width: max-content !important;
+}
+
 .hover-icon-group .tooltip-inner{
   position: absolute !important;
   left: -206px !important;
