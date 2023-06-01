@@ -61,7 +61,7 @@ export class SharedService {
   pluck(data, key) {
     return pluck(data, key);
   }
-
+  
   checkAssetMimeTypes(document: any): string {
     return this.checkMimeType(document);
   }
@@ -72,7 +72,7 @@ export class SharedService {
     if(document && this.checkAssetMimeTypes(document) === 'nopreview') {
       return '../../../assets/images/no-preview-big.png';
     }
-
+    
     if (!event) {
       return `${window.location.origin}/nuxeo/${url.split('nuxeo/')[1]}`;
     }
@@ -288,7 +288,7 @@ export class SharedService {
   // }
 
   chekForReportRoles(role: string): boolean {
-    const user = this.user ? JSON.parse(localStorage.getItem('user')) : null;
+    const user = JSON.parse(localStorage.getItem('user'));
     return ["ceo's office", "ground x"].includes(user?.sector?.toLowerCase()) || user?.groups.indexOf(role) != -1;
   }
 
@@ -304,7 +304,7 @@ export class SharedService {
     if (!user?.groups) return false;
     return user?.groups.includes(EXTERNAL_USER);
   }
-
+  
   capitaliseSelectiveTags(tag: string): string {
     if(tag.toLowerCase().trim() === 'neom') {
       return tag.toUpperCase();
@@ -513,7 +513,7 @@ export class SharedService {
 
     if(lowercaseMime == 'doc' || lowercaseMime == 'docx'){
       return '../../../assets/images/word.png';
-    }
+    } 
     if(lowercaseMime == 'ppt' || lowercaseMime == 'pptx'){
       return '../../../assets/images/ppt.png';
     }

@@ -258,7 +258,7 @@ export class UploadModalComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         this.filesMap[i] = files[i]
       }
-      if(Object.keys(this.filesMap).length >50) { //50
+      if(Object.keys(this.filesMap).length >500) { //500
         // this.openModal(fileLimitExceeded);
         this.filesMap ={}
         this.uploadLimit = true;
@@ -281,7 +281,7 @@ export class UploadModalComponent implements OnInit {
       // else if (WHITELIST_EXTENSIONS.includes(file.type)) {
         if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
-      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length() - 1].toLowerCase())) {
+      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase())) {
         filteredFile.push(file);
       } else if (file.type?.includes("image/")) {
         filteredFile.push(file);
@@ -292,6 +292,8 @@ export class UploadModalComponent implements OnInit {
       } else if (file.name?.toLowerCase().includes(".srt")) {
         filteredFile.push(file);
       } else {
+        console.log("No criteria found");
+        
         // const blockedFile = file;
         // blockedFile['isBlocked'] = true;
         // filteredFile.push(blockedFile);
@@ -698,7 +700,9 @@ export class UploadModalComponent implements OnInit {
             promiseArray = [];
           }
           this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-          if (promiseArray.length > 0) await Promise.all(promiseArray);
+          if (promiseArray.length > 0) await Promise.all(promiseArray).then(res=>{
+            console.log("===============",res)
+          });
           this.filesUploadDone[index] = true;
           resolve();
         } catch (err) {
@@ -754,6 +758,8 @@ export class UploadModalComponent implements OnInit {
 
   async checkUploadedFileStatusAndUploadFailedChunks(uploadUrl: string) {
     const fileStatus: any = await this.apiService.get(uploadUrl).toPromise();
+    console.log({fileStatus});
+    
     if(Object.keys(this.chunksFailedToUpload).length) {
       let promiseArray = [];
       for(const key in this.chunksFailedToUpload) {

@@ -187,7 +187,7 @@
               <div class="tollTipCustom">
                 <img src="../../../assets/images/private-icon.svg" class="private-icon" style="position: relative; z-index: 9; width: 17px;margin-right: 10px;" />
                 <div class="tolltipContent">
-                  This is a locked folder
+                  This is a private folder
                 </div>
               </div>
               <!-- <div class="publicUseBlk">Private</div> -->
@@ -199,7 +199,7 @@
               </div> -->
             </div>
           </span>
-          <img *ngIf="!item.properties['dc:isPrivate']" (click)="openFolder(item);" [src]="getIconByType(item.type)" style="width: 15px; margin-right: 10px; object-fit: contain; display: inline-block; vertical-align: middle; position: relative; z-index: 99;">
+          <img *ngIf="!item.properties['dc:isPrivate']" (click)="openFolder(item);" [src]="getIconByType(item.type)" style="width: 15px; margin-right: 10px; object-fit: contain; display: inline-block; vertical-align: -1px; position: relative; z-index: 99;">
           <p (click)="openFolder(item);" class="workspaeName">
             <span class="tollTipCustom">
               <!-- {{sharedService.stringShortener(item?.title, 25)}} -->
@@ -217,12 +217,15 @@
                 {{removeWorkspacesFromString(item.path, item.title)}}
               </span>
             </span>
+
           </p>
         </td>
         <td *ngIf="checkAssetType(item.type)" class="getWidth2" [ngClass]="{'pointerCursor': !isTrashView}" (contextmenu)="onContextMenu($event, item)">
           <div class="zoomImg" style="display: inline-block;">
             <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')" [ngClass]="{'noPreviewImg': checkAssetMimeTypes(item) === 'nopreview'}" style="width: 20px;margin-right: 10px; object-fit: contain; max-height: 30px;">
-              
+            <div class="zoomImgBlock">
+              <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')">
+            </div>
           </div>
           <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; max-width: calc(100% - 30px); vertical-align: middle;">
             <span class="tollTipCustom">

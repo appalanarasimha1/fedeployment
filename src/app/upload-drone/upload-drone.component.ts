@@ -7,7 +7,15 @@ import { apiRoutes } from "src/app/common/config";
 import { SharedService } from "../services/shared.service";
 import { WHITELIST_EXTENSIONS } from "../upload-modal/constant";
 import { ApiService } from "../services/api.service";
+import { environment } from '../../environments/environment';
 import * as moment from "moment";
+import {Clipboard} from '@angular/cdk/clipboard';
+
+
+const MAX_CHUNK_SIZE = 2 * 100 * 1000 * 1000; // NOTE: this denotes to 700MB
+const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
+const CONCURRENT_UPLOAD_REQUEST = 1;
+const apiVersion1 = environment.apiVersion;
 
 @Component({
   selector: "app-upload-drone",
@@ -54,11 +62,16 @@ export class UploadDroneComponent implements OnInit {
   dateHiideSrt: boolean = true;
   startUpLoading = false;
   maxDate= new Date()
+  chunksFailedToUpload = {};
+  recReqCount:number=0
+  filesRetry ={}
+  uploadFailedRetry ={}
 
   constructor(
     public dialogRef: MatDialogRef<UploadDroneComponent>,
     public sharedService: SharedService,
     private apiService: ApiService,
+    private clipboard: Clipboard,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -95,7 +108,7 @@ export class UploadDroneComponent implements OnInit {
     this.dialogRef.close(done);
   }
 
-  onSearchBarChange(e) {
+  onSearchBarChange(e) {  
     if (!this.searchText) {
       this.filteredInstallationIdList = this.installationIdList;
       return;
@@ -183,20 +196,22 @@ export class UploadDroneComponent implements OnInit {
     if (!res) return null;
     return res["value"];
   }
-
+  allFiles;
   async startUpload() {
     // this.loading = true;
+    this.failedFiles = []
     this.startUpLoading = true;
-    await this.uploadFile([...this.files,...this.srtFiles]);
+    this.allFiles =[...this.files,...this.srtFiles]
+    await this.uploadFile(this.allFiles);
     // console.log("upload done")
   }
   allowPublish:boolean=false
-  async uploadFile(files) {
+  async uploadFile(files,index?:number) {
     if (!this.batchId) {
       await this.createBatchUpload();
     }
-    for (let i = 0; i < files.length; i++) {
-      await this.uploadFileIndex(this.currentIndex, files[i],files.length);
+    for (let i = index?index+1:0; i < files.length; i++) {
+      await this.uploadFileIndex(this.currentIndex, files[this.currentIndex],files.length , i);
       this.currentIndex++;
     }
   }
@@ -205,13 +220,84 @@ export class UploadDroneComponent implements OnInit {
     const res = await this.apiService.post(apiRoutes.UPLOAD, {}).toPromise();
     this.batchId = res["batchId"];
   }
-
-  async uploadFileIndex(index, file,length?:number) {
+  failedFiles =[]
+  async uploadFileIndex(index, file,length?:number,currentItration?:number) {
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
     const totalSize = blob.size;
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
+    this.chunksFailedToUpload = {};
+
+    if (totalSize > MAX_CHUNK_SIZE) {
+      // upload file in chunk
+      const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
+      console.log('total chunk: ' + totalChunk);
+      return new Promise<void>(async (resolve, reject) => {
+        try {
+          let promiseArray = [];
+          let chunksToBeSent = totalChunk;
+          let chunkIndex = 0;
+          for (let j = 0; j < Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST); j++) {
+            console.log('value of Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST) = ', Math.ceil(totalChunk/CONCURRENT_UPLOAD_REQUEST));
+            chunksToBeSent = chunksToBeSent % CONCURRENT_UPLOAD_REQUEST === 0 ? CONCURRENT_UPLOAD_REQUEST : totalChunk % CONCURRENT_UPLOAD_REQUEST ;
+            for (let i = 0; i < chunksToBeSent; i++) {
+              const chunkedBlob = file.slice((i + j) * MAX_CHUNK_SIZE, (i + j + 1) * MAX_CHUNK_SIZE);
+              console.log("i = ", i, " | j = ", j);
+              promiseArray.push(this.uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, totalChunk, totalSize, encodeURIComponent(blob.name), blob.mimeType));
+
+              console.log("chunkIndex = ", chunkIndex);
+              chunkIndex += 1;
+              if (promiseArray.length === chunksToBeSent) await Promise.all(promiseArray.map(p => p.catch(e => e)));
+            }
+            if(CONCURRENT_UPLOAD_REQUEST - chunksToBeSent > 0)
+              chunksToBeSent = totalChunk - chunksToBeSent;
+            promiseArray = [];
+          }
+          this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+          if (promiseArray.length > 0) await Promise.all(promiseArray);
+          this.filesUploadDone[index] = true;
+          if (this.currentIndex == length-1) {
+            this.allowPublish = true;
+            this.startUpLoading = false;
+            this.publishStep = true;
+          }
+          // this.filesUploadDone[index] = true;
+          this.filesRetry[index] = null
+          this.uploadFailedRetry[index] = null
+          resolve();
+        } catch (err) {
+          console.log("Upload Error:", err);
+          this.recReqCount = this.recReqCount +1
+          this.filesRetry[index] = this.recReqCount
+          
+          if(this.recReqCount >2){
+            if (this.currentIndex == length-1) {
+              if(length !==1){
+                this.allowPublish = true;
+                this.publishStep = true;
+              }
+              this.startUpLoading = false;
+            }
+            this.recReqCount = 0
+            this.uploadFailedRetry[index] = true
+            this.filesRetry[index] = null
+            this.failedFiles.push(file)
+            delete this.filesMap[index];
+            if(this.allFiles.length-1 > this.currentIndex){
+              this.uploadFile(this.allFiles,this.currentIndex++)
+            }
+            
+            // reject();
+          }else{
+            setTimeout(() => {
+              this.uploadFileIndex(index, file,length,currentItration)
+            }, 5000);
+            
+          }
+        }
+      });
+    } else {
     const options = {
       reportProgress: true,
       observe: "events",
@@ -267,27 +353,56 @@ export class UploadDroneComponent implements OnInit {
     return new Promise<void>((resolve, reject) => {
       this.apiService.post(uploadUrl, blob.content, options).subscribe(
         (event) => {
-          console.log("this.currentIndex",this.currentIndex,length);
+          // console.log("this.currentIndex",this.currentIndex,length,event);
           if (event.type == HttpEventType.UploadProgress) {
             const percentDone = Math.round((100 * event.loaded) / event.total);
             console.log(`File is ${percentDone}% loaded.`);
             this.setUploadProgressBar(index, percentDone);
           } else if (event instanceof HttpResponse) {
             // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-            console.log("File is completely loaded!");
+            // console.log("File is completely loaded!");
             resolve();
           }
         },
       (err) => {
           console.log("Upload Error:", err);
-          this.filesMap[index]['isVirus'] = true;
-          reject();
+          // this.filesMap[index]['isVirus'] = true;
+          this.recReqCount = this.recReqCount +1
+          this.filesRetry[index] = this.recReqCount
+          
+          if(this.recReqCount >2){
+            if (this.currentIndex == length-1) {
+              if(length !==1){
+                this.allowPublish = true;
+                this.publishStep = true;
+              }
+              this.startUpLoading = false;
+            }
+            this.recReqCount = 0
+            this.uploadFailedRetry[index] = true
+            this.filesRetry[index] = null
+            this.failedFiles.push(file)
+            delete this.filesMap[index];
+            if(this.allFiles.length-1 > this.currentIndex){
+              this.uploadFile(this.allFiles,this.currentIndex++)
+            }
+            
+            // reject();
+          }else{
+            setTimeout(() => {
+              this.uploadFileIndex(index, file,length,currentItration)
+            }, 5000);
+            
+          }
+          
           // delete this.filesMap[index];
         },
         () => {
           console.log("this.currentIndex",this.currentIndex,length);
           this.setUploadProgressBar(index, 100);
           this.filesUploadDone[index] = true;
+          this.filesRetry[index] = null
+          this.uploadFailedRetry[index] = null
           $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
           console.log("Upload done");
           
@@ -298,11 +413,13 @@ export class UploadDroneComponent implements OnInit {
           }
           resolve();
         }
-      );
+      )
     });
+  }
   }
 
   setUploadProgressBar(index, percent) {
+    console.log({index, percent});
     this.fileUploadProgress[index] = percent || 0;
     const sum = this.fileUploadProgress.reduce(
       (partialSum, a) => partialSum + a,
@@ -328,7 +445,7 @@ export class UploadDroneComponent implements OnInit {
     }
     this.sharedService.newEvent('Upload done');
 
-    this.sharedService.showSnackbar(`${this.files.length +this.srtFiles.length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
+    this.sharedService.showSnackbar(`${Object.keys(this.filesMap).length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
 
     // this.sharedService.showSnackbar(
     //   `${this.files.length +this.srtFiles.length} assets uploaded`,
@@ -360,10 +477,14 @@ export class UploadDroneComponent implements OnInit {
     if (file.type?.includes("image/")) {
       fileType = "Picture";
       filePath = "/Photos";
-    } else if (file.type?.includes("video/")) {
+    } else if (file.type?.includes("video/")|| file.name?.toLowerCase().includes(".srt")) {
       fileType = "Video";
       filePath = "/Videos";
-    } else if (file.type?.includes("audio/")) {
+    } else if (file.name?.toLowerCase().includes(".srt")) {
+      fileType = "Srt";
+      filePath = "/Videos";
+    } 
+    else if (file.type?.includes("audio/")) {
       fileType = "Audio";
     }
     const url = encodeURI(`/path${folder}`) + filePath;
@@ -483,7 +604,12 @@ export class UploadDroneComponent implements OnInit {
       // } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
         if (WHITELIST_EXTENSIONS.includes(file.type)) {
         filteredFile.push(file);
-      } else if (file.type?.includes("image/")) {
+      } else if (
+        filenameSplit[1] &&
+        WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase()))
+         {
+        filteredFile.push(file);
+      }else if (file.type?.includes("image/")) {
         filteredFile.push(file);
       } else if (file.type?.includes("video/")) {
         filteredFile.push(file);
@@ -494,12 +620,7 @@ export class UploadDroneComponent implements OnInit {
         // filteredFile.push(file);
         this.srtFiles.push(file)
         this.srtDates.push(file.lastModifiedDate);
-      } else if (
-        filenameSplit[1] &&
-        WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase()))
-         {
-        filteredFile.push(file);
-      } else {
+      }  else {
         // const blockedFile = file;
         // blockedFile['isBlocked'] = true;
         // filteredFile.push(blockedFile);
@@ -511,6 +632,7 @@ export class UploadDroneComponent implements OnInit {
 
   onRemove(event) {
     // console.log(event);]
+    if(this.publishStep) return 
     const index = this.files.indexOf(event);
     this.files.splice(index, 1);
     this.dates.splice(index, 1);
@@ -703,6 +825,7 @@ export class UploadDroneComponent implements OnInit {
     }
   }
   onRemoveSrt(event) {
+    if(this.publishStep) return 
     const index = this.srtFiles.indexOf(event);
     this.srtFiles.splice(index, 1);
     this.srtDates.splice(index, 1);
@@ -717,5 +840,79 @@ export class UploadDroneComponent implements OnInit {
       result = true
     }
     return result
+  }
+
+  async uploadFileChunk(index, uploadUrl, chunkedBlob, chunkIndex, chunkCount, fileSize, fileName, fileType, retryCount = 1) {
+    const blob = new Nuxeo.Blob({ content: chunkedBlob });
+    const headers = {
+      "Cache-Control": "no-cache",
+      "X-Upload-Chunk-Index": chunkIndex,
+      "X-Upload-Chunk-Count": chunkCount,
+      "X-File-Name": fileName,
+      "X-File-Size": fileSize,
+      "X-File-Type": fileType,
+      "X-Upload-Type": "chunked",
+      "Content-Length": blob.size,
+      "X-Authentication-Token": localStorage.getItem("token"),
+    }
+
+    const options = {
+      reportProgress: true,
+      observe: "events",
+      headers,
+      method: 'POST',
+      body: blob.content
+    };
+    const apiUrl = apiVersion1 + uploadUrl;
+    await this.uploadChunks(index, chunkIndex, chunkCount, apiUrl, options);
+  }
+
+  async uploadChunks(index, chunkIndex, chunkCount, apiUrl: string, options: any) {
+    try {
+      const res = await fetch(apiUrl, options);
+      if (res.status === 201) {
+        // retryCount = 1;
+        this.setUploadProgressBar(index, 100);
+        $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+        console.log("Upload done");
+      } else if (res.status === 202) {
+        // retryCount = 1;
+        const percentDone = Math.round((100 * (chunkIndex + 1)) / chunkCount);
+        console.log(`File is ${percentDone}% loaded.`,100 * (chunkIndex + 1),chunkCount);
+        this.setUploadProgressBar(index, percentDone);
+      }  else {
+        // retry upload failed chunk
+        // if (retryCount < 11)
+          // console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+          this.chunksFailedToUpload[chunkIndex] = {chunkIndex, chunkCount, options, apiUrl};
+      }
+    } catch (err) {
+      // retry upload failed chunk
+      // if (retryCount < 11) {
+        // console.log('retry count = ', retryCount, ", chunkCount = ", chunkCount);
+          this.chunksFailedToUpload[chunkIndex] = {chunkIndex, chunkCount, options, apiUrl};
+      // }
+    }
+  }
+  async checkUploadedFileStatusAndUploadFailedChunks(uploadUrl: string) {
+    const fileStatus: any = await this.apiService.get(uploadUrl).toPromise();
+    console.log({fileStatus});
+    if(Object.keys(this.chunksFailedToUpload).length) {
+      let promiseArray = [];
+      for(const key in this.chunksFailedToUpload) {
+        if(key.indexOf(fileStatus.uploadedChunkIds) != -1) {
+          continue;
+        }
+        promiseArray.push(this.uploadChunks(key, this.chunksFailedToUpload[key].chunkIndex, this.chunksFailedToUpload[key].chunkCount, this.chunksFailedToUpload[key].apiUrl, this.chunksFailedToUpload[key].options));
+      }
+      await Promise.all(promiseArray.map(p => p.catch(e => e)));
+    }
+    return fileStatus;
+  }
+
+  copyHeroName() {
+    let files = this.failedFiles.map(file=>file.name);
+    this.clipboard.copy(files.toString());
+    this.sharedService.showSnackbar(`Copied`, 4000, 'top', 'center', 'snackBarMiddle');
   }
 }

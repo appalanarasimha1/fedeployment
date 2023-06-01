@@ -333,7 +333,7 @@
 
                       <li>
                         <span>Format</span>
-                         <span style="word-break: break-all">{{doc?.properties && doc?.properties["picture:info"]?.format}}</span>
+                         <span style="word-break: break-all">{{doc?.properties && getFormat(doc)}}</span>
                       </li>
 
                       <li *ngIf="device">

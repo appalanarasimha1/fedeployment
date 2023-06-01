@@ -41,16 +41,7 @@
                                         <li>Underwater cameras</li>
                                     </ul>
                                     <p>These devices record media in a short frequency of 5-30mins (drone and helicopter flights are less frequent) and transmit in real-time into Ground X. The interactive map below shows the locations of these devices.</p>
-                                    <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.593141741978!2d55.270686914446394!3d25.183212238448927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6833aaaaaaab%3A0x90d2395d7b4b565b!2sNEOM!5e0!3m2!1sen!2sin!4v1679049331326!5m2!1sen!2sin" width="70%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
-                                    
-                                    <app-esri-map 
-                                    *ngIf="initialized"
-                                      [center]="mapCenter" 
-                                      [basemap]="basemapType" 
-                                      [zoom]="mapZoomLevel" 
-                                      (mapLoaded)="mapLoadedEvent($event)">
-                                    </app-esri-map>
-
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.593141741978!2d55.270686914446394!3d25.183212238448927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6833aaaaaaab%3A0x90d2395d7b4b565b!2sNEOM!5e0!3m2!1sen!2sin!4v1679049331326!5m2!1sen!2sin" width="70%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                     <p>Although most devices belong to the Ground X Unit, some cameras are installed and managed by other NEOM teams using Ground X to capture and distribute their camera feeds.</p>
                                 </div>
                             </div>

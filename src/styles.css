@@ -3362,7 +3362,7 @@ tr.mat-header-row{
 th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
   border-bottom: 1px solid rgba(230, 230, 230, 0.7);
 }
-th.mat-header-cell, th.mat-header-cell button, th {
+th.mat-header-cell, th.mat-header-cell button,th {
 
   /*background: #ffffff;*/
   /*color: #888;*/
@@ -4645,7 +4645,4 @@ ul.all-sectors img.noPreviewItem {
 }
 .modal-body.fixx .ng-dropdown-panel .ng-dropdown-panel-items {
   max-height: 100% !important;
-}
-.mat-calendar-table-header th {
-  border-bottom: 0px solid rgba(230, 230, 230, 0.7) !important;
 }

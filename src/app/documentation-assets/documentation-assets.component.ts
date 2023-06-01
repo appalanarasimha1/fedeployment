@@ -10,6 +10,7 @@ import { apiRoutes } from "../common/config";
 import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from "rxjs";
+import { ISearchResponse } from "../common/interfaces";
 
 @Component({
   selector: "app-documentation-assets",
@@ -47,6 +48,7 @@ export class DocumentationAssetsComponent implements OnInit {
   company = "";
   companyId = "";
   loading = false;
+  assetListDocument: Partial<ISearchResponse> = {entries: []};
   assetList = [];
   masoneryItemIndex;
   viewType = "GRID";
@@ -80,7 +82,7 @@ export class DocumentationAssetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.getConstructionData()
+    // this.getConstructionData()
     // this.masonryImages = this.dummyPictures.slice(0);
     this.sharedService.getSidebarToggle().subscribe(() => {
       this.updateMasonryLayout = !this.updateMasonryLayout;
@@ -264,11 +266,19 @@ export class DocumentationAssetsComponent implements OnInit {
     this.getAssetList();
   }
 
-  async getAssetList() {
-    this.loading = true;
+  showMore() { 
+    this.getAssetList(true);
+  }
+
+  async getAssetList(loadMore = false) {
+    if(!loadMore) {
+      this.loading = true;
+    }
+    let currentPageIndex = loadMore ? this.assetListDocument.currentPageIndex + 1 : 0;
     const uploadedPath = await this.getDroneUploadPaths() || 'War Room';
     const pathQuery = this.computeQueryWsPaths(uploadedPath);
-    let url = `/search/pp/nxql_search/execute?currentPageIndex=0&offset=0&pageSize=100&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` + pathQuery;
+    const offset = currentPageIndex * 40;
+    let url = `/search/pp/nxql_search/execute?currentPageIndex=${currentPageIndex}&offset=${offset}&pageSize=40&queryParams=SELECT * FROM Document WHERE ecm:isVersion = 0 AND ecm:isTrashed = 0` + pathQuery;
     if (this.companyId) {
       url += ` AND dc:vendor = '${this.companyId}'`;
     }
@@ -278,14 +288,15 @@ export class DocumentationAssetsComponent implements OnInit {
       this.loading = false;
       return;
     }
-    url += query;
+    url += query + " ORDER BY dc:created DESC";
     const res = await this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .pipe( takeUntil(this.ngUnsubscribe) )
       .toPromise();
     this.loading = false;
     if (!res) return;
-    this.assetList = res["entries"];
+    this.assetListDocument = res as unknown as ISearchResponse;
+    this.assetList = loadMore ? this.assetList.concat(res["entries"]) :  res["entries"];
   }
 
   computeQueryWsPaths(paths) {
@@ -341,10 +352,17 @@ export class DocumentationAssetsComponent implements OnInit {
       const queryString = deviceIds.join("','");
       query += ` AND dc:installationId IN ('${queryString}')`;
     }
+    console.log("this.selectedStartDate",this.selectedStartDate,new Date(Date.now() + 1*24*60*60*1000));
+    
     if (this.selectedStartDate && this.selectedEndDate) {
       query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
         this.selectedStartDate
       )}' AND DATE '${this.formatDateString(this.selectedEndDate)}'`;
+    }else{
+      let date = new Date()
+      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
+        date
+      )}' AND DATE '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
     }
     if (this.assetByMe) {
       query += ` AND dc:creator = '${this.user}'`;
@@ -354,7 +372,7 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   formatDateString(date) {
-    return date.toISOString().split("T")[0];
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split("T")[0];
   }
 
   openModal() {

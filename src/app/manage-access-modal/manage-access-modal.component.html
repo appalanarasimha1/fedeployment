@@ -1,9 +1,4 @@
 <div class="manageAccessBlock">
-  <h3>Manage access
-    <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
-        <img src="../../assets/images/close-modal.svg" style="width: 20px" />
-    </button>
-  </h3>
 
   <!-- NOTE: Following block is hidden, because this is old code and we will remiove it once locked folder is deployed on prod -->
   <div style="display: none;">
@@ -14,7 +9,7 @@
     </div>
 
     <div class="breadcrumbBlock">
-        <span  *ngFor="let c of folderStructure; let i = index">/<span [ngClass]="i === folderStructure.length - 1? 'active': ''"> {{c.title}}</span> </span>
+        <span  *ngFor="let c of folderStructure; let i = index">/<span [ngClass]="i === folderStructure.length - 1? 'active': ''"> {{c.title}}</span> </span> 
     </div>
 
     <div *ngIf="docIsPrivate" class="whenYouConvert">

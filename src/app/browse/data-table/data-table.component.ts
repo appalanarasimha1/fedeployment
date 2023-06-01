@@ -12,10 +12,10 @@ import { DataService } from '../../services/data.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { PreviewPopupComponent } from '../../preview-popup/preview-popup.component';
-import { ManageAccessModalComponent } from '../../manage-access-modal/manage-access-modal.component';
 import { Router } from '@angular/router';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import * as moment from 'moment';
+import { ManageAccessModalComponent } from 'src/app/manage-access-modal/manage-access-modal.component';
 
 @Component({
   selector: 'app-data-table',
@@ -271,7 +271,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         }
         
       }
-      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !=="OrderedFolder") {
+      if (newDownloadArray.length == 1 &&  newDownloadArrayFullItem[0].type !=="OrderedFolder" &&  newDownloadArrayFullItem[0].type !=="Workspace") {
         window.location.href =this.getFileContent(newDownloadArrayFullItem[0])
         this.removeAssets()
       }
