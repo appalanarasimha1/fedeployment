@@ -247,8 +247,9 @@ export class ManageAccessModalComponent implements OnInit {
     if (permission?.includes('Everything')) {
       this.computedCollaborators[key].permissions.isAdmin = true;
     }
-    if (item.user === this.selectedFolder?.properties["dc:creator"] || item.user === this.selectedFolder?.properties["dc:creator"].id)
+    if (item.user === this.selectedFolder?.properties["dc:creator"]?.id) {
       this.computedCollaborators[key].permissions.isOwner = true;
+    }
   }
 
   checkAccessOptionDisabled(value: {[id: string]: string}) {
