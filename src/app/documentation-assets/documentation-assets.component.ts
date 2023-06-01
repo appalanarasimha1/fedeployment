@@ -70,7 +70,19 @@ export class DocumentationAssetsComponent implements OnInit {
   resultCount: number = 0;
   defaultPageSize: number = 20;
   pageSizeOptions = [20, 50, 100];
-
+  forInternalUse: any = [];
+  downloadArray: any = [];
+  sizeExeeded: boolean = false;
+  forInternaCheck: boolean = false;
+  downloadFullItem: any = [];
+  needPermissionToDownload: any = [];
+  downloadCount: number = 0;
+  copyRightItem:any=[]
+  downloadErrorShow: boolean = false;
+  downloadEnable: boolean = false;
+  hasSearchData: boolean = false;
+  fileSelected = [];
+  isAware;
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -588,7 +600,7 @@ export class DocumentationAssetsComponent implements OnInit {
     if (!installationId) return false;
     const assetRegion = this.getInstallationIdRegion(installationId);
     if (!assetRegion) return false;
-    return this.userPermissionMap[assetRegion];
+    return this.userPermissionMap[assetRegion] || false;
   }
 
   getInstallationIdRegion(installationId) {
@@ -618,4 +630,171 @@ export class DocumentationAssetsComponent implements OnInit {
     let url = "/latestData?pageNumber=1&pageSize=5&assetType="
     this.apiService.constructionGet(url).subscribe((res:any)=>console.log("resss",res))
   }
+
+  selectImage(event: any, file: any, index: number, isRecent?: boolean): void {
+    this.selectAsset(event, file, index);
+    if (event.checked || event.target?.checked) {
+      this.fileSelected.push(file);
+    } else {
+      if (this.fileSelected.length) {
+        let i = -1;
+        this.fileSelected.forEach((item, ind) => {
+          if (item.uid === file.uid) {
+            i = ind;
+          }
+        });
+        if (i !== -1) {
+          this.fileSelected.splice(i, 1); // remove the file from selected files
+        }
+      }
+    }
+  }
+  removeAssets() {
+    this.forInternalUse = [];
+    this.downloadArray = [];
+    this.sizeExeeded = false;
+    this.forInternaCheck = false;
+    this.downloadFullItem = [];
+    this.needPermissionToDownload = [];
+    this.downloadCount = 0;
+    this.fileSelected = [];
+    this.assetList.forEach((e) => (e.isSelected = false));
+    // this.recentDataShow.forEach((e) => (e.isSelected = false));
+    // this.favourites.forEach((e) => (e.isSelected = false));
+    // this.trendingAssets.forEach((e) => (e.isSelected = false));
+  }
+  getUser(item) {
+    return item.properties["sa:downloadApprovalUsers"];
+  }
+
+
+  
+  multiDownload() {
+    if (this.downloadArray.length>0 && this.copyRightItem.length<1 && !this.sizeExeeded && this.forInternalUse.length<1 && this.needPermissionToDownload.length < 1) {
+      this.downloadAssets();
+    }else{
+      $(".downloadFileWorkspace").on("click", function (e) {
+        // $(".dropdownCreate").toggle();
+        $(".multiDownloadBlock").show();
+        $(".downloadFileWorkspace").addClass("multiDownlodClick");
+        e.stopPropagation();
+      });
+      $(".downloadFileWorkspace.multiDownlodClick").on("click", function (e) {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+        e.stopPropagation();
+      });
+
+      $(".multiDownloadBlock").click(function (e) {
+        e.stopPropagation();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
+
+      $(document).click(function () {
+        $(".multiDownloadBlock").hide();
+        $(".downloadFileWorkspace").removeClass("multiDownlodClick");
+      });
+    }
+  }
+
+
+  getFileContent(doc) {
+    return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
+  }
+  downloadAssets(e?:any) {
+    // this.uncheckAll1()
+    if (!this.downloadEnable && this.forInternalUse.length > 0) {
+      return;
+    } else {
+      if (this.downloadArray.length) {
+        for(let i = 0; i < this.downloadArray.length; i++) {
+          window.open(this.getFileContent(this.downloadFullItem[i]));
+        }
+        return this.removeAssets();
+      }
+  }
+  }
+   
+  
+  downloadClick() {
+    if (!this.downloadEnable) {
+      this.downloadErrorShow = true;
+    }
+  }
+  onCheckboxChange(e: any) {
+    if (e.target.checked) {
+      this.downloadErrorShow = false;
+      this.downloadEnable = true;
+    } else {
+      this.downloadEnable = false;
+    }
+  }
+  selectAsset($event, item, i) {
+    console.log("itemitemitemitemitem", item, $event);
+    // if (!$event.target?.checked || !$event.checked) {
+    //   console.log("inside unchecked");
+    //   this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+    //   this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+    //   this.downloadFullItem = this.downloadFullItem.filter(
+    //     (m) => m.uid !== item.uid
+    //   );
+    //   this.needPermissionToDownload = this.needPermissionToDownload.filter(
+    //     (m) => m.uid !== item.uid
+    //   );
+    //   this.downloadCount = this.downloadCount - 1;
+    // }
+    // else
+    if ($event.target?.checked || $event.checked) {
+      this.downloadCount = this.downloadCount + 1;
+    if (
+      item.properties['sa:copyrightName'] !== null &&
+      item.properties['sa:copyrightName'] !== ""
+    ) {
+      this.copyRightItem.push(item.uid);
+    }
+      if (item.properties["sa:downloadApprovalUsers"].length > 0) {
+        this.needPermissionToDownload.push(item);
+      } else {
+        if (item.properties["sa:access"] === "Internal access only") {
+          this.forInternalUse.push(item.uid);
+        }
+        this.downloadArray.push(item.uid);
+        this.downloadFullItem.push(item);
+      }
+    } else {
+      //  if (!$event.target?.checked || !$event.checked) {
+      console.log("inside unchecked");
+      this.forInternalUse = this.forInternalUse.filter((m) => m !== item.uid);
+      this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
+      this.copyRightItem = this.copyRightItem.filter((m) => m !== item.uid);
+      this.downloadFullItem = this.downloadFullItem.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.needPermissionToDownload = this.needPermissionToDownload.filter(
+        (m) => m.uid !== item.uid
+      );
+      this.downloadCount = this.downloadCount - 1;
+      //  }
+    }
+    this.getdownloadAssetsSize();
+  }
+  getdownloadAssetsSize() {
+    let size = 0;
+    if (this.downloadArray.length > 0) {
+      this.downloadFullItem.forEach((doc) => {
+        size = size + parseInt(doc.properties["file:content"]?.length);
+      });
+      let sizeInGB = size / 1024 / 1024 / 1024;
+
+      if (sizeInGB > 1) {
+        this.sizeExeeded = true;
+      } else {
+        this.sizeExeeded = false;
+      }
+    } else {
+      this.sizeExeeded = false;
+    }
+  }
+
+
 }

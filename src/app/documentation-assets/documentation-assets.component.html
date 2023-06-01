@@ -120,6 +120,7 @@
               [doc]="doc"
               [viewType]="viewType"
               (onOpenPreview)="open(doc, doc.type)"
+              (onSelect)="selectImage($event, doc, i)"
               (onMarkFavourite)="markFavourite(doc, 'recent')"
               [hasDownloadPermission]="checkAssetDownloadPermission(doc)"
             >
@@ -157,4 +158,70 @@
       >
     </mat-paginator> -->
 
+
+    <div *ngIf="fileSelected.length" class="downloadAssets">
+      <div class="selectedItems">
+        Selected {{downloadCount}}
+        <img src="../../assets/images/remove-icon.svg" alt="" (click)="removeAssets()" />
+      </div>
+      <div class="downloadSelectedAssets downloadFileWorkspace">
+        <span (click)="multiDownload()"><img src="../../assets/images/download-golden.svg" alt="" /> Download
+          selected assets</span>
+        <div class="multiDownloadBlock">
+          <div class="internal-use">
+            <p *ngIf="copyRightItem.length>0">Always credit copyright owners.</p>
+    
+            <p class="pt-15" *ngIf="sizeExeeded" [ngClass]="{'removeMarginTop' : copyRightItem.length < 1 }">
+              Your download exceeds 1 GB. This will likely take some time.
+            </p>
+            <p class="pt-15" *ngIf="needPermissionToDownload.length >0">
+              {{ needPermissionToDownload.length }} asset{{ needPermissionToDownload.length>1 ?'s':'' }} in your selection
+              require download permission. Contact approver(s) via email:
+            </p>
+    
+            <ul class="downloadImgLisst" *ngIf="needPermissionToDownload.length > 0">
+              <li *ngFor="let item of needPermissionToDownload">
+                <div class="imgListBlk">
+                  <img src="../../../assets/images/doc-white.svg" />
+                </div>
+                <div class="contentListBlk">{{ item.title }}</div>
+                <div class="imgMailIcon">
+                  <a href="mailto:{{ getUser(item) }}"><img src="../../../assets/images/mail-icon.svg" /></a>
+                </div>
+              </li>
+            </ul>
+            <div class="control-group"
+              [ngClass]="{'error-disabled' : downloadErrorShow && !isAware, 'removeMarginTop' : !sizeExeeded &&  needPermissionToDownload.length<1}">
+              <label class="control control--checkbox" *ngIf="forInternalUse.length>0">I'm aware certain selected asset(s)
+                must NOT be used in public
+                <input type="checkbox" [(ngModel)]="isAware" checked="isAware" (change)="onCheckboxChange($event)" />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+            <div class="error" *ngIf="downloadErrorShow && !isAware">
+              Please check the box to proceed
+            </div>
+            <div class="download-btn" (click)="downloadClick()">
+              <!-- <a (click)="removeAssets()" class="cancelDownload"
+                >Cancel download</a
+              > -->
+              <a (click)="downloadAssets($event)"
+                [ngClass]="{'downloadDisbable':!downloadEnable && forInternalUse.length > 0}"
+                *ngIf="downloadArray.length>0">
+                <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.9673 19.5525V12.0525" stroke="#EDD580" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M14.0923 16.7893L10.9673 19.9143L7.84229 16.7893" stroke="#EDD580" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M15.3748 14.1251H16.3123C18.0615 14.128 19.6161 13.0111 20.1715 11.3525C20.7269 9.69382 20.1582 7.86592 18.76 6.81503C17.3617 5.76414 15.4478 5.72622 14.009 6.72091C13.429 3.63287 10.6466 1.45547 7.50963 1.63483C4.37272 1.81418 1.8566 4.29453 1.63234 7.42855C1.40808 10.5626 3.5454 13.3759 6.62482 14.0001"
+                    stroke="#EDD580" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Download
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </section>
