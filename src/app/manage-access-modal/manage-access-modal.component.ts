@@ -274,4 +274,8 @@ export class ManageAccessModalComponent implements OnInit {
     // }
     return false;
   }
+
+  isUserOwner() {
+    return this.user === this.selectedFolder?.properties["dc:creator"]?.id; 
+  }
 }

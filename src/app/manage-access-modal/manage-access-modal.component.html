@@ -60,7 +60,7 @@
       <span>{{removeWorkspacesFromString(selectedFolder["properties"]["dc:path"])}} /<span class="active">{{selectedFolder.title}}</span></span> 
     </div>
     <div class="lockFolder">
-      <div class="slideToggleBlk"><mat-slide-toggle [disabled]="lockedChildren.length > 0" [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
+      <div class="slideToggleBlk"><mat-slide-toggle [disabled]="lockedChildren.length > 0 || !isUserOwner()" [checked]="docIsPrivate" (change)="togglerUserActivated($event)"></mat-slide-toggle></div>
       <div class="slideContent">
         Lock folder
         <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
