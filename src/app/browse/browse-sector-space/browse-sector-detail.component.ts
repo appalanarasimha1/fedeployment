@@ -352,7 +352,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       return;
     }
     this.saveState(item, index, breadCrumbIndex);
-    const sectorName = item.path.split("/")[1];
+    const sectorName = this.checkExternalUser() ? this.sectorName : item.path.split("/")[1];
     let url = `workspace/${sectorName}`;
     if(index) {
       url = `${url}/${item.uid}`;
