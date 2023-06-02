@@ -403,6 +403,7 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   hasRequestRestriction() {
+    if (!this.hasDownloadPermission) return true;
     return (
       this.doc.properties["sa:allow"] === ALLOW.request ||
       this.doc.properties["sa:downloadApproval"] === "true"
