@@ -62,7 +62,6 @@ export class AddUserModalComponent implements OnInit {
 
   doneLoading:boolean = false;
   loading = true;
-  accessList = [];
 
   constructor(
     private apiService: ApiService,
@@ -80,7 +79,6 @@ export class AddUserModalComponent implements OnInit {
     this.listExternalUserGlobal = [];
     this.getExternalGroupUser();
     this.getExternalGlobalGroupUser();
-    this.getAccessList();
     this.selectedFolder = this.data.selectedFolder;
     this.folderId = this.data.folderId;
     this.folderCollaborators = this.data.folderCollaborators || {};
@@ -95,36 +93,6 @@ export class AddUserModalComponent implements OnInit {
     this.getExternalGroupUser();
     this.sharedService.fetchExternalUserInfo();
     this.getExternalGroupUser();
-  }
-
-
-  async getAccessList() {
-    const url = '/settings/accessList';
-    const res = await this.apiService
-      .get(url, {}).toPromise() as any;
-
-    const list = res || [];
-    const sortedAll = [
-      ...list.filter(a => a.name === 'ALL'),
-      ...list.filter(a => a.name !== 'ALL')
-    ]
-    this.accessList = sortedAll
-    .map((entry) => ({
-      name: entry.name,
-      uid: entry.id,
-      activated: entry.activated,
-      users: entry.users || [],
-    }));
-  }
-
-  checkAuthorizeUser(userToCheck) {
-    let found = false;
-    for (const access of this.accessList) {
-      const users = access.users;
-      found = users.find(user => user.activated && user.user === userToCheck);
-      if(found) break;
-    }
-    return found
   }
 
   closeModal() {
@@ -145,6 +113,10 @@ export class AddUserModalComponent implements OnInit {
     });
   }
 
+  isNeomUser(user) {
+    return !!user?.includes('@neom.com') || !!user?.match('@.*neom.com');
+  }
+
   selectChange(item) {
     this.userInputText = null;
     this.selectedCollaborator = null;
@@ -153,7 +125,7 @@ export class AddUserModalComponent implements OnInit {
       item.id = item.id.toLowerCase();
     }
     if (isExist) return;
-    else if (this.listExternalUser.includes(item.id) || !this.checkAuthorizeUser(item.id)) {
+    else if (!this.isNeomUser(item.id)) {
       const end = new Date();
       end.setMonth(new Date().getMonth() + 1);
       this.addedExternalUsers[item.id] = {
