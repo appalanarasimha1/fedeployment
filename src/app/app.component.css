@@ -59,3 +59,6 @@
   font-size: 21px !important;
   color: #DEB31A !important;
 }
+.float.addMargin {
+  bottom: 135px;
+}

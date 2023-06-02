@@ -6,6 +6,7 @@ import { DataService } from './services/data.service';
 import { NuxeoService } from './services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import { fadeAnimation } from './animations';
+import { IEntry } from './common/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit{
   showHeader = false;
   showAddButton = false;
   showFooter = false;
+  selectedCards : {isChecked : boolean, doc: IEntry}[] = [];
 
   constructor(
     protected readonly keycloak: KeycloakService,
@@ -92,6 +94,14 @@ export class AppComponent implements OnInit{
     //   this.showFooter = true;
     //   return;
     // }
+    this.dataService.cardSelection$.subscribe(data => {
+      if(data.isChecked){
+        this.selectedCards.push(data);
+      } else {
+        const docIndex = this.selectedCards.findIndex(item  => item.doc.uid === data.doc.uid);
+        this.selectedCards.splice(docIndex, 1);
+      }
+    })
   }
 
   checkSelectedTab(tab: string) {
@@ -119,6 +129,10 @@ export class AppComponent implements OnInit{
   onActivate() {
     $("body").animate({ scrollTop: 0 }, "slow");
     // window.scroll(0,0);
+  }
+
+  checkCardSelection(): boolean {
+    return !!this.selectedCards.length;
   }
 
 }
