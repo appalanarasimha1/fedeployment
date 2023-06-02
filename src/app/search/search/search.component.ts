@@ -294,10 +294,12 @@ export class SearchComponent implements OnInit {
       default:
         // params["duplicate_show"] = "1";
     }
+
     // params["queryParams"] = this.excludedDroneWorkspaces || " ";
 
     if(this.excludedDroneWorkspaces){
-      params["queryParams"] = params["queryParams"] ? (params["queryParams"]+ ' AND ' + this.excludedDroneWorkspaces) : this.excludedDroneWorkspaces;
+      params["queryParams"] = this.excludedDroneWorkspaces;
+      // params["queryParams"] = params["queryParams"] ? (params["queryParams"]+ ' AND ' + this.excludedDroneWorkspaces) : this.excludedDroneWorkspaces;
     }else{
       if(!params['queryParams']) {
         params['queryParams'] = ' '
@@ -735,7 +737,8 @@ export class SearchComponent implements OnInit {
       const ids = res['value'];
       // const ids = "6593c96f-9df1-4b7b-9a68-60d23fef1be9,4221b15b-8e23-42c8-93f1-bc9ec4547f9d"
      if (ids && ids.length > 0) {
-       this.excludedDroneWorkspaces = `ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
+      this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
+      //  this.excludedDroneWorkspaces = `ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
      }
     } catch (err) {}
   }
