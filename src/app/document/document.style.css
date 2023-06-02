@@ -2078,3 +2078,8 @@ ul.catalogue-feature-blk li {
 .sectorsDropdown .d-inline-block.dropdown{
   z-index: 99 !important;
 }
+
+::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+    margin-top: 125px !important;
+}
