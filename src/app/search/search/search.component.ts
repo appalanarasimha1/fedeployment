@@ -297,7 +297,7 @@ export class SearchComponent implements OnInit {
 
     // params["queryParams"] = this.excludedDroneWorkspaces || " ";
 
-    if(this.excludedDroneWorkspaces){
+    if(this.excludedDroneWorkspaces && this.detailViewType !== 'favourite' && this.detailViewType !== 'recentUpload'){
       params["queryParams"] = this.excludedDroneWorkspaces;
       // params["queryParams"] = params["queryParams"] ? (params["queryParams"]+ ' AND ' + this.excludedDroneWorkspaces) : this.excludedDroneWorkspaces;
     }else{
