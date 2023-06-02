@@ -162,7 +162,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     const arrayCall = [];
     const arrayIndex = [];
     for (const key in this.selectedList) {
-      if(this.checkMovePermission(this.selectedList[key])){
+      if(this.checkMovePermission(this.selectedList[key]) || !this.move){
         arrayCall.push(this.moveAsset(this.selectedList[key]));
         arrayIndex.push(key)
       }
