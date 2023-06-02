@@ -294,8 +294,13 @@ export class SearchComponent implements OnInit {
       default:
         // params["duplicate_show"] = "1";
     }
+    // params["queryParams"] = this.excludedDroneWorkspaces || " ";
     if(this.excludedDroneWorkspaces){
       params["queryParams"] = params["queryParams"] + this.excludedDroneWorkspaces;
+    }else{
+      if(!params['queryParams']) {
+        params['queryParams'] = ' '
+      }
     }
     if (!url) return;
 
