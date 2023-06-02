@@ -228,6 +228,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
+        docs.entries = docs.entries.filter((item) => {
+          // Return elements where uid doesn't match any parentRef
+          return !docs.entries.some((parentItem) => parentItem.uid === item.parentRef);
+        });
+      
         this.assetList = docs.entries.filter((sector) => UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1);
         let workSpaceIndex = this.assetList.findIndex((res) => res.title === "Workspaces");
         if (workSpaceIndex >= 0) {
@@ -347,7 +352,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       return;
     }
     this.saveState(item, index, breadCrumbIndex);
-    const sectorName = item.path.split("/")[1];
+    const sectorName = this.checkExternalUser() ? this.sectorName : item.path.split("/")[1];
     let url = `workspace/${sectorName}`;
     if(index) {
       url = `${url}/${item.uid}`;
@@ -970,7 +975,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   checkSharedFolderPath(){
-    return window.location.href.includes(`/workspace/sharedFolder`)
+    return this.sectorName === 'sharedFolder' && !this.folderId
   }
 
 }
