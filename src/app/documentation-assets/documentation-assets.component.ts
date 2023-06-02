@@ -11,6 +11,7 @@ import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from "rxjs";
 import { ISearchResponse } from "../common/interfaces";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-documentation-assets",
@@ -701,21 +702,89 @@ export class DocumentationAssetsComponent implements OnInit {
   getFileContent(doc) {
     return this.sharedService.getAssetUrl(null, doc?.properties["file:content"]?.data || "");
   }
-  downloadAssets(e?:any) {
+  downloadAssets(e?: any) {
     // this.uncheckAll1()
     if (!this.downloadEnable && this.forInternalUse.length > 0) {
       return;
     } else {
-      if (this.downloadArray.length) {
-        for(let i = 0; i < this.downloadArray.length; i++) {
+      let newDownloadArray = []
+      let newDownloadArrayFullItem = []
+      for (let i = 0; i < this.downloadFullItem.length; i++) {
+        if (this.downloadFullItem[i].type === 'Video') {
           window.open(this.getFileContent(this.downloadFullItem[i]));
+
+        } else {
+          newDownloadArray.push(this.downloadFullItem[i].uid)
+          newDownloadArrayFullItem.push(this.downloadFullItem[i])
         }
-        return this.removeAssets();
+
       }
+      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
+        window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+        this.removeAssets()
+      }
+      else {
+        this.sharedService.showSnackbar(
+          "Your download is being prepared do not close your browser",
+          0,
+          "top",
+          "center",
+          "snackBarMiddle",
+          "Close"
+        );
+        $(".multiDownloadBlock").hide();
+        let randomString = Math.random().toString().substring(7);
+        let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
+        let uid: any;
+        this.downloadAsZip(input, uid, randomString)
+      }
+    }
   }
+
+  async downloadAsZip(input, uid, randomString: string) {
+    new Promise((resolve, reject) => {
+      this.removeAssets();
+      this.apiService.downloaPost("/automation/Blob.BulkDownload/@async", {
+        params: {
+          filename: `selection-${randomString}.zip`,
+        },
+        context: {},
+        input,
+      })
+        .subscribe((res: any) => {
+          let splittedLocation = res.headers.get("location").split("/");
+          let newUID = splittedLocation[splittedLocation.length - 2];
+          uid = newUID;
+          let checkZipCompleted = (newUID) => {
+            // this.loading = true
+            this.apiService
+              .downloadGet("/automation/Blob.BulkDownload/@async/" + newUID + "/status")
+              .toPromise().then((resp: any) => {
+                if (resp.status === 200) {
+                  setTimeout(() => {
+                    checkZipCompleted(newUID)
+                  }, 1000);
+
+                } else {
+                  // this.loading = false
+                  window.open(
+                    environment.apiServiceBaseUrl +
+                    "/nuxeo/site/api/v1/automation/Blob.BulkDownload/@async/" +
+                    uid
+                  );
+                  this.removeAssets();
+                }
+              }).catch(e => {
+                this.removeAssets();
+              });
+
+          }
+          checkZipCompleted(uid)
+        });
+    })
   }
-   
-  
+
+
   downloadClick() {
     if (!this.downloadEnable) {
       this.downloadErrorShow = true;

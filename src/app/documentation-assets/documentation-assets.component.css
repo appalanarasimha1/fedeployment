@@ -582,3 +582,8 @@ ul.downloadImgLisst li .contentListBlk {
 .download-btn a.cancelDownload {
   margin-right: 25px;
 }
+
+::ng-deep .mat-snack-bar-container.snackBarMiddle, 
+::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+    margin-top: 125px !important;
+}
