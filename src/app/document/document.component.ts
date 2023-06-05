@@ -853,6 +853,12 @@ export class DocumentComponent implements OnInit, OnChanges {
   removeFromFavorite(uid: string) {
     const indexOfItemToRemove = this.favourites.findIndex((f) => f.uid === uid);
     this.favourites.splice(indexOfItemToRemove, 1);
+
+    if(this.detailView === 'favourite') { 
+      const indexOfItemToRemove = this.documents?.entries?.findIndex((f) => f.uid === uid);
+      this.documents?.entries?.splice(indexOfItemToRemove, 1);
+    }
+
     return;
   }
 
@@ -1274,9 +1280,11 @@ export class DocumentComponent implements OnInit, OnChanges {
                     uid
                   );
                   this.removeAssets();
+                  this.sharedService.hideSnackBar();
                 }
               }).catch(e => {
                 this.removeAssets();
+                this.sharedService.hideSnackBar();
               });
 
           }

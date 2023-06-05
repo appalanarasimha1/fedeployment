@@ -326,7 +326,7 @@ export class SearchComponent implements OnInit {
     }
      this.dataService.loaderValueChangeNew(true);
     this.nuxeo.nuxeoClient
-      .request(url, { queryParams: params })
+      .request(url, { queryParams: params, headers })
       .get()
       .then((docs) => {
         this.setData(docs, isShowMore);

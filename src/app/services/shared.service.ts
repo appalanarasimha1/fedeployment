@@ -393,6 +393,10 @@ export class SharedService {
     }, timeout);
   }
 
+  hideSnackBar() { 
+    this._snackBar.dismiss()
+  }
+
   markRecentlyViewed(data: any): any[] {
     let found = false;
 
