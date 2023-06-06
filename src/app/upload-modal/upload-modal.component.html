@@ -55,11 +55,11 @@
                      <ngx-dropzone-label class="" style="margin: unset;">
                         <div *ngIf="!f?.value['isVirus']" style="width: 100%;text-align: left;margin-top: 0px;">
                            <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
-                           <span *ngIf="filesUploadDone[i]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
-                           <span *ngIf="!filesUploadDone[i] && !this.filesUploadDone[i] && !filesRetry[i] && !uploadFailedRetry[i]" class="upload-loading">Uploading...{{fileUploadProgress[i]?fileUploadProgress[i]:0}}%</span>
-                           <span style="width: 99px;" class="upload-loading retryingFile" *ngIf="filesRetry[i]">Retrying... {{this.filesRetry[i]}}</span>
+                           <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
+                           <span *ngIf="!filesUploadDone[f.key] && !this.filesUploadDone[f.key] && !filesRetry[f.key] && !uploadFailedRetry[f.key]" class="upload-loading">Uploading...{{fileUploadProgress[f.key]?fileUploadProgress[f.key]:0}}%</span>
+                           <span style="width: 99px;" class="upload-loading retryingFile" *ngIf="filesRetry[f.key]">Retrying... {{this.filesRetry[f.key]}}</span>
 
-                           <div *ngIf="filesUploadDone[i] && !f?.value['isVirus']" class="selected-icon">
+                           <div *ngIf="filesUploadDone[f.key] && !f?.value['isVirus']" class="selected-icon">
                               <img src="../../assets/images/BtnTickbox.png" style="float: right;">
                            </div>
                         </div>

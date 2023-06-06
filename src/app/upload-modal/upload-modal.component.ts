@@ -177,7 +177,7 @@ export class UploadModalComponent implements OnInit {
   overallDownloadApproval: boolean = false;
   overallUsers: string[];
   overallDownloadApprovalUsers: string[];
-  whiteListFiles:any;
+  whiteListFiles:any = [];
   fileLimitExceed;
 
   uploadLimit:boolean = false;
@@ -264,9 +264,10 @@ export class UploadModalComponent implements OnInit {
       this.showError = false;
       this.showErrorCheckbox = false;
       const files = this.filterWhitelistFiles(event.addedFiles);
-      this.whiteListFiles = files
+      const prevLen = this.whiteListFiles.length || 0;
+      this.whiteListFiles.push(...files);
       for (let i = 0; i < files.length; i++) {
-        this.filesMap[i] = files[i]
+        this.filesMap[prevLen + i] = files[i]
       }
       if(Object.keys(this.filesMap).length >500) { //500
         // this.openModal(fileLimitExceeded);
@@ -278,7 +279,7 @@ export class UploadModalComponent implements OnInit {
 
       if(this.sizeExeeded) return 
       // console.log("12345",this.getTotalFileSize())
-      this.uploadFile(files);
+      this.uploadFile(this.whiteListFiles, prevLen-1);
     }
   }
 
@@ -635,13 +636,13 @@ export class UploadModalComponent implements OnInit {
   }
 
   setUploadProgressBar(index, percentDone) {
-    console.log({index, percentDone});
+    // console.log({index, percentDone});
     this.fileUploadProgress[index] = percentDone || 0;
 
     const element = <HTMLElement>(
       document.getElementsByClassName(`upload-progress-bar-${index}`)[0]
     );
-    console.log({index, percentDone,element});
+    // console.log({index, percentDone,element});
     const background = `background-image: linear-gradient(to right, rgba(0, 123, 181, 0.3) ${percentDone}%,#ffffff ${percentDone}%);`;
     let attr = element.getAttribute("style");
     attr = attr.replace(/background-image:.*?;/g, "");
@@ -675,8 +676,11 @@ export class UploadModalComponent implements OnInit {
   }
 
   async uploadFileIndex(index, file,length?:number,currentItration?:number) {
+    if(!file){ 
+      return
+    }
     $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-
+    // console.log('file index', file )
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
     const totalSize = blob.size;
@@ -771,7 +775,7 @@ export class UploadModalComponent implements OnInit {
         (event) => {
           if (event.type == HttpEventType.UploadProgress) {
             const percentDone = Math.round((100 * event.loaded) / event.total);
-            console.log(`File is ${percentDone}% loaded.`);
+            // console.log(`File is ${percentDone}% loaded.`);
             this.setUploadProgressBar(index, percentDone);
           } else if (event instanceof HttpResponse) {
             // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
@@ -881,20 +885,22 @@ export class UploadModalComponent implements OnInit {
   removeFileIndex(index) {
     delete this.filesMap[index];
     delete this.filesUploadDone[index];
+    delete this.whiteListFiles[index];
+    delete this.fileUploadProgress[index];
     const url = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     try {
       this.apiService.delete(url)
       .subscribe((res) => {
-        if (this.filesMap[index]) {
-          delete this.filesMap[index];
-          delete this.filesUploadDone[index];
-        }
-      })
+        // if (this.filesMap[index]) {
+        //   delete this.filesMap[index];
+        //   delete this.filesUploadDone[index];
+        // }
+      }) 
     } catch(err) {
-      if (this.filesMap[index]) {
-        delete this.filesMap[index];
-        delete this.filesUploadDone[index];
-      }
+      // if (this.filesMap[index]) {
+      //   delete this.filesMap[index];
+      //   delete this.filesUploadDone[index];
+      // }
     }
   }
 
