@@ -416,15 +416,14 @@ export class UploadModalComponent implements OnInit {
   getSelectedAssetsTitle() {
     if (!Object.keys(this.filesMap).length) return;
     const file = this.filesMap[Object.keys(this.filesMap)[0]];
-    const len = Object.keys(this.filesMap).length;
+    const len = this.getAssetNumber();
     return `${this.shortTheString(file.name, 20)} ${
       len > 1 ? `and other ${len - 1} files` : ""
     }`;
   }
   getSelectedAssetsTitle1() {
     // const title = this.filesMap[0]?.title;
-    const len = Object.keys(this.filesMap).length;
-
+    const len = this.getAssetNumber();
     return `${len} assets`;
   }
 
@@ -1125,7 +1124,7 @@ export class UploadModalComponent implements OnInit {
   proceedClicked:boolean=false;
   getTotalFileSize() {
     let size = 0;
-    Object.keys(this.filesMap).forEach((key) => {
+    Object.keys(this.filesMap).filter(e=>!this.filesMap[e]['isVirus']).forEach((key) => {
       size += this.filesMap[key].size;
     });
     
@@ -1524,7 +1523,7 @@ export class UploadModalComponent implements OnInit {
   // }
 
   checkFormState(): boolean {
-    const length = Object.keys(this.filesMap).length;
+    const length = Object.keys(this.filesMap).filter(e=> !this.filesMap[e]['isVirus']).length;
     for (let i = 0; i < length; i++) {
       const access = this.customAccessMap[i];
       const allow = this.customAllowMap[i];
