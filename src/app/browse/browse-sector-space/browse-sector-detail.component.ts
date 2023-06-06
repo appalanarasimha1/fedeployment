@@ -744,8 +744,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openModal(key?:boolean) {
-    if(key) this.dropFilesNew=[]
+  openModal(key?: boolean) {
+    if (key) this.dropFilesNew = [];
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
