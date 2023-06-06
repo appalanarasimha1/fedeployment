@@ -101,9 +101,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   permissionChange:boolean=false;
   assetSize = { count: 0, size: null};
 
-  intervalId: any;
-  isThumbnailGenerated: boolean = false;
-
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
@@ -144,44 +141,15 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       }
     });
 
-    // this.isThumbnailGenerated = this.checkThumbnailGenerated(this.assetList);
-
     this.dataService.uploadedAssetData$.subscribe((result: any) => {
       if (!result?.length) return;
       result.map((asset: any) => this.assetList.unshift(asset));
       this.assetList = this.assetList.slice();
-      this.intervalId = setInterval(() => {
-        // console.log(this.checkThumbnailGenerated(this.assetList));
-        if (!this.checkThumbnailGenerated(this.assetList)) {
-          this.isThumbnailGenerated = false;
-          this.getAssets(this.folderId, true, 20, 0, 0, true);
-          // console.log('this.getAssets', this.assetList);
-        } else {
-          this.isThumbnailGenerated = true;
-          clearInterval(this.intervalId); // Stop the interval when condition is met
-        }
-      }, 25000);
     });
 
-    
-
-    
     const fetchAll = false;
     this.fetchExternalUserInfo(fetchAll);
     this.checkCollabAndPrivateFolder();
-
-    this.intervalId = setInterval(() => {
-      // console.log(this.checkThumbnailGenerated(this.assetList));
-      if (!this.checkThumbnailGenerated(this.assetList)) {
-        this.isThumbnailGenerated = false;
-        this.getAssets(this.folderId, true, 20, 0, 0, true);
-        // console.log('this.getAssets', this.assetList);
-      } else {
-        this.isThumbnailGenerated = true;
-        clearInterval(this.intervalId); // Stop the interval when condition is met
-      }
-    }, 25000);
-
   }
 
   ngAfterViewInit(): void {}
@@ -291,12 +259,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     checkCache = true,
     pageSize = 20,
     pageIndex = 0,
-    offset = 0,
-    fromThubmnailGenerated: boolean = false
+    offset = 0
   ): void {
-    if(!fromThubmnailGenerated){
     this.loading = true;
-    }
     this.showAssetPath = false;
     this.sharedService.toTop();
     let url = "";
@@ -723,6 +688,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
 
   async openManageAccessModal(isSelected = false) {
     this.whiteLoader = true;
+    console.log("openManageAccessModal");
     const folderId = isSelected ? Object.values(this.dataTableComponent.selectedFolderList)[0]['uid'] : this.currentWorkspace.uid;
 
     // this.loading = true;
@@ -764,7 +730,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         this.dataTableComponent?.removeAssets();
       }
       this.getAssets(this.folderId);
-      this.checkCollabAndPrivateFolder();
       
       this.whiteLoader = false;
     });
@@ -1188,11 +1153,5 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   isFolderAdmin(): boolean {
     return this.sharedService.isFolderAdmin();
   }
-  
-  checkThumbnailGenerated(items) {
-    if (items?.length) {
-      return items.every((item) => item.type === 'Picture' && item?.properties['picture:info']?.format != null);
-    }
-    return false;
-  }
+
 }
