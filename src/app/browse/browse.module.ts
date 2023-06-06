@@ -21,7 +21,6 @@ import { SearchModule } from '../search/search.module';
 import { BrowseNavigationComponent } from './browse-navigation/browse-navigation.component';
 import { BrowseHomeComponent } from './browse-home/browse-home.component';
 import { BrowseSectorDetailComponent } from './browse-sector-space/browse-sector-detail.component';
-import { BrowseSectorFolderComponent } from './browse-sector-folder/browse-sector-folder.component';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { TrashViewComponent } from './trash-view/trash-view.component';
 @NgModule({
@@ -47,7 +46,6 @@ import { TrashViewComponent } from './trash-view/trash-view.component';
     BrowseNavigationComponent,
     BrowseHomeComponent,
     BrowseSectorDetailComponent,
-    BrowseSectorFolderComponent,
     CreateFolderComponent,
     TrashViewComponent,
   ],

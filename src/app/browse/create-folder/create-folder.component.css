@@ -1,274 +1,88 @@
 
 .dropdownCreate .control-group {
-    display: block;
-  }
-  .dropdownCreate .control {
-    display: block;
-    position: relative;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: normal;
-    padding: 0px;
-    padding-left: 30px;
-    border: 0px;
-    margin: 0px 0px 0px;
-    color: #040404;
-  }
-  .dropdownCreate .control input {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
-  }
-  .dropdownCreate .control__indicator {
-    position: absolute;
-    top: 4px;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background: #fff;
-    border-radius: 6px;
-    border: 1px solid #404040;
-  }
-  .dropdownCreate .control--radio .control__indicator {
-    border-radius: 50%;
-  }
-  /* .dropdownCreate .control:hover input ~ .control__indicator, */
-  /* .dropdownCreate .control input:focus ~ .control__indicator {
-    background: #006845;
-  } */
-  .dropdownCreate .control input:checked ~ .control__indicator {
-    background: #006845;
-  }
-  /* .dropdownCreate .control:hover input:not([disabled]):checked ~ .control__indicator,
-  .dropdownCreate .control input:checked:focus ~ .control__indicator {
-    background: #fff;
-  } */
-  .dropdownCreate .control input:disabled ~ .control__indicator {
-    background: #fff;
-    opacity: 0.6;
-    pointer-events: none;
-  }
-  .dropdownCreate .control__indicator:after {
-    content: '';
-    position: absolute;
-    display: none;
-  }
-  .dropdownCreate .control input:checked ~ .control__indicator:after {
-    display: block;
-  }
-  .dropdownCreate .control--radio .control__indicator:after {
-    left: 7px;
-    top: 7px;
-    height: 6px;
-    width: 6px;
-    border-radius: 50%;
-    background: #23211E;
-  }
-  .dropdownCreate .control--radio input:disabled ~ .control__indicator:after {
-    background: #fff;
-  }
-  
+  display: block;
+}
+.dropdownCreate .control {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: normal;
+  padding: 0px;
+  padding-left: 30px;
+  border: 0px;
+  margin: 0px 0px 0px;
+  color: #040404;
+}
+.dropdownCreate .control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.dropdownCreate .control__indicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #404040;
+}
+.dropdownCreate .control--radio .control__indicator {
+  border-radius: 50%;
+}
+/* .dropdownCreate .control:hover input ~ .control__indicator, */
+/* .dropdownCreate .control input:focus ~ .control__indicator {
+  background: #006845;
+} */
+.dropdownCreate .control input:checked ~ .control__indicator {
+  background: #006845;
+}
+/* .dropdownCreate .control:hover input:not([disabled]):checked ~ .control__indicator,
+.dropdownCreate .control input:checked:focus ~ .control__indicator {
+  background: #fff;
+} */
+.dropdownCreate .control input:disabled ~ .control__indicator {
+  background: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.dropdownCreate .control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.dropdownCreate .control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.dropdownCreate .control--radio .control__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #23211E;
+}
+.dropdownCreate .control--radio input:disabled ~ .control__indicator:after {
+  background: #fff;
+}
+
 .dropdownCreate .btn:disabled {
-    background: #E8E6DF;
-    color: #BAB8B2;
-    opacity: 1;
-  }
-  
-.createFolder input.errorInput {
-    border-bottom: 2px solid #E03C31 !important;
-  }
-  
-.dropdownCreate.createFolder form {
-    clear: left;
-    width: 100%;
-    float: left;
-    padding-top: 10px;
-  }
-.createFolder ::ng-deep .mat-expansion-indicator {
-    /* transform: rotate(-180deg) !important; */
-    height: 10px;
-    width: 10px;
-  }
-  ::ng-deep .mat-expansion-panel-body{
-    padding: 0px !important;
-  }
-  
-.createBtn{
-    background-color: #EDD580;
-    border-radius: 24px;
-    float: right;
-    width: unset;
-    font-weight: normal;
-    padding: 6px 19px;
-    font-size: 14px;
-    /* line-height: 20px; */
-    color: #040505;
-  }
-  /* ::ng-deep .mat-datepicker-popup{
-    left: 819px !important;
-  } */
-  ::ng-deep .mat-expansion-panel-header-description{
-    color: #937206;
-  }
-  
-  
-.createFolder ::ng-deep .mat-expansion-indicator {
-    /* transform: rotate(-180deg) !important; */
-    height: 10px;
-    width: 10px;
-  }
-
-  .dropdownCreate, .multiDownloadBlock {
-    display:none;
-    text-align: left;
-  }
-  .btn-disabled, .recover-btn-disabled {
-    cursor: default;
-    color: #E1BB33;
-  }
-  .btn-disabled {
-    background-image: url(../../../assets/images/delete-disable-icon.svg);
-    background-position: 0px 4px;
-    background-repeat: no-repeat;
-    background-size: 16px;
-    filter: invert(0.5);
-    opacity: 0.6;
-  }
-  .btn-disabled img, .recover-btn-disabled img {
-    /* filter: invert(0.5); */
-    opacity: 0;
-  }
-  
-  .recover-btn-disabled {
-    background-image: url(../../../assets/images/recover-disable-icon.svg);
-    background-position: 0px 5px;
-    background-repeat: no-repeat;
-    background-size: 18px;
-    filter: invert(0.5);
-    opacity: 0.6;
-  }
-  
-  ::ng-deep .mat-snack-bar-container.snackBarMiddle,
-  ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
-    max-width: 50vw !important;
-    margin-top: 200px !important;
-    border-radius: 50px !important;
-    min-width: auto !important;
-  }
-  ::ng-deep .mat-simple-snackbar {
-    color: #fff !important;
-    font-family: inherit !important;
-  }
-  ::ng-deep .mat-simple-snackbar-action {
-    color: #fff !important;
-    font-weight: 600 !important;
-  }
-  ::ng-deep .mat-simple-snackbar-action button {
-    font-weight: bold !important;
-  }
-  ::ng-deep .mat-simple-snackbar {
-    text-align: center !important;
-  }
-  
-  .renameFolderImg, .renameFolderRemoveImg {
-    display: inline-block;
-    max-width: 18px;
-    cursor: pointer;
-    vertical-align: -1px;
-  }
-  .renameFolderRemoveImg {
-    max-width: 30px;
-    vertical-align: -8px;
-    margin-left: 10px;
-  }
-  ul.uploadAssetsClassifications li img {
-    display: inline-block;
-    margin: 0px;
-    padding: 0px;
-    vertical-align: 0px;
-    line-height: normal;
-}
-
-
-
-
-
-.createFolder{
-  position: absolute;
-  background: #FFFFFF;
-  box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
-  border-radius: 8px;
-  padding: 20px;
-  width: 500px;
-  right: 0px;
-  top: 50px;
-  z-index: 999;
-}
-.createNew{
-  font-size: 15px;
-  line-height: 24px;
-  color: #937206;
-  font-weight: normal;
-}
-.placeholderText{
-  font-size: 14px;
-  line-height: 20px;
+  background: #E8E6DF;
   color: #BAB8B2;
-  float: right;
-  padding-top: 2px;
+  opacity: 1;
 }
-.createFolder input{
-  border: unset;
-  border-bottom: 2px solid #413E3C;
+
+.createFolder input.errorInput {
+  border-bottom: 2px solid #E03C31 !important;
+}
+
+.dropdownCreate.createFolder form {
+  clear: left;
   width: 100%;
-  font-size: 15px;
-  font-weight: normal;
-  line-height: 24px;
-  color: #040404;
-  padding-bottom: 5px;
-  padding-left: 0px;
-  font-weight: 500;
-}
-.createFolder input::placeholder{
-  font-size: 15px !important;
-  line-height: 24px !important;
-  color: #040404 !important;
-  font-weight: normal !important;
-}
-.createFolder label{
-  font-size: 15px;
-  line-height: 24px;
-  color: #040404;
-  font-weight: normal;
-}
-
-
-
-
-
-.mat-expansion-panel:not([class*=mat-elevation-z]){
-  box-shadow: unset;
-}
-.mat-expansion-panel-header{
-  padding: 0px !important;
-  height: unset !important;
-}
-.mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){
-  background: unset;
-}
-::ng-deep .mat-content{
-  flex: unset !important;
-}
-::ng-deep .mat-expansion-indicator::after {
-  border-style: solid;
-  border-width: 0 1.5px 1.5px 0 !important;
-  content: "";
-  display: inline-block;
-  padding: 2.5px !important;
-  /* transform: rotate(-45deg) !important; */
-  vertical-align: middle;
-  color: #937206;
-  position: absolute;
+  float: left;
+  padding-top: 10px;
 }
 .createFolder ::ng-deep .mat-expansion-indicator {
   /* transform: rotate(-180deg) !important; */
@@ -278,53 +92,239 @@
 ::ng-deep .mat-expansion-panel-body{
   padding: 0px !important;
 }
-.publishingAssets {
-  background: #E6F2FF;
-  border-radius: 8px;
-  padding: 8px 15px;
-  color: #0072A2;
-  font-weight: 400;
+
+.createBtn{
+  background-color: #EDD580;
+  border-radius: 24px;
+  float: right;
+  width: unset;
+  font-weight: normal;
+  padding: 6px 19px;
   font-size: 14px;
-  line-height: 24px;
-  font-family: 'brownlight';
+  /* line-height: 20px; */
+  color: #040505;
+}
+/* ::ng-deep .mat-datepicker-popup{
+  left: 819px !important;
+} */
+::ng-deep .mat-expansion-panel-header-description{
+  color: #937206;
+}
+
+
+.createFolder ::ng-deep .mat-expansion-indicator {
+  /* transform: rotate(-180deg) !important; */
+  height: 10px;
+  width: 10px;
+}
+
+.dropdownCreate, .multiDownloadBlock {
+  display:none;
+  text-align: left;
+}
+.btn-disabled, .recover-btn-disabled {
+  cursor: default;
+  color: #E1BB33;
+}
+.btn-disabled {
+  background-image: url(../../../assets/images/delete-disable-icon.svg);
+  background-position: 0px 4px;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  filter: invert(0.5);
+  opacity: 0.6;
+}
+.btn-disabled img, .recover-btn-disabled img {
+  /* filter: invert(0.5); */
+  opacity: 0;
+}
+
+.recover-btn-disabled {
+  background-image: url(../../../assets/images/recover-disable-icon.svg);
+  background-position: 0px 5px;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  filter: invert(0.5);
+  opacity: 0.6;
+}
+
+::ng-deep .mat-snack-bar-container.snackBarMiddle,
+::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
+  max-width: 50vw !important;
+  margin-top: 200px !important;
+  border-radius: 50px !important;
+  min-width: auto !important;
+}
+::ng-deep .mat-simple-snackbar {
+  color: #fff !important;
+  font-family: inherit !important;
+}
+::ng-deep .mat-simple-snackbar-action {
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+::ng-deep .mat-simple-snackbar-action button {
+  font-weight: bold !important;
+}
+::ng-deep .mat-simple-snackbar {
+  text-align: center !important;
+}
+
+.renameFolderImg, .renameFolderRemoveImg {
+  display: inline-block;
+  max-width: 18px;
+  cursor: pointer;
+  vertical-align: -1px;
+}
+.renameFolderRemoveImg {
+  max-width: 30px;
+  vertical-align: -8px;
+  margin-left: 10px;
+}
+ul.uploadAssetsClassifications li img {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  vertical-align: 0px;
+  line-height: normal;
+}
+
+
+
+
+
+.createFolder{
+position: absolute;
+background: #FFFFFF;
+box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+border-radius: 8px;
+padding: 20px;
+width: 500px;
+right: 0px;
+top: 50px;
+z-index: 999;
+}
+.createNew{
+font-size: 15px;
+line-height: 24px;
+color: #937206;
+font-weight: normal;
+}
+.placeholderText{
+font-size: 14px;
+line-height: 20px;
+color: #BAB8B2;
+float: right;
+padding-top: 2px;
+}
+.createFolder input{
+border: unset;
+border-bottom: 2px solid #413E3C;
+width: 100%;
+font-size: 15px;
+font-weight: normal;
+line-height: 24px;
+color: #040404;
+padding-bottom: 5px;
+padding-left: 0px;
+font-weight: 500;
+}
+.createFolder input::placeholder{
+font-size: 15px !important;
+line-height: 24px !important;
+color: #040404 !important;
+font-weight: normal !important;
+}
+.createFolder label{
+font-size: 15px;
+line-height: 24px;
+color: #040404;
+font-weight: normal;
+}
+
+
+
+
+
+.mat-expansion-panel:not([class*=mat-elevation-z]){
+box-shadow: unset;
+}
+.mat-expansion-panel-header{
+padding: 0px !important;
+height: unset !important;
+}
+.mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]){
+background: unset;
+}
+::ng-deep .mat-content{
+flex: unset !important;
+}
+::ng-deep .mat-expansion-indicator::after {
+border-style: solid;
+border-width: 0 1.5px 1.5px 0 !important;
+content: "";
+display: inline-block;
+padding: 2.5px !important;
+/* transform: rotate(-45deg) !important; */
+vertical-align: middle;
+color: #937206;
+position: absolute;
+}
+.createFolder ::ng-deep .mat-expansion-indicator {
+/* transform: rotate(-180deg) !important; */
+height: 10px;
+width: 10px;
+}
+::ng-deep .mat-expansion-panel-body{
+padding: 0px !important;
+}
+.publishingAssets {
+background: #E6F2FF;
+border-radius: 8px;
+padding: 8px 15px;
+color: #0072A2;
+font-weight: 400;
+font-size: 14px;
+line-height: 24px;
+font-family: 'brownlight';
 }
 .publishingAssets::after {
-  content: '';
-  display: block;
-  clear: both;
+content: '';
+display: block;
+clear: both;
 }
 .publishingAssets p {
-  color: #0072A2;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  font-family: 'brownlight';
-  padding-bottom: 10px;
+color: #0072A2;
+font-weight: 400;
+font-size: 14px;
+line-height: 24px;
+font-family: 'brownlight';
+padding-bottom: 10px;
 }
 .publishingAssets p strong {
-  font-family: 'brownregular';
-  font-weight: normal;
+font-family: 'brownregular';
+font-weight: normal;
 }
 .publishingAssets ul li {
-  display: block;
-  width: 100%;
-  clear: left;
-  padding-bottom: 10px;
-  overflow: hidden;
+display: block;
+width: 100%;
+clear: left;
+padding-bottom: 10px;
+overflow: hidden;
 }
 .publishingAssets ul li span.leftCont {
-  float: left;
-  font-family: 'brownlight';
-  width: 50%;
+float: left;
+font-family: 'brownlight';
+width: 50%;
 }
 .publishingAssets ul li span.rightCont {
-  width: 50%;
-  font-family: 'brownregular';
-  vertical-align: top;
-  float: right;
+width: 50%;
+font-family: 'brownregular';
+vertical-align: top;
+float: right;
 }
 .publishingAssets ul li:last-child {
-  padding-bottom: 0px;
+padding-bottom: 0px;
 }
 
 .publishingAssets .table-bordered>thead>tr>th, 
@@ -334,60 +334,125 @@
 .publishingAssets .table-bordered>tbody>tr>td, 
 .publishingAssets .table-bordered>tfoot>tr>td
 .publishingAssets .table.table-bordered {
-  border: 1px solid #AFD9FF;
+border: 1px solid #AFD9FF;
 }
 .publishingAssets .table-bordered>tbody>tr>td {
-  border-left: 0px;
-  color: #0072A2;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  font-family: 'brownlight';
+border-left: 0px;
+color: #0072A2;
+font-weight: 400;
+font-size: 14px;
+line-height: 24px;
+font-family: 'brownlight';
 }
 .publishingAssets .table-bordered {
-  border: 0px;
-  margin-bottom: 8px;
+border: 0px;
+margin-bottom: 8px;
 }
 .publishingAssets tbody tr:hover {
-  background-color: transparent;
+background-color: transparent;
 }
 .positionRelative {
-  position: relative !important;
+position: relative !important;
 }
 
 .dropdownCreate .folderType .control input:checked ~ .control__indicator::after {
-  color: transparent;
-  border: solid transparent;
+color: transparent;
+border: solid transparent;
 }
 .dropdownCreate .folderType .control input:checked ~ .control__indicator::before {
-  content: '';
-  display: block;
-  height: 100%;
-  width: 100%;
-  border: 2px solid white;
-  border-radius: 100px;
-  background: #DAAA00;
+content: '';
+display: block;
+height: 100%;
+width: 100%;
+border: 2px solid white;
+border-radius: 100px;
+background: #DAAA00;
 }
 .dropdownCreate .folderType .control input:checked ~ .control__indicator {
-  background: #DAAA00;
-  border: 1px solid #DAAA00;
+background: #DAAA00;
+border: 1px solid #DAAA00;
 }
 .mb-10 {
-  margin-bottom: 10px !important;
+margin-bottom: 10px !important;
 }
 img.closeIcon {
-  width: 20px !important;
-  float: right;
-  opacity: 1 !important;
-  cursor: pointer;
+width: 20px !important;
+float: right;
+opacity: 1 !important;
+cursor: pointer;
 }
 .errorMessage {
-  color: #E03C31;
-  font-size: 14px;
-  float: left;
-  line-height: 35px;
+color: #E03C31;
+font-size: 14px;
+float: left;
+line-height: 35px;
 }
 button.createBtn.btn.tollTipCustom.disableBtn {
-  background: #E8E6DF;
-  color: #BAB8B2;
+background: #E8E6DF;
+color: #BAB8B2;
+}
+
+.lockFolder {
+display: flex;
+font-family: 'brownregular';
+font-size: 14px;
+color: #000;
+margin-bottom: 20px;
+}
+.lockFolder .slideToggleBlk {margin-right: 15px;}
+.lockFolder .slideContent p {
+font-family: 'brownlight';
+}
+.lockFolderInfo {
+color: #CB1B19;
+background: #FDE8E8;
+border-radius: 8px;
+padding: 8px 12px;
+font-size: 14px;
+font-weight: normal;
+margin-bottom: 15px;
+display: inline-block;
+}
+::ng-deep .mat-slide-toggle-bar {
+background-color: #D1CFC9;
+border-radius: 20px !important;
+height: 17px !important;
+width: 32px !important;
+}
+::ng-deep .mat-slide-toggle-thumb-container {
+width: 12px !important;
+height: 12px !important;
+top: 2px !important;
+left: 2px !important;
+}
+::ng-deep .mat-slide-toggle-thumb {
+height: 12px !important;
+width: 12px !important;
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+background-color: #fff;
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+background-color: #0E7A53;
+}
+::ng-deep .mat-slide-toggle-label {
+margin-bottom: 0px !important;
+display: inline-block !important;
+vertical-align: middle !important;
+height: 20px !important;
+}
+::ng-deep .mat-slide-toggle .mat-slide-toggle-ripple {
+height: 16px !important;
+width: 16px !important;
+}
+
+.whenYouConvert {
+background: #E6F2FF;
+border-radius: 8px;
+padding: 8px 16px;
+color: #0072A2;
+font-size: 14px;
+font-weight: normal;
+margin-bottom: 15px;
+display: inline-block;
 }
