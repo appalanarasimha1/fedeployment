@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -14,7 +14,8 @@ export class AssetViewComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -26,11 +27,15 @@ export class AssetViewComponent implements OnInit {
 
   async fetchAsset(assetId: string): Promise<void> {
     this.loading = true;
-    const doc: any = await this.apiService.get(`/id/${assetId}?fetch-acls=username`,
-      {headers: { "fetch-document": "properties"}}).toPromise();
-    this.file = doc;
-    this.fileUrl = `${window.location.origin}/nuxeo/${doc.properties['file:content'].data.split('nuxeo/')[1]}`;
-    this.loading = false;
+    try {
+      const doc: any = await this.apiService.get(`/id/${assetId}?fetch-acls=username`,
+        {headers: { "fetch-document": "properties"}}).toPromise();
+      this.file = doc;
+      this.fileUrl = `${window.location.origin}/nuxeo/${doc.properties['file:content'].data.split('nuxeo/')[1]}`;
+      this.loading = false;
+    } catch (error) {
+      this.router.navigate(['/asset-not-accessed'])
+    }
   }
 
 }
