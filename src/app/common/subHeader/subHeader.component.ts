@@ -12,6 +12,7 @@ import { SharedService } from "src/app/services/shared.service";
 import { IHeaderSearchCriteria } from "./interface";
 import { CarouselModule } from "ngx-owl-carousel-o";
 import { OwlOptions } from "ngx-owl-carousel-o";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { unescapeIdentifier } from "@angular/compiler";
 import { OWNER_APPROVAL_LABEL } from "./../../upload-modal/constant";
 import { concat, Observable, of, Subject } from "rxjs";
@@ -78,6 +79,8 @@ export class SubHeaderComponent implements OnInit {
   recentSearch: any;
   clearRecent: boolean = false;
   readonly OWNER_APPROVAL_LABEL = OWNER_APPROVAL_LABEL;
+  searchTextChanged: Subject<string> = new Subject<string>();
+  txtQuery = '';
 
   constructor(
     public nuxeo: NuxeoService,
@@ -108,6 +111,7 @@ export class SubHeaderComponent implements OnInit {
     if (!this.showItemOnlyOnce) this.playPersonalizedVideo();
 
     this.getRecentSearch();
+    this.initSearchBarChange();
     return;
   }
 
@@ -471,6 +475,20 @@ export class SubHeaderComponent implements OnInit {
   outClick() {
     console.log("qwertgyhuiop");
   }
+
+  initSearchBarChange() {
+    this.searchTextChanged
+      .pipe(debounceTime(200), distinctUntilChanged())
+      .subscribe(model => {
+        this.txtQuery = model;
+        this.onSearchBarChange(this.txtQuery);
+      });
+  }
+
+  handleSearchBarChange(query: string) {
+    this.searchTextChanged.next(query);
+  }
+
   onSearchBarChange(e) {
     if (e.trim() !== "") {
       this.loadWorkSpace = true;
