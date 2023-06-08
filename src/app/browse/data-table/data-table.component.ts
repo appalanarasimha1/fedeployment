@@ -805,6 +805,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         }, 1000);
       }
     });
+    return modalDialog
   }
 
   navigateToTrash() {
