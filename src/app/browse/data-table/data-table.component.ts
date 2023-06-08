@@ -1279,7 +1279,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     dialogConfig.panelClass = "custom-modalbox";
     dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
     const folder = (await this.fetchFolder(folderId)) as any;
-    if (!this.checkHasAdminPermission(folder)) return;
+    if (!this.checkHasAdminPermission(folder) && !this.sharedService.isOwner(folder)) return;
 
     dialogConfig.data = {
       selectedFolder: folder

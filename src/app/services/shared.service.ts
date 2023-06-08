@@ -606,10 +606,11 @@ export class SharedService {
   }
 
   isFolderAdmin(item?: IEntry): boolean {
-    const currentWorkspace = item || JSON.parse(localStorage.getItem("workspaceState"));
+    const currentWorkspace: IEntry = item || JSON.parse(localStorage.getItem("workspaceState"));
     let adminAcl = null;
-    currentWorkspace?.contextParameters?.acls?.[0].name === 'local' && currentWorkspace?.contextParameters?.acls?.[0].aces?.forEach(element => {
-      if(element.username === this.user.username && element.permission.toLowerCase() === permissions.lockFolderPermissions.ADMIN.toLowerCase()) {
+    const acls = currentWorkspace?.contextParameters?.acls.filter(item => item.name === 'local');
+    acls?.length && acls?.[0]?.aces?.forEach(element => {
+      if(element?.username === this?.user?.username && element.permission.toLowerCase() === permissions.lockFolderPermissions.ADMIN.toLowerCase()) {
         adminAcl = element;
       }
     });
@@ -617,7 +618,16 @@ export class SharedService {
     if(adminAcl && (adminAcl.end && new Date(adminAcl.end).getTime() > new Date().getTime() || !adminAcl.end)) {
       return true;
     }
+
+    if(this.isOwner(currentWorkspace)) {
+      return true;
+    }
+
     return false;
+  }
+
+  isOwner(item: IEntry) {
+    return item.properties?.["dc:creator"]?.id.toLowerCase() === this?.user?.username.toLowerCase();
   }
 
 }
