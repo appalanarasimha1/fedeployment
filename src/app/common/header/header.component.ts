@@ -77,6 +77,7 @@ export class HeaderComponent implements OnInit {
   generateVideo:boolean = false;
   videoResponseShow:boolean = false;
   changeSectorShow : boolean = false;
+  isInAccessListOfRegion = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -459,7 +460,14 @@ export class HeaderComponent implements OnInit {
     return isNaN(name) && !splittedUser?.length ? "":name?.toUpperCase()
   }
 
-  checkUserGroup(groups) {
+  async checkInAccessListOfRegion() {
+    try {
+      this.isInAccessListOfRegion = await this.sharedService.checkInAccessListOfRegion()      
+    } catch (error) {}
+  }
+
+  async checkUserGroup(groups) {
+    await this.checkInAccessListOfRegion()
     if (groups.includes(DRONE_UPLOADER)) {
       this.isDroneUploader = true;
     }
