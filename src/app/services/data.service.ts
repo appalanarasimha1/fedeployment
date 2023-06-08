@@ -22,6 +22,7 @@ export class DataService {
   private showFooter = new Subject<boolean>();
   private folderPermission = new Subject<boolean>();
   private fetchAssets = new Subject<any>();
+  private cardSelection = new Subject<any>();
   constructor() {}
 
   // Observable string streams
@@ -41,6 +42,7 @@ export class DataService {
   showFooter$ = this.showFooter.asObservable();
   folderPermission$ = this.folderPermission.asObservable();
   fetchAssets$ = this.fetchAssets.asObservable();
+  cardSelection$ = this.cardSelection.asObservable();
 
   sectorDataPush(sector) {
     this.sectorChangedSource.next(sector);
@@ -98,5 +100,9 @@ export class DataService {
 
   fetchAssetsInit(data: any) {
     this.fetchAssets.next(data);
+  }
+
+  cardSelectionInit(data: any) {
+    this.cardSelection.next(data);
   }
 }

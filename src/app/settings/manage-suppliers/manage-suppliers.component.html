@@ -16,9 +16,9 @@
                 <th style="width:20%">Suppliers</th>
                 <th style="width:12%">Supplier ID</th>
                 <th style="width:15%">Assigned region</th>
-                <th style="width:36%">Tech support email</th>
-                <th style="width:15%">Access expiry</th>
-                <th style="width: 40px">&nbsp;&nbsp;</th>
+                <th style="width:38%">Tech support email</th>
+                <th style="width:125px">Access expiry</th>
+                <th style="width: 50px">&nbsp;&nbsp;</th>
                 <th style="width: 30px">&nbsp;&nbsp;</th>
             </tr>
             <tr *ngFor="let supplier of filteredSuppliers; let i = index">
@@ -48,14 +48,18 @@
                     </mat-form-field>
                 </td>
                 <td class="editIcon">
-                    <div class="emailBlock" *ngIf="!supplier.renameEmail">
-                      {{supplier.supportEmail}}
-                        <span *ngIf="supplier.supportEmail" class="penvilIcon" (click)="renameEmailClick(); supplier.renameEmail = true">
-                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
+                    <div class="emailBlock" *ngIf="!supplier.renameEmail" style="display: flex;">
+                      <div class="tollTipCustom" style="width: 100%;">
+                        <div class="itemTitleContent">{{supplier.supportEmail}}</div>
+                        <div class="tolltipContent">{{supplier.supportEmail}}</div>
+                      </div>
+                    
+                      <span *ngIf="supplier.supportEmail" class="penvilIcon" (click)="renameEmailClick(); supplier.renameEmail = true">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M6.16778 20.2612L1 21.0004L1.73786 15.8313L15.0276 2.54149C16.2509 1.3182 18.2343 1.3182 19.4576 2.54149C20.6808 3.76478 20.6808 5.74812 19.4576 6.97141L6.16778 20.2612Z" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M13.5508 4.01904L17.9807 8.44897" stroke="#C49900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
                     </div>
                     <div class="renameEmail" *ngIf="supplier.renameEmail">
                         <input type="text" [(ngModel)]="supplier.supportEmail" class="renameAssets" />

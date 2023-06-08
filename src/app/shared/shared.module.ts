@@ -35,6 +35,14 @@ import { SafePipe } from '../common/pipe/safe.pipe';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MasonryViewComponent } from '../masonry-view/masonry-view.component';
+import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ShareModalComponent } from '../share-modal/share-modal.component';
+import { ArcGisMapComponent } from '../arc-gis-map/arc-gis-map.component';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -60,9 +68,16 @@ keyboardEventKeyPolyfill();
     AssetViewComponent,
     ManageAccessModalComponent,
     DataTableComponent,
-    // ManageAccessModalComponent,
     SafePipe,
-    MasonryViewComponent
+    MasonryViewComponent,
+
+    AddUserModalComponent,
+    DataTableComponent,
+    SafePipe,
+    MasonryViewComponent,
+    ShareModalComponent,
+    ArcGisMapComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -76,10 +91,13 @@ keyboardEventKeyPolyfill();
     MatStepperModule,
     ChartsModule,
     MatSnackBarModule,
-    // UploadModalModule,
-    // NgxMasonryModule,
     TextInputAutocompleteModule,
     MatMenuModule,
+    MatSlideToggleModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgSelectModule
   ],
   exports: [
     CommonModule,
@@ -87,6 +105,12 @@ keyboardEventKeyPolyfill();
     PdfViewerModule,
     ReactiveFormsModule,
     NgbModule,
+    MatSlideToggleModule,
+    
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgSelectModule,
     
     // MatDialogModule,
     LoaderComponent,

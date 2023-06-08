@@ -9,7 +9,7 @@
   </button>
   <span class="tooltiptext">Upload Assets</span>
 </div> -->
-<div *ngIf="showAddButton" class="float" (click)="onActivate()">
+<div *ngIf="showAddButton" [ngClass]="{'addMargin': checkCardSelection()}" class="float" (click)="onActivate()">
   <img src="../assets/images/ArrowUp.svg"  >
 <!-- <button *ngIf="showAddButton" mat-fab class="float" color="primary" aria-label="Add" (click)="onActivate()">
   <mat-icon>add</mat-icon>

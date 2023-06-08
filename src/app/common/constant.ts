@@ -144,3 +144,14 @@ export const tabs = {
     MEDIA: 'media',
     CONSTRUCTION: 'construction'
   };
+export const permissions = {
+    lockFolderPermissions: {
+        'OWNER': '',
+        'ADMIN': 'Everything',
+        'READWRITE': 'readwrite',
+        'UPLOAD': 'CanUpload',
+        'DELETE': 'delete',
+        'DOWNLOAD': 'CanDownload',
+        'READ': 'Read',
+    }
+}

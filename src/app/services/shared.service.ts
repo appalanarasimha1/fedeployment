@@ -5,12 +5,13 @@ import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import JSEncrypt from 'jsencrypt';
-import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars } from '../common/constant';
+import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars, permissions } from '../common/constant';
 import { ApiService } from './api.service';
 import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { NuxeoService } from './nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
+import { IChildAssetACL, IEntry } from '../common/interfaces';
 
 
 @Injectable({
@@ -20,6 +21,7 @@ export class SharedService {
   public todaysDateUTC = new Date().toUTCString();
   public todayDateKSAInMilli = new Date().getTime() + 3 * 60 * 60 * 1000;
   public MeterType;
+  public user = JSON.parse(localStorage.getItem('user')) || null;
 
   // /* <!-- sprint12-fixes start --> */
   public sidebarToggleResize = new BehaviorSubject(false);
@@ -295,12 +297,14 @@ export class SharedService {
     // window.scroll(0,0);
   }
 
-  checkExternalUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
+  checkExternalUser(user = JSON.parse(localStorage.getItem('user'))) {
+    if(typeof user == "string") {
+      return user.includes('neom') ? false : true;
+    }
     if (!user?.groups) return false;
     return user?.groups.includes(EXTERNAL_USER);
   }
-
+  
   capitaliseSelectiveTags(tag: string): string {
     if(tag.toLowerCase().trim() === 'neom') {
       return tag.toUpperCase();
@@ -519,6 +523,101 @@ export class SharedService {
 
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  getFolderCollaborators(selectedFolder?) {
+    const currentWorkspace = selectedFolder ? selectedFolder : JSON.parse(localStorage.getItem('workspaceState'));
+    if (!currentWorkspace?.contextParameters?.acls) return [];
+    const localAces = currentWorkspace.contextParameters.acls.find(acl => acl.name === 'local');
+    if (!localAces?.aces) return;
+    const folderCollaborators = {};
+    localAces.aces.forEach(ace => {
+      if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
+      if (!ace.granted || ace.username === "Administrator" || ace.username === 'administrators') return;
+      if (folderCollaborators[ace.username.id || ace.username]) {
+        folderCollaborators[ace.username.id || ace.username].permission.push(ace.permission);
+        folderCollaborators[ace.username.id || ace.username].ids.push(ace.id);
+        folderCollaborators[ace.username.id || ace.username].end = this.getLatestEndDate(folderCollaborators[ace.username.id || ace.username].end, ace.end)
+        return;
+      }
+      folderCollaborators[ace.username.id || ace.username] = {
+        user: ace.username,
+        permission: [ace.permission],
+        externalUser: ace.externalUser,
+        end: ace.end,
+        id: ace.id,
+        ids: [ace.id],
+      }
+    });
+    return folderCollaborators;
+  }
+
+  getLatestEndDate(date1: string, date2: string) {
+    if(new Date(date1).getTime() > new Date(date2).getTime()) {
+      return date1;
+    } else {
+      return date2;
+    }
+  }
+
+  createAdminCollaborator(data: IChildAssetACL) {
+    const user = this.user ? JSON.parse(localStorage.getItem('user')) : null;
+    return {
+        "user": data.creator,
+        "permission": [
+            "Everything"
+        ],
+        "externalUser": this.checkExternalUser(data.creator),
+        "end": null,
+        "id": `${data.creator}:Everything:true:${user.id}::`,
+        "ids": [
+          `${data.creator}:Everything:true:${user.id}::`
+        ]
+    }
+  }
+  
+  public async removeAllPermissions(folderCollaborators, creator: string, currentUserId: string, folderId: string) {
+    const arr = [];
+    for (const key in folderCollaborators) {
+      if(key.toLowerCase() === creator.toLowerCase() || key.toLowerCase() === currentUserId.toLowerCase()) {
+        continue;
+      }
+      const ids = folderCollaborators[key].ids;
+      for (const id of ids) {
+        folderCollaborators[key].id = id;
+        await this.removePermission(folderCollaborators[key].id, folderId);
+      }
+    }
+  }
+
+  public removePermission(id: string, folderId: string) {
+    const params = {
+      acl: "local",
+      id: id,
+    };
+    const payload = {
+      params,
+      context: {},
+      input: folderId,
+    };
+    return this.apiService
+      .post(apiRoutes.REMOVE_PERMISSION, payload)
+      .toPromise();
+  }
+
+  isFolderAdmin(item?: IEntry): boolean {
+    const currentWorkspace = item || JSON.parse(localStorage.getItem("workspaceState"));
+    let adminAcl = null;
+    currentWorkspace?.contextParameters?.acls?.[0].name === 'local' && currentWorkspace?.contextParameters?.acls?.[0].aces?.forEach(element => {
+      if(element.username === this.user.username && element.permission.toLowerCase() === permissions.lockFolderPermissions.ADMIN.toLowerCase()) {
+        adminAcl = element;
+      }
+    });
+
+    if(adminAcl && (adminAcl.end && new Date(adminAcl.end).getTime() > new Date().getTime() || !adminAcl.end)) {
+      return true;
+    }
+    return false;
   }
 
 }

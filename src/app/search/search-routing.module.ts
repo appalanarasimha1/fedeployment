@@ -5,10 +5,16 @@ import { SearchComponent } from './search/search.component';
 
 
 const routes: Routes = [
-  {path: '', component: SearchComponent,
-  children: [
-    // {path: 'construction', component: DocumentationAssetsComponent}
-  ]}
+  {
+    path: '', component: SearchComponent,
+    children: [
+    ]
+  },
+  {
+    path: 'construction', component: SearchComponent,
+    children: [
+    ]
+  }
 ];
 
 @NgModule({

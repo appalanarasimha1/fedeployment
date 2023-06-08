@@ -6,7 +6,7 @@ import { apiRoutes } from '../../common/config';
 import { IBrowseSidebar, IEntry, ISearchResponse, IArrow } from '../../common/interfaces';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { MoveCopyAssetsComponent } from "src/app/move-copy-assets/move-copy-assets.component";
-import { ASSET_TYPE, constants, PAGE_SIZE_20, UNWANTED_WORKSPACES } from '../../common/constant';
+import { ASSET_TYPE, constants, PAGE_SIZE_20, permissions, UNWANTED_WORKSPACES } from '../../common/constant';
 import { Sort } from "@angular/material/sort";
 import { DataService } from '../../services/data.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -15,6 +15,7 @@ import { PreviewPopupComponent } from '../../preview-popup/preview-popup.compone
 import { Router } from '@angular/router';
 import { NuxeoService } from 'src/app/services/nuxeo.service';
 import * as moment from 'moment';
+import { ManageAccessModalComponent } from 'src/app/manage-access-modal/manage-access-modal.component';
 
 @Component({
   selector: 'app-data-table',
@@ -289,20 +290,6 @@ export class DataTableComponent implements OnInit, OnChanges {
         let uid: any;
         this.downloadAsZip(input, uid, randomString)
       }
-      // if (this.downloadArray.length > 1) {
-      //   this.sharedService.showSnackbar(
-      //     "Your download is being prepared do not close your browser",
-      //     6000,
-      //     "top",
-      //     "center",
-      //     "snackBarMiddle"
-      //   );
-      //   $(".multiDownloadBlock").hide();
-      //   let randomString = Math.random().toString().substring(7);
-      //   let input = "docs:" + JSON.parse(JSON.stringify(this.downloadArray));
-      //   let uid: any;
-      //   this.downloadAsZip(input, uid, randomString)
-      // }
     }
   }
 
@@ -463,7 +450,11 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   checkCanDelete(item) {
-    return this.user === item.properties["dc:creator"]?.id || this.user === item.properties["dc:creator"];
+    return (this.user === item.properties["dc:creator"]?.id || 
+    this.user === item.properties["dc:creator"] || 
+    item.contextParameters.acls[0].aces.filter(acl => 
+      this.user === acl.username && acl.permission.toLowerCase() === 'everything'
+    ).length);
   }
 
   checkGeneralFolder(item){
@@ -1269,6 +1260,80 @@ export class DataTableComponent implements OnInit, OnChanges {
       }
     }
     return false;
+  }
+
+  async fetchFolder(id) {
+    const result: any = await this.apiService
+      .get(`/id/${id}?fetch-acls=username%2Ccreator%2Cextended`, {
+        headers: { "fetch-document": "properties" },
+      })
+      .toPromise();
+    return result;
+  }
+
+  async openManageAccessModal(folderId) {
+    // this.loading = true;
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.id = "modal-component";
+    dialogConfig.panelClass = "custom-modalbox";
+    dialogConfig.disableClose = true; // The user can't close the dialog by clicking outside its body
+    const folder = (await this.fetchFolder(folderId)) as any;
+    if (!this.checkHasAdminPermission(folder)) return;
+
+    dialogConfig.data = {
+      selectedFolder: folder
+    };
+
+    const modalDialog = this.matDialog.open(
+      ManageAccessModalComponent,
+      dialogConfig
+    );
+
+    modalDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.currentWorkspace = result;
+        if (result?.properties && result?.properties["dc:isPrivate"]) {
+          result.properties["isPrivateUpdated"] = true;
+        }
+        // this.saveState(result);
+        this.sortedData.forEach((item: IEntry) => {
+          if(result.uid === item.uid) {
+            item.properties["dc:isPrivate"] = result?.properties?.["dc:isPrivate"];
+          }
+        });
+      }
+      this.sortedData = this.sortedData.slice();
+      this.removeAssets();
+    });
+  }
+
+  isFolderAdmin(item: IEntry): boolean {
+    return this.sharedService.isFolderAdmin(item);
+  }
+
+  checkHasAdminPermission(folder) {
+    const currentCollaborators = this.sharedService.getFolderCollaborators(folder);
+    return this.hasAdminPermission(currentCollaborators, folder);
+  }
+
+  hasAdminPermission(currentCollaborators, folder) {
+    if (localStorage.getItem("user")) {
+      this.user = JSON.parse(localStorage.getItem("user"))["username"];
+    }
+    // console.log('currentCollaborators', currentCollaborators, this.user)
+    if (this.user === "Administrator") return true;
+    const currentWorkspace = folder ? folder : JSON.parse(localStorage.getItem("workspaceState"));
+    if (
+      currentWorkspace?.properties &&
+      currentWorkspace?.properties["isPrivateUpdated"]
+    )
+      return true;
+    if (!currentCollaborators || Object.keys(currentCollaborators).length === 0)
+      return false;
+    const ace = currentCollaborators[this.user];
+    if (!ace) return false;
+    return ace.permission.includes("Everything");
   }
 
 }

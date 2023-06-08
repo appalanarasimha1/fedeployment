@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BrowseSectorFolderComponent } from './browse-sector-folder.component';
+import { ArcGisMapComponent } from './arc-gis-map.component';
 
-describe('BrowseSectorFolderComponent', () => {
-  let component: BrowseSectorFolderComponent;
-  let fixture: ComponentFixture<BrowseSectorFolderComponent>;
+describe('ArcGisMapComponent', () => {
+  let component: ArcGisMapComponent;
+  let fixture: ComponentFixture<ArcGisMapComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BrowseSectorFolderComponent ]
+      declarations: [ ArcGisMapComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BrowseSectorFolderComponent);
+    fixture = TestBed.createComponent(ArcGisMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

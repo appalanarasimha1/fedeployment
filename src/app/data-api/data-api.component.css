@@ -84,6 +84,7 @@ section.lpSecOne {
 
 .topToggle ::ng-deep .mat-slide-toggle {
     float: right !important;
+    margin-left: 10px;
 }
 .topToggle ::ng-deep .mat-slide-toggle-bar {
     background-color: #D1CFC9;
@@ -187,4 +188,11 @@ section.lpSecOne {
 }
 .accordion-single-content iframe {
     margin: 30px 0px;
+}
+.topToggle span {
+    display: inline-block;
+    float: right;
+    font-size: 14px;
+    font-family: 'brownlight';
+    line-height: 24px;
 }

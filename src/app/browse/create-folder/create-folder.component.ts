@@ -38,6 +38,8 @@ export class CreateFolderComponent implements OnInit,OnChanges {
   listExternalUserGlobal: any[];
   checkPrivateFolder:boolean;
 
+  makeLockFolder: boolean;
+
   constructor(
     public sharedService: SharedService,
     private apiService: ApiService
@@ -121,14 +123,14 @@ export class CreateFolderComponent implements OnInit,OnChanges {
       };
     }
   }
-  
+
   CheckTitleAlreadyExits(name: string) {
     console.log('this.allFolders',this.allFolders, typeof this.allFolders)
     let titles = this.allFolders.map((m:any)=>m.title.toLowerCase().trim())
     if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
     return false
   }
-  
+
   async getAllFolders(folder?:any){
     let currentState = this.folderAssetsResult[folder?.uid]?.entries?.filter(r => r.title == "Workspaces")
     if(currentState?.length){
@@ -146,23 +148,21 @@ export class CreateFolderComponent implements OnInit,OnChanges {
   openNewFolderDiv() {
     this.showFolder = !this.showFolder;
   }
-  
-  handleChange(event, name: string) {
-    if (event.checked || event.target?.checked) {
-      if(name == 'published') {
-        this.publishingAssets = true;
-        this.publishingPrivateAssets = false;
-        this.checkboxIsPrivate = false
-      }
-      if(name == 'private') {
-        this.publishingAssets = false;
-        this.publishingPrivateAssets = true;
-        this.checkboxIsPrivate = true
 
-      }
+  handleChange(name: string) {
+    if(name == 'published') {
+      this.publishingAssets = true;
+      this.publishingPrivateAssets = false;
+      this.checkboxIsPrivate = false
+    }
+    if(name == 'private') {
+      this.publishingAssets = false;
+      this.publishingPrivateAssets = true;
+      this.checkboxIsPrivate = true
+
     }
   }
-  
+
   datePickerDefaultAction() {
     $( ".createNew.flexible" ).focus(() => {
       // alert( "Handler for .focus() called." );
@@ -219,7 +219,7 @@ export class CreateFolderComponent implements OnInit,OnChanges {
   }
 
 
-  
+
   // ================================================================================================= //
   isPrivateFolder(isButton = true, includeChild = false) {
     if (!this.hasInheritAcl() && !includeChild) return false;
@@ -231,7 +231,7 @@ export class CreateFolderComponent implements OnInit,OnChanges {
     this.isAdmin = this.hasAdminPermission(currentCollaborators);
     return isPrivate && this.hasNoOtherCollaborators(currentCollaborators)
   }
-  
+
   hasInheritAcl() {
     const currentWorkspace = JSON.parse(localStorage.getItem('workspaceState'));
     if (currentWorkspace?.properties && currentWorkspace?.properties['isPrivateUpdated']) return true;
@@ -260,7 +260,7 @@ export class CreateFolderComponent implements OnInit,OnChanges {
     });
     return folderCollaborators;
   }
-  
+
   hasAdminPermission(currentCollaborators) {
     if (this.user === "Administrator") return true;
     const currentWorkspace = JSON.parse(localStorage.getItem('workspaceState'));
@@ -268,20 +268,25 @@ export class CreateFolderComponent implements OnInit,OnChanges {
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return false;
     const ace = currentCollaborators[this.user];
     if (!ace) return false;
-    return ace.permission === 'Everything';
+    return ace.permission === "Everything" || ace.permission?.includes("Everything");
   }
-  
+
   hasNoOtherCollaborators(currentCollaborators) {
     if (!currentCollaborators || Object.keys(currentCollaborators).length === 0) return true;
     const otherUser = Object.keys(currentCollaborators).find(id => this.user !== id);
     if (otherUser) return false;
     else return true;
   }
-  
+
   isExternalUser() {
     return this.listExternalUser.includes(this.user) && !this.listExternalUserGlobal.includes(this.user);
   }
-  
+
+  toggleLockFolder(event) {
+    this.makeLockFolder = !this.makeLockFolder;
+    this.handleChange(this.makeLockFolder ? 'private' : 'published');
+  }
+
   // ================================================================================================= //
 
 }
