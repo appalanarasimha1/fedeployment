@@ -365,7 +365,10 @@ export class SearchComponent implements OnInit {
 
   formatAIThemeSearchQuery(params) {
     let finalQuery = '';
-    const ecmText = params['ecm_fulltext'].toLowerCase();
+    if(!params?.['ecm_fulltext']) { 
+      return 
+    }
+    const ecmText = params?.['ecm_fulltext']?.toLowerCase();
     if (ecmText?.includes(' and ')) {
       return
     }
