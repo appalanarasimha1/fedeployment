@@ -679,7 +679,7 @@
   <ul class="sidebarList">
     <li>
       <div class="updateNavigation">
-        <a class="sidebarLink" *ngIf="isDroneUploader === isExternalUSer || (isInAccessListOfRegion)" 
+        <a class="sidebarLink" *ngIf="isDroneUploader === isExternalUSer || isGlobalExternalUser || (isInAccessListOfRegion)" 
         [routerLink]="checkShowTabSelection() ? '/': '/construction'" (click)="resetFilter(); selectTab('search')"
         [ngClass]="isHomeUrlActive?  'active': ''"
         >
@@ -707,7 +707,7 @@
           </a>
         </div>
 
-        <a class="sidebarLink" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" *ngIf="isDroneUploader !== isExternalUSer && !isInAccessListOfRegion">
+        <a class="sidebarLink" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" *ngIf="isDroneUploader !== isExternalUSer&& !isGlobalExternalUser && !isInAccessListOfRegion">
           <img src="../../../assets/images/discovery-icon.svg" />
           Discovery
         </a>

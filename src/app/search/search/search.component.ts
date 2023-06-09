@@ -702,7 +702,7 @@ export class SearchComponent implements OnInit {
     }
     await this.checkInAccessListOfRegion()
 
-    if ((this.isDroneUploader && !this.isGlobalExternalUser) || this.isInAccessListOfRegion) {
+    if ((this.isDroneUploader || this.isInAccessListOfRegion) && !this.isGlobalExternalUser ) {
       this.selectedTab = tabs.CONSTRUCTION;
       this.router.navigate(['/', tabs.CONSTRUCTION]);
       return;

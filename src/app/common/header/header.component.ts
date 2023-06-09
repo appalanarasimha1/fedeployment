@@ -562,14 +562,17 @@ export class HeaderComponent implements OnInit {
   }
 
   checkShowTabSelection() {
-    let isOtherPage = false;
+    // let isOtherPage = false;
     // if (this.documentsView) {
     //   isOtherPage = !!this.documentsView.checkShowDetailview()
     // }
-    if (this.isGlobalExternalUser && this.isDroneUploader && !isOtherPage) {
-      return true;
+    if(this.isGlobalExternalUser) { 
+      return true
     }
-    return !this.isDroneUploader && !isOtherPage && this.checkNeomUser();
+    if (this.isDroneUploader) {
+      return false;
+    }
+    return !this.isDroneUploader && this.checkNeomUser();
   }
 
   generateVideoPlay() {
