@@ -84,6 +84,7 @@ export class DocumentationAssetsComponent implements OnInit {
   hasSearchData: boolean = false;
   fileSelected = [];
   isAware;
+  maxDate = new Date();
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
