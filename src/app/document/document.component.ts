@@ -1289,6 +1289,8 @@ export class DocumentComponent implements OnInit, OnChanges {
 
           }
           checkZipCompleted(uid)
+        }, err=> {
+          this.sharedService.hideSnackBar();
         });
     })
   }
@@ -1309,6 +1311,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.recentDataShow.forEach((e) => (e.isSelected = false));
     this.favourites.forEach((e) => (e.isSelected = false));
     this.trendingAssets.forEach((e) => (e.isSelected = false));
+    this.documents?.entries?.forEach((e) => (e.isSelected = false));
   }
 
   afterChangeTrending(e){
