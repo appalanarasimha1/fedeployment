@@ -373,13 +373,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   // }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    if(this.permissionChange) return true
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
-
     const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
     const currentCollaborators = this.getFolderCollaborators();
     this.isAdmin = this.hasAdminPermission(currentCollaborators);
-
+    if (this.permissionChange) return true
     if (isButton && includeChild) return isPrivate;
     if (isPrivate && !this.hasInheritAcl()) return true;
     if (this.hasInheritAcl() && includeChild) return isPrivate;
