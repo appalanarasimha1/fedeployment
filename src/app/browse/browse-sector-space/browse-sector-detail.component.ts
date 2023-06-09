@@ -807,9 +807,15 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     return item.properties["sa:downloadApprovalUsers"];
   }
 
-  openMoveModal(move=true) {
-    if(this.dataTableComponent){
-    this.dataTableComponent.openMoveModal(move);
+  async openMoveModal(move = true) {
+    if (this.dataTableComponent) {
+      const modalRef = await this.dataTableComponent.openMoveModal(move);
+
+      modalRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.getAssets(this.folderId, true);
+        }
+      })
     }
 
     else return;
