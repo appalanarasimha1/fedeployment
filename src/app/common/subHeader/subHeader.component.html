@@ -29,6 +29,7 @@
             <div
               style="position: relative; z-index: 99; pointer-events: all"
               class="searchDiv"
+              *ngIf="!hideSearchBar"
             >
               <form (ngSubmit)="searchOutputFn(searchText)" autocomplete="off">
                 <button class="primary search-btn">
