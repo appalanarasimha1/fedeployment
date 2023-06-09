@@ -729,7 +729,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         }
         this.dataTableComponent?.removeAssets();
       }
-      this.getAssets(this.folderId);
+      // this.getAssets(this.folderId);
       
       this.whiteLoader = false;
     });
