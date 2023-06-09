@@ -74,6 +74,9 @@ export class UploadModalComponent implements OnInit {
     // this.showPopup(2,event);
     event.stopPropagation()
   }
+  @HostListener('document:dragenter', ['$event']) onDocumentDragEnter(event) {
+    event.stopPropagation()
+  }
 
   isLinear = true;
   panelOpenState = false;
@@ -191,7 +194,7 @@ export class UploadModalComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log("incoming data = ", this.data);
-    this.description = this.data?.properties['dc:description'];
+    this.description = this.data?.properties?.['dc:description'];
     if(this.data?.dropFilesNew?.length){
       this.uploadFile(this.data.dropFilesNew)
     }
