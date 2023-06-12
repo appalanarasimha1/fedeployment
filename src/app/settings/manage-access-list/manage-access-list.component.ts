@@ -210,8 +210,9 @@ export class ManageAccessListComponent implements OnInit {
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
         const users = this.selectedAccess.users;
+        result.group = this.selectedAccess?.name?.initial
         users.push(result);
-        this.updateAccessUsers(this.selectedAccess.uid, users);
+        this.updateAccessUsers(this.selectedAccess.uid, users,result);
         this.getAccessList();
       }
     });
