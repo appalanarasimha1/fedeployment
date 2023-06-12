@@ -66,7 +66,7 @@ export class InviteUserModalComponent implements OnInit {
         "properties": {
           "username": this.userEmail,
           "email": this.userEmail,
-          "groups": this.supplier ? [DRONE_UPLOADER] : [],
+          "groups": this.supplier ? [DRONE_UPLOADER] : this.groupList,
         }
       })
       .execute();
