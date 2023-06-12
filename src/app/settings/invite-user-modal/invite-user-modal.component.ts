@@ -20,7 +20,8 @@ export class InviteUserModalComponent implements OnInit {
   supplier = null;
   isExisted = false;
   accessEntry = false;
-
+  groupList=[]
+  
   constructor(
     public dialogRef: MatDialogRef<InviteUserModalComponent>,
     private nuxeo: NuxeoService,
@@ -35,6 +36,7 @@ export class InviteUserModalComponent implements OnInit {
     this.supplier = this.data.supplier;
     this.isExisted = this.data.isExisted;
     this.accessEntry = this.data.accessEntry;
+    this.groupList = this.data.groups
     if (this.accessEntry) this.download = true;
   }
 
