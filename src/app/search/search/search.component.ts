@@ -76,6 +76,7 @@ export class SearchComponent implements OnInit {
   isGlobalExternalUser = false;
 
   excludedDroneWorkspaces = "";
+  isInAccessListOfRegion = false;
 
   // TypeScript public modifiers
   constructor(
@@ -347,7 +348,7 @@ export class SearchComponent implements OnInit {
     }
      this.dataService.loaderValueChangeNew(true);
     this.nuxeo.nuxeoClient
-      .request(url, { queryParams: params })
+      .request(url, { queryParams: params, headers })
       .get()
       .then((docs) => {
         this.setData(docs, isShowMore);
@@ -683,8 +684,13 @@ export class SearchComponent implements OnInit {
     this.detailViewType = detailViewType;
     this.resetFilter();
   }
-
-  checkUserGroup(groups) {
+  async checkInAccessListOfRegion() {
+    try {
+      this.isInAccessListOfRegion = await this.sharedService.checkInAccessListOfRegion()      
+    } catch (error) {}
+  }
+  
+  async checkUserGroup(groups) {
     if (groups.includes(DRONE_UPLOADER)) {
       this.isDroneUploader = true;
     }
@@ -694,7 +700,9 @@ export class SearchComponent implements OnInit {
     if (groups.includes(EXTERNAL_USER)) {
       this.isExternalUSer = true;
     }
-    if (this.isDroneUploader && !this.isGlobalExternalUser) {
+    await this.checkInAccessListOfRegion()
+
+    if ((this.isDroneUploader || this.isInAccessListOfRegion) && !this.isGlobalExternalUser ) {
       this.selectedTab = tabs.CONSTRUCTION;
       this.router.navigate(['/', tabs.CONSTRUCTION]);
       return;

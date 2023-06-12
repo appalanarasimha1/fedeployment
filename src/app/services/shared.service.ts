@@ -26,6 +26,7 @@ export class SharedService {
   // /* <!-- sprint12-fixes start --> */
   public sidebarToggleResize = new BehaviorSubject(false);
   private _subject = new Subject<any>();
+  regionList = [];
 
   constructor(
     private router: Router,
@@ -397,6 +398,10 @@ export class SharedService {
     }, timeout);
   }
 
+  hideSnackBar() { 
+    this._snackBar.dismiss()
+  }
+
   markRecentlyViewed(data: any): any[] {
     let found = false;
 
@@ -628,6 +633,34 @@ export class SharedService {
 
   isOwner(item: IEntry) {
     return item.properties?.["dc:creator"]?.id.toLowerCase() === this?.user?.username.toLowerCase();
+  }
+  
+  async getRegionList() {
+    if(this.regionList?.length) {
+      return this.regionList
+    }
+    const url = "/settings/area";
+    const res = (await this.apiService.get(url, {}).toPromise()) as any;
+
+    const regions = res || [];
+    this.regionList = regions.map((region) => ({
+      initial: region.code,
+      name: region.title,
+      uid: region.id,
+    }));
+    return this.regionList
+  }
+
+  async checkInAccessListOfRegion() {
+    let result = false;
+    try {
+      const regions = await this.getRegionList()
+      if (this.user?.groups?.length && regions?.length) {
+        const matchingGroup = this.user.groups.find(e => regions.find(d => e === d.initial));
+        result = !!matchingGroup;
+      }
+    } catch (error) { }
+    return result
   }
 
 }

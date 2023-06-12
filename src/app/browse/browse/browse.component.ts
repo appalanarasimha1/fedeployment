@@ -1188,9 +1188,13 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     dialogConfig.panelClass = 'custom-modalbox';
     dialogConfig.disableClose = true;
     this.selectedFolder["sectorId"] = this.selectedFolder2.uid;
-    dialogConfig.data = this.selectedFolder;
-    dialogConfig.data.isPrivate = this.isPrivateFolder();
-    dialogConfig.data.dropFilesNew = this.dropFilesNew;
+    // dialogConfig.data = this.selectedFolder;
+    const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
+    if (selectedFolder) {
+      dialogConfig.data = selectedFolder;
+      dialogConfig.data.isPrivate = this.isPrivateFolder();
+      dialogConfig.data.dropFilesNew = this.dropFilesNew;
+    }
     // https://material.angular.io/components/dialog/overview
     const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     modalDialog.afterClosed().subscribe((result) => {

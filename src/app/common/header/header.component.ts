@@ -77,6 +77,7 @@ export class HeaderComponent implements OnInit {
   generateVideo:boolean = false;
   videoResponseShow:boolean = false;
   changeSectorShow : boolean = false;
+  isInAccessListOfRegion = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -459,7 +460,14 @@ export class HeaderComponent implements OnInit {
     return isNaN(name) && !splittedUser?.length ? "":name?.toUpperCase()
   }
 
-  checkUserGroup(groups) {
+  async checkInAccessListOfRegion() {
+    try {
+      this.isInAccessListOfRegion = await this.sharedService.checkInAccessListOfRegion()      
+    } catch (error) {}
+  }
+
+  async checkUserGroup(groups) {
+    await this.checkInAccessListOfRegion()
     if (groups.includes(DRONE_UPLOADER)) {
       this.isDroneUploader = true;
     }
@@ -554,14 +562,17 @@ export class HeaderComponent implements OnInit {
   }
 
   checkShowTabSelection() {
-    let isOtherPage = false;
+    // let isOtherPage = false;
     // if (this.documentsView) {
     //   isOtherPage = !!this.documentsView.checkShowDetailview()
     // }
-    if (this.isGlobalExternalUser && this.isDroneUploader && !isOtherPage) {
-      return true;
+    if(this.isGlobalExternalUser) { 
+      return true
     }
-    return !this.isDroneUploader && !isOtherPage && this.checkNeomUser();
+    if (this.isDroneUploader) {
+      return false;
+    }
+    return !this.isDroneUploader && this.checkNeomUser();
   }
 
   generateVideoPlay() {
