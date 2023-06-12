@@ -946,7 +946,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     );
     this.sharedService.showSnackbar(
       "The deleted items will be retained for 180 days in",
-      6000,
+      3000,
       "top",
       "center",
       "snackBarMiddle",

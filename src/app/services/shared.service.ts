@@ -530,11 +530,12 @@ export class SharedService {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  getFolderCollaborators(selectedFolder?) {
+  getFolderCollaborators(selectedFolder?: IEntry) {
     const currentWorkspace = selectedFolder ? selectedFolder : JSON.parse(localStorage.getItem('workspaceState'));
     if (!currentWorkspace?.contextParameters?.acls) return [];
     const localAces = currentWorkspace.contextParameters.acls.find(acl => acl.name === 'local');
-    if (!localAces?.aces) return;
+    if (!localAces?.aces) return this.getFolderOwnerAcl(currentWorkspace);
+    
     const folderCollaborators = {};
     localAces.aces.forEach(ace => {
       if (!ace.granted || ace.username.id === "Administrator" || ace.username.id === 'administrators') return;
@@ -555,6 +556,19 @@ export class SharedService {
       }
     });
     return folderCollaborators;
+  }
+
+  getFolderOwnerAcl(currentWorkspace: IEntry) {
+    const owner = currentWorkspace.properties?.["dc:creator"].id;
+    let ownerCollaborator = {};
+    ownerCollaborator[owner] = { 
+      user: owner, 
+      notExisted: false, 
+      permission: ['Everything', 'CanUpload', 'CanDownload'], 
+      ids: [`${owner}:Everything:true:${owner}::`, `${owner}:CanUpload:true:Administrator::`, `${owner}:CanDownload:true:Administrator::`]
+    };
+    
+    return ownerCollaborator;
   }
 
   getLatestEndDate(date1: string, date2: string) {
