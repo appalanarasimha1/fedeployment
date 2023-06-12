@@ -84,6 +84,7 @@ export class DocumentationAssetsComponent implements OnInit {
   hasSearchData: boolean = false;
   fileSelected = [];
   isAware;
+  maxDate = new Date();
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
@@ -722,6 +723,7 @@ export class DocumentationAssetsComponent implements OnInit {
       if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
         window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
         this.removeAssets()
+        this.sharedService.hideSnackBar();
       }
       else {
         this.sharedService.showSnackbar(
@@ -773,9 +775,11 @@ export class DocumentationAssetsComponent implements OnInit {
                     uid
                   );
                   this.removeAssets();
+                  this.sharedService.hideSnackBar();
                 }
               }).catch(e => {
                 this.removeAssets();
+                this.sharedService.hideSnackBar();
               });
 
           }

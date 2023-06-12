@@ -373,13 +373,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   // }
 
   isPrivateFolder(isButton = true, includeChild = false) {
-    if(this.permissionChange) return true
     const selectedFolder = JSON.parse(localStorage.getItem('workspaceState'));
-
     const isPrivate = selectedFolder?.properties && selectedFolder?.properties["dc:isPrivate"];
     const currentCollaborators = this.getFolderCollaborators();
     this.isAdmin = this.hasAdminPermission(currentCollaborators);
-
+    if (this.permissionChange) return true
     if (isButton && includeChild) return isPrivate;
     if (isPrivate && !this.hasInheritAcl()) return true;
     if (this.hasInheritAcl() && includeChild) return isPrivate;
@@ -744,8 +742,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openModal(key?:boolean) {
-    if(key) this.dropFilesNew=[]
+  openModal(key?: boolean) {
+    if (key) this.dropFilesNew = [];
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
@@ -807,9 +805,15 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     return item.properties["sa:downloadApprovalUsers"];
   }
 
-  openMoveModal(move=true) {
-    if(this.dataTableComponent){
-    this.dataTableComponent.openMoveModal(move);
+  async openMoveModal(move = true) {
+    if (this.dataTableComponent) {
+      const modalRef = await this.dataTableComponent.openMoveModal(move);
+
+      modalRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.getAssets(this.folderId, true);
+        }
+      })
     }
 
     else return;

@@ -33,6 +33,7 @@ import {
 export class SubHeaderComponent implements OnInit {
   @Input() tagsMetadata: any;
   @Input() tagsMetadataNew: any;
+  @Input() hideSearchBar: boolean = false;
   @Output() searchTextOutput: EventEmitter<any> = new EventEmitter();
   @ViewChild("content") videoModal: ElementRef;
   // @Input() sectors: string[];

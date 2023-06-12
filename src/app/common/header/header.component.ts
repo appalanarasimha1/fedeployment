@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadModalComponent } from '../../upload-modal/upload-modal.component';
 import { UploadDroneComponent } from "../../upload-drone/upload-drone.component";
@@ -77,6 +77,7 @@ export class HeaderComponent implements OnInit {
   generateVideo:boolean = false;
   videoResponseShow:boolean = false;
   changeSectorShow : boolean = false;
+  isInAccessListOfRegion = false;
 
   constructor(
     private nuxeo: NuxeoService,
@@ -198,7 +199,7 @@ export class HeaderComponent implements OnInit {
     this.sendSelectedTab.emit(tab);
     if (tab === 'search') {
       if (this.isDroneUploader && !this.isGlobalExternalUser) {
-        this.router.navigate(['/'], { fragment: 'construction' });
+        this.router.navigate(['/', 'construction']);
         return;
       }
       this.router.navigate(['']);
@@ -452,22 +453,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-
-  checkWorkspaceActive(){
-    if (window.location.href.includes(`${window.location.origin}/workspace`)) {
-      return true
-    }
-  }
-
-  checkHomeActive(){
-    if (window.location.href==(`${window.location.origin}/`) || window.location.href==(`${window.location.origin}/#`)) {
-      return true
-    }
-    // if (window.location.href==`${window.location.origin}/` || window.location.href.includes('favorites')) {
-    //   return true
-    // }
-  }
-
   getImageName(){
     let {userData} = this
     let splittedUser = userData?.email.split(".")
@@ -475,7 +460,14 @@ export class HeaderComponent implements OnInit {
     return isNaN(name) && !splittedUser?.length ? "":name?.toUpperCase()
   }
 
-  checkUserGroup(groups) {
+  async checkInAccessListOfRegion() {
+    try {
+      this.isInAccessListOfRegion = await this.sharedService.checkInAccessListOfRegion()      
+    } catch (error) {}
+  }
+
+  async checkUserGroup(groups) {
+    await this.checkInAccessListOfRegion()
     if (groups.includes(DRONE_UPLOADER)) {
       this.isDroneUploader = true;
     }
@@ -562,6 +554,25 @@ export class HeaderComponent implements OnInit {
       $(".notificationExpandarea").hide();
       $(".notifactionClickAction").removeClass("createNewFolderClick");
     });
+  }
+
+  get isHomeUrlActive() { 
+    const url = this.router.url;
+    return (url === '/' || url.includes('/?') || url.includes('/#') || url.includes('/construction')) 
+  }
+
+  checkShowTabSelection() {
+    // let isOtherPage = false;
+    // if (this.documentsView) {
+    //   isOtherPage = !!this.documentsView.checkShowDetailview()
+    // }
+    if(this.isGlobalExternalUser) { 
+      return true
+    }
+    if (this.isDroneUploader) {
+      return false;
+    }
+    return !this.isDroneUploader && this.checkNeomUser();
   }
 
   generateVideoPlay() {
