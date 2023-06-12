@@ -720,25 +720,29 @@ export class DocumentationAssetsComponent implements OnInit {
         }
 
       }
-      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
-        window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+      if (newDownloadArray.length > 0) {
+        if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
+          window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+          this.removeAssets()
+          this.sharedService.hideSnackBar();
+        }
+        else {
+          this.sharedService.showSnackbar(
+            "Your download is being prepared do not close your browser",
+            0,
+            "top",
+            "center",
+            "snackBarMiddle",
+            "Close"
+          );
+          $(".multiDownloadBlock").hide();
+          let randomString = Math.random().toString().substring(7);
+          let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
+          let uid: any;
+          this.downloadAsZip(input, uid, randomString)
+        }
+      } else {
         this.removeAssets()
-        this.sharedService.hideSnackBar();
-      }
-      else {
-        this.sharedService.showSnackbar(
-          "Your download is being prepared do not close your browser",
-          0,
-          "top",
-          "center",
-          "snackBarMiddle",
-          "Close"
-        );
-        $(".multiDownloadBlock").hide();
-        let randomString = Math.random().toString().substring(7);
-        let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
-        let uid: any;
-        this.downloadAsZip(input, uid, randomString)
       }
     }
   }
