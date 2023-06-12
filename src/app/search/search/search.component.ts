@@ -77,7 +77,6 @@ export class SearchComponent implements OnInit {
   isGlobalExternalUser = false;
 
   excludedDroneWorkspaces = "";
-  apiCallDebounceTimeout: any;
   isInAccessListOfRegion = false;
 
   // TypeScript public modifiers
@@ -273,11 +272,6 @@ export class SearchComponent implements OnInit {
   }
 
   async fetchApiResult(withAncestorId = true, params, isShowMore: boolean = false) {
-    if(this.apiCallDebounceTimeout) { 
-      clearTimeout(this.apiCallDebounceTimeout)
-    }
-    this.apiCallDebounceTimeout = setTimeout(async ()=> {
-
     if(withAncestorId && (!this.excludedDroneWorkspaces || this.excludedDroneWorkspaces.length === 0)) {
       await this.getDroneUploadWsIds();
     }
@@ -381,7 +375,6 @@ export class SearchComponent implements OnInit {
           return;
         }
       });
-    }, 400)
 
   }
 
