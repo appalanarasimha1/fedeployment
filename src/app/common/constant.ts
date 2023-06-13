@@ -156,3 +156,5 @@ export const AISearchThemeMapping = {
     places: ["flea market", "hospital", "beach", "mountains", "house", "parking lot", "science museum", "campsite", "gas_station", "art gallery", "pavement", "art_school", "playground", "library", "bus station", "server room", "airport_terminal", "airplane_cabin", "auditorium", "baseball_field", "biology_laboratory", "classroom", "coffee_shop", "ocean deep", "desserts", "snowfield", "conference_room", "construction_site", "dam", "gymnasium", "industrial_area", "locker_room", "office", "restaurant", "street", "supermarket", "wind_farm", "village", "runway", "pharmacy", "music_studio", "region", "university"],
     events: ["events", "event", "exhibition", "socializing", "training", "program", "stage", "attending conference", "congregating", "celebrating", "auditorium"]
 }
+
+export const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
