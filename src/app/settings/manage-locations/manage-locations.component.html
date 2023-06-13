@@ -1,7 +1,7 @@
 
 <div class="externalUser positionRelative" *ngIf="!showExternalUserPage">
     <div class="device-header">
-        <h2>Regions</h2>
+        <h2>Regions <span class="countingSettings">{{filteredRegions.length}}</span></h2>
         <button class="primary createSuppliers" (click)="openCreateLocationModal()">Create new region</button>
     </div>
     <p class="externalEditAccess">You can <strong>search for existing regions</strong> by typing their name below:</p>
