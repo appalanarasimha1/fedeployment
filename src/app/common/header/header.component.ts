@@ -293,15 +293,19 @@ export class HeaderComponent implements OnInit {
   }
 
   get isUploadButtonVisible() {
-    if (this.isDroneUploader) {
-      return true
+    if(this.router.url.includes('/construction')) { 
+      if (this.isDroneUploader) {
+        return true
+      }
+      const user = JSON.parse(localStorage.getItem('user'));
+      this.userData = user;
+      if (user?.groups?.includes(EXTERNAL_GROUP_GLOBAL)) { // || user?.groups?.includes(REPORT_ROLE)
+        return true
+      }
+      return false;
+    }else{
+      return this.isDroneUploader || !this.checkExternalUser()
     }
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.userData = user;
-    if (user?.groups?.includes(EXTERNAL_GROUP_GLOBAL)) { // || user?.groups?.includes(REPORT_ROLE)
-      return true
-    }
-    return false;
   }
 
   checkNeomUser() {
