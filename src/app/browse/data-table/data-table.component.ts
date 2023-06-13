@@ -40,6 +40,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Output() sortedDataList: EventEmitter<any> = new EventEmitter();
   @Output() selectedCount: EventEmitter<any> = new EventEmitter();
   @Output() selectedAssetMoveList: EventEmitter<any> = new EventEmitter();
+  @Output() assetSelectionChange: EventEmitter<any> = new EventEmitter();
+  @Output() onRemoveAssets: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("paginator") paginator: MatPaginator;
@@ -496,6 +498,10 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.count = this.count + 1;
         this.assetCount = this.assetCount + 1;
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
+        this.assetSelectionChange.emit({
+          item,
+          checked: true
+        })
       }
       if (this.lastIndexClicked ==undefined) {
         this.currentIndexClicked = i
@@ -553,6 +559,10 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.count = this.count - 1;
         this.assetCount = this.assetCount - 1;
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
+        this.assetSelectionChange.emit({
+          item,
+          checked: false 
+        })
       }
 
       if (this.count==0) {
@@ -647,7 +657,10 @@ export class DataTableComponent implements OnInit, OnChanges {
       if (updateCount) {
         this.count = this.count + 1
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
-
+        this.assetSelectionChange.emit({
+          item,
+          checked: true
+        })
       };
       this.downloadArray.push(item.uid);
         this.downloadFullItem.push(item);
@@ -657,7 +670,10 @@ export class DataTableComponent implements OnInit, OnChanges {
       if (updateCount){
          this.count = this.count - 1;
          this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
-
+         this.assetSelectionChange.emit({
+          item,
+          checked: false
+        })
         }
         this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
         this.downloadFullItem = this.downloadFullItem.filter(
@@ -724,6 +740,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
     this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
+    this.onRemoveAssets.emit()
     this.removeSelection();
   }
 
