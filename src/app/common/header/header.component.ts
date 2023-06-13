@@ -298,7 +298,7 @@ export class HeaderComponent implements OnInit {
     }
     const user = JSON.parse(localStorage.getItem('user'));
     this.userData = user;
-    if (user?.groups?.includes(EXTERNAL_GROUP_GLOBAL) || user?.groups?.includes(REPORT_ROLE)) {
+    if (user?.groups?.includes(EXTERNAL_GROUP_GLOBAL)) { // || user?.groups?.includes(REPORT_ROLE)
       return true
     }
     return false;
