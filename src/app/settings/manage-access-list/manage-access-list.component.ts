@@ -11,6 +11,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { InviteUserModalComponent} from '../invite-user-modal/invite-user-modal.component';
+import { EMAIL_REGEX } from "src/app/common/constant";
 
 @Component({
   selector: "app-manage-access-list",
@@ -72,9 +73,12 @@ export class ManageAccessListComponent implements OnInit {
     // Filter out duplicates
     const uniqueUsers = nonAdminUsers.filter((user, index) => nonAdminUsers.indexOf(user) === index);
     // Filter out non-neom users  
-    const neomUsers = uniqueUsers.filter(user => user.includes('neom'));
-    
-    return neomUsers;
+    // const neomUsers = uniqueUsers.filter(user => user.includes('neom'));
+
+    // Filter out only valie emails
+    const validEmails = uniqueUsers.filter(user=> EMAIL_REGEX.test(user))
+
+    return validEmails;
   }
 
   

@@ -13,7 +13,7 @@ export class InviteUserModalComponent implements OnInit {
 
   loading = false;
   userEmail = "";
-  upload = true;
+  upload = false;
   download = false;
   delete = false;
   selectedMonth = new Date();
@@ -34,6 +34,7 @@ export class InviteUserModalComponent implements OnInit {
     this.selectedMonth = new Date(this.selectedMonth.setFullYear(this.selectedMonth.getFullYear() + 1));
     this.userEmail = this.data.userEmail;
     this.supplier = this.data.supplier;
+    this.upload = !!this.supplier;
     this.isExisted = this.data.isExisted;
     this.accessEntry = this.data.accessEntry;
     this.groupList = this.data.groups
