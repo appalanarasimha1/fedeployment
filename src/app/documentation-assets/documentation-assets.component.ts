@@ -369,14 +369,14 @@ export class DocumentationAssetsComponent implements OnInit {
     console.log("this.selectedStartDate",this.selectedStartDate,new Date(Date.now() + 1*24*60*60*1000));
     
     if (this.selectedStartDate && this.selectedEndDate) {
-      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
+      query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
         this.selectedStartDate
-      )}' AND DATE '${this.formatDateString(this.selectedEndDate)}'`;
+      )}' AND '${this.formatDateString(this.selectedEndDate)}'`;
     }else{
       let date = new Date()
-      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
+      query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
         date
-      )}' AND DATE '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
+      )}' AND '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
     }
     if (this.assetByMe) {
       query += ` AND dc:creator = '${this.user}'`;
@@ -386,7 +386,7 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   formatDateString(date) {
-    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split("T")[0];
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split("T")[0].split("-").join("");
   }
 
   openModal() {
