@@ -732,12 +732,16 @@ export class SearchComponent implements OnInit {
     if (groups.includes(EXTERNAL_USER)) {
       this.isExternalUSer = true;
     }
+
+    const hasAllGroup = groups.includes("ALL");
     await this.checkInAccessListOfRegion()
 
-    if ((this.isDroneUploader || this.isInAccessListOfRegion) && !this.isGlobalExternalUser ) {
-      this.selectedTab = tabs.CONSTRUCTION;
-      this.router.navigate(['/', tabs.CONSTRUCTION]);
-      return;
+    if (!this.isNeomUser()) {
+      if ((this.isDroneUploader || this.isInAccessListOfRegion || hasAllGroup) && !this.isGlobalExternalUser) {
+        this.selectedTab = tabs.CONSTRUCTION;
+        this.router.navigate(['/', tabs.CONSTRUCTION]);
+        return;
+      }
     }
     if (this.isExternalUSer && !this.isGlobalExternalUser && !this.isDroneUploader) {
       this.router.navigate(['workspace']);
