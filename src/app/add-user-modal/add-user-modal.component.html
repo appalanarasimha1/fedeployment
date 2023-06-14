@@ -120,17 +120,25 @@
 
         <table class="folderListview" style="width: calc(100% - 6px);">
           <tr>
-              <th style="width:45%">Users</th>
-              <th style="width:20%">Role</th>
+              <th style="width:30%">Users</th>
+              <th style="width:15%">Role</th>
               <th style="width:30%">Permissions</th>
               <th style="width:14%">Access expiry</th>
+              <th style="width:14%">
+                <span class="tollTipCustom">
+                  Broader access <svg width="26" height="26" class="infoIcon" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 1C6.37905 1 1 6.38565 1 13.0043C1 19.6229 6.37905 25 13 25C19.621 25 25 19.6229 25 13.0043C25 6.38565 19.621 1 13 1ZM13 2.09903C19.0314 2.09903 23.9091 6.975 23.9091 13.0043C23.9091 19.0335 19.0314 23.901 13 23.901C6.96861 23.901 2.09091 19.0335 2.09091 13.0043C2.09091 6.975 6.96862 2.09903 13 2.09903ZM13 7.00638C12.6988 7.00638 12.4545 7.25048 12.4545 7.55163C12.4545 7.85278 12.6988 8.0969 13 8.0969C13.3013 8.0969 13.5455 7.85278 13.5455 7.55163C13.5455 7.25048 13.3013 7.00638 13 7.00638ZM12.9403 10.7242C12.8048 10.7391 12.6797 10.8042 12.5898 10.9067C12.4999 11.0092 12.4516 11.1416 12.4545 11.2779V18.4569C12.4535 18.5291 12.4669 18.6009 12.4938 18.6679C12.5208 18.735 12.5608 18.796 12.6116 18.8474C12.6623 18.8989 12.7228 18.9398 12.7895 18.9676C12.8561 18.9955 12.9277 19.0099 13 19.0099C13.0723 19.0099 13.1439 18.9955 13.2105 18.9676C13.2772 18.9398 13.3377 18.8989 13.3885 18.8474C13.4392 18.796 13.4792 18.735 13.5062 18.6679C13.5331 18.6009 13.5465 18.5291 13.5455 18.4569V11.2779C13.5471 11.2003 13.5322 11.1232 13.5017 11.0519C13.4711 10.9805 13.4257 10.9164 13.3684 10.864C13.3111 10.8116 13.2433 10.772 13.1695 10.7479C13.0957 10.7238 13.0175 10.7157 12.9403 10.7242Z" fill="#BAB8B2" stroke="#BAB8B2" stroke-width="0.5"/>
+                    </svg>
+                  <div class="tolltipContent">In addition to a locked folder access, set the user to have <br />a broader access to all public assets on Ground X.</div>
+                </span>
+              </th>
               <th style="width:40px"></th>
           </tr>
         </table>
         <div class="overflowHidden">
           <table class="folderListview">
             <tr *ngFor="let collaborator of computedCollaborators | keyvalue">
-              <td style="width:45%">
+              <td style="width:30%">
                 <div class="tollTipCustom">
                   <div class="itemTitleContent">{{ getUsername(collaborator.value) }}
                     <span *ngIf="collaborator.value.user === user">(You)</span>
@@ -138,7 +146,7 @@
                   </div>
                 </div>
               </td>
-              <td class="bold" style="width:20%">
+              <td class="bold" style="width:15%">
                 <span *ngIf="collaborator.value.permissions.isOwner">Owner</span>
                 <span
                   *ngIf="!collaborator.value.permissions.isOwner && !collaborator.value.permissions.isAdmin && collaborator.value.user != user"
@@ -180,16 +188,33 @@
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
               </td>
-              <td style="width:40px">
-                <svg
-                  *ngIf="!collaborator.value.permissions?.isOwner && collaborator.value.user != user"
-                  (click)="removeUser(collaborator.key)" width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
-                  <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+              <td style="width:14%" class="makePrivate bold">
+                <ul class="permission">
+                  <li>
+                    <span class="tollTipCustom">
+                      <label class="control control--checkbox">
+                        Enable
+                        <input type="checkbox" />
+                        <div class="control__indicator"></div>
+                      </label>
+                      <div class="tolltipContent">In addition to a locked folder access, set the user to have <br />a broader access to all public assets on Ground X.</div>
+                    </span>
+                  </li>
+                </ul>
+              </td>
+              <td style="width:40px; text-align: right;">
+                <span class="tollTipCustom">
+                  <svg
+                    *ngIf="!collaborator.value.permissions?.isOwner && collaborator.value.user != user"
+                    (click)="removeUser(collaborator.key)" width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="action-delete-icon">
+                    <path d="M1.16724 5.24465L14.8612 2.33398" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.06662 1.52163L6.13329 2.14497C5.87313 2.19969 5.64547 2.35575 5.50061 2.57867C5.35575 2.80158 5.30562 3.07301 5.36129 3.33297L5.56929 4.31163L10.46 3.27163L10.252 2.29363C10.1972 2.03404 10.0415 1.80685 9.81923 1.66206C9.59692 1.51727 9.32619 1.46675 9.06662 1.52163Z" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.16724 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.1672 13V8" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4172 5H14.1672L13.2439 15.5827C13.2008 16.1024 12.7655 16.5018 12.2439 16.5H5.08724C4.56722 16.4997 4.13422 16.1009 4.09124 15.5827L3.3999 7.25133" stroke="#937206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="tolltipContent">Remove access to this folder</div>
+                </span>
               </td>
             </tr>
             <!-- <tr>

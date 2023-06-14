@@ -7,7 +7,12 @@ import {SharedService} from "../services/shared.service";
 import { DataService } from "../services/data.service";
 import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
 import { IChildAssetACL } from '../common/interfaces';
-import { ACCESS, ALLOW, CONFIDENTIALITY } from '../upload-modal/constant';
+import { ACCESS, ALLOW, CONFIDENTIALITY, SPECIFIC_USER_LABEL } from '../upload-modal/constant';
+import { concat, Observable, of, Subject } from "rxjs";
+
+interface FileByIndex {
+  [index: string]: File;
+}
 
 @Component({
   selector: 'app-manage-access-modal',
@@ -48,6 +53,25 @@ export class ManageAccessModalComponent implements OnInit {
   ];
   downloadApproval: boolean = false;
   loading: boolean = false;
+
+  overallConfidentiality: string;
+  overallAccess: string;
+  access: string;
+  allow: string;
+  customAccessMap: any = {};
+  customConfidentialityMap: any = {};
+  customDownloadApprovalUsersMap: any = {};
+  overallDownloadApprovalUsers: string[];
+  customDownloadApprovalMap: any = {};
+  overallDownloadApproval: boolean = false;
+  filesMap: FileByIndex = {};
+  customUsersMap: any = {};
+  overallUsers: string[];
+  userList$: Observable<any>;
+  userLoading: boolean = false;
+  userInput$ = new Subject<string>();
+
+  readonly SPECIFIC_USER_LABEL = SPECIFIC_USER_LABEL;
 
   constructor(
     private apiService: ApiService,
@@ -278,5 +302,50 @@ export class ManageAccessModalComponent implements OnInit {
 
   isUserOwner() {
     return this.user === this.selectedFolder?.properties["dc:creator"]?.id; 
+  }
+
+  checkShowUserDropdown(fileIndex?: any) {
+    const access =
+      fileIndex == null
+        ? this.overallAccess
+        : this.customAccessMap[fileIndex] || this.access;
+    const confidentiality =
+      fileIndex == null
+        ? this.overallConfidentiality
+        : this.customConfidentialityMap[fileIndex] || this.confidentiality;
+    if (access === ACCESS.restricted) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  onCheckDownloadApproval(event) {
+    console.log('event', event)
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    for (let i = 0; i < this.getAssetNumber(); i++) {
+      if (!event.target.checked) {
+        this.customDownloadApprovalUsersMap[i] = [];
+      } else {
+        this.overallDownloadApprovalUsers = [user.username];
+      }
+      this.customDownloadApprovalMap[i] = this.overallDownloadApproval;
+      this.customDownloadApprovalUsersMap[i] =
+      this.overallDownloadApprovalUsers;
+      // this.customDownloadApprovalMap[i] = this.downloadApproval;
+    }
+  }
+  getAssetNumber(): number {
+    return Object.keys(this.filesMap).length;
+  }
+  userOverall(){
+    const len = Object.keys(this.filesMap).length;
+    for (let i = 0; i < len; i++) {
+      this.customUsersMap[i] = this.overallUsers;
+    }
+  }
+  trackByFn(item: any) {
+    return item.id;
   }
 }

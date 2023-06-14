@@ -168,7 +168,7 @@
               </div>
               <div class="col-md-9 makePrivate">
                 <label class="control control--checkbox" style="font-family: 'brownlight';">
-                  <input [(ngModel)]="downloadApproval" type="checkbox"/>
+                  <input [(ngModel)]="downloadApproval" type="checkbox" (change)="onCheckDownloadApproval($event)"/>
                   <div class="control__indicator"></div>
                   Approval required before download
                 </label>
@@ -176,7 +176,33 @@
             </div>
           </div>
           <div class="col-md-6">
-            &nbsp;
+            <div class="row">
+              <div class="col-md-3">
+                {{SPECIFIC_USER_LABEL}}
+              </div>
+              <div class="col-md-9 makePrivate">
+                <ng-select style="height: unset !important;" 
+                  (change)="userOverall()"
+                  [items]="userList$ | async"
+                  bindLabel="id"
+                  bindValue="id"
+                  [multiple]="true"
+                  [hideSelected]="true"
+                  [trackByFn]="trackByFn"
+                  [minTermLength]="2"
+                  [loading]="userLoading"
+                  typeToSearchText="Search users"
+                  [typeahead]="userInput$"
+                  [(ngModel)]="overallUsers"
+                  [ngClass]="{'goldenText': overallUsers }"
+                  [searchable]="true"
+                  [clearable]="true" >
+                  <ng-template ng-option-tmp let-item="item">
+                      {{item.id}} ({{item.fullname}})
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
           </div>
         </div>
       </div>
