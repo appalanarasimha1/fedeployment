@@ -189,12 +189,12 @@
                 </mat-form-field>
               </td>
               <td style="width:14%" class="makePrivate bold">
-                <ul class="permission">
+                <ul *ngIf="!collaborator.value.permissions.isAdmin && checkExternaUser(collaborator.value.user)" class="permission">
                   <li>
                     <span class="tollTipCustom">
                       <label class="control control--checkbox">
                         Enable
-                        <input type="checkbox" />
+                        <input type="checkbox" [(ngModel)]="collaborator.value.permissions.broderAccess" />
                         <div class="control__indicator"></div>
                       </label>
                       <div class="tolltipContent">In addition to a locked folder access, set the user to have <br />a broader access to all public assets on Ground X.</div>
@@ -308,14 +308,14 @@
       </div>
     </div>
 
-    <div class="makeAdminBlock" *ngIf="checkShowExternalUser()">
+    <!-- <div class="makeAdminBlock" *ngIf="checkShowExternalUser()">
       <h3 style="color: grey;">External users</h3>
       <ul style="min-height: auto;">
         <li *ngFor="let c of invitedCollaborators | keyvalue">
           {{getExternalName(c.value)}}
           <span class="disableColor pl-10">Pending - Access expires {{getEndDate(c.value.end)}}</span>
           <span class="makeAdminAction">
-            <span  (click)="open(mymodal, c.value)">Edit Access</span><!-- open(mymodal, c.value) -->
+            <span  (click)="open(mymodal, c.value)">Edit Access</span>
             <span (click)="removeUser(c.key)" class="removeIcon">
               <svg
                 width="20"
@@ -378,7 +378,7 @@
           </span>
         </li>
       </ul>
-    </div>
+    </div> -->
 
     <!-- <div class="makePrivate tollTipWorkspace">
       <label class="control control--checkbox mb-20">

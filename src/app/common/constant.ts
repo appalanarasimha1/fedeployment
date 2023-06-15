@@ -148,7 +148,7 @@ export const permissions = {
     lockFolderPermissions: {
         'OWNER': '',
         'ADMIN': 'Everything',
-        'READWRITE': 'readwrite',
+        'READWRITE': 'ReadWrite',
         'UPLOAD': 'CanUpload',
         'DELETE': 'delete',
         'DOWNLOAD': 'CanDownload',

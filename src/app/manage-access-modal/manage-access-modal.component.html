@@ -168,7 +168,11 @@
               </div>
               <div class="col-md-9 makePrivate">
                 <label class="control control--checkbox" style="font-family: 'brownlight';">
-                  <input [(ngModel)]="downloadApproval" type="checkbox" (change)="onCheckDownloadApproval($event)"/>
+                  <input 
+                  [(ngModel)]="downloadApproval" 
+                  type="checkbox" 
+                  (change)="onCheckDownloadApproval($event)"
+                  />
                   <div class="control__indicator"></div>
                   Approval required before download
                 </label>
@@ -176,7 +180,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="row" *ngIf="checkShowUserDropdown()">
+            <div class="row" *ngIf="downloadApproval">
               <div class="col-md-3">
                 {{SPECIFIC_USER_LABEL}}
               </div>

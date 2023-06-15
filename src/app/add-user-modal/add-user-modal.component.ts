@@ -135,6 +135,9 @@ export class AddUserModalComponent implements OnInit {
     if (permission?.includes('Everything')) {
       this.computedCollaborators[key].permissions.isAdmin = true;
     }
+    if (permission?.includes('ReadWrite')) {
+      this.computedCollaborators[key].permissions.broderAccess = true;
+    }
     if (item.user === this.selectedFolder?.properties["dc:creator"] || item.user === this.selectedFolder?.properties["dc:creator"].id)
       this.computedCollaborators[key].permissions.isOwner = true;
   }
@@ -171,10 +174,8 @@ export class AddUserModalComponent implements OnInit {
     end.setMonth(new Date().getMonth() + 12);
     const isExist = this.computedCollaborators[item.id];
     if (isExist) return;
-    else if (!this.isNeomUser(item.id)) {
-      const end = new Date();
-      end.setMonth(new Date().getMonth() + 1);
-      this.addedExternalUsers[item.id] = {
+    else if (this.listExternalUser.includes(item.id)) {
+      newItem = {
         end,
         user: item.id,
         permissions: {
@@ -327,9 +328,7 @@ export class AddUserModalComponent implements OnInit {
     //   this.updateExternalUserGroup(item.user.id, item.isGlobal);
     // }
     let permission = item.permission;
-    // if (item.isAdmin !== undefined) {
-    //   permission = item.isAdmin ? "Everything" : "ReadWrite";
-    // }
+    
     if (!permission) permission = 'Read'
     const params = {
       permission,
@@ -712,7 +711,7 @@ export class AddUserModalComponent implements OnInit {
 
   async saveChanges() {
     await this.removePermissions();
-    // await this.removeAllPermissions();
+    // await this.removeAllPermissions(); 
     for (const key in this.computedCollaborators) {
       try {
         const collab = this.computedCollaborators[key];
@@ -720,9 +719,11 @@ export class AddUserModalComponent implements OnInit {
         if (item.notExisted && !this.checkNeomEmail(item.user)) {
           await this.inviteUser(item);
         }
+
         if (this.addedCollaborators[key] || this.addedExternalUsers[key]) {
           await this.sendInviteInternal(item);
         }
+
         if (item.permissions.canDownload) {
           const alreadyHave = item?.ids?.filter(item => item.includes("CanDownload"));
           if(!alreadyHave?.length) {
@@ -730,6 +731,7 @@ export class AddUserModalComponent implements OnInit {
             await this.addPermission(item);
           }
         }
+
         if (item.permissions.canUpload) {
           const alreadyHave = item?.ids?.filter(item => item.includes("CanUpload"));
           if(!alreadyHave?.length) {
@@ -737,13 +739,21 @@ export class AddUserModalComponent implements OnInit {
             await this.addPermission(item);
           }
         }
+
         if (item.permissions.isAdmin) {
           const alreadyHave = item?.ids?.filter(item => item.includes("Everything"));
           if(!alreadyHave?.length) {
             item.permission = permissions.lockFolderPermissions.ADMIN;
             await this.addPermission(item);
           }
+        } else if (this.sharedService.checkExternalUser(item.user) && item.permissions.broderAccess) {
+            const alreadyHave = item?.ids?.filter(item => item.includes("ReadWrite"));
+            if(!alreadyHave?.length) {
+              item.permission = permissions.lockFolderPermissions.READWRITE;
+              await this.addPermission(item);
+          }
         }
+
         if (!item.permissions.isAdmin && !item.permissions.canDownload && !item.permissions.canUpload) {
           item.permission = permissions.lockFolderPermissions.READ;
           await this.addPermission(item);
@@ -762,6 +772,10 @@ export class AddUserModalComponent implements OnInit {
       }
     }
     this.parentOutput.emit({closeModal: true});
+  }
+
+  checkExternaUser(email: string) {
+    return this.sharedService.checkExternalUser(email);
   }
 
   async removePermissions() {
@@ -796,6 +810,14 @@ export class AddUserModalComponent implements OnInit {
             await this.sharedService.removePermission(alreadyHave[0], this.folderId);
           }
         }
+
+        if (item.permissions?.isAdmin || !item.permissions?.broderAccess) {
+          const alreadyHave = item.ids?.filter(item => item.includes("ReadWrite"));
+          if(alreadyHave?.length) {
+            await this.sharedService.removePermission(alreadyHave[0], this.folderId);
+          }
+        }
+
       } catch (e) {
         //NOTE: show the toaster and do not close the modal window.
         this.sharedService.showSnackbar(

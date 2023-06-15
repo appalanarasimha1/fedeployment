@@ -9,6 +9,15 @@ import { AddUserModalComponent } from '../add-user-modal/add-user-modal.componen
 import { IChildAssetACL } from '../common/interfaces';
 import { ACCESS, ALLOW, CONFIDENTIALITY, SPECIFIC_USER_LABEL } from '../upload-modal/constant';
 import { concat, Observable, of, Subject } from "rxjs";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  tap,
+  map,
+  filter,
+} from "rxjs/operators";
 
 interface FileByIndex {
   [index: string]: File;
@@ -37,7 +46,7 @@ export class ManageAccessModalComponent implements OnInit {
   peopleInviteInput: string = "";
   folderCollaborators = {};
   lockedChildren = [];
-  user = "";
+  loggedInUserName = "";
   childAssetOwners: IChildAssetACL[];
   computedCollaborators = {};
 
@@ -61,12 +70,11 @@ export class ManageAccessModalComponent implements OnInit {
   customAccessMap: any = {};
   customConfidentialityMap: any = {};
   customDownloadApprovalUsersMap: any = {};
-  overallDownloadApprovalUsers: string[];
   customDownloadApprovalMap: any = {};
   overallDownloadApproval: boolean = false;
   filesMap: FileByIndex = {};
   customUsersMap: any = {};
-  overallUsers: string[];
+  overallUsers: string[] = [];
   userList$: Observable<any>;
   userLoading: boolean = false;
   userInput$ = new Subject<string>();
@@ -83,7 +91,7 @@ export class ManageAccessModalComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getfolderAcl();
-    this.user = JSON.parse(localStorage.getItem("user"))["username"];
+    this.loggedInUserName = JSON.parse(localStorage.getItem("user"))["username"];
     this.selectedFolder = this.input_data || this.data.selectedFolder;
     this.isPrivate = this.selectedFolder.properties['dc:isPrivate'] || false;
     this.docIsPrivate = this.isPrivate;
@@ -94,6 +102,8 @@ export class ManageAccessModalComponent implements OnInit {
       this.updateComputedCollaborators(this.folderCollaborators[key]);
     });
     if (!this.isPrivate) this.getLockedChild();
+
+    this.loadUsers()
   }
 
   async closeModal(isUpdated = false) {
@@ -183,7 +193,7 @@ export class ManageAccessModalComponent implements OnInit {
         );
         
       }
-      this.dataService.folderPermissionInit(this.docIsPrivate)
+      this.dataService.folderPermissionInit(this.docIsPrivate);
       if(this.input_data) {
         this.input_data.properties['dc:isPrivate'] = true;
         this.markIsPrivate.emit(this.input_data);
@@ -197,7 +207,7 @@ export class ManageAccessModalComponent implements OnInit {
   }
 
   async removeAllPermission() {
-    await this.sharedService.removeAllPermissions(this.computedCollaborators, this.selectedFolder.properties['dc:creator'].id, this.user, this.selectedFolder.uid);
+    await this.sharedService.removeAllPermissions(this.computedCollaborators, this.selectedFolder.properties['dc:creator'].id, this.loggedInUserName, this.selectedFolder.uid);
   }
 
   async setAccessRights() {
@@ -211,7 +221,8 @@ export class ManageAccessModalComponent implements OnInit {
             "sa:confidentiality": this.confidentiality.id,
             "sa:copyrightName": null,
             "sa:copyrightYear": null,
-            "sa:downloadApproval": this.downloadApproval
+            "sa:downloadApproval": this.downloadApproval,
+            "sa:downloadApprovalUsers": this.overallUsers
         }
       }
       const res = await this.apiService.post(apiRoutes.SET_UNLOCK_ASSET_ACL, payload).toPromise();
@@ -301,51 +312,81 @@ export class ManageAccessModalComponent implements OnInit {
   }
 
   isUserOwner() {
-    return this.user === this.selectedFolder?.properties["dc:creator"]?.id; 
+    return this.loggedInUserName === this.selectedFolder?.properties["dc:creator"]?.id; 
   }
 
-  checkShowUserDropdown(fileIndex?: any) {
-    const access =
-      fileIndex == null
-        ? this.overallAccess
-        : this.customAccessMap[fileIndex] || this.access;
-    const confidentiality =
-      fileIndex == null
-        ? this.overallConfidentiality
-        : this.customConfidentialityMap[fileIndex] || this.confidentiality;
-    if (access === ACCESS.restricted) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // checkShowUserDropdown(fileIndex?: any) {
+  //   const access =
+  //     fileIndex == null
+  //       ? this.overallAccess
+  //       : this.customAccessMap[fileIndex] || this.access;
+  //   const confidentiality =
+  //     fileIndex == null
+  //       ? this.overallConfidentiality
+  //       : this.customConfidentialityMap[fileIndex] || this.confidentiality;
+  //   if (access === ACCESS.restricted) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   onCheckDownloadApproval(event) {
-    console.log('event', event)
-
-    const user = JSON.parse(localStorage.getItem('user'));
-    for (let i = 0; i < this.getAssetNumber(); i++) {
-      if (!event.target.checked) {
-        this.customDownloadApprovalUsersMap[i] = [];
-      } else {
-        this.overallDownloadApprovalUsers = [user.username];
-      }
-      this.customDownloadApprovalMap[i] = this.overallDownloadApproval;
-      this.customDownloadApprovalUsersMap[i] =
-      this.overallDownloadApprovalUsers;
-      // this.customDownloadApprovalMap[i] = this.downloadApproval;
-    }
+    this.overallUsers = [this.loggedInUserName];
   }
+
   getAssetNumber(): number {
     return Object.keys(this.filesMap).length;
   }
-  userOverall(){
+
+  userOverall() {
     const len = Object.keys(this.filesMap).length;
     for (let i = 0; i < len; i++) {
       this.customUsersMap[i] = this.overallUsers;
     }
   }
+
   trackByFn(item: any) {
     return item.id;
   }
+  
+  loadUsers() {
+    this.userList$ = concat(
+      of([]),
+      this.userInput$.pipe(
+        filter((res) => {
+          return res !== null && res.length >= 2;
+        }),
+        distinctUntilChanged(),
+        debounceTime(300),
+        tap(() => (this.userLoading = true)),
+        switchMap((term) => {
+          return this.searchUser(term).pipe(
+            catchError(() => of([])),
+            tap(() => (this.userLoading = false))
+          );
+        })
+      )
+    );
+  }
+  
+  searchUser(term) {
+    this.userLoading = true;
+    const params = {
+      q: term.toLowerCase(),
+      currentPageIndex: 0,
+    };
+    return this.apiService.get(apiRoutes.SEARCH_USER, { params }).pipe(
+      map((resp) => {
+        return resp["entries"].map((entry) => ({
+          id: entry.id,
+          fullname: `${entry.properties.firstName || ""} ${
+            entry.properties.lastName || ""
+          }`.trim(),
+        }));
+      })
+    );
+  }
+
+
 }

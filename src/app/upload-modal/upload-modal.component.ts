@@ -1270,6 +1270,7 @@ export class UploadModalComponent implements OnInit {
     return new Date(dateString).toLocaleDateString();
   }
 
+  // TODO: move it to shared service as it is redundant
   loadUsers() {
     this.userList$ = concat(
       of([]),
