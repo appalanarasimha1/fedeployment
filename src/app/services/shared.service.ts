@@ -668,6 +668,9 @@ export class SharedService {
   async checkInAccessListOfRegion() {
     let result = false;
     try {
+      if(!this.user) { 
+        this.user = JSON.parse(localStorage.getItem('user')) || null
+      }
       const regions = await this.getRegionList()
       if (this.user?.groups?.length && regions?.length) {
         const matchingGroup = this.user.groups.find(e => regions.find(d => e === d.initial));

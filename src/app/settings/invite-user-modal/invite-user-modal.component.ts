@@ -13,14 +13,15 @@ export class InviteUserModalComponent implements OnInit {
 
   loading = false;
   userEmail = "";
-  upload = true;
+  upload = false;
   download = false;
   delete = false;
   selectedMonth = new Date();
   supplier = null;
   isExisted = false;
   accessEntry = false;
-
+  groupList=[]
+  
   constructor(
     public dialogRef: MatDialogRef<InviteUserModalComponent>,
     private nuxeo: NuxeoService,
@@ -33,8 +34,10 @@ export class InviteUserModalComponent implements OnInit {
     this.selectedMonth = new Date(this.selectedMonth.setFullYear(this.selectedMonth.getFullYear() + 1));
     this.userEmail = this.data.userEmail;
     this.supplier = this.data.supplier;
+    this.upload = !!this.supplier;
     this.isExisted = this.data.isExisted;
     this.accessEntry = this.data.accessEntry;
+    this.groupList = this.data.groups
     if (this.accessEntry) this.download = true;
   }
 
@@ -64,7 +67,7 @@ export class InviteUserModalComponent implements OnInit {
         "properties": {
           "username": this.userEmail,
           "email": this.userEmail,
-          "groups": this.supplier ? [DRONE_UPLOADER] : [],
+          "groups": this.supplier ? [DRONE_UPLOADER] : this.groupList,
         }
       })
       .execute();

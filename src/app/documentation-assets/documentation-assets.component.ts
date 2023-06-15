@@ -369,14 +369,14 @@ export class DocumentationAssetsComponent implements OnInit {
     console.log("this.selectedStartDate",this.selectedStartDate,new Date(Date.now() + 1*24*60*60*1000));
     
     if (this.selectedStartDate && this.selectedEndDate) {
-      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
+      query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
         this.selectedStartDate
-      )}' AND DATE '${this.formatDateString(this.selectedEndDate)}'`;
+      )}' AND '${this.formatDateString(this.selectedEndDate)}'`;
     }else{
       let date = new Date()
-      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
+      query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
         date
-      )}' AND DATE '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
+      )}' AND '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
     }
     if (this.assetByMe) {
       query += ` AND dc:creator = '${this.user}'`;
@@ -386,7 +386,7 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   formatDateString(date) {
-    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split("T")[0];
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split("T")[0].split("-").join("");
   }
 
   openModal() {
@@ -720,25 +720,29 @@ export class DocumentationAssetsComponent implements OnInit {
         }
 
       }
-      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
-        window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+      if (newDownloadArray.length > 0) {
+        if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
+          window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+          this.removeAssets()
+          this.sharedService.hideSnackBar();
+        }
+        else {
+          this.sharedService.showSnackbar(
+            "Your download is being prepared do not close your browser",
+            0,
+            "top",
+            "center",
+            "snackBarMiddle",
+            "Close"
+          );
+          $(".multiDownloadBlock").hide();
+          let randomString = Math.random().toString().substring(7);
+          let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
+          let uid: any;
+          this.downloadAsZip(input, uid, randomString)
+        }
+      } else {
         this.removeAssets()
-        this.sharedService.hideSnackBar();
-      }
-      else {
-        this.sharedService.showSnackbar(
-          "Your download is being prepared do not close your browser",
-          0,
-          "top",
-          "center",
-          "snackBarMiddle",
-          "Close"
-        );
-        $(".multiDownloadBlock").hide();
-        let randomString = Math.random().toString().substring(7);
-        let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
-        let uid: any;
-        this.downloadAsZip(input, uid, randomString)
       }
     }
   }

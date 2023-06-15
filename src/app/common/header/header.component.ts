@@ -291,6 +291,23 @@ export class HeaderComponent implements OnInit {
       return this.sharedService.checkExternalUser();
     }
   }
+
+  get isUploadButtonVisible() {
+    if(this.router.url.includes('/construction')) { 
+      if (this.isDroneUploader) {
+        return true
+      }
+      const user = JSON.parse(localStorage.getItem('user'));
+      this.userData = user;
+      if (user?.groups?.includes(EXTERNAL_GROUP_GLOBAL)) { // || user?.groups?.includes(REPORT_ROLE)
+        return true
+      }
+      return false;
+    }else{
+      return this.isDroneUploader || !this.checkExternalUser()
+    }
+  }
+
   checkNeomUser() {
     if (!this.userData) return !this.checkExternalUser();
     return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');

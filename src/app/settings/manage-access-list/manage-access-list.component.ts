@@ -11,6 +11,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { InviteUserModalComponent} from '../invite-user-modal/invite-user-modal.component';
+import { EMAIL_REGEX } from "src/app/common/constant";
 
 @Component({
   selector: "app-manage-access-list",
@@ -72,9 +73,12 @@ export class ManageAccessListComponent implements OnInit {
     // Filter out duplicates
     const uniqueUsers = nonAdminUsers.filter((user, index) => nonAdminUsers.indexOf(user) === index);
     // Filter out non-neom users  
-    const neomUsers = uniqueUsers.filter(user => user.includes('neom'));
-    
-    return neomUsers;
+    // const neomUsers = uniqueUsers.filter(user => user.includes('neom'));
+
+    // Filter out only valie emails
+    const validEmails = uniqueUsers.filter(user=> EMAIL_REGEX.test(user))
+
+    return validEmails;
   }
 
   
@@ -133,8 +137,8 @@ export class ManageAccessListComponent implements OnInit {
     if (res) this.users = res['entries'].map(user => user.id);
   }
 
-  updateDocument(id, params) {
-    return this.apiService.post(`/settings/accessList/${id}`, params, {responseType: 'text'}).toPromise();
+  updateDocument(id, params,user?,update?) {
+    return this.apiService.post(`/settings/accessList/${update?"update":"add"}/${id}`, [user], {responseType: 'text'}).toPromise();
   }
 
   openAccess(access) {
@@ -166,9 +170,10 @@ export class ManageAccessListComponent implements OnInit {
       permissions: ['download'],
       activated: true,
       expiry: end,
+      group:this.selectedAccess?.name?.initial
     }
     users.push(newUserProp);
-    this.updateAccessUsers(this.selectedAccess.uid, users);
+    this.updateAccessUsers(this.selectedAccess.uid, users,newUserProp);
   }
 
   checkEnableInviteBtn() {
@@ -177,7 +182,7 @@ export class ManageAccessListComponent implements OnInit {
   }
 
   async toggleAccessActivated(event, access) {
-    this.updateDocument(access.uid, {"activated": event.checked});
+    this.updateWholeDocument(access.uid, {"activated": event.checked});
     if(!event.checked) {
       this.sharedService.showSnackbar(
         "This access list will be disabled and its users unable to access its assets.",
@@ -201,6 +206,7 @@ export class ManageAccessListComponent implements OnInit {
       userEmail: this.inviteUserInput,
       accessEntry: this.selectedAccess,
       isExisted: this.users?.includes(this.inviteUserInput),
+      groups:[this.selectedAccess?.name?.initial]
     }
 
     const modalDialog = this.matDialog.open(InviteUserModalComponent, dialogConfig);
@@ -208,8 +214,9 @@ export class ManageAccessListComponent implements OnInit {
     modalDialog.afterClosed().subscribe((result) => {
       if (result) {
         const users = this.selectedAccess.users;
+        result.group = this.selectedAccess?.name?.initial
         users.push(result);
-        this.updateAccessUsers(this.selectedAccess.uid, users);
+        this.updateAccessUsers(this.selectedAccess.uid, users,result);
         this.getAccessList();
       }
     });
@@ -231,7 +238,8 @@ export class ManageAccessListComponent implements OnInit {
       permissions.splice(permissionIndex, 1);
     }
     users[index].permissions = permissions;
-    this.updateAccessUsers(this.selectedAccess.uid, users);
+    users[index].group = this.selectedAccess?.name?.initial
+    this.updateAccessUsers(this.selectedAccess.uid, users,users[index],true);
   }
 
   updateRegionPermission(users, disabled = false, name?) {
@@ -248,24 +256,26 @@ export class ManageAccessListComponent implements OnInit {
       .toPromise();
   }
 
-  updateAccessUsers(id, users) {
+  updateAccessUsers(id, users,user?,update=false) {
     const params = {
       "users": users,
     }
-    this.updateDocument(id, params);
+    this.updateDocument(id, params,user,update);
     this.updateRegionPermission(users);
   }
 
   togglerUserActivated(event, index) {
     const users = this.selectedAccess.users;
     users[index].activated = event.checked;
-    this.updateAccessUsers(this.selectedAccess.uid, users);
+    this.updateAccessUsers(this.selectedAccess.uid, users, users[index],true);
   }
 
   updateUserExpiry(event, index) {
     const users = this.selectedAccess.users;
     users[index].expiry = event.value;
-    this.updateAccessUsers(this.selectedAccess.uid, users);
+    this.updateAccessUsers(this.selectedAccess.uid, users,users[index],true);
   }
-
+  updateWholeDocument(id, params) {
+    return this.apiService.post(`/settings/accessList/${id}`, params, {responseType: 'text'}).toPromise();
+  }
 }
