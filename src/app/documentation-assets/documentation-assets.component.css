@@ -85,7 +85,7 @@
     font-weight: normal;
   }
 .documentationBlck ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items{
-    max-height: 120px !important;
+    /* max-height: 120px !important; */
 }
 .documentationBlck ::ng-deep .ng-arrow-wrapper .ng-arrow {
     content: "";
@@ -586,4 +586,7 @@ ul.downloadImgLisst li .contentListBlk {
 ::ng-deep .mat-snack-bar-container.snackBarMiddle, 
 ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
     margin-top: 125px !important;
+}
+.documentationBlck ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
+  max-height: 380px;
 }
