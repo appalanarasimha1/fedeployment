@@ -793,6 +793,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         setTimeout(() => {
           // if (this.selectedFolder.type === 'Domain') window.location.reload();
           // else this.handleClickNew(this.selectedFolder.uid);
+          this.fetchAssets.emit({id: this.currentWorkspace.uid});
         }, 1000);
       }
     });
