@@ -144,9 +144,15 @@ export class DataTableComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.numberOfPages = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.numberOfPages;
-    this.resultCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.resultsCount;
-    this.currentPageCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.currentPageSize;
+    let currentWorkspaceId =  this.currentWorkspace.title === 'Shared folders' ? null :  this.currentWorkspace?.uid
+    if(this.resultCount && this.resultCount !== this?.folderStructure?.[currentWorkspaceId]?.resultsCount ) { 
+      this.paginator.pageSize = this.defaultPageSize;
+      this.paginator.firstPage();
+    }
+
+    this.numberOfPages = this?.folderStructure?.[currentWorkspaceId]?.numberOfPages;
+    this.resultCount = this?.folderStructure?.[currentWorkspaceId]?.resultsCount;
+    this.currentPageCount = this?.folderStructure?.[currentWorkspaceId]?.currentPageSize;
   }
   
   /**
