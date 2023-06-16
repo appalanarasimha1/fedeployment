@@ -576,3 +576,75 @@ li.flex span.ellipsis {
 .retryingFile{
     color: #937206 !important;
 }
+.numberBlk {
+    white-space: nowrap;
+}
+
+li.customListBlock {
+    padding: 6px 20px 6px 44px;
+    cursor: pointer;
+}
+li.customListBlock .box1 {
+    width: 80px;
+    margin-right: 10px;
+    vertical-align: middle;
+    display: inline-block;
+}
+li.customListBlock span.ellipsis.box2 {
+    width: calc(100% - 245px);
+    display: inline-block;
+    white-space: nowrap;
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+li.customListBlock span.box3 { 
+    width: 145px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+li.customListBlock:hover {
+    background: #E1BB33;
+}
+
+.tollTipCustom{
+    position: relative;
+}
+.tollTipCustom .tolltipContent {
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.80);
+    padding: 3px 10px;
+    font-size: 13px;
+    color: #fff !important;
+    font-weight: normal;
+    width: max-content;
+    border-radius: 40px;
+    white-space: nowrap;
+    max-width: max-content;
+    width: max-content;
+    display: none;
+    text-align: center;
+    z-index: 99;
+    line-height: normal;
+}
+.tollTipCustom:hover .tolltipContent {
+    display: block;
+}
+.itemTitleContent {
+    /* width: calc(100% - 30px); */
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 20px;
+    display: inline-block;
+    position: relative;
+    z-index: 9;
+    white-space: nowrap;
+    vertical-align: -2px;
+}
