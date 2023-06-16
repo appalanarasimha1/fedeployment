@@ -30,11 +30,22 @@
                 [multiple]="false"
                 typeToSearchText="Search users"
             />
-            <div class="searchPopup" *ngIf="searchPopup && !tagClicked" id="customScrollBar" style="overflow-y: auto;">
+            <div class="searchPopup" id="customScrollBar" style="overflow-y: auto;"><!--*ngIf="searchPopup && !tagClicked" -->
                 <ul>
                     <!-- <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>OXAGON</span></li>
                     <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>TROJENA</span></li> -->
-                    <li *ngFor="let device of filteredInstallationIdList" class="flex" (click)="showUploadBlock(device)"><span class="numberBlk">{{device.installationId}}</span> <span class="ellipsis">{{device.area}}</span> <span>{{device.location}}</span></li>
+                    <li *ngFor="let device of filteredInstallationIdList" (click)="showUploadBlock(device)" class="customListBlock">
+                        <span class="numberBlk box1">{{device.installationId}}</span> 
+                        <span class="ellipsis box2">
+                            <span class="tollTipCustom">
+                                <div class="itemTitleContent">{{device.area}}</div>
+                                <span class="tolltipContent">
+                                    {{device.area}}
+                                </span>
+                            </span>
+                        </span> 
+                        <span class="box3">{{device.location}}</span>
+                    </li>
                 </ul>
             </div>
         </div>
