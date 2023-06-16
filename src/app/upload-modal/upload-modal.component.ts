@@ -182,6 +182,8 @@ export class UploadModalComponent implements OnInit {
 
   uploadLimit:boolean = false;
 
+  makeLockFolder: boolean;
+
   constructor(
     private apiService: ApiService,
     public dialogRef: MatDialogRef<UploadModalComponent>,
@@ -1527,5 +1529,24 @@ export class UploadModalComponent implements OnInit {
   closeAll(){
     this.modalService.dismissAll();
     this.uploadLimit = false;
+  }
+
+  toggleLockFolder(event) {
+    this.makeLockFolder = !this.makeLockFolder;
+    this.handleChangeToggle(this.makeLockFolder ? 'private' : 'published');
+  }
+
+  handleChangeToggle(name: string) {
+    if(name == 'published') {
+      this.publishingAssets = true;
+      this.publishingPrivateAssets = false;
+      this.checkboxIsPrivate = false
+    }
+    if(name == 'private') {
+      this.publishingAssets = false;
+      this.publishingPrivateAssets = true;
+      this.checkboxIsPrivate = true
+
+    }
   }
 }
