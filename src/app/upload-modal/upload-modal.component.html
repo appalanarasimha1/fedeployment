@@ -257,9 +257,20 @@
                      </div>
                      <div class="col-xl-9 col-md-9 folderType"  [ngClass]="{'grayField': descriptionFilled}" >
                         <div class="row">
-                           <div class="col-xl-2 col-md-2">
+                           <div class="col-xl-5 col-md-5">
                               <div class="row">
                                  <div class="col-xl-12 mb-10">
+                                    <div class="lockFolder">
+                                       <div class="slideToggleBlk">
+                                         <mat-slide-toggle (change)="toggleLockFolder($event)"></mat-slide-toggle>
+                                       </div>
+                                       <div class="slideContent">
+                                         Lock folder
+                                         <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <!-- <div class="col-xl-12 mb-10">
                                     <label class="control control--checkbox" (change)="handleChange($event, 'published')" style="margin-bottom: 0px; display: inline-block;">
                                       Published
                                       <input type="radio" id="Published" name="publishedPrivate" checked/>
@@ -272,27 +283,27 @@
                                       <input type="radio" id="Private" name="publishedPrivate"/>
                                       <div class="control__indicator" for="Private" style="top: 4px;left: 0px;border-radius: 100px;"></div>
                                     </label>
-                                  </div>
+                                  </div> -->
                               </div>
                            </div>
-                           <div class="col-xl-10 col-md-10" >
+                           <div class="col-xl-7 col-md-7" >
                               <div class="row">
                                  <div class="col-xl-12 mb-10">
                                     <div class="publishingAssets" *ngIf="publishingAssets">
-                                       <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
+                                       <p><strong>Used for publishing assets to "ALL USERS" or "ALL NEOM EMAIL HOLDERS"</strong></p>
                                        
                                        <table class="table table-bordered">
                                           <tbody>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Discoverable from search</td>
+                                                <td style="padding-left: 0px;white-space: nowrap;">Discoverable from search</td><!--white-space: nowrap;-->
                                                 <td style="border-right: 0px; font-family: 'brownregular';">Yes</td>
                                              </tr>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
+                                                <td style="padding-left: 0px;">Access and Usage</td>
                                                 <td style="border-right: 0px; font-family: 'brownregular';">Set per asset <br />("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</td>
                                              </tr>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
+                                                <td style="padding-left: 0px;">Can receive files from external users</td>
                                                 <td style="border-right: 0px;font-family: 'brownregular';">No</td>
                                              </tr>
                                           </tbody>
@@ -309,15 +320,15 @@
                                     </div>
        
                                     <div class="publishingAssets" *ngIf="publishingPrivateAssets">
-                                      <p>Used for restricting files to specific users or receiving files from external users</p>
+                                      <p><strong>Used for restricting files to specific users or receiving files from external users</strong></p>
                                       <table class="table table-bordered">
                                           <tbody>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
+                                                <td style="padding-left: 0px;">Access and Usage</td>
                                                 <td style="border-right: 0px; font-family: 'brownregular';">Folder members only</td>
                                              </tr>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
+                                                <td style="padding-left: 0px;">Can receive files from <br />external users</td>
                                                 <td style="border-right: 0px;font-family: 'brownregular';">Yes (if folder member)</td>
                                              </tr>
                                           </tbody>
