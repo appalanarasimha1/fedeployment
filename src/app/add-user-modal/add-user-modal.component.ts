@@ -615,7 +615,7 @@ export class AddUserModalComponent implements OnInit {
   }
 
   sendInvite(isNeom = false) {
-    const invitedEmail = this.userInputText;
+    const invitedEmail = this.userInputText?.toLowerCase();
     const existedUser = this.getEmailInUserList(invitedEmail);
     if (existedUser) {
       this.selectChange(existedUser);
