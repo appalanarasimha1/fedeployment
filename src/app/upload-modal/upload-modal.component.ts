@@ -203,7 +203,7 @@ export class UploadModalComponent implements OnInit {
     console.log("incoming data = ", this.data);
     this.description = this.data?.properties?.['dc:description'];
     if(this.data?.dropFilesNew?.length){
-      this.uploadFile(this.data.dropFilesNew)
+      this.onSelect({ addedFiles: this.data.dropFilesNew })
     }
 
     await this.showWorkspaceList();
@@ -619,13 +619,15 @@ export class UploadModalComponent implements OnInit {
     this.assetCache[uid]["contextParameters"] = contextParameters;
     return this.assetCache[uid]["entries"];
   }
-  async uploadFile(files,index?:number) {
+  async uploadFile(files, index?: number) {
     if (!this.batchId) {
       await this.createBatchUpload();
     }
     for (let i = index ? index + 1 : 0; i < files.length; i++) {
-      await this.uploadFileIndex(this.currentIndex, files[this.currentIndex],files.length , i);
-      this.currentIndex++;
+      await this.uploadFileIndex(this.currentIndex, files[this.currentIndex], files.length, i);
+      // if(files[this.currentIndex]) {
+      this.currentIndex = i + 1;
+      // }
     }
   }
 
@@ -808,8 +810,11 @@ export class UploadModalComponent implements OnInit {
             
             // reject();
           }else{
-            setTimeout(() => {
-              this.uploadFileIndex(index, file,length,currentItration)
+            setTimeout(async () => {
+              try {
+                await this.uploadFileIndex(index, file,length,currentItration)
+                resolve();
+              } catch (error) {}
             }, 5000);
             
           }
@@ -822,7 +827,9 @@ export class UploadModalComponent implements OnInit {
           this.uploadFailedRetry[index] = null
           $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
           console.log("Upload done");
-          
+          // if(this.whiteListFiles.length-1 > this.currentIndex){
+          //   this.uploadFile(this.whiteListFiles,this.currentIndex++)
+          // }
           // if (this.currentIndex == length-1) {
           //   this.allowPublish = true;
           //   this.startUpLoading = false;
