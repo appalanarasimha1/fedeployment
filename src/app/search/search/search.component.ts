@@ -798,14 +798,8 @@ export class SearchComponent implements OnInit {
 
   async getDroneUploadWsIds() {
     try {
-      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
-      const ids = res['value'];
-      // const ids = "6593c96f-9df1-4b7b-9a68-60d23fef1be9,4221b15b-8e23-42c8-93f1-bc9ec4547f9d"
-     if (ids && ids.length > 0) {
-      this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
-      //  this.excludedDroneWorkspaces = `ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
-     }
-    } catch (err) {}
+      this.excludedDroneWorkspaces = await this.sharedService.getDronFolderPathsToExclude();
+    } catch (err) { }
   }
 
 }
