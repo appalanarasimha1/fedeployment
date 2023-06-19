@@ -14,7 +14,8 @@ import {
   EXTERNAL_USER,
   DRONE_UPLOADER,
   tabs,
-  AISearchThemeMapping
+  AISearchThemeMapping,
+  GLOBAL_ROLE
 } from "src/app/common/constant";
 import { DataService } from "src/app/services/data.service";
 import { SideDrawerComponent } from "src/app/common/sideDrawer/sideDrawer.component";
@@ -733,7 +734,7 @@ export class SearchComponent implements OnInit {
       this.isExternalUSer = true;
     }
 
-    const hasAllGroup = groups.includes("Global");
+    const hasAllGroup = groups.includes(GLOBAL_ROLE);
     await this.checkInAccessListOfRegion()
 
     if (!this.isNeomUser()) {
