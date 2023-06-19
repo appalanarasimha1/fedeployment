@@ -131,7 +131,11 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   checkCanGoBack() {
     if (this.prevParent) {
-      if (this.prevParent.type !== 'Root') return true;
+      if (this.move) {
+        if (this.prevParent.type !== 'Root' && this.prevParent.type !== 'Domain') return true;
+      } else {
+        if (this.prevParent.type !== 'Root') return true;
+      }
     }
     if (!this.currentFolder || this.currentFolder.type === 'Domain') return false;
     return true;
