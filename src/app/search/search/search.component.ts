@@ -733,7 +733,7 @@ export class SearchComponent implements OnInit {
       this.isExternalUSer = true;
     }
 
-    const hasAllGroup = groups.includes("ALL");
+    const hasAllGroup = groups.includes("Global");
     await this.checkInAccessListOfRegion()
 
     if (!this.isNeomUser()) {
