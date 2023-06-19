@@ -33,6 +33,8 @@
                     </ng-option>
                 </ng-select>
             </li>
+          
+
             <li>
                 <ng-select placeholder="Sub-area"
                     (change)="onSelectSubArea($event)"
@@ -47,6 +49,38 @@
                     </ng-option>
                 </ng-select>
             </li>
+
+            <li>
+              <ng-select 
+                  [items]="items$ | async"
+                  placeholder="Device ID"
+                  (change)="onDeviceId($event)"
+                  [(ngModel)]="selectedDeviceId"
+                  id="confidentiality"
+                  [ngClass]="{'goldenText': selectedDeviceId}"
+                  [typeahead]="input$"
+              >
+                  <ng-option *ngFor="let region of deviceIds" [value]="region">
+                    {{region}}
+                  </ng-option>
+              </ng-select>
+            </li>
+
+            <li>
+              <ng-select placeholder="Device type"
+                  (change)="onSelectDeviceType($event)"
+                  [searchable]="true"
+                  [clearable]="true"
+                  [(ngModel)]="selectedDeviceType"
+                  id="confidentiality"
+                  [ngClass]="{'goldenText': selectedDeviceType}"
+              >
+                  <ng-option *ngFor="let subArea of deviceTypes" [value]="subArea">
+                      {{subArea | titlecase}}
+                  </ng-option>
+              </ng-select>
+          </li>
+
             <li>
               <mat-form-field appearance="fill" [ngClass]="{'goldenText': selectedStartDate || selectedEndDate}">
                 <mat-label (click)="picker.open();">Enter a date range</mat-label>

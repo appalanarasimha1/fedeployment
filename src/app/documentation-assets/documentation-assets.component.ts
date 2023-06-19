@@ -8,8 +8,17 @@ import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
 import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from "rxjs";
+import { concat, Observable, of, Subject } from "rxjs";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  tap,
+  map,
+  filter,
+  takeUntil
+} from "rxjs/operators";
 import { ISearchResponse } from "../common/interfaces";
 import { environment } from "src/environments/environment";
 
@@ -19,14 +28,21 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./documentation-assets.component.css"],
 })
 export class DocumentationAssetsComponent implements OnInit {
+  public items$: Observable<any>;
+  public input$ = new Subject<string | null>();
+  deviceIds = [];
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
-
+  selectedDeviceId;
+  deviceTypes:any = [];
+  selectedDeviceType;
   constructor(
     public matDialog: MatDialog,
     public sharedService: SharedService,
     private apiService: ApiService
-  ) {}
+  ) {
+    this.loadDevices();
+  }
 
   public masonryOptions: NgxMasonryOptions = {
     gutter: 10,
@@ -88,9 +104,19 @@ export class DocumentationAssetsComponent implements OnInit {
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
+    this.selectedDeviceId = null;
     this.getAssetList();
   }
   onSelectSubArea(area) {
+    this.selectedDeviceId = null;
+    this.getAssetList();
+  }
+  onDeviceId(area) {
+    this.selectedRegion = null;
+    this.selectedsubArea = null;
+    this.getAssetList();
+  }
+  onSelectDeviceType(area) {
     this.getAssetList();
   }
 
@@ -110,6 +136,7 @@ export class DocumentationAssetsComponent implements OnInit {
     this.sharedService.events$.forEach(event => {
       if (event === 'Upload done') this.getAssetList();
     });
+    this.getDeviceTypes();
   }
 
   async fetchGeneralData() {
@@ -345,6 +372,12 @@ export class DocumentationAssetsComponent implements OnInit {
     } else {
       query += ` AND ecm:primaryType = '${this.selectedFormat}'`;
     }
+
+    if(this.selectedDeviceType) {
+      query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
+    }
+
+
     if (this.selectedRegion) {
       filteredDevice = this.deviceList.filter(device =>
         (device.region?.includes(this.selectedRegion.uid)
@@ -360,9 +393,12 @@ export class DocumentationAssetsComponent implements OnInit {
       filteredDevice = this.deviceList.filter(device =>
         (device.subArea?.includes(this.selectedsubArea.uid) || device.subAreaId?.includes(this.selectedsubArea.locationId)))
     }
+    if (this.selectedDeviceId) {
+      filteredDevice = this.deviceList.filter(device => device.installationId === this.selectedDeviceId);
+    }
     if (filteredDevice != null) {
       if (filteredDevice.length === 0) return 'NONE';
-      const deviceIds = filteredDevice.map(device => device.installationId);
+      const deviceIds = Array.from(new Set<string>(filteredDevice.map(device => device.installationId)));
       const queryString = deviceIds.join("','");
       query += ` AND dc:installationId IN ('${queryString}')`;
     }
@@ -571,6 +607,8 @@ export class DocumentationAssetsComponent implements OnInit {
       this.selectedFormat ||
       this.selectedRegion ||
       this.selectedsubArea ||
+      this.selectedDeviceId ||
+      this.selectedDeviceType ||
       this.assetByMe
     );
   }
@@ -873,5 +911,33 @@ export class DocumentationAssetsComponent implements OnInit {
     }
   }
 
+  loadDevices() {
+    this.items$ = concat(
+      of([]),
+      this.input$.pipe(
+        distinctUntilChanged(),
+        debounceTime(300),
+        switchMap((term) => {
+          return this.getDeviceId(term).pipe(
+            catchError(() => of([])),
+          );
+        })
+      )
+    );
+  }
+
+  getDeviceId(id){
+    const url = `/cameraData/deviceID?deviceID=${id}`;
+    return this.apiService
+      .get(url, {}).pipe(tap((res: any)=>{
+        this.deviceIds =res
+      }));
+  }  
+
+  async getDeviceTypes(){
+    const url = `/cameraData/deviceType`;
+    this.deviceTypes =  await this.apiService
+      .get(url, {}).toPromise()
+  }  
 
 }
