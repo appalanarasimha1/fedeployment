@@ -30,7 +30,7 @@
                 [multiple]="false"
                 typeToSearchText="Search users"
             />
-            <div class="searchPopup" id="customScrollBar" style="overflow-y: auto;"><!--*ngIf="searchPopup && !tagClicked" -->
+            <div *ngIf="searchPopup && !tagClicked" class="searchPopup" id="customScrollBar" style="overflow-y: auto;">
                 <ul>
                     <!-- <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>OXAGON</span></li>
                     <li class="flex" (click)="showUploadBlock()"><span>Monthly footage</span> <span>TROJENA</span></li> -->
