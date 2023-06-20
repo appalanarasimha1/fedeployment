@@ -29,8 +29,8 @@
                 class="vh"
                 [checked]="folder.uid === selectedDestination?.uid"
                 (change)="selectFolder($event, folder)"
-                [disabled]="!move && !folder.properties['dc:isPrivate']"
-              />
+                />
+                <!-- [disabled]="!move && !folder.properties['dc:isPrivate']" -->
               <div class="control__indicator"></div>
             </label>
           </div>
