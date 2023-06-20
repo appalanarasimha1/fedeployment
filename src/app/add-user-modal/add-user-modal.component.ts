@@ -742,7 +742,7 @@ export class AddUserModalComponent implements OnInit {
 
         if (item.permissions.isAdmin) {
           const alreadyHave = item?.ids?.filter(item => item.includes("Everything"));
-          if(!alreadyHave?.length) {
+          if(!alreadyHave?.length || item?.assembledLocally) {
             item.permission = permissions.lockFolderPermissions.ADMIN;
             await this.addPermission(item);
           }

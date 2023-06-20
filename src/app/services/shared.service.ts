@@ -592,7 +592,8 @@ export class SharedService {
         "id": `${data.creator}:Everything:true:${user.id}::`,
         "ids": [
           `${data.creator}:Everything:true:${user.id}::`
-        ]
+        ],
+        assembledLocally: true
     }
   }
   
@@ -647,7 +648,7 @@ export class SharedService {
   }
 
   isOwner(item: IEntry) {
-    return item.properties?.["dc:creator"]?.id?.toLowerCase() === this?.user?.username?.toLowerCase();
+    return item?.properties?.["dc:creator"]?.id?.toLowerCase() === this?.user?.username?.toLowerCase();
   }
   
   async getRegionList() {
