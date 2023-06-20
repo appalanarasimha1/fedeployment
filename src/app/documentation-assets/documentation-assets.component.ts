@@ -192,12 +192,14 @@ export class DocumentationAssetsComponent implements OnInit {
       name: region.title,
       uid: region.id,
     }));
+    this.regionList.sort((a, b) => a.initial > b.initial ? 1 : -1);
     if (this.userRegionList.length > 0 && !this.userRegionList.includes('ALL')) {
       this.regionList = this.regionList.filter(region => this.userRegionList.includes(region.initial));
     }
     if (this.supplierRegions) {
       this.regionList = this.regionList.filter(region => this.supplierRegions.includes(region.uid));
     }
+  
     this.computeRegionMap();
   }
 
@@ -222,9 +224,12 @@ export class DocumentationAssetsComponent implements OnInit {
       uid: area.id,
       parentArea: area.parentArea,
     }));
+    this.subAreaList.sort((a, b) => a.name > b.name ? 1 : -1);
     const regionIds = this.regionList.map(region => region.uid);
     this.subAreaList = this.subAreaList.filter(subArea => regionIds.includes(subArea.parentArea));
+
     this.filteredSubAreaList = this.subAreaList;
+    
     this.computeSubAreaMap();
   }
 

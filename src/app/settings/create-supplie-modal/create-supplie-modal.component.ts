@@ -66,6 +66,7 @@ export class CreateSupplieModalComponent implements OnInit {
   ngOnInit(): void {
     this.suppliersName = this.data.supplierInput;
     this.suppliersRegion = this.data.suppliersRegion;
+    this.suppliersRegion.sort((a, b) => a.initial > b.initial ? 1 : -1);
     this.selectedMonth = new Date();
     this.selectedMonth.setMonth(this.selectedMonth.getMonth() + 6);
     this.currentSuppliers = this.data.currentSuppliers || [];;
