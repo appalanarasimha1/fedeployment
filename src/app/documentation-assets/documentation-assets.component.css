@@ -594,3 +594,6 @@ ul.downloadImgLisst li .contentListBlk {
 li.removeArrow ::ng-deep .ng-arrow-wrapper {
   display: none !important;
 }
+.mb-100 {
+  margin-bottom: 100px;
+}

@@ -172,7 +172,7 @@
         <div
           *ngIf="assetListDocument.isNextPageAvailable"
           (click)="showMore()"
-          class="showMoreBtn"
+          class="showMoreBtn" class="showMoreBtn" [ngClass]="{'mb-100' : fileSelected.length}"
         >
           Show more
         </div>
