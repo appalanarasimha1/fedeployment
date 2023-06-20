@@ -50,7 +50,7 @@
                 </ng-select>
             </li>
 
-            <li>
+            <li class="removeArrow">
               <ng-select 
                   [items]="items$ | async"
                   placeholder="Device ID"
@@ -114,8 +114,15 @@
                     </ng-option>
                 </ng-select>
             </li>
+            <li *ngIf="!isNeomUser()" style="width: auto;">
+              <label class="control control--checkbox" style="margin-bottom: 0px;margin-top: 10px;">
+                Only show assets uploaded by me
+                <input (change)="getAssetList()" [(ngModel)]="assetByMe" type="checkbox" checked="checked"/>
+                <div class="control__indicator"></div>
+             </label>
+            </li>
           </ul>
-          <div class="row">
+          <!-- <div class="row">
             <div *ngIf="!isNeomUser()" class="col-md-4">
               <label class="control control--checkbox" style="margin-bottom: 0px;">
                 Only show assets uploaded by me
@@ -129,8 +136,8 @@
                 <input type="checkbox" checked="checked"/>
                 <div class="control__indicator"></div>
              </label>
-            </div> -->
-          </div>
+            </div> -/->
+          </div> -->
         </div>
 
 
