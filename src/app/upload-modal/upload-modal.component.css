@@ -130,6 +130,7 @@ font-weight: normal;
   color: #0072A2;
   position: absolute;
   top: 45px;
+  width: 100%;
 }
 ngx-dropzone-preview:hover {
   background-color: white !important;
@@ -1657,7 +1658,7 @@ span.showAllClassifications svg.rotateArrow {
   color: #B1AAA1;
 }
 .upload-loading span.malware {
-  width: 70%;
+  width: 80%;
   float: left;
   line-height: 18px;
   font-size: 13px;
@@ -2055,3 +2056,7 @@ li.styled.yellowfix:hover {
     margin-bottom: 15px;
     display: inline-block;
     }
+
+.retryingFile{
+  color: #937206 !important;
+}

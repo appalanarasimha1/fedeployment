@@ -5,7 +5,7 @@ import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import JSEncrypt from 'jsencrypt';
-import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars, permissions } from '../common/constant';
+import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars, permissions, PAGE_SIZE_200, ROOT_ID } from '../common/constant';
 import { ApiService } from './api.service';
 import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
@@ -27,7 +27,8 @@ export class SharedService {
   public sidebarToggleResize = new BehaviorSubject(false);
   private _subject = new Subject<any>();
   regionList = [];
-
+  workspacesList = [];
+  
   constructor(
     private router: Router,
     private apiService: ApiService,
@@ -680,4 +681,29 @@ export class SharedService {
     return result
   }
 
+
+  async getWorkspacesList() { 
+    if(this.workspacesList && this.workspacesList.length)  {
+      return this.workspacesList;
+    }
+    let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${0}&offset=${0}&pageSize=${PAGE_SIZE_200}&ecm_parentId=${ROOT_ID}&ecm_trashed=false`;
+    const { entries = [] }: any = await this.apiService.get(url).toPromise();
+    this.workspacesList = entries;
+    return this.workspacesList
+  }
+
+  async getDronFolderPathsToExclude() { 
+    try {
+      let excludedDroneWorkspaces = '';
+      const workspaces = await this.getWorkspacesList()
+      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, { params: { getId: true } }).toPromise();
+      const value = res['value'];
+      const dronArr = value ? (JSON.parse(value) || []) : [];
+      const ids = dronArr.map(e => e.id).filter((e) => workspaces.find(d => d.uid === e))
+      if (ids && ids.length > 0) {
+        excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.join("' AND ecm:ancestorId != '")}'`;
+      }
+      return excludedDroneWorkspaces;
+    } catch (err) { }
+  }
 }

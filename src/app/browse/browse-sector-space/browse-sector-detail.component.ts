@@ -100,6 +100,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   onlyPrivate:boolean = false;
   permissionChange:boolean=false;
   assetSize = { count: 0, size: null};
+  selectedAssetsIds = {}
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -127,6 +128,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.route.paramMap.subscribe( async () => {
       this.sectorName = this.route.snapshot.paramMap.get('sectorName');
       this.folderId = this.route.snapshot.paramMap.get('folderId');
+      this.searchBarValue = '';
       if(!this.folderId) {
         if(this.sectorName === 'sharedFolder') {
           // this.checkExternalGlobalUserList();
@@ -139,6 +141,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         this.getAssets(this.folderId);
         await this.fetchFolderById(this.folderId);
       }
+      this.removeAssets()
     });
 
     this.dataService.uploadedAssetData$.subscribe((result: any) => {
@@ -279,6 +282,14 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
           (sector) =>
             UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
         );
+        if (this.selectedAssetsIds && Object.keys(this.selectedAssetsIds).length > 0) {
+          this.assetList.forEach(doc => {
+            if (doc && this.selectedAssetsIds[doc.uid]) {
+              doc.isSelected = true
+            }
+          })
+        }
+
         let workSpaceIndex = this.assetList.findIndex(
           (res) => res.title === "Workspaces"
         );
@@ -292,6 +303,13 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
           this.loading = false;
         }
       });
+  }
+
+  handleAssetSelectionChange (event) { 
+    this.selectedAssetsIds[event.item.uid] = event.checked;
+  }
+  handleRemoveAssets() { 
+    this.selectedAssetsIds = {};
   }
 
   initWorkspaceSearch(initialiseViews?: boolean): void {
@@ -321,7 +339,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   async searchFolders(searchString: string) {
-    this.showAssetPath = true;
     // this.loading = true;
     let query;
     if (!this.folderId && this.isExternalView) {
@@ -343,7 +360,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         headers: { "fetch-document": "properties" },
       })
       .toPromise();
-
+    this.showAssetPath = true;
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, false)
     );

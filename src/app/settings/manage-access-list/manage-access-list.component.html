@@ -1,7 +1,7 @@
 
 <div class="externalUser positionRelative" *ngIf="!showExternalUserPage">
     <div class="device-header">
-        <h2>Access lists</h2>
+        <h2>Access lists <span class="countingSettings">{{filteredAccessList.length}}</span></h2>
         <!-- <button class="primary createSuppliers" (click)="openCreateLocationModal()">Create new region</button> -->
     </div>
     <p class="externalEditAccess">You can <strong>search for existing access lists</strong> by typing their name below:</p>

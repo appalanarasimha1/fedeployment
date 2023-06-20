@@ -4650,3 +4650,9 @@ ul.all-sectors img.noPreviewItem {
 .modal-body.fixx .ng-dropdown-panel .ng-dropdown-panel-items {
   max-height: 100% !important;
 }
+span.countingSettings {
+  border-radius: 100px;
+  padding: 4px 8px 5px;
+  background: #E8E6DF;
+  font-size: 15px;
+}
