@@ -56,9 +56,11 @@ const BUTTON_LABEL = {
   3: "Publish",
 };
 
-const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
+
+const MAX_CHUNK_SIZE = 1*100 * 100 * 1000; // 10 mb
+const CHUNK_UPLOAD_THREASOLD = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB // 700000000
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
-const CONCURRENT_UPLOAD_REQUEST = 5;
+const CONCURRENT_UPLOAD_REQUEST = 1;
 const apiVersion1 = environment.apiVersion;
 
 @Component({
@@ -188,6 +190,7 @@ export class UploadModalComponent implements OnInit {
   failedFiles = []
 
   makeLockFolder: boolean;
+  uploading = false;
 
   constructor(
     private apiService: ApiService,
@@ -279,7 +282,12 @@ export class UploadModalComponent implements OnInit {
 
       if(this.sizeExeeded) return 
       // console.log("12345",this.getTotalFileSize())
-      this.uploadFile(this.whiteListFiles, prevLen-1);
+      
+      // If upload is in progress we don't need to call this method again, just pushing files in this.whiteListFiles
+      // will make things work, as for loop will pick those new files up from modified array
+      if(!this.uploading) {
+        this.uploadFile(this.whiteListFiles, prevLen-1);
+      }
     }
   }
 
@@ -620,6 +628,7 @@ export class UploadModalComponent implements OnInit {
     return this.assetCache[uid]["entries"];
   }
   async uploadFile(files, index?: number) {
+    this.uploading = true;
     if (!this.batchId) {
       await this.createBatchUpload();
     }
@@ -629,6 +638,7 @@ export class UploadModalComponent implements OnInit {
       this.currentIndex = i + 1;
       // }
     }
+    this.uploading = false;
   }
 
   async createBatchUpload() {
@@ -688,7 +698,7 @@ export class UploadModalComponent implements OnInit {
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
     this.chunksFailedToUpload = {};
-    if (totalSize > MAX_CHUNK_SIZE) {
+    if (totalSize > CHUNK_UPLOAD_THREASOLD) {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
       console.log('total chunk: ' + totalChunk);
