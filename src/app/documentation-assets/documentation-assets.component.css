@@ -61,7 +61,7 @@
 
 .regionBlok {
     padding: 0px 0px 30px;
-    max-width: 86%;
+    max-width: 100%;
 }
 .regionBlok::after,
 .regionBlok ul::after {
@@ -78,6 +78,7 @@
     float: left;
     padding-right: 30px;
     width: 25%;
+    margin-bottom: 20px;
 }
 .goldenText input {
     color: #C49900 !important;
@@ -589,4 +590,7 @@ ul.downloadImgLisst li .contentListBlk {
 }
 .documentationBlck ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
   max-height: 380px;
+}
+li.removeArrow ::ng-deep .ng-arrow-wrapper {
+  display: none !important;
 }
