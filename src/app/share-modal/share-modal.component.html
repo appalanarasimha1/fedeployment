@@ -1,4 +1,4 @@
-<div class="manageAccessBlock">
+<!-- <div class="manageAccessBlock">
   <h3>Manage access
     <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
         <img src="../../assets/images/close-modal.svg" style="width: 20px" />
@@ -51,7 +51,7 @@
                 <td style="width:50%">
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">sheriff.shitu@neom.com <span>(You)</span></div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                   
                   </div>
                 </td>
                 <td class="makePrivate bold" style="width:30%">
@@ -74,7 +74,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">maha.aljehani@neom.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="makePrivate bold">
@@ -115,7 +114,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">jing.lin@neom.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="makePrivate bold">
@@ -156,7 +154,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">ankur.tiwari@neom.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="makePrivate bold">
@@ -197,7 +194,7 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">zimraan.hadi@example.com <span class="accessExpired">Access expired</span></div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
+                   
                   </div>
                 </td>
                 <td class="makePrivate bold">
@@ -238,7 +235,6 @@
                 <td>
                   <div class="tollTipCustom">
                     <div class="itemTitleContent">azeem.ahmadi@example.com</div>
-                    <!-- <div class="tolltipContent">ankur.tiwari@neom.com</div> -->
                   </div>
                 </td>
                 <td class="makePrivate bold">
@@ -286,4 +282,13 @@
         <button (click)="closeModal()" class="cancel-btn">Cancel</button>
         <button (click)="updateRights()" class="upload-btn" >Save changes</button>
     </div>
-</div>
+</div> -->
+
+
+<app-add-user-modal
+  [selectedFolder]=""
+  [folderId]=""
+  [folderCollaborators]=""
+  [childAssetOwners]=""
+  >
+</app-add-user-modal>
