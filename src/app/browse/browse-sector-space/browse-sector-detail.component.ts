@@ -127,6 +127,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.route.paramMap.subscribe( async () => {
       this.sectorName = this.route.snapshot.paramMap.get('sectorName');
       this.folderId = this.route.snapshot.paramMap.get('folderId');
+      this.searchBarValue = '';
       if(!this.folderId) {
         if(this.sectorName === 'sharedFolder') {
           // this.checkExternalGlobalUserList();
@@ -321,7 +322,6 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   async searchFolders(searchString: string) {
-    this.showAssetPath = true;
     // this.loading = true;
     let query;
     if (!this.folderId && this.isExternalView) {
@@ -343,7 +343,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         headers: { "fetch-document": "properties" },
       })
       .toPromise();
-
+    this.showAssetPath = true;
     result.entries = result.entries.sort((a, b) =>
       this.compare(a.title, b.title, false)
     );
