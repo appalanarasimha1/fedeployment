@@ -122,6 +122,7 @@ export const DEFAULT_NUMBER_OF_TAGS_PREVIEW = 8;
 
 export const ROOT_ID = '00000000-0000-0000-0000-000000000000';
 export const REPORT_ROLE = 'reportAdmin';
+export const GLOBAL_ROLE = 'Global';
 export const specialExtensions = [ // NOTE: these are extensions of special routes in backend, please connect with "Mudit" before changing it
     '.js',
     '.ico',
