@@ -177,10 +177,15 @@ export class UploadModalComponent implements OnInit {
   overallDownloadApproval: boolean = false;
   overallUsers: string[];
   overallDownloadApprovalUsers: string[];
-  whiteListFiles:any;
+  whiteListFiles:any = [];
   fileLimitExceed;
 
   uploadLimit:boolean = false;
+  fileUploadProgress = [];
+  recReqCount:number = 0
+  filesRetry = {}
+  uploadFailedRetry ={}
+  failedFiles = []
 
   makeLockFolder: boolean;
 
@@ -198,7 +203,7 @@ export class UploadModalComponent implements OnInit {
     console.log("incoming data = ", this.data);
     this.description = this.data?.properties?.['dc:description'];
     if(this.data?.dropFilesNew?.length){
-      this.uploadFile(this.data.dropFilesNew)
+      this.onSelect({ addedFiles: this.data.dropFilesNew })
     }
 
     await this.showWorkspaceList();
@@ -259,9 +264,10 @@ export class UploadModalComponent implements OnInit {
       this.showError = false;
       this.showErrorCheckbox = false;
       const files = this.filterWhitelistFiles(event.addedFiles);
-      this.whiteListFiles = files
+      const prevLen = this.whiteListFiles.length || 0;
+      this.whiteListFiles.push(...files);
       for (let i = 0; i < files.length; i++) {
-        this.filesMap[i] = files[i]
+        this.filesMap[prevLen + i] = files[i]
       }
       if(Object.keys(this.filesMap).length >500) { //500
         // this.openModal(fileLimitExceeded);
@@ -273,7 +279,7 @@ export class UploadModalComponent implements OnInit {
 
       if(this.sizeExeeded) return 
       // console.log("12345",this.getTotalFileSize())
-      this.uploadFile(files);
+      this.uploadFile(this.whiteListFiles, prevLen-1);
     }
   }
 
@@ -366,7 +372,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   checkUploadStep() {
-    const notUploadDone = Object.keys(this.filesUploadDone).find(key => !this.filesUploadDone[key]);
+    const notUploadDone = Object.keys(this.filesUploadDone).find((key) => this.filesUploadDone[key] === false && !this.filesMap[key]['isVirus'] );
     if (notUploadDone) return true;
     if (Object.keys(this.filesMap).length === 0 || !this.agreeTerms) {
       // this.showError = true;
@@ -410,15 +416,14 @@ export class UploadModalComponent implements OnInit {
   getSelectedAssetsTitle() {
     if (!Object.keys(this.filesMap).length) return;
     const file = this.filesMap[Object.keys(this.filesMap)[0]];
-    const len = Object.keys(this.filesMap).length;
+    const len = this.getAssetNumber();
     return `${this.shortTheString(file.name, 20)} ${
       len > 1 ? `and other ${len - 1} files` : ""
     }`;
   }
   getSelectedAssetsTitle1() {
     // const title = this.filesMap[0]?.title;
-    const len = Object.keys(this.filesMap).length;
-
+    const len = this.getAssetNumber();
     return `${len} assets`;
   }
 
@@ -614,14 +619,15 @@ export class UploadModalComponent implements OnInit {
     this.assetCache[uid]["contextParameters"] = contextParameters;
     return this.assetCache[uid]["entries"];
   }
-  async uploadFile(files) {
-    console.log('testUpload',files);
+  async uploadFile(files, index?: number) {
     if (!this.batchId) {
       await this.createBatchUpload();
     }
-    for (let i = 0; i < files.length; i++) {
-      await this.uploadFileIndex(this.currentIndex, files[i]);
-      this.currentIndex++;
+    for (let i = index ? index + 1 : 0; i < files.length; i++) {
+      await this.uploadFileIndex(this.currentIndex, files[this.currentIndex], files.length, i);
+      // if(files[this.currentIndex]) {
+      this.currentIndex = i + 1;
+      // }
     }
   }
 
@@ -631,12 +637,13 @@ export class UploadModalComponent implements OnInit {
   }
 
   setUploadProgressBar(index, percentDone) {
-    console.log({index, percentDone});
-    
+    // console.log({index, percentDone});
+    this.fileUploadProgress[index] = percentDone || 0;
+
     const element = <HTMLElement>(
       document.getElementsByClassName(`upload-progress-bar-${index}`)[0]
     );
-    console.log({index, percentDone,element});
+    // console.log({index, percentDone,element});
     const background = `background-image: linear-gradient(to right, rgba(0, 123, 181, 0.3) ${percentDone}%,#ffffff ${percentDone}%);`;
     let attr = element.getAttribute("style");
     attr = attr.replace(/background-image:.*?;/g, "");
@@ -669,14 +676,16 @@ export class UploadModalComponent implements OnInit {
     await this.uploadChunks(index, chunkIndex, chunkCount, apiUrl, options);
   }
 
-  async uploadFileIndex(index, file) {
+  async uploadFileIndex(index, file,length?:number,currentItration?:number) {
+    if(!file){ 
+      return
+    }
     $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-
+    // console.log('file index', file )
     const uploadUrl = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     const blob = new Nuxeo.Blob({ content: file });
     const totalSize = blob.size;
     this.filesMap[index] = file;
-    console.log('file', file);
     this.filesUploadDone[index] = false;
     this.chunksFailedToUpload = {};
     if (totalSize > MAX_CHUNK_SIZE) {
@@ -705,60 +714,132 @@ export class UploadModalComponent implements OnInit {
             promiseArray = [];
           }
           this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-          if (promiseArray.length > 0) await Promise.all(promiseArray).then(res=>{
-            console.log("===============",res)
-          });
+          if (promiseArray.length > 0) await Promise.all(promiseArray);
           this.filesUploadDone[index] = true;
+          // if (this.currentIndex == length-1) {
+          //   this.allowPublish = true;
+          //   this.startUpLoading = false;
+          //   this.publishStep = true;
+          // }
+          // this.filesUploadDone[index] = true;
+          this.filesRetry[index] = null
+          this.uploadFailedRetry[index] = null
           resolve();
         } catch (err) {
           console.log("Upload Error:", err);
-          this.filesMap[index]['isVirus'] = true;
-          reject();
+          this.recReqCount = this.recReqCount +1
+          this.filesRetry[index] = this.recReqCount
+          
+          if(this.recReqCount >2){
+            // if (this.currentIndex == length-1) {
+            //   if(length !==1){
+            //     this.allowPublish = true;
+            //     this.publishStep = true;
+            //   }
+            //   this.startUpLoading = false;
+            // }
+            this.recReqCount = 0
+            this.uploadFailedRetry[index] = true
+            this.filesRetry[index] = null
+            this.failedFiles.push(file)
+            // delete this.filesMap[index];
+            this.filesMap[index]['isVirus'] = true;
+            if(this.whiteListFiles.length-1 > this.currentIndex){
+              this.uploadFile(this.whiteListFiles,this.currentIndex++)
+            }
+            
+            // reject();
+          }else{
+            setTimeout(() => {
+              this.uploadFileIndex(index, file,length,currentItration)
+            }, 5000);
+            
+          }
         }
       });
     } else {
-      const options = {
-        reportProgress: true,
-        observe: "events",
-        headers: {
-          "Cache-Control": "no-cache",
-          "X-File-Name": encodeURIComponent(blob.name),
-          "X-File-Size": blob.size,
-          "X-File-Type": blob.mimeType,
-          "Content-Length": blob.size,
-          "X-Authentication-Token": localStorage.getItem("token"),
-        },
-      };
-      // try {
-      return new Promise<void>((resolve, reject) => {
-        this.apiService.post(uploadUrl, blob.content, options).subscribe(
-          (event) => {
-            if (event.type == HttpEventType.UploadProgress) {
-              const percentDone = Math.round((100 * event.loaded) / event.total);
-              console.log(`File is ${percentDone}% loaded.`);
-              this.setUploadProgressBar(index, percentDone);
-            } else if (event instanceof HttpResponse) {
-              this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
-              console.log("File is completely loaded!");
-              resolve();
-            }
-          },
-        (err) => {
-            console.log("Upload Error:", err);
-            this.filesMap[index]['isVirus'] = true;
-            reject();
-            // delete this.filesMap[index];
-          },
-          () => {
-            this.setUploadProgressBar(index, 100);
-            this.filesUploadDone[index] = true;
-            $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
-            console.log("Upload done");
+    const options = {
+      reportProgress: true,
+      observe: "events",
+      headers: {
+        "Cache-Control": "no-cache",
+        "X-File-Name": encodeURIComponent(blob.name),
+        "X-File-Size": blob.size,
+        "X-File-Type": blob.mimeType,
+        "Content-Length": blob.size,
+        "X-Authentication-Token": localStorage.getItem("token"),
+      },
+    };
+    // try {
+    return new Promise<void>((resolve, reject) => {
+      this.apiService.post(uploadUrl, blob.content, options).subscribe(
+        (event) => {
+          if (event.type == HttpEventType.UploadProgress) {
+            const percentDone = Math.round((100 * event.loaded) / event.total);
+            // console.log(`File is ${percentDone}% loaded.`);
+            this.setUploadProgressBar(index, percentDone);
+          } else if (event instanceof HttpResponse) {
+            // this.checkUploadedFileStatusAndUploadFailedChunks(uploadUrl);
+            // console.log("File is completely loaded!");
             resolve();
           }
-        );
-      });
-    }
+        },
+      (err) => {
+          console.log("Upload Error:", err);
+          // this.filesMap[index]['isVirus'] = true;
+          this.recReqCount = this.recReqCount +1
+          this.filesRetry[index] = this.recReqCount
+          
+          if(this.recReqCount >2){
+            if (this.currentIndex == length-1) {
+              // if(length !==1){
+              //   this.allowPublish = true;
+              //   this.publishStep = true;
+              // }
+              // this.startUpLoading = false;
+            }
+            this.recReqCount = 0
+            this.uploadFailedRetry[index] = true
+            this.filesRetry[index] = null
+            this.failedFiles.push(file)
+            // delete this.filesMap[index];
+            this.filesMap[index]['isVirus'] = true;
+            if(this.whiteListFiles.length-1 > this.currentIndex){
+              this.uploadFile(this.whiteListFiles,this.currentIndex++)
+            }
+            
+            // reject();
+          }else{
+            setTimeout(async () => {
+              try {
+                await this.uploadFileIndex(index, file,length,currentItration)
+                resolve();
+              } catch (error) {}
+            }, 5000);
+            
+          }
+          
+        },
+        () => {
+          this.setUploadProgressBar(index, 100);
+          this.filesUploadDone[index] = true;
+          this.filesRetry[index] = null
+          this.uploadFailedRetry[index] = null
+          $('.upload-file-preview.errorNewUi').css('background-image', 'linear-gradient(to right, #FDEDED 100%,#FDEDED 100%)');
+          console.log("Upload done");
+          // if(this.whiteListFiles.length-1 > this.currentIndex){
+          //   this.uploadFile(this.whiteListFiles,this.currentIndex++)
+          // }
+          // if (this.currentIndex == length-1) {
+          //   this.allowPublish = true;
+          //   this.startUpLoading = false;
+          //   this.publishStep = true;
+          // }
+          resolve();
+        }
+      );
+    });
+  }
   }
 
   async checkUploadedFileStatusAndUploadFailedChunks(uploadUrl: string) {
@@ -806,23 +887,26 @@ export class UploadModalComponent implements OnInit {
     }
   }
 
+  // TODO: handle indexes after delete
   removeFileIndex(index) {
     delete this.filesMap[index];
     delete this.filesUploadDone[index];
+    delete this.whiteListFiles[index];
+    delete this.fileUploadProgress[index];
     const url = `${apiRoutes.UPLOAD}/${this.batchId}/${index}`;
     try {
       this.apiService.delete(url)
       .subscribe((res) => {
-        if (this.filesMap[index]) {
-          delete this.filesMap[index];
-          delete this.filesUploadDone[index];
-        }
-      })
+        // if (this.filesMap[index]) {
+        //   delete this.filesMap[index];
+        //   delete this.filesUploadDone[index];
+        // }
+      }) 
     } catch(err) {
-      if (this.filesMap[index]) {
-        delete this.filesMap[index];
-        delete this.filesUploadDone[index];
-      }
+      // if (this.filesMap[index]) {
+      //   delete this.filesMap[index];
+      //   delete this.filesUploadDone[index];
+      // }
     }
   }
 
@@ -1047,7 +1131,7 @@ export class UploadModalComponent implements OnInit {
   proceedClicked:boolean=false;
   getTotalFileSize() {
     let size = 0;
-    Object.keys(this.filesMap).forEach((key) => {
+    Object.keys(this.filesMap).filter(e=>!this.filesMap[e]['isVirus']).forEach((key) => {
       size += this.filesMap[key].size;
     });
     
@@ -1066,11 +1150,13 @@ export class UploadModalComponent implements OnInit {
     }
 
     for(let key in this.filesMap) {
-      const asset = await this.createAsset(this.filesMap[key], key, folder);
-      if (this.filesMap[key].size >= MAX_PROCESS_SIZE) {
-        this.attachFileToAsset(asset, key);
+      if(this.filesUploadDone[key]) {
+        const asset = await this.createAsset(this.filesMap[key], key, folder);
+        if (this.filesMap[key].size >= MAX_PROCESS_SIZE) {
+          this.attachFileToAsset(asset, key);
+        }
+        if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
       }
-      if (!this.isPrivateFolder()) await this.setAssetPermission(asset, key);
     }
     // this.calFileManagerApi();
     if(!this.showRedirectUrl()) {
@@ -1316,7 +1402,7 @@ export class UploadModalComponent implements OnInit {
   }
 
   getAssetNumber(): number {
-    return Object.keys(this.filesMap).length;
+    return Object.keys(this.filesMap).filter(e=>!this.filesMap[e]['isVirus']).length;
   }
 
   checkOwnerDropdown(index?: string) {
@@ -1444,7 +1530,7 @@ export class UploadModalComponent implements OnInit {
   // }
 
   checkFormState(): boolean {
-    const length = Object.keys(this.filesMap).length;
+    const length = Object.keys(this.filesMap).filter(e=> !this.filesMap[e]['isVirus']).length;
     for (let i = 0; i < length; i++) {
       const access = this.customAccessMap[i];
       const allow = this.customAllowMap[i];
