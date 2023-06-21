@@ -57,7 +57,7 @@ const BUTTON_LABEL = {
 };
 
 
-const MAX_CHUNK_SIZE = 7 * 100 * 100 * 1000; // 700 mb
+const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // 700 mb
 const CHUNK_UPLOAD_THREASOLD = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 700mb // 700000000
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
 const CONCURRENT_UPLOAD_REQUEST = 1;
