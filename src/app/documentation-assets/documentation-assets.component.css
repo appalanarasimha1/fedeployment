@@ -1,6 +1,6 @@
 .documentationBlck {
     padding: 35px 0 0;
-    margin-left: 140px;
+    margin-left: 160px;
 }
 .pl-110 {
     position: relative;
@@ -47,7 +47,7 @@
 }
 
 .masonry-item{
-    width: 306px;
+    width: 279px;
     /* width: calc(25% - 10px); */
     margin-bottom: 10px;
 }
@@ -76,9 +76,9 @@
 }
 .regionBlok ul li {
     float: left;
-    padding-right: 30px;
+    margin-right: 2.4%;
     width: 25%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 .goldenText input {
     color: #C49900 !important;
@@ -593,4 +593,23 @@ ul.downloadImgLisst li .contentListBlk {
 }
 li.removeArrow ::ng-deep .ng-arrow-wrapper {
   display: none !important;
+}
+.regionBlok ul li:nth-child(1) {
+  width: 17%;
+}
+.regionBlok ul li:nth-child(2) {
+  width: 24%;
+}
+.regionBlok ul li:nth-child(3) {
+  width: 10%;
+}
+.regionBlok ul li:nth-child(4) {
+  width: 10%;
+}
+.regionBlok ul li:nth-child(5) {
+  width: 10%;
+}
+.regionBlok ul li:nth-child(6) {
+  width: 17%;
+  margin-right: 0px;
 }
