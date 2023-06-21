@@ -109,8 +109,6 @@ export class CreateDeviceModalComponent implements OnInit {
       this.direction = this.selectedDevice.direction;
       this.poleId = this.selectedDevice.cameraPole;
       this.selectedOwner = this.selectedDevice.owner;
-      this.uploadDate = this.selectedDevice.installationDate ? this.selectedDevice.installationDate.slice(4, 6) + "/" + this.selectedDevice.installationDate.slice(6, 8) + "/" + this.selectedDevice.installationDate.slice(0, 4) : "";
-      this.uploadTime = this.selectedDevice.installationTime ? this.selectedDevice.installationTime.slice(0, 2) + ":" + this.selectedDevice.installationTime.slice(2, 4) : "";
     }
   }
 
@@ -195,8 +193,8 @@ export class CreateDeviceModalComponent implements OnInit {
       supplierId: this.selectedSupplier,
       channelId:this.channelId,
       
-      installationDate: moment(this.uploadDate).toISOString(true).split('T')[0].slice(0, 10).replace(/-/g, "") || "",
-      installationTime: this.uploadTime.slice(0, 10).replace(/:/g, "") + "00" || "",
+      installationDate: moment().toISOString(true).split('T')[0].slice(0, 10).replace(/-/g, ""),
+      installationTime: moment().format('HH:mm:ss').slice(0, 10).replace(/:/g, ""),
     }
     const id = await this.apiService.post(`/settings/camera/autogen?prefix=${this.buildDevicePrefix()}`, payload, {responseType: 'text'}).toPromise();
     this.sharedService.showSnackbar(
@@ -258,9 +256,5 @@ export class CreateDeviceModalComponent implements OnInit {
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-  // For testing purpose
-  checkDateTimeValues(){
-    console.log("this.uploadDate",moment(this.uploadDate).toISOString(true).split('T')[0].slice(0, 10).replace(/-/g, ""));
-    console.log("this.uploadTime",this.uploadTime.slice(0, 10).replace(/:/g, "") + "00");
-  }
+  
 }
