@@ -54,6 +54,7 @@ import { UploadDroneComponent } from './upload-drone/upload-drone.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { DataApiComponent } from './data-api/data-api.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { DeleteConfirmationComponent } from './common/delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     // DocumentationAssetsComponent,
     UploadDroneComponent,
     DataApiComponent,
+    DeleteConfirmationComponent,
     // AssetViewComponent,
   ],
   imports: [

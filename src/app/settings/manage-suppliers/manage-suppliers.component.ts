@@ -174,8 +174,15 @@ export class ManageSuppliersComponent implements OnInit {
     this.updateSuppilerUsers(this.selectedSupplier.uid, users);
   }
 
-  togglerUserActivated(event, index) {
+  async togglerUserActivated(event, index) {
     const users = this.selectedSupplier.users;
+    if(!event.checked) {
+      const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to disable this user?', 'Disable');
+      if(!confirmed) {
+        users[index].activated = true;
+        return
+      }
+    }
     users[index].activated = event.checked;
     this.updateSuppilerUsers(this.selectedSupplier.uid, users);
   }
@@ -287,7 +294,11 @@ export class ManageSuppliersComponent implements OnInit {
     this.suppliersCtrl.setValue(null);
   }
 
-  remove(fruit, indx, index): void {
+  async remove(fruit, indx, index) {
+    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to remove this Region?');
+    if(!confirmed) {
+      return
+    }
     const regions = this.supplierList[index].regions;
     const removedIndex = regions.indexOf(fruit);
     if (removedIndex < 0) return;
@@ -334,6 +345,14 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async toggleActivated(event, supplier, allNotifactionContent) {
+    if(!event.checked) {
+      const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to disable this Supplier?', 'Disable');
+      if(!confirmed) {
+        supplier.activated = true
+        return
+      }
+    }
+
     await this.updateDocument(supplier.uid, {"activated": event.checked});
     if(event.checked) {
       this.modalOpen = true;

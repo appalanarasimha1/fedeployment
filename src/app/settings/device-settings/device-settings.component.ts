@@ -219,6 +219,10 @@ export class DeviceSettingsComponent implements OnInit {
   }
 
   async deleteDevice(device) {
+    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to delete this Device?');
+    if(!confirmed) {
+      return
+    }
     await this.deleteDocument(device.uid);
     this.getDeviceList();
   }

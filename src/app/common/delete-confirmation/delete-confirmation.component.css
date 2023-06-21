@@ -1,0 +1,126 @@
+::ng-deep .mat-dialog-container {
+    padding: 20px !important;
+    border-radius: 8px !important;
+}
+
+
+.button-groups {
+    padding-top: 20px
+}
+
+.button-groups::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.button-groups button.cancel-btn {
+    float: left;
+    appearance: none;
+    border: 1px solid #BAB8B2;
+    border-radius: 30px;
+    color: #090808;
+    line-height: 34px;
+    padding: 0px 20px 3px;
+    min-width: 100px;
+    letter-spacing: 0.5px;
+}
+
+button.upload-btn {
+    float: right;
+    appearance: none;
+    border: 1px solid #23211E;
+    border-radius: 30px;
+    color: #fff;
+    line-height: 34px;
+    padding: 0px 20px 3px;
+    min-width: 100px;
+    background: #23211E;
+    letter-spacing: 0.5px;
+}
+
+.button-groups button.upload-btn.disabled {
+    background: #91908F;
+    color: #fff;
+    border: 1px solid #91908F;
+    cursor: not-allowed;
+    padding: 0px 20px 3px;
+}
+
+.modalContentBlock .deleteBlock h3,
+.deleteBlock h3 {
+    font-weight: normal;
+    font-size: 15px;
+    letter-spacing: normal;
+    color: #040404;
+    line-height: normal;
+    padding-bottom: 20px;
+}
+
+.disableColor {
+    color: #BAB8B2;
+}
+
+.mb-20 {
+    margin-bottom: 20px !important;
+}
+
+.mb-10 {
+    margin-bottom: 10px !important;
+}
+
+.pl-10 {
+    padding-left: 10px;
+}
+
+
+.makeAdminBlock ul::-webkit-scrollbar-thumb {
+    background-color: #E8E6DF;
+    border-radius: 10px;
+}
+
+.modalContentBlock .deleteBlock {
+    width: 100% !important;
+}
+
+::ng-deep .modal-edit-access .modal-dialog {
+    max-width: 640px !important;
+}
+
+.modalContentBlock {
+    padding: 20px;
+}
+
+.modalContentBlock .deleteBlock {
+    width: 100% !important;
+}
+
+.modalContentBlock ol {
+    display: block;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.modalContentBlock ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    content: "";
+    /* background-image: url(../../assets/images/black-downarrow.png) !important; */
+    background-position: 0px 4px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 10px !important;
+    width: 10px !important;
+}
+
+.modalContentBlock ::ng-deep .ng-select .ng-arrow-wrapper {
+    width: 25px;
+    padding-right: 0px;
+}
+
+.modalContentBlock .deleteBlock {
+    margin-bottom: 20px;
+}
+
+.deleteBlock {
+    width: 500px !important;
+}

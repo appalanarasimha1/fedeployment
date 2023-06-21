@@ -182,6 +182,14 @@ export class ManageAccessListComponent implements OnInit {
   }
 
   async toggleAccessActivated(event, access) {
+    if(!event.checked) {
+      const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to disable this access list?', 'Disable');
+      if(!confirmed) {
+        access.activated = true;
+        return
+      }
+    }
+
     this.updateWholeDocument(access.uid, {"activated": event.checked});
     if(!event.checked) {
       this.sharedService.showSnackbar(
@@ -264,8 +272,16 @@ export class ManageAccessListComponent implements OnInit {
     this.updateRegionPermission(users);
   }
 
-  togglerUserActivated(event, index) {
+  async togglerUserActivated(event, index) {
     const users = this.selectedAccess.users;
+    if(!event.checked) {
+      const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to disable this user from access list?', 'Disable');
+      if(!confirmed) {
+        users[index].activated = true;
+        return
+      }
+    }
+
     users[index].activated = event.checked;
     this.updateAccessUsers(this.selectedAccess.uid, users, users[index],true);
   }

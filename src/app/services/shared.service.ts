@@ -12,6 +12,8 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { NuxeoService } from './nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import { IChildAssetACL, IEntry } from '../common/interfaces';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from '../common/delete-confirmation/delete-confirmation.component';
 
 
 @Injectable({
@@ -33,7 +35,8 @@ export class SharedService {
     private router: Router,
     private apiService: ApiService,
     private _snackBar: MatSnackBar,
-    protected readonly keycloak: KeycloakService
+    protected readonly keycloak: KeycloakService,
+    public matDialog: MatDialog,
     ) {}
 
   setSidebarToggle(slideToggle) {
@@ -706,5 +709,19 @@ export class SharedService {
       }
       return excludedDroneWorkspaces;
     } catch (err) { }
+  }
+
+  async openConfirmationModal(message?: string, confirmButtonText?: string): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      const modalDialog = this.matDialog.open(DeleteConfirmationComponent, {
+        data: {
+          message,
+          confirmButtonText
+        }
+      });
+      modalDialog.afterClosed().subscribe((res) => {
+        resolve(res || false);
+      })
+    })
   }
 }

@@ -12,6 +12,7 @@ import { ApiService } from "../../services/api.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CreateLocationModalComponent } from "../create-location-modal/create-location-modal.component";
 import { CreateSubAreaModalComponent } from "../create-sub-area-modal/create-sub-area-modal.component";
+import { SharedService } from "src/app/services/shared.service";
 
 @Component({
   selector: "app-manage-locations",
@@ -43,7 +44,8 @@ export class ManageLocationsComponent implements OnInit {
 
   constructor(
     public matDialog: MatDialog,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
@@ -199,6 +201,10 @@ export class ManageLocationsComponent implements OnInit {
   }
 
   async removeRegion(region) {
+    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to remove this Region?');
+    if(!confirmed) {
+      return
+    }
     await this.deleteDocument('area', region.uid);
     this.getRegionList();
   }
@@ -212,6 +218,10 @@ export class ManageLocationsComponent implements OnInit {
     // this.updateDocument(this.selectedRegion.uid, {
     //   properties: { "region:locations": currentLocations },
     // });
+    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to remove this Sub-area?');
+    if(!confirmed) {
+      return
+    }
     await this.deleteDocument('subarea', subArea.uid);
     this.getSubAreaList(this.selectedRegion.uid);
   }

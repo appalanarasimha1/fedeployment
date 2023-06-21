@@ -967,6 +967,10 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     } else return;
   }
   async deleteFolders() {
+    const shouldDelete = await this.sharedService.openConfirmationModal();
+    if(!shouldDelete) {
+      return
+    }
     if (this.dataTableComponent) {
       this.loading = true;
       await this.dataTableComponent.deleteFolders();

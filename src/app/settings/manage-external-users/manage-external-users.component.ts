@@ -80,6 +80,10 @@ export class ManageExternalUsersComponent implements OnInit {
   }
 
   async removeAllAccess(user) {
+    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want remove user from all private folders?');
+    if(!confirmed) {
+      return
+    }
     const folders = this.managedUsersMap[user] || [];
     const promiseCall = [];
     this.loading = true;
@@ -93,6 +97,10 @@ export class ManageExternalUsersComponent implements OnInit {
   }
 
   async removePermission(folder, index) {
+    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to remove access to this folder?');
+    if(!confirmed) {
+      return
+    }
     this.loading = true;
     await this.removeFolderPermission(folder);
     this.currentUserFolderList.splice(index, 1);
