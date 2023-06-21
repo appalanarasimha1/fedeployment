@@ -348,7 +348,7 @@ export class AddUserModalComponent implements OnInit {
     return this.apiService.post(apiRoutes.ADD_PERMISSION, payload).toPromise();
   }
 
-  async updateExternalUserGroup(email, isAdded) {
+  async updateExternalUserGroup(email: string, isAdded: boolean) {
     const params = {
       email,
       isAdded,
@@ -358,9 +358,7 @@ export class AddUserModalComponent implements OnInit {
       context: {},
       input: this.folderId,
     };
-    await this.apiService
-      .post(apiRoutes.UPDATE_EXTERNAL_GROUP_USER, payload)
-      .toPromise();
+    await this.apiService.post(apiRoutes.UPDATE_EXTERNAL_GROUP_USER, payload).toPromise();
     this.sharedService.fetchExternalUserInfo();
   }
 
@@ -751,6 +749,7 @@ export class AddUserModalComponent implements OnInit {
             if(!alreadyHave?.length) {
               item.permission = permissions.lockFolderPermissions.READWRITE;
               await this.addPermission(item);
+              await this.updateExternalUserGroup(item.user, true);
           }
         }
 
@@ -815,6 +814,7 @@ export class AddUserModalComponent implements OnInit {
           const alreadyHave = item.ids?.filter(item => item.includes("ReadWrite"));
           if(alreadyHave?.length) {
             await this.sharedService.removePermission(alreadyHave[0], this.folderId);
+            await this.updateExternalUserGroup(item.user, false);
           }
         }
 
