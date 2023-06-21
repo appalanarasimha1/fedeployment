@@ -104,7 +104,7 @@
                 <td>
                     <div class="tollTipCustom">
                         <div class="itemTitleContent">{{device.installationId}}</div>
-                        <div class="tolltipContent">{{device.installationId}}</div>
+                        <div class="tolltipContent">{{device?.installationDate ? device.installationDate.slice(4, 6) + "/" + device.installationDate.slice(6, 8) + "/" + device.installationDate.slice(0, 4) : "Not Available"}}</div>
                     </div>
                 </td>
                 <td>
