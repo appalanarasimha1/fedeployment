@@ -109,6 +109,8 @@ export class CreateDeviceModalComponent implements OnInit {
       this.direction = this.selectedDevice.direction;
       this.poleId = this.selectedDevice.cameraPole;
       this.selectedOwner = this.selectedDevice.owner;
+      this.uploadDate = this.selectedDevice.installationDate ? this.selectedDevice.installationDate.slice(4, 6) + "/" + this.selectedDevice.installationDate.slice(6, 8) + "/" + this.selectedDevice.installationDate.slice(0, 4) : "";
+      this.uploadTime = this.selectedDevice.installationTime ? this.selectedDevice.installationTime.slice(0, 2) + ":" + this.selectedDevice.installationTime.slice(2, 4) : "";
     }
   }
 
