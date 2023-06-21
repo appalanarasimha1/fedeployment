@@ -409,20 +409,21 @@ export class SharedService {
     // tslint:disable-next-line:prefer-const
     let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
     if (recentlyViewed.length) {
-      recentlyViewed.map((item: any, index: number) => {
-        if (item.uid === data.uid) {
-          found = true;
-          recentlyViewed.splice(index, 1);
-          recentlyViewed.push(data);
-        }
+      const index = recentlyViewed.findIndex((item: any) => {
+        return item.uid === data.uid 
       });
+      if(index >= 0) { 
+        found = true;
+        recentlyViewed.splice(index, 1);
+        recentlyViewed.push(data);
+      }
     }
     if (found) {
       localStorage.setItem(
         localStorageVars.RECENTLY_VIEWED,
         JSON.stringify(recentlyViewed, this.getCircularReplacer())
       );
-      return [...recentlyViewed.reverse()];
+      return recentlyViewed.reverse();
     }
 
     data["isSelected"] = false;
@@ -431,7 +432,7 @@ export class SharedService {
       localStorageVars.RECENTLY_VIEWED,
       JSON.stringify(recentlyViewed, this.getCircularReplacer())
     );
-    return [...recentlyViewed.reverse()];
+    return recentlyViewed.reverse();
   }
 
   getCircularReplacer() {
