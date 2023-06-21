@@ -8,6 +8,7 @@ import {
 import { ApiService } from "../../services/api.service";
 import { SharedService } from "src/app/services/shared.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import * as moment from "moment";
 
 const typePrefix = {
   "timelapse": "T",
@@ -54,6 +55,9 @@ export class CreateDeviceModalComponent implements OnInit {
   longitude: number;
   direction: string;
   poleId = "";
+  uploadDate : string;
+  maxDate= new Date();
+  uploadTime: string;
   selectedRegion: string;
   selectedRegionInitial: string;
   selectedSubArea: string;
@@ -187,7 +191,10 @@ export class CreateDeviceModalComponent implements OnInit {
       subAreaName: this.selectedsubAreas.name || "",
       owner: this.selectedOwner || "",
       supplierId: this.selectedSupplier,
-      channelId:this.channelId
+      channelId:this.channelId,
+      
+      installationDate: moment(this.uploadDate).toISOString(true).split('T')[0].slice(0, 10).replace(/-/g, "") || "",
+      installationTime: this.uploadTime.slice(0, 10).replace(/:/g, "") + "00" || "",
     }
     const id = await this.apiService.post(`/settings/camera/autogen?prefix=${this.buildDevicePrefix()}`, payload, {responseType: 'text'}).toPromise();
     this.sharedService.showSnackbar(
@@ -249,4 +256,9 @@ export class CreateDeviceModalComponent implements OnInit {
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+  // For testing purpose
+  checkDateTimeValues(){
+    console.log("this.uploadDate",moment(this.uploadDate).toISOString(true).split('T')[0].slice(0, 10).replace(/-/g, ""));
+    console.log("this.uploadTime",this.uploadTime.slice(0, 10).replace(/:/g, "") + "00");
+  }
 }

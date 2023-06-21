@@ -79,6 +79,27 @@
                     </div>
                 </div>
             </li>
+            <li>
+                <div class="flex">
+                    <div class="form-group">
+                        <label for="Date">Date</label>
+                            <input matInput [matDatepicker]="picker" 
+                            [max]="maxDate" 
+                            placeholder="E.g. 1/1/2023"  
+                            [(ngModel)]="uploadDate"  
+                            (click)="picker.open()" 
+                            [ngClass]="{'goldenText': uploadDate}" />
+                            <!-- <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle> -->
+                            <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                    <div class="form-group">
+                        <label for="Time">Time</label>
+                        <input type="time" 
+                        [(ngModel)]="uploadTime" 
+                        [ngClass]="{'goldenText': uploadTime}" />
+                    </div>
+                </div>
+            </li>
             <li class="regionBlok">
                 <div class="form-group">
                     <label for="Supplier">Supplier</label>
