@@ -146,7 +146,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       return;
     }
 
-    let currentWorkspaceId =  this.currentWorkspace.title === 'Shared folders' ? null :  this.currentWorkspace?.uid
+    let currentWorkspaceId =  this.currentWorkspace?.title === 'Shared folders' ? null :  this.currentWorkspace?.uid
     if(this.resultCount && this.resultCount !== this?.folderStructure?.[currentWorkspaceId]?.resultsCount ) { 
       this.paginator.pageSize = this.defaultPageSize;
       this.paginator.firstPage();
