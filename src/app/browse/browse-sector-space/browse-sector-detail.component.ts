@@ -278,6 +278,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
+        docs.entries = docs.entries.filter((item) => {
+          // Return elements where uid doesn't match any parentRef
+          return !docs.entries.some((parentItem) => parentItem.uid === item.parentRef);
+        });
+    
         this.assetList = docs.entries.filter(
           (sector) =>
             UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
