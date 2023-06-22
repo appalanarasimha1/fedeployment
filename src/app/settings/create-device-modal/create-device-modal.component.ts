@@ -55,9 +55,6 @@ export class CreateDeviceModalComponent implements OnInit {
   longitude: number;
   direction: string;
   poleId = "";
-  uploadDate : string;
-  maxDate= new Date();
-  uploadTime: string;
   selectedRegion: string;
   selectedRegionInitial: string;
   selectedSubArea: string;
