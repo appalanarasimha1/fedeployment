@@ -75,7 +75,6 @@ import { DeleteConfirmationComponent } from './common/delete-confirmation/delete
     // DocumentationAssetsComponent,
     UploadDroneComponent,
     DataApiComponent,
-    DeleteConfirmationComponent,
     // AssetViewComponent,
   ],
   imports: [

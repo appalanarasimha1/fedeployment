@@ -1,6 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MoveCopyAssetsComponent } from 'src/app/move-copy-assets/move-copy-assets.component';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-delete-confirmation',
@@ -9,21 +7,35 @@ import { MoveCopyAssetsComponent } from 'src/app/move-copy-assets/move-copy-asse
 })
 export class DeleteConfirmationComponent implements OnInit {
 
+  @Input() message;
+  @Input() confirmButtonText;
+  @Output() onConfirm = new EventEmitter() 
+  @Output() onCancle = new EventEmitter() 
+
   constructor(
-    public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit(): void {
-  }
+    this.datePickerDefaultAction()
+  } 
 
   
-  closeModal() {
-    this.dialogRef.close();
+  datePickerDefaultAction() {
+    $(".dropdownDelete, .mat-datepicker-content").click(function (e) {
+      e.stopPropagation();
+    });
+
+    $(document).click( ()=> {
+      this.closePopup()
+    });
+  }
+  
+  closePopup() {
+    this.onCancle.emit()
   }
 
 
   confirmDelete() {
-    this.dialogRef.close(true);
+    this.onConfirm.emit()
   }
 }

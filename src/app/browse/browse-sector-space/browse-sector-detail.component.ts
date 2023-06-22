@@ -101,6 +101,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   permissionChange:boolean=false;
   assetSize = { count: 0, size: null};
   selectedAssetsIds = {}
+  showDeletePopup = false
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -966,17 +967,24 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.dataTableComponent.openMoveModal(move);
     } else return;
   }
-  async deleteFolders() {
-    const shouldDelete = await this.sharedService.openConfirmationModal();
-    if(!shouldDelete) {
-      return
-    }
+
+  onDeleteCancle() {
+    this.showDeletePopup = false
+  }
+
+  async onDeleteConfirm() {
+    this.showDeletePopup = false
     if (this.dataTableComponent) {
       this.loading = true;
       await this.dataTableComponent.deleteFolders();
       // await this.getAssets(this.currentWorkspace?.uid)
       this.loading = false;
     } else return;
+  }
+
+  async deleteFolders(e) {
+    e.stopPropagation()
+    this.showDeletePopup = !this.showDeletePopup
   }
 
   checkEnableMoveButton() {

@@ -154,7 +154,13 @@
                     </ul>
                 </td>
                 <td (click)="openCreateDeviceModal(false, device)" style="text-align: center !important;cursor: pointer;color: #C49900;">Edit</td>
-                <td  style="text-align: center !important;"><img [hidden]="device?.isIngested && device.isIngested" (click)="deleteDevice(device)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+                <td  style="text-align: center !important;position: relative;">
+                    <img [hidden]="device?.isIngested && device.isIngested" (click)="deleteDevice(device,$event)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;">
+                    <app-delete-confirmation
+                    (onCancle)="onDeleteCancle()"
+                    (onConfirm)="onDeleteConfirm()"
+                    *ngIf="showDeletePopup && device.uid === deviceToDelete.uid"></app-delete-confirmation>
+                </td>
             </tr>
         </table>
     </div>

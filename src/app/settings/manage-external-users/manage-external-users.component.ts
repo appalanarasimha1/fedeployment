@@ -32,6 +32,11 @@ export class ManageExternalUsersComponent implements OnInit {
 
   showUserManageSuppliers: boolean = false;
   showUserManageLocations: boolean = false;
+  
+  showFolderAccessDisable = false
+  folderToDisable;
+  showUserDisable = false
+  userToDisable;
 
 
   ngOnInit(): void {
@@ -79,32 +84,47 @@ export class ManageExternalUsersComponent implements OnInit {
     this.showUserAccessPage = false;
   }
 
-  async removeAllAccess(user) {
-    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want remove user from all private folders?');
-    if(!confirmed) {
-      return
-    }
-    const folders = this.managedUsersMap[user] || [];
+  onUserRemoveCancle() {
+    this.showUserDisable = false
+  }
+
+  async onUserRemoveConfirm() {
+    this.showUserDisable = false
+    
+    const folders = this.managedUsersMap[this.userToDisable] || [];
     const promiseCall = [];
     this.loading = true;
     folders.forEach(folder => {
       promiseCall.push(this.removeFolderPermission(folder));
     });
     await Promise.all(promiseCall);
-    delete this.managedUsersMap[user];
+    delete this.managedUsersMap[this.userToDisable];
     this.managedUsers = Object.keys(this.managedUsersMap);
     this.loading = false;
   }
 
-  async removePermission(folder, index) {
-    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to remove access to this folder?');
-    if(!confirmed) {
-      return
-    }
+  async removeAllAccess(user,e) {
+    e.stopPropagation()
+    this.showUserDisable = !this.showUserDisable
+    this.userToDisable = user
+  }
+
+  onRemovePermissionCancle() {
+    this.showFolderAccessDisable = false
+  }
+
+  async onRemovePermissionConfirm() {
+    this.showFolderAccessDisable = false
     this.loading = true;
-    await this.removeFolderPermission(folder);
-    this.currentUserFolderList.splice(index, 1);
+    await this.removeFolderPermission(this.folderToDisable.folder);
+    this.currentUserFolderList.splice(this.folderToDisable.index, 1);
     this.loading = false;
+  }
+
+  async removePermission(folder, index, e) {
+    e.stopPropagation()
+    this.showFolderAccessDisable = !this.showFolderAccessDisable
+    this.folderToDisable = {folder, index}
   }
 
   async onEndDateChange(value, folder, index) {

@@ -38,6 +38,11 @@ export class ManageAccessListComponent implements OnInit {
   inviteUserInput: string = '';
   users = [];
   filteredUsers: Observable<string[]>;
+  showDeletePopup = false
+  userIndexToDelete;
+  showAccessToggleConfirmation = false
+  accessToToggle;
+
 
   constructor(
     public matDialog: MatDialog,
@@ -181,26 +186,35 @@ export class ManageAccessListComponent implements OnInit {
     return this.inviteUserInput && !this.selectedAccess?.users?.find(user => user.user === this.inviteUserInput);
   }
 
-  async toggleAccessActivated(event, access) {
-    if(!event.checked) {
-      const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to disable this access list?', 'Disable');
-      if(!confirmed) {
-        access.activated = true;
-        return
-      }
-    }
 
-    this.updateWholeDocument(access.uid, {"activated": event.checked});
-    if(!event.checked) {
-      this.sharedService.showSnackbar(
-        "This access list will be disabled and its users unable to access its assets.",
-        3000,
-        "top",
-        "center",
-        "snackBarMiddle"
-      );
+  onCancleAccessToggle() {
+    this.showAccessToggleConfirmation = false
+    this.accessToToggle.activated = true;
+  }
+
+  async onConfirmAccessToggle() {
+    this.sharedService.showSnackbar(
+      "This access list will be disabled and its users unable to access its assets.",
+      3000,
+      "top",
+      "center",
+      "snackBarMiddle"
+    );
+
+    this.showAccessToggleConfirmation = false
+    let access = this.accessToToggle
+    this.updateWholeDocument(access.uid, { "activated": false });
+    this.updateRegionPermission(access.users, true, access.name);
+  }
+
+  async toggleAccessActivated(event, access) {
+    this.accessToToggle = access
+    if (!event.checked) {
+      this.showAccessToggleConfirmation = !this.showAccessToggleConfirmation;
+    } else {
+      this.updateWholeDocument(access.uid, { "activated": event.checked });
+      this.updateRegionPermission(access.users, !event.checked, access.name);
     }
-    this.updateRegionPermission(access.users, !event.checked, access.name);
   }
 
   async openInviteUserModal() {
@@ -272,18 +286,30 @@ export class ManageAccessListComponent implements OnInit {
     this.updateRegionPermission(users);
   }
 
+
+  onDeleteCancle() {
+    const users = this.selectedAccess.users;
+    this.showDeletePopup = false
+    users[this.userIndexToDelete].activated = true;
+  }
+
+  async onDeleteConfirm() {
+    this.showDeletePopup = false
+    const users = this.selectedAccess.users;
+    this.updateAccessUsers(this.selectedAccess.uid, users, users[this.userIndexToDelete],true);
+  }
+
+
   async togglerUserActivated(event, index) {
     const users = this.selectedAccess.users;
     if(!event.checked) {
-      const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to disable this user from access list?', 'Disable');
-      if(!confirmed) {
-        users[index].activated = true;
-        return
-      }
+      this.userIndexToDelete = index
+      this.showDeletePopup = !this.showDeletePopup
+    }else{
+      users[index].activated = event.checked;
+      this.updateAccessUsers(this.selectedAccess.uid, users, users[index],true);
     }
 
-    users[index].activated = event.checked;
-    this.updateAccessUsers(this.selectedAccess.uid, users, users[index],true);
   }
 
   updateUserExpiry(event, index) {

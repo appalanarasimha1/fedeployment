@@ -711,17 +711,4 @@ export class SharedService {
     } catch (err) { }
   }
 
-  async openConfirmationModal(message?: string, confirmButtonText?: string): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      const modalDialog = this.matDialog.open(DeleteConfirmationComponent, {
-        data: {
-          message,
-          confirmButtonText
-        }
-      });
-      modalDialog.afterClosed().subscribe((res) => {
-        resolve(res || false);
-      })
-    })
-  }
 }

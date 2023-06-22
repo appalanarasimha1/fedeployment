@@ -1,11 +1,13 @@
-::ng-deep .mat-dialog-container {
+::ng-deep .delete-confirmation {
     padding: 20px !important;
     border-radius: 8px !important;
 }
 
 
 .button-groups {
-    padding-top: 20px
+    padding-top: 12px;
+    display: flex;
+    justify-content: end;
 }
 
 .button-groups::after {
@@ -27,16 +29,16 @@
 }
 
 button.upload-btn {
-    float: right;
+    float: left;
     appearance: none;
-    border: 1px solid #23211E;
+    border: 1px solid #BAB8B2;
     border-radius: 30px;
-    color: #fff;
+    color: #090808;
     line-height: 34px;
     padding: 0px 20px 3px;
     min-width: 100px;
-    background: #23211E;
     letter-spacing: 0.5px;
+    margin-left: 16px;
 }
 
 .button-groups button.upload-btn.disabled {
@@ -73,54 +75,26 @@ button.upload-btn {
     padding-left: 10px;
 }
 
-
-.makeAdminBlock ul::-webkit-scrollbar-thumb {
-    background-color: #E8E6DF;
-    border-radius: 10px;
-}
-
-.modalContentBlock .deleteBlock {
-    width: 100% !important;
-}
-
-::ng-deep .modal-edit-access .modal-dialog {
-    max-width: 640px !important;
-}
-
-.modalContentBlock {
-    padding: 20px;
-}
-
-.modalContentBlock .deleteBlock {
-    width: 100% !important;
-}
-
-.modalContentBlock ol {
-    display: block;
-    list-style: none;
-    margin: 0px;
-    padding: 0px;
-}
-
-.modalContentBlock ::ng-deep .ng-arrow-wrapper .ng-arrow {
-    content: "";
-    /* background-image: url(../../assets/images/black-downarrow.png) !important; */
-    background-position: 0px 4px;
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 10px !important;
-    width: 10px !important;
-}
-
-.modalContentBlock ::ng-deep .ng-select .ng-arrow-wrapper {
-    width: 25px;
-    padding-right: 0px;
-}
-
-.modalContentBlock .deleteBlock {
-    margin-bottom: 20px;
-}
-
 .deleteBlock {
-    width: 500px !important;
+    max-width: 400px !important;
+    width: max-content;
+}
+
+.deleteFolder {
+    position: absolute;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 8px rgb(0 0 0 / 15%);
+    border-radius: 8px;
+    padding: 20px;
+    right: 0px;
+    top: 40px;
+    z-index: 999;
+}
+
+.placeholderText {
+    font-size: 14px;
+    line-height: 20px;
+    color: #BAB8B2;
+    float: right;
+    padding-top: 2px;
 }

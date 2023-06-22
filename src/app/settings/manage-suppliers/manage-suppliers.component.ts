@@ -81,6 +81,12 @@ export class ManageSuppliersComponent implements OnInit {
   managedUsersBackUp=[];
   modalOpen: boolean = true;
 
+  showSupplierDisable = false
+  supplierToDisable;
+  showUserDisable = false
+  userToDisable;
+
+
   constructor(
     public matDialog: MatDialog,
     private renderer: Renderer2,
@@ -174,17 +180,27 @@ export class ManageSuppliersComponent implements OnInit {
     this.updateSuppilerUsers(this.selectedSupplier.uid, users);
   }
 
+  onDeleteCancle() {
+    const users = this.selectedSupplier.users;
+    this.showUserDisable = false
+    users[this.userToDisable].activated = true;
+  }
+
+  async onDeleteConfirm() {
+    this.showUserDisable = false
+    const users = this.selectedSupplier.users;
+    this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+  }
+
   async togglerUserActivated(event, index) {
     const users = this.selectedSupplier.users;
     if(!event.checked) {
-      const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to disable this user?', 'Disable');
-      if(!confirmed) {
-        users[index].activated = true;
-        return
-      }
+      this.userToDisable = index;
+      this.showUserDisable = !this.showUserDisable;
+    }else{
+      users[index].activated = event.checked;
+      this.updateSuppilerUsers(this.selectedSupplier.uid, users);
     }
-    users[index].activated = event.checked;
-    this.updateSuppilerUsers(this.selectedSupplier.uid, users);
   }
 
   updateUserExpiry(event, index) {
@@ -295,10 +311,6 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async remove(fruit, indx, index) {
-    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to remove this Region?');
-    if(!confirmed) {
-      return
-    }
     const regions = this.supplierList[index].regions;
     const removedIndex = regions.indexOf(fruit);
     if (removedIndex < 0) return;
@@ -344,32 +356,40 @@ export class ManageSuppliersComponent implements OnInit {
     this.getSupplierList();
   }
 
-  async toggleActivated(event, supplier, allNotifactionContent) {
-    if(!event.checked) {
-      const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to disable this Supplier?', 'Disable');
-      if(!confirmed) {
-        supplier.activated = true
-        return
-      }
-    }
+  
+  onCancleAccessToggle() {
+    this.showSupplierDisable = false
+    this.supplierToDisable.activated = true;
+  }
 
-    await this.updateDocument(supplier.uid, {"activated": event.checked});
-    if(event.checked) {
-      this.modalOpen = true;
-      this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
-      }, (reason) => {
-        this.closeModal();
-      });
-    } else {
-      this.sharedService.showSnackbar(
-        `Supplier's access has been ${event.checked ? "enabled" : "disabled"}`,
-        5000,
-        "top",
-        "center",
-        "snackBarMiddle",
-      );
-    }
+  async onConfirmAccessToggle() {
+    this.sharedService.showSnackbar(
+      `Supplier's access has been disabled`,
+      5000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
+  
+    this.showSupplierDisable = false
+    await this.updateDocument(this.supplierToDisable.uid, {"activated": false});
     this.getSupplierList();
+  }
+
+  async toggleActivated(event, supplier, allNotifactionContent) {
+    this.supplierToDisable = supplier
+    if(!event.checked) {
+      this.showSupplierDisable = !this.showSupplierDisable;
+      
+    }else{
+      await this.updateDocument(supplier.uid, {"activated": event.checked});
+        this.modalOpen = true;
+        this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+        }, (reason) => {
+          this.closeModal();
+        });
+      this.getSupplierList();
+    }
   }
 
   async openCreateSupplierModal() {

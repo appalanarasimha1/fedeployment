@@ -43,6 +43,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ShareModalComponent } from '../share-modal/share-modal.component';
 import { ArcGisMapComponent } from '../arc-gis-map/arc-gis-map.component';
+import { DeleteConfirmationComponent } from '../common/delete-confirmation/delete-confirmation.component';
 
 keyboardEventKeyPolyfill();
 @NgModule({
@@ -77,7 +78,7 @@ keyboardEventKeyPolyfill();
     MasonryViewComponent,
     ShareModalComponent,
     ArcGisMapComponent,
-    
+    DeleteConfirmationComponent,
   ],
   imports: [
     CommonModule,
@@ -133,7 +134,8 @@ keyboardEventKeyPolyfill();
     ManageAccessModalComponent,
     // ManageAccessModalComponent,
     SafePipe,
-    MasonryViewComponent
+    MasonryViewComponent,
+    DeleteConfirmationComponent
   ]
 })
 export class SharedModule { }

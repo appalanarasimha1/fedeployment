@@ -42,6 +42,13 @@ export class ManageLocationsComponent implements OnInit {
   showUserManageSuppliers = false;
   loading = false;
 
+    
+  showRegionDelete = false
+  regionToDelete;
+  showSubAreaDelete = false
+  subAreaToDelete;
+
+
   constructor(
     public matDialog: MatDialog,
     private apiService: ApiService,
@@ -200,30 +207,41 @@ export class ManageLocationsComponent implements OnInit {
     return this.apiService.post(`/settings/${type}/${id}`, params, {responseType: 'text'}).toPromise();
   }
 
-  async removeRegion(region) {
-    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to remove this Region?');
-    if(!confirmed) {
-      return
-    }
-    await this.deleteDocument('area', region.uid);
+    
+  onRemoveRegionCancle() {
+    this.showRegionDelete = false
+  }
+
+  async onRemoveRegionConfirm() {
+    this.showRegionDelete = false
+    this.loading = true;
+    await this.deleteDocument('area', this.regionToDelete.uid);
     this.getRegionList();
   }
 
-  async removeSubArea(subArea) {
-    // const currentLocations = this.selectedRegion.locations || [];
-    // const index = currentLocations.indexOf(subArea.uid);
-    // if (index < 0) return;
-    // currentLocations.splice(index, 1);
-    // this.selectedRegion.locations = currentLocations;
-    // this.updateDocument(this.selectedRegion.uid, {
-    //   properties: { "region:locations": currentLocations },
-    // });
-    const confirmed = await this.sharedService.openConfirmationModal('Are you sure you want to remove this Sub-area?');
-    if(!confirmed) {
-      return
-    }
-    await this.deleteDocument('subarea', subArea.uid);
+
+  async removeRegion(region, e) {
+    e.stopPropagation()
+    this.showRegionDelete = !this.showRegionDelete;
+    this.regionToDelete = region;
+  }
+  
+  onRemoveSubAreaCancle() {
+    this.showSubAreaDelete = false
+  }
+
+  async onRemoveSubAreaConfirm() {
+    this.showSubAreaDelete = false
+    this.loading = true;
+    await this.deleteDocument('subarea', this.subAreaToDelete.uid);
     this.getSubAreaList(this.selectedRegion.uid);
+  }
+
+
+  async removeSubArea(subArea, e) {
+    e.stopPropagation()
+    this.showSubAreaDelete = !this.showSubAreaDelete;
+    this.subAreaToDelete = subArea;
   }
 
   openSubAreaList(region) {
