@@ -237,8 +237,11 @@ export class HeaderComponent implements OnInit {
     if(workspaceState) {
       dialogConfig.data = workspaceState;
     }
+
+    const url = this.router.url;
+
     // https://material.angular.io/components/dialog/overview
-    if (!this.isDroneUploadPage && !this.isDroneUploader) {
+    if ((!this.isDroneUploadPage && !this.isDroneUploader) || url.includes('/workspace')) {
       const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     } else {
       const modalDialog = this.matDialog.open(UploadDroneComponent, dialogConfig);
@@ -292,7 +295,16 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  
+  checkSharedFolderPath(){
+    return this.router.url === '/workspace/sharedFolder'
+  }
+      
+  
   get isUploadButtonVisible() {
+    if(this.checkSharedFolderPath()) { 
+      return false
+    }
     if(this.router.url.includes('/construction')) { 
       if (this.isDroneUploader) {
         return true
