@@ -26,7 +26,6 @@ import { ACCESS,
   ALLOW_VALUE_MAP,
   SPECIFIC_USER_LABEL,
   OWNER_APPROVAL_LABEL,
-  WHITELIST_EXTENSIONS,
   YEARS,
   ACCESS_TITLE,
   ACCESSNEW} from "./constant";
@@ -266,7 +265,7 @@ export class UploadModalComponent implements OnInit {
     } else {
       this.showError = false;
       this.showErrorCheckbox = false;
-      const files = this.filterWhitelistFiles(event.addedFiles);
+      const files = this.filterBlacklistFiles(event.addedFiles);
       const prevLen = this.whiteListFiles.length || 0;
       this.whiteListFiles.push(...files);
       for (let i = 0; i < files.length; i++) {
@@ -291,34 +290,8 @@ export class UploadModalComponent implements OnInit {
     }
   }
 
-  filterWhitelistFiles(files: any) {
-    const filteredFile = [];
-    for (const file of files) {
-      const filenameSplit = file.name.split('.');
-      //console.log(filenameSplit.length, filenameSplit[1], file.type)
-      // if (filenameSplit.length > 2) {}
-      // else if (WHITELIST_EXTENSIONS.includes(file.type)) {
-        if (WHITELIST_EXTENSIONS.includes(file.type)) {
-        filteredFile.push(file);
-      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase())) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("image/")) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("video/")) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("audio/")) {
-        filteredFile.push(file);
-      } else if (file.name?.toLowerCase().includes(".srt")) {
-        filteredFile.push(file);
-      } else {
-        console.log("No criteria found");
-        
-        // const blockedFile = file;
-        // blockedFile['isBlocked'] = true;
-        // filteredFile.push(blockedFile);
-      }
-    }
-
+  filterBlacklistFiles(files: File[]) {
+    const filteredFile = this.sharedService.filterSafeFiles(files)
     return filteredFile;
   }
 

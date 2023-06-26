@@ -12,6 +12,7 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { NuxeoService } from './nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import { IChildAssetACL, IEntry } from '../common/interfaces';
+import { BLACKLIST_EXTENSIONS } from '../upload-modal/constant';
 
 
 @Injectable({
@@ -707,4 +708,43 @@ export class SharedService {
       return excludedDroneWorkspaces;
     } catch (err) { }
   }
+
+
+  getFileExtension(fileName: string) {
+    const lastDotIndex = fileName.lastIndexOf(".");
+    if (lastDotIndex === -1) {
+      return '';
+    }
+    return fileName.slice(lastDotIndex + 1).toLowerCase();
+  }
+
+  isFileInBlackList(file: File) {
+    const fileName = file.name;
+    const fileExtension = this.getFileExtension(fileName);
+
+    if (BLACKLIST_EXTENSIONS.includes(fileExtension)) {
+      return true;
+    }
+
+    // Check against blacklisted MIME types
+    const mimeTypes = file.type.split("/");
+    const fileMimeType = mimeTypes[mimeTypes.length - 1].toLowerCase();
+    if (BLACKLIST_EXTENSIONS.includes(fileMimeType)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  filterSafeFiles(files: File[]) {
+    const safeFiles = [];
+    for (const file of files) {
+      if (!this.isFileInBlackList(file)) {
+        safeFiles.push(file);
+      }
+    }
+    return safeFiles;
+  }
+
+
 }
