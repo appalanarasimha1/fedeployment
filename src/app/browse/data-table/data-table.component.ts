@@ -480,7 +480,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.contextMenu.openMenu();
 
       $(document).click( (e)=> {
-        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0) {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && $(e.target).parents(".rename-block").length === 0 && this.count == 0) {
           // $(".availableActions").hide();
           this.removeAssets()
         }
