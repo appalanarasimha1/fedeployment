@@ -268,7 +268,7 @@
             </span>
           </span>
 
-          <span *ngIf="item.edit" style="display: inline-block; position: relative; z-index: 99;">
+          <span *ngIf="item.edit" style="display: inline-block; position: relative; z-index: 99;" class="rename-block">
             <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
             <div class="actionIcon" style="margin-top: 0px;display: inline-block;">
               <svg
