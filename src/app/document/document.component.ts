@@ -735,7 +735,6 @@ export class DocumentComponent implements OnInit, OnChanges {
         break;
     }
     // }
-    this.recentDataShow = this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -758,6 +757,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     // }
 
     this.previewModal.open();
+    
+    this.recentDataShow = this.sharedService.markRecentlyViewed(file);
   }
 
   onFileProgress(event: any) {

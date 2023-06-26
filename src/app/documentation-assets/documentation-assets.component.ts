@@ -481,7 +481,6 @@ export class DocumentationAssetsComponent implements OnInit {
         break;
     }
     // }
-    this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -504,6 +503,7 @@ export class DocumentationAssetsComponent implements OnInit {
     // }
 
     this.previewModal.open(this.checkAssetDownloadPermission(this.selectedFile));
+    this.sharedService.markRecentlyViewed(file);
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
