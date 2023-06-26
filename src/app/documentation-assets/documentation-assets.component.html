@@ -43,7 +43,14 @@
                     [ngClass]="{'goldenText': selectedsubArea}"
                 >
                     <ng-option *ngFor="let subArea of filteredSubAreaList" [value]="subArea">
-                        {{subArea.name}}
+                      <div class="d-flex justify-content-between">
+                        <span>
+                          {{subArea.name}} 
+                        </span>
+                        <span>
+                          {{subArea.parentName}}
+                        </span>
+                      </div>
                     </ng-option>
                 </ng-select>
             </li>

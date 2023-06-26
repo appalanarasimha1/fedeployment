@@ -248,6 +248,7 @@ export class DocumentationAssetsComponent implements OnInit {
       name: area.name,
       uid: area.id,
       parentArea: area.parentArea,
+      parentName: area.title
     }));
     const regionIds = this.regionList.map(region => region.uid);
     this.subAreaList = this.subAreaList.filter(subArea => regionIds.includes(subArea.parentArea));
