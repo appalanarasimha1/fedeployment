@@ -170,3 +170,8 @@ export const AISearchThemeMapping = {
 }
 
 export const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
+export enum DEVICE_TYPES  {
+    drone = 'Drone',
+    timelapse = 'timelapse'
+}

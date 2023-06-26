@@ -7,7 +7,7 @@ import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
-import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
+import { DEVICE_TYPES, DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
 import { concat, Observable, of, Subject } from "rxjs";
 import {
   catchError,
@@ -374,7 +374,12 @@ export class DocumentationAssetsComponent implements OnInit {
     }
 
     if(this.selectedDeviceType) {
-      query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
+
+      if(this.selectedDeviceType === DEVICE_TYPES.timelapse) { 
+        query += ` AND dc:deviceType IN ('timelapse', 'Timelapse')`;
+      }else{
+        query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
+      }
     }
 
 
@@ -409,10 +414,13 @@ export class DocumentationAssetsComponent implements OnInit {
         this.selectedStartDate
       )}' AND '${this.formatDateString(this.selectedEndDate)}'`;
     }else{
-      let date = new Date()
-      query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
-        date
-      )}' AND '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
+
+      if(this.selectedDeviceType !== DEVICE_TYPES.drone ) { 
+        let date = new Date()
+        query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
+          date
+        )}' AND '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
+      }
     }
     if (this.assetByMe) {
       query += ` AND dc:creator = '${this.user}'`;
