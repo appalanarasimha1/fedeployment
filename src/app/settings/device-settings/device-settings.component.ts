@@ -107,7 +107,9 @@ export class DeviceSettingsComponent implements OnInit {
       owner: device.owner,
       uid: device.id,
       supplierId: device.supplierId,
-      statusUpdateDate: device?.statusUpdateDate
+      statusUpdateDate: device?.statusUpdateDate,
+      installationDate: device?.installationDate,
+      installationTime: device?.installationTime,
     }));
     if(from !=='changeStatus'){
       this.filteredDeviceList = this.deviceList;

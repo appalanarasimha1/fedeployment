@@ -588,45 +588,24 @@ export class UploadDroneComponent implements OnInit {
       this.dates.push(addedFiles[i].lastModifiedDate);
     }
     // this.dates = [...this.dates, ...addedDates];
-
-
-
-
     // this.uploadFile(this.files);
     // this.countFile = false;
   }
-  srtFiles:any =[]
-  filterWhitelistFiles(files: any) {
-    const filteredFile = [];
-    for (const file of files) {
-      const filenameSplit = file.name.split(".");
-      // if (filenameSplit.length > 2) {
-      // } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
-        if (WHITELIST_EXTENSIONS.includes(file.type)) {
-        filteredFile.push(file);
-      } else if (
-        filenameSplit[1] &&
-        WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase()))
-         {
-        filteredFile.push(file);
-      }else if (file.type?.includes("image/")) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("video/")) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("audio/")) {
-        filteredFile.push(file);
-      } else if (file.name?.toLowerCase().includes(".srt")) {
-        this.dateHiideSrt = false;
-        // filteredFile.push(file);
-        this.srtFiles.push(file)
-        this.srtDates.push(file.lastModifiedDate);
-      }  else {
-        // const blockedFile = file;
-        // blockedFile['isBlocked'] = true;
-        // filteredFile.push(blockedFile);
-      }
-    }
 
+  srtFiles: any = []
+  filterWhitelistFiles(files: any) {
+    let filteredFile = this.sharedService.filterSafeFiles(files);
+    this.srtFiles = filteredFile.filter((file) => {
+      if (file.name?.toLowerCase().includes(".srt")) {
+        this.srtDates.push(file.lastModifiedDate);
+        return true;
+      }
+      return false;
+    })
+    filteredFile = filteredFile.filter((file) => !file.name?.toLowerCase().includes(".srt"))
+    if (this.srtFiles.length) {
+      this.dateHiideSrt = false;
+    }
     return filteredFile;
   }
 

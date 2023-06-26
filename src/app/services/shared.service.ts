@@ -14,6 +14,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { IChildAssetACL, IEntry } from '../common/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../common/delete-confirmation/delete-confirmation.component';
+import { BLACKLIST_EXTENSIONS } from '../upload-modal/constant';
 
 
 @Injectable({
@@ -412,20 +413,21 @@ export class SharedService {
     // tslint:disable-next-line:prefer-const
     let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
     if (recentlyViewed.length) {
-      recentlyViewed.map((item: any, index: number) => {
-        if (item.uid === data.uid) {
-          found = true;
-          recentlyViewed.splice(index, 1);
-          recentlyViewed.push(data);
-        }
+      const index = recentlyViewed.findIndex((item: any) => {
+        return item.uid === data.uid 
       });
+      if(index >= 0) { 
+        found = true;
+        recentlyViewed.splice(index, 1);
+        recentlyViewed.push(data);
+      }
     }
     if (found) {
       localStorage.setItem(
         localStorageVars.RECENTLY_VIEWED,
         JSON.stringify(recentlyViewed, this.getCircularReplacer())
       );
-      return [...recentlyViewed.reverse()];
+      return recentlyViewed.reverse();
     }
 
     data["isSelected"] = false;
@@ -434,7 +436,7 @@ export class SharedService {
       localStorageVars.RECENTLY_VIEWED,
       JSON.stringify(recentlyViewed, this.getCircularReplacer())
     );
-    return [...recentlyViewed.reverse()];
+    return recentlyViewed.reverse();
   }
 
   getCircularReplacer() {
@@ -710,5 +712,43 @@ export class SharedService {
       return excludedDroneWorkspaces;
     } catch (err) { }
   }
+
+
+  getFileExtension(fileName: string) {
+    const lastDotIndex = fileName.lastIndexOf(".");
+    if (lastDotIndex === -1) {
+      return '';
+    }
+    return fileName.slice(lastDotIndex + 1).toLowerCase();
+  }
+
+  isFileInBlackList(file: File) {
+    const fileName = file.name;
+    const fileExtension = this.getFileExtension(fileName);
+
+    if (BLACKLIST_EXTENSIONS.includes(fileExtension)) {
+      return true;
+    }
+
+    // Check against blacklisted MIME types
+    const mimeTypes = file.type.split("/");
+    const fileMimeType = mimeTypes[mimeTypes.length - 1].toLowerCase();
+    if (BLACKLIST_EXTENSIONS.includes(fileMimeType)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  filterSafeFiles(files: File[]) {
+    const safeFiles = [];
+    for (const file of files) {
+      if (!this.isFileInBlackList(file)) {
+        safeFiles.push(file);
+      }
+    }
+    return safeFiles;
+  }
+
 
 }

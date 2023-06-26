@@ -690,3 +690,15 @@ input.datePicker:focus::placeholder{
 ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container {
     padding-left: 0px !important;
 }
+.searchBlock ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input {
+    color: #DEB31A !important;
+}
+.searchBlock ::ng-deep .ng-select .ng-has-value .ng-placeholder {
+    display: block;
+}
+.searchBlock .positionRelative ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../assets/images/down-arrow-yellow.svg) !important;
+    background-position: 0px 3px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
