@@ -375,7 +375,7 @@ export class DocumentationAssetsComponent implements OnInit {
 
     if(this.selectedDeviceType) {
 
-      if(this.selectedDeviceType === DEVICE_TYPES.timelapse) { 
+      if(this.selectedDeviceType.toLowerCase() === DEVICE_TYPES.timelapse) { 
         query += ` AND dc:deviceType IN ('timelapse', 'Timelapse')`;
       }else{
         query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
