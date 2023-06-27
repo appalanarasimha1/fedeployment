@@ -375,10 +375,14 @@ export class DocumentationAssetsComponent implements OnInit {
 
     if(this.selectedDeviceType) {
 
-      if(this.selectedDeviceType === DEVICE_TYPES.timelapse) { 
+      if(this.selectedDeviceType.toLowerCase() === DEVICE_TYPES.timelapse) { 
         query += ` AND dc:deviceType IN ('timelapse', 'Timelapse')`;
       }else{
         query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
+      }
+    } else {
+      if (this.selectedFormat === 'Video') {
+        query += ` AND dc:deviceType NOT IN ('timelapse', 'Timelapse')`;
       }
     }
 
@@ -415,10 +419,11 @@ export class DocumentationAssetsComponent implements OnInit {
       )}' AND '${this.formatDateString(this.selectedEndDate)}'`;
     }else{
 
-      if(this.selectedDeviceType !== DEVICE_TYPES.drone ) { 
-        let date = new Date()
+      if(this.selectedDeviceType !== DEVICE_TYPES.drone && this.selectedFormat !== 'Video') { 
+        const startDate = new Date(Date.now() - 7*24*60*60*1000);
+        console.log('startDate', startDate)
         query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
-          date
+          startDate
         )}' AND '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
       }
     }
