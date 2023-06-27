@@ -54,6 +54,7 @@ export class CreateFolderComponent implements OnInit,OnChanges {
   ngOnChanges(changes):void{
     if (changes?.currentWorkspace?.currentValue) {
       this.checkPrivateFolder = changes.currentWorkspace.currentValue.properties['dc:isPrivate'];
+      this.getAllFolders(this.currentWorkspace)
     }
   }
 
@@ -126,7 +127,7 @@ export class CreateFolderComponent implements OnInit,OnChanges {
 
   CheckTitleAlreadyExits(name: string) {
     console.log('this.allFolders',this.allFolders, typeof this.allFolders)
-    let titles = this.allFolders.map((m:any)=>m.title.toLowerCase().trim())
+    let titles = (this.allFolders || []).map((m:any)=>m.title.toLowerCase().trim())
     if(titles.indexOf(name?.toLowerCase().trim()) !== -1) return true
     return false
   }
@@ -138,10 +139,10 @@ export class CreateFolderComponent implements OnInit,OnChanges {
       const result: any = await this.apiService
           .get(url, { headers: { "fetch-document": "properties" } })
           .toPromise();
-     this.allFolders = result?.entries
+     this.allFolders = result?.entries || []
     }else{
       let currentState1 = this.folderAssetsResult[folder?.uid]?.entries?.filter(r => r.type == "OrderedFolder")
-      this.allFolders = currentState1
+      this.allFolders = currentState1 || []
     }
   }
 
@@ -206,7 +207,6 @@ export class CreateFolderComponent implements OnInit,OnChanges {
       $(".dropdownCreate").hide();
       e.stopPropagation();
     });
-    this.getAllFolders(this.currentWorkspace)
   }
 
   inputChange() {
