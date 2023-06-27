@@ -106,12 +106,12 @@ keyboardEventKeyPolyfill();
     PdfViewerModule,
     ReactiveFormsModule,
     NgbModule,
-    MatSlideToggleModule,
+    // MatSlideToggleModule,
     
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    NgSelectModule,
+    // MatDatepickerModule,
+    // MatFormFieldModule,
+    // MatInputModule,
+    // NgSelectModule,
     
     // MatDialogModule,
     LoaderComponent,
