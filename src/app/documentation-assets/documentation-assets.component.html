@@ -33,7 +33,7 @@
                     </ng-option>
                 </ng-select>
             </li>
-            <li>
+            <li class="subAreaDropdown">
                 <ng-select placeholder="Sub-area"
                     (change)="onSelectSubArea($event)"
                     [searchable]="true"
@@ -44,10 +44,10 @@
                 >
                     <ng-option *ngFor="let subArea of filteredSubAreaList" [value]="subArea">
                       <div class="d-flex justify-content-between">
-                        <span>
+                        <span class="subAreaName">
                           {{subArea.name}} 
                         </span>
-                        <span>
+                        <span class="subAreaParentName">
                           {{subArea.parentName}}
                         </span>
                       </div>

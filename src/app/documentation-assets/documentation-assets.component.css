@@ -613,3 +613,26 @@ li.removeArrow ::ng-deep .ng-arrow-wrapper {
   width: 17%;
   margin-right: 0px;
 }
+li.subAreaDropdown ::ng-deep ng-dropdown-panel {
+  width: 350px;
+}
+.subAreaName{
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 60%;
+}
+.subAreaParentName {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 40%; 
+  padding-left: 20px; 
+  text-align: right;
+}
