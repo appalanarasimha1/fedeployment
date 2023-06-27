@@ -69,6 +69,8 @@ export class DeviceSettingsComponent implements OnInit {
   subAreaMap = {};
   owners = [];
   selectedOwner;
+  showDeletePopup = false
+  deviceToDelete;
 
   deviceTypes = [
     { id: 1, name: "Timelapse" },
@@ -220,9 +222,21 @@ export class DeviceSettingsComponent implements OnInit {
       .toPromise();
   }
 
-  async deleteDevice(device) {
-    await this.deleteDocument(device.uid);
+  
+  onDeleteCancle() {
+    this.showDeletePopup = false
+  }
+
+  async onDeleteConfirm() {
+    this.showDeletePopup = false
+    await this.deleteDocument(this.deviceToDelete.uid);
     this.getDeviceList();
+  }
+
+  async deleteDevice(device, e) {
+    e.stopPropagation()
+    this.deviceToDelete = device;
+    this.showDeletePopup = !this.showDeletePopup
   }
 
   searchDevice(event) {

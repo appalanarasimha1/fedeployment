@@ -1,0 +1,16 @@
+<div class="dropdownDelete  deleteFolder">
+  <div class="deleteBlock">
+    <h3>
+      {{message || 'Are you sure you want to delete the selected item(s)?'}}
+      <!-- <button type="button" class="close-modal-icon" aria-label="Close" (click)="closeModal()" style="float: right;">
+        <img src="../../assets/images/close-modal.svg" style="width: 20px" />
+      </button> -->
+    </h3>
+  </div>
+  <div class="button-groups">
+    <button (click)="closePopup()" class="cancel-btn">No</button>
+    <button (click)="confirmDelete()" class="upload-btn" style="position: relative">
+      {{confirmButtonText || 'Yes'}}
+    </button>
+  </div>
+</div>
