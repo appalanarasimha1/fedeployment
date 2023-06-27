@@ -184,7 +184,6 @@ export class MasonryViewComponent implements OnInit, OnChanges {
         break;
     }
     // }
-    this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -205,6 +204,7 @@ export class MasonryViewComponent implements OnInit, OnChanges {
     }
 
     this.previewModal.open();
+    this.sharedService.markRecentlyViewed(file);
   }
   
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {

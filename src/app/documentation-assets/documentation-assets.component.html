@@ -7,7 +7,7 @@
       <li>Click <a href="mailto:groundxsupport@neom.com?subject=Ground X API Access Request">here</a> to request API access to construction footage.</li>
     </ul>
   </div>
-  <div *ngIf="!notAuthorize" class="container" style="min-height: 100vh;">
+  <div *ngIf="!notAuthorize" class="container" style="min-height: 100vh; padding-left: 0px;">
       <h2>Construction footage</h2>
       <h3>{{company}}</h3>
       <!-- <div *ngIf="!loading && (!assetList || assetList.length == 0) && checkNoFilterSelected()" class="adding-assets">
@@ -33,8 +33,6 @@
                     </ng-option>
                 </ng-select>
             </li>
-          
-
             <li>
                 <ng-select placeholder="Sub-area"
                     (change)="onSelectSubArea($event)"
@@ -79,7 +77,21 @@
                       {{subArea | titlecase}}
                   </ng-option>
               </ng-select>
-          </li>
+            </li>
+            <li>
+              <ng-select placeholder="Format"
+                  (change)="getAssetList()"
+                  [searchable]="true"
+                  [clearable]="true"
+                  [(ngModel)]="selectedFormat"
+                  id="confidentiality"
+                  [ngClass]="{'goldenText': selectedFormat}"
+              >
+                  <ng-option *ngFor="let format of formats" [value]="format">
+                      {{format}}
+                  </ng-option>
+              </ng-select>
+            </li>
 
             <li>
               <mat-form-field appearance="fill" [ngClass]="{'goldenText': selectedStartDate || selectedEndDate}">
@@ -100,30 +112,16 @@
               </mat-form-field>
               <!-- <button mat-button (click)="clearSelection()">Clear</button> -->
             </li>
-            <li>
-                <ng-select placeholder="Format"
-                    (change)="getAssetList()"
-                    [searchable]="true"
-                    [clearable]="true"
-                    [(ngModel)]="selectedFormat"
-                    id="confidentiality"
-                    [ngClass]="{'goldenText': selectedFormat}"
-                >
-                    <ng-option *ngFor="let format of formats" [value]="format">
-                        {{format}}
-                    </ng-option>
-                </ng-select>
-            </li>
-            <li *ngIf="!isNeomUser()" style="width: auto;">
+            <!-- <li *ngIf="!isNeomUser()" style="width: auto;">
               <label class="control control--checkbox" style="margin-bottom: 0px;margin-top: 10px;">
                 Only show assets uploaded by me
                 <input (change)="getAssetList()" [(ngModel)]="assetByMe" type="checkbox" checked="checked"/>
                 <div class="control__indicator"></div>
              </label>
-            </li>
+            </li> -->
           </ul>
-          <!-- <div class="row">
-            <div *ngIf="!isNeomUser()" class="col-md-4">
+          <div *ngIf="!isNeomUser()" class="row">
+            <div class="col-md-4">
               <label class="control control--checkbox" style="margin-bottom: 0px;">
                 Only show assets uploaded by me
                 <input (change)="getAssetList()" [(ngModel)]="assetByMe" type="checkbox" checked="checked"/>
@@ -136,8 +134,8 @@
                 <input type="checkbox" checked="checked"/>
                 <div class="control__indicator"></div>
              </label>
-            </div> -/->
-          </div> -->
+            </div> -->
+          </div>
         </div>
 
 
@@ -178,7 +176,7 @@
         </div>
 
         <div class="no-asset" *ngIf="(!assetList || assetList.length == 0) && !checkNoFilterSelected()">
-          No results found &#8722; Limited access
+          No results found
         </div>
       </div>
 

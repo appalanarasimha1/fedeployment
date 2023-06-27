@@ -7,7 +7,7 @@ import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
-import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
+import { DEVICE_TYPES, DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
 import { concat, Observable, of, Subject } from "rxjs";
 import {
   catchError,
@@ -374,7 +374,16 @@ export class DocumentationAssetsComponent implements OnInit {
     }
 
     if(this.selectedDeviceType) {
-      query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
+
+      if(this.selectedDeviceType.toLowerCase() === DEVICE_TYPES.timelapse) { 
+        query += ` AND dc:deviceType IN ('timelapse', 'Timelapse')`;
+      }else{
+        query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
+      }
+    } else {
+      if (this.selectedFormat === 'Video') {
+        query += ` AND dc:deviceType NOT IN ('timelapse', 'Timelapse')`;
+      }
     }
 
 
@@ -409,10 +418,14 @@ export class DocumentationAssetsComponent implements OnInit {
         this.selectedStartDate
       )}' AND '${this.formatDateString(this.selectedEndDate)}'`;
     }else{
-      let date = new Date()
-      query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
-        date
-      )}' AND '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
+
+      if(this.selectedDeviceType !== DEVICE_TYPES.drone && this.selectedFormat !== 'Video') { 
+        const startDate = new Date(Date.now() - 7*24*60*60*1000);
+        console.log('startDate', startDate)
+        query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
+          startDate
+        )}' AND '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
+      }
     }
     if (this.assetByMe) {
       query += ` AND dc:creator = '${this.user}'`;
@@ -481,7 +494,6 @@ export class DocumentationAssetsComponent implements OnInit {
         break;
     }
     // }
-    this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -504,6 +516,7 @@ export class DocumentationAssetsComponent implements OnInit {
     // }
 
     this.previewModal.open(this.checkAssetDownloadPermission(this.selectedFile));
+    this.sharedService.markRecentlyViewed(file);
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {

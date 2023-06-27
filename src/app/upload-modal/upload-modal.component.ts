@@ -26,7 +26,6 @@ import { ACCESS,
   ALLOW_VALUE_MAP,
   SPECIFIC_USER_LABEL,
   OWNER_APPROVAL_LABEL,
-  WHITELIST_EXTENSIONS,
   YEARS,
   ACCESS_TITLE,
   ACCESSNEW} from "./constant";
@@ -56,9 +55,11 @@ const BUTTON_LABEL = {
   3: "Publish",
 };
 
-const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 800MB
+
+const MAX_CHUNK_SIZE = 7 * 100 * 1000 * 1000; // 700 mb
+const CHUNK_UPLOAD_THREASOLD = 7 * 100 * 1000 * 1000; // NOTE: this denotes to 700mb // 700000000
 const MAX_PROCESS_SIZE = 10 * 1000 * 1000 * 1000; // 10GB
-const CONCURRENT_UPLOAD_REQUEST = 5;
+const CONCURRENT_UPLOAD_REQUEST = 1;
 const apiVersion1 = environment.apiVersion;
 
 @Component({
@@ -188,6 +189,7 @@ export class UploadModalComponent implements OnInit {
   failedFiles = []
 
   makeLockFolder: boolean;
+  uploading = false;
 
   constructor(
     private apiService: ApiService,
@@ -263,7 +265,7 @@ export class UploadModalComponent implements OnInit {
     } else {
       this.showError = false;
       this.showErrorCheckbox = false;
-      const files = this.filterWhitelistFiles(event.addedFiles);
+      const files = this.filterBlacklistFiles(event.addedFiles);
       const prevLen = this.whiteListFiles.length || 0;
       this.whiteListFiles.push(...files);
       for (let i = 0; i < files.length; i++) {
@@ -279,38 +281,17 @@ export class UploadModalComponent implements OnInit {
 
       if(this.sizeExeeded) return 
       // console.log("12345",this.getTotalFileSize())
-      this.uploadFile(this.whiteListFiles, prevLen-1);
+      
+      // If upload is in progress we don't need to call this method again, just pushing files in this.whiteListFiles
+      // will make things work, as for loop will pick those new files up from modified array
+      if(!this.uploading) {
+        this.uploadFile(this.whiteListFiles, prevLen-1);
+      }
     }
   }
 
-  filterWhitelistFiles(files: any) {
-    const filteredFile = [];
-    for (const file of files) {
-      const filenameSplit = file.name.split('.');
-      //console.log(filenameSplit.length, filenameSplit[1], file.type)
-      // if (filenameSplit.length > 2) {}
-      // else if (WHITELIST_EXTENSIONS.includes(file.type)) {
-        if (WHITELIST_EXTENSIONS.includes(file.type)) {
-        filteredFile.push(file);
-      } else if (filenameSplit[1] && WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase())) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("image/")) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("video/")) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("audio/")) {
-        filteredFile.push(file);
-      } else if (file.name?.toLowerCase().includes(".srt")) {
-        filteredFile.push(file);
-      } else {
-        console.log("No criteria found");
-        
-        // const blockedFile = file;
-        // blockedFile['isBlocked'] = true;
-        // filteredFile.push(blockedFile);
-      }
-    }
-
+  filterBlacklistFiles(files: File[]) {
+    const filteredFile = this.sharedService.filterSafeFiles(files)
     return filteredFile;
   }
 
@@ -620,6 +601,7 @@ export class UploadModalComponent implements OnInit {
     return this.assetCache[uid]["entries"];
   }
   async uploadFile(files, index?: number) {
+    this.uploading = true;
     if (!this.batchId) {
       await this.createBatchUpload();
     }
@@ -629,6 +611,7 @@ export class UploadModalComponent implements OnInit {
       this.currentIndex = i + 1;
       // }
     }
+    this.uploading = false;
   }
 
   async createBatchUpload() {
@@ -688,7 +671,7 @@ export class UploadModalComponent implements OnInit {
     this.filesMap[index] = file;
     this.filesUploadDone[index] = false;
     this.chunksFailedToUpload = {};
-    if (totalSize > MAX_CHUNK_SIZE) {
+    if (totalSize > CHUNK_UPLOAD_THREASOLD) {
       // upload file in chunk
       const totalChunk = Math.ceil(totalSize / MAX_CHUNK_SIZE);
       console.log('total chunk: ' + totalChunk);
