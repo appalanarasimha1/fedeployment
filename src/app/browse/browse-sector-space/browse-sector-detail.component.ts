@@ -1140,7 +1140,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   checkSharedFolderPath(){
-    return !window.location.href.includes(`/workspace/sharedFolder/`)
+    return this.router.url === '/workspace/sharedFolder'
   }
   
   async openShareModal() {
