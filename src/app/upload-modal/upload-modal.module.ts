@@ -14,6 +14,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ClickOutsideDirective } from './clickoutside.directive';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @NgModule({
   declarations: [UploadModalComponent, ClickOutsideDirective],
   imports: [
@@ -29,7 +30,8 @@ import { ClickOutsideDirective } from './clickoutside.directive';
     MatInputModule,
     // MatStepperModule,
     MatExpansionModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    MatSlideToggleModule,
   ],
   exports: [UploadModalComponent]
 })

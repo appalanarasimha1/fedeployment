@@ -101,6 +101,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   permissionChange:boolean=false;
   assetSize = { count: 0, size: null};
   selectedAssetsIds = {}
+  showDeletePopup = false
   searchQuerySubscription;
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
@@ -976,13 +977,24 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.dataTableComponent.openMoveModal(move);
     } else return;
   }
-  async deleteFolders() {
+
+  onDeleteCancle() {
+    this.showDeletePopup = false
+  }
+
+  async onDeleteConfirm() {
+    this.showDeletePopup = false
     if (this.dataTableComponent) {
       this.loading = true;
       await this.dataTableComponent.deleteFolders();
       // await this.getAssets(this.currentWorkspace?.uid)
       this.loading = false;
     } else return;
+  }
+
+  async deleteFolders(e) {
+    e.stopPropagation()
+    this.showDeletePopup = !this.showDeletePopup
   }
 
   checkEnableMoveButton() {
@@ -1140,7 +1152,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   }
 
   checkSharedFolderPath(){
-    return !window.location.href.includes(`/workspace/sharedFolder/`)
+    return this.router.url === '/workspace/sharedFolder'
   }
   
   async openShareModal() {

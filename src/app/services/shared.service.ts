@@ -12,6 +12,8 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { NuxeoService } from './nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import { IChildAssetACL, IEntry } from '../common/interfaces';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from '../common/delete-confirmation/delete-confirmation.component';
 import { BLACKLIST_EXTENSIONS } from '../upload-modal/constant';
 
 
@@ -34,7 +36,8 @@ export class SharedService {
     private router: Router,
     private apiService: ApiService,
     private _snackBar: MatSnackBar,
-    protected readonly keycloak: KeycloakService
+    protected readonly keycloak: KeycloakService,
+    public matDialog: MatDialog,
     ) {}
 
   setSidebarToggle(slideToggle) {
