@@ -168,6 +168,20 @@ export class ManageAccessListComponent implements OnInit {
 
   async selectUser(user) {
     const users = this.selectedAccess.users;
+    const foundUser = users.find((e) => e.user.toLowerCase() === user.toLowerCase().trim())
+    if (foundUser) {
+      this.sharedService.showSnackbar(
+        "User already exists",
+        4000,
+        "top",
+        "center",
+        "snackBarMiddle",
+        null,
+        null,
+        0
+      );
+      return
+    }
     const end = new Date();
     end.setFullYear(new Date().getFullYear() + 1);
     const newUserProp = {
