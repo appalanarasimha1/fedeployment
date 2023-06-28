@@ -23,6 +23,7 @@ import { BrowseHomeComponent } from './browse-home/browse-home.component';
 import { BrowseSectorDetailComponent } from './browse-sector-space/browse-sector-detail.component';
 import { CreateFolderComponent } from './create-folder/create-folder.component';
 import { TrashViewComponent } from './trash-view/trash-view.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @NgModule({
   imports: [
     SharedModule,
@@ -40,6 +41,7 @@ import { TrashViewComponent } from './trash-view/trash-view.component';
     MatDatepickerModule,
     UploadModalModule,
     SearchModule,
+    MatSlideToggleModule,
   ],
   declarations: [
     BrowseComponent,
@@ -50,6 +52,7 @@ import { TrashViewComponent } from './trash-view/trash-view.component';
     TrashViewComponent,
   ],
   exports: [
+    MatSlideToggleModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
