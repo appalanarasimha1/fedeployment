@@ -114,7 +114,7 @@
                         (onCancle)="onDeleteCancle()"
                         (onConfirm)="onDeleteConfirm()"
                         [message]="'Access will be deactivated, Are you sure?'"
-                        *ngIf="showDeletePopup"></app-delete-confirmation>
+                        *ngIf="showDeletePopup && i === userIndexToDelete"></app-delete-confirmation>
                     </div>
                 </td>
                 <td></td>

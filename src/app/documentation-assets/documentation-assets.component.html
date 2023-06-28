@@ -169,6 +169,7 @@
               (onSelect)="selectImage($event, doc, i)"
               (onMarkFavourite)="markFavourite(doc, 'recent')"
               [hasDownloadPermission]="checkAssetDownloadPermission(doc)"
+              [disableSelectCheckbox]="!checkAssetDownloadPermission(doc)"
             >
             </document-card>
           </div>
