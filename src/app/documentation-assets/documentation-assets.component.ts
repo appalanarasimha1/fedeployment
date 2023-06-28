@@ -163,9 +163,9 @@ export class DocumentationAssetsComponent implements OnInit {
       users: entry.users || [],
     }));
 
-    if (this.notAuthorize) {
-      this.checkAuthorizeUser()
-    }
+    // if (this.notAuthorize) {
+    this.checkAuthorizeUser()
+    // }
 
     await this.getRegionList();
     await this.getSubAreaList();
