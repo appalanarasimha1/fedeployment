@@ -143,7 +143,7 @@ export class DeviceSettingsComponent implements OnInit {
       renameEmail : false,
     }));
     // Sort by Name
-    this.supplierList.sort((a, b) => a.name > b.name ? 1 : -1);
+    this.supplierList.sort((a, b) => a.supplierId?.toLowerCase() > b.supplierId?.toLowerCase() ? 1 : -1);
     this.supplierIds = this.supplierList.map(supplier => supplier.supplierId).filter(supplierId => !!supplierId);
   }
 
@@ -157,7 +157,7 @@ export class DeviceSettingsComponent implements OnInit {
       name: region.title,
       uid: region.id,
     }));
-    this.regionList.sort((a, b) => a.initial > b.initial ? 1 : -1);
+    this.regionList.sort((a, b) => a.initial?.toLowerCase() > b.initial?.toLowerCase() ? 1 : -1);
     this.computeRegionMap();
   }
 
@@ -183,7 +183,7 @@ export class DeviceSettingsComponent implements OnInit {
       parentArea: area.parentArea,
     }));
     // Sort by name
-    this.subAreaList.sort((a, b) => a.name > b.name ? 1 : -1);
+    this.subAreaList.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
     this.computeSubAreaMap();
   }
 
@@ -201,7 +201,7 @@ export class DeviceSettingsComponent implements OnInit {
     const owners = res || [];
     this.owners = owners.map(owner => owner.owner);
     // Sort by owner
-    this.owners.sort((a, b) => a > b ? 1 : -1);
+    this.owners.sort((a, b) => a?.toLowerCase() > b?.toLowerCase() ? 1 : -1);
   }
 
   capitalizeFirstLetter(string) {
