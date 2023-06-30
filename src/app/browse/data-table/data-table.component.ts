@@ -40,6 +40,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Output() sortedDataList: EventEmitter<any> = new EventEmitter();
   @Output() selectedCount: EventEmitter<any> = new EventEmitter();
   @Output() selectedAssetMoveList: EventEmitter<any> = new EventEmitter();
+  @Output() assetSelectionChange: EventEmitter<any> = new EventEmitter();
+  @Output() onRemoveAssets: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   @ViewChild("paginator") paginator: MatPaginator;
@@ -144,9 +146,15 @@ export class DataTableComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.numberOfPages = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.numberOfPages;
-    this.resultCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.resultsCount;
-    this.currentPageCount = changes?.folderStructure?.currentValue[this.currentWorkspace?.uid]?.currentPageSize;
+    let currentWorkspaceId =  this.currentWorkspace?.title === 'Shared folders' ? null :  this.currentWorkspace?.uid
+    if(this.resultCount && this.resultCount !== this?.folderStructure?.[currentWorkspaceId]?.resultsCount ) { 
+      this.paginator.pageSize = this.defaultPageSize;
+      this.paginator.firstPage();
+    }
+
+    this.numberOfPages = this?.folderStructure?.[currentWorkspaceId]?.numberOfPages;
+    this.resultCount = this?.folderStructure?.[currentWorkspaceId]?.resultsCount;
+    this.currentPageCount = this?.folderStructure?.[currentWorkspaceId]?.currentPageSize;
   }
   
   /**
@@ -472,7 +480,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.contextMenu.openMenu();
 
       $(document).click( (e)=> {
-        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0) {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && $(e.target).parents(".rename-block").length === 0 && this.count == 0) {
           // $(".availableActions").hide();
           this.removeAssets()
         }
@@ -496,6 +504,10 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.count = this.count + 1;
         this.assetCount = this.assetCount + 1;
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
+        this.assetSelectionChange.emit({
+          item,
+          checked: true
+        })
       }
       if (this.lastIndexClicked ==undefined) {
         this.currentIndexClicked = i
@@ -553,6 +565,10 @@ export class DataTableComponent implements OnInit, OnChanges {
         this.count = this.count - 1;
         this.assetCount = this.assetCount - 1;
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
+        this.assetSelectionChange.emit({
+          item,
+          checked: false 
+        })
       }
 
       if (this.count==0) {
@@ -647,7 +663,10 @@ export class DataTableComponent implements OnInit, OnChanges {
       if (updateCount) {
         this.count = this.count + 1
         this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
-
+        this.assetSelectionChange.emit({
+          item,
+          checked: true
+        })
       };
       this.downloadArray.push(item.uid);
         this.downloadFullItem.push(item);
@@ -657,7 +676,10 @@ export class DataTableComponent implements OnInit, OnChanges {
       if (updateCount){
          this.count = this.count - 1;
          this.selectedCount.emit({allCount:this.count,assetCount:this.assetCount})
-
+         this.assetSelectionChange.emit({
+          item,
+          checked: false
+        })
         }
         this.downloadArray = this.downloadArray.filter((m) => m !== item.uid);
         this.downloadFullItem = this.downloadFullItem.filter(
@@ -724,6 +746,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.clickHandle.emit({eventName: 'needPermissionToDownloadEvent', data: this.needPermissionToDownload});
     this.clickHandle.emit({eventName: 'downloadArray', data: this.downloadArray});
     this.selectedAssetList.emit(this.selectedFolderList);
+    this.onRemoveAssets.emit()
     this.removeSelection();
   }
 
@@ -793,6 +816,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         setTimeout(() => {
           // if (this.selectedFolder.type === 'Domain') window.location.reload();
           // else this.handleClickNew(this.selectedFolder.uid);
+          this.fetchAssets.emit({id: this.currentWorkspace.uid});
         }, 1000);
       }
     });

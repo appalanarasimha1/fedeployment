@@ -75,7 +75,7 @@
     height: 100%;
     overflow: hidden;
     overflow-y: scroll;
-    max-height: 200px;
+    /* max-height: 200px; */
   }
   .makeAdminBlock ul li:hover, .makeAdminBlock ul li.active {
     background: #F8EECC;

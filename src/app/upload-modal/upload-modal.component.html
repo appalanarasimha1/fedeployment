@@ -50,13 +50,15 @@
             </ngx-dropzone-label>
             <!-- <div class="malware" style="color: red;width: 100%; text-align: center;" *ngIf="fileLimitExceed">You can upload upto 100 files</div> -->
             <ul class="flexible upload-preview" *ngIf="!sizeExeeded">
-               <li *ngFor="let f of filesMap | keyvalue">
+               <li *ngFor="let f of filesMap | keyvalue; let i = index">
                   <ngx-dropzone-preview *ngIf="!f?.value['isVirus']" class="upload-file-preview upload-progress-bar-{{f.key}}" [ngClass]="{'fillbar': filesUploadDone[f.key]}" [removable]="true" (removed)="onRemove(f)">
                      <ngx-dropzone-label class="" style="margin: unset;">
                         <div *ngIf="!f?.value['isVirus']" style="width: 100%;text-align: left;margin-top: 0px;">
                            <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
                            <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
-                           <span *ngIf="!filesUploadDone[f.key]" class="upload-loading">Uploading</span>
+                           <span *ngIf="!filesUploadDone[f.key] && !this.filesUploadDone[f.key] && !filesRetry[f.key] && !uploadFailedRetry[f.key]" class="upload-loading">Uploading...{{fileUploadProgress[f.key]?fileUploadProgress[f.key]:0}}%</span>
+                           <span style="width: 99px;" class="upload-loading retryingFile" *ngIf="filesRetry[f.key]">Retrying... {{this.filesRetry[f.key]}}</span>
+
                            <div *ngIf="filesUploadDone[f.key] && !f?.value['isVirus']" class="selected-icon">
                               <img src="../../assets/images/BtnTickbox.png" style="float: right;">
                            </div>
@@ -75,7 +77,11 @@
                            <!-- <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span> -->
                            <span class="upload-loading">
                               <span class="malware">File upload failed</span>
-                              <img src="../../assets/images/btn-tickbox.svg" class="tickboxImg" />
+                              <svg style="position: static; display: inline-block; height: 17px;vertical-align: -4px;" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                 <path d="M13.6517 8.34814L8.34839 13.6506" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                 <path d="M8.34839 8.34814L13.6517 13.6506" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M11 20.375C16.1777 20.375 20.375 16.1777 20.375 11C20.375 5.82233 16.1777 1.625 11 1.625C5.82233 1.625 1.625 5.82233 1.625 11C1.625 16.1777 5.82233 20.375 11 20.375Z" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           </svg>
                            </span>
                         </div>
                         <!-- <div *ngIf="f?.value['isVirus']" style="width: 20%; text-align: center;">
@@ -257,9 +263,20 @@
                      </div>
                      <div class="col-xl-9 col-md-9 folderType"  [ngClass]="{'grayField': descriptionFilled}" >
                         <div class="row">
-                           <div class="col-xl-2 col-md-2">
+                           <div class="col-xl-5 col-md-5">
                               <div class="row">
                                  <div class="col-xl-12 mb-10">
+                                    <div class="lockFolder">
+                                       <div class="slideToggleBlk">
+                                         <mat-slide-toggle (change)="toggleLockFolder($event)"></mat-slide-toggle>
+                                       </div>
+                                       <div class="slideContent">
+                                         Lock folder
+                                         <p>A locked folder and its contents will be only accessible by a selected group of individual people inside or outside of NEOM. </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <!-- <div class="col-xl-12 mb-10">
                                     <label class="control control--checkbox" (change)="handleChange($event, 'published')" style="margin-bottom: 0px; display: inline-block;">
                                       Published
                                       <input type="radio" id="Published" name="publishedPrivate" checked/>
@@ -272,27 +289,27 @@
                                       <input type="radio" id="Private" name="publishedPrivate"/>
                                       <div class="control__indicator" for="Private" style="top: 4px;left: 0px;border-radius: 100px;"></div>
                                     </label>
-                                  </div>
+                                  </div> -->
                               </div>
                            </div>
-                           <div class="col-xl-10 col-md-10" >
+                           <div class="col-xl-7 col-md-7" >
                               <div class="row">
                                  <div class="col-xl-12 mb-10">
                                     <div class="publishingAssets" *ngIf="publishingAssets">
-                                       <p>Used for publishing assets to "<strong>ALL USERS</strong>" or "<strong>ALL NEOM EMAIL HOLDERS</strong>"</p>
+                                       <p><strong>Used for publishing assets to "ALL USERS" or "ALL NEOM EMAIL HOLDERS"</strong></p>
                                        
                                        <table class="table table-bordered">
                                           <tbody>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Discoverable from search</td>
+                                                <td style="padding-left: 0px;white-space: nowrap;">Discoverable from search:</td><!--white-space: nowrap;-->
                                                 <td style="border-right: 0px; font-family: 'brownregular';">Yes</td>
                                              </tr>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
+                                                <td style="padding-left: 0px;">Access and Usage:</td>
                                                 <td style="border-right: 0px; font-family: 'brownregular';">Set per asset <br />("ALL USERS" or "ALL NEOM EMAIL HOLDERS")</td>
                                              </tr>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
+                                                <td style="padding-left: 0px;">Can receive files from external users:</td>
                                                 <td style="border-right: 0px;font-family: 'brownregular';">No</td>
                                              </tr>
                                           </tbody>
@@ -309,15 +326,19 @@
                                     </div>
        
                                     <div class="publishingAssets" *ngIf="publishingPrivateAssets">
-                                      <p>Used for restricting files to specific users or receiving files from external users</p>
+                                      <p><strong>Used for restricting files to specific users or receiving files from external users</strong></p>
                                       <table class="table table-bordered">
                                           <tbody>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Access and Usage</td>
+                                                <td style="padding-left: 0px;white-space: nowrap;">Discoverable from search:</td><!--white-space: nowrap;-->
+                                                <td style="border-right: 0px; font-family: 'brownregular';">No</td>
+                                             </tr>
+                                             <tr>
+                                                <td style="padding-left: 0px;">Access and Usage:</td>
                                                 <td style="border-right: 0px; font-family: 'brownregular';">Folder members only</td>
                                              </tr>
                                              <tr>
-                                                <td style="padding-left: 0px; white-space: nowrap;">Can receive files from external users</td>
+                                                <td style="padding-left: 0px;">Can receive files from <br />external users:</td>
                                                 <td style="border-right: 0px;font-family: 'brownregular';">Yes (if folder member)</td>
                                              </tr>
                                           </tbody>

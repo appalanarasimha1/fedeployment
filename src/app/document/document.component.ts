@@ -735,7 +735,6 @@ export class DocumentComponent implements OnInit, OnChanges {
         break;
     }
     // }
-    this.recentDataShow = this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -758,6 +757,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     // }
 
     this.previewModal.open();
+    
+    this.recentDataShow = this.sharedService.markRecentlyViewed(file);
   }
 
   onFileProgress(event: any) {
@@ -1226,24 +1227,29 @@ export class DocumentComponent implements OnInit, OnChanges {
         }
 
       }
-      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
-        window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+
+      if (newDownloadArray.length > 0) {
+        if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
+          window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+          this.removeAssets()
+        }
+        else {
+          this.sharedService.showSnackbar(
+            "Your download is being prepared do not close your browser",
+            0,
+            "top",
+            "center",
+            "snackBarMiddle",
+            "Close"
+          );
+          $(".multiDownloadBlock").hide();
+          let randomString = Math.random().toString().substring(7);
+          let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
+          let uid: any;
+          this.downloadAsZip(input, uid, randomString)
+        }
+      } else {
         this.removeAssets()
-      }
-      else {
-        this.sharedService.showSnackbar(
-          "Your download is being prepared do not close your browser",
-          0,
-          "top",
-          "center",
-          "snackBarMiddle",
-          "Close"
-        );
-        $(".multiDownloadBlock").hide();
-        let randomString = Math.random().toString().substring(7);
-        let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
-        let uid: any;
-        this.downloadAsZip(input, uid, randomString)
       }
     }
   }
@@ -1403,11 +1409,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   async getDroneUploadWsIds() {
     try {
-      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
-      const ids = res['value'];
-     if (ids && ids.length > 0) {
-       this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
-     }
+      this.excludedDroneWorkspaces = await this.sharedService.getDronFolderPathsToExclude();
     } catch (err) {}
   }
 }

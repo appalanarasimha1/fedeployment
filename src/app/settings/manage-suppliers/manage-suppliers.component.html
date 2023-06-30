@@ -1,6 +1,6 @@
 <div class="externalUser positionRelative" *ngIf="!showExternalUserPage">
     <div class="device-header">
-        <h2>Suppliers</h2>
+        <h2>Suppliers <span class="countingSettings">{{filteredSuppliers.length}}</span></h2>
         <button class="primary createSuppliers" (click)="openCreateSupplierModal()">Create new supplier</button>
     </div>
     <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> by typing their name below:</p>
@@ -103,6 +103,11 @@
                   <span class="removeIcon">
                     <mat-slide-toggle (change)="toggleActivated($event, supplier, allNotifactionContent)" [(ngModel)]="supplier.activated"></mat-slide-toggle>
                     <div class="removeInfo">Supplier's access can be turned on and off from this toggle.</div>
+                          <app-delete-confirmation
+                          (onCancle)="onCancleAccessToggle()"
+                          (onConfirm)="onConfirmAccessToggle()"
+                          [message]="'Access will be deactivated, Are you sure?'"
+                          *ngIf="showSupplierDisable && supplierToDisable.uid === supplier.uid"></app-delete-confirmation>
                   </span>
                 </td>
                 <td (click)="showExternalUserList(supplier)" class="positionRelative">
@@ -216,7 +221,17 @@
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </td>
-                <td><mat-slide-toggle [(ngModel)]="user.activated" (change)="togglerUserActivated($event, i)"></mat-slide-toggle></td>
+                <td>
+                  <div class="positionRelative">
+                    <mat-slide-toggle [(ngModel)]="user.activated" (change)="togglerUserActivated($event, i)"></mat-slide-toggle>
+                    <app-delete-confirmation
+                    (onCancle)="onDeleteCancle()"
+                    (onConfirm)="onDeleteConfirm()"
+                    [message]="'Access will be deactivated, Are you sure?'"
+                    *ngIf="showUserDisable && i === userToDisable"></app-delete-confirmation>
+                </div>
+
+                </td>
                 <td></td>
             </tr>
         </table>

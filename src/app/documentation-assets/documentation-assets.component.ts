@@ -7,9 +7,18 @@ import { ApiService } from "../services/api.service";
 import { UploadDroneComponent } from "../upload-drone/upload-drone.component";
 import { PreviewPopupComponent } from "../preview-popup/preview-popup.component";
 import { apiRoutes } from "../common/config";
-import { DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from "rxjs";
+import { DEVICE_TYPES, DRONE_UPLOADER, WARROOM_VIEW_ACCESS } from '../common/constant';
+import { concat, Observable, of, Subject } from "rxjs";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  tap,
+  map,
+  filter,
+  takeUntil
+} from "rxjs/operators";
 import { ISearchResponse } from "../common/interfaces";
 import { environment } from "src/environments/environment";
 
@@ -19,14 +28,21 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./documentation-assets.component.css"],
 })
 export class DocumentationAssetsComponent implements OnInit {
+  public items$: Observable<any>;
+  public input$ = new Subject<string | null>();
+  deviceIds = [];
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
-
+  selectedDeviceId;
+  deviceTypes:any = [];
+  selectedDeviceType;
   constructor(
     public matDialog: MatDialog,
     public sharedService: SharedService,
     private apiService: ApiService
-  ) {}
+  ) {
+    this.loadDevices();
+  }
 
   public masonryOptions: NgxMasonryOptions = {
     gutter: 10,
@@ -88,9 +104,19 @@ export class DocumentationAssetsComponent implements OnInit {
 
   onSelectRegions(regions) {
     this.selectedsubArea = null;
+    this.selectedDeviceId = null;
     this.getAssetList();
   }
   onSelectSubArea(area) {
+    this.selectedDeviceId = null;
+    this.getAssetList();
+  }
+  onDeviceId(area) {
+    this.selectedRegion = null;
+    this.selectedsubArea = null;
+    this.getAssetList();
+  }
+  onSelectDeviceType(area) {
     this.getAssetList();
   }
 
@@ -110,6 +136,7 @@ export class DocumentationAssetsComponent implements OnInit {
     this.sharedService.events$.forEach(event => {
       if (event === 'Upload done') this.getAssetList();
     });
+    this.getDeviceTypes();
   }
 
   async fetchGeneralData() {
@@ -136,9 +163,9 @@ export class DocumentationAssetsComponent implements OnInit {
       users: entry.users || [],
     }));
 
-    if (this.notAuthorize) {
-      this.checkAuthorizeUser()
-    }
+    // if (this.notAuthorize) {
+    this.checkAuthorizeUser()
+    // }
 
     await this.getRegionList();
     await this.getSubAreaList();
@@ -223,6 +250,7 @@ export class DocumentationAssetsComponent implements OnInit {
       name: area.name,
       uid: area.id,
       parentArea: area.parentArea,
+      parentName: area.title
     }));
     this.subAreaList.sort((a, b) => a.name > b.name ? 1 : -1);
     const regionIds = this.regionList.map(region => region.uid);
@@ -350,6 +378,21 @@ export class DocumentationAssetsComponent implements OnInit {
     } else {
       query += ` AND ecm:primaryType = '${this.selectedFormat}'`;
     }
+
+    if(this.selectedDeviceType) {
+
+      if(this.selectedDeviceType.toLowerCase() === DEVICE_TYPES.timelapse) { 
+        query += ` AND dc:deviceType IN ('timelapse', 'Timelapse')`;
+      }else{
+        query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
+      }
+    } else {
+      if (this.selectedFormat === 'Video') {
+        query += ` AND dc:deviceType NOT IN ('timelapse', 'Timelapse')`;
+      }
+    }
+
+
     if (this.selectedRegion) {
       filteredDevice = this.deviceList.filter(device =>
         (device.region?.includes(this.selectedRegion.uid)
@@ -365,23 +408,30 @@ export class DocumentationAssetsComponent implements OnInit {
       filteredDevice = this.deviceList.filter(device =>
         (device.subArea?.includes(this.selectedsubArea.uid) || device.subAreaId?.includes(this.selectedsubArea.locationId)))
     }
+    if (this.selectedDeviceId) {
+      filteredDevice = this.deviceList.filter(device => device.installationId === this.selectedDeviceId);
+    }
     if (filteredDevice != null) {
       if (filteredDevice.length === 0) return 'NONE';
-      const deviceIds = filteredDevice.map(device => device.installationId);
+      const deviceIds = Array.from(new Set<string>(filteredDevice.map(device => device.installationId)));
       const queryString = deviceIds.join("','");
       query += ` AND dc:installationId IN ('${queryString}')`;
     }
     console.log("this.selectedStartDate",this.selectedStartDate,new Date(Date.now() + 1*24*60*60*1000));
     
     if (this.selectedStartDate && this.selectedEndDate) {
-      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
+      query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
         this.selectedStartDate
-      )}' AND DATE '${this.formatDateString(this.selectedEndDate)}'`;
+      )}' AND '${this.formatDateString(this.selectedEndDate)}'`;
     }else{
-      let date = new Date()
-      query += ` AND dc:created BETWEEN DATE '${this.formatDateString(
-        date
-      )}' AND DATE '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
+
+      if(this.selectedDeviceType !== DEVICE_TYPES.drone && this.selectedFormat !== 'Video') { 
+        const startDate = new Date(Date.now() - 7*24*60*60*1000);
+        console.log('startDate', startDate)
+        query += ` AND dc:assetDateTaken BETWEEN '${this.formatDateString(
+          startDate
+        )}' AND '${this.formatDateString(new Date(Date.now() + 1*24*60*60*1000))}'`;
+      }
     }
     if (this.assetByMe) {
       query += ` AND dc:creator = '${this.user}'`;
@@ -391,7 +441,7 @@ export class DocumentationAssetsComponent implements OnInit {
   }
 
   formatDateString(date) {
-    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split("T")[0];
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split("T")[0].split("-").join("");
   }
 
   openModal() {
@@ -450,7 +500,6 @@ export class DocumentationAssetsComponent implements OnInit {
         break;
     }
     // }
-    this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
@@ -473,6 +522,7 @@ export class DocumentationAssetsComponent implements OnInit {
     // }
 
     this.previewModal.open(this.checkAssetDownloadPermission(this.selectedFile));
+    this.sharedService.markRecentlyViewed(file);
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
@@ -576,6 +626,8 @@ export class DocumentationAssetsComponent implements OnInit {
       this.selectedFormat ||
       this.selectedRegion ||
       this.selectedsubArea ||
+      this.selectedDeviceId ||
+      this.selectedDeviceType ||
       this.assetByMe
     );
   }
@@ -725,25 +777,29 @@ export class DocumentationAssetsComponent implements OnInit {
         }
 
       }
-      if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
-        window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+      if (newDownloadArray.length > 0) {
+        if (newDownloadArray.length == 1 && newDownloadArrayFullItem[0].type !== "OrderedFolder" && newDownloadArrayFullItem[0].type !== "Workspace") {
+          window.location.href = this.getFileContent(newDownloadArrayFullItem[0])
+          this.removeAssets()
+          this.sharedService.hideSnackBar();
+        }
+        else {
+          this.sharedService.showSnackbar(
+            "Your download is being prepared do not close your browser",
+            0,
+            "top",
+            "center",
+            "snackBarMiddle",
+            "Close"
+          );
+          $(".multiDownloadBlock").hide();
+          let randomString = Math.random().toString().substring(7);
+          let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
+          let uid: any;
+          this.downloadAsZip(input, uid, randomString)
+        }
+      } else {
         this.removeAssets()
-        this.sharedService.hideSnackBar();
-      }
-      else {
-        this.sharedService.showSnackbar(
-          "Your download is being prepared do not close your browser",
-          0,
-          "top",
-          "center",
-          "snackBarMiddle",
-          "Close"
-        );
-        $(".multiDownloadBlock").hide();
-        let randomString = Math.random().toString().substring(7);
-        let input = "docs:" + JSON.parse(JSON.stringify(newDownloadArray));
-        let uid: any;
-        this.downloadAsZip(input, uid, randomString)
       }
     }
   }
@@ -874,5 +930,33 @@ export class DocumentationAssetsComponent implements OnInit {
     }
   }
 
+  loadDevices() {
+    this.items$ = concat(
+      of([]),
+      this.input$.pipe(
+        distinctUntilChanged(),
+        debounceTime(300),
+        switchMap((term) => {
+          return this.getDeviceId(term).pipe(
+            catchError(() => of([])),
+          );
+        })
+      )
+    );
+  }
+
+  getDeviceId(id){
+    const url = `/cameraData/deviceID?deviceID=${id}`;
+    return this.apiService
+      .get(url, {}).pipe(tap((res: any)=>{
+        this.deviceIds =res
+      }));
+  }  
+
+  async getDeviceTypes(){
+    const url = `/cameraData/deviceType`;
+    this.deviceTypes =  await this.apiService
+      .get(url, {}).toPromise()
+  }  
 
 }

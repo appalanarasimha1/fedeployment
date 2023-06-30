@@ -1,6 +1,6 @@
 <div class="externalUser positionRelative">
     <div class="device-header">
-        <h2>Devices</h2>
+        <h2>Devices <span class="countingSettings">{{filteredDeviceList.length}}</span></h2>
         <button class="primary createSuppliers" (click)="openCreateDeviceModal()">Create new device</button>
     </div>
     <!-- <p class="externalEditAccess">You can <strong>search for existing suppliers</strong> or <strong>create a new supplier</strong> by typing their name below:</p> -->
@@ -104,7 +104,7 @@
                 <td>
                     <div class="tollTipCustom">
                         <div class="itemTitleContent">{{device.installationId}}</div>
-                        <div class="tolltipContent">{{device.installationId}}</div>
+                        <div *ngIf="device?.installationDate" class="tolltipContent">{{device.installationDate.slice(4, 6) + "/" + device.installationDate.slice(6, 8) + "/" + device.installationDate.slice(0, 4)}}</div>
                     </div>
                 </td>
                 <td>
@@ -154,7 +154,13 @@
                     </ul>
                 </td>
                 <td (click)="openCreateDeviceModal(false, device)" style="text-align: center !important;cursor: pointer;color: #C49900;">Edit</td>
-                <td  style="text-align: center !important;"><img [hidden]="device?.isIngested && device.isIngested" (click)="deleteDevice(device)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+                <td  style="text-align: center !important;position: relative;">
+                    <img [hidden]="device?.isIngested && device.isIngested" (click)="deleteDevice(device,$event)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;">
+                    <app-delete-confirmation
+                    (onCancle)="onDeleteCancle()"
+                    (onConfirm)="onDeleteConfirm()"
+                    *ngIf="showDeletePopup && device.uid === deviceToDelete.uid"></app-delete-confirmation>
+                </td>
             </tr>
         </table>
     </div>

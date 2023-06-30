@@ -131,7 +131,11 @@ export class MoveCopyAssetsComponent implements OnInit {
 
   checkCanGoBack() {
     if (this.prevParent) {
-      if (this.prevParent.type !== 'Root') return true;
+      if (this.move) {
+        if (this.prevParent.type !== 'Root' && this.prevParent.type !== 'Domain') return true;
+      } else {
+        if (this.prevParent.type !== 'Root') return true;
+      }
     }
     if (!this.currentFolder || this.currentFolder.type === 'Domain') return false;
     return true;
@@ -154,8 +158,22 @@ export class MoveCopyAssetsComponent implements OnInit {
   }
 
   async moveAssets() {
-    this.loading = true;
     if (!this.selectedDestination) return;
+    if (!this.move && !this.selectedDestination.properties['dc:isPrivate']) {
+
+      this.sharedService.showSnackbar(
+        "You can only copy to a Locked folder destination",
+        4000,
+        "top",
+        "center",
+        "snackBarMiddle",
+        null,
+        null,
+        0
+      );
+      return;
+    }
+    this.loading = true;
     if (this.selectedDestination.type === 'Domain') {
       this.selectedDestination = await this.getSectorWs(this.selectedDestination.uid)
     }

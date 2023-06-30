@@ -2083,3 +2083,6 @@ ul.catalogue-feature-blk li {
 ::ng-deep .mat-snack-bar-container.snackBarMiddleRecover {
     margin-top: 125px !important;
 }
+.mb-100 {
+  margin-bottom: 100px;
+}

@@ -132,7 +132,7 @@
         </th>
         <th style="width: 3%">&nbsp;&nbsp;</th>
       </tr>
-      <tr *ngFor="let item of sortedData; let i = index;" [ngClass]="selectedFolderList[i] != null ? 'checkDelete' : ''" class="groupFolder positionRelative">
+      <tr *ngFor="let item of sortedData; let i = index;" [ngClass]="item.isSelected ? 'checkDelete' : ''" class="groupFolder positionRelative">
         <td style="position: relative;" class="getWidth1" (contextmenu)="onContextMenu($event, item)">
           <div
             class="delete-folder-action"
@@ -227,21 +227,27 @@
               <img (click)="open(item, item.type)" [src]="getAssetUrl(null, item.contextParameters.thumbnail.url, item,'thumbnail')">
             </div>
           </div>
-          <p *ngIf="!item.edit" (click)="open(item, item.type)" style="text-align: left; z-index: 9; position: relative;display: inline-block; max-width: calc(100% - 30px); vertical-align: middle;">
+          <p *ngIf="!item.edit" (click)="open(item, item.type)" class="workspaeName">
             <span class="tollTipCustom">
+              <!-- {{sharedService.stringShortener(item?.title, 25)}} -->
+              <div class="itemTitleContent">{{item?.title}}</div>
+              <span class="tolltipContent">
+                {{item.title}}
+              </span>
+            </span>
+            
+            <!-- <span class="tollTipCustom">
               {{sharedService.stringShortener(item?.title, 25)}}
-              <!--img *ngIf="item.type === 'Picture' && item?.properties['picture:info']?.format === null"  src="../../../assets/images/recover-icon.svg" style="width: 15px; margin-left: 5px; vertical-align: middle;"-->
+              <!--img *ngIf="item.type === 'Picture' && item?.properties['picture:info']?.format === null"  src="../../../assets/images/recover-icon.svg" style="width: 15px; margin-left: 5px; vertical-align: middle;"-/->
               <span class="tolltipContent" style="top: 28px;
               height: auto;
               white-space: break-spaces;
               text-align: left;
               padding: 5px 10px;">
                 {{item?.title}}
-
-
               </span>
 
-            </span>
+            </span> -->
             <span *ngIf="showAssetPath" class="tollTipCustom" style="text-align: left; word-break: break-all; display: block; color: rgba(35, 33, 30, 0.6); font-weight: normal;">{{removeWorkspacesFromString(item.path, item.title)}}
               <span class="tolltipContent" style="width: 100%;
                 height: auto;
@@ -262,7 +268,7 @@
             </span>
           </span>
 
-          <span *ngIf="item.edit" style="display: inline-block; position: relative; z-index: 99;">
+          <span *ngIf="item.edit" style="display: inline-block; position: relative; z-index: 99;" class="rename-block">
             <input type="text" value="{{item.title}}" [(ngModel)]="item.title" class="renameAssets" />
             <div class="actionIcon" style="margin-top: 0px;display: inline-block;">
               <svg

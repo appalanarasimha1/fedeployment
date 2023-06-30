@@ -85,7 +85,7 @@
                     </a>
                   </div> -->
                   <div class="downloadBtn buttonCreate customtooltip download-permission-tooltip">
-                    <a href="javascript:void(0)" class="createNew " [triggers]="'hover'" [disableTooltip]="!hasRequestRestriction()" ngbTooltip="File not downloadable" (click)="datePickerDefaultAction()">
+                    <a href="javascript:void(0)" class="createNew " [triggers]="'hover'" [disableTooltip]="this.hasDownloadPermission && (!hasRequestRestriction() || !checkRejected())" ngbTooltip="File not downloadable" (click)="datePickerDefaultAction()">
                       <img src="../../assets/images/download-white-icon.svg" /> Download
                     </a>
                   </div>
@@ -135,7 +135,7 @@
                           <div class="down-arrow-icon"></div>
                           <div class="sub-dropdown-menu">
                             <ul>
-                              <li *ngFor="let view of doc.properties['picture:views']">
+                              <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']">
                                 <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                   {{ view.width }} * {{ view.height }}
                                   <span>{{getDownloadFileEstimation(view.content.length)}}</span>
@@ -156,7 +156,7 @@
                       <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length < 1" class="rejectedRequest" style="margin: -20px -30px">
                         <div class="sub-dropdown-menu directDownloadBlk">
                           <ul style="margin-bottom: 5px;" *ngIf="!dwonloadingMsgInternalUse">
-                            <li *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
+                            <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
                               <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                 {{ view.width }} * {{ view.height }}
                                 <span>{{getDownloadFileEstimation(view.content.length)}}</span>
@@ -677,7 +677,7 @@
                         <div class="down-arrow-icon"></div>
                         <div class="sub-dropdown-menu">
                           <ul>
-                            <li *ngFor="let view of doc.properties['picture:views']">
+                            <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']">
                               <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                 {{ view.width }} * {{ view.height }}
                                 <span>{{getDownloadFileEstimation(view.content.length)}}</span>
@@ -698,7 +698,7 @@
                     <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length < 1" class="rejectedRequest" style="margin: -20px -30px">
                       <div class="sub-dropdown-menu directDownloadBlk">
                         <ul style="margin-bottom: 5px;" *ngIf="!dwonloadingMsgInternalUse">
-                          <li *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
+                          <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
                             <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                               {{ view.width }} * {{ view.height }}
                               <span>{{getDownloadFileEstimation(view.content.length)}}</span>

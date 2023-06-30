@@ -13,7 +13,9 @@ import {
   EXTERNAL_GROUP_GLOBAL,
   EXTERNAL_USER,
   DRONE_UPLOADER,
-  tabs
+  tabs,
+  AISearchThemeMapping,
+  GLOBAL_ROLE
 } from "src/app/common/constant";
 import { DataService } from "src/app/services/data.service";
 import { SideDrawerComponent } from "src/app/common/sideDrawer/sideDrawer.component";
@@ -155,6 +157,8 @@ export class SearchComponent implements OnInit {
         ecm_fulltext: searchTerm,
         highlight:
           "dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name",
+        sortBy: "dc:created",
+        sortOrder : "desc"
       };
       this.searchTerm(data);
     });
@@ -347,6 +351,8 @@ export class SearchComponent implements OnInit {
       this.dataService.loaderValueChange(true);
     }
      this.dataService.loaderValueChangeNew(true);
+
+    this.formatAIThemeSearchQuery(params);
     this.nuxeo.nuxeoClient
       .request(url, { queryParams: params, headers })
       .get()
@@ -372,6 +378,35 @@ export class SearchComponent implements OnInit {
           return;
         }
       });
+
+  }
+
+  formatAIThemeSearchQuery(params) {
+    let finalQuery = '';
+    if(!params?.['ecm_fulltext']) { 
+      return 
+    }
+    const ecmText = params?.['ecm_fulltext']?.toLowerCase();
+    if (ecmText?.includes(' and ')) {
+      return
+    }
+
+    const keysToLookForArray = ecmText.split(' or ');
+    keysToLookForArray.forEach((keyToLookFor, i) => {
+      if (params['ecm_fulltext']) {
+        const foundItem = Object.entries(AISearchThemeMapping).find((([k, v]) => k.toLowerCase() === keyToLookFor))
+        if (foundItem && foundItem[1] && foundItem[1].length) {
+          if (finalQuery) {
+            finalQuery = finalQuery + ' or '
+          }
+          finalQuery = finalQuery + [keyToLookFor, ...foundItem[1]].join(' or ')
+        }
+      }
+    })
+
+    if (finalQuery) {
+      params['ecm_fulltext'] = finalQuery
+    }
   }
 
   fetchNextPageResults(
@@ -700,12 +735,16 @@ export class SearchComponent implements OnInit {
     if (groups.includes(EXTERNAL_USER)) {
       this.isExternalUSer = true;
     }
+
+    const hasAllGroup = groups.includes(GLOBAL_ROLE);
     await this.checkInAccessListOfRegion()
 
-    if ((this.isDroneUploader || this.isInAccessListOfRegion) && !this.isGlobalExternalUser ) {
-      this.selectedTab = tabs.CONSTRUCTION;
-      this.router.navigate(['/', tabs.CONSTRUCTION]);
-      return;
+    if (!this.isNeomUser()) {
+      if ((this.isDroneUploader || this.isInAccessListOfRegion || hasAllGroup) && !this.isGlobalExternalUser) {
+        this.selectedTab = tabs.CONSTRUCTION;
+        this.router.navigate(['/', tabs.CONSTRUCTION]);
+        return;
+      }
     }
     if (this.isExternalUSer && !this.isGlobalExternalUser && !this.isDroneUploader) {
       this.router.navigate(['workspace']);
@@ -762,14 +801,8 @@ export class SearchComponent implements OnInit {
 
   async getDroneUploadWsIds() {
     try {
-      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, {params: {getId: true}}).toPromise();
-      const ids = res['value'];
-      // const ids = "6593c96f-9df1-4b7b-9a68-60d23fef1be9,4221b15b-8e23-42c8-93f1-bc9ec4547f9d"
-     if (ids && ids.length > 0) {
-      this.excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
-      //  this.excludedDroneWorkspaces = `ecm:ancestorId != '${ids.split(',').join("' AND ecm:ancestorId != '")}'`;
-     }
-    } catch (err) {}
+      this.excludedDroneWorkspaces = await this.sharedService.getDronFolderPathsToExclude();
+    } catch (err) { }
   }
 
 }

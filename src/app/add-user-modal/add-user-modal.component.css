@@ -388,6 +388,7 @@ h3.externalUsers {
     text-align: left;
     color: #BAB8B2;
     border-bottom: unset;
+    vertical-align: top;
 }
 .folderListview td {
     font-family: 'brownlight';
@@ -437,6 +438,7 @@ h3.externalUsers {
 }
 .tollTipCustom{
     position: relative;
+    display: inline-block;
 }
 .itemTitleContent span {
     margin-left: 10px;
@@ -638,6 +640,8 @@ input.datePicker:focus::placeholder{
 }
 .action-delete-icon {
     cursor: pointer;
+    float: right;
+    margin-right: 4px;
 }
 ::ng-deep .cdk-global-overlay-wrapper{
     overflow: auto !important;
@@ -665,4 +669,36 @@ input.datePicker:focus::placeholder{
     top: 5px;
     right: 0px;
     z-index: -1;
+}
+.positionRelative ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../assets/images/down-arrow-yellow.svg);
+    background-position: 0px 3px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.tollTipCustom .infoIcon {
+    width: 16px;
+    cursor: pointer;
+}
+.addUserBlock .folderListview .tollTipCustom .tolltipContent {
+    right: 0px;
+    left: auto;
+    text-align: left;
+}
+
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+    padding-left: 0px !important;
+}
+.searchBlock ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input>input {
+    color: #DEB31A !important;
+}
+.searchBlock ::ng-deep .ng-select .ng-has-value .ng-placeholder {
+    display: block;
+}
+.searchBlock .positionRelative ::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {
+    background-image: url(../../assets/images/down-arrow-yellow.svg) !important;
+    background-position: 0px 3px;
+    background-repeat: no-repeat;
+    background-size: contain;
 }

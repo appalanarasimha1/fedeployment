@@ -7,7 +7,7 @@ import { NuxeoService } from '../../services/nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import * as $ from 'jquery';
 import { DataService } from '../../services/data.service';
-import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL, DRONE_UPLOADER, EXTERNAL_USER } from '../constant';
+import { REPORT_ROLE, TRIGGERED_FROM_SUB_HEADER, EXTERNAL_GROUP_GLOBAL, DRONE_UPLOADER, EXTERNAL_USER, GLOBAL_ROLE } from '../constant';
 import { SharedService } from 'src/app/services/shared.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit {
   videoResponseShow:boolean = false;
   changeSectorShow : boolean = false;
   isInAccessListOfRegion = false;
-
+  isGlobalAccessUser = false;
   constructor(
     private nuxeo: NuxeoService,
     private router: Router,
@@ -237,8 +237,11 @@ export class HeaderComponent implements OnInit {
     if(workspaceState) {
       dialogConfig.data = workspaceState;
     }
+
+    const url = this.router.url;
+
     // https://material.angular.io/components/dialog/overview
-    if (!this.isDroneUploadPage && !this.isDroneUploader) {
+    if ((!this.isDroneUploadPage && !this.isDroneUploader) || url.includes('/workspace')) {
       const modalDialog = this.matDialog.open(UploadModalComponent, dialogConfig);
     } else {
       const modalDialog = this.matDialog.open(UploadDroneComponent, dialogConfig);
@@ -291,6 +294,32 @@ export class HeaderComponent implements OnInit {
       return this.sharedService.checkExternalUser();
     }
   }
+
+  
+  checkSharedFolderPath(){
+    return this.router.url === '/workspace/sharedFolder'
+  }
+      
+  
+  get isUploadButtonVisible() {
+    if(this.checkSharedFolderPath()) { 
+      return false
+    }
+    if(this.router.url.includes('/construction')) { 
+      if (this.isDroneUploader) {
+        return true
+      }
+      const user = JSON.parse(localStorage.getItem('user'));
+      this.userData = user;
+      if (user?.groups?.includes(EXTERNAL_GROUP_GLOBAL)) { // || user?.groups?.includes(REPORT_ROLE)
+        return true
+      }
+      return false;
+    }else{
+      return this.isDroneUploader || !this.checkExternalUser()
+    }
+  }
+
   checkNeomUser() {
     if (!this.userData) return !this.checkExternalUser();
     return this.userData.email?.includes('@neom.com') || this.userData.email?.match('@.*neom.com');
@@ -402,7 +431,8 @@ export class HeaderComponent implements OnInit {
 
   buildRequestDownloadNotificationTitle(notification) {
     const extended = notification.extended;
-    return `${extended.requestedBy} requests to download an asset.`;
+    return `${extended.requestedBy} requests to download an item.`;
+    // return `${extended.requestedBy} requests to download an asset.`;
   }
 
   buildRequestDownloadResponseNotificationTitle(notification) {
@@ -476,6 +506,9 @@ export class HeaderComponent implements OnInit {
     }
     if (groups.includes(EXTERNAL_USER)) {
       this.isExternalUSer = true;
+    }
+    if(groups.includes(GLOBAL_ROLE)) { 
+      this.isGlobalAccessUser = true;
     }
   }
 

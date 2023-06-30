@@ -5,13 +5,16 @@ import { startCase, camelCase, isEmpty, pluck } from 'lodash';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import JSEncrypt from 'jsencrypt';
-import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars, permissions } from '../common/constant';
+import { ASSET_TYPE, EXTERNAL_USER, EXTERNAL_GROUP_GLOBAL, localStorageVars, permissions, PAGE_SIZE_200, ROOT_ID } from '../common/constant';
 import { ApiService } from './api.service';
 import { apiRoutes } from "src/app/common/config";
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { NuxeoService } from './nuxeo.service';
 import { KeycloakService } from 'keycloak-angular';
 import { IChildAssetACL, IEntry } from '../common/interfaces';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from '../common/delete-confirmation/delete-confirmation.component';
+import { BLACKLIST_EXTENSIONS } from '../upload-modal/constant';
 
 
 @Injectable({
@@ -27,12 +30,14 @@ export class SharedService {
   public sidebarToggleResize = new BehaviorSubject(false);
   private _subject = new Subject<any>();
   regionList = [];
-
+  workspacesList = [];
+  
   constructor(
     private router: Router,
     private apiService: ApiService,
     private _snackBar: MatSnackBar,
-    protected readonly keycloak: KeycloakService
+    protected readonly keycloak: KeycloakService,
+    public matDialog: MatDialog,
     ) {}
 
   setSidebarToggle(slideToggle) {
@@ -408,20 +413,21 @@ export class SharedService {
     // tslint:disable-next-line:prefer-const
     let recentlyViewed = JSON.parse(localStorage.getItem(localStorageVars.RECENTLY_VIEWED)) || [];
     if (recentlyViewed.length) {
-      recentlyViewed.map((item: any, index: number) => {
-        if (item.uid === data.uid) {
-          found = true;
-          recentlyViewed.splice(index, 1);
-          recentlyViewed.push(data);
-        }
+      const index = recentlyViewed.findIndex((item: any) => {
+        return item.uid === data.uid 
       });
+      if(index >= 0) { 
+        found = true;
+        recentlyViewed.splice(index, 1);
+        recentlyViewed.push(data);
+      }
     }
     if (found) {
       localStorage.setItem(
         localStorageVars.RECENTLY_VIEWED,
         JSON.stringify(recentlyViewed, this.getCircularReplacer())
       );
-      return [...recentlyViewed.reverse()];
+      return recentlyViewed.reverse();
     }
 
     data["isSelected"] = false;
@@ -430,7 +436,7 @@ export class SharedService {
       localStorageVars.RECENTLY_VIEWED,
       JSON.stringify(recentlyViewed, this.getCircularReplacer())
     );
-    return [...recentlyViewed.reverse()];
+    return recentlyViewed.reverse();
   }
 
   getCircularReplacer() {
@@ -591,7 +597,8 @@ export class SharedService {
         "id": `${data.creator}:Everything:true:${user.id}::`,
         "ids": [
           `${data.creator}:Everything:true:${user.id}::`
-        ]
+        ],
+        assembledLocally: true
     }
   }
   
@@ -646,7 +653,7 @@ export class SharedService {
   }
 
   isOwner(item: IEntry) {
-    return item.properties?.["dc:creator"]?.id.toLowerCase() === this?.user?.username.toLowerCase();
+    return item?.properties?.["dc:creator"]?.id?.toLowerCase() === this?.user?.username?.toLowerCase();
   }
   
   async getRegionList() {
@@ -668,6 +675,9 @@ export class SharedService {
   async checkInAccessListOfRegion() {
     let result = false;
     try {
+      if(!this.user) { 
+        this.user = JSON.parse(localStorage.getItem('user')) || null
+      }
       const regions = await this.getRegionList()
       if (this.user?.groups?.length && regions?.length) {
         const matchingGroup = this.user.groups.find(e => regions.find(d => e === d.initial));
@@ -676,5 +686,69 @@ export class SharedService {
     } catch (error) { }
     return result
   }
+
+
+  async getWorkspacesList() { 
+    if(this.workspacesList && this.workspacesList.length)  {
+      return this.workspacesList;
+    }
+    let url = `/search/pp/advanced_document_content/execute?currentPageIndex=${0}&offset=${0}&pageSize=${PAGE_SIZE_200}&ecm_parentId=${ROOT_ID}&ecm_trashed=false`;
+    const { entries = [] }: any = await this.apiService.get(url).toPromise();
+    this.workspacesList = entries;
+    return this.workspacesList
+  }
+
+  async getDronFolderPathsToExclude() { 
+    try {
+      let excludedDroneWorkspaces = '';
+      const workspaces = await this.getWorkspacesList()
+      const res = await this.apiService.post(apiRoutes.GET_DRONE_FOLDER_PATHs, { params: { getId: true } }).toPromise();
+      const value = res['value'];
+      const dronArr = value ? (JSON.parse(value) || []) : [];
+      const ids = dronArr.map(e => e.id).filter((e) => workspaces.find(d => d.uid === e))
+      if (ids && ids.length > 0) {
+        excludedDroneWorkspaces = `AND ecm:ancestorId != '${ids.join("' AND ecm:ancestorId != '")}'`;
+      }
+      return excludedDroneWorkspaces;
+    } catch (err) { }
+  }
+
+
+  getFileExtension(fileName: string) {
+    const lastDotIndex = fileName.lastIndexOf(".");
+    if (lastDotIndex === -1) {
+      return '';
+    }
+    return fileName.slice(lastDotIndex + 1).toLowerCase();
+  }
+
+  isFileInBlackList(file: File) {
+    const fileName = file.name;
+    const fileExtension = this.getFileExtension(fileName);
+
+    if (BLACKLIST_EXTENSIONS.includes(fileExtension)) {
+      return true;
+    }
+
+    // Check against blacklisted MIME types
+    const mimeTypes = file.type.split("/");
+    const fileMimeType = mimeTypes[mimeTypes.length - 1].toLowerCase();
+    if (BLACKLIST_EXTENSIONS.includes(fileMimeType)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  filterSafeFiles(files: File[]) {
+    const safeFiles = [];
+    for (const file of files) {
+      if (!this.isFileInBlackList(file)) {
+        safeFiles.push(file);
+      }
+    }
+    return safeFiles;
+  }
+
 
 }
