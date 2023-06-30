@@ -142,7 +142,7 @@ export class DeviceSettingsComponent implements OnInit {
       expiry: supplier.expiry,
       renameEmail : false,
     }));
-    // Sort by Name
+    // Sort by SupplierId
     this.supplierList.sort((a, b) => a.supplierId?.toLowerCase() > b.supplierId?.toLowerCase() ? 1 : -1);
     this.supplierIds = this.supplierList.map(supplier => supplier.supplierId).filter(supplierId => !!supplierId);
   }
