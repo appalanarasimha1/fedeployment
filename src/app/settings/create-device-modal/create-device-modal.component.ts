@@ -101,8 +101,8 @@ export class CreateDeviceModalComponent implements OnInit {
       }
       this.selectedSubArea = this.selectedDevice.subArea;
       this.onSelectdeviceType(null, this.selectedDevice.deviceType);
-      this.latitude = this.selectedDevice.latitude;
-      this.longitude = this.selectedDevice.longitude;
+      this.latitude = this.selectedDevice.latitude?.[0];
+      this.longitude = this.selectedDevice.longitude?.[0];
       this.direction = this.selectedDevice.direction;
       this.poleId = this.selectedDevice.cameraPole;
       this.selectedOwner = this.selectedDevice.owner;
