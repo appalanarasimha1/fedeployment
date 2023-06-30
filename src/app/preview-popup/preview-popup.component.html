@@ -85,7 +85,7 @@
                     </a>
                   </div> -->
                   <div class="downloadBtn buttonCreate customtooltip download-permission-tooltip">
-                    <a href="javascript:void(0)" class="createNew " [triggers]="'hover'" [disableTooltip]="this.hasDownloadPermission && (!hasRequestRestriction() || !checkRejected())" ngbTooltip="File not downloadable" (click)="datePickerDefaultAction()">
+                    <a href="javascript:void(0)" class="createNew " [triggers]="'hover'" [disableTooltip]="this.hasDownloadPermission && (!hasRequestRestriction() || !checkRejected())" ngbTooltip="You do not have download permission for this asset" (click)="datePickerDefaultAction()" >
                       <img src="../../assets/images/download-white-icon.svg" /> Download
                     </a>
                   </div>
