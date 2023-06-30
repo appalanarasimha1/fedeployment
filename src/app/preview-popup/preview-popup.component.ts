@@ -805,6 +805,6 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   }
 
   get isDownloadEnabled () { 
-    return this.hasDownloadPermission && (!this.hasRequestRestriction() || !this.checkRejected())
+    return (this.hasDownloadPermission && (!this.hasRequestRestriction() || !this.checkRejected())) || this.checkCanDownload();
   }
 }
