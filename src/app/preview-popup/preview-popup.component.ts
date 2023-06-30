@@ -803,4 +803,8 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   getFormat(doc){
     return doc.properties['file:content']?.['mime-type']?.split("/")[1]
   }
+
+  get isDownloadEnabled () { 
+    return (this.hasDownloadPermission && (!this.hasRequestRestriction() || !this.checkRejected())) || this.checkCanDownload();
+  }
 }

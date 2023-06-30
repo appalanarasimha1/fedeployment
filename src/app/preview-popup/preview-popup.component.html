@@ -84,9 +84,9 @@
                       </svg>
                     </a>
                   </div> -->
-                  <div class="downloadBtn buttonCreate customtooltip download-permission-tooltip">
-                    <a href="javascript:void(0)" class="createNew " [triggers]="'hover'" [disableTooltip]="this.hasDownloadPermission && (!hasRequestRestriction() || !checkRejected())" ngbTooltip="File not downloadable" (click)="datePickerDefaultAction()">
-                      <img src="../../assets/images/download-white-icon.svg" /> Download
+                  <div class="downloadBtn buttonCreate customtooltip download-permission-tooltip" [class.downloadBtnPermission]="!isDownloadEnabled">
+                    <a href="javascript:void(0)" class="createNew "  [triggers]="'hover'" [disableTooltip]="isDownloadEnabled" ngbTooltip="You do not have download permission for this asset" (click)="datePickerDefaultAction()" >
+                      <img [src]="isDownloadEnabled ? '../../assets/images/download-white-icon.svg': '../../assets/images/download-black.svg'" /> Download
                     </a>
                   </div>
                   <div *ngIf="showCreateFolderPopup" class='dropdownCreate createFolder'>
