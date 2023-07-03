@@ -60,6 +60,7 @@ export class ManageSuppliersComponent implements OnInit {
   filteredUsers: Observable<string[]>;
   filteredSuppliers = [];
   currentSuppliers = [];
+  userEmails=[]
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
@@ -257,6 +258,10 @@ export class ManageSuppliersComponent implements OnInit {
     this.filteredSuppliers = this.supplierList;
     this.currentSuppliers = this.supplierList.map(supplier => supplier.name);
     this.supplierInput = "";
+    let usersData = this.supplierList.map(sup=>{
+      return sup.users?.map(user=>user.user)
+    })
+    this.userEmails=usersData.reduce((acc, val) =>acc.concat(val), [])
     for (let i = 0; i < this.supplierList.length; i++) {
       this.filteredFruits[i] = this.suppliersCtrl.valueChanges.pipe(
         startWith(null),
@@ -416,6 +421,15 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async openInviteUserModal() {
+    if (this.userEmails.indexOf(this.inviteUserInput.trim().toLowerCase()) !== -1) {
+      return this.sharedService.showSnackbar(
+        "User is already added  in a supplier list",
+        4000,
+        "top",
+        "center",
+        "snackBarMiddle"
+      );
+    }
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";
