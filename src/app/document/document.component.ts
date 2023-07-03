@@ -9,7 +9,7 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, NavigationEnd } from "@angular/router";
 import { IHeaderSearchCriteria } from "../common/subHeader/interface";
 import {
   ASSET_SEARCH_PAGE_SIZE,
@@ -240,6 +240,12 @@ export class DocumentComponent implements OnInit, OnChanges {
         if (element) element.scrollIntoView();
       }, 500);
     });
+    this.router.events.forEach((event: any) => {
+      if (event.url && event instanceof NavigationEnd) {
+        this.removeAssets()
+      }
+    });
+
     this.getRecentlyViewed();
     this.getFavorites();
     // this.getTrendingAssets();
