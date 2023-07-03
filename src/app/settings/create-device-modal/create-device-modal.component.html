@@ -11,20 +11,20 @@
                 <label *ngIf="isCreate" for="Device Type">Device Type</label>
                 <ol *ngIf="isCreate" class="deviceType">
                     <li>
-                        <input  type="radio" [checked]="selectedType=='timelapse'" id="timelapse" name="deviceType" (change)="onSelectdeviceType($event, 'timelapse')" checked />
-                        <label for="timelapse">Timelapse</label>
-                    </li>
-                    <li>
                         <input type="radio" [checked]="selectedType=='360'" id="360" name="deviceType" (change)="onSelectdeviceType($event, '360')" />
                         <label for="360">360</label>
+                    </li>
+                    <li>
+                        <input type="radio" [checked]="selectedType=='drone'" id="drone" name="deviceType" (change)="onSelectdeviceType($event, 'drone')" />
+                        <label for="drone">Drone</label>
                     </li>
                     <li>
                         <input type="radio" [checked]="selectedType=='live'" id="live" name="deviceType" (change)="onSelectdeviceType($event, 'live')" />
                         <label for="live">Live</label>
                     </li>
                     <li>
-                        <input type="radio" [checked]="selectedType=='drone'" id="drone" name="deviceType" (change)="onSelectdeviceType($event, 'drone')" />
-                        <label for="drone">Drone</label>
+                        <input  type="radio" [checked]="selectedType=='timelapse'" id="timelapse" name="deviceType" (change)="onSelectdeviceType($event, 'timelapse')" checked />
+                        <label for="timelapse">Timelapse</label>
                     </li>
                 </ol>
                 <!-- <ol *ngIf="!isCreate" class="deviceType">

@@ -50,7 +50,7 @@ export class CreateDeviceModalComponent implements OnInit {
   regionList = [];
   subAreaList = [];
   supplierList = [];
-  selectedType = "timelapse";
+  selectedType = "360";
   latitude: number;
   longitude: number;
   direction: string;
