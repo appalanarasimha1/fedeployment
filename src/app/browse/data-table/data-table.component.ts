@@ -800,6 +800,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     dialogConfig.data = {
       selectedList: this.selectedMoveList,
       parentId: this.breadCrumb[0]?.uid,
+      parent: this.breadCrumb[0],
       sectorList: this.folderStructure[0]?.children || [],
       user:this.user,
       move,
