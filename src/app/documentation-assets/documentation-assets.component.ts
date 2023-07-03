@@ -219,12 +219,14 @@ export class DocumentationAssetsComponent implements OnInit {
       name: region.title,
       uid: region.id,
     }));
+    this.regionList.sort((a, b) => a.initial?.toLowerCase() > b.initial?.toLowerCase() ? 1 : -1);
     if (this.userRegionList.length > 0 && !this.userRegionList.includes('ALL')) {
       this.regionList = this.regionList.filter(region => this.userRegionList.includes(region.initial));
     }
     if (this.supplierRegions) {
       this.regionList = this.regionList.filter(region => this.supplierRegions.includes(region.uid));
     }
+  
     this.computeRegionMap();
   }
 
@@ -250,9 +252,12 @@ export class DocumentationAssetsComponent implements OnInit {
       parentArea: area.parentArea,
       parentName: area.title
     }));
+    this.subAreaList.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
     const regionIds = this.regionList.map(region => region.uid);
     this.subAreaList = this.subAreaList.filter(subArea => regionIds.includes(subArea.parentArea));
+
     this.filteredSubAreaList = this.subAreaList;
+    
     this.computeSubAreaMap();
   }
 
@@ -952,6 +957,7 @@ export class DocumentationAssetsComponent implements OnInit {
     const url = `/cameraData/deviceType`;
     this.deviceTypes =  await this.apiService
       .get(url, {}).toPromise()
+    this.deviceTypes.sort((a, b) => a?.toLowerCase() > b?.toLowerCase() ? 1 : -1);
   }  
 
 }

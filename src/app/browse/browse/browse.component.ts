@@ -2274,6 +2274,7 @@ export class BrowseComponent implements OnInit, AfterViewInit {
     dialogConfig.data = {
       selectedList: this.selectedMoveList,
       parentId: this.sectorSelected.uid,
+      parent: this.sectorSelected,
       sectorList: this.folderStructure[0]?.children || [],
       user:this.user,
       move,
