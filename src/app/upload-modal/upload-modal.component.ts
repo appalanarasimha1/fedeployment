@@ -1101,15 +1101,7 @@ export class UploadModalComponent implements OnInit {
     }
     return "";
   }
-
-  humanFileSize(size) {
-    const i = Math.floor(Math.log(size) / Math.log(1024));
-    return (
-      (size / Math.pow(1024, i)).toFixed(2) +
-      " " +
-      ["B", "kB", "MB", "GB", "TB"][i]
-    );
-  }
+  
   sizeExeeded:boolean=false;
   proceedClicked:boolean=false;
   getTotalFileSize() {
@@ -1120,7 +1112,7 @@ export class UploadModalComponent implements OnInit {
     
     let sizeInGB = size / 1024 / 1024 /1024
     if(sizeInGB>50 && !this.proceedClicked)this.sizeExeeded= true // 50
-    return this.humanFileSize(size);
+    return this.sharedService.humanFileSize(size);
   }
   uploadedAsset1 =[]
   async publishAssets() {

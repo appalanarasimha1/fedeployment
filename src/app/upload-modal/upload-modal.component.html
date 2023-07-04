@@ -55,7 +55,7 @@
                      <ngx-dropzone-label class="" style="margin: unset;">
                         <div *ngIf="!f?.value['isVirus']" style="width: 100%;text-align: left;margin-top: 0px;">
                            <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
-                           <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span>
+                           <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ sharedService.humanFileSize(f.value.size) }}</span>
                            <span *ngIf="!filesUploadDone[f.key] && !this.filesUploadDone[f.key] && !filesRetry[f.key] && !uploadFailedRetry[f.key]" class="upload-loading">Uploading...{{fileUploadProgress[f.key]?fileUploadProgress[f.key]:0}}%</span>
                            <span style="width: 99px;" class="upload-loading retryingFile" *ngIf="filesRetry[f.key]">Retrying... {{this.filesRetry[f.key]}}</span>
 
@@ -74,7 +74,7 @@
                      <ngx-dropzone-label class="flexible" style="margin: unset;">
                         <div  style="width: 80%;text-align: left;margin-top: 0px;">
                            <p class="imgLabel">{{ shortTheString(f.value.name, 20) }}</p>
-                           <!-- <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ humanFileSize(f.value.size) }}</span> -->
+                           <!-- <span *ngIf="filesUploadDone[f.key]" class="imgSize">{{ sharedService.humanFileSize(f.value.size) }}</span> -->
                            <span class="upload-loading">
                               <span class="malware">File upload failed</span>
                               <svg style="position: static; display: inline-block; height: 17px;vertical-align: -4px;" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -619,7 +619,7 @@
                                  {{file.value.name}}
                                </div>
                               <br/><br/>
-                              <span>{{ humanFileSize(file.value.size) }}</span>
+                              <span>{{ sharedService.humanFileSize(file.value.size) }}</span>
                            </span>
                            <div class="copyright-information">
                               <div (click)="openCopyright(file.key)" *ngIf="!openCopyrightMap[file.key]">

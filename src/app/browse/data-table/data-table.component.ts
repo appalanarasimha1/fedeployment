@@ -91,8 +91,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   selectedMoveList={};
   sizeExeeded = false;
   sortedData: IEntry[] = [];
-  arrowisAsc: IArrow = { "title": true, "fileType": true, "dc:creator": true, "dc:created": true, "dc:modified": true, "dc:sector": true };
-  hoverArrow: IArrow = { "title": false, "fileType": false, "dc:creator": false, "dc:created": false, "dc:modified": false, "dc:sector": false };
+  arrowisAsc: IArrow = { "title": true, "fileType": true, "fileSize": true, "dc:creator": true, "dc:created": true, "dc:modified": true, "dc:sector": true };
+  hoverArrow: IArrow = { "title": false, "fileType": false, "fileSize": false, "dc:creator": false, "dc:created": false, "dc:modified": false, "dc:sector": false };
   showLinkCopy: boolean = false;
   showShadow = false;
   selectedMoveListNew: any = {};
@@ -1142,6 +1142,12 @@ export class DataTableComponent implements OnInit, OnChanges {
             this.getFileType(b),
             isAsc
           );
+        case "fileSize":
+          return this.compare(
+            parseInt(a.properties["file:content"]?.length) || 0,
+            parseInt(b.properties["file:content"]?.length) || 0,
+            isAsc
+          );
         default:
           return 0;
       }
@@ -1208,6 +1214,14 @@ export class DataTableComponent implements OnInit, OnChanges {
     }
 
     return splittedData.substring(number).toLowerCase();
+  }
+
+  getFileSize(item) {
+    if(item.type === 'Workspace' || item.type === 'Folder' || item.type === 'OrderedFolder') {
+      return '';  
+    }
+    let size = parseInt(item.properties["file:content"].length);
+    return this.sharedService.humanFileSize(size);
   }
 
 

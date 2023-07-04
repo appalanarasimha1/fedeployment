@@ -750,5 +750,15 @@ export class SharedService {
     return safeFiles;
   }
 
+  humanFileSize(size) {
+    if (!size) return "0 kB";
+    const i = Math.floor(Math.log(size) / Math.log(1024));
+    return (
+      (size / Math.pow(1024, i)).toFixed(2) +
+      " " +
+      ["B", "kB", "MB", "GB", "TB"][i]
+    );
+  }
+
 
 }
