@@ -383,7 +383,7 @@ export class DocumentationAssetsComponent implements OnInit {
 
       if(this.selectedDeviceType.toLowerCase() === DEVICE_TYPES.timelapse) { 
         query += ` AND dc:deviceType IN ('timelapse', 'Timelapse')`;
-      } else if (this.selectedDeviceType.toLowerCase() === DEVICE_TYPES.drone.toLocaleLowerCase()) { 
+      } else if (this.selectedDeviceType.toLowerCase() === DEVICE_TYPES.drone.toLowerCase()) { 
         query += ` AND dc:deviceType IN ('drone', 'Drone')`;
       } else {
         query += ` AND dc:deviceType = '${this.selectedDeviceType.toLowerCase()}'`;
