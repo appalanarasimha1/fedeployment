@@ -61,6 +61,22 @@
               </span>
       </th>
 
+      <th mat-sort-header="fileSize"
+            width="12%"
+            (mouseover)="this.hoverArrow['fileSize'] = true"
+        >File Size
+        <span *ngIf="this.arrowisAsc['fileSize'] && this.hoverArrow['fileSize']"
+          class="material-icons fs-6"
+          (click)="sortData({active: 'fileSize', direction: 'asc'})">
+            arrow_upward
+            </span>
+            <span *ngIf="!this.arrowisAsc['fileSize'] && this.hoverArrow['fileSize']"
+            class="material-icons fs-6"
+            (click)="sortData({active: 'fileSize', direction: 'desc'})">
+              arrow_downward
+              </span>
+      </th>
+
         <th mat-sort-header="dc:creator"
             width="20%"
             (mouseover)="this.hoverArrow['dc:creator'] = true"
@@ -331,6 +347,11 @@
 
         <td>
           <p class="itemTitleContent">{{getFileType(item)}}</p>
+        </td>
+
+        <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">
+          <p class="itemTitleContent">{{getFileSize(item)}}</p>
+          <p class="tolltipContent">{{getFileSize(item)}}</p>
         </td>
 
         <td class="tollTipCustom" (contextmenu)="onContextMenu($event, item)">

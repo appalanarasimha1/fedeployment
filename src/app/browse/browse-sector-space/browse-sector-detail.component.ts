@@ -551,18 +551,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.assetList?.forEach((doc) => {
       size += +doc.properties?.["file:content"]?.length || 0;
     });
-    this.assetSize.size = this.humanFileSize(size);
+    this.assetSize.size = this.sharedService.humanFileSize(size);
     return this.assetSize.size;
-  }
-
-  humanFileSize(size) {
-    if (!size) return "0 kB";
-    const i = Math.floor(Math.log(size) / Math.log(1024));
-    return (
-      (size / Math.pow(1024, i)).toFixed(2) +
-      " " +
-      ["B", "kB", "MB", "GB", "TB"][i]
-    );
   }
 
   getDateInFormat(date: string): string {
