@@ -27,9 +27,17 @@
                     [(ngModel)]="selectedRegion"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedRegion}"
+                    clearAllText="Clear"
+                    [title]="selectedRegion ?  selectedRegion.initial + ' - '+ selectedRegion.name : ''"
                 >
+                    <ng-template ng-label-tmp let-item="item">
+                      {{item.initial}} - {{item.name}}
+                    </ng-template>
+                    
                     <ng-option *ngFor="let region of regionList" [value]="region">
-                      {{region.initial}} - {{region.name}}
+                      <span [title]="region.initial + ' - ' + region.name">
+                        {{region.initial}} - {{region.name}}
+                      </span>
                     </ng-option>
                 </ng-select>
             </li>
@@ -41,13 +49,19 @@
                     [(ngModel)]="selectedsubArea"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedsubArea}"
+                    clearAllText="Clear"
+                    [title]="selectedsubArea ?  selectedsubArea.name : ''"
                 >
+                    <ng-template ng-label-tmp let-item="item">
+                        {{item.name}}
+                    </ng-template>
+                  
                     <ng-option *ngFor="let subArea of filteredSubAreaList" [value]="subArea">
                       <div class="d-flex justify-content-between">
-                        <span class="subAreaName">
+                        <span class="subAreaName" [title]="subArea.name">
                           {{subArea.name}} 
                         </span>
-                        <span class="subAreaParentName">
+                        <span class="subAreaParentName" [title]="subArea.parentName">
                           {{subArea.parentName}}
                         </span>
                       </div>
@@ -64,6 +78,7 @@
                   id="confidentiality"
                   [ngClass]="{'goldenText': selectedDeviceId}"
                   [typeahead]="input$"
+                  clearAllText="Clear"
               >
                   <ng-option *ngFor="let region of deviceIds" [value]="region">
                     {{region}}
@@ -79,6 +94,7 @@
                   [(ngModel)]="selectedDeviceType"
                   id="confidentiality"
                   [ngClass]="{'goldenText': selectedDeviceType}"
+                  clearAllText="Clear"
               >
                   <ng-option *ngFor="let subArea of deviceTypes" [value]="subArea">
                       {{subArea | titlecase}}
@@ -93,6 +109,7 @@
                   [(ngModel)]="selectedFormat"
                   id="confidentiality"
                   [ngClass]="{'goldenText': selectedFormat}"
+                  clearAllText="Clear"
               >
                   <ng-option *ngFor="let format of formats" [value]="format">
                       {{format}}
@@ -108,7 +125,7 @@
                   <input matinput (dateChange)="dateRangeChange()" class="customInput" matEndDate placeholder="End date" [(ngModel)]="selectedEndDate">
                 </mat-date-range-input>
                 <mat-date-range-picker #picker></mat-date-range-picker>
-                <span *ngIf="selectedStartDate || selectedEndDate" class="ng-clear-wrapper ng-star-inserted" title="Clear all" (click)="clearSelection()"
+                <span *ngIf="selectedStartDate || selectedEndDate" class="ng-clear-wrapper ng-star-inserted" title="Clear" (click)="clearSelection()"
                 style="color: #DEB31A !important;
                 font-size: 20px;
                 font-family: 'brownregular';
@@ -127,7 +144,7 @@
              </label>
             </li> -->
           </ul>
-          <div *ngIf="!isNeomUser()" class="row">
+          <div *ngIf="isDroneUploader" class="row">
             <div class="col-md-4">
               <label class="control control--checkbox" style="margin-bottom: 0px;">
                 Only show assets uploaded by me

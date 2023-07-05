@@ -101,9 +101,12 @@ export class DocumentationAssetsComponent implements OnInit {
   fileSelected = [];
   isAware;
   maxDate = new Date();
+  isDroneUploader = false;
 
   onSelectRegions(regions) {
-    this.selectedsubArea = null;
+    if (this.selectedRegion) {
+      this.selectedsubArea = null;
+    }
     this.selectedDeviceId = null;
     this.getAssetList();
   }
@@ -128,7 +131,10 @@ export class DocumentationAssetsComponent implements OnInit {
       this.updateMasonryLayout = !this.updateMasonryLayout;
     });
     const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData?.groups.includes(DRONE_UPLOADER)) this.notAuthorize = false;
+    if (userData?.groups.includes(DRONE_UPLOADER)) {
+      this.notAuthorize = false;
+      this.isDroneUploader = true;
+    }
     if (userData?.groups.includes(WARROOM_VIEW_ACCESS)) this.notAuthorize = false;
 
     this.user = userData["username"];
