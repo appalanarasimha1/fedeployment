@@ -108,7 +108,12 @@ export class DocumentationAssetsComponent implements OnInit {
       this.selectedsubArea = null;
     }
     this.selectedDeviceId = null;
-    this.getAssetList();
+
+    if (!this.selectedRegion && this.selectedsubArea) {
+      // if sub area is selected, and you are deselecting region don't make API call as the data is same
+    } else {
+      this.getAssetList();
+    }
   }
   onSelectSubArea(area) {
     this.selectedDeviceId = null;
