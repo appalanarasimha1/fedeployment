@@ -24,6 +24,8 @@ export class DeviceSettingsComponent implements OnInit {
     this.getSubAreaList();
     this.getOwnerList();
     this.getSupplierList();
+    this.getProponentList()
+    // this.getDeviceListByProponent('GOA')
   }
   async openCreateDeviceModal(create = true, selectedDevice?) {
     const dialogConfig = new MatDialogConfig();
@@ -69,8 +71,10 @@ export class DeviceSettingsComponent implements OnInit {
   subAreaMap = {};
   owners = [];
   selectedOwner;
+  selectedProponent;
   showDeletePopup = false
   deviceToDelete;
+  proponentList=[];
 
   deviceTypes = [
     { id: 1, name: "360" },
@@ -92,26 +96,7 @@ export class DeviceSettingsComponent implements OnInit {
 
     if (!res) return;
     const devices = res;
-    this.deviceList = devices.map((device) => ({
-      deviceType: device.deviceType?.toLowerCase(),
-      latitude: device.latitude,
-      longitude: device.longitude,
-      direction: device.cameraDirection,
-      cameraPole: device.cameraPole,
-      region: device.region,
-      areaId: device.areaId,
-      subArea: device.subAreaName,
-      subAreaId: device.subAreaId,
-      status: device.status?.toLowerCase(),
-      installationId: device.installationId,
-      isIngested: (device?.isIngested && device.isIngested) || false,
-      owner: device.owner,
-      uid: device.id,
-      supplierId: device.supplierId,
-      statusUpdateDate: device?.statusUpdateDate,
-      installationDate: device?.installationDate,
-      installationTime: device?.installationTime,
-    }));
+    this.deviceList = this.mapDeviceContent(devices)
     if(from !=='changeStatus'){
       this.filteredDeviceList = this.deviceList;
       this.deviceInput = "";
@@ -328,5 +313,55 @@ export class DeviceSettingsComponent implements OnInit {
     } else {
       return 'Data not available';
     }
+  }
+  async getProponentList(){
+    try {
+      await this.apiService.constructionGet('/proponents',{}).subscribe((res:any)=>{
+      this.proponentList = res?.body 
+    })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  getDeviceListByProponent(){
+    try {
+      this.selectedRegions = null
+        this.selectedsubAreas= null
+        this.selectedOwner= null
+        // api call here 
+        if (this.selectedProponent) {
+          this.apiService.get(`/settings/proponentsDevice/${this.selectedProponent}`,{}).subscribe((res:any)=>{
+            this.deviceList = this.mapDeviceContent(res || [])
+            this.filterDevice()
+          })
+        }else {
+          this.getDeviceList()
+        }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  mapDeviceContent(devices){
+    return devices.map((device) => ({
+      deviceType: device.deviceType?.toLowerCase(),
+      latitude: device.latitude,
+      longitude: device.longitude,
+      direction: device.cameraDirection,
+      cameraPole: device.cameraPole,
+      region: device.region,
+      areaId: device.areaId,
+      subArea: device.subAreaName,
+      subAreaId: device.subAreaId,
+      status: device.status?.toLowerCase(),
+      installationId: device.installationId,
+      isIngested: (device?.isIngested && device.isIngested) || false,
+      owner: device.owner,
+      uid: device.id,
+      supplierId: device.supplierId,
+      statusUpdateDate: device?.statusUpdateDate,
+      installationDate: device?.installationDate,
+      installationTime: device?.installationTime,
+    }));
   }
 }
