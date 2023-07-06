@@ -141,6 +141,14 @@
                                   <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                                 </a>
                               </li>
+                              <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                                <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                  <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                  {{ view.name }}
+                                  <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                                </a>
+                              </li>
+
                               <li>
                                 <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                                   Original File
@@ -159,6 +167,13 @@
                             <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
                               <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                 {{ view.width }} * {{ view.height }}
+                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                              </a>
+                            </li>
+                            <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                {{ view.name }}
                                 <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                               </a>
                             </li>
@@ -683,6 +698,15 @@
                                 <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                               </a>
                             </li>
+
+                            <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                {{ view.name }}
+                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                              </a>
+                            </li>
+
                             <li>
                               <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                                 Original File
@@ -704,6 +728,15 @@
                               <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                             </a>
                           </li>
+
+                          <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                            <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                              <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                              {{ view.name }}
+                              <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                            </a>
+                          </li>
+
                           <li (click)="dwonloadingMsgBlk()">
                             <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                               Original File
