@@ -747,7 +747,8 @@ export class DocumentComponent implements OnInit, OnChanges {
       // this.favourite = file.contextParameters.favorites.isFavorite;
     } else if (fileType === "video") {
       fileRenditionUrl =
-        file.properties["vid:transcodedVideos"][0]?.content.data || "";
+      file.properties["vid:transcodedVideos"][0]?.content?.data || 
+      `${window.location.origin}/nuxeo/${file.properties['file:content']?.data?.split('nuxeo/')?.[1]}`;
     } else if (fileType === "file") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
       // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
