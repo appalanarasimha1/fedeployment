@@ -17,6 +17,7 @@
                     [searchable]="true"
                     [clearable]="true"
                     [(ngModel)]="selectedRegions"
+                    [disabled]="selectedProponent"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedRegions}"
                 >
@@ -31,6 +32,7 @@
                     [searchable]="true"
                     [clearable]="true"
                     [(ngModel)]="selectedsubAreas"
+                    [disabled]="selectedProponent"
                     id="confidentiality"
                     [ngClass]="{'goldenText': selectedsubAreas}"
                 >
@@ -76,10 +78,26 @@
                     [clearable]="true"
                     [(ngModel)]="selectedOwner"
                     id="confidentiality"
+                    [disabled]="selectedProponent"
                     [ngClass]="{'goldenText': selectedOwner}"
                 >
                     <ng-option *ngFor="let owner of owners" [value]="owner">
                         {{owner}}
+                    </ng-option>
+                </ng-select>
+            </li>
+            <li style="margin-top: 7px;">
+                <ng-select placeholder="Proponent"
+                    (change)="getDeviceListByProponent()"
+                    [searchable]="true"
+                    [clearable]="true"
+
+                    [(ngModel)]="selectedProponent"
+                    id="confidentiality"
+                    [ngClass]="{'goldenText': selectedProponent}"
+                >
+                    <ng-option *ngFor="let proponent of proponentList" [value]="proponent.proponentId">
+                        {{proponent.proponentId}}
                     </ng-option>
                 </ng-select>
             </li>
