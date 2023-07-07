@@ -8,6 +8,7 @@ import {
 import { ApiService } from "../../services/api.service";
 import { SharedService } from "src/app/services/shared.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import * as moment from "moment";
 
 const typePrefix = {
   "timelapse": "T",
@@ -49,7 +50,7 @@ export class CreateDeviceModalComponent implements OnInit {
   regionList = [];
   subAreaList = [];
   supplierList = [];
-  selectedType = "timelapse";
+  selectedType = "360";
   latitude: number;
   longitude: number;
   direction: string;
@@ -100,8 +101,8 @@ export class CreateDeviceModalComponent implements OnInit {
       }
       this.selectedSubArea = this.selectedDevice.subArea;
       this.onSelectdeviceType(null, this.selectedDevice.deviceType);
-      this.latitude = this.selectedDevice.latitude;
-      this.longitude = this.selectedDevice.longitude;
+      this.latitude = this.selectedDevice.latitude?.[0];
+      this.longitude = this.selectedDevice.longitude?.[0];
       this.direction = this.selectedDevice.direction;
       this.poleId = this.selectedDevice.cameraPole;
       this.selectedOwner = this.selectedDevice.owner;
@@ -187,7 +188,10 @@ export class CreateDeviceModalComponent implements OnInit {
       subAreaName: this.selectedsubAreas.name || "",
       owner: this.selectedOwner || "",
       supplierId: this.selectedSupplier,
-      channelId:this.channelId
+      channelId:this.channelId,
+      
+      installationDate: moment().toISOString(true).split('T')[0].slice(0, 10).replace(/-/g, ""),
+      installationTime: moment().format('HH:mm:ss').slice(0, 10).replace(/:/g, ""),
     }
     const id = await this.apiService.post(`/settings/camera/autogen?prefix=${this.buildDevicePrefix()}`, payload, {responseType: 'text'}).toPromise();
     this.sharedService.showSnackbar(
@@ -249,4 +253,5 @@ export class CreateDeviceModalComponent implements OnInit {
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+  
 }

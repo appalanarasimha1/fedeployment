@@ -84,9 +84,9 @@
                       </svg>
                     </a>
                   </div> -->
-                  <div class="downloadBtn buttonCreate customtooltip download-permission-tooltip">
-                    <a href="javascript:void(0)" class="createNew " [triggers]="'hover'" [disableTooltip]="!hasRequestRestriction() || !checkRejected()" ngbTooltip="File not downloadable" (click)="datePickerDefaultAction()">
-                      <img src="../../assets/images/download-white-icon.svg" /> Download
+                  <div class="downloadBtn buttonCreate customtooltip download-permission-tooltip" [class.downloadBtnPermission]="!isDownloadEnabled">
+                    <a href="javascript:void(0)" class="createNew "  [triggers]="'hover'" [disableTooltip]="isDownloadEnabled" ngbTooltip="You do not have download permission for this asset" (click)="datePickerDefaultAction()" >
+                      <img [src]="isDownloadEnabled ? '../../assets/images/download-white-icon.svg': '../../assets/images/download-black.svg'" /> Download
                     </a>
                   </div>
                   <div *ngIf="showCreateFolderPopup" class='dropdownCreate createFolder'>
@@ -135,12 +135,20 @@
                           <div class="down-arrow-icon"></div>
                           <div class="sub-dropdown-menu">
                             <ul>
-                              <li *ngFor="let view of doc.properties['picture:views']">
+                              <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']">
                                 <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                   {{ view.width }} * {{ view.height }}
                                   <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                                 </a>
                               </li>
+                              <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                                <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                  <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                  {{ view.name }}
+                                  <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                                </a>
+                              </li>
+
                               <li>
                                 <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                                   Original File
@@ -156,9 +164,16 @@
                       <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length < 1" class="rejectedRequest" style="margin: -20px -30px">
                         <div class="sub-dropdown-menu directDownloadBlk">
                           <ul style="margin-bottom: 5px;" *ngIf="!dwonloadingMsgInternalUse">
-                            <li *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
+                            <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
                               <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                 {{ view.width }} * {{ view.height }}
+                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                              </a>
+                            </li>
+                            <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                {{ view.name }}
                                 <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                               </a>
                             </li>
@@ -677,12 +692,21 @@
                         <div class="down-arrow-icon"></div>
                         <div class="sub-dropdown-menu">
                           <ul>
-                            <li *ngFor="let view of doc.properties['picture:views']">
+                            <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']">
                               <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                 {{ view.width }} * {{ view.height }}
                                 <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                               </a>
                             </li>
+
+                            <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                {{ view.name }}
+                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                              </a>
+                            </li>
+
                             <li>
                               <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                                 Original File
@@ -698,12 +722,21 @@
                     <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length < 1" class="rejectedRequest" style="margin: -20px -30px">
                       <div class="sub-dropdown-menu directDownloadBlk">
                         <ul style="margin-bottom: 5px;" *ngIf="!dwonloadingMsgInternalUse">
-                          <li *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
+                          <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
                             <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                               {{ view.width }} * {{ view.height }}
                               <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                             </a>
                           </li>
+
+                          <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                            <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                              <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                              {{ view.name }}
+                              <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                            </a>
+                          </li>
+
                           <li (click)="dwonloadingMsgBlk()">
                             <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                               Original File

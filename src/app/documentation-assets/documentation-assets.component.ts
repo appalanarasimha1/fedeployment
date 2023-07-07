@@ -174,9 +174,9 @@ export class DocumentationAssetsComponent implements OnInit {
       users: entry.users || [],
     }));
 
-    if (this.notAuthorize) {
-      this.checkAuthorizeUser()
-    }
+    // if (this.notAuthorize) {
+    this.checkAuthorizeUser()
+    // }
 
     await this.getRegionList();
     await this.getSubAreaList();
@@ -230,12 +230,14 @@ export class DocumentationAssetsComponent implements OnInit {
       name: region.title,
       uid: region.id,
     }));
+    this.regionList.sort((a, b) => a.initial?.toLowerCase() > b.initial?.toLowerCase() ? 1 : -1);
     if (this.userRegionList.length > 0 && !this.userRegionList.includes('ALL')) {
       this.regionList = this.regionList.filter(region => this.userRegionList.includes(region.initial));
     }
     if (this.supplierRegions) {
       this.regionList = this.regionList.filter(region => this.supplierRegions.includes(region.uid));
     }
+  
     this.computeRegionMap();
   }
 
@@ -259,10 +261,14 @@ export class DocumentationAssetsComponent implements OnInit {
       name: area.name,
       uid: area.id,
       parentArea: area.parentArea,
+      parentName: area.title
     }));
+    this.subAreaList.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
     const regionIds = this.regionList.map(region => region.uid);
     this.subAreaList = this.subAreaList.filter(subArea => regionIds.includes(subArea.parentArea));
+
     this.filteredSubAreaList = this.subAreaList;
+    
     this.computeSubAreaMap();
   }
 
@@ -507,14 +513,14 @@ export class DocumentationAssetsComponent implements OnInit {
         break;
     }
     // }
-    this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
     } else if (fileType === "video") {
       fileRenditionUrl =
-        file.properties["vid:transcodedVideos"][0]?.content.data || "";
+        file.properties["vid:transcodedVideos"][0]?.content?.data || 
+        `${window.location.origin}/nuxeo/${file.properties['file:content']?.data?.split('nuxeo/')?.[1]}`;
     } else if (fileType === "file") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
       // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
@@ -530,6 +536,7 @@ export class DocumentationAssetsComponent implements OnInit {
     // }
 
     this.previewModal.open(this.checkAssetDownloadPermission(this.selectedFile));
+    this.sharedService.markRecentlyViewed(file);
   }
 
   getAssetUrl(event: any, url: string, document?: any, type?: string): string {
@@ -964,6 +971,7 @@ export class DocumentationAssetsComponent implements OnInit {
     const url = `/cameraData/deviceType`;
     this.deviceTypes =  await this.apiService
       .get(url, {}).toPromise()
+    this.deviceTypes.sort((a, b) => a?.toLowerCase() > b?.toLowerCase() ? 1 : -1);
   }  
 
 }

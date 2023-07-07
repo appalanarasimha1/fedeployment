@@ -184,12 +184,7 @@ export class UpdateModalComponent implements OnInit {
     this.docs.forEach(doc => {
       size += +doc.properties["file:content"]?.length || 0;
     });
-    return this.humanFileSize(size);
-  }
-
-  humanFileSize(size) {
-    const i = Math.floor( Math.log(size) / Math.log(1024) );
-    return ( size / Math.pow(1024, i) ).toFixed(2)  + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+    return this.sharedService.humanFileSize(size);
   }
 
   showLocaleDate() {

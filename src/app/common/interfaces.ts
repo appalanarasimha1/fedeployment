@@ -275,6 +275,7 @@ export interface IBrowseSidebar {
 export interface IArrow {
  "title": boolean,
  "fileType": boolean,
+ "fileSize": boolean,
  "dc:creator": boolean,
  "dc:created": boolean,
  "dc:modified": boolean,

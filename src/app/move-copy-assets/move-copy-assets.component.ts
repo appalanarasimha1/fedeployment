@@ -24,6 +24,7 @@ export class MoveCopyAssetsComponent implements OnInit {
   selectedDestination: any;
   folderList: any;
   parentId: string;
+  parent: any;
   prevParent: any;
   currentFolder: any;
   breadcrumb: any;
@@ -44,7 +45,8 @@ export class MoveCopyAssetsComponent implements OnInit {
     private modalService: NgbModal,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.parent = this.data.parent;
     this.user = this.data.user
     this.selectedList = this.data.selectedList;
     this.move = this.data.move;
@@ -52,21 +54,24 @@ export class MoveCopyAssetsComponent implements OnInit {
     this.sectorList = this.data.sectorList;
     this.selectedIdList = Object.keys(this.selectedList).map(key => this.selectedList[key].uid);
     const parentId = this.data.parentId;
-    this.fetchAssets(parentId);
+    this.currentFolder = this.parent;
+    await this.fetchAssets(parentId);
     // this.folderList = this.sectorList || [];
     // if (this.folderList.length === 0) this.fetchAssets(parentId);
   }
 
-  closeModal() {
-    this.dialogRef.close(this.selectedDestination);
+  closeModal(destination?) {
+    this.dialogRef.close(destination || this.selectedDestination);
   }
   selectFolder($event, folder){
-    if($event.target?.checked) {
-      // this.movedContentShow = true;
-      this.selectedDestination = folder;
-    } else {
-      // this.movedContentShow = false;
-      this.selectedDestination = null;
+    if(this.checkEnableCheckbox(folder)) { 
+      if(this.selectedDestination?.uid === folder?.uid) {
+        // this.movedContentShow = true;
+        this.selectedDestination = null;
+      } else {
+        this.selectedDestination = folder;
+        // this.movedContentShow = false;
+      }
     }
   }
 
@@ -126,7 +131,13 @@ export class MoveCopyAssetsComponent implements OnInit {
     // } else {
       this.fetchAssets(this.currentFolder?.parentRef || ROOT_ID);
     // }
-    this.currentFolder = null;
+
+    if (this.prevParent.type === 'Domain') {
+      this.currentFolder = null;
+      this.fetchAssets(ROOT_ID);
+    } else {
+      this.currentFolder = this.prevParent;
+    }
   }
 
   checkCanGoBack() {
@@ -158,8 +169,9 @@ export class MoveCopyAssetsComponent implements OnInit {
   }
 
   async moveAssets() {
-    if (!this.selectedDestination) return;
-    if (!this.move && !this.selectedDestination.properties['dc:isPrivate']) {
+    let destination = this.selectedDestination ? this.selectedDestination : this.currentFolder;
+    if (!destination) return;
+    if (!this.move && !destination?.properties?.['dc:isPrivate']) {
 
       this.sharedService.showSnackbar(
         "You can only copy to a Locked folder destination",
@@ -174,14 +186,14 @@ export class MoveCopyAssetsComponent implements OnInit {
       return;
     }
     this.loading = true;
-    if (this.selectedDestination.type === 'Domain') {
-      this.selectedDestination = await this.getSectorWs(this.selectedDestination.uid)
+    if (destination.type === 'Domain') {
+      destination = await this.getSectorWs(destination.uid)
     }
     const arrayCall = [];
     const arrayIndex = [];
     for (const key in this.selectedList) {
       if(this.checkMovePermission(this.selectedList[key]) || !this.move){
-        arrayCall.push(this.moveAsset(this.selectedList[key]));
+        arrayCall.push(this.moveAsset(this.selectedList[key], destination));
         arrayIndex.push(key)
       }
 
@@ -189,7 +201,7 @@ export class MoveCopyAssetsComponent implements OnInit {
     const res = await Promise.all(arrayCall);
     res.forEach((response, index) => this.showNoti(response.value, arrayIndex[index], index));
 
-    this.closeModal()
+    this.closeModal(destination)
     this.loading = false;
   }
 
@@ -209,10 +221,10 @@ export class MoveCopyAssetsComponent implements OnInit {
     );
   }
 
-  async moveAsset(item) {
+  async moveAsset(item, destination) {
     const params = {
       src: item.uid,
-      des: this.selectedDestination.uid,
+      des: destination.uid,
       move: this.move,
     }
     const body = {

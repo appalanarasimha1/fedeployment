@@ -180,7 +180,8 @@
             {{ getDateInFormat(currentWorkspace.start) }}
           </li>
           <li>
-            {{ assetList?.length }} assets,
+            {{ assetList?.length }} items,
+            <!-- {{ assetList?.length }} assets, -->
             {{ getSelectedAssetsSize() }}
           </li>
         </ul>
@@ -230,7 +231,7 @@
               <span
                 class="deleteFolder"
                 [ngClass]="checkEnableDeleteBtn() ? '' : 'btn-disabled'"
-                (click)="deleteFolders()"
+                (click)="deleteFolders($event)"
                 >
                 <!--  -->
                 <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -256,6 +257,12 @@
                   </div>
                 </div>
               </span>
+
+              <app-delete-confirmation
+              (onCancle)="onDeleteCancle()"
+              (onConfirm)="onDeleteConfirm()"
+              *ngIf="showDeletePopup"></app-delete-confirmation>
+
             </div>
           </li>
           <li *ngIf="(downloadArray?.length > 0 || needPermissionToDownload?.length >0)">

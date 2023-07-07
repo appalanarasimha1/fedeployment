@@ -24,6 +24,8 @@ export class DeviceSettingsComponent implements OnInit {
     this.getSubAreaList();
     this.getOwnerList();
     this.getSupplierList();
+    this.getProponentList()
+    // this.getDeviceListByProponent('GOA')
   }
   async openCreateDeviceModal(create = true, selectedDevice?) {
     const dialogConfig = new MatDialogConfig();
@@ -69,17 +71,22 @@ export class DeviceSettingsComponent implements OnInit {
   subAreaMap = {};
   owners = [];
   selectedOwner;
+  selectedProponent;
+  showDeletePopup = false
+  deviceToDelete;
+  proponentList=[];
 
   deviceTypes = [
-    { id: 1, name: "Timelapse" },
-    { id: 2, name: "360" },
+    { id: 1, name: "360" },
+    { id: 2, name: "Drone" },
     { id: 3, name: "Live" },
-    { id: 4, name: "Drone" },
+    { id: 4, name: "Timelapse" },
   ];
+  
   status = [
-    { id: 1, name: "Online" },
+    { id: 1, name: "Decommissioned" },
     { id: 2, name: "Offline" },
-    { id: 3, name: "Decommissioned" },
+    { id: 3, name: "Online" },
   ];
 
   async getDeviceList(from?:string) {
@@ -89,24 +96,7 @@ export class DeviceSettingsComponent implements OnInit {
 
     if (!res) return;
     const devices = res;
-    this.deviceList = devices.map((device) => ({
-      deviceType: device.deviceType?.toLowerCase(),
-      latitude: device.latitude,
-      longitude: device.longitude,
-      direction: device.cameraDirection,
-      cameraPole: device.cameraPole,
-      region: device.region,
-      areaId: device.areaId,
-      subArea: device.subAreaName,
-      subAreaId: device.subAreaId,
-      status: device.status?.toLowerCase(),
-      installationId: device.installationId,
-      isIngested: (device?.isIngested && device.isIngested) || false,
-      owner: device.owner,
-      uid: device.id,
-      supplierId: device.supplierId,
-      statusUpdateDate: device?.statusUpdateDate
-    }));
+    this.deviceList = this.mapDeviceContent(devices)
     if(from !=='changeStatus'){
       this.filteredDeviceList = this.deviceList;
       this.deviceInput = "";
@@ -137,6 +127,8 @@ export class DeviceSettingsComponent implements OnInit {
       expiry: supplier.expiry,
       renameEmail : false,
     }));
+    // Sort by SupplierId
+    this.supplierList.sort((a, b) => a.supplierId?.toLowerCase() > b.supplierId?.toLowerCase() ? 1 : -1);
     this.supplierIds = this.supplierList.map(supplier => supplier.supplierId).filter(supplierId => !!supplierId);
   }
 
@@ -150,6 +142,7 @@ export class DeviceSettingsComponent implements OnInit {
       name: region.title,
       uid: region.id,
     }));
+    this.regionList.sort((a, b) => a.initial?.toLowerCase() > b.initial?.toLowerCase() ? 1 : -1);
     this.computeRegionMap();
   }
 
@@ -174,6 +167,8 @@ export class DeviceSettingsComponent implements OnInit {
       uid: area.id,
       parentArea: area.parentArea,
     }));
+    // Sort by name
+    this.subAreaList.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
     this.computeSubAreaMap();
   }
 
@@ -190,6 +185,8 @@ export class DeviceSettingsComponent implements OnInit {
 
     const owners = res || [];
     this.owners = owners.map(owner => owner.owner);
+    // Sort by owner
+    this.owners.sort((a, b) => a?.toLowerCase() > b?.toLowerCase() ? 1 : -1);
   }
 
   capitalizeFirstLetter(string) {
@@ -218,9 +215,21 @@ export class DeviceSettingsComponent implements OnInit {
       .toPromise();
   }
 
-  async deleteDevice(device) {
-    await this.deleteDocument(device.uid);
+  
+  onDeleteCancle() {
+    this.showDeletePopup = false
+  }
+
+  async onDeleteConfirm() {
+    this.showDeletePopup = false
+    await this.deleteDocument(this.deviceToDelete.uid);
     this.getDeviceList();
+  }
+
+  async deleteDevice(device, e) {
+    e.stopPropagation()
+    this.deviceToDelete = device;
+    this.showDeletePopup = !this.showDeletePopup
   }
 
   searchDevice(event) {
@@ -304,5 +313,55 @@ export class DeviceSettingsComponent implements OnInit {
     } else {
       return 'Data not available';
     }
+  }
+  async getProponentList(){
+    try {
+      await this.apiService.constructionGet('/proponents',{}).subscribe((res:any)=>{
+      this.proponentList = res?.body 
+    })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  getDeviceListByProponent(){
+    try {
+      this.selectedRegions = null
+        this.selectedsubAreas= null
+        this.selectedOwner= null
+        // api call here 
+        if (this.selectedProponent) {
+          this.apiService.get(`/settings/proponentsDevice/${this.selectedProponent}`,{}).subscribe((res:any)=>{
+            this.deviceList = this.mapDeviceContent(res || [])
+            this.filterDevice()
+          })
+        }else {
+          this.getDeviceList()
+        }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  mapDeviceContent(devices){
+    return devices.map((device) => ({
+      deviceType: device.deviceType?.toLowerCase(),
+      latitude: device.latitude,
+      longitude: device.longitude,
+      direction: device.cameraDirection,
+      cameraPole: device.cameraPole,
+      region: device.region,
+      areaId: device.areaId,
+      subArea: device.subAreaName,
+      subAreaId: device.subAreaId,
+      status: device.status?.toLowerCase(),
+      installationId: device.installationId,
+      isIngested: (device?.isIngested && device.isIngested) || false,
+      owner: device.owner,
+      uid: device.id,
+      supplierId: device.supplierId,
+      statusUpdateDate: device?.statusUpdateDate,
+      installationDate: device?.installationDate,
+      installationTime: device?.installationTime,
+    }));
   }
 }

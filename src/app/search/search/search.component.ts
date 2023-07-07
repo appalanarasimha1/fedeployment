@@ -157,6 +157,8 @@ export class SearchComponent implements OnInit {
         ecm_fulltext: searchTerm,
         highlight:
           "dc:title.fulltext,ecm:binarytext,dc:description.fulltext,ecm:tag,note:note.fulltext,file:content.name",
+        sortBy: "dc:created",
+        sortOrder : "desc"
       };
       this.searchTerm(data);
     });

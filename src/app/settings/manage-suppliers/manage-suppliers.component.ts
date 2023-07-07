@@ -60,6 +60,7 @@ export class ManageSuppliersComponent implements OnInit {
   filteredUsers: Observable<string[]>;
   filteredSuppliers = [];
   currentSuppliers = [];
+  userEmails=[]
 
   @ViewChild('suppliersInput') suppliersInput: ElementRef;
   @ViewChild("myInput", { static: false }) myInput: ElementRef;
@@ -80,6 +81,12 @@ export class ManageSuppliersComponent implements OnInit {
   managedUsersMap = {};
   managedUsersBackUp=[];
   modalOpen: boolean = true;
+
+  showSupplierDisable = false
+  supplierToDisable;
+  showUserDisable = false
+  userToDisable;
+
 
   constructor(
     public matDialog: MatDialog,
@@ -174,10 +181,27 @@ export class ManageSuppliersComponent implements OnInit {
     this.updateSuppilerUsers(this.selectedSupplier.uid, users);
   }
 
-  togglerUserActivated(event, index) {
+  onDeleteCancle() {
     const users = this.selectedSupplier.users;
-    users[index].activated = event.checked;
+    this.showUserDisable = false
+    users[this.userToDisable].activated = true;
+  }
+
+  async onDeleteConfirm() {
+    this.showUserDisable = false
+    const users = this.selectedSupplier.users;
     this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+  }
+
+  async togglerUserActivated(event, index) {
+    const users = this.selectedSupplier.users;
+    if(!event.checked) {
+      this.userToDisable = index;
+      this.showUserDisable = !this.showUserDisable;
+    }else{
+      users[index].activated = event.checked;
+      this.updateSuppilerUsers(this.selectedSupplier.uid, users);
+    }
   }
 
   updateUserExpiry(event, index) {
@@ -234,6 +258,10 @@ export class ManageSuppliersComponent implements OnInit {
     this.filteredSuppliers = this.supplierList;
     this.currentSuppliers = this.supplierList.map(supplier => supplier.name);
     this.supplierInput = "";
+    let usersData = this.supplierList.map(sup=>{
+      return sup.users?.map(user=>user.user)
+    })
+    this.userEmails=usersData.reduce((acc, val) =>acc.concat(val), [])
     for (let i = 0; i < this.supplierList.length; i++) {
       this.filteredFruits[i] = this.suppliersCtrl.valueChanges.pipe(
         startWith(null),
@@ -287,7 +315,7 @@ export class ManageSuppliersComponent implements OnInit {
     this.suppliersCtrl.setValue(null);
   }
 
-  remove(fruit, indx, index): void {
+  async remove(fruit, indx, index) {
     const regions = this.supplierList[index].regions;
     const removedIndex = regions.indexOf(fruit);
     if (removedIndex < 0) return;
@@ -333,24 +361,40 @@ export class ManageSuppliersComponent implements OnInit {
     this.getSupplierList();
   }
 
-  async toggleActivated(event, supplier, allNotifactionContent) {
-    await this.updateDocument(supplier.uid, {"activated": event.checked});
-    if(event.checked) {
-      this.modalOpen = true;
-      this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
-      }, (reason) => {
-        this.closeModal();
-      });
-    } else {
-      this.sharedService.showSnackbar(
-        `Supplier's access has been ${event.checked ? "enabled" : "disabled"}`,
-        5000,
-        "top",
-        "center",
-        "snackBarMiddle",
-      );
-    }
+  
+  onCancleAccessToggle() {
+    this.showSupplierDisable = false
+    this.supplierToDisable.activated = true;
+  }
+
+  async onConfirmAccessToggle() {
+    this.sharedService.showSnackbar(
+      `Supplier's access has been disabled`,
+      5000,
+      "top",
+      "center",
+      "snackBarMiddle",
+    );
+  
+    this.showSupplierDisable = false
+    await this.updateDocument(this.supplierToDisable.uid, {"activated": false});
     this.getSupplierList();
+  }
+
+  async toggleActivated(event, supplier, allNotifactionContent) {
+    this.supplierToDisable = supplier
+    if(!event.checked) {
+      this.showSupplierDisable = !this.showSupplierDisable;
+      
+    }else{
+      await this.updateDocument(supplier.uid, {"activated": event.checked});
+        this.modalOpen = true;
+        this.modalService.open(allNotifactionContent, { windowClass: 'custom-modal-notifaction', backdropClass: 'remove-backdrop', keyboard: false, backdrop: 'static' }).result.then((result) => {
+        }, (reason) => {
+          this.closeModal();
+        });
+      this.getSupplierList();
+    }
   }
 
   async openCreateSupplierModal() {
@@ -377,6 +421,15 @@ export class ManageSuppliersComponent implements OnInit {
   }
 
   async openInviteUserModal() {
+    if (this.userEmails.indexOf(this.inviteUserInput.trim().toLowerCase()) !== -1) {
+      return this.sharedService.showSnackbar(
+        "User is already added  in a supplier list",
+        4000,
+        "top",
+        "center",
+        "snackBarMiddle"
+      );
+    }
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.id = "modal-component";

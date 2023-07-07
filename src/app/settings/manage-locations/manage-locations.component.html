@@ -21,7 +21,15 @@
             <tr *ngFor="let region of filteredRegions">
                 <td><div class="height32"></div></td>
                 <td>{{region.initial}} <span class="lightGray">{{region.name}}</span></td>
-                <td style="text-align: center !important;"><img [hidden]="region.isIngested" (click)="removeRegion(region)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+                <td style="text-align: center !important;">
+                    <div class="positionRelative">
+                    <img [hidden]="region.isIngested" (click)="removeRegion(region, $event)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;">
+                        <app-delete-confirmation
+                        (onCancle)="onRemoveRegionCancle()"
+                        (onConfirm)="onRemoveRegionConfirm()"
+                        *ngIf="showRegionDelete && regionToDelete.uid === region.uid"></app-delete-confirmation>    
+                    </div>
+                </td>
                 <td style="text-align: center !important;" (click)="openSubAreaList(region)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
             </tr>
         </table>
@@ -74,7 +82,15 @@
                 <td><div class="height32"></div></td>
                 <td>{{subArea.locationId}}</td>
                 <td>{{subArea.name}}</td>
-                <td style="text-align: center !important;"><img [hidden]="subArea.isIngested" (click)="removeSubArea(subArea)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;"></td>
+                <td style="text-align: center !important;">
+                    <div class="positionRelative">
+                        <img [hidden]="subArea.isIngested" (click)="removeSubArea(subArea, $event)" src="../../assets/images/delete-icon.svg" style="cursor: pointer; margin: 0px auto;">
+                        <app-delete-confirmation
+                        (onCancle)="onRemoveSubAreaCancle()"
+                        (onConfirm)="onRemoveSubAreaConfirm()"
+                        *ngIf="showSubAreaDelete && subAreaToDelete.uid === subArea.uid"></app-delete-confirmation>    
+                    </div>
+                </td>
             </tr>
         </table>
     </div>

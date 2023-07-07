@@ -101,6 +101,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   permissionChange:boolean=false;
   assetSize = { count: 0, size: null};
   selectedAssetsIds = {}
+  showDeletePopup = false
+  searchQuerySubscription;
 
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
@@ -278,6 +280,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.apiService
       .get(url, { headers: { "fetch-document": "properties" } })
       .subscribe((docs: any) => {
+        docs.entries = docs.entries.filter((item) => {
+          // Return elements where uid doesn't match any parentRef
+          return !docs.entries.some((parentItem) => parentItem.uid === item.parentRef);
+        });
+    
         this.assetList = docs.entries.filter(
           (sector) =>
             UNWANTED_WORKSPACES.indexOf(sector.title.toLowerCase()) === -1
@@ -320,7 +327,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       )
         .pipe(
           filter(Boolean),
-          debounceTime(250),
+          debounceTime(300),
           distinctUntilChanged(),
           tap(async (text: Event) => {
             if (!this.workspaceSearch.nativeElement.value) {
@@ -354,41 +361,45 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       pageSize: 20,
       queryParams: query,
     };
-    const result: any = await this.apiService
+    if (this.searchQuerySubscription) {
+      this.searchQuerySubscription.unsubscribe()
+    }
+    this.searchQuerySubscription = this.apiService
       .get(apiRoutes.NXQL_SEARCH, {
         params,
         headers: { "fetch-document": "properties" },
       })
-      .toPromise();
-    this.showAssetPath = true;
-    result.entries = result.entries.sort((a, b) =>
-      this.compare(a.title, b.title, false)
-    );
-    const folders = result.entries.filter(
-      (entry) =>
-        [
-          ASSET_TYPE.WORKSPACE_ROOT,
-          ASSET_TYPE.DOMAIN,
-          ASSET_TYPE.FOLDER,
-          ASSET_TYPE.ORDERED_FOLDER,
-          ASSET_TYPE.WORKSPACE,
-        ].indexOf(entry.type.toLowerCase()) > -1
-    );
-    const assets = result.entries.filter(
-      (entry) =>
-        [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(
-          entry.type.toLowerCase()
-        ) > -1
-    );
-    result.entries = folders.concat(assets);
-    // result.entries = result.entries.sort((a, b) =>
-    //   this.assetTypeCompare(a.type, b.type)
-    // );
-    // this.numberOfPages = result.numberOfPages;
-    // this.resultCount = result.resultsCount;
-    // this.sortedData = result.entries;
-    this.assetList = result.entries;
-    // this.loading = false;
+      .subscribe((result: any) => {
+        this.showAssetPath = true;
+        result.entries = result.entries.sort((a, b) =>
+          this.compare(a.title, b.title, false)
+        );
+        const folders = result.entries.filter(
+          (entry) =>
+            [
+              ASSET_TYPE.WORKSPACE_ROOT,
+              ASSET_TYPE.DOMAIN,
+              ASSET_TYPE.FOLDER,
+              ASSET_TYPE.ORDERED_FOLDER,
+              ASSET_TYPE.WORKSPACE,
+            ].indexOf(entry.type.toLowerCase()) > -1
+        );
+        const assets = result.entries.filter(
+          (entry) =>
+            [ASSET_TYPE.FILE, ASSET_TYPE.PICTURE, ASSET_TYPE.VIDEO].indexOf(
+              entry.type.toLowerCase()
+            ) > -1
+        );
+        result.entries = folders.concat(assets);
+        // result.entries = result.entries.sort((a, b) =>
+        //   this.assetTypeCompare(a.type, b.type)
+        // );
+        // this.numberOfPages = result.numberOfPages;
+        // this.resultCount = result.resultsCount;
+        // this.sortedData = result.entries;
+        this.assetList = result.entries;
+        // this.loading = false;
+      });
   }
 
   assetTypeCompare(a: string, b: string): number {
@@ -441,7 +452,7 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       return;
     }
     this.saveState(item, index, breadCrumbIndex);
-    const sectorName = item.path.split("/")[1];
+    const sectorName = this.checkExternalUser() ? this.sectorName : item.path.split("/")[1];
     let url = `workspace/${sectorName}`;
     if (index) {
       url = `${url}/${item.uid}`;
@@ -540,18 +551,8 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     this.assetList?.forEach((doc) => {
       size += +doc.properties?.["file:content"]?.length || 0;
     });
-    this.assetSize.size = this.humanFileSize(size);
+    this.assetSize.size = this.sharedService.humanFileSize(size);
     return this.assetSize.size;
-  }
-
-  humanFileSize(size) {
-    if (!size) return "0 kB";
-    const i = Math.floor(Math.log(size) / Math.log(1024));
-    return (
-      (size / Math.pow(1024, i)).toFixed(2) +
-      " " +
-      ["B", "kB", "MB", "GB", "TB"][i]
-    );
   }
 
   getDateInFormat(date: string): string {
@@ -966,13 +967,24 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       this.dataTableComponent.openMoveModal(move);
     } else return;
   }
-  async deleteFolders() {
+
+  onDeleteCancle() {
+    this.showDeletePopup = false
+  }
+
+  async onDeleteConfirm() {
+    this.showDeletePopup = false
     if (this.dataTableComponent) {
       this.loading = true;
       await this.dataTableComponent.deleteFolders();
       // await this.getAssets(this.currentWorkspace?.uid)
       this.loading = false;
     } else return;
+  }
+
+  async deleteFolders(e) {
+    e.stopPropagation()
+    this.showDeletePopup = !this.showDeletePopup
   }
 
   checkEnableMoveButton() {
