@@ -70,6 +70,9 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    this.user = userData?.["username"];
+
     if (this.doc) {
       this.getTags();
       this.getComments();
@@ -570,9 +573,13 @@ export class PreviewPopupComponent implements OnInit, OnChanges {
     return `{{${choice}}} `;
   }
   checkCanDownload() {
-    if (this.user === this.getCreator()) return true;
+    if (this.isCreator()) return true;
     const permissions = this.doc?.contextParameters?.permissions || [];
     return permissions.includes("CanDownload");
+  }
+
+  isCreator () {
+    return this.user === this.getCreator();
   }
 
   checkRejected() {
