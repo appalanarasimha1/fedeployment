@@ -4,6 +4,7 @@ import {
   OnInit,
   ViewChild,
   AfterViewInit,
+  OnDestroy,
 } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
@@ -43,7 +44,7 @@ import { ShareModalComponent } from "src/app/share-modal/share-modal.component";
   templateUrl: "./browse-sector-detail.component.html",
   styleUrls: ["./browse-sector-detail.component.css"],
 })
-export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
+export class BrowseSectorDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   loading: boolean = true;
   renameFolderName: boolean = false;
   folderNameRef = undefined;
@@ -104,6 +105,10 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
   showDeletePopup = false
   searchQuerySubscription;
 
+  thumbnailRetryCount = 0;
+  maxRetryThumbail = 3;
+  thumbailRetryInterval;
+
   @ViewChild(DataTableComponent) dataTableComponent: DataTableComponent;
   @ViewChild("workspaceSearch") workspaceSearch: ElementRef;
 
@@ -150,6 +155,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       if (!result?.length) return;
       result.map((asset: any) => this.assetList.unshift(asset));
       this.assetList = this.assetList.slice();
+      this.thumbnailRetryCount = 0;
+      if(this.thumbailRetryInterval) { 
+        clearInterval(this.thumbailRetryInterval);
+      }
+      this.checkAndRefreshThumbails();
     });
 
     const fetchAll = false;
@@ -264,9 +274,10 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     checkCache = true,
     pageSize = 20,
     pageIndex = 0,
-    offset = 0
+    offset = 0,
+    setLoader = true
   ): void {
-    this.loading = true;
+    if(setLoader) this.loading = true;
     this.showAssetPath = false;
     this.sharedService.toTop();
     let url = "";
@@ -300,6 +311,11 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
         let workSpaceIndex = this.assetList.findIndex(
           (res) => res.title === "Workspaces"
         );
+
+        if(setLoader) { 
+          this.checkAndRefreshThumbails();
+        }
+
         if (workSpaceIndex >= 0) {
           this.getAssets(this.assetList[workSpaceIndex].uid);
           this.loading = false;
@@ -312,6 +328,28 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
       });
   }
 
+  checkAndRefreshThumbails() {
+    if (this.checkIsThumbnailMissing(this.assetList)) {
+      this.thumbailRetryInterval = setInterval(() => {
+        if ((this.thumbnailRetryCount < this.maxRetryThumbail) && this.checkIsThumbnailMissing(this.assetList)) {
+          this.thumbnailRetryCount = this.thumbnailRetryCount + 1;
+          this.getAssets(this.folderId, true, 20, 0, 0, false);
+        } else {
+          clearInterval(this.thumbailRetryInterval);
+          this.thumbnailRetryCount = 0;
+        }
+      }, 60000 * 2)
+    }
+  }
+
+  checkIsThumbnailMissing(items): boolean {
+    items = items.filter((item) => item.type === 'Picture' || item.type === 'Video');
+    if (items?.length) {
+      return !!items.find((item) => item?.properties['picture:info']?.format === null);
+    }
+    return false;
+  }
+  
   handleAssetSelectionChange (event) { 
     this.selectedAssetsIds[event.item.uid] = event.checked;
   }
@@ -1183,4 +1221,9 @@ export class BrowseSectorDetailComponent implements OnInit, AfterViewInit {
     return this.sharedService.isFolderAdmin();
   }
 
+  ngOnDestroy(): void {
+    if(this.thumbailRetryInterval) { 
+      clearInterval(this.thumbailRetryInterval);
+    }
+  }
 }
