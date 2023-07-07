@@ -126,7 +126,7 @@
                         </div>
                       </div>
 
-                      <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length > 0" class="rejectedRequest">
+                      <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length > 0 && !isCreator()" class="rejectedRequest">
                         <p style="margin-bottom: 10px;"><span>{{getCreator()}}</span> has approved your download request:</p>
                         <p style="margin-bottom: 15px;">Always credit copyright owners.</p>
 
@@ -161,7 +161,7 @@
                       </div>
 
                       <!-- direct download start -->
-                      <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length < 1" class="rejectedRequest" style="margin: -20px -30px">
+                      <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && (getApprovalUsers().length < 1 || isCreator())" class="rejectedRequest" style="margin: -20px -30px">
                         <div class="sub-dropdown-menu directDownloadBlk">
                           <ul style="margin-bottom: 5px;" *ngIf="!dwonloadingMsgInternalUse">
                             <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
@@ -683,7 +683,7 @@
                       </div>
                     </div>
 
-                    <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length > 0" class="rejectedRequest">
+                    <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length > 0 && !isCreator()" class="rejectedRequest">
                       <p style="margin-bottom: 10px;"><span>{{getCreator()}}</span> has approved your download request:</p>
                       <p style="margin-bottom: 15px;">Always credit copyright owners.</p>
 
@@ -719,7 +719,7 @@
                     </div>
 
                     <!-- direct download start -->
-                    <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length < 1" class="rejectedRequest" style="margin: -20px -30px">
+                    <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && (getApprovalUsers().length < 1 || isCreator())" class="rejectedRequest" style="margin: -20px -30px">
                       <div class="sub-dropdown-menu directDownloadBlk">
                         <ul style="margin-bottom: 5px;" *ngIf="!dwonloadingMsgInternalUse">
                           <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
