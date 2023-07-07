@@ -203,6 +203,7 @@ export class UploadDroneComponent implements OnInit {
     this.startUpLoading = true;
     this.allFiles =[...this.files,...this.srtFiles]
     await this.uploadFile(this.allFiles);
+    this.publishAfterUpload()
     // console.log("upload done")
   }
   allowPublish:boolean=false
@@ -435,14 +436,14 @@ export class UploadDroneComponent implements OnInit {
   async publishAssets() {
     this.loading = true;
     // this.publishing = true;
-    const folderToAdd = await this.getUploadFolderPath();
-    for (let key in this.filesMap) {
-      const asset = await this.createAsset(
-        this.filesMap[key],
-        key,
-        folderToAdd
-      );
-    }
+    // const folderToAdd = await this.getUploadFolderPath();
+    // for (let key in this.filesMap) {
+    //   const asset = await this.createAsset(
+    //     this.filesMap[key],
+    //     key,
+    //     folderToAdd
+    //   );
+    // }
     this.sharedService.newEvent('Upload done');
 
     this.sharedService.showSnackbar(`${Object.keys(this.filesMap).length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
@@ -914,5 +915,22 @@ export class UploadDroneComponent implements OnInit {
     let files = this.failedFiles.map(file=>file.name);
     this.clipboard.copy(files.toString());
     this.sharedService.showSnackbar(`Copied`, 4000, 'top', 'center', 'snackBarMiddle');
+  }
+
+  async publishAfterUpload(){
+    this.loading = true;
+    const folderToAdd = await this.getUploadFolderPath();
+    for (let key in this.filesMap) {
+      const asset = await this.createAsset(
+        this.filesMap[key],
+        key,
+        folderToAdd
+      );
+    }
+    this.loading = false;
+    // this.sharedService.newEvent('Upload done');
+
+    // this.sharedService.showSnackbar(`${Object.keys(this.filesMap).length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
+
   }
 }
