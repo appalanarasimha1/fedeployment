@@ -9,7 +9,7 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, NavigationEnd } from "@angular/router";
 import { IHeaderSearchCriteria } from "../common/subHeader/interface";
 import {
   ASSET_SEARCH_PAGE_SIZE,
@@ -240,6 +240,12 @@ export class DocumentComponent implements OnInit, OnChanges {
         if (element) element.scrollIntoView();
       }, 500);
     });
+    this.router.events.forEach((event: any) => {
+      if (event.url && event instanceof NavigationEnd) {
+        this.removeAssets()
+      }
+    });
+
     this.getRecentlyViewed();
     this.getFavorites();
     // this.getTrendingAssets();
@@ -735,14 +741,14 @@ export class DocumentComponent implements OnInit, OnChanges {
         break;
     }
     // }
-    this.recentDataShow = this.sharedService.markRecentlyViewed(file);
     if (fileType === "image") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/Medium`;
       fileRenditionUrl = url; // file.properties['file:content'].data;
       // this.favourite = file.contextParameters.favorites.isFavorite;
     } else if (fileType === "video") {
       fileRenditionUrl =
-        file.properties["vid:transcodedVideos"][0]?.content.data || "";
+      file.properties["vid:transcodedVideos"][0]?.content?.data || 
+      `${window.location.origin}/nuxeo/${file.properties['file:content']?.data?.split('nuxeo/')?.[1]}`;
     } else if (fileType === "file") {
       const url = `/nuxeo/api/v1/id/${file.uid}/@rendition/pdf`;
       // fileRenditionUrl = `${this.getNuxeoPdfViewerURL()}${encodeURIComponent(url)}`;
@@ -758,6 +764,8 @@ export class DocumentComponent implements OnInit, OnChanges {
     // }
 
     this.previewModal.open();
+    
+    this.recentDataShow = this.sharedService.markRecentlyViewed(file);
   }
 
   onFileProgress(event: any) {

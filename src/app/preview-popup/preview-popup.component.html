@@ -84,9 +84,9 @@
                       </svg>
                     </a>
                   </div> -->
-                  <div class="downloadBtn buttonCreate customtooltip download-permission-tooltip">
-                    <a href="javascript:void(0)" class="createNew " [triggers]="'hover'" [disableTooltip]="!hasRequestRestriction() || !checkRejected()" ngbTooltip="File not downloadable" (click)="datePickerDefaultAction()">
-                      <img src="../../assets/images/download-white-icon.svg" /> Download
+                  <div class="downloadBtn buttonCreate customtooltip download-permission-tooltip" [class.downloadBtnPermission]="!isDownloadEnabled">
+                    <a href="javascript:void(0)" class="createNew "  [triggers]="'hover'" [disableTooltip]="isDownloadEnabled" ngbTooltip="You do not have download permission for this asset" (click)="datePickerDefaultAction()" >
+                      <img [src]="isDownloadEnabled ? '../../assets/images/download-white-icon.svg': '../../assets/images/download-black.svg'" /> Download
                     </a>
                   </div>
                   <div *ngIf="showCreateFolderPopup" class='dropdownCreate createFolder'>
@@ -126,7 +126,7 @@
                         </div>
                       </div>
 
-                      <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length > 0" class="rejectedRequest">
+                      <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length > 0 && !isCreator()" class="rejectedRequest">
                         <p style="margin-bottom: 10px;"><span>{{getCreator()}}</span> has approved your download request:</p>
                         <p style="margin-bottom: 15px;">Always credit copyright owners.</p>
 
@@ -135,12 +135,20 @@
                           <div class="down-arrow-icon"></div>
                           <div class="sub-dropdown-menu">
                             <ul>
-                              <li *ngFor="let view of doc.properties['picture:views']">
+                              <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']">
                                 <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                   {{ view.width }} * {{ view.height }}
                                   <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                                 </a>
                               </li>
+                              <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                                <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                  <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                  {{ view.name }}
+                                  <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                                </a>
+                              </li>
+
                               <li>
                                 <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                                   Original File
@@ -153,12 +161,19 @@
                       </div>
 
                       <!-- direct download start -->
-                      <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length < 1" class="rejectedRequest" style="margin: -20px -30px">
+                      <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && (getApprovalUsers().length < 1 || isCreator())" class="rejectedRequest" style="margin: -20px -30px">
                         <div class="sub-dropdown-menu directDownloadBlk">
                           <ul style="margin-bottom: 5px;" *ngIf="!dwonloadingMsgInternalUse">
-                            <li *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
+                            <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
                               <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                 {{ view.width }} * {{ view.height }}
+                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                              </a>
+                            </li>
+                            <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                {{ view.name }}
                                 <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                               </a>
                             </li>
@@ -286,7 +301,7 @@
                         <!-- <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }"> -->
                         <img src="../../assets/images/clear-icon.svg" *ngIf="description" (click)="clearValue()">
                       </div>
-                      <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }" (click)="addUpdateDescription()" ><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
+                      <div class="addDescriptionIcon" (click)="addUpdateDescription()" ><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
                       <div class="addDescriptionIcon" (click)="enableInputClick(false)"><img src="../../assets/images/remove-description.svg" ></div>
                     </div>
 
@@ -668,7 +683,7 @@
                       </div>
                     </div>
 
-                    <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length > 0" class="rejectedRequest">
+                    <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length > 0 && !isCreator()" class="rejectedRequest">
                       <p style="margin-bottom: 10px;"><span>{{getCreator()}}</span> has approved your download request:</p>
                       <p style="margin-bottom: 15px;">Always credit copyright owners.</p>
 
@@ -677,12 +692,21 @@
                         <div class="down-arrow-icon"></div>
                         <div class="sub-dropdown-menu">
                           <ul>
-                            <li *ngFor="let view of doc.properties['picture:views']">
+                            <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']">
                               <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                                 {{ view.width }} * {{ view.height }}
                                 <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                               </a>
                             </li>
+
+                            <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                              <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                                <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                                {{ view.name }}
+                                <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                              </a>
+                            </li>
+
                             <li>
                               <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                                 Original File
@@ -695,15 +719,24 @@
                     </div>
 
                     <!-- direct download start -->
-                    <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && getApprovalUsers().length < 1" class="rejectedRequest" style="margin: -20px -30px">
+                    <div *ngIf="(showDownloadDropdown() || checkCanDownload()) && (getApprovalUsers().length < 1 || isCreator())" class="rejectedRequest" style="margin: -20px -30px">
                       <div class="sub-dropdown-menu directDownloadBlk">
                         <ul style="margin-bottom: 5px;" *ngIf="!dwonloadingMsgInternalUse">
-                          <li *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
+                          <li [hidden]="doc?.type === 'Video'" *ngFor="let view of doc.properties['picture:views']" (click)="dwonloadingMsgBlk()">
                             <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
                               {{ view.width }} * {{ view.height }}
                               <span>{{getDownloadFileEstimation(view.content.length)}}</span>
                             </a>
                           </li>
+
+                          <li [hidden]="checkMimeType(doc) === 'picture'" *ngFor="let view of doc.properties['vid:transcodedVideos']">
+                            <a href="{{ getAssetUrl(null, view.content.data) || '' }}">
+                              <!-- {{ view.info.width }} * {{ view.info.height }} -->
+                              {{ view.name }}
+                              <span>{{getDownloadFileEstimation(view.content.length)}}</span>
+                            </a>
+                          </li>
+
                           <li (click)="dwonloadingMsgBlk()">
                             <a href="{{ getAssetUrl(null, doc?.properties['file:content']?.data) || '' }}">
                               Original File
@@ -821,7 +854,7 @@
                       <input type="text" placeholder="Add description" [(ngModel)]="description" [ngClass]="{'goldenText': description }">
                       <img src="../../assets/images/clear-icon.svg" *ngIf="description" (click)="clearValue()">
                     </div>
-                    <div class="addDescriptionIcon" [ngClass]="{'disabledIcon': !description }" (click)="addUpdateDescription()"><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
+                    <div class="addDescriptionIcon" (click)="addUpdateDescription()"><img src="../../assets/images/add-description.svg" style="width: 20px;" ></div>
                     <div class="addDescriptionIcon" (click)="enableInputClick(false)"><img src="../../assets/images/remove-description.svg" ></div>
                   </div>
 

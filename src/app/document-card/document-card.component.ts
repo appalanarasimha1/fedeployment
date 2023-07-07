@@ -18,6 +18,7 @@ export class DocumentCardComponent implements OnInit, OnChanges {
   @Output() onOpenPreview = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
   @Output() onMarkFavourite = new EventEmitter<any>();
+  @Input() disableSelectCheckbox = false;
 
   modalLoading = false;
   isAware = false;

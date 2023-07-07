@@ -70,7 +70,7 @@ export class AppComponent implements OnInit{
             }, 500);
           } else if(event.url.includes('/construction')){
             this.showHeader = true;
-            this.showAddButton = false;
+            this.showAddButton = true;
             setTimeout(()=>{
               this.showFooter = true;
             }, 500);

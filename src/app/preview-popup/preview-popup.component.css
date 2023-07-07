@@ -1849,8 +1849,18 @@ font-weight: normal;
   color: #fff;
   font-weight: normal;
 }
+
+.downloadBtnPermission a {
+  background: #cccccc;
+  width: 140px;
+  padding: 9px 20px;
+  border-radius: 100px;
+  color: #000;
+  font-weight: normal;
+}
+
 /* .downloadBtn img,  */
-.downloadBtn a img {
+.downloadBtn a img, .downloadBtnPermission a img {
   max-width: 20px;
 }
 

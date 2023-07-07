@@ -203,6 +203,7 @@ export class UploadDroneComponent implements OnInit {
     this.startUpLoading = true;
     this.allFiles =[...this.files,...this.srtFiles]
     await this.uploadFile(this.allFiles);
+    this.publishAfterUpload()
     // console.log("upload done")
   }
   allowPublish:boolean=false
@@ -435,14 +436,14 @@ export class UploadDroneComponent implements OnInit {
   async publishAssets() {
     this.loading = true;
     // this.publishing = true;
-    const folderToAdd = await this.getUploadFolderPath();
-    for (let key in this.filesMap) {
-      const asset = await this.createAsset(
-        this.filesMap[key],
-        key,
-        folderToAdd
-      );
-    }
+    // const folderToAdd = await this.getUploadFolderPath();
+    // for (let key in this.filesMap) {
+    //   const asset = await this.createAsset(
+    //     this.filesMap[key],
+    //     key,
+    //     folderToAdd
+    //   );
+    // }
     this.sharedService.newEvent('Upload done');
 
     this.sharedService.showSnackbar(`${Object.keys(this.filesMap).length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
@@ -588,45 +589,24 @@ export class UploadDroneComponent implements OnInit {
       this.dates.push(addedFiles[i].lastModifiedDate);
     }
     // this.dates = [...this.dates, ...addedDates];
-
-
-
-
     // this.uploadFile(this.files);
     // this.countFile = false;
   }
-  srtFiles:any =[]
-  filterWhitelistFiles(files: any) {
-    const filteredFile = [];
-    for (const file of files) {
-      const filenameSplit = file.name.split(".");
-      // if (filenameSplit.length > 2) {
-      // } else if (WHITELIST_EXTENSIONS.includes(file.type)) {
-        if (WHITELIST_EXTENSIONS.includes(file.type)) {
-        filteredFile.push(file);
-      } else if (
-        filenameSplit[1] &&
-        WHITELIST_EXTENSIONS.includes(filenameSplit[filenameSplit.length - 1].toLowerCase()))
-         {
-        filteredFile.push(file);
-      }else if (file.type?.includes("image/")) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("video/")) {
-        filteredFile.push(file);
-      } else if (file.type?.includes("audio/")) {
-        filteredFile.push(file);
-      } else if (file.name?.toLowerCase().includes(".srt")) {
-        this.dateHiideSrt = false;
-        // filteredFile.push(file);
-        this.srtFiles.push(file)
-        this.srtDates.push(file.lastModifiedDate);
-      }  else {
-        // const blockedFile = file;
-        // blockedFile['isBlocked'] = true;
-        // filteredFile.push(blockedFile);
-      }
-    }
 
+  srtFiles: any = []
+  filterWhitelistFiles(files: any) {
+    let filteredFile = this.sharedService.filterSafeFiles(files);
+    this.srtFiles = filteredFile.filter((file) => {
+      if (file.name?.toLowerCase().includes(".srt")) {
+        this.srtDates.push(file.lastModifiedDate);
+        return true;
+      }
+      return false;
+    })
+    filteredFile = filteredFile.filter((file) => !file.name?.toLowerCase().includes(".srt"))
+    if (this.srtFiles.length) {
+      this.dateHiideSrt = false;
+    }
     return filteredFile;
   }
 
@@ -914,5 +894,22 @@ export class UploadDroneComponent implements OnInit {
     let files = this.failedFiles.map(file=>file.name);
     this.clipboard.copy(files.toString());
     this.sharedService.showSnackbar(`Copied`, 4000, 'top', 'center', 'snackBarMiddle');
+  }
+
+  async publishAfterUpload(){
+    this.loading = true;
+    const folderToAdd = await this.getUploadFolderPath();
+    for (let key in this.filesMap) {
+      const asset = await this.createAsset(
+        this.filesMap[key],
+        key,
+        folderToAdd
+      );
+    }
+    this.loading = false;
+    // this.sharedService.newEvent('Upload done');
+
+    // this.sharedService.showSnackbar(`${Object.keys(this.filesMap).length} assets uploaded`, 4000, 'top', 'center', 'snackBarMiddle');
+
   }
 }

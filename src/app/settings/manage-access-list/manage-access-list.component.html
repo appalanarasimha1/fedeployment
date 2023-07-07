@@ -22,7 +22,16 @@
                 <td><div class="height32"></div></td>
                 <td *ngIf="access.name.initial !== access.name.full">{{access.name.initial}} - {{access.name.full}}</td>
                 <td *ngIf="access.name.initial === access.name.full">{{access.name.initial}}</td>
-                <td><mat-slide-toggle [(ngModel)]="access.activated" (change)="toggleAccessActivated($event, access)"></mat-slide-toggle></td>
+                <td>
+                    <div class="positionRelative">
+                        <mat-slide-toggle [(ngModel)]="access.activated" (change)="toggleAccessActivated($event, access)"></mat-slide-toggle>
+                        <app-delete-confirmation
+                        (onCancle)="onCancleAccessToggle()"
+                        (onConfirm)="onConfirmAccessToggle()"
+                        [message]="'Access will be deactivated, Are you sure?'"
+                        *ngIf="showAccessToggleConfirmation && accessToToggle.uid === access.uid"></app-delete-confirmation>
+                    </div>
+                </td>
                 <td style="text-align: center !important;" (click)="openAccess(access)"><img src="../../../assets/images/back-arrow.svg" class="clickArrowAction" /></td>
             </tr>
         </table>
@@ -98,7 +107,16 @@
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </td>
-                <td><mat-slide-toggle [(ngModel)]="user.activated" (change)="togglerUserActivated($event, i)"></mat-slide-toggle></td>
+                <td>
+                    <div class="positionRelative">
+                        <mat-slide-toggle [(ngModel)]="user.activated" (change)="togglerUserActivated($event, i)"></mat-slide-toggle>
+                        <app-delete-confirmation
+                        (onCancle)="onDeleteCancle()"
+                        (onConfirm)="onDeleteConfirm()"
+                        [message]="'Access will be deactivated, Are you sure?'"
+                        *ngIf="showDeletePopup && i === userIndexToDelete"></app-delete-confirmation>
+                    </div>
+                </td>
                 <td></td>
             </tr>
         </table>

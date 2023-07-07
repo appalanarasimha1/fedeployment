@@ -91,8 +91,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   selectedMoveList={};
   sizeExeeded = false;
   sortedData: IEntry[] = [];
-  arrowisAsc: IArrow = { "title": true, "fileType": true, "dc:creator": true, "dc:created": true, "dc:modified": true, "dc:sector": true };
-  hoverArrow: IArrow = { "title": false, "fileType": false, "dc:creator": false, "dc:created": false, "dc:modified": false, "dc:sector": false };
+  arrowisAsc: IArrow = { "title": true, "fileType": true, "fileSize": true, "dc:creator": true, "dc:created": true, "dc:modified": true, "dc:sector": true };
+  hoverArrow: IArrow = { "title": false, "fileType": false, "fileSize": false, "dc:creator": false, "dc:created": false, "dc:modified": false, "dc:sector": false };
   showLinkCopy: boolean = false;
   showShadow = false;
   selectedMoveListNew: any = {};
@@ -480,7 +480,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.contextMenu.openMenu();
 
       $(document).click( (e)=> {
-        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && this.count == 0) {
+        if (!$(e.target).hasClass("groupFolder") && $(e.target).parents(".availableActions").length === 0 && $(e.target).parents(".rename-block").length === 0 && this.count == 0) {
           // $(".availableActions").hide();
           this.removeAssets()
         }
@@ -800,6 +800,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     dialogConfig.data = {
       selectedList: this.selectedMoveList,
       parentId: this.breadCrumb[0]?.uid,
+      parent: this.breadCrumb[0],
       sectorList: this.folderStructure[0]?.children || [],
       user:this.user,
       move,
@@ -1141,6 +1142,12 @@ export class DataTableComponent implements OnInit, OnChanges {
             this.getFileType(b),
             isAsc
           );
+        case "fileSize":
+          return this.compare(
+            parseInt(a.properties["file:content"]?.length) || 0,
+            parseInt(b.properties["file:content"]?.length) || 0,
+            isAsc
+          );
         default:
           return 0;
       }
@@ -1207,6 +1214,14 @@ export class DataTableComponent implements OnInit, OnChanges {
     }
 
     return splittedData.substring(number).toLowerCase();
+  }
+
+  getFileSize(item) {
+    if(item.type === 'Workspace' || item.type === 'Folder' || item.type === 'OrderedFolder') {
+      return '';  
+    }
+    let size = parseInt(item.properties["file:content"].length);
+    return this.sharedService.humanFileSize(size);
   }
 
 

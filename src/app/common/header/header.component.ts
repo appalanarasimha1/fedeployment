@@ -431,7 +431,8 @@ export class HeaderComponent implements OnInit {
 
   buildRequestDownloadNotificationTitle(notification) {
     const extended = notification.extended;
-    return `${extended.requestedBy} requests to download an asset.`;
+    return `${extended.requestedBy} requests to download an item.`;
+    // return `${extended.requestedBy} requests to download an asset.`;
   }
 
   buildRequestDownloadResponseNotificationTitle(notification) {
