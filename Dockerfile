@@ -1,5 +1,5 @@
 # Use a base Alpine Linux image
-FROM node:12.18.4
+FROM node:16.16.0
 
 # Set the working directory
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 #ENV BUILD_ID=dontKillMe
 
 # Copy required files to working dir
-COPY . .
+COPY . /app
 
 # Install PM2, start your application, and save the process list
 RUN npm install -g @angular/cli@9 pm2 gulp
