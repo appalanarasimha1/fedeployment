@@ -12,7 +12,7 @@ pipeline {
 	stage('Docker Build') {
     agent any
       steps {
-        sh 'docker build -t fedimg3 .'
+        sh 'docker build -t fedimg4 .'
         sh 'docker images'
       }
     }
@@ -34,7 +34,7 @@ pipeline {
 					
 					script{
 						try{
-							sh 'ssh -v opc@10.149.63.235 kubectl apply -f /home/opc/an/fenode-deployment.yaml -n an'
+							sh 'ssh -v opc@10.149.63.235 kubectl apply -f /home/opc/an/nodeapp-deployment.yaml -n an'
 							sh 'kubectl get pods -n an'
 							sh 'kubectl get deployments -n an'
 							sh 'kubectl get svc -n an'
