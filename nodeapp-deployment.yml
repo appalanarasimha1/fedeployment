@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nodeapp-deployment
+  namespace: an
   labels:
      app: nodeapp
      type: front-end
@@ -26,6 +27,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nodejs-service
+  namespace: an
 spec:
   selector:
     app: nodejsapp
