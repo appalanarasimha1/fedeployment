@@ -34,7 +34,7 @@ pipeline {
 					
 					script{
 						try{
-							sh 'kubectl apply -f nodeapp-deployment.yaml -n an'
+							sh 'kubectl apply -f fenode-deployment.yaml -n an'
 							sh 'kubectl get pods -n an'
 							sh 'kubectl get deployments -n an'
 							sh 'kubectl get svc -n an'
