@@ -13,7 +13,7 @@ pipeline {
     agent any
       steps {
         sh 'docker build -t jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an .'
-        sh 'docker tag v21707'
+        sh 'docker tag jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an v21707'
 	sh 'docker push jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707'
       }
     }
