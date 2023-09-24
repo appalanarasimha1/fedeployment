@@ -17,6 +17,8 @@ spec:
          containers:
            - name: nodejsapp-erp
              image: "jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1"
+             imagePullSecrets:
+              -name: oci-reg
   replicas: 1
   selector:
     matchLabels:
