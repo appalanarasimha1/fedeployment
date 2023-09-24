@@ -18,16 +18,14 @@ pipeline {
 stage('Docker Build') {
     agent any
       steps {
-        sh 'docker build -t jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an .'
-        sh 'docker tag  groundx_fe_uat_an jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1'
-	sh 'docker push  jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1'
+        sh 'docker build -t groundx_fe_uat_an .'
+        sh 'docker tag  groundx_fe_uat_an:latest jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1'
+	sh 'docker push jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1'
 	
       }
     }
   	
-   
-   
-    
+     
     stage('Deploy to K8s')
 		{
 		    
