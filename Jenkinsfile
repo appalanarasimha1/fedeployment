@@ -8,23 +8,25 @@ pipeline {
 	
 	
 	stages {
-	    
-	stage('Docker Build') {
-    agent any
-      steps {
-        sh 'docker build -t jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an .'
-        sh 'docker tag jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an v21707'
-	sh 'docker push jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707'
-      }
-    }
-  	
-   
-    stage('Docker') {
+	 stage('Docker') {
     agent any
       steps {
           sh ''' docker login  https://jed.ocir.io -u $DOCHUBCREDS_USR -p  "$DOCHUBCREDS_PSW" ''' 
           }
     }
+	    
+stage('Docker Build') {
+    agent any
+      steps {
+        sh 'docker build -t jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an .'
+        sh 'docker tag  groundx_fe_uat_an jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1'
+	sh 'docker push  jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1'
+	
+      }
+    }
+  	
+   
+   
     
     stage('Deploy to K8s')
 		{
