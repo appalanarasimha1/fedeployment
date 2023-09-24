@@ -34,14 +34,12 @@ pipeline {
 					
 					script{
 						try{
-							sh 'kubectl apply -f fenode-deployment.yaml -n an'
-							sh 'kubectl get pods -n an'
-							sh 'kubectl get deployments -n an'
-							sh 'kubectl get svc -n an'
-							}catch(error)
-							{
+							sh 'ssh -v opc@10.149.63.235 kubectl apply -f /home/opc/an/fenode-deployment.yaml -n an'
+							sh 'ssh opc@10.149.63.235 kubectl get pods -n an'
+						}catch(error)
+						{
 
-							}
+						}
 					}
 				}
 			}
