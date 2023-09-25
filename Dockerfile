@@ -8,7 +8,7 @@ WORKDIR /app
 #ENV BUILD_ID=dontKillMe
 
 # Copy required files to working dir
-COPY . /app
+COPY . .
 
 # Install PM2, start your application, and save the process list
 RUN npm install -g @angular/cli@9 pm2 gulp
