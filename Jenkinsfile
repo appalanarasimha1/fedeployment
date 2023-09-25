@@ -19,8 +19,8 @@ stage('Docker Build') {
     agent any
       steps {
         sh 'docker build -t jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an .'
-        sh 'docker tag  jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1'
-	sh 'docker push jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1'
+        sh 'docker tag  jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.0'
+	sh 'docker push jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.0'
 	
       }
     }
