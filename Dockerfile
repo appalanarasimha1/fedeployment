@@ -1,4 +1,4 @@
-# Use a base Alpine Linux image
+# Use a base image
 FROM node:16.16.0
 
 # Set the working directory
