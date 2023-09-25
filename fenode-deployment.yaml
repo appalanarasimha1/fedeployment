@@ -18,7 +18,7 @@ spec:
            - name: nodejsapp-erp
              image: "jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1"
              imagePullSecrets:
-              -name: oci-reg
+              -name: ocirsecret
   replicas: 1
   selector:
     matchLabels:
@@ -36,6 +36,6 @@ spec:
   type: LoadBalancer  
   ports:
     - protocol: TCP
-      targetPort: 3000
-      port: 8080
-      nodePort: 30080
+      targetPort: 3001
+      port: 8081
+      nodePort: 30002
