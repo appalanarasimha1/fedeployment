@@ -17,8 +17,9 @@ RUN npm install -g @angular/cli@9 pm2 gulp
 
 # Display running PM2 processes
 CMD ["npm", "version"]
-CMD ["npm","list"]
-CMD ["ng","version"]
-CMD ["gulp","--version"]
-CMD ["pm2","-v"]
+CMD ["/bin/bash"]
+#CMD ["npm","list"]
+#CMD ["ng","version"]
+#CMD ["gulp","--version"]
+#CMD ["pm2","-v"]
 # CMD ["pm2", "start", "server/bin/oci-uat_server.json"]
