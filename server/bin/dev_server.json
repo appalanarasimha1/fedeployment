@@ -1,0 +1,10 @@
+{
+    "script": "server/build/index.js",
+    "name": "dev_groundX_UI",
+    "exec_mode": "cluster",
+    "instances": "max", 
+    "log_date_format": "YYYY-MM-DD HH:mm Z",
+    "error_file": "../runtime/err.log",
+    "out_file": "../runtime/out.log",
+    "merge_logs": true
+  }
