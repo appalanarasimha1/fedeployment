@@ -1,25 +1,13 @@
-# Use a base image
-FROM node:12.18.4
-
-# Set the working directory
+FROM node:12.18.4 as builder
 WORKDIR /app
-
-# Set an environment variable
-#ENV BUILD_ID=dontKillMe
-
-# Copy required files to working dir
-COPY . .
-
-# Install PM2, start your application, and save the process list
-RUN npm install -g @angular/cli@9 pm2 gulp
-#    pm2 start server/bin/oci-uat_server.json && \
-#    pm2 save
-
-# Display running PM2 processes
-CMD ["npm", "version"]
-CMD ["/bin/bash"]
-#CMD ["npm","list"]
-#CMD ["ng","version"]
-#CMD ["gulp","--version"]
-#CMD ["pm2","-v"]
-CMD ["pm2", "start", "server/bin/oci-uat_server.json"]
+COPY fe_pipeline/package*.json ./
+RUN npm install
+RUN npm install -g @angular/cli@9
+RUN npm install -g pm2 --save
+RUN echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
+FROM node:12.18.4 as production
+WORKDIR /app
+COPY --from=builder /usr/local/lib/node_modules/pm2 /usr/local/lib/node_modules/pm2
+ENV PATH="/usr/local/lib/node_modules/pm2/bin:${PATH}"
+COPY fe_pipeline ./
+CMD pm2 start server/bin/oci-prod_server.json && pm2 save && pm2 list && tail -f /dev/null
