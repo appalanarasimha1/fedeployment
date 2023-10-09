@@ -1,8 +1,0 @@
-{
-    "source": {
-      "index": "searchindex"
-    },
-    "dest": {
-      "index": "searchindex_v4"
-    }
-  }
