@@ -17,7 +17,7 @@ stages {
 	 stage('Docker Build') {
 			
 			steps {
-			   sshagent(['DOCKERLOGIN']){
+			   sshagent(['opc244']){
 				sh 'ssh -o StrictHostKeyChecking=no opc@10.160.0.4 uptime'
 				sh 'docker build -t nodejsimg1 .'
 				sh 'docker images'
