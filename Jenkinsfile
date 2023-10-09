@@ -1,34 +1,49 @@
 pipeline {
     
-  agent any
+agent any
 
 	environment{
-	    DOCHUBCREDS=credentials('DOCKERLOGIN')
+	    DOCKERHUB_CREDENTIALS=credentials('DOCKERLOGIN')
 	}
 	
-	
-	stages {
+stages {
 	 stage('Docker') {
-    agent any
-      steps {
-          sh ''' docker login  https://jed.ocir.io -u $DOCHUBCREDS_USR -p  "$DOCHUBCREDS_PSW" ''' 
-          }
-    }
+			agent any
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
 	    
-stage('Docker Build') {
-    agent any
-      steps {
-        sh 'docker build -t jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an .'
-        sh 'docker tag  jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.3'
-	
-	
-      }
+	 stage('Docker Build') {
+			
+			steps {
+			   sshagent(['DOCKERLOGIN']){
+				sh 'ssh -o StrictHostKeyChecking=no opc@10.160.0.4 uptime'
+				sh 'docker build -t nodejsimg1 .'
+				sh 'docker images'
+				
+				}
+			}
     }
-  	
-     
- 
-    
-    
+	 stage('Deploy to K8S'){
+		    steps{
+			sshagent(['k8slogin']){
+				script{
+				try{
+						sh 'ssh -o StrictHostKeyChecking=no opc@10.160.0.6 uptime'
+						sh 'ssh opc@10.160.0.6 kubectl get pods -n an'
+					}catch(error){
+				
+					}
+				}
+			 }
+			}
+		}
   }
+  post {
+		always {
+			sh 'docker logout'
+		}
+	}
+  
 }
-
