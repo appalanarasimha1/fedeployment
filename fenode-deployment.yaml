@@ -16,9 +16,8 @@ spec:
      spec:
          containers:
            - name: nodejsapp-erp
-             image: "jed.ocir.io/axnfm4jb3i73/groundx_fe_uat_an:v21707.1"
-             imagePullSecrets:
-              -name: ocirsecret
+             image: "nodejsimg1"
+             
   replicas: 1
   selector:
     matchLabels:
@@ -37,5 +36,5 @@ spec:
   ports:
     - protocol: TCP
       targetPort: 3001
-      port: 8081
+      port: 8080
       nodePort: 30002
